@@ -130,46 +130,52 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             {
                 Usuario usuario = CreateUser();
 
-                errorMensaje = "test";
-
                 usuario.Role = "Peasent";
 
 				await _userStore.SetUserNameAsync(usuario, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(usuario, Input.Email, CancellationToken.None);
 
-                var result = await _userManager.CreateAsync(usuario, Input.Password);
-
-                if (result.Succeeded)
+                try
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var result = await _userManager.CreateAsync(usuario, Input.Password);
 
-                    var userId = await _userManager.GetUserIdAsync(usuario);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (result.Succeeded)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var userId = await _userManager.GetUserIdAsync(usuario);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(usuario, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                    else
+
+                    foreach (var error in result.Errors)
                     {
-                        await _signInManager.SignInAsync(usuario, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-
-                foreach (var error in result.Errors)
+                catch (Exception ex) 
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    errorMensaje = ex.Message;
                 }
+                
             }
 
             return Page();
@@ -181,7 +187,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             {
                 return Activator.CreateInstance<Usuario>();
             }
-            catch
+            catch (Exception ex) 
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(Usuario)}'. " +
                     $"Ensure that '{nameof(Usuario)}' is not an abstract class and has a parameterless constructor, or alternatively " +

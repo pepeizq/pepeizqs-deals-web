@@ -9,7 +9,12 @@ var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_we
 
 builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseSqlServer(conexionTexto));
 
-builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
+builder.Services.AddDefaultIdentity<Usuario>(options => 
+{ 
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true; 
+}
+).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
 builder.Services.AddRazorPages();
 
