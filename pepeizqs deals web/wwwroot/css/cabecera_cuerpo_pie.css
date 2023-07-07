@@ -1,0 +1,73 @@
+﻿.cabecera {
+    height: 70px;
+    background-color: var(--fondoOscuro);
+}
+
+.cuerpo {
+    background-color: var(--fondoCuerpo);
+    color: var(--colorTexto);
+    height: 100%;
+}
+
+.cuerpo-espacio {
+    padding: 40px 10px 60px 10px;
+}
+
+.pie {
+    background-color: var(--fondoOscuro);
+    font-size: var(--tamañoTexto);
+    color: var(--colorTexto);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.texto-logo {
+    font-size: 22px;
+    color: var(--colorTexto);
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+.texto-logo:hover {
+    color: var(--colorTextoHover);
+}
+
+.texto-cabecera {
+    font-size: var(--tamañoTexto);
+    color: var(--colorTexto);
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    vertical-align: middle;
+    background-color: transparent;
+}
+
+.texto-cabecera:hover {
+    color: var(--colorTextoHover);
+}
+
+.texto-cabecera:visited {
+    color: var(--colorTextoVisitado);
+}
+
+.texto-cabecera:active {
+    color: var(--colorTextoActivo);
+}
+
+.texto-pie {
+    font-size: var(--tamañoTexto);
+    color: var(--colorTexto);
+    text-decoration: none;
+}
+
+.texto-pie:hover {
+    color: var(--colorTextoHover);
+}
+
+.texto-pie:visited {
+    color: var(--colorTextoVisitado);
+}

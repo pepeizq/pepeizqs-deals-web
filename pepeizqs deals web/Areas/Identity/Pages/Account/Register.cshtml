@@ -1,0 +1,44 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Identity/Pages/_CuentaLayout.cshtml";
+}
+
+<div class="cuerpo-registro">
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div class="texto-info">Create a new account</div>
+
+        <hr />
+
+        <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="texto-info-entrada">Email</label>
+            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="texto-info-entrada">Password</label>
+            <input asp-for="Input.Password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Input.ConfirmPassword" class="texto-info-entrada">Confirm Password</label>
+            <input asp-for="Input.ConfirmPassword" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <span asp-validation-for="Input.ConfirmPassword" class="texto-peligro-entrada"></span>
+        </div>
+        <button id="registerSubmit" type="submit" class="boton">Register</button>
+    </form>
+
+    @if (Model.errorMensaje.Length > 0)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>@Model.errorMensaje</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

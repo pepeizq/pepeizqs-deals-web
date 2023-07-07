@@ -1,0 +1,74 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Juegos.EditarModel
+@{
+}
+
+<br>
+<h2>Editar Juego</h2>
+
+@if (Model.errorMensaje.Length > 0)
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMensaje</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+<form method="post">
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">ID</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="id" value="@Model.juego.Id" />
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Nombre</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="nombre" value="@Model.juego.Nombre" />
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Imagen</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="imagen" value="@Model.juego.Imagen" />
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Drm</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="drm" value="@Model.juego.Drm" />
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Enlace</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="enlace" value="@Model.juego.Enlace" />
+		</div>
+	</div>
+
+	@if (Model.exitoMensaje.Length > 0)
+	{
+		<div class="row mb-3">
+			<div class="col-sm-9">
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>@Model.exitoMensaje</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	}
+
+	<div class="row mb-3">
+		<div class="offset-sm-3 col-sm-3 d-grid">
+			<button type="submit" class="btn btn-primary">Enviar</button>
+		</div>
+
+		<div class="col-sm-3 d-grid">
+			<a class="btn btn-outline-primary" href="/" role="button">Cancelar</a>
+		</div>
+	</div>
+</form>

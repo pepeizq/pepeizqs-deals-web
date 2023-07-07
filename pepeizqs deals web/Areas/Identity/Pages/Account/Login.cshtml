@@ -1,0 +1,54 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = "~/Areas/Identity/Pages/_CuentaLayout.cshtml";
+}
+
+<div class="cuerpo-login">
+    <form id="account" method="post">
+        <div class="texto-info">Log in with an account</div>
+
+        <hr />
+
+        <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="texto-info-entrada">Email</label>
+            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="texto-info-entrada">Password</label>
+            <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="password" />
+            <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
+        </div>
+        <div class="checkbox mb-3">
+            <label asp-for="Input.RememberMe" class="form-label">
+                <input class="caja-confirmacion" asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+        </div>
+        <div>
+            <button id="login-submit" type="submit" class="boton">Log in</button>
+        </div>
+
+        <hr />
+
+        <div>
+            <p>
+                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+            </p>
+            <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+            </p>
+            <p>
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

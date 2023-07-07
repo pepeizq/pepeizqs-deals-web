@@ -1,0 +1,35 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Juegos.IndexModel
+@{
+}
+
+<br/>
+<h2>Juegos</h2>
+<a class='btn btn-primary btn-sm' href='/Juegos/Añadir'>Nuevo Juego</a>
+<table class='table'>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Nombre</th>
+			<th>Imagen</th>
+			<th>Drm</th>
+			<th>Enlace</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var juego in Model.listaJuegos)
+		{
+			<tr>
+				<td>@juego.Id</td>
+				<td>@juego.Nombre</td>
+				<td>@juego.Imagen</td>
+				<td>@juego.Drm</td>
+				<td>@juego.Enlace</td>
+				<td>
+					<a class="btn btn-primary btn-sm" href="/Juegos/Editar?id=@juego.Id">Editar</a>
+					<a class="btn btn-danger btn-sm" href="/Juegos/Borrar?id=@juego.Id">Borrar</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

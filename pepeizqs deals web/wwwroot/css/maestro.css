@@ -1,0 +1,16 @@
+﻿:root {
+    --fondoOscuro: #002033;
+    --fondoCuerpo: #1b2838;
+    --tamañoTexto: 16px;
+    --colorTexto: #f5f5f5;
+    --colorTextoHover: #b9e2fa;
+    --colorTextoVisitado: #cbeafb;
+    --fondoEntrada: #0d1621;
+    --fondoBoton: #1982bf;
+    --fondoBotonHover: #1671a6;
+    --colorTextoPeligro: #f04f5e;
+    --colorTextoPeligroHover: #b91020;
+    --colorTextoOscuro: #86aeef;
+    --colorTextoAlerta: #664d03;
+    --fondoAlerta: #fff3cd;
+}

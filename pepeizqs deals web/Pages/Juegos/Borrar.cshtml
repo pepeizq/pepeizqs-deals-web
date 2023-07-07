@@ -1,0 +1,33 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Juegos.BorrarModel
+
+@using Microsoft.Data.SqlClient;
+
+@{
+	string id = Request.Query["Id"];
+
+	try
+	{
+		WebApplicationBuilder builder = WebApplication.CreateBuilder();
+		string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+
+		using (SqlConnection conexion = new SqlConnection(conexionTexto))
+		{
+			conexion.Open();
+			String borrarJuego = "DELETE FROM juegos WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(borrarJuego, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+
+				comando.ExecuteNonQuery();
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		
+	}
+
+	Response.Redirect("/Juegos/Index");
+}
