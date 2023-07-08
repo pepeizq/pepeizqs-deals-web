@@ -5,7 +5,11 @@ namespace pepeizqs_deals_web.Areas.Identity.Data;
 
 public class Usuario : IdentityUser
 {
-	[PersonalData]
+    [PersonalData]
+    [Column(TypeName = "nvarchar(100)")]
+    public string? Nickname { get; set; }
+
+    [PersonalData]
 	[Column(TypeName = "nvarchar(100)")]
     public string? Role { get; set; }
 
