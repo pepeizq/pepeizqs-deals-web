@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿//Comandos:
+//Add-Migration "Initial Crate"
+//Update-Database
+
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace pepeizqs_deals_web.Areas.Identity.Data;

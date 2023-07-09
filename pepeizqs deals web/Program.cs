@@ -1,5 +1,7 @@
 //https://www.youtube.com/watch?v=wzaoQiS_9dI
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
@@ -12,9 +14,27 @@ builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseS
 builder.Services.AddDefaultIdentity<Usuario>(options => 
 { 
     options.SignIn.RequireConfirmedAccount = false;
-    options.User.RequireUniqueEmail = true; 
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 15;
+    options.Lockout.AllowedForNewUsers = true;
+    options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.Cookie.Name = "cookiePepeizq";
+    options.Cookie.Expiration = TimeSpan.FromDays(14);
+    options.ExpireTimeSpan = TimeSpan.FromDays(14);
+    options.LoginPath = "/Identity/Account/Login";
+    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+    options.SlidingExpiration = true;
+});
 
 builder.Services.AddRazorPages();
 

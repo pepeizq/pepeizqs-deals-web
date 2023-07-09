@@ -29,8 +29,8 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Display(Name = "Username")]
-            public string Username { get; set; }
+            [Display(Name = "Nickname")]
+            public string Nickname { get; set; }
 
             [Display(Name = "Steam Account")]
             public string SteamAccount { get; set; }
@@ -38,14 +38,12 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(Usuario usuario)
         {
-            string userName = await _userManager.GetUserNameAsync(usuario);
-
-            Usuario usuarioSteam = await _userManager.GetUserAsync(User);
-            string cuentaSteam = usuarioSteam.SteamAccount;
+            string nickName = usuario.Nickname;
+            string cuentaSteam = usuario.SteamAccount;
 
             Input = new InputModel
             {
-                Username = userName,
+                Nickname = nickName,
                 SteamAccount = cuentaSteam
             };
         }
@@ -81,7 +79,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
             try
             {
-                usuario.UserName = Input.Username;
+                usuario.Nickname = Input.Nickname;
                 usuario.SteamAccount = Input.SteamAccount;
 
                 await _userManager.UpdateAsync(usuario);

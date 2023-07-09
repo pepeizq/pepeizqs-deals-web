@@ -12,8 +12,8 @@ using pepeizqs_deals_web.Data;
 namespace pepeizqs_deals_web.Migrations
 {
     [DbContext(typeof(pepeizqs_deals_webContext))]
-    [Migration("20230707075924_Initial Create")]
-    partial class InitialCreate
+    [Migration("20230708104901_Initial Crate")]
+    partial class InitialCrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -186,6 +186,9 @@ namespace pepeizqs_deals_web.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Nickname")
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
