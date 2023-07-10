@@ -1,6 +1,5 @@
 //https://www.youtube.com/watch?v=wzaoQiS_9dI
 
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
@@ -29,10 +28,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.Cookie.Name = "cookiePepeizq";
-    options.Cookie.Expiration = TimeSpan.FromDays(14);
-    options.ExpireTimeSpan = TimeSpan.FromDays(14);
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.LoginPath = "/Identity/Account/Login";
-    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     options.SlidingExpiration = true;
 });
 

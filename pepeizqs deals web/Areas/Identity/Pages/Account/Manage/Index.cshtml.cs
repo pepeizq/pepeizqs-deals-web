@@ -33,6 +33,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
             public string Nickname { get; set; }
 
             [Display(Name = "Steam Account")]
+            [DataType(DataType.Url)]
             public string SteamAccount { get; set; }
         }
 
@@ -46,6 +47,8 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
                 Nickname = nickName,
                 SteamAccount = cuentaSteam
             };
+
+            ViewData["SteamGames"] = usuario.SteamGames;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -81,6 +84,9 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
             {
                 usuario.Nickname = Input.Nickname;
                 usuario.SteamAccount = Input.SteamAccount;
+
+                usuario.SteamGames = await Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+                ViewData["SteamGames"] = usuario.SteamGames;
 
                 await _userManager.UpdateAsync(usuario);
             }
