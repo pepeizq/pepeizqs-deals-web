@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using pepeizqs_deals_web.Areas.Identity.Data;
+using Steam;
 using System.ComponentModel.DataAnnotations;
 
 namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
@@ -37,9 +38,9 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
             public string SteamAccount { get; set; }
         }
 
-        private async Task LoadAsync(Usuario usuario)
-        {
-            string nickName = usuario.Nickname;
+        private Task LoadAsync(Usuario usuario)
+		{
+			string nickName = usuario.Nickname;
             string cuentaSteam = usuario.SteamAccount;
 
             Input = new InputModel
@@ -48,10 +49,18 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
                 SteamAccount = cuentaSteam
             };
 
-            ViewData["SteamGames"] = usuario.SteamGames;
-        }
+            SteamJuegosyDeseados datos = new SteamJuegosyDeseados
+            {
+                juegos = usuario.SteamGames,
+                deseados = usuario.SteamWishlist
+            };
 
-        public async Task<IActionResult> OnGetAsync()
+            ViewData["SteamData"] = Cuenta.Mensaje(datos);
+
+			return Task.CompletedTask;
+		}
+
+		public async Task<IActionResult> OnGetAsync()
         {
             Usuario usuario = await _userManager.GetUserAsync(User);
 
@@ -85,8 +94,11 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
                 usuario.Nickname = Input.Nickname;
                 usuario.SteamAccount = Input.SteamAccount;
 
-                usuario.SteamGames = await Steam.Cuenta.CargarDatos(usuario.SteamAccount);
-                ViewData["SteamGames"] = usuario.SteamGames;
+                SteamJuegosyDeseados datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+                usuario.SteamGames = datos.juegos;
+                usuario.SteamWishlist = datos.deseados;
+
+                ViewData["SteamData"] = Cuenta.Mensaje(datos);
 
                 await _userManager.UpdateAsync(usuario);
             }

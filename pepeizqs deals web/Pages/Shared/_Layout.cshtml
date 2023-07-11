@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,12 +32,18 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="texto-cabecera" asp-area="" asp-page="/Juegos/Index">Test Juegos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="texto-cabecera" asp-area="" asp-page="/Juegos/Tiendas">Test Tiendas</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (await UsuarioCoger.RolDios(UserManager, User) == true)
+                            {
+                                <li class="nav-item">
+                                    <a class="texto-cabecera" asp-area="" asp-page="/Juegos/Index">Admin Juegos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="texto-cabecera" asp-area="" asp-page="/Juegos/Tiendas">Admin Tiendas</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
 

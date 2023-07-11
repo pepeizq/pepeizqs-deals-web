@@ -21,9 +21,9 @@
 
         <div class="mb-3">
             <label asp-for="Input.SteamAccount" class="texto-info-entrada"></label>
-            <input asp-for="Input.SteamAccount" class="entrada-texto" placeholder="Please enter your Steam Account."/>
+            <input asp-for="Input.SteamAccount" class="entrada-texto" placeholder="https://steamcommunity.com/id/yourname/" />
             <span asp-validation-for="Input.SteamAccount" class="texto-peligro-entrada"></span>
-            <label class="texto-info-entrada">@ViewData["SteamGames"]</label>
+            <label class="texto-info-entrada perfil-espacio-top">@ViewData["SteamData"]</label>
         </div>
 
         <div class="perfil-flexible">

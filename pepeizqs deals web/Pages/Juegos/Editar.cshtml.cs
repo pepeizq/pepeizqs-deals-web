@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+using Juegos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
-using static pepeizqs_deals_web.Pages.Juegos.IndexModel;
 
 namespace pepeizqs_deals_web.Pages.Juegos
 {

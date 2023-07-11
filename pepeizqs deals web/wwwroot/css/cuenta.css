@@ -40,6 +40,8 @@
     color: var(--colorTexto);
     display: block;
     width: 100%;
+    min-width: 100%;
+    vertical-align: middle;
 }
 
 .caja-confirmacion {
@@ -65,11 +67,32 @@
     text-align: center;
     font-size: 20px;
     border: 0px;
+    text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
 .boton:hover {
+    color: var(--colorTexto);
     background-color: var(--fondoBotonHover);
+}
+
+.boton-pequeño {
+    color: var(--colorTexto);
+    background-color: var(--fondoBotonPequeño);
+    display: inline-block;
+    user-select: none;
+    width: 100%;
+    padding: 6px;
+    text-align: left;
+    font-size: 16px;
+    border: 0px;
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.boton-pequeño:hover {
+    color: var(--colorTexto);
+    background-color: var(--fondoBotonPequeñoHover);
 }
 
 .boton-peligro {
@@ -87,6 +110,25 @@
 }
 
 .boton-peligro:hover {
+    color: var(--colorTexto);
+    background-color: var(--colorTextoPeligroHover);
+}
+
+.boton-pequeño-peligro {
+    color: var(--colorTexto);
+    background-color: var(--colorTextoPeligro);
+    display: inline-block;
+    user-select: none;
+    width: 100%;
+    padding: 6px;
+    text-align: center;
+    font-size: 16px;
+    border: 0px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    text-decoration: none;
+}
+
+.boton-pequeño-peligro:hover {
     color: var(--colorTexto);
     background-color: var(--colorTextoPeligroHover);
 }
@@ -136,8 +178,16 @@
     flex-direction: row;
 }
 
+.perfil-flexible-centrado {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .perfil-flexible-izquierda {
     width: 250px;
+    min-width: 250px;
 }
 
 .perfil-flexible-derecha {
@@ -153,4 +203,29 @@
     border: 0px;
     color: var(--colorTextoAlerta);
     background-color: var(--fondoAlerta);
+}
+
+.perfil-espacio-top {
+    margin-top: 6px;
+}
+
+.perfil-espacio-bottom {
+    margin-bottom: 50px;
+}
+
+.admin-busqueda {
+    padding-left: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.admin-busqueda-juego-izquierda {
+    justify-content: center;
+    width: 100%;
+}
+
+.admin-busqueda-juego-derecha {
+    width: 150px;
+    min-width: 150px;
+    padding-left: 30px;
 }

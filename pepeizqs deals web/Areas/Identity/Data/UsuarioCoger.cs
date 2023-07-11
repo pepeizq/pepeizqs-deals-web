@@ -20,5 +20,21 @@ namespace pepeizqs_deals_web.Areas.Identity.Data
 
             return nombre;
         }
+
+        public static async Task<bool> RolDios(UserManager<Usuario> userManager, ClaimsPrincipal user)
+        {
+            bool god = false;
+
+            Usuario usuario = await userManager.GetUserAsync(user);
+
+            string rol = usuario.Role;
+
+            if (rol.ToLower() == "god")
+            {
+                god = true;
+            }
+
+            return god;
+        }
     }
 }
