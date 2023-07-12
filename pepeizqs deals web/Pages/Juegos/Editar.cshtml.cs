@@ -35,9 +35,9 @@ namespace pepeizqs_deals_web.Pages.Juegos
 							{
 								juego.Id = lector.GetInt32(0);
 								juego.Nombre = lector.GetString(1);
-								juego.Imagen = lector.GetString(2);
-								juego.Drm = lector.GetString(3);
-								juego.Enlace = lector.GetString(4);
+								//juego.Imagen = lector.GetString(2);
+								//juego.Drm = lector.GetString(3);
+								//juego.Enlace = lector.GetString(4);
 							}
 						}
 					}
@@ -53,15 +53,15 @@ namespace pepeizqs_deals_web.Pages.Juegos
         {
 			juego.Id = int.Parse(Request.Form["id"]);
 			juego.Nombre = Request.Form["nombre"];
-			juego.Imagen = Request.Form["imagen"];
-			juego.Drm = Request.Form["drm"];
-			juego.Enlace = Request.Form["enlace"];
+			//juego.Imagen = Request.Form["imagen"];
+			//juego.Drm = Request.Form["drm"];
+			//juego.Enlace = Request.Form["enlace"];
 
-			if (juego.Id == 0 || juego.Nombre == string.Empty || juego.Imagen == string.Empty || juego.Drm == string.Empty || juego.Enlace == string.Empty)
-			{
-				errorMensaje = "error";
-				return;
-			}
+			//if (juego.Id == 0 || juego.Nombre == string.Empty || juego.Imagen == string.Empty || juego.Drm == string.Empty || juego.Enlace == string.Empty)
+			//{
+			//	errorMensaje = "error";
+			//	return;
+			//}
 
 			try
 			{
@@ -80,9 +80,9 @@ namespace pepeizqs_deals_web.Pages.Juegos
 					{
 						comando.Parameters.AddWithValue("@id", juego.Id);
 						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-						comando.Parameters.AddWithValue("@imagen", juego.Imagen);
-						comando.Parameters.AddWithValue("@drm", juego.Drm);
-						comando.Parameters.AddWithValue("@enlace", juego.Enlace);
+						//comando.Parameters.AddWithValue("@imagen", juego.Imagen);
+						//comando.Parameters.AddWithValue("@drm", juego.Drm);
+						//comando.Parameters.AddWithValue("@enlace", juego.Enlace);
 
 						comando.ExecuteNonQuery();
 					}
@@ -96,9 +96,9 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 			juego.Id = 0;
 			juego.Nombre = string.Empty;
-			juego.Imagen = string.Empty;
-			juego.Drm = string.Empty;
-			juego.Enlace = string.Empty;
+			//juego.Imagen = string.Empty;
+			//juego.Drm = string.Empty;
+			//juego.Enlace = string.Empty;
 
 			exitoMensaje = "exito";
 

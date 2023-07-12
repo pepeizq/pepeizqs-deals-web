@@ -41,9 +41,9 @@ namespace pepeizqs_deals_web.Pages.Juegos
 				}
 			}
 		}
-    
-        public async Task<IActionResult> OnPostAsync()
-        {
+
+		public IActionResult OnPost()
+		{
 			if (busquedaJuegos != string.Empty)
 			{
 				WebApplicationBuilder builder = WebApplication.CreateBuilder();
@@ -97,5 +97,5 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 			return RedirectToPage();
 		}
-    }
+	}
 }

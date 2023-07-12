@@ -13,14 +13,38 @@ namespace Juegos
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; } //Id Steam
 		public string Nombre { get; set; }
-		public string Tipo { get; set; }
+		public JuegoTipo Tipo { get; set; }
 		public JuegoImagenes Imagenes { get; set; }
-		public JuegoPrecio PrecioMinimoActual { get; set; }
-		public JuegoPrecio PrecioMinimoHistorico { get; set; }
+		public List<JuegoPrecio> PrecioMinimoActual { get; set; }
+		public List<JuegoPrecio> PrecioMinimoHistorico { get; set; }
 		public List<JuegoPrecio> PrecioActualesTiendas { get; set; }
 		public JuegoAnalisis Analisis { get; set; }
-
+		public JuegoCaracteristicas Caracteristicas { get; set; }
+		public JuegoMedia Media { get; set; }
 	}
+
+	public static class JuegoCrear
+	{
+		public static Juego Generar()
+		{
+			JuegoImagenes imagenes = new JuegoImagenes();
+			List<JuegoPrecio> precioMinimoActual = new List<JuegoPrecio>();
+			List<JuegoPrecio> precioMinimoHistorico = new List<JuegoPrecio>();
+			List<JuegoPrecio> precioActualesTiendas = new List<JuegoPrecio>();
+
+			Juego juego = new Juego
+			{
+				Imagenes = imagenes,
+				PrecioMinimoActual = precioMinimoActual,
+				PrecioMinimoHistorico = precioMinimoHistorico,
+				PrecioActualesTiendas = precioActualesTiendas
+			};
+
+			return juego;
+		}
+	}
+
+	//-------------------------------------------------------
 
 	public class JuegoImagenes
 	{
@@ -33,12 +57,13 @@ namespace Juegos
 
 	public class JuegoPrecio
 	{
-		public string DRM { get; set; }
+		public JuegoDRM DRM { get; set; }
 		public string Enlace { get; set; }
-		public string Descuento { get; set; }
-		public float Precio { get; set; }
+		public int Descuento { get; set; }
+		public decimal Precio { get; set; }
 		public string Tienda { get; set; }
 		public DateTime FechaDetectado { get; set; }
+		public DateTime FechaTermina { get; set; }
 	}
 
 	public class JuegoAnalisis
@@ -47,8 +72,38 @@ namespace Juegos
 		public string Cantidad { get; set; }
 	}
 
+	public class JuegoCaracteristicas
+	{
+		public bool Windows { get; set; }
+		public bool Mac { get; set; }
+		public bool Linux { get; set; }
+	}
 
+	public class JuegoMedia
+	{ 
+		public string Video { get; set; }
+		public List<string> Capturas { get; set; }
+	}
 
+	//-------------------------------------------------------
+
+	public enum JuegoTipo
+	{
+		Game,
+		DLC,
+		Bundle
+	}
+
+	public enum JuegoDRM
+	{
+		Steam,
+		DRMFree,
+		Ubisoft,
+		EA,
+		Rockstar,
+		Microsoft,
+		Epic
+	}
 
 	//-------------------------------------------------------
 
