@@ -1,3 +1,5 @@
+#nullable disable
+
 using Juegos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -6,7 +8,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 {
     public class EditarModel : PageModel
     {
-		public Juego juego = new Juego();
+		public Juego juegoEditar = new Juego();
 
 		public string errorMensaje = string.Empty;
 		public string exitoMensaje = string.Empty;
@@ -33,8 +35,8 @@ namespace pepeizqs_deals_web.Pages.Juegos
 						{
 							if (lector.Read())
 							{
-								juego.Id = lector.GetInt32(0);
-								juego.Nombre = lector.GetString(1);
+								juegoEditar.Id = lector.GetInt32(0);
+								juegoEditar.Nombre = lector.GetString(1);
 								//juego.Imagen = lector.GetString(2);
 								//juego.Drm = lector.GetString(3);
 								//juego.Enlace = lector.GetString(4);
@@ -51,8 +53,8 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
         public void OnPost() 
         {
-			juego.Id = int.Parse(Request.Form["id"]);
-			juego.Nombre = Request.Form["nombre"];
+			juegoEditar.Id = int.Parse(Request.Form["id"]);
+			juegoEditar.Nombre = Request.Form["nombre"];
 			//juego.Imagen = Request.Form["imagen"];
 			//juego.Drm = Request.Form["drm"];
 			//juego.Enlace = Request.Form["enlace"];
@@ -78,8 +80,8 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
-						comando.Parameters.AddWithValue("@id", juego.Id);
-						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+						comando.Parameters.AddWithValue("@id", juegoEditar.Id);
+						comando.Parameters.AddWithValue("@nombre", juegoEditar.Nombre);
 						//comando.Parameters.AddWithValue("@imagen", juego.Imagen);
 						//comando.Parameters.AddWithValue("@drm", juego.Drm);
 						//comando.Parameters.AddWithValue("@enlace", juego.Enlace);
@@ -94,8 +96,8 @@ namespace pepeizqs_deals_web.Pages.Juegos
 				return;
 			}
 
-			juego.Id = 0;
-			juego.Nombre = string.Empty;
+			juegoEditar.Id = 0;
+			juegoEditar.Nombre = string.Empty;
 			//juego.Imagen = string.Empty;
 			//juego.Drm = string.Empty;
 			//juego.Enlace = string.Empty;

@@ -23,7 +23,7 @@
 						<button class="boton" type="submit">Precargar Juego</button>
 					</div>
 					<div class="admin-busqueda">
-						<input value="@Model.idPrecarga" name="precarga" class="entrada-texto" />
+						<input name="precarga" class="entrada-texto" />
 					</div>
 				</div>			
 			</div>
@@ -39,51 +39,153 @@
 				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Nombre"/>
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Tipo (Game/DLC/Bundle)</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Tipo" />
+				<input class="entrada-texto" name="tipo" value="@Model.juegoAñadir.Tipo" />
 
 				@if (Model.juegoAñadir.PrecioActualesTiendas != null)
 				{
 					@if (Model.juegoAñadir.PrecioActualesTiendas.Count > 0)
 					{
-						<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Precios</label>
-						<hr />
+						@for (int i = 0; i < Model.juegoAñadir.PrecioActualesTiendas.Count; i++)
+						{
+							<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Precio @i.ToString()</label>
+							<hr />
 
-						<label class="texto-info-entrada admin-añadir-espacio-top">Descuento</label>
-						<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.PrecioActualesTiendas[0].Descuento"/>
+							<label class="texto-info-entrada admin-añadir-espacio-top">Descuento</label>
+							<input class="entrada-texto" name="descuento_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].Descuento" />
 
-						<label class="texto-info-entrada admin-añadir-espacio-top">DRM</label>
-						<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.PrecioActualesTiendas[0].DRM" />
+							<label class="texto-info-entrada admin-añadir-espacio-top">DRM</label>
+							<input class="entrada-texto" name="drm_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].DRM" />
 
-						<label class="texto-info-entrada admin-añadir-espacio-top">Precio</label>
-						<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.PrecioActualesTiendas[0].Precio" />
+							<label class="texto-info-entrada admin-añadir-espacio-top">Precio</label>
+							<input class="entrada-texto" name="precio_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].Precio" />
+
+							<label class="texto-info-entrada admin-añadir-espacio-top">Moneda</label>
+							<input class="entrada-texto" name="moneda_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].Moneda" />
+
+							<label class="texto-info-entrada admin-añadir-espacio-top">Fecha Detectado</label>
+							<input class="entrada-texto" name="fechadetectado_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].FechaDetectado" />
+
+							<label class="texto-info-entrada admin-añadir-espacio-top">Enlace</label>
+							<input class="entrada-texto" name="enlace_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].Enlace" />
+
+							<label class="texto-info-entrada admin-añadir-espacio-top">Tienda</label>
+							<input class="entrada-texto" name="tienda_@i.ToString()" value="@Model.juegoAñadir.PrecioActualesTiendas[i].Tienda" />
+						}
 					}
 				}
-
-
 
 				<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Imágenes</label>
 				<hr />
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Header (460x215)</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Imagenes.Header_460x215"/>
+				<input class="entrada-texto" name="imagenheader" value="@Model.juegoAñadir.Imagenes.Header_460x215"/>
 				<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Imagenes.Header_460x215"/>
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Capsule (231x87)</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Imagenes.Capsule_231x87" />
+				<input class="entrada-texto" name="imagencapsule" value="@Model.juegoAñadir.Imagenes.Capsule_231x87" />
 				<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Imagenes.Capsule_231x87"/>
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Logo</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Imagenes.Logo" />
+				<input class="entrada-texto" name="imagenlogo" value="@Model.juegoAñadir.Imagenes.Logo" />
 				<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Imagenes.Logo" />
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Library (600x900)</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Imagenes.Library_600x900" />
+				<input class="entrada-texto" name="imagenlibrary1" value="@Model.juegoAñadir.Imagenes.Library_600x900" />
 				<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Imagenes.Library_600x900" />
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Library (1920x620)</label>
-				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Imagenes.Library_1920x620" />
+				<input class="entrada-texto" name="imagenlibrary2" value="@Model.juegoAñadir.Imagenes.Library_1920x620" />
 				<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Imagenes.Library_1920x620" />
+
+				@if (Model.juegoAñadir.Caracteristicas != null)
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Caracteristicas</label>
+					<hr />
+
+					<label class="texto-info-entrada admin-añadir-espacio-top">Windows</label>
+					<input class="entrada-texto" name="windows" value="@Model.juegoAñadir.Caracteristicas.Windows.ToString()" />
+
+					<label class="texto-info-entrada admin-añadir-espacio-top">Mac</label>
+					<input class="entrada-texto" name="mac" value="@Model.juegoAñadir.Caracteristicas.Mac.ToString()" />
+
+					<label class="texto-info-entrada admin-añadir-espacio-top">Linux</label>
+					<input class="entrada-texto" name="linux" value="@Model.juegoAñadir.Caracteristicas.Linux.ToString()" />
+
+					@if (Model.juegoAñadir.Caracteristicas.Desarrolladores != null)
+					{
+						@if (Model.juegoAñadir.Caracteristicas.Desarrolladores.Count > 0)
+						{
+							<label class="texto-info-entrada admin-añadir-espacio-top">Desarrolladores</label>
+
+							@for (int i = 0; i < Model.juegoAñadir.Caracteristicas.Desarrolladores.Count; i++)
+							{
+								<input class="entrada-texto" name="desarrollador_@i.ToString()" value="@Model.juegoAñadir.Caracteristicas.Desarrolladores[i]" />
+							}
+						}
+					}
+
+					@if (Model.juegoAñadir.Caracteristicas.Publishers != null)
+					{
+						@if (Model.juegoAñadir.Caracteristicas.Publishers.Count > 0)
+						{
+							<label class="texto-info-entrada admin-añadir-espacio-top">Publishers</label>
+
+							@for (int i = 0; i < Model.juegoAñadir.Caracteristicas.Publishers.Count; i++)
+							{
+								<input class="entrada-texto" name="publisher_@i.ToString()" value="@Model.juegoAñadir.Caracteristicas.Publishers[i]" />
+							}
+						}
+					}
+
+					<label class="texto-info-entrada admin-añadir-espacio-top">Descripcion</label>
+					<input class="entrada-texto" name="descripcion" value="@Model.juegoAñadir.Caracteristicas.Descripcion" />
+				}
+
+
+
+
+				@if (Model.juegoAñadir.Media != null)
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Media</label>
+					<hr />
+
+					<label class="texto-info-entrada admin-añadir-espacio-top">Video</label>
+					<input class="entrada-texto" name="video" value="@Model.juegoAñadir.Media.Video" />
+
+					@if (Model.juegoAñadir.Media.Capturas != null)
+					{
+						@if (Model.juegoAñadir.Media.Capturas.Count > 0)
+						{
+							@for (int i = 0; i < Model.juegoAñadir.Media.Capturas.Count; i++)
+							{
+								<label class="texto-info-entrada admin-añadir-espacio-top">Captura @i.ToString()</label>
+								<input class="entrada-texto" name="captura_@i.ToString()" value="@Model.juegoAñadir.Media.Capturas[i]" />
+								<img class="admin-imagen-mostrar" src="@Model.juegoAñadir.Media.Capturas[i]" />
+							}
+						}
+					}
+				}
+
+				<hr />
+
+				<div class="perfil-flexible-centrado admin-añadir-espacio-adicional-top">
+					<div class="perfil-flexible-izquierda">
+						<button class="boton" type="submit">Añadir Juego</button>
+					</div>
+				</div>
 			</div>
+
+			@if (Model.exitoMensaje.Length > 0)
+			{
+				<div class="row mb-3">
+					<div class="col-sm-9">
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<strong>@Model.exitoMensaje</strong>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					</div>
+				</div>
+			}
 		</form>
 	}
 }
@@ -95,62 +197,3 @@
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 }
-
-<form method="post">
-@*	<div class="row mb-3">
-		<label class="col-sm-3 col-form-label">ID</label>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="id" value="@Model.juegoAñadir.Id" />
-		</div>
-	</div>
-
-	<div class="row mb-3">
-		<label class="col-sm-3 col-form-label">Nombre</label>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="nombre" value="@Model.juegoAñadir.Nombre" />
-		</div>
-	</div>
-*@
-@*	<div class="row mb-3">
-		<label class="col-sm-3 col-form-label">Imagen</label>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="imagen" value="@Model.juego.Imagen" />
-		</div>
-	</div>
-
-	<div class="row mb-3">
-		<label class="col-sm-3 col-form-label">Drm</label>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="drm" value="@Model.juego.Drm" />
-		</div>
-	</div>
-
-	<div class="row mb-3">
-		<label class="col-sm-3 col-form-label">Enlace</label>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="enlace" value="@Model.juego.Enlace" />
-		</div>
-	</div>*@
-
-	@if (Model.exitoMensaje.Length > 0)
-	{
-		<div class="row mb-3">
-			<div class="col-sm-9">
-				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<strong>@Model.exitoMensaje</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-			</div>
-		</div>
-	}
-
-	<div class="row mb-3">
-		<div class="offset-sm-3 col-sm-3 d-grid">
-			<button type="submit" class="btn btn-primary">Enviar</button>
-		</div>
-
-		<div class="col-sm-3 d-grid">
-			<a class="btn btn-outline-primary" href="/" role="button">Cancelar</a>
-		</div>
-	</div>
-</form>

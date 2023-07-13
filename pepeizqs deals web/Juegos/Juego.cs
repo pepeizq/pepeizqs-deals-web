@@ -61,9 +61,12 @@ namespace Juegos
 		public string Enlace { get; set; }
 		public int Descuento { get; set; }
 		public decimal Precio { get; set; }
+		public JuegoMoneda Moneda { get; set; }
 		public string Tienda { get; set; }
 		public DateTime FechaDetectado { get; set; }
 		public DateTime FechaTermina { get; set; }
+		public int CodigoDescuento { get; set; }
+		public string CodigoTexto { get; set; }
 	}
 
 	public class JuegoAnalisis
@@ -77,6 +80,9 @@ namespace Juegos
 		public bool Windows { get; set; }
 		public bool Mac { get; set; }
 		public bool Linux { get; set; }
+		public List<string> Desarrolladores { get; set; }
+		public List<string> Publishers { get; set; }
+		public string Descripcion { get; set; }
 	}
 
 	public class JuegoMedia
@@ -103,6 +109,13 @@ namespace Juegos
 		Rockstar,
 		Microsoft,
 		Epic
+	}
+
+	public enum JuegoMoneda
+	{		
+		Euro,
+		Dolar,
+		Libra
 	}
 
 	//-------------------------------------------------------

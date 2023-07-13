@@ -44,7 +44,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 		public IActionResult OnPost()
 		{
-			if (busquedaJuegos != string.Empty)
+			if (Request.Form["busquedajuegos"] != string.Empty)
 			{
 				WebApplicationBuilder builder = WebApplication.CreateBuilder();
 				string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
@@ -52,7 +52,9 @@ namespace pepeizqs_deals_web.Pages.Juegos
 				using (SqlConnection conexion = new SqlConnection(conexionTexto))
 				{
 					conexion.Open();
-					string busqueda = "SELECT * FROM juegos WHERE nombre LIKE '%" + busquedaJuegos.ToLower() + "%'";
+
+					string busquedaForm = Request.Form["busquedajuegos"];
+					string busqueda = "SELECT * FROM juegos WHERE nombre LIKE '%" + busquedaForm.ToLower() + "%'";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
