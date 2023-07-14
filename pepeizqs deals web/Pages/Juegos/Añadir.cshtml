@@ -32,14 +32,20 @@
 				<label class="texto-info-entrada">Datos</label>
 				<hr />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">ID</label>
-				<input class="entrada-texto" name="id" value="@Model.juegoAñadir.Id"/>
+				<label class="texto-info-entrada admin-añadir-espacio-top">ID Steam</label>
+				<input class="entrada-texto" name="idSteam" value="@Model.juegoAñadir.IdSteam"/>
+
+				<label class="texto-info-entrada admin-añadir-espacio-top">ID GOG</label>
+				<input class="entrada-texto" name="idGog" value="@Model.juegoAñadir.IdGog" />
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Titulo</label>
 				<input class="entrada-texto" name="nombre" value="@Model.juegoAñadir.Nombre"/>
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Tipo (Game/DLC/Bundle)</label>
 				<input class="entrada-texto" name="tipo" value="@Model.juegoAñadir.Tipo" />
+
+				<label class="texto-info-entrada admin-añadir-espacio-top">Fecha Comprobación API Steam</label>
+				<input class="entrada-texto" name="fechacomprobacion" value="@Model.juegoAñadir.FechaSteamAPIComprobacion" />
 
 				@if (Model.juegoAñadir.PrecioActualesTiendas != null)
 				{
@@ -140,9 +146,6 @@
 					<label class="texto-info-entrada admin-añadir-espacio-top">Descripcion</label>
 					<input class="entrada-texto" name="descripcion" value="@Model.juegoAñadir.Caracteristicas.Descripcion" />
 				}
-
-
-
 
 				@if (Model.juegoAñadir.Media != null)
 				{

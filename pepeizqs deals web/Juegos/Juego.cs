@@ -11,7 +11,9 @@ namespace Juegos
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; } //Id Steam
+		public int Id { get; set; }
+		public int IdSteam { get; set; }
+		public int IdGog { get; set; }
 		public string Nombre { get; set; }
 		public JuegoTipo Tipo { get; set; }
 		public JuegoImagenes Imagenes { get; set; }
@@ -21,6 +23,7 @@ namespace Juegos
 		public JuegoAnalisis Analisis { get; set; }
 		public JuegoCaracteristicas Caracteristicas { get; set; }
 		public JuegoMedia Media { get; set; }
+		public DateTime FechaSteamAPIComprobacion { get; set; }
 	}
 
 	public static class JuegoCrear

@@ -50,30 +50,75 @@ namespace pepeizqs_deals_web.Pages.Juegos
 			}
             else 
             {
-				if (Request.Form["id"] != string.Empty)
+				if (Request.Form["nombre"] != string.Empty)
 				{
-					int id = int.Parse(Request.Form["id"]);
+					string nombre = Request.Form["nombre"];
 
-					if (id > 0)
+					if (nombre.Length > 0)
 					{
-						juegoAñadir.Id = int.Parse(Request.Form["id"]);
+						if (Request.Form["idSteam"] != string.Empty)
+						{
+							if (int.Parse(Request.Form["idSteam"]) > 0)
+							{
+								juegoAñadir.IdSteam = int.Parse(Request.Form["idSteam"]);
+							}
+						}
+
+						if (Request.Form["idGog"] != string.Empty)
+						{
+							if (int.Parse(Request.Form["idGog"]) > 0)
+							{
+								juegoAñadir.IdGog = int.Parse(Request.Form["idGog"]);
+							}
+						}
+
+
 						juegoAñadir.Nombre = Request.Form["nombre"];
 						juegoAñadir.Tipo = Enum.Parse<JuegoTipo>(Request.Form["tipo"]);
+						juegoAñadir.FechaSteamAPIComprobacion = DateTime.Parse(Request.Form["fechacomprobacion"]);
 
 						//----------------------------
 
-						JuegoPrecio precio = new JuegoPrecio
+						int l = 0;
+						while (l < 20)
 						{
-							Descuento = int.Parse(Request.Form["descuento_0"]),
-							DRM = Enum.Parse<JuegoDRM>(Request.Form["drm_0"]),
-							Precio = decimal.Parse(Request.Form["precio_0"]),
-							Moneda = Enum.Parse<JuegoMoneda>(Request.Form["moneda_0"]),
-							FechaDetectado = DateTime.Parse(Request.Form["fechadetectado_0"]),
-							Enlace = Request.Form["enlace_0"],
-							Tienda = Request.Form["tienda_0"]
-						};
+							if (Request.Form["precio_" + l.ToString()] != string.Empty)
+							{
+								string precioMirar = Request.Form["precio_" + l.ToString()];
 
-						juegoAñadir.PrecioActualesTiendas.Add(precio);
+								if (juegoAñadir.PrecioActualesTiendas == null)
+								{
+									juegoAñadir.PrecioActualesTiendas = new List<JuegoPrecio>();
+								}
+
+								if (precioMirar != null)
+								{
+									JuegoPrecio precio = new JuegoPrecio
+									{
+										Descuento = int.Parse(Request.Form["descuento_" + l.ToString()]),
+										DRM = Enum.Parse<JuegoDRM>(Request.Form["drm_" + l.ToString()]),
+										Precio = decimal.Parse(Request.Form["precio_" + l.ToString()]),
+										Moneda = Enum.Parse<JuegoMoneda>(Request.Form["moneda_" + l.ToString()]),
+										FechaDetectado = DateTime.Parse(Request.Form["fechadetectado_" + l.ToString()]),
+										Enlace = Request.Form["enlace_" + l.ToString()],
+										Tienda = Request.Form["tienda_" + l.ToString()]
+									};
+
+									juegoAñadir.PrecioActualesTiendas.Add(precio);
+								}
+								else
+								{
+									break;
+								}
+							}
+							else
+							{
+								break;
+							}
+
+							l += 1;
+						}
+
 						juegoAñadir.PrecioMinimoActual = juegoAñadir.PrecioActualesTiendas;
 						juegoAñadir.PrecioMinimoHistorico = juegoAñadir.PrecioActualesTiendas;
 
@@ -215,14 +260,16 @@ namespace pepeizqs_deals_web.Pages.Juegos
 								conexion.Open();
 
 								string sqlAñadir = "INSERT INTO juegos " +
-									"(id, nombre, tipo, imagenes, precioMinimoActual, precioMinimoHistorico, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
-									"(@id, @nombre, @tipo, @imagenes, @precioMinimoActual, @precioMinimoHistorico, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
+									"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimoActual, precioMinimoHistorico, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
+									"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimoActual, @precioMinimoHistorico, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
 
 								using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 								{
-									comando.Parameters.AddWithValue("@id", juegoAñadir.Id);
+									comando.Parameters.AddWithValue("@idSteam", juegoAñadir.IdSteam);
+									comando.Parameters.AddWithValue("@idGog", juegoAñadir.IdGog);
 									comando.Parameters.AddWithValue("@nombre", juegoAñadir.Nombre);
 									comando.Parameters.AddWithValue("@tipo", juegoAñadir.Tipo);
+									comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juegoAñadir.FechaSteamAPIComprobacion);
 									comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juegoAñadir.Imagenes));
 									comando.Parameters.AddWithValue("@precioMinimoActual", JsonConvert.SerializeObject(juegoAñadir.PrecioMinimoActual));
 									comando.Parameters.AddWithValue("@precioMinimoHistorico", JsonConvert.SerializeObject(juegoAñadir.PrecioMinimoHistorico));
@@ -232,6 +279,18 @@ namespace pepeizqs_deals_web.Pages.Juegos
 									comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juegoAñadir.Media));
 
 									comando.ExecuteNonQuery();
+								}
+
+								if (juegoAñadir.IdSteam > 0)
+								{
+									return RedirectToPage("./Editar", new { idSteam = juegoAñadir.IdSteam });
+								}
+								else
+								{
+									if (juegoAñadir.IdGog > 0)
+									{
+										return RedirectToPage("./Editar", new { idGog = juegoAñadir.IdGog });
+									}
 								}
 							}
 						}

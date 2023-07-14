@@ -100,14 +100,15 @@ namespace Steam
 
 					Juegos.Juego juego = new Juegos.Juego
 					{
-						Id = int.Parse(datos.Datos.Id),
+						IdSteam = int.Parse(datos.Datos.Id),
 						Nombre = datos.Datos.Nombre,
 						Imagenes = imagenes,
 						PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio },
 						PrecioMinimoActual = new List<Juegos.JuegoPrecio> { precio },
 						PrecioMinimoHistorico = new List<Juegos.JuegoPrecio> { precio },
 						Caracteristicas = caracteristicas,
-						Media = media
+						Media = media,
+						FechaSteamAPIComprobacion = DateTime.Now
 					};
 
 					if (datos.Datos.Tipo == "dlc")
