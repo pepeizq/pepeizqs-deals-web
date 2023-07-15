@@ -4,7 +4,7 @@ using Herramientas;
 using Newtonsoft.Json;
 using System.Globalization;
 
-namespace Steam
+namespace APIs.Steam
 {
 	public static class Juego
 	{
@@ -27,7 +27,12 @@ namespace Steam
 				if (datos != null)
 				{
 					string descuento = datos.Datos.Precio.Descuento;
-					descuento = descuento.Replace("%", null);
+
+					if (descuento != null)
+					{
+						descuento = descuento.Replace("%", null);
+						descuento = descuento.Replace("-", null);
+					}
 
 					string precioFormateado = datos.Datos.Precio.Formateado;
 					precioFormateado = precioFormateado.Replace("€", null);

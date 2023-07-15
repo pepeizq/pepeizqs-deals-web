@@ -1,10 +1,10 @@
 ﻿#nullable disable
 
+using APIs.Steam;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using pepeizqs_deals_web.Areas.Identity.Data;
-using Steam;
 using System.ComponentModel.DataAnnotations;
 
 namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage

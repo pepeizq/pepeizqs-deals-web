@@ -3,7 +3,7 @@
 using Herramientas;
 using Newtonsoft.Json;
 
-namespace Steam
+namespace APIs.Steam
 {
     public static class Cuenta
     {

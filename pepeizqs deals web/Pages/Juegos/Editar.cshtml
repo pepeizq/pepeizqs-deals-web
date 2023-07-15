@@ -69,28 +69,31 @@
 					}
 				}
 
-				<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Imágenes</label>
-				<hr />
+				@if (Model.juegoEditar.Imagenes != null)
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-adicional-top">Imágenes</label>
+					<hr />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Header (460x215)</label>
-				<input class="entrada-texto" name="imagenheader" value="@Model.juegoEditar.Imagenes.Header_460x215" />
-				<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Imagenes.Header_460x215" />
+					<label class="texto-info-entrada admin-añadir-espacio-top">Header (460x215)</label>
+					<input class="entrada-texto" name="imagenheader" value="@Model.juegoEditar.Imagenes.Header_460x215" />
+					<img style="width:230px; height:107px;" src="@Model.juegoEditar.Imagenes.Header_460x215" />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Capsule (231x87)</label>
-				<input class="entrada-texto" name="imagencapsule" value="@Model.juegoEditar.Imagenes.Capsule_231x87" />
-				<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Imagenes.Capsule_231x87" />
+					<label class="texto-info-entrada admin-añadir-espacio-top">Capsule (231x87)</label>
+					<input class="entrada-texto" name="imagencapsule" value="@Model.juegoEditar.Imagenes.Capsule_231x87" />
+					<img style="width:115px; height:44px;" src="@Model.juegoEditar.Imagenes.Capsule_231x87" />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Logo</label>
-				<input class="entrada-texto" name="imagenlogo" value="@Model.juegoEditar.Imagenes.Logo" />
-				<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Imagenes.Logo" />
+					<label class="texto-info-entrada admin-añadir-espacio-top">Logo</label>
+					<input class="entrada-texto" name="imagenlogo" value="@Model.juegoEditar.Imagenes.Logo" />
+					<img style="max-width:200px; max-height:200px;" src="@Model.juegoEditar.Imagenes.Logo" />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Library (600x900)</label>
-				<input class="entrada-texto" name="imagenlibrary1" value="@Model.juegoEditar.Imagenes.Library_600x900" />
-				<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Imagenes.Library_600x900" />
+					<label class="texto-info-entrada admin-añadir-espacio-top">Library (600x900)</label>
+					<input class="entrada-texto" name="imagenlibrary1" value="@Model.juegoEditar.Imagenes.Library_600x900" />
+					<img style="width:300px; height:450px;" src="@Model.juegoEditar.Imagenes.Library_600x900" />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Library (1920x620)</label>
-				<input class="entrada-texto" name="imagenlibrary2" value="@Model.juegoEditar.Imagenes.Library_1920x620" />
-				<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Imagenes.Library_1920x620" />
+					<label class="texto-info-entrada admin-añadir-espacio-top">Library (1920x620)</label>
+					<input class="entrada-texto" name="imagenlibrary2" value="@Model.juegoEditar.Imagenes.Library_1920x620" />
+					<img style="width:960px; height:310px;" src="@Model.juegoEditar.Imagenes.Library_1920x620" />
+				}
 
 				@if (Model.juegoEditar.Caracteristicas != null)
 				{
@@ -152,7 +155,7 @@
 							{
 								<label class="texto-info-entrada admin-añadir-espacio-top">Captura @i.ToString()</label>
 								<input class="entrada-texto" name="captura_@i.ToString()" value="@Model.juegoEditar.Media.Capturas[i]" />
-								<img class="admin-imagen-mostrar" src="@Model.juegoEditar.Media.Capturas[i]" />
+								<img src="@Model.juegoEditar.Media.Capturas[i]" />
 							}
 						}
 					}

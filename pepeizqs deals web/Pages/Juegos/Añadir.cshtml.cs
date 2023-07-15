@@ -28,7 +28,11 @@ namespace pepeizqs_deals_web.Pages.Juegos
 					{
 						if (plataforma == "steam")
 						{
-							juegoAñadir = Steam.Juego.CargarDatos(id).Result;
+							juegoAñadir = APIs.Steam.Juego.CargarDatos(id).Result;
+						}
+						else if (plataforma == "gog")
+						{
+							juegoAñadir = APIs.GOG.Juego.CargarDatos(id).Result;
 						}
 					}					
 				}
@@ -41,11 +45,17 @@ namespace pepeizqs_deals_web.Pages.Juegos
         {
             if (Request.Form["precarga"] != string.Empty) 
             {
-				if (Steam.Juego.Detectar(Request.Form["precarga"])  == true) 
+				if (APIs.Steam.Juego.Detectar(Request.Form["precarga"])  == true) 
 				{
-					string idPrecarga = Steam.Juego.LimpiarID(Request.Form["precarga"]);
+					string idPrecarga = APIs.Steam.Juego.LimpiarID(Request.Form["precarga"]);
 
 					return RedirectToPage("./Añadir", new { id = idPrecarga, plataforma = "steam" });
+				}
+				else if (APIs.GOG.Juego.Detectar(Request.Form["precarga"]) == true)
+				{
+					string idPrecarga = APIs.GOG.Juego.LimpiarSlug(Request.Form["precarga"]);
+
+					return RedirectToPage("./Añadir", new { id = idPrecarga, plataforma = "gog" });
 				}
 			}
             else 
