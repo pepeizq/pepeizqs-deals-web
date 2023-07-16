@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Pages\Juegos\Añadir.cshtml.cs~RF679b9fe9.TMP" />
     <None Remove="Pages\Shared\_LoginPartial.cshtml~RF52f04f21.TMP" />
+    <None Remove="Pages\Tiendas\Index.cshtml.cs~RF7f0b5803.TMP" />
   </ItemGroup>
 
   <ItemGroup>

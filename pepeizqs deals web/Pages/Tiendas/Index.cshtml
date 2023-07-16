@@ -1,0 +1,33 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Tiendas.IndexModel
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+	ViewData["Title"] = "Tiendas";
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
+	{
+		<form method="post">
+			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+			{
+				<div class="perfil perfil-espacio-bottom">
+					<div class="perfil-flexible-centrado">
+						<div class="perfil-flexible-izquierda">
+							<button class="boton" id="@tienda.Id" type="submit"><img src="@tienda.Imagen300x80"/></button>
+						</div>
+
+					</div>
+				</div>
+			}
+		</form>
+	}
+}

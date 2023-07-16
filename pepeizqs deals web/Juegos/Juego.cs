@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-//https://store.steampowered.com/api/appdetails?appids=1868140
-
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 

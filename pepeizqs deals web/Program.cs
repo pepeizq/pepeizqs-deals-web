@@ -1,5 +1,3 @@
-//https://www.youtube.com/watch?v=wzaoQiS_9dI
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
