@@ -4,6 +4,8 @@
 @using Microsoft.Data.SqlClient;
 
 @{
+	#nullable disable
+
 	string id = Request.Query["Id"];
 
 	try
@@ -26,7 +28,7 @@
 	}
 	catch (Exception ex)
 	{
-		
+		Console.WriteLine(ex.Message);
 	}
 
 	Response.Redirect("/Juegos/Index");

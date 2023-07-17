@@ -36,9 +36,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 						}
 					}					
 				}
-            }
-
-			
+            }	
 		}
 
         public IActionResult OnPost() 
