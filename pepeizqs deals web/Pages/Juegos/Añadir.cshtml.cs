@@ -3,8 +3,6 @@
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 
 namespace pepeizqs_deals_web.Pages.Juegos
 {
@@ -127,8 +125,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 							l += 1;
 						}
 
-						juegoAñadir.PrecioMinimoActual = juegoAñadir.PrecioActualesTiendas;
-						juegoAñadir.PrecioMinimoHistorico = juegoAñadir.PrecioActualesTiendas;
+						juegoAñadir.PrecioMinimosHistoricos = juegoAñadir.PrecioActualesTiendas;
 
 						//----------------------------
 
@@ -258,54 +255,18 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 						//----------------------------
 
-						try
+						JuegoBaseDatos.InsertarJuego(juegoAñadir);
+
+						if (juegoAñadir.IdSteam > 0)
 						{
-							WebApplicationBuilder builder = WebApplication.CreateBuilder();
-							string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
-							using (SqlConnection conexion = new SqlConnection(conexionTexto))
-							{
-								conexion.Open();
-
-								string sqlAñadir = "INSERT INTO juegos " +
-									"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimoActual, precioMinimoHistorico, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
-									"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimoActual, @precioMinimoHistorico, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
-
-								using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
-								{
-									comando.Parameters.AddWithValue("@idSteam", juegoAñadir.IdSteam);
-									comando.Parameters.AddWithValue("@idGog", juegoAñadir.IdGog);
-									comando.Parameters.AddWithValue("@nombre", juegoAñadir.Nombre);
-									comando.Parameters.AddWithValue("@tipo", juegoAñadir.Tipo);
-									comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juegoAñadir.FechaSteamAPIComprobacion);
-									comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juegoAñadir.Imagenes));
-									comando.Parameters.AddWithValue("@precioMinimoActual", JsonConvert.SerializeObject(juegoAñadir.PrecioMinimoActual));
-									comando.Parameters.AddWithValue("@precioMinimoHistorico", JsonConvert.SerializeObject(juegoAñadir.PrecioMinimoHistorico));
-									comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juegoAñadir.PrecioActualesTiendas));
-									comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juegoAñadir.Analisis));
-									comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juegoAñadir.Caracteristicas));
-									comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juegoAñadir.Media));
-
-									comando.ExecuteNonQuery();
-								}
-
-								if (juegoAñadir.IdSteam > 0)
-								{
-									return RedirectToPage("./Editar", new { idSteam = juegoAñadir.IdSteam });
-								}
-								else
-								{
-									if (juegoAñadir.IdGog > 0)
-									{
-										return RedirectToPage("./Editar", new { idGog = juegoAñadir.IdGog });
-									}
-								}
-							}
+							return RedirectToPage("./Editar", new { idSteam = juegoAñadir.IdSteam });
 						}
-						catch (Exception ex) 
+						else
 						{
-							errorMensaje = ex.Message;
-							return null;
+							if (juegoAñadir.IdGog > 0)
+							{
+								return RedirectToPage("./Editar", new { idGog = juegoAñadir.IdGog });
+							}
 						}
 					}
 				}

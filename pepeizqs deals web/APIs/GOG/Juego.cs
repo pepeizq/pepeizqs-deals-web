@@ -169,8 +169,7 @@ namespace APIs.GOG
 													Caracteristicas = caracteristicas,
 													Imagenes = imagenes,
 													PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio },
-													PrecioMinimoActual = new List<Juegos.JuegoPrecio> { precio },
-													PrecioMinimoHistorico = new List<Juegos.JuegoPrecio> { precio },
+													PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio },
 													FechaSteamAPIComprobacion = new DateTime(2000, 1, 1)
 												};
 

@@ -109,8 +109,7 @@ namespace APIs.Steam
 						Nombre = datos.Datos.Nombre,
 						Imagenes = imagenes,
 						PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio },
-						PrecioMinimoActual = new List<Juegos.JuegoPrecio> { precio },
-						PrecioMinimoHistorico = new List<Juegos.JuegoPrecio> { precio },
+						PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio },
 						Caracteristicas = caracteristicas,
 						Media = media,
 						FechaSteamAPIComprobacion = DateTime.Now

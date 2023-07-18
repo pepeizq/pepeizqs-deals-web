@@ -15,8 +15,7 @@ namespace Juegos
 		public string Nombre { get; set; }
 		public JuegoTipo Tipo { get; set; }
 		public JuegoImagenes Imagenes { get; set; }
-		public List<JuegoPrecio> PrecioMinimoActual { get; set; }
-		public List<JuegoPrecio> PrecioMinimoHistorico { get; set; }
+		public List<JuegoPrecio> PrecioMinimosHistoricos { get; set; }
 		public List<JuegoPrecio> PrecioActualesTiendas { get; set; }
 		public JuegoAnalisis Analisis { get; set; }
 		public JuegoCaracteristicas Caracteristicas { get; set; }
@@ -29,15 +28,13 @@ namespace Juegos
 		public static Juego Generar()
 		{
 			JuegoImagenes imagenes = new JuegoImagenes();
-			List<JuegoPrecio> precioMinimoActual = new List<JuegoPrecio>();
 			List<JuegoPrecio> precioMinimoHistorico = new List<JuegoPrecio>();
 			List<JuegoPrecio> precioActualesTiendas = new List<JuegoPrecio>();
 
 			Juego juego = new Juego
 			{
 				Imagenes = imagenes,
-				PrecioMinimoActual = precioMinimoActual,
-				PrecioMinimoHistorico = precioMinimoHistorico,
+				PrecioMinimosHistoricos = precioMinimoHistorico,
 				PrecioActualesTiendas = precioActualesTiendas
 			};
 
@@ -58,6 +55,8 @@ namespace Juegos
 
 	public class JuegoPrecio
 	{
+		public string Nombre { get; set; }
+		public string Imagen { get; set; }
 		public JuegoDRM DRM { get; set; }
 		public string Enlace { get; set; }
 		public int Descuento { get; set; }

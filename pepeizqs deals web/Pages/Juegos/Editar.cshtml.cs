@@ -73,17 +73,16 @@ namespace pepeizqs_deals_web.Pages.Juegos
 								juegoEditar.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
 
 								juegoEditar.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
-								juegoEditar.PrecioMinimoActual = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
-								juegoEditar.PrecioMinimoHistorico = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
-								juegoEditar.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(6));
+								juegoEditar.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+								juegoEditar.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
 
-								juegoEditar.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(7));
-								juegoEditar.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(8));
-								juegoEditar.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(9));
+								juegoEditar.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+								juegoEditar.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+								juegoEditar.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
 
-								juegoEditar.IdSteam = lector.GetInt32(10);
-								juegoEditar.IdGog = lector.GetInt32(11);
-								juegoEditar.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(12));
+								juegoEditar.IdSteam = lector.GetInt32(9);
+								juegoEditar.IdGog = lector.GetInt32(10);
+								juegoEditar.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
 							}
 						}
 					}
@@ -166,8 +165,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 						l += 1;
 					}
 
-					juegoEditar.PrecioMinimoActual = juegoEditar.PrecioActualesTiendas;
-					juegoEditar.PrecioMinimoHistorico = juegoEditar.PrecioActualesTiendas;
+					juegoEditar.PrecioMinimosHistoricos = juegoEditar.PrecioActualesTiendas;
 
 					//----------------------------
 
@@ -297,62 +295,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 
 					//----------------------------
 
-					try
-					{
-						WebApplicationBuilder builder = WebApplication.CreateBuilder();
-						string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
-						using (SqlConnection conexion = new SqlConnection(conexionTexto))
-						{
-							conexion.Open();
-
-							string sqlEditar = "UPDATE juegos " +
-								"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
-									"imagenes=@imagenes, precioMinimoActual=@precioMinimoActual, precioMinimoHistorico=@precioMinimoHistorico, precioActualesTiendas=@precioActualesTiendas, " +
-									"analisis=@analisis, caracteristicas=@caracteristicas, media=@media ";
-
-							if (juegoEditar.IdSteam > 0)
-							{
-								sqlEditar = sqlEditar + "WHERE idSteam=@idSteam";
-							}
-							else
-							{
-								if (juegoEditar.IdGog > 0)
-								{
-									sqlEditar = sqlEditar + "WHERE idGog=@idGog";
-								}
-								else
-								{
-									sqlEditar = sqlEditar + "WHERE id=@id";
-								}
-							}
-
-							using (SqlCommand comando = new SqlCommand(sqlEditar, conexion))
-							{
-								comando.Parameters.AddWithValue("@idSteam", juegoEditar.IdSteam);
-								comando.Parameters.AddWithValue("@idGog", juegoEditar.IdGog);
-								comando.Parameters.AddWithValue("@nombre", juegoEditar.Nombre);
-								comando.Parameters.AddWithValue("@tipo", juegoEditar.Tipo);
-								comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juegoEditar.FechaSteamAPIComprobacion);
-								comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juegoEditar.Imagenes));
-								comando.Parameters.AddWithValue("@precioMinimoActual", JsonConvert.SerializeObject(juegoEditar.PrecioMinimoActual));
-								comando.Parameters.AddWithValue("@precioMinimoHistorico", JsonConvert.SerializeObject(juegoEditar.PrecioMinimoHistorico));
-								comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juegoEditar.PrecioActualesTiendas));
-								comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juegoEditar.Analisis));
-								comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juegoEditar.Caracteristicas));
-								comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juegoEditar.Media));
-
-								comando.ExecuteNonQuery();
-							}
-
-							
-						}
-					}
-					catch (Exception ex)
-					{
-						errorMensaje = ex.Message;
-						return null;
-					}
+					JuegoBaseDatos.ActualizarJuego(juegoEditar);
 				}
 			}
 			else
@@ -360,70 +303,6 @@ namespace pepeizqs_deals_web.Pages.Juegos
 				errorMensaje = "error id";
 				return null;
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-			//juegoEditar.Id = int.Parse(Request.Form["id"]);
-			//juegoEditar.Nombre = Request.Form["nombre"];
-			//juego.Imagen = Request.Form["imagen"];
-			//juego.Drm = Request.Form["drm"];
-			//juego.Enlace = Request.Form["enlace"];
-
-			//if (juego.Id == 0 || juego.Nombre == string.Empty || juego.Imagen == string.Empty || juego.Drm == string.Empty || juego.Enlace == string.Empty)
-			//{
-			//	errorMensaje = "error";
-			//	return;
-			//}
-
-			//try
-			//{
-			//	WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			//	string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
-			//	using (SqlConnection conexion = new SqlConnection(conexionTexto))
-			//	{
-			//		conexion.Open();
-
-			//		string sqlActualizar = "UPDATE juegos " +
-			//			"SET nombre=@nombre, imagen=@imagen, drm=@drm, enlace=@enlace " +
-			//			"WHERE id=@id";
-
-			//		using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-			//		{
-			//			comando.Parameters.AddWithValue("@id", juegoEditar.Id);
-			//			comando.Parameters.AddWithValue("@nombre", juegoEditar.Nombre);
-			//			//comando.Parameters.AddWithValue("@imagen", juego.Imagen);
-			//			//comando.Parameters.AddWithValue("@drm", juego.Drm);
-			//			//comando.Parameters.AddWithValue("@enlace", juego.Enlace);
-
-			//			comando.ExecuteNonQuery();
-			//		}
-			//	}
-			//}
-			//catch (Exception ex)
-			//{
-			//	errorMensaje = ex.Message;
-			//	return;
-			//}
-
-			//juegoEditar.Id = 0;
-			//juegoEditar.Nombre = string.Empty;
-			////juego.Imagen = string.Empty;
-			////juego.Drm = string.Empty;
-			////juego.Enlace = string.Empty;
-
-			//exitoMensaje = "exito";
-
-			//Response.Redirect("/Juegos/Index");
 
 			return null;
 		}

@@ -1,6 +1,4 @@
-﻿using Tiendas2;
-
-namespace Tiendas2
+﻿namespace Tiendas2
 {
 	public static class TiendasCargar
 	{
