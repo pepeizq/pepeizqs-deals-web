@@ -16,20 +16,16 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		<form method="post">
-			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
-			{
-				<div class="perfil perfil-espacio-bottom">
-					<div class="perfil-flexible-centrado">
-						<div class="perfil-flexible-izquierda">
-							<button class="boton" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"><img src="@tienda.Imagen300x80" /></button>
-						</div>
-
-					</div>
+		<div class="perfil">
+			<form method="post">
+				<div class="admin-grid">
+					@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+					{
+						<div><button class="boton admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button></div>
+					}
 				</div>
+			</form>
+		</div>
 
-				@Model.mensaje
-			}
-		</form>
 	}
 }

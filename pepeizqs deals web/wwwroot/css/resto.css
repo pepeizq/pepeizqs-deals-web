@@ -237,3 +237,21 @@
 .admin-añadir-espacio-adicional-top {
     margin-top: 30px;
 }
+
+.admin-boton-imagen-300x80 {
+    background-position: center;
+    background-size: cover;
+    background-color: var(--fondoBoton);
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    padding: 45px;
+    height: 80px;
+    width: 300px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    grid-gap: 30px;
+    justify-content: center;
+}

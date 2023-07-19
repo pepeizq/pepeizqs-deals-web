@@ -6,7 +6,8 @@
 		{
 			List<Tienda> tiendas = new List<Tienda>
 			{
-				APIs.Steam.Tienda.Generar()
+				APIs.Steam.Tienda.Generar(),
+				APIs.GamersGate.Tienda.Generar()
 			};
 
 			return tiendas;

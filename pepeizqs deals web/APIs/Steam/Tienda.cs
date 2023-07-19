@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿//https://store.steampowered.com/search/results/?query&start=350&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&snr=1_7_7_2300_7&infinite=1
+
+#nullable disable
 
 using Herramientas;
 using Juegos;
@@ -24,19 +26,16 @@ namespace APIs.Steam
 			return tienda;
 		}
 
-		public static async Task<List<JuegoPrecio>> BuscarOfertas()
+		public static async Task BuscarOfertas()
 		{
-			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
-
-            //int numPaginas = await GenerarNumPaginas("https://store.steampowered.com/search/?sort_by=Price_ASC&specials=1&page=1&l=english");
-            int numPaginas = 20;
+            int numPaginas = await GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
             if (numPaginas > 0) 
             {
                 int i = 1;
                 while (i <= numPaginas) 
                 {
-                    string html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&specials=1&page=" + i.ToString() + "&l=english");
+                    string html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
 
                     if (html != null)
                     {
@@ -105,83 +104,136 @@ namespace APIs.Steam
 
                                     string imagen = temp10.Trim();
 
-                                    int int11 = temp4.IndexOf(Strings.ChrW(34) + "discount_pct" + Strings.ChrW(34));
+									JuegoAnalisis analisis = new JuegoAnalisis
+									{
+										Cantidad = "0"
+									};
 
-                                    if (int11 != -1)
+									if (enlace.Contains("https://store.steampowered.com/app/") == true)
                                     {
-                                        string temp11 = temp4.Remove(0, int11);
+                                        int int11 = temp4.IndexOf("data-tooltip-html=");
 
-                                        int11 = temp11.IndexOf(">");
-                                        temp11 = temp11.Remove(0, int11 + 1);
-
-                                        int int12 = temp11.IndexOf("</div>");
-                                        string temp12 = temp11.Remove(int12, temp11.Length - int12);
-
-                                        int descuento = 0;
-
-                                        if (int12 != -1)
+                                        if (int11 != -1)
                                         {
-                                            temp12 = temp12.Replace("-", null);
-                                            temp12 = temp12.Replace("%", null);
+                                            string temp11 = temp4.Remove(0, int11);
 
-                                            descuento = int.Parse(temp12.Trim());
-                                        }
+                                            int int12 = temp11.IndexOf("%");
+                                            string temp12 = temp11.Remove(int12, temp11.Length - int12);
 
-                                        if (descuento > 0)
-                                        {
-											int int13 = temp4.IndexOf(Strings.ChrW(34) + "discount_final_price" + Strings.ChrW(34));
-											string temp13 = temp4.Remove(0, int13);
+                                            temp12 = temp12.Remove(0, temp12.Length - 2);
+                                            temp12 = temp12.Trim();
 
-											int13 = temp13.IndexOf(Strings.ChrW(34) + ">");
-											temp13 = temp13.Remove(0, int13 + 2);
-
-											int int14 = temp13.IndexOf("</div>");
-											string temp14 = temp13.Remove(int14, temp13.Length - int14);
-
-                                            if (temp14 != null)
+                                            if (temp12.Contains(";") == true)
                                             {
-												if (temp14.Contains("--") == true)
+                                                temp12 = temp12.Replace(";", "0");
+                                            }
+
+                                            if (temp12 == "00")
+                                            {
+                                                temp12 = "100";
+                                            }
+
+                                            string porcentaje = temp12;
+
+                                            int int13 = temp4.IndexOf("data-tooltip-html=");
+                                            string temp13 = temp4.Remove(0, int13);
+
+                                            int int14 = temp13.IndexOf("user reviews");
+                                            string temp14 = temp13.Remove(int14, temp13.Length - int14);
+
+                                            int14 = temp14.IndexOf("of the");
+                                            temp14 = temp14.Remove(0, int14 + 6);
+
+                                            string cantidad = temp14.Trim();
+
+                                            if (cantidad.Length > 2)
+                                            {
+                                                analisis.Cantidad = cantidad;
+                                                analisis.Porcentaje = porcentaje;
+											}
+                                        }
+                                    }
+
+                                    if (analisis.Cantidad.Length > 2)
+                                    {
+										int int11 = temp4.IndexOf(Strings.ChrW(34) + "discount_pct" + Strings.ChrW(34));
+
+										if (int11 != -1)
+										{
+											string temp11 = temp4.Remove(0, int11);
+
+											int11 = temp11.IndexOf(">");
+											temp11 = temp11.Remove(0, int11 + 1);
+
+											int int12 = temp11.IndexOf("</div>");
+											string temp12 = temp11.Remove(int12, temp11.Length - int12);
+
+											int descuento = 0;
+
+											if (int12 != -1)
+											{
+												temp12 = temp12.Replace("-", null);
+												temp12 = temp12.Replace("%", null);
+
+												descuento = int.Parse(temp12.Trim());
+											}
+
+											if (descuento > 0)
+											{
+												int int13 = temp4.IndexOf(Strings.ChrW(34) + "discount_final_price" + Strings.ChrW(34));
+												string temp13 = temp4.Remove(0, int13);
+
+												int13 = temp13.IndexOf(Strings.ChrW(34) + ">");
+												temp13 = temp13.Remove(0, int13 + 2);
+
+												int int14 = temp13.IndexOf("</div>");
+												string temp14 = temp13.Remove(int14, temp13.Length - int14);
+
+												if (temp14 != null)
 												{
-													temp14 = temp14.Replace("--", "00");
+													if (temp14.Contains("--") == true)
+													{
+														temp14 = temp14.Replace("--", "00");
+													}
+
+													temp14 = temp14.Replace(",", ".");
+													temp14 = temp14.Replace("€", null);
 												}
 
-                                                temp14 = temp14.Replace(",", ".");
-                                                temp14 = temp14.Replace("€", null);
-											}
+												bool precioFormato = true;
 
-											bool precioFormato = true;
-
-											if (temp14.Contains("Free") == true)
-											{
-												precioFormato = false;
-											}
-											else if (temp14.Length == 0)
-											{
-												precioFormato = false;
-											}
-
-											if (precioFormato == true)
-											{
-                                                decimal precio = decimal.Parse(temp14.Trim());
-
-												JuegoPrecio oferta = new JuegoPrecio
+												if (temp14.Contains("Free") == true)
 												{
-                                                    Nombre = titulo,
-                                                    Imagen = imagen,
-													Tienda = "steam",
-													DRM = JuegoDRM.Steam,
-													Descuento = descuento,
-                                                    Precio = precio,
-                                                    Moneda = JuegoMoneda.Euro,
-                                                    Enlace = enlace,
-                                                    FechaDetectado = DateTime.Now
-												};
+													precioFormato = false;
+												}
+												else if (temp14.Length == 0)
+												{
+													precioFormato = false;
+												}
 
-												ofertas.Add(oferta);
+												if (precioFormato == true)
+												{
+													decimal precio = decimal.Parse(temp14.Trim());
+
+													JuegoPrecio oferta = new JuegoPrecio
+													{
+														Nombre = titulo,
+														Imagen = imagen,
+														Tienda = "steam",
+														DRM = JuegoDRM.Steam,
+														Descuento = descuento,
+														Precio = precio,
+														Moneda = JuegoMoneda.Euro,
+														Enlace = enlace,
+														FechaDetectado = DateTime.Now
+													};
+
+                                                    await JuegoBaseDatos.ComprobarSteam(oferta, analisis);
+												}
 											}
-										}                                       
-                                    }
-								}
+										}
+									}     
+                                }
 
                                 j += 1;
                             }
@@ -191,8 +243,6 @@ namespace APIs.Steam
                     i += 1;
                 }
             }
-
-			return ofertas;
 		}
 
         public static async Task<int> GenerarNumPaginas(string enlace)

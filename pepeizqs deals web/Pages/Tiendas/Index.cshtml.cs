@@ -8,9 +8,7 @@ namespace pepeizqs_deals_web.Pages.Tiendas
 {
     public class IndexModel : PageModel
     {
-		public string mensaje = string.Empty;
-
-        public void OnGet()
+        public async Task OnGetAsync()
         {
 			string id = Request.Query["id"];
 
@@ -20,11 +18,13 @@ namespace pepeizqs_deals_web.Pages.Tiendas
 				{
 					if (id == APIs.Steam.Tienda.Generar().Id)
 					{
-						List<JuegoPrecio> ofertas = APIs.Steam.Tienda.BuscarOfertas().Result;
+						await APIs.Steam.Tienda.BuscarOfertas();
 
-						mensaje = ofertas.Count.ToString();
+						//JuegoBaseDatos.LimpiarJuegos();
 
-						JuegoBaseDatos.ComprobarSteam(ofertas, mensaje);
+						//mensaje = ofertas.Count.ToString();
+
+						//JuegoBaseDatos.ComprobarSteam(ofertas);
 					}
 				}
 			}
