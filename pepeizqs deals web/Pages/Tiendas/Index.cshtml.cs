@@ -8,7 +8,7 @@ namespace pepeizqs_deals_web.Pages.Tiendas
 {
     public class IndexModel : PageModel
     {
-        public async Task OnGetAsync()
+        public void OnGetAsync()
         {
 			string id = Request.Query["id"];
 
@@ -18,13 +18,13 @@ namespace pepeizqs_deals_web.Pages.Tiendas
 				{
 					if (id == APIs.Steam.Tienda.Generar().Id)
 					{
-						await APIs.Steam.Tienda.BuscarOfertas();
+						APIs.Steam.Tienda.BuscarOfertas(ViewData);
 
 						//JuegoBaseDatos.LimpiarJuegos();
-
-						//mensaje = ofertas.Count.ToString();
-
-						//JuegoBaseDatos.ComprobarSteam(ofertas);
+					}
+					else if (id == APIs.GamersGate.Tienda.Generar().Id) 
+					{
+						APIs.GamersGate.Tienda.BuscarOfertas(ViewData);
 					}
 				}
 			}

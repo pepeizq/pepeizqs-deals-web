@@ -108,7 +108,8 @@ namespace Juegos
 		EA,
 		Rockstar,
 		Microsoft,
-		Epic
+		Epic,
+		NoEspecificado
 	}
 
 	public enum JuegoMoneda

@@ -4,7 +4,7 @@ namespace Herramientas
 {
     public static class Decompiladores
     {
-        public static async Task<string>Estandar(string enlace)
+        public static async Task<string> Estandar(string enlace)
         {
             HttpClient cliente = new HttpClient();
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
@@ -18,7 +18,7 @@ namespace Herramientas
             return contenido;
         }
 
-        public static void Humble(string enlace) 
+		public static void Humble(string enlace) 
         {
             HttpClient cliente = new HttpClient();
             cliente.DefaultRequestHeaders.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");

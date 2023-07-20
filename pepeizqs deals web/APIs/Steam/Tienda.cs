@@ -4,6 +4,7 @@
 
 using Herramientas;
 using Juegos;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.VisualBasic;
 using System.Net;
 
@@ -26,18 +27,21 @@ namespace APIs.Steam
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas()
+		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
-            int numPaginas = await GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
+            int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
             if (numPaginas > 0) 
             {
                 int i = 1;
                 while (i <= numPaginas) 
                 {
-                    string html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
+					Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
+					tarea.Wait();
 
-                    if (html != null)
+					string html = tarea.Result;
+
+					if (html != null)
                     {
                         if (html.Contains("<!-- List Items -->") == false)
                         {
@@ -228,7 +232,7 @@ namespace APIs.Steam
 														FechaDetectado = DateTime.Now
 													};
 
-                                                    await JuegoBaseDatos.ComprobarSteam(oferta, analisis);
+                                                    JuegoBaseDatos.ComprobarSteam(oferta, analisis, objeto);
 												}
 											}
 										}
@@ -245,13 +249,16 @@ namespace APIs.Steam
             }
 		}
 
-        public static async Task<int> GenerarNumPaginas(string enlace)
+        public static int GenerarNumPaginas(string enlace)
         {
             int numPaginas = 0;
 
-            string html = await Decompiladores.Estandar(enlace);
+			Task<string> tarea = Decompiladores.Estandar(enlace);
+			tarea.Wait();
 
-            if (html != null)
+			string html = tarea.Result;
+
+			if (html != null)
             {
                 if (html.Contains("<div class=" + Strings.ChrW(34) + "search_pagination_right" + Strings.ChrW(34) + ">") == true)
                 {

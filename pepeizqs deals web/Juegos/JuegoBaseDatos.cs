@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
@@ -7,7 +8,7 @@ namespace Juegos
 {
 	public static class JuegoBaseDatos
 	{
-		public static async Task ComprobarSteam(JuegoPrecio oferta, JuegoAnalisis analisis)
+		public static void ComprobarSteam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto)
 		{
 			Juego juego = JuegoCrear.Generar();
 
@@ -54,7 +55,10 @@ namespace Juegos
 								{
 									try
 									{
-										juego = await APIs.Steam.Juego.CargarDatos(id);
+										Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(id);
+										tarea.Wait();
+
+										juego = tarea.Result;
 									}
 									catch
 									{
@@ -81,7 +85,6 @@ namespace Juegos
 									{
 										insertar = false;
 									}
-
 								}
 								else
 								{
@@ -120,6 +123,99 @@ namespace Juegos
 					if (actualizar == true && insertar == false)
 					{
 						ActualizarNuevosPrecios(juego, oferta);
+					}
+				}
+			}
+		}
+
+		public static void ComprobarTienda(JuegoPrecio oferta, ViewDataDictionary objeto)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+
+			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			{
+				conexion.Open();
+
+				bool insertarTienda = false;
+				int idBuscarJuego = 0;
+
+				string buscarTienda = "SELECT * FROM tienda" + oferta.Tienda + " WHERE enlace=@enlace";
+
+				using (SqlCommand comando = new SqlCommand(buscarTienda, conexion))
+				{
+					comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read() == false)
+						{
+							insertarTienda = true;
+						}
+						else
+						{
+							idBuscarJuego = lector.GetInt32(3);
+						}
+					}
+				}
+
+                if (insertarTienda == true)
+                {
+					string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
+						"(enlace, nombre, imagen, idJuegos) VALUES " +
+						"(@enlace, @nombre, @imagen, @idJuegos)";
+
+					using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
+					{
+						comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
+						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
+						comando.Parameters.AddWithValue("@imagen", oferta.Imagen);
+						comando.Parameters.AddWithValue("@idJuegos", 0);
+
+						try
+						{
+							comando.ExecuteNonQuery();
+						}
+						catch
+						{
+
+						}
+					}
+				}
+
+				if (idBuscarJuego > 0)
+				{
+					string buscarJuego = "SELECT * FROM juegos WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idBuscarJuego);
+
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							if (lector.Read() == true)
+							{
+								Juego juego = JuegoCrear.Generar();
+
+								juego.Id = lector.GetInt32(0);
+								juego.Nombre = lector.GetString(1);
+								juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
+
+								juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+								juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+								juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+
+								juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+								juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+								juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+
+								juego.IdSteam = lector.GetInt32(9);
+								juego.IdGog = lector.GetInt32(10);
+								juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+
+								ActualizarNuevosPrecios(juego, oferta);
+							}
+						}
 					}
 				}
 			}
