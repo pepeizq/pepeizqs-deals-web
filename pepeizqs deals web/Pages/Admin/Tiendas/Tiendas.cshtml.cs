@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO.Compression;
 using System.Net;
 
-namespace pepeizqs_deals_web.Pages.Tiendas
+namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
     public class TiendasModel : PageModel
     {

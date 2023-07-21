@@ -1,5 +1,5 @@
 ﻿@page
-@model pepeizqs_deals_web.Pages.Juegos.IndexModel
+@model pepeizqs_deals_web.Pages.Admin.Juegos.IndexModel
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -46,11 +46,11 @@
 				{
 					<div class="perfil-flexible-centrado perfil-espacio-top">
 						<div class="admin-busqueda-juego-izquierda">
-							<a class="boton-pequeño" href="/Juegos/Editar?id=@juego.Id">@juego.Nombre</a>
+							<a class="boton-pequeño" href="/Admin/Juegos/Editar?id=@juego.Id">@juego.Nombre</a>
 						</div>
 
 						<div class="admin-busqueda-juego-derecha">
-							<a href="/Juegos/Borrar?id=@juego.Id" class="boton-pequeño-peligro">Borrar</a>
+							<a href="/Admin/Juegos/Borrar?id=@juego.Id" class="boton-pequeño-peligro">Borrar</a>
 						</div>
 					</div>
 				}

@@ -255,3 +255,22 @@
     grid-gap: 30px;
     justify-content: center;
 }
+
+.juego-wrap {
+    overflow: hidden;
+    position: relative;
+    padding: 30px;
+}
+
+.juego-fondo {
+    opacity: 0.3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+}
+
+.juego-contenido {
+    position: relative;
+}

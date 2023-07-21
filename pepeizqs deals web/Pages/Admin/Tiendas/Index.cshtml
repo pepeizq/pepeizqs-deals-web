@@ -1,5 +1,5 @@
 ﻿@page
-@model pepeizqs_deals_web.Pages.Tiendas.IndexModel
+@model pepeizqs_deals_web.Pages.Admin.Tiendas.IndexModel
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -16,7 +16,7 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		<div class="perfil">
+		<div class="perfil perfil-espacio-bottom">
 			<form method="post">
 				<div class="admin-grid">
 					@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -27,6 +27,8 @@
 			</form>
 		</div>
 
-		@ViewData["Mensaje"]
+		<div class="perfil">
+			@ViewData["Mensaje"]
+		</div>		
 	}
 }

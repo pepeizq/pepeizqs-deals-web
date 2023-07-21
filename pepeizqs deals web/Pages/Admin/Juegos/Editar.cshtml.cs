@@ -4,9 +4,8 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 
-namespace pepeizqs_deals_web.Pages.Juegos
+namespace pepeizqs_deals_web.Pages.Admin.Juegos
 {
     public class EditarModel : PageModel
     {
@@ -68,21 +67,7 @@ namespace pepeizqs_deals_web.Pages.Juegos
 						{
 							if (lector.Read())
 							{
-								juegoEditar.Id = lector.GetInt32(0);
-								juegoEditar.Nombre = lector.GetString(1);
-								juegoEditar.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
-
-								juegoEditar.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
-								juegoEditar.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
-								juegoEditar.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
-
-								juegoEditar.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
-								juegoEditar.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
-								juegoEditar.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
-
-								juegoEditar.IdSteam = lector.GetInt32(9);
-								juegoEditar.IdGog = lector.GetInt32(10);
-								juegoEditar.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+								juegoEditar = JuegoBaseDatos.CargarJuego(juegoEditar, lector);
 							}
 						}
 					}

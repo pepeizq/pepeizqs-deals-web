@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 
-namespace pepeizqs_deals_web.Pages.Juegos
+namespace pepeizqs_deals_web.Pages.Admin.Juegos
 {
     public class IndexModel : PageModel
     {

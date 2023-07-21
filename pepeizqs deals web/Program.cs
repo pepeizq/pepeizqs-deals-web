@@ -50,6 +50,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllerRoute(name: "game",
+				pattern: "game/{*id}");
+
 app.MapRazorPages();
 
 app.Run();

@@ -29,14 +29,16 @@ namespace APIs.Steam
 
 		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
-            int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
+            int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
-            if (numPaginas > 0) 
+			objeto["Mensaje"] = objeto["Mensaje"] + "Steam: " + numPaginas.ToString() + " paginas detectadas" + Environment.NewLine;
+
+			if (numPaginas > 0) 
             {
                 int i = 1;
                 while (i <= numPaginas) 
                 {
-					Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&sort_by=Price_ASC&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
+					Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
 					tarea.Wait();
 
 					string html = tarea.Result;
@@ -45,14 +47,14 @@ namespace APIs.Steam
                     {
                         if (html.Contains("<!-- List Items -->") == false)
                         {
-                            if (i < numPaginas - 10)
-                            {
-                                i -= 1;
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            //if (i < numPaginas - 10)
+                            //{
+                            //    i -= 1;
+                            //}
+                            //else
+                            //{
+                            //    break;
+                            //}
                         }
                         else
                         {
@@ -160,16 +162,16 @@ namespace APIs.Steam
 
                                     if (analisis.Cantidad.Length > 2)
                                     {
-										int int11 = temp4.IndexOf(Strings.ChrW(34) + "discount_pct" + Strings.ChrW(34));
+										int int11 = temp4.IndexOf("data-discount=" + Strings.ChrW(34));
 
 										if (int11 != -1)
 										{
 											string temp11 = temp4.Remove(0, int11);
 
-											int11 = temp11.IndexOf(">");
+											int11 = temp11.IndexOf(Strings.ChrW(34));
 											temp11 = temp11.Remove(0, int11 + 1);
 
-											int int12 = temp11.IndexOf("</div>");
+											int int12 = temp11.IndexOf(Strings.ChrW(34));
 											string temp12 = temp11.Remove(int12, temp11.Length - int12);
 
 											int descuento = 0;
@@ -300,14 +302,7 @@ namespace APIs.Steam
 							i += 1;
                         }
                     }
-
-
                 }
-            }
-
-            if (numPaginas == 0) 
-            {
-                numPaginas = 300;
             }
 
             return numPaginas;

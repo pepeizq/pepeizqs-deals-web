@@ -1,10 +1,9 @@
 #nullable disable
 
-using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace pepeizqs_deals_web.Pages.Tiendas
+namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
     public class IndexModel : PageModel
     {

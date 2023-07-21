@@ -88,6 +88,8 @@ namespace APIs.GamersGate
 								}	
 							}
 						}
+
+						objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
 					}
 				}
 			}

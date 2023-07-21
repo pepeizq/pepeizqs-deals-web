@@ -1,0 +1,17 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.GameModel
+
+@{
+	ViewData["Title"] = Model.juego.Nombre;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="juego-wrap">
+    <img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620"/>
+
+    <div class="juego-contenido">
+        <div class="perfil perfil-espacio-bottom">
+            @Model.juego.Nombre
+        </div>    
+    </div>
+</div>

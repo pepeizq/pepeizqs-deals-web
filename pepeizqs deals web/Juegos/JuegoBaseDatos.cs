@@ -35,7 +35,7 @@ namespace Juegos
 				
 				}
 
-				if (numeroId != 0)
+				if (numeroId > 0)
 				{
 					WebApplicationBuilder builder = WebApplication.CreateBuilder();
 					string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
@@ -88,22 +88,8 @@ namespace Juegos
 								}
 								else
 								{
-									juego.Id = lector.GetInt32(0);
-									juego.Nombre = lector.GetString(1);
-									juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
-
-									juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
-									juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
-									juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
-
-									juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
-									juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
-									juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
-
-									juego.IdSteam = lector.GetInt32(9);
-									juego.IdGog = lector.GetInt32(10);
-									juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
-
+									juego = CargarJuego(juego, lector);
+									
 									actualizar = true;
 								}
 							}
@@ -126,6 +112,57 @@ namespace Juegos
 					}
 				}
 			}
+		}
+
+		public static Juego CargarJuego(Juego juego, SqlDataReader lector)
+		{
+			juego.Id = lector.GetInt32(0);
+			juego.Nombre = lector.GetString(1);
+
+			if (lector.GetString(2) != null)
+			{
+				juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
+			}
+
+			if (lector.GetString(3) != null)
+			{
+				juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+			}
+
+			if (lector.GetString(4) != null)
+			{
+				juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+			}
+
+			if (lector.GetString(5) != null)
+			{
+				juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+			}
+
+			if (lector.GetString(6) != null)
+			{
+				juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+			}
+
+			if (lector.GetString(7) != null)
+			{
+				juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+			}
+
+			if (lector.GetString(8) != null)
+			{
+				juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+			}
+
+			juego.IdSteam = lector.GetInt32(9);
+			juego.IdGog = lector.GetInt32(10);
+
+			if (lector.GetString(11) != null)
+			{
+				juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+			}
+
+			return juego;
 		}
 
 		public static void ComprobarTienda(JuegoPrecio oferta, ViewDataDictionary objeto)
