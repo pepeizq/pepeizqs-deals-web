@@ -7,7 +7,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
     public class IndexModel : PageModel
     {
-        public void OnGetAsync()
+		public void OnGet()
         {
 			string id = Request.Query["id"];
 

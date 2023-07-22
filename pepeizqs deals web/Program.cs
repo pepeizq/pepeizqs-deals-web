@@ -8,8 +8,8 @@ var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_we
 
 builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseSqlServer(conexionTexto));
 
-builder.Services.AddDefaultIdentity<Usuario>(options => 
-{ 
+builder.Services.AddDefaultIdentity<Usuario>(options =>
+{
     options.SignIn.RequireConfirmedAccount = false;
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
@@ -37,8 +37,8 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    //app.UseExceptionHandler("/Error");
-    app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Error");
+    //app.UseDeveloperExceptionPage();
 
     app.UseHsts();
 }

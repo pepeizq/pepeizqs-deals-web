@@ -99,19 +99,7 @@ namespace Juegos
 		DLC,
 		Bundle
 	}
-
-	public enum JuegoDRM
-	{
-		Steam,
-		DRMFree,
-		Ubisoft,
-		EA,
-		Rockstar,
-		Microsoft,
-		Epic,
-		NoEspecificado
-	}
-
+	
 	public enum JuegoMoneda
 	{		
 		Euro,

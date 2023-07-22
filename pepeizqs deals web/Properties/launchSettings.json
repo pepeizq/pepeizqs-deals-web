@@ -24,7 +24,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "sqlDebugging": true
+      "sqlDebugging": true,
+      "nativeDebugging": true
     }
   },
   "iisSettings": {

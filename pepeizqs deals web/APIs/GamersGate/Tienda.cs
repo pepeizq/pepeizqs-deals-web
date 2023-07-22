@@ -63,7 +63,7 @@ namespace APIs.GamersGate
 
 								if (descuento > 0)
 								{
-									JuegoDRM drm = DRM.Traducir(juegoGG.DRM);
+									JuegoDRM drm = JuegoDRM2.Traducir(juegoGG.DRM);
 
 									JuegoPrecio oferta = new JuegoPrecio
 									{

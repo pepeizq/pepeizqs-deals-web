@@ -1,14 +1,26 @@
-﻿using Juegos;
+﻿#nullable disable
 
-namespace Herramientas
+namespace Juegos
 {
-	public static class DRM
+	public enum JuegoDRM
+	{
+		Steam,
+		DRMFree,
+		Ubisoft,
+		EA,
+		Rockstar,
+		Microsoft,
+		Epic,
+		NoEspecificado
+	}
+
+	public static class JuegoDRM2
 	{
 		public static JuegoDRM Traducir(string drmTexto)
 		{
 			JuegoDRM drm = new JuegoDRM();
 
-			if (string.IsNullOrEmpty(drmTexto) == false) 
+			if (string.IsNullOrEmpty(drmTexto) == false)
 			{
 				if (drmTexto.ToLower() == "steam")
 				{
@@ -36,8 +48,14 @@ namespace Herramientas
 				}
 			}
 
-
 			return drm;
+		}
+
+		public static List<JuegoDRM> CargarDRMs()
+		{
+			List<JuegoDRM> drms = Enum.GetValues(typeof(JuegoDRM)).Cast<JuegoDRM>().ToList();
+
+			return drms;
 		}
 	}
 }

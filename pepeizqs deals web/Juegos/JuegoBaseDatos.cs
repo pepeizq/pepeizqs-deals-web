@@ -303,9 +303,7 @@ namespace Juegos
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
 			using (SqlConnection conexion = new SqlConnection(conexionTexto))
-			{
-				conexion.Open();
-
+			{			
 				string sqlEditar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
@@ -371,7 +369,7 @@ namespace Juegos
 			}
 		}
 
-		public static void ActualizarNuevosPrecios(Juego juego, JuegoPrecio nuevoPrecio)
+		public static void ActualizarNuevosPrecios(Juego juego, JuegoPrecio nuevoPrecio, SqlConnection conexion = null)
 		{
 			bool nuevoEncontrado = false;
 
