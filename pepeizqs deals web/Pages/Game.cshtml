@@ -18,12 +18,12 @@
 				<div class="juego-flexible-izquierda">
 					<img src="@Model.juego.Imagenes.Header_460x215" class="juego-imagen" />
 				</div>
-				<div class="admin-busqueda juego-titulo">
+				<div class="juego-titulo">
 					@Model.juego.Nombre <br/>
 
 					@if (Model.juego.IdSteam > 0)
 					{
-						<a class="juego-boton-pequeño" href="https://store.steampowered.com/app/@Model.juego.IdSteam" target="_blank">View on Steam</a>
+						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="https://store.steampowered.com/app/@Model.juego.IdSteam" target="_blank">View on Steam</a></div>
 					}		
 				</div>
 
@@ -60,17 +60,23 @@
 			@if (JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm).Count > 0)
 			{
 				<div class="perfil">
-					@drm
+					<div class="juego-minimo">@JuegoFicha.PrepararDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
 
 					@foreach (var precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm))
 					{
 						<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@precio.Enlace" target="_blank">
-							<div>
+							<div class="perfil-flexible-centrado">
 								<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
-								
-								<div>
-									@precio.Precio.ToString()
-								</div>	
+
+								<div class="juego-descuento-precio">
+									<div class="juego-descuento">
+										@precio.Descuento.ToString()%
+									</div>
+
+									<div class="juego-precio">
+										@JuegoFicha.PrepararPrecio(precio.Precio, precio.Moneda)
+									</div>
+								</div>
 							</div>					
 						</a>
 					}

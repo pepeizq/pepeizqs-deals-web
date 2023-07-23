@@ -15,20 +15,20 @@ namespace Juegos
 			bool insertar = false;
 			bool actualizar = false;
 
-			string id = string.Empty;
+			string idSteam = string.Empty;
 
 			if (oferta.Enlace.Contains("https://store.steampowered.com/app/") == true)
 			{
-				id = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
+				idSteam = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
 			}
 
-			if (string.IsNullOrEmpty(id) == false)
+			if (string.IsNullOrEmpty(idSteam) == false)
 			{
 				int numeroId = 0;
 
 				try
 				{
-					numeroId = int.Parse(id);
+					numeroId = int.Parse(idSteam);
 				}
 				catch 
 				{ 
@@ -43,11 +43,11 @@ namespace Juegos
 					using (SqlConnection conexion = new SqlConnection(conexionTexto))
 					{
 						conexion.Open();
-						string seleccionarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+						string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
 
-						using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
+						using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 						{
-							comando.Parameters.AddWithValue("@idSteam", id);
+							comando.Parameters.AddWithValue("@idSteam", idSteam);
 
 							using (SqlDataReader lector = comando.ExecuteReader())
 							{
@@ -55,7 +55,7 @@ namespace Juegos
 								{
 									try
 									{
-										Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(id);
+										Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(idSteam);
 										tarea.Wait();
 
 										juego = tarea.Result;
@@ -108,7 +108,7 @@ namespace Juegos
 
 					if (actualizar == true && insertar == false)
 					{
-						ActualizarNuevosPrecios(juego, oferta);
+						ActualizarNuevosPrecios(juego, oferta, objeto);
 					}
 				}
 			}
@@ -125,33 +125,57 @@ namespace Juegos
 			}
 
 			if (lector.GetString(3) != null)
-			{
-				juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+			{			
+				try
+				{
+					juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+				}
+				catch { }
 			}
 
 			if (lector.GetString(4) != null)
-			{
-				juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+			{			
+				try
+				{
+					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+				}
+				catch { }
 			}
 
 			if (lector.GetString(5) != null)
 			{
-				juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+				try
+				{
+					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+				}
+				catch { }			
 			}
 
 			if (lector.GetString(6) != null)
 			{
-				juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+				try
+				{
+					juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+				}
+				catch { }				
 			}
 
 			if (lector.GetString(7) != null)
 			{
-				juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+				try
+				{
+					juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+				}
+				catch { }			
 			}
 
 			if (lector.GetString(8) != null)
 			{
-				juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+				try
+				{
+					juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+				}
+				catch { }			
 			}
 
 			juego.IdSteam = lector.GetInt32(9);
@@ -159,7 +183,11 @@ namespace Juegos
 
 			if (lector.GetString(11) != null)
 			{
-				juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+				try
+				{
+					juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+				}
+				catch { }			
 			}
 
 			return juego;
@@ -198,6 +226,21 @@ namespace Juegos
 
                 if (insertarTienda == true)
                 {
+					string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
+
+					using (SqlCommand comando = new SqlCommand(buscarNombre, conexion))
+					{
+						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
+
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							if (lector.Read() == true)
+							{
+								idBuscarJuego = lector.GetInt32(0);
+							}
+						}
+					}
+
 					string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
 						"(enlace, nombre, imagen, idJuegos) VALUES " +
 						"(@enlace, @nombre, @imagen, @idJuegos)";
@@ -207,7 +250,7 @@ namespace Juegos
 						comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
 						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
 						comando.Parameters.AddWithValue("@imagen", oferta.Imagen);
-						comando.Parameters.AddWithValue("@idJuegos", 0);
+						comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
 
 						try
 						{
@@ -226,7 +269,7 @@ namespace Juegos
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
-						comando.Parameters.AddWithValue("@id", idBuscarJuego);
+						comando.Parameters.AddWithValue("@id", idBuscarJuego.ToString());
 
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{
@@ -234,23 +277,9 @@ namespace Juegos
 							{
 								Juego juego = JuegoCrear.Generar();
 
-								juego.Id = lector.GetInt32(0);
-								juego.Nombre = lector.GetString(1);
-								juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
-
-								juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
-								juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
-								juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
-
-								juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
-								juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
-								juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
-
-								juego.IdSteam = lector.GetInt32(9);
-								juego.IdGog = lector.GetInt32(10);
-								juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
-
-								ActualizarNuevosPrecios(juego, oferta);
+								juego = CargarJuego(juego, lector);
+								
+								ActualizarNuevosPrecios(juego, oferta, objeto);
 							}
 						}
 					}
@@ -303,7 +332,9 @@ namespace Juegos
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
 			using (SqlConnection conexion = new SqlConnection(conexionTexto))
-			{			
+			{
+				conexion.Open();
+
 				string sqlEditar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
@@ -339,9 +370,10 @@ namespace Juegos
 					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 
+					comando.ExecuteNonQuery();
 					try
 					{
-						comando.ExecuteNonQuery();
+					
 					}
 					catch
 					{
@@ -351,7 +383,7 @@ namespace Juegos
 			}
 		}
 
-		public static void LimpiarJuegos()
+		public static void LimpiarJuegos(string tabla)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
@@ -360,7 +392,7 @@ namespace Juegos
 			{
 				conexion.Open();
 
-				string limpiar = "TRUNCATE TABLE juegos";
+				string limpiar = "TRUNCATE TABLE " + tabla;
 
 				using (SqlCommand comando = new SqlCommand(limpiar, conexion))
 				{
@@ -369,9 +401,9 @@ namespace Juegos
 			}
 		}
 
-		public static void ActualizarNuevosPrecios(Juego juego, JuegoPrecio nuevoPrecio, SqlConnection conexion = null)
+		public static void ActualizarNuevosPrecios(Juego juego, JuegoPrecio nuevoPrecio, ViewDataDictionary objeto)
 		{
-			bool nuevoEncontrado = false;
+			bool añadir = true;
 
 			if (juego.PrecioActualesTiendas != null)
 			{
@@ -390,7 +422,7 @@ namespace Juegos
 							precio.Nombre = nuevoPrecio.Nombre;
 							precio.Imagen = nuevoPrecio.Imagen;
 
-							nuevoEncontrado = true;
+							añadir = false;
 						}
 					}
 				}
@@ -400,9 +432,9 @@ namespace Juegos
 				juego.PrecioActualesTiendas = new List<JuegoPrecio>();
 			}
 
-			if (nuevoEncontrado == false)
+			if (añadir == true)
 			{
-				juego.PrecioActualesTiendas.Add(nuevoPrecio);
+			 	juego.PrecioActualesTiendas.Add(nuevoPrecio);
 			}
 
 			if (juego.PrecioActualesTiendas.Count > 0)

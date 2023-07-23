@@ -7,7 +7,8 @@
 			List<Tienda> tiendas = new List<Tienda>
 			{
 				APIs.Steam.Tienda.Generar(),
-				APIs.GamersGate.Tienda.Generar()
+				APIs.GamersGate.Tienda.Generar(),
+				APIs.Humble.Tienda.Generar()
 			};
 
 			return tiendas;

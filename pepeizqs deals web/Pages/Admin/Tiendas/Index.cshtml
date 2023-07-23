@@ -3,6 +3,7 @@
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
+@using Tiendas2
 
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
@@ -19,9 +20,16 @@
 		<div class="perfil perfil-espacio-bottom">
 			<form method="post">
 				<div class="admin-grid">
-					@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+					@foreach (Tienda tienda in TiendasCargar.GenerarListado())
 					{
-						<div><button class="boton admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button></div>
+						@if (tienda.EnseñarAdmin == true)
+						{
+							<div>
+								<button class="boton admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button><br />
+
+								<div class="admin-tiempohace">@TiendasBaseDatos.SacarTiempo(tienda.Id)</div>
+							</div>
+						}					
 					}
 				</div>
 			</form>

@@ -31,14 +31,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    //app.UseDeveloperExceptionPage();
+    //app.UseExceptionHandler("/Error");
+    app.UseDeveloperExceptionPage();
 
     app.UseHsts();
 }

@@ -19,7 +19,8 @@ namespace APIs.GamersGate
 				ImagenLogo = "/imagenes/tiendas/gamersgate_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/gamersgate_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/gamersgate_icono.ico",
-				Color = "#232A3E"
+				Color = "#232A3E",
+				EnseñarAdmin = true
 			};
 
 			return tienda;
@@ -89,7 +90,7 @@ namespace APIs.GamersGate
 							}
 						}
 
-						objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
+						//objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
 					}
 				}
 			}

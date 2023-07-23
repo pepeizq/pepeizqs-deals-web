@@ -21,7 +21,8 @@ namespace APIs.Steam
 				ImagenLogo = "/imagenes/tiendas/steam_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/steam_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/steam_icono.ico",
-				Color = "#2e4460"
+				Color = "#2e4460",
+                EnseñarAdmin = true
 			};
 
 			return tienda;

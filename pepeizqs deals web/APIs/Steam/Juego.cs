@@ -43,9 +43,13 @@ namespace APIs.Steam
 						Mac = datos.Datos.Sistemas.Mac,
 						Linux = datos.Datos.Sistemas.Linux,
 						Desarrolladores = datos.Datos.Desarrolladores,
-						Publishers = datos.Datos.Publishers,
-						Descripcion = datos.Datos.DescripcionCorta
+						Publishers = datos.Datos.Publishers
 					};
+
+					if (string.IsNullOrEmpty(datos.Datos.DescripcionCorta) == false)
+					{
+						caracteristicas.Descripcion = datos.Datos.DescripcionCorta;
+					}
 
 					//------------------------------------------------------
 
