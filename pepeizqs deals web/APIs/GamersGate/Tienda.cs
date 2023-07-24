@@ -51,7 +51,7 @@ namespace APIs.GamersGate
 						{ 
 							foreach (GamersGateJuego juegoGG in listaJuegos.Juegos)
 							{
-								string titulo = WebUtility.HtmlDecode(juegoGG.Titulo);
+								string nombre = WebUtility.HtmlDecode(juegoGG.Titulo);
 								
 								string enlace = juegoGG.Enlace;
 
@@ -68,7 +68,7 @@ namespace APIs.GamersGate
 
 									JuegoPrecio oferta = new JuegoPrecio
 									{
-										Nombre = titulo,
+										Nombre = nombre,
 										Enlace = enlace,
 										Imagen = imagen,
 										Moneda = JuegoMoneda.Euro,
@@ -90,7 +90,7 @@ namespace APIs.GamersGate
 							}
 						}
 
-						//objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
+						objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
 					}
 				}
 			}

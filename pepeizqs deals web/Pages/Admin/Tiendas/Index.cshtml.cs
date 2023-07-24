@@ -1,6 +1,5 @@
 #nullable disable
 
-using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tiendas2;
@@ -28,6 +27,11 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					{
 						TiendasBaseDatos.ActualizarTiempo(APIs.GamersGate.Tienda.Generar().Id, DateTime.Now);
 						APIs.GamersGate.Tienda.BuscarOfertas(ViewData);
+					}
+					else if (id == APIs.Humble.Tienda.Generar().Id)
+					{
+						TiendasBaseDatos.ActualizarTiempo(APIs.Humble.Tienda.Generar().Id, DateTime.Now);
+						APIs.Humble.Tienda.BuscarOfertas(ViewData);
 					}
 				}
 			}

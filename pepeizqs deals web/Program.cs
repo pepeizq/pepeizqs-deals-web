@@ -31,6 +31,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+	options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+});
+
+builder.Services.ConfigureApplicationCookie(options => options.Cookie.Name = "pepeCookie");
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 

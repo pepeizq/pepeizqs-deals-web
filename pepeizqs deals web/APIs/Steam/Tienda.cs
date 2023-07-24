@@ -32,7 +32,7 @@ namespace APIs.Steam
 		{
             int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
-			objeto["Mensaje"] = objeto["Mensaje"] + "Steam: " + numPaginas.ToString() + " paginas detectadas" + Environment.NewLine;
+			objeto["Mensaje"] = objeto["Mensaje"] + "Steam: " + numPaginas.ToString() + " páginas detectadas" + Environment.NewLine;
 
 			if (numPaginas > 0) 
             {
