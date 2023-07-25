@@ -1,0 +1,31 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Admin.Tiendas.HumbleModel
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+    ViewData["Title"] = "Humble";
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
+    {
+        <div class="perfil perfil-espacio-bottom">
+            <form method="post">
+                <textarea id="humble-texto" asp-for="Input.Texto" class="entrada-texto"></textarea>
+
+                <button id="humble-cargar" type="submit" class="boton">Cargar</button>
+            </form>
+        </div>
+
+        <div class="perfil">
+            @ViewData["Mensaje"]
+        </div>
+    }
+}

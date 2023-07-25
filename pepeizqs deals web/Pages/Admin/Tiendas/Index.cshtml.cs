@@ -8,7 +8,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
     public class IndexModel : PageModel
     {
-		public void OnGet()
+        public IActionResult OnGet()
         {
 			string id = Request.Query["id"];
 
@@ -30,11 +30,13 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					}
 					else if (id == APIs.Humble.Tienda.Generar().Id)
 					{
-						TiendasBaseDatos.ActualizarTiempo(APIs.Humble.Tienda.Generar().Id, DateTime.Now);
-						APIs.Humble.Tienda.BuscarOfertas(ViewData);
+						//TiendasBaseDatos.ActualizarTiempo(APIs.Humble.Tienda.Generar().Id, DateTime.Now);
+						//APIs.Humble.Tienda.BuscarOfertas(ViewData);
 					}
 				}
 			}
+
+			return null;
 		}
 
 		public IActionResult OnPost(string id) 

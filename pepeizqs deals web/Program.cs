@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
@@ -33,14 +36,21 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-	options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
 });
 
 builder.Services.ConfigureApplicationCookie(options => options.Cookie.Name = "pepeCookie");
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddDataProtection().UseCryptographicAlgorithms(
+	new AuthenticatedEncryptorConfiguration
+	{
+		EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+	});
+
+//builder.Services.AddControllersWithViews();
+//builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRazorPages();
 

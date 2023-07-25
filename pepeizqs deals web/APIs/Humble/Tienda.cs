@@ -51,14 +51,14 @@ namespace APIs.Humble
 			return tienda;
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto)
+		public static void BuscarOfertas(ViewDataDictionary objeto, string html)
 		{
 			int numPaginas = 0;
 
 			//Task<string> htmlPaginas2 = Decompiladores.Estandar("https://api.scrapfly.io/scrape?key=scp-live-9d23586400df4474a28c9075ea0b5ebc&url=https%3A%2F%2Fwww.humblebundle.com%2Fstore%2Fapi%2Fsearch%3Ffilter%3Donsale%26sort%3Ddiscount%26request%3D2%26page_size%3D20%26page%3D0&tags=player%2Cproject%3Adefault&country=es");
 			//htmlPaginas2.Wait();
 
-			string htmlPaginas = Decompiladores.GZipFormato("https://www.humblebundle.com/store/api/search?filter=onsale&sort=discount&request=2&page_size=20&page=1");
+			//string htmlPaginas = Decompiladores.GZipFormato("https://www.humblebundle.com/store/api/search?filter=onsale&sort=discount&request=2&page_size=20&page=1");
 
 			//if (htmlPaginas != null)
 			//{
@@ -91,37 +91,40 @@ namespace APIs.Humble
 
 			//			if (scraper != null)
 			//			{
-			//				HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
+			HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
 
-			//				if (juegos != null)
-			//				{
-			//					foreach (HumbleJuego juego in juegos.Resultados)
-			//					{
-			//						string nombre = WebUtility.HtmlDecode(juego.Titulo);
+			if (juegos != null)
+			{
+				foreach (HumbleJuego juego in juegos.Resultados)
+				{
+					string nombre = WebUtility.HtmlDecode(juego.Titulo);
 
-			//						string imagen = juego.ImagenGrande;
+					string imagen = juego.ImagenGrande;
 
-			//						string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
+					string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
 
-			//						double precioChoice = 0;
-			//						double precioRebajado = 0;
+					double precioChoice = 0;
+					double precioRebajado = 0;
 
-			//						if (juego.PrecioRebajado != null)
-			//						{
+					if (juego.PrecioRebajado != null)
+					{
 
-			//						}
-			//					}
-			//				}
-			//			}
-			//		}
+					}
+				}
+			}
 
-			//		i += 1;
-			//	}
-			//}
+            objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
 
-			objeto["Mensaje"] = htmlPaginas;
-			//objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + numPaginas.ToString() + " páginas detectadas" + Environment.NewLine;
-		}
+
+            //			}
+            //		}
+
+            //		i += 1;
+            //	}
+            //}
+
+            //objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + numPaginas.ToString() + " páginas detectadas" + Environment.NewLine;
+        }
 
 		private static double DescuentoChoice(double cantidad)
 		{
