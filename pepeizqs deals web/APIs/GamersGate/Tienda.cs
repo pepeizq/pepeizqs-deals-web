@@ -5,6 +5,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Net;
 using System.Xml.Serialization;
+using Tiendas2;
 
 namespace APIs.GamersGate
 {
@@ -28,7 +29,9 @@ namespace APIs.GamersGate
 
 		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
-			Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
+            TiendasBaseDatos.ActualizarTiempo(Tienda.Generar().Id, DateTime.Now);
+
+            Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 			tarea.Wait();
 
 			string html = tarea.Result;
@@ -49,22 +52,22 @@ namespace APIs.GamersGate
 					{
 						if (listaJuegos.Juegos.Count > 0) 
 						{ 
-							foreach (GamersGateJuego juegoGG in listaJuegos.Juegos)
+							foreach (GamersGateJuego juego in listaJuegos.Juegos)
 							{
-								string nombre = WebUtility.HtmlDecode(juegoGG.Titulo);
+								string nombre = WebUtility.HtmlDecode(juego.Titulo);
 								
-								string enlace = juegoGG.Enlace;
+								string enlace = juego.Enlace;
 
-								string imagen = juegoGG.ImagenGrande;
+								string imagen = juego.ImagenGrande;
 
-								decimal precioBase = decimal.Parse(juegoGG.PrecioBase);
-								decimal precioDescontado = decimal.Parse(juegoGG.PrecioDescontado);
+								decimal precioBase = decimal.Parse(juego.PrecioBase);
+								decimal precioRebajado = decimal.Parse(juego.PrecioDescontado);
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioDescontado);
+								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
 								if (descuento > 0)
 								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juegoGG.DRM);
+									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
 									JuegoPrecio oferta = new JuegoPrecio
 									{
@@ -72,16 +75,16 @@ namespace APIs.GamersGate
 										Enlace = enlace,
 										Imagen = imagen,
 										Moneda = JuegoMoneda.Euro,
-										Precio = precioDescontado,
+										Precio = precioRebajado,
 										Descuento = descuento,
-										Tienda = "gamersgate",
+										Tienda = Generar().Id,
 										DRM = drm,
 										FechaDetectado = DateTime.Now
 									};
 
-									if (juegoGG.Fecha != null)
+									if (juego.Fecha != null)
 									{
-										DateTime fechaTermina = DateTime.Parse(juegoGG.Fecha);
+										DateTime fechaTermina = DateTime.Parse(juego.Fecha);
 										oferta.FechaTermina = fechaTermina;
 									}
 

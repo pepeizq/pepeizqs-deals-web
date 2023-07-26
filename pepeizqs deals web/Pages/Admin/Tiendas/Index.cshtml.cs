@@ -18,19 +18,16 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 				{
 					if (id == APIs.Steam.Tienda.Generar().Id)
 					{
-						TiendasBaseDatos.ActualizarTiempo(APIs.Steam.Tienda.Generar().Id, DateTime.Now);
 						APIs.Steam.Tienda.BuscarOfertas(ViewData);
 
 						//JuegoBaseDatos.LimpiarJuegos();
 					}
 					else if (id == APIs.GamersGate.Tienda.Generar().Id) 
-					{
-						TiendasBaseDatos.ActualizarTiempo(APIs.GamersGate.Tienda.Generar().Id, DateTime.Now);
+					{						
 						APIs.GamersGate.Tienda.BuscarOfertas(ViewData);
 					}
 					else if (id == APIs.Humble.Tienda.Generar().Id)
 					{
-						//TiendasBaseDatos.ActualizarTiempo(APIs.Humble.Tienda.Generar().Id, DateTime.Now);
 						//APIs.Humble.Tienda.BuscarOfertas(ViewData);
 					}
 				}

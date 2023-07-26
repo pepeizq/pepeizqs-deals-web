@@ -193,7 +193,15 @@ namespace Juegos
 			return juego;
 		}
 
-		public static void ComprobarTienda(JuegoPrecio oferta, ViewDataDictionary objeto)
+        public static void ComprobarTienda(List<JuegoPrecio> ofertas, ViewDataDictionary objeto)
+		{
+			foreach (var oferta in ofertas)
+			{
+				ComprobarTienda(oferta, objeto);
+            }
+		}
+
+        public static void ComprobarTienda(JuegoPrecio oferta, ViewDataDictionary objeto)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
@@ -411,7 +419,7 @@ namespace Juegos
 				{
 					foreach (JuegoPrecio precio in juego.PrecioActualesTiendas)
 					{
-						if (nuevoPrecio.Enlace == precio.Enlace)
+						if (nuevoPrecio.Enlace == precio.Enlace && nuevoPrecio.DRM == precio.DRM && nuevoPrecio.Tienda == precio.Tienda)
 						{
 							precio.Precio = nuevoPrecio.Precio;
 							precio.Descuento = nuevoPrecio.Descuento;

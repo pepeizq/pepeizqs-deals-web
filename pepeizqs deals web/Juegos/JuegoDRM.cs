@@ -56,7 +56,7 @@ namespace Juegos
 			return texto;
 		}
 
-		public static JuegoDRM Traducir(string drmTexto)
+		public static JuegoDRM Traducir(string drmTexto, string tienda)
 		{
 			JuegoDRM drm = new JuegoDRM();
 
@@ -102,9 +102,23 @@ namespace Juegos
 				{
 					drm = JuegoDRM.Epic;
 				}
-				else
+                else if (drmTexto.ToLower() == "epic")
+                {
+                    drm = JuegoDRM.Epic;
+                }
+                else
 				{
 					drm = JuegoDRM.NoEspecificado;
+				}
+
+				//------------------------------------------------
+
+				if (tienda == "humblestore")
+				{
+					if (drmTexto.ToLower() == "download")
+					{
+						drm = JuegoDRM.DRMFree;
+					}
 				}
 			}
 

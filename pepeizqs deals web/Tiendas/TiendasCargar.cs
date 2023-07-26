@@ -8,7 +8,8 @@
 			{
 				APIs.Steam.Tienda.Generar(),
 				APIs.GamersGate.Tienda.Generar(),
-				APIs.Humble.Tienda.Generar()
+				APIs.Humble.Tienda.Generar(),
+				APIs.Humble.Tienda.GenerarChoice()
 			};
 
 			return tiendas;

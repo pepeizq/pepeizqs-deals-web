@@ -7,6 +7,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.VisualBasic;
 using System.Net;
+using Tiendas2;
 
 namespace APIs.Steam
 {
@@ -30,6 +31,8 @@ namespace APIs.Steam
 
 		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
+            TiendasBaseDatos.ActualizarTiempo(Tienda.Generar().Id, DateTime.Now);
+
             int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
 			objeto["Mensaje"] = objeto["Mensaje"] + "Steam: " + numPaginas.ToString() + " páginas detectadas" + Environment.NewLine;

@@ -20,7 +20,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
             cliente.DefaultRequestHeaders.Upgrade.ParseAdd("1");
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Linux; Android 11; TX6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.116 Safari/537.36");
 
-            cliente.DefaultRequestHeaders.Add("Cookie", "_simpleauth_sess=eyJpZCI6IlA2Zzk4ZW9Md0kifQ==|1690107705|990dc3ae5f2e06b2ceab54ffbdd2d8ed9bb961ae; __cf_bm=hU4VpHmh1ImQoNqA_7nPls.AJb7tRR.JzSJPclp.Rkw-1690107574-0-AStg0XLhW6ii9rTCTeEtSm1WCYFEKLJvuuKRB/jQ3Wi6VMFkqhxnxPlUj1LVKb7XFp4DUt4y7FT9pYagCpGv6C4=");
+            cliente.DefaultRequestHeaders.Add("_simpleauth_sess", "eyJpZCI6IlBqaEpCU0t2cXMifQ==|1690269608|403e50bddc190a681986cae183df960a55565cf5");
 
             Console.WriteLine(cliente.DefaultRequestHeaders.UserAgent.ToString());
 

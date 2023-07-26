@@ -2,15 +2,15 @@
 {
 	public static class Calculadora
 	{
-		public static int SacarDescuento(decimal precioBase, decimal precioDescontado)
+		public static int SacarDescuento(decimal precioBase, decimal precioRebajado)
 		{
 			int descuento = 0;
 
-			if (precioBase > 0 && precioDescontado > 0) 
+			if (precioBase > 0 && precioRebajado > 0) 
 			{
-				if (precioBase != precioDescontado)
+				if (precioBase != precioRebajado)
 				{
-					decimal temp = (precioDescontado / precioBase) * 100;
+					decimal temp = (precioRebajado / precioBase) * 100;
 
 					descuento = Decimal.ToInt32(100 - temp);
 				}
