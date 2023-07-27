@@ -13,10 +13,10 @@
     <img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620"/>
 
     <div class="juego-contenido">
-        <div class="perfil perfil-espacio-bottom juego-cabecera">      
+        <div class="perfil-espacio-bottom juego-cabecera">      
 			<div class="perfil-flexible-centrado">
 				<div class="juego-flexible-izquierda">
-					<img src="@Model.juego.Imagenes.Header_460x215" class="juego-imagen" />
+					<img src="@JuegoFicha.LimpiarImagenJuego(Model.juego.Imagenes.Header_460x215)" class="juego-imagen" />
 				</div>
 				<div class="juego-titulo">
 					@Model.juego.Nombre <br/>
@@ -48,39 +48,62 @@
 								<img src="/imagenes/analisis/negative2.png" class="juego-analisis-imagen" />
 							}
 
-							<div class="juego-analisis-texto">@Model.juego.Analisis.Porcentaje% (@Calculadora.RedondearAnalisis(Model.juego.Analisis.Cantidad))</div>
+							<div class="juego-analisis-texto">@Model.juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(Model.juego.Analisis.Cantidad)</div>
 						</div>
 					</div>				
 				}
 			</div>
         </div>   
 		
-		@foreach (var drm in JuegoDRM2.CargarDRMs())
+		@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 		{
-			@if (JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm).Count > 0)
+			@if (drm != JuegoDRM.NoEspecificado)
 			{
-				<div class="perfil">
-					<div class="juego-minimo">@JuegoFicha.PrepararDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
+				@if (JuegoFicha.PrepararMinimo(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas).Length > 0)
+				{
+					<div class="juego-drm-centrado perfil-espacio-bottom">
+						<div class="perfil juego-drm-imagen">
+							@if (drm == JuegoDRM.DRMFree)
+							{
+								<div style="font-weight: bold;font-size: 18px;">DRM Free</div>
+							}
+							else
+							{
+								<img src="@JuegoDRM2.SacarImagen(drm)" />
+							}
+						</div>
 
-					@foreach (var precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm))
-					{
-						<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@precio.Enlace" target="_blank">
-							<div class="perfil-flexible-centrado">
-								<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
+						<div class="perfil" style="width: 90%;">
+							<div class="juego-minimo">@JuegoFicha.PrepararMinimo(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
 
-								<div class="juego-descuento-precio">
-									<div class="juego-descuento">
-										@precio.Descuento.ToString()%
-									</div>
+							@if (JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm).Count > 0)
+							{
+								@foreach (JuegoPrecio precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm))
+								{
+									<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@precio.Enlace" target="_blank">
+										<div class="perfil-flexible-centrado">
+											<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
-									<div class="juego-precio">
-										@JuegoFicha.PrepararPrecio(precio.Precio, precio.Moneda)
-									</div>
-								</div>
-							</div>					
-						</a>
-					}
-				</div>
+											<div class="juego-descuento-precio">
+												<div class="juego-descuento">
+													@precio.Descuento.ToString()%
+												</div>
+
+												<div class="juego-precio">
+													@JuegoFicha.PrepararPrecio(precio.Precio, precio.Moneda)
+												</div>
+											</div>
+										</div>
+									</a>
+								}
+							}
+							else
+							{
+								<div>There are currently no deals for this platform</div>
+							}
+						</div>
+					</div>
+				}
 			}
 		}
 		

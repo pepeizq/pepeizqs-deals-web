@@ -255,7 +255,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 						//----------------------------
 
-						JuegoBaseDatos.InsertarJuego(juegoAñadir);
+						BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir);
 
 						if (juegoAñadir.IdSteam > 0)
 						{

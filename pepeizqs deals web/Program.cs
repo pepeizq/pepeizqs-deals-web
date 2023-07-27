@@ -61,7 +61,7 @@ if (!app.Environment.IsDevelopment())
     //app.UseExceptionHandler("/Error");
     app.UseDeveloperExceptionPage();
 
-    app.UseHsts();
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();

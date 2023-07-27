@@ -3,11 +3,11 @@
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
-namespace Tiendas2
+namespace BaseDatos.Tiendas
 {
-	public static class TiendasBaseDatos
+	public static class Tiempo
 	{
-		public static void ActualizarTiempo(string tienda, DateTime fecha)
+		public static void Actualizar(string tienda, DateTime fecha)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
@@ -83,7 +83,7 @@ namespace Tiendas2
 			}
 		}
 
-		public static string SacarTiempo(string tienda)
+		public static string Sacar(string tienda)
 		{
 			string tiempo = string.Empty;
 

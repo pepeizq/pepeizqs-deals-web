@@ -5,7 +5,6 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Net;
 using System.Xml.Serialization;
-using Tiendas2;
 
 namespace APIs.GamersGate
 {
@@ -21,7 +20,8 @@ namespace APIs.GamersGate
 				Imagen300x80 = "/imagenes/tiendas/gamersgate_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/gamersgate_icono.ico",
 				Color = "#232A3E",
-				EnseñarAdmin = true
+				AdminEnseñar = true,
+				AdminInteractuar = true
 			};
 
 			return tienda;
@@ -29,7 +29,7 @@ namespace APIs.GamersGate
 
 		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
-            TiendasBaseDatos.ActualizarTiempo(Tienda.Generar().Id, DateTime.Now);
+            BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
 
             Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 			tarea.Wait();
@@ -88,7 +88,7 @@ namespace APIs.GamersGate
 										oferta.FechaTermina = fechaTermina;
 									}
 
-									JuegoBaseDatos.ComprobarTienda(oferta, objeto);
+									BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto);
 								}	
 							}
 						}

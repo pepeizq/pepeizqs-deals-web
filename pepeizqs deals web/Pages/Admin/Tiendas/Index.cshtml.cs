@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Tiendas2;
 
 namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
@@ -19,16 +18,15 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					if (id == APIs.Steam.Tienda.Generar().Id)
 					{
 						APIs.Steam.Tienda.BuscarOfertas(ViewData);
-
-						//JuegoBaseDatos.LimpiarJuegos();
 					}
 					else if (id == APIs.GamersGate.Tienda.Generar().Id) 
 					{						
 						APIs.GamersGate.Tienda.BuscarOfertas(ViewData);
 					}
-					else if (id == APIs.Humble.Tienda.Generar().Id)
+
+					if (id == "test")
 					{
-						//APIs.Humble.Tienda.BuscarOfertas(ViewData);
+						BaseDatos.Juegos.Precios.Limpiar("humblechoice");
 					}
 				}
 			}

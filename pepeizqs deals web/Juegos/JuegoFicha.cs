@@ -19,7 +19,27 @@ namespace Juegos
 					{
 						if (precio.DRM == drm)
 						{
-							preciosOrdenados.Add(precio);
+							bool fechaEncaja = true;
+
+							if (precio.FechaTermina.Year > 2022)
+							{
+								if (DateTime.Now > precio.FechaTermina)
+								{
+									fechaEncaja = false;
+								}
+							}
+							else
+							{
+								if (precio.FechaDetectado.DayOfYear + 1 < DateTime.Now.DayOfYear)
+								{
+									fechaEncaja = false;
+								}
+							}
+							
+							if (fechaEncaja == true)
+							{
+								preciosOrdenados.Add(precio);
+							}						
 						}
 					}
 				}
@@ -33,6 +53,19 @@ namespace Juegos
 			}
 
 			return preciosOrdenados;
+		}
+
+		public static string LimpiarImagenJuego(string enlace)
+		{
+			if (enlace.Contains("/header_alt_") == true)
+			{
+				int int1 = enlace.IndexOf("/header_alt_");
+				enlace = enlace.Remove(int1, enlace.Length - int1);
+
+				enlace = enlace + "/header.jpg";
+			}
+
+			return enlace;
 		}
 
 		public static string SacarImagenTienda(string codigo)
@@ -52,7 +85,7 @@ namespace Juegos
 			return imagen;
 		}
 
-		public static string PrepararDRM(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
+		public static string PrepararMinimo(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
 		{
 			string drmPreparado = string.Empty;
 
@@ -78,13 +111,15 @@ namespace Juegos
 					});
 				}
 				
-				drmPreparado = "Historical low for " + JuegoDRM2.Texto(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
+				drmPreparado = "Historical low for " + JuegoDRM2.Nombre(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
 
 				bool incluirTiempo = true;
 
+				List<JuegoPrecio> preciosActualesOrdenados = OrdenarPrecios(preciosActuales, drm);
+
 				if (preciosActuales.Count > 0)
 				{
-					foreach (JuegoPrecio actual in preciosActuales)
+					foreach (JuegoPrecio actual in preciosActualesOrdenados)
 					{
 						if (actual.DRM == drm)
 						{
@@ -98,7 +133,18 @@ namespace Juegos
 				
 				if (incluirTiempo == true)
 				{
-					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(minimosOrdenados[0].FechaDetectado) + ")";
+					List<Tienda> tiendas = TiendasCargar.GenerarListado();
+					string tiendaFinal = string.Empty;
+
+					foreach (var tienda in tiendas)
+					{
+						if (tienda.Id == minimosOrdenados[0].Tienda)
+						{
+							tiendaFinal = tienda.Nombre;
+						}
+					}
+
+					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(minimosOrdenados[0].FechaDetectado) + " on " + tiendaFinal + ")";
 				}
 			}
 

@@ -15,6 +15,7 @@ namespace Tiendas2
 		public string ImagenIcono;
 		public string Imagen300x80;
 		public string Color;
-		public bool EnseñarAdmin;
+		public bool AdminEnseñar;
+		public bool AdminInteractuar;
 	}
 }

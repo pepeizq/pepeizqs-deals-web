@@ -23,7 +23,8 @@ namespace APIs.Steam
 				Imagen300x80 = "/imagenes/tiendas/steam_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/steam_icono.ico",
 				Color = "#2e4460",
-                EnseñarAdmin = true
+                AdminEnseñar = true,
+				AdminInteractuar = true
 			};
 
 			return tienda;
@@ -31,7 +32,7 @@ namespace APIs.Steam
 
 		public static void BuscarOfertas(ViewDataDictionary objeto)
 		{
-            TiendasBaseDatos.ActualizarTiempo(Tienda.Generar().Id, DateTime.Now);
+			BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
 
             int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
@@ -238,7 +239,7 @@ namespace APIs.Steam
 														FechaDetectado = DateTime.Now
 													};
 
-                                                    JuegoBaseDatos.ComprobarSteam(oferta, analisis, objeto);
+                                                    BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto);
 												}
 											}
 										}

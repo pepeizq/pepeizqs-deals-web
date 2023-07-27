@@ -55,7 +55,7 @@
 
 				numCantidad = (int)(Math.Round(double.Parse(cantidad.Replace(",", null)) / divisor, 0) * divisor);
 
-				cantidadFinal = numCantidad.ToString() + "+ reviews";
+				cantidadFinal = numCantidad.ToString("N0") + "+ reviews";
 			}
 
 			return cantidadFinal;

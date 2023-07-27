@@ -31,7 +31,8 @@ namespace APIs.Humble
 				Imagen300x80 = "/imagenes/tiendas/humblestore_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Color = "#ea9192",
-				EnseñarAdmin = true
+				AdminEnseñar = true,
+				AdminInteractuar = false
 			};
 
 			return tienda;
@@ -47,7 +48,8 @@ namespace APIs.Humble
 				Imagen300x80 = "/imagenes/tiendas/humblechoice_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Color = "#ea9192",
-				EnseñarAdmin = false
+				AdminEnseñar = false,
+				AdminInteractuar = false
 			};
 
 			return tienda;
@@ -55,7 +57,7 @@ namespace APIs.Humble
 
 		public static void BuscarOfertas(ViewDataDictionary objeto, string html)
 		{
-            TiendasBaseDatos.ActualizarTiempo(Tienda.Generar().Id, DateTime.Now);
+			BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
 
             HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
 
@@ -160,7 +162,7 @@ namespace APIs.Humble
 
 							if (ofertas.Count > 0)
 							{
-                                JuegoBaseDatos.ComprobarTienda(ofertas, objeto);
+                                BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
                             }                 
                         }
 					}

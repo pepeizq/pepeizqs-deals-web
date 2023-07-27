@@ -67,7 +67,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						{
 							if (lector.Read())
 							{
-								juegoEditar = JuegoBaseDatos.CargarJuego(juegoEditar, lector);
+								juegoEditar = BaseDatos.Juegos.Cargar.Ejecutar(juegoEditar, lector);
 							}
 						}
 					}
@@ -280,7 +280,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 					//----------------------------
 
-					JuegoBaseDatos.ActualizarJuego(juegoEditar);
+					BaseDatos.Juegos.Actualizar.Ejecutar(juegoEditar);
 				}
 			}
 			else

@@ -16,39 +16,100 @@ namespace Juegos
 
 	public static class JuegoDRM2
 	{
-		public static string Texto(JuegoDRM drm)
+		public static List<DRM> GenerarListado()
+		{
+			List<DRM> drms = new List<DRM>();
+
+			//----------------------------
+
+			DRM steam = new DRM
+			{
+				Id = JuegoDRM.Steam,
+				Nombre = "Steam",
+				Imagen = "/imagenes/drm/steam.png",
+				Acepciones = new List<string> { "steam", "steamworks" }
+			};
+
+			drms.Add(steam);
+
+			//----------------------------
+
+			DRM drmfree = new DRM
+			{
+				Id = JuegoDRM.DRMFree,
+				Nombre = "DRM Free",
+				Acepciones = new List<string> { "drm free", "drmfree" }
+			};
+
+			drms.Add(drmfree);
+
+			//----------------------------
+
+			DRM ubisoft = new DRM
+			{
+				Id = JuegoDRM.Ubisoft,
+				Nombre = "Ubisoft Connect",
+				Imagen = "/imagenes/drm/ubisoft.png",
+				Acepciones = new List<string> { "ubisoft connect", "ubisoft", "uplay" }
+			};
+
+			drms.Add(ubisoft);
+
+			//----------------------------
+
+			DRM ea = new DRM
+			{
+				Id = JuegoDRM.EA,
+				Nombre = "EA App",
+				Imagen = "/imagenes/drm/ea.png",
+				Acepciones = new List<string> { "eaapp", "ea app", "electronicarts", "electronic arts", "origin" }
+			};
+
+			drms.Add(ea);
+
+			//----------------------------
+
+			DRM rockstar = new DRM
+			{
+				Id = JuegoDRM.Rockstar,
+				Nombre = "Rockstar Games Launcher",
+				Imagen = "/imagenes/drm/rockstar.png",
+				Acepciones = new List<string> { "rockstar social club", "rockstar" }
+			};
+
+			drms.Add(rockstar);
+
+			//----------------------------
+
+			return drms;
+		}
+
+		public static string Nombre(JuegoDRM drmBuscar)
 		{
 			string texto = string.Empty;
 
-			if (drm == JuegoDRM.Steam)
-			{
-				texto = "Steam";
+			List<DRM> drms = GenerarListado();
+
+			foreach (DRM drm in drms) 
+			{ 
+				if (drm.Id == drmBuscar)
+				{
+					texto = drm.Nombre;
+				}
 			}
-			else if (drm == JuegoDRM.DRMFree)
-			{
-				texto = "DRM Free";
-			}
-			else if (drm == JuegoDRM.Ubisoft)
-			{
-				texto = "Ubisoft Connect";
-			}
-			else if (drm == JuegoDRM.EA)
-			{
-				texto = "EA App";
-			}
-			else if (drm == JuegoDRM.Rockstar)
-			{
-				texto = "Rockstar Games Launcher";
-			}
-			else if (drm == JuegoDRM.Microsoft)
+
+
+
+
+			if (drmBuscar == JuegoDRM.Microsoft)
 			{
 				texto = "Microsoft Store";
 			}
-			else if (drm == JuegoDRM.Epic)
+			else if (drmBuscar == JuegoDRM.Epic)
 			{
 				texto = "Epic Games Store";
 			}
-			else if (drm == JuegoDRM.NoEspecificado)
+			else if (drmBuscar == JuegoDRM.NoEspecificado)
 			{
 				texto = "Not specified";
 			}
@@ -58,57 +119,46 @@ namespace Juegos
 
 		public static JuegoDRM Traducir(string drmTexto, string tienda)
 		{
-			JuegoDRM drm = new JuegoDRM();
+			JuegoDRM drmFinal = JuegoDRM.NoEspecificado;
 
 			if (string.IsNullOrEmpty(drmTexto) == false)
 			{
-				if (drmTexto.ToLower() == "steam")
+				List<DRM> drms = GenerarListado();
+
+				foreach (DRM drm in drms)
 				{
-					drm = JuegoDRM.Steam;
+					foreach (string acepcion in drm.Acepciones)
+					{
+						if (acepcion == drmTexto)
+						{
+							drmFinal = drm.Id;
+						}
+					}			
 				}
-				else if (drmTexto.ToLower() == "steamworks")
+			}
+				
+
+			if (string.IsNullOrEmpty(drmTexto) == false)
+			{
+				if (drmTexto.ToLower() == "epic game store")
 				{
-					drm = JuegoDRM.Steam;
-				}
-				else if (drmTexto.ToLower() == "drm free")
-				{
-					drm = JuegoDRM.DRMFree;
-				}
-				else if (drmTexto.ToLower() == "ubisoft connect")
-				{
-					drm = JuegoDRM.Ubisoft;
-				}
-				else if (drmTexto.ToLower() == "ubisoft")
-				{
-					drm = JuegoDRM.Ubisoft;
-				}
-				else if (drmTexto.ToLower() == "rockstar social club")
-				{
-					drm = JuegoDRM.Rockstar;
-				}
-				else if (drmTexto.ToLower() == "rockstar")
-				{
-					drm = JuegoDRM.Rockstar;
-				}
-				else if (drmTexto.ToLower() == "epic game store")
-				{
-					drm = JuegoDRM.Epic;
+					drmFinal = JuegoDRM.Epic;
 				}
 				else if (drmTexto.ToLower() == "epic games store")
 				{
-					drm = JuegoDRM.Epic;
+					drmFinal = JuegoDRM.Epic;
 				}
 				else if (drmTexto.ToLower() == "epic games")
 				{
-					drm = JuegoDRM.Epic;
+					drmFinal = JuegoDRM.Epic;
 				}
                 else if (drmTexto.ToLower() == "epic")
                 {
-                    drm = JuegoDRM.Epic;
+					drmFinal = JuegoDRM.Epic;
                 }
                 else
 				{
-					drm = JuegoDRM.NoEspecificado;
+					drmFinal = JuegoDRM.NoEspecificado;
 				}
 
 				//------------------------------------------------
@@ -117,12 +167,27 @@ namespace Juegos
 				{
 					if (drmTexto.ToLower() == "download")
 					{
-						drm = JuegoDRM.DRMFree;
+						drmFinal = JuegoDRM.DRMFree;
 					}
 				}
 			}
 
-			return drm;
+			return drmFinal;
+		}
+
+		public static string SacarImagen(JuegoDRM drmImagen)
+		{
+			List<DRM> drms = GenerarListado();
+
+			foreach (DRM drm in drms)
+			{
+				if (drm.Id == drmImagen)
+				{
+					return drm.Imagen;
+				}
+			}
+
+			return null;
 		}
 
 		public static List<JuegoDRM> CargarDRMs()
@@ -131,5 +196,13 @@ namespace Juegos
 
 			return drms;
 		}
+	}
+
+	public class DRM
+	{
+		public JuegoDRM Id;
+		public string Nombre;
+		public string Imagen;
+		public List<string> Acepciones;
 	}
 }
