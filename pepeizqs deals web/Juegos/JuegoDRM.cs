@@ -2,6 +2,7 @@
 
 namespace Juegos
 {
+	//No cambiar orden
 	public enum JuegoDRM
 	{
 		Steam,
@@ -11,7 +12,8 @@ namespace Juegos
 		Rockstar,
 		Microsoft,
 		Epic,
-		NoEspecificado
+		NoEspecificado,
+		GOG
 	}
 
 	public static class JuegoDRM2
@@ -34,11 +36,23 @@ namespace Juegos
 
 			//----------------------------
 
+			DRM gog = new DRM
+			{
+				Id = JuegoDRM.DRMFree,
+				Nombre = "GOG",
+				Imagen = "/imagenes/drm/gog.png",
+				Acepciones = new List<string> { "gog", "gog galaxy" }
+			};
+
+			drms.Add(gog);
+
+			//----------------------------
+
 			DRM drmfree = new DRM
 			{
 				Id = JuegoDRM.DRMFree,
 				Nombre = "DRM Free",
-				Acepciones = new List<string> { "drm free", "drmfree" }
+				Acepciones = new List<string> { "drm free" }
 			};
 
 			drms.Add(drmfree);
@@ -62,7 +76,7 @@ namespace Juegos
 				Id = JuegoDRM.EA,
 				Nombre = "EA App",
 				Imagen = "/imagenes/drm/ea.png",
-				Acepciones = new List<string> { "eaapp", "ea app", "electronicarts", "electronic arts", "origin" }
+				Acepciones = new List<string> { "ea app", "electronic arts", "origin" }
 			};
 
 			drms.Add(ea);
@@ -78,6 +92,30 @@ namespace Juegos
 			};
 
 			drms.Add(rockstar);
+
+			//----------------------------
+
+			DRM microsoft = new DRM
+			{
+				Id = JuegoDRM.Microsoft,
+				Nombre = "Microsoft Store",
+				Imagen = "/imagenes/drm/microsoft.png",
+				Acepciones = new List<string> { "microsoft store", "microsoft" }
+			};
+
+			drms.Add(microsoft);
+
+			//----------------------------
+
+			DRM epic = new DRM
+			{
+				Id = JuegoDRM.Epic,
+				Nombre = "Epic Games Store",
+				Imagen = "/imagenes/drm/epic.png",
+				Acepciones = new List<string> { "epic game store", "epic games store", "epic games", "epic" }
+			};
+
+			drms.Add(epic);
 
 			//----------------------------
 
@@ -98,18 +136,7 @@ namespace Juegos
 				}
 			}
 
-
-
-
-			if (drmBuscar == JuegoDRM.Microsoft)
-			{
-				texto = "Microsoft Store";
-			}
-			else if (drmBuscar == JuegoDRM.Epic)
-			{
-				texto = "Epic Games Store";
-			}
-			else if (drmBuscar == JuegoDRM.NoEspecificado)
+			if (drmBuscar == JuegoDRM.NoEspecificado)
 			{
 				texto = "Not specified";
 			}
@@ -123,6 +150,9 @@ namespace Juegos
 
 			if (string.IsNullOrEmpty(drmTexto) == false)
 			{
+				drmTexto = drmTexto.Replace(" ", null);
+				drmTexto = drmTexto.ToLower();
+
 				List<DRM> drms = GenerarListado();
 
 				foreach (DRM drm in drms)
@@ -135,33 +165,6 @@ namespace Juegos
 						}
 					}			
 				}
-			}
-				
-
-			if (string.IsNullOrEmpty(drmTexto) == false)
-			{
-				if (drmTexto.ToLower() == "epic game store")
-				{
-					drmFinal = JuegoDRM.Epic;
-				}
-				else if (drmTexto.ToLower() == "epic games store")
-				{
-					drmFinal = JuegoDRM.Epic;
-				}
-				else if (drmTexto.ToLower() == "epic games")
-				{
-					drmFinal = JuegoDRM.Epic;
-				}
-                else if (drmTexto.ToLower() == "epic")
-                {
-					drmFinal = JuegoDRM.Epic;
-                }
-                else
-				{
-					drmFinal = JuegoDRM.NoEspecificado;
-				}
-
-				//------------------------------------------------
 
 				if (tienda == "humblestore")
 				{

@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Herramientas;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
@@ -98,13 +99,6 @@ namespace Juegos
 		Game,
 		DLC,
 		Bundle
-	}
-	
-	public enum JuegoMoneda
-	{		
-		Euro,
-		Dolar,
-		Libra
 	}
 
 	//-------------------------------------------------------

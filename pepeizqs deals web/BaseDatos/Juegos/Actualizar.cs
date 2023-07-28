@@ -17,28 +17,28 @@ namespace BaseDatos.Juegos
 			{
 				conexion.Open();
 
-				string sqlEditar = "UPDATE juegos " +
+				string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
 						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media ";
 
 				if (juego.IdSteam > 0)
 				{
-					sqlEditar = sqlEditar + "WHERE idSteam=@idSteam";
+					sqlActualizar = sqlActualizar + "WHERE idSteam=@idSteam";
 				}
 				else
 				{
 					if (juego.IdGog > 0)
 					{
-						sqlEditar = sqlEditar + "WHERE idGog=@idGog";
+						sqlActualizar = sqlActualizar + "WHERE idGog=@idGog";
 					}
 					else
 					{
-						sqlEditar = sqlEditar + "WHERE id=@id";
+						sqlActualizar = sqlActualizar + "WHERE id=@id";
 					}
 				}
 
-				using (SqlCommand comando = new SqlCommand(sqlEditar, conexion))
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
 					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
@@ -51,19 +51,17 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
 					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
-
-					comando.ExecuteNonQuery();
+			
 					try
 					{
-
+						comando.ExecuteNonQuery();
 					}
 					catch
 					{
 
 					}
 				}
-			}
-			
+			}		
 		}
 	}
 }

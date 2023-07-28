@@ -7,7 +7,7 @@ namespace Juegos
 {
 	public static class JuegoFicha
 	{
-		public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm)
+		public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm, bool cambioMoneda)
 		{
 			List<JuegoPrecio> preciosOrdenados = new List<JuegoPrecio>();
 
@@ -38,7 +38,20 @@ namespace Juegos
 							
 							if (fechaEncaja == true)
 							{
-								preciosOrdenados.Add(precio);
+								JuegoPrecio nuevoPrecio = precio;
+
+								if (cambioMoneda == true)
+								{
+									if (nuevoPrecio != null)
+									{
+										if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
+										{
+											nuevoPrecio.Precio = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
+										}
+									}
+								}								
+
+								preciosOrdenados.Add(nuevoPrecio);
 							}						
 						}
 					}
@@ -91,13 +104,32 @@ namespace Juegos
 
 			List<JuegoPrecio> minimosOrdenados = new List<JuegoPrecio>();
 
-			if (minimos.Count > 0)
+			if (minimos != null)
 			{
-				foreach (JuegoPrecio minimo in minimos)
+				if (minimos.Count > 0)
 				{
-					if (minimo.DRM == drm) 
-					{ 
-						minimosOrdenados.Add(minimo);
+					foreach (JuegoPrecio minimo in minimos)
+					{
+						if (minimo.DRM == drm)
+						{
+							minimosOrdenados.Add(minimo);
+						}
+					}
+				}
+			}
+			
+			if (minimosOrdenados.Count == 0)
+			{
+				preciosActuales.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2) {
+					return p1.Precio.CompareTo(p2.Precio);
+				});
+
+				foreach (JuegoPrecio actual in preciosActuales)
+				{
+					if (actual.DRM == drm)
+					{
+						minimosOrdenados.Add(actual);
+						break;
 					}
 				}
 			}
@@ -115,7 +147,7 @@ namespace Juegos
 
 				bool incluirTiempo = true;
 
-				List<JuegoPrecio> preciosActualesOrdenados = OrdenarPrecios(preciosActuales, drm);
+				List<JuegoPrecio> preciosActualesOrdenados = OrdenarPrecios(preciosActuales, drm, false);
 
 				if (preciosActuales.Count > 0)
 				{
@@ -123,7 +155,14 @@ namespace Juegos
 					{
 						if (actual.DRM == drm)
 						{
-							if (actual.Precio == minimosOrdenados[0].Precio)
+							decimal precio = actual.Precio;
+
+							if (actual.Moneda != JuegoMoneda.Euro)
+							{
+								precio = Divisas.Cambio(precio, actual.Moneda);
+							}
+
+							if (precio == minimosOrdenados[0].Precio)
 							{
 								incluirTiempo = false;
 							}
@@ -146,6 +185,10 @@ namespace Juegos
 
 					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(minimosOrdenados[0].FechaDetectado) + " on " + tiendaFinal + ")";
 				}
+				else
+				{
+					drmPreparado = drmPreparado + " (Active Now)";
+				}
 			}
 
 			return drmPreparado;
@@ -155,13 +198,13 @@ namespace Juegos
 		{
 			string precioTexto = string.Empty;
 
-			if (moneda == JuegoMoneda.Euro)
+			if (precio > 0)
 			{
 				precioTexto = precio.ToString();
 				precioTexto = precioTexto.Replace(".", ",") + "€";
 			}
 
-			return precioTexto;
+            return precioTexto;
 		}
 	}
 }

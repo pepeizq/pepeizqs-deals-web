@@ -1,6 +1,7 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.Admin.Tiendas.IndexModel
 
+@using Herramientas
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using Tiendas2
@@ -27,11 +28,11 @@
 							<div style="width: 50%;">
 								@if (tienda.AdminInteractuar == true)
 								{
-									<button class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button>
+									<button class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.ImagenLogo);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button>
 								}
 								else
 								{
-									<p class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80); background-color: transparent;" id="@tienda.Id" asp-route-id="@tienda.Id"></p>
+									<p class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.ImagenLogo); background-color: transparent;" id="@tienda.Id" asp-route-id="@tienda.Id"></p>
 								}					
 							</div>
 							<div style="width: 45%;">
@@ -45,6 +46,19 @@
 
 		<div class="perfil perfil-espacio-bottom">
 			@ViewData["Mensaje"]
+		</div>
+
+		<div class="perfil perfil-espacio-bottom">
+			<form method="post">
+				<div class="perfil-flexible-centrado">
+					<div style="width: 20%;">
+						<button class="boton-pequeño" style="text-align: center;" id="divisas" asp-route-id="divisas" type="submit">Actualizar</button>
+					</div>
+					<div style="width: 75%;">
+						<div class="admin-tiempohace">@Divisas.Mensaje()</div>
+					</div>
+				</div>
+			</form>
 		</div>
 		
 @*		<div class="perfil">

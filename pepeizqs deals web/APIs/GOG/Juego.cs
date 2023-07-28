@@ -97,7 +97,7 @@ namespace APIs.GOG
 													Descuento = descuento,
 													DRM = Juegos.JuegoDRM.DRMFree,
 													Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
-													Moneda = Juegos.JuegoMoneda.Euro,
+													Moneda = JuegoMoneda.Euro,
 													FechaDetectado = DateTime.Now,
 													Enlace = enlacePrecio,
 													Tienda = "gog"

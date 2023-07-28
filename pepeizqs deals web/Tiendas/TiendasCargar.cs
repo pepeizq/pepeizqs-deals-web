@@ -9,7 +9,11 @@
 				APIs.Steam.Tienda.Generar(),
 				APIs.GamersGate.Tienda.Generar(),
 				APIs.Humble.Tienda.Generar(),
-				APIs.Humble.Tienda.GenerarChoice()
+				APIs.Humble.Tienda.GenerarChoice(),
+				APIs.Gamesplanet.Tienda.GenerarUk(),
+				APIs.Gamesplanet.Tienda.GenerarFr(),
+				APIs.Gamesplanet.Tienda.GenerarDe(),
+				APIs.Gamesplanet.Tienda.GenerarUs()
 			};
 
 			return tiendas;

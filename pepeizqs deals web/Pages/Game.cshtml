@@ -76,9 +76,9 @@
 						<div class="perfil" style="width: 90%;">
 							<div class="juego-minimo">@JuegoFicha.PrepararMinimo(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
 
-							@if (JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm).Count > 0)
+							@if (JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, false).Count > 0)
 							{
-								@foreach (JuegoPrecio precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm))
+								@foreach (JuegoPrecio precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, true))
 								{
 									<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@precio.Enlace" target="_blank">
 										<div class="perfil-flexible-centrado">

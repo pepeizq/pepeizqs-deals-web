@@ -15,7 +15,10 @@ namespace BaseDatos.Juegos
 				{
 					foreach (JuegoPrecio precio in juego.PrecioActualesTiendas)
 					{
-						if (nuevoPrecio.Enlace == precio.Enlace && nuevoPrecio.DRM == precio.DRM && nuevoPrecio.Tienda == precio.Tienda)
+						if (nuevoPrecio.Enlace == precio.Enlace && 
+							nuevoPrecio.DRM == precio.DRM && 
+							nuevoPrecio.Tienda == precio.Tienda &&
+							nuevoPrecio.Moneda == precio.Moneda)
 						{
 							precio.Precio = nuevoPrecio.Precio;
 							precio.Descuento = nuevoPrecio.Descuento;
@@ -57,9 +60,17 @@ namespace BaseDatos.Juegos
 								{
 									if (precio.DRM == minimo.DRM)
 									{
-										if (precio.Precio <= minimo.Precio)
+										decimal tempPrecio = precio.Precio;
+
+										if (precio.Moneda != Herramientas.JuegoMoneda.Euro)
 										{
-											minimo.Precio = precio.Precio;
+											tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, precio.Moneda);
+										}
+
+										if (tempPrecio <= minimo.Precio)
+										{
+											minimo.Precio = tempPrecio;
+											minimo.Moneda = precio.Moneda;
 											minimo.Descuento = precio.Descuento;
 											minimo.FechaDetectado = precio.FechaDetectado;
 											minimo.FechaTermina = precio.FechaTermina;
@@ -101,30 +112,51 @@ namespace BaseDatos.Juegos
 			{
 				foreach (var juego in juegos)
 				{
-					int posicion = 0;
-					bool borrar = false;
+					int posicionActual = 0;
+					bool borrarActual = false;
 
 					int i = 0;
 					foreach (var precio in juego.PrecioActualesTiendas)
 					{
 						if (precio.Tienda == tienda)
 						{
-							posicion = i;
-							borrar = true;
+							posicionActual = i;
+							borrarActual = true;
 							break;
 						}
 						i += 1;
 					}
 
-					if (borrar == true)
+					if (borrarActual == true)
 					{
-						juego.PrecioActualesTiendas.RemoveAt(posicion);
+						juego.PrecioActualesTiendas.RemoveAt(posicionActual);
+
+						Juegos.Actualizar.Ejecutar(juego);
+					}
+
+					int posicionHistorico = 0;
+					bool borrarHistorico = false;
+
+					int j = 0;
+					foreach (var precio in juego.PrecioMinimosHistoricos)
+					{
+						if (precio.Tienda == tienda)
+						{
+							posicionHistorico = j;
+							borrarHistorico = true;
+							break;
+						}
+						j += 1;
+					}
+
+					if (borrarHistorico == true)
+					{
+						juego.PrecioMinimosHistoricos.RemoveAt(posicionHistorico);
 
 						Juegos.Actualizar.Ejecutar(juego);
 					}
 				}
-			}
-			
+			}	
 		}
 	}
 }

@@ -1,5 +1,6 @@
 #nullable disable
 
+using Herramientas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,10 +24,21 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					{						
 						APIs.GamersGate.Tienda.BuscarOfertas(ViewData);
 					}
-
-					if (id == "test")
+					else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
 					{
-						BaseDatos.Juegos.Precios.Limpiar("humblechoice");
+                        APIs.Gamesplanet.Tienda.BuscarOfertas(ViewData);
+					}
+
+					if (id == "divisas")
+					{
+						Divisas.Ejecutar();
+					}
+
+					///Admin/Tiendas?id=
+
+					if (id == "limpiar")
+					{
+						BaseDatos.Juegos.Precios.Limpiar("gamesplanetuk");
 					}
 				}
 			}

@@ -124,7 +124,7 @@ namespace APIs.Steam
 							Descuento = int.Parse(descuento),
 							DRM = Juegos.JuegoDRM.Steam,
 							Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
-							Moneda = Juegos.JuegoMoneda.Euro,
+							Moneda = JuegoMoneda.Euro,
 							FechaDetectado = DateTime.Now,
 							Enlace = enlacePrecio,
 							Tienda = "steam"

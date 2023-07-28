@@ -15,7 +15,6 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System.Net;
-using Tiendas2;
 
 namespace APIs.Humble
 {
@@ -97,9 +96,9 @@ namespace APIs.Humble
 
 							List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
-                            foreach (var drm2 in juego.DRM)
+                            foreach (string drmTexto in juego.DRM)
 							{
-                                JuegoDRM drm = JuegoDRM2.Traducir(drm2, Generar().Id);
+                                JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
 
                                 JuegoPrecio oferta = new JuegoPrecio
                                 {
@@ -132,31 +131,34 @@ namespace APIs.Humble
 									decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
 									precioChoice = Math.Round(precioChoice, 2);
 
-									int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
+									if (precioChoice < precioRebajado)
+									{
+										int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
 
-                                    JuegoPrecio choice = new JuegoPrecio
-                                    {
-                                        Nombre = nombre,
-                                        Enlace = enlace,
-                                        Imagen = imagen,
-                                        Moneda = JuegoMoneda.Euro,
-                                        Precio = precioChoice,
-                                        Descuento = descuentoChoice,
-                                        Tienda = GenerarChoice().Id,
-                                        DRM = drm,
-                                        FechaDetectado = DateTime.Now
-                                    };
+										JuegoPrecio choice = new JuegoPrecio
+										{
+											Nombre = nombre,
+											Enlace = enlace,
+											Imagen = imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioChoice,
+											Descuento = descuentoChoice,
+											Tienda = GenerarChoice().Id,
+											DRM = drm,
+											FechaDetectado = DateTime.Now
+										};
 
-                                    if (juego.FechaTermina > 0)
-                                    {
-                                        DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                                        fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
-                                        fechaTermina = fechaTermina.ToLocalTime();
+										if (juego.FechaTermina > 0)
+										{
+											DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+											fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
+											fechaTermina = fechaTermina.ToLocalTime();
 
-                                        choice.FechaTermina = fechaTermina;
-                                    }
+											choice.FechaTermina = fechaTermina;
+										}
 
-									ofertas.Add(choice);
+										ofertas.Add(choice);
+									}			
                                 }          
                             }
 

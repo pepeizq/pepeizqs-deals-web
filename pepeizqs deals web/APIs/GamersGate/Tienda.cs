@@ -54,14 +54,14 @@ namespace APIs.GamersGate
 						{ 
 							foreach (GamersGateJuego juego in listaJuegos.Juegos)
 							{
-								string nombre = WebUtility.HtmlDecode(juego.Titulo);
+								string nombre = WebUtility.HtmlDecode(juego.Nombre);
 								
 								string enlace = juego.Enlace;
 
 								string imagen = juego.ImagenGrande;
 
 								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioDescontado);
+								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
 								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
@@ -110,13 +110,13 @@ namespace APIs.GamersGate
 	public class GamersGateJuego
 	{
 		[XmlElement("title")]
-		public string Titulo { get; set; }
+		public string Nombre { get; set; }
 
 		[XmlElement("link")]
 		public string Enlace { get; set; }
 
 		[XmlElement("price")]
-		public string PrecioDescontado { get; set; }
+		public string PrecioRebajado { get; set; }
 
 		[XmlElement("srp")]
 		public string PrecioBase { get; set; }
@@ -148,5 +148,4 @@ namespace APIs.GamersGate
 		[XmlElement("state")]
 		public string Estado { get; set; }
 	}
-
 }

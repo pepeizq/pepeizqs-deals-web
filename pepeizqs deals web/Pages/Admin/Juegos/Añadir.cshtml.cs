@@ -1,5 +1,6 @@
 #nullable disable
 
+using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

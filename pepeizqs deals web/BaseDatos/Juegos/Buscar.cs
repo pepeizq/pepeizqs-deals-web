@@ -48,9 +48,9 @@ namespace BaseDatos.Juegos
 					using (SqlConnection conexion = new SqlConnection(conexionTexto))
 					{
 						conexion.Open();
-						String seleccionarJuego = sqlBuscar;
+						string buscar = sqlBuscar;
 
-						using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
+						using (SqlCommand comando = new SqlCommand(buscar, conexion))
 						{
 							comando.Parameters.AddWithValue(idParametro, idBuscar);
 
