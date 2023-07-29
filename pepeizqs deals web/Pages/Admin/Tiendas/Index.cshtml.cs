@@ -11,6 +11,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
         public IActionResult OnGet()
         {
 			string id = Request.Query["id"];
+			string tienda = Request.Query["tienda"];
 
 			if (id != null)
 			{
@@ -38,7 +39,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 
 					if (id == "limpiar")
 					{
-						BaseDatos.Juegos.Precios.Limpiar("gamesplanetuk");
+						BaseDatos.Juegos.Precios.Limpiar(tienda);
 					}
 				}
 			}

@@ -5,6 +5,8 @@ namespace pepeizqs_deals_web.Pages
 {
 	public class IndexModel : PageModel
 	{
+		public string buscador = string.Empty;
+
 		private readonly ILogger<IndexModel> _logger;
 
 		public IndexModel(ILogger<IndexModel> logger)
@@ -16,5 +18,5 @@ namespace pepeizqs_deals_web.Pages
 		{
 
 		}
-	}
+    }
 }

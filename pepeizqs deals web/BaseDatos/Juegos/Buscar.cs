@@ -76,7 +76,53 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-		public static List<Juego> Todos()
+        public static List<Juego> Nombre(string nombre)
+        {
+            List<Juego> juegos = new List<Juego>();
+
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+
+            using (SqlConnection conexion = new SqlConnection(conexionTexto))
+            {
+                conexion.Open();
+                string busqueda = "SELECT * FROM juegos WHERE REPLACE(REPLACE(nombre, '®',''), '™', '') LIKE '%" + nombre.ToLower() + "%'";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Juego juego = new Juego();
+                            juego = Cargar.Ejecutar(juego, lector);
+
+                            juegos.Add(juego);
+                        }
+                    }
+                }
+            }
+
+			if (juegos.Count > 0)
+			{
+				juegos.Sort(delegate (Juego j1, Juego j2)
+				{
+					string j1Limpio = j1.Nombre;
+					j1Limpio = j1Limpio.Replace("®", null);
+                    j1Limpio = j1Limpio.Replace("™", null);
+
+                    string j2Limpio = j2.Nombre;
+                    j2Limpio = j2Limpio.Replace("®", null);
+                    j2Limpio = j2Limpio.Replace("™", null);
+
+                    return j1Limpio.CompareTo(j2Limpio);
+				});
+            }
+
+            return juegos;
+        }
+
+        public static List<Juego> Todos()
 		{
 			List<Juego> juegos = new List<Juego>();
 

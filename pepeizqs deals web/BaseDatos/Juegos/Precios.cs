@@ -30,6 +30,7 @@ namespace BaseDatos.Juegos
 							precio.Imagen = nuevoPrecio.Imagen;
 
 							añadir = false;
+							break;
 						}
 					}
 				}
@@ -122,7 +123,6 @@ namespace BaseDatos.Juegos
 						{
 							posicionActual = i;
 							borrarActual = true;
-							break;
 						}
 						i += 1;
 					}
@@ -144,7 +144,6 @@ namespace BaseDatos.Juegos
 						{
 							posicionHistorico = j;
 							borrarHistorico = true;
-							break;
 						}
 						j += 1;
 					}

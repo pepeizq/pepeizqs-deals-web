@@ -49,10 +49,9 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(
 		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 	});
 
-//builder.Services.AddControllersWithViews();
-//builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddServerSideBlazor();
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -75,5 +74,6 @@ app.MapControllerRoute(name: "game",
 				pattern: "game/{*id}");
 
 app.MapRazorPages();
+app.MapBlazorHub();
 
 app.Run();

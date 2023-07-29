@@ -56,94 +56,63 @@ namespace APIs.Humble
 
 		public static void BuscarOfertas(ViewDataDictionary objeto, string html)
 		{
-			BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
-
-            HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
-
-			if (juegos != null)
+			if (html != null)
 			{
-				foreach (HumbleJuego juego in juegos.Resultados)
+				if (html != "null")
 				{
-					string nombre = WebUtility.HtmlDecode(juego.Titulo);
+					BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
 
-					string imagen = juego.ImagenGrande;
+					HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
 
-					string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
-
-					if (juego.PrecioBase != null && juego.PrecioRebajado != null)
+					if (juegos != null)
 					{
-						decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad);
-
-                        int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioRebajado);
-
-                        if (descuento > 0)
+						foreach (HumbleJuego juego in juegos.Resultados)
 						{
-							bool añadirChoice = true;
+							string nombre = WebUtility.HtmlDecode(juego.Titulo);
 
-							if (juego.CosasIncompatibles != null)
+							string imagen = juego.ImagenGrande;
+
+							string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
+
+							if (juego.PrecioBase != null && juego.PrecioRebajado != null)
 							{
-								if (juego.CosasIncompatibles.Count > 0)
+								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad);
+
+								int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioRebajado);
+
+								if (descuento > 0)
 								{
-									foreach (var cosa in juego.CosasIncompatibles)
+									bool añadirChoice = true;
+
+									if (juego.CosasIncompatibles != null)
 									{
-										if (cosa == "subscriber-discount-coupons")
+										if (juego.CosasIncompatibles.Count > 0)
 										{
-											añadirChoice = false;
+											foreach (var cosa in juego.CosasIncompatibles)
+											{
+												if (cosa == "subscriber-discount-coupons")
+												{
+													añadirChoice = false;
+												}
+											}
 										}
 									}
-								}
-							}
 
-							List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
+									List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
-                            foreach (string drmTexto in juego.DRM)
-							{
-                                JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
-
-                                JuegoPrecio oferta = new JuegoPrecio
-                                {
-                                    Nombre = nombre,
-                                    Enlace = enlace,
-                                    Imagen = imagen,
-                                    Moneda = JuegoMoneda.Euro,
-                                    Precio = precioRebajado,
-                                    Descuento = descuento,
-                                    Tienda = Generar().Id,
-                                    DRM = drm,
-                                    FechaDetectado = DateTime.Now
-                                };
-
-                                if (juego.FechaTermina > 0)
-                                {
-                                    DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                                    fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
-                                    fechaTermina = fechaTermina.ToLocalTime();
-
-                                    oferta.FechaTermina = fechaTermina;
-                                }
-
-								ofertas.Add(oferta);
-
-                                if (añadirChoice == true)
-                                {
-									decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
-
-									decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
-									precioChoice = Math.Round(precioChoice, 2);
-
-									if (precioChoice < precioRebajado)
+									foreach (string drmTexto in juego.DRMs)
 									{
-										int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
+										JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
 
-										JuegoPrecio choice = new JuegoPrecio
+										JuegoPrecio oferta = new JuegoPrecio
 										{
 											Nombre = nombre,
 											Enlace = enlace,
 											Imagen = imagen,
 											Moneda = JuegoMoneda.Euro,
-											Precio = precioChoice,
-											Descuento = descuentoChoice,
-											Tienda = GenerarChoice().Id,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
 											DRM = drm,
 											FechaDetectado = DateTime.Now
 										};
@@ -154,24 +123,64 @@ namespace APIs.Humble
 											fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
 											fechaTermina = fechaTermina.ToLocalTime();
 
-											choice.FechaTermina = fechaTermina;
+											oferta.FechaTermina = fechaTermina;
 										}
 
-										ofertas.Add(choice);
-									}			
-                                }          
-                            }
+										ofertas.Add(oferta);
 
-							if (ofertas.Count > 0)
-							{
-                                BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
-                            }                 
-                        }
+										if (añadirChoice == true)
+										{
+											decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
+
+											decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
+											precioChoice = Math.Round(precioChoice, 2);
+
+											if (precioChoice < precioRebajado)
+											{
+												int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
+
+												JuegoPrecio choice = new JuegoPrecio
+												{
+													Nombre = nombre,
+													Enlace = enlace,
+													Imagen = imagen,
+													Moneda = JuegoMoneda.Euro,
+													Precio = precioChoice,
+													Descuento = descuentoChoice,
+													Tienda = GenerarChoice().Id,
+													DRM = drm,
+													FechaDetectado = DateTime.Now
+												};
+
+												if (juego.FechaTermina > 0)
+												{
+													DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+													fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
+													fechaTermina = fechaTermina.ToLocalTime();
+
+													choice.FechaTermina = fechaTermina;
+												}
+
+												ofertas.Add(choice);
+											}
+										}
+									}
+
+									if (ofertas.Count > 0)
+									{
+										BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
+									}
+								}
+							}
+						}
+					}
+
+					if (juegos != null)
+					{
+						objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
 					}
 				}
-			}
-
-            objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
+			}	         
         }
 
 		private static double DescuentoChoice(double cantidad)
@@ -251,7 +260,7 @@ namespace APIs.Humble
 		public string Enlace { get; set; }
 
 		[JsonProperty("delivery_methods")]
-		public List<string> DRM { get; set; }
+		public List<string> DRMs { get; set; }
 
 		[JsonProperty("platforms")]
 		public List<string> Sistemas { get; set; }

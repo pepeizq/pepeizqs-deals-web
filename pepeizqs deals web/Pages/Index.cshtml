@@ -1,5 +1,12 @@
 ﻿@page
+@using Microsoft.AspNetCore.Builder;
 @model IndexModel
-@{
 
+@{
+	ViewData["Title"] = "Home Page";
+	Layout = "/Pages/Shared/_Layout.cshtml";
 }
+
+@*@(await Html.RenderComponentAsync<Buscador>(RenderMode.ServerPrerendered))*@
+
+<component type="typeof(Juegos.Juego)" render-mode="Static" />

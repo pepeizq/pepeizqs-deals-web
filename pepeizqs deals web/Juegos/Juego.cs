@@ -3,11 +3,12 @@
 using Herramientas;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components;
 
 namespace Juegos
 {
-	public class Juego
-	{
+	public class Juego : ComponentBase, IComponent
+    {
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
