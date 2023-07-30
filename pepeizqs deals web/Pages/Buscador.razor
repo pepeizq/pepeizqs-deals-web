@@ -6,35 +6,33 @@
 
 @inherits Juegos.Juego
 
-@*<div class="perfil">*@
 <input type="text" @oninput="TextoCambia" class="entrada-texto" />
 
 @if (juegos.Count > 0)
 {
-    <div id="cajabuscador" style="position: fixed;left: 50%;
-    transform: translate(-50%, 0);">
+    <div class="buscador-panel">
         @foreach (var juego in juegos)
         {
             <div class="perfil-flexible-centrado perfil-espacio-top">
                 <a class="boton-pequeño" href="/game/@juego.Id">
                     <div class="perfil-flexible-centrado">
-                        <div style="width: 15%;">
+                        <div style="width: 12%;">
                             <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
                         </div>
 
-                        <div style="width: 85%; padding-left: 15px;">
+                        <div style="width: 76%; padding-left: 15px; padding-right: 15px;">
                             @juego.Nombre
+                        </div>
+
+                        <div style="width: 12%;">
+                            @Juegos.JuegoFicha.BuscadorMinimo(juego)
                         </div>
                     </div>
                 </a>
             </div>
         }
-    </div>   
+    </div>
 }
-
-
-
-
 
 @code {
     #nullable disable
@@ -43,10 +41,14 @@
 
     private void TextoCambia(ChangeEventArgs texto)
     {
-        if (texto.Value.ToString().Trim().Length > 1)
+        if (texto.Value.ToString().Trim().Length > 0)
         {
             juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString());
         } 
+        else
+        {
+            juegos = new List<Juegos.Juego>();
+        }
     }
 }
 

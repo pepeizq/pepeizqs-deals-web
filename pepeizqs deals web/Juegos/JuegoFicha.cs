@@ -194,6 +194,41 @@ namespace Juegos
 			return drmPreparado;
 		}
 
+		public static string BuscadorMinimo(Juego juego)
+		{
+			List<JuegoDRM> drms = JuegoDRM2.CargarDRMs();
+			decimal minimo = 10000000;
+			
+			foreach (var drm in drms)
+			{
+                List<JuegoPrecio> ordenados = OrdenarPrecios(juego.PrecioActualesTiendas, drm, true);
+
+				if (ordenados.Count > 0)
+				{
+					foreach (var precio in ordenados)
+					{
+						if (precio.Precio < minimo)
+						{
+							minimo = precio.Precio;
+						}
+					}
+				}
+            }
+
+			string mensaje = string.Empty;
+
+            if (minimo != 10000000)
+			{
+                mensaje = "From " + PrepararPrecio(minimo, JuegoMoneda.Euro);
+            }
+			else
+			{
+                mensaje = "Not in Sale";
+            }
+			
+			return mensaje;
+		}
+
 		public static string PrepararPrecio(decimal precio, JuegoMoneda moneda)
 		{
 			string precioTexto = string.Empty;

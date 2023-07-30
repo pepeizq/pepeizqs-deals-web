@@ -439,3 +439,16 @@
     font-size: 18px;
     margin: 20px;
 }
+
+.buscador-panel {
+    height: 90%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow: scroll;
+    position: fixed;
+    z-index: 1000;
+    margin-top: 5%;
+    padding: 10px;
+    background-color: var(--fondoOscuroTransparente);
+}
