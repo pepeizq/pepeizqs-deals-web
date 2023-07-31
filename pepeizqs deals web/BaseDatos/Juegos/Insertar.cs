@@ -13,7 +13,9 @@ namespace BaseDatos.Juegos
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			SqlConnection conexion = new SqlConnection(conexionTexto);
+
+            using (conexion)
 			{
 				conexion.Open();
 
@@ -45,6 +47,8 @@ namespace BaseDatos.Juegos
 					}
 				}
 			}
+
+			conexion.Dispose();
 		}
 	}
 }

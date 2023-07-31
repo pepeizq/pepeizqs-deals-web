@@ -83,7 +83,9 @@ namespace BaseDatos.Juegos
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
-            using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			SqlConnection conexion = new SqlConnection(conexionTexto);
+
+            using (conexion)
             {
                 conexion.Open();
                 string busqueda = "SELECT * FROM juegos WHERE REPLACE(REPLACE(nombre, '®',''), '™', '') LIKE '%" + nombre.ToLower() + "%'";
@@ -102,6 +104,8 @@ namespace BaseDatos.Juegos
                     }
                 }
             }
+
+			conexion.Dispose();
 
 			if (juegos.Count > 0)
 			{

@@ -40,7 +40,9 @@ namespace BaseDatos.Tiendas
 					WebApplicationBuilder builder = WebApplication.CreateBuilder();
 					string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
-					using (SqlConnection conexion = new SqlConnection(conexionTexto))
+					SqlConnection conexion = new SqlConnection(conexionTexto);
+
+                    using (conexion)
 					{
 						conexion.Open();
 						string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
@@ -96,6 +98,8 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
+					conexion.Dispose();
+
 					if (analisis != null)
 					{
 						juego.Analisis = analisis;
@@ -127,7 +131,9 @@ namespace BaseDatos.Tiendas
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
 
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			SqlConnection conexion = new SqlConnection(conexionTexto);
+
+            using (conexion)
 			{
 				conexion.Open();
 
@@ -214,6 +220,8 @@ namespace BaseDatos.Tiendas
 					}
 				}
 			}
+
+			conexion.Dispose();
 		}
 	}
 }
