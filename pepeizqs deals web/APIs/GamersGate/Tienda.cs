@@ -27,10 +27,8 @@ namespace APIs.GamersGate
 			return tienda;
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto)
+		public static void BuscarOfertas(ViewDataDictionary objeto = null)
 		{
-            BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
-
             Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 			tarea.Wait();
 
@@ -93,14 +91,14 @@ namespace APIs.GamersGate
 							}
 						}
 
-						objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
 					}
 				}
 			}
 		}
-	}
+    }
 
-	[XmlRoot("xml")]
+    [XmlRoot("xml")]
     public class GamersGateJuegos
 	{
 		[XmlElement("item")]

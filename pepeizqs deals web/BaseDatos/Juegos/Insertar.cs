@@ -12,7 +12,6 @@ namespace BaseDatos.Juegos
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
 			SqlConnection conexion = new SqlConnection(conexionTexto);
 
             using (conexion)
@@ -23,7 +22,9 @@ namespace BaseDatos.Juegos
 					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
 					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
 
-				using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
+				SqlCommand comando = new SqlCommand(sqlAñadir, conexion);
+
+                using (comando)
 				{
 					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
@@ -46,6 +47,8 @@ namespace BaseDatos.Juegos
 
 					}
 				}
+
+				comando.Dispose();
 			}
 
 			conexion.Dispose();

@@ -60,12 +60,12 @@ namespace APIs.Humble
 			{
 				if (html != "null")
 				{
-					BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
-
 					HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
 
 					if (juegos != null)
 					{
+						int juegos2 = 0;
+
 						foreach (HumbleJuego juego in juegos.Resultados)
 						{
 							string nombre = WebUtility.HtmlDecode(juego.Titulo);
@@ -168,12 +168,16 @@ namespace APIs.Humble
 
 									if (ofertas.Count > 0)
 									{
-										BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
+                                        juegos2 += 1;
+
+                                        BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
 									}
 								}
 							}
 						}
-					}
+
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " juegos detectados");
+                    }
 
 					if (juegos != null)
 					{

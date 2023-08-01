@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -17,30 +18,44 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
-builder.Services.Configure<IdentityOptions>(options =>
+builder.Services.AddQuartz(q =>
 {
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 15;
-    options.Lockout.AllowedForNewUsers = true;
-    options.User.RequireUniqueEmail = true;
-});
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+    var jobKey = new JobKey("CronGestionador");
+    q.AddJob<Herramientas.CronGestionador>(opts => opts.WithIdentity(jobKey));
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    options.Cookie.Name = "cookiePepeizq";
-    options.ExpireTimeSpan = TimeSpan.FromDays(30);
-    options.LoginPath = "/Identity/Account/Login";
-    options.SlidingExpiration = true;
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("CronGestionador-trigger")
+        .WithCronSchedule("10 0/60 * * * ?")
+    );
 });
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-});
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+//    options.Lockout.MaxFailedAccessAttempts = 15;
+//    options.Lockout.AllowedForNewUsers = true;
+//    options.User.RequireUniqueEmail = true;
+//});
 
-builder.Services.ConfigureApplicationCookie(options => options.Cookie.Name = "pepeCookie");
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//    options.Cookie.Name = "cookiePepeizq";
+//    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+//    options.LoginPath = "/Identity/Account/Login";
+//    options.SlidingExpiration = true;
+//});
+
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+//    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+//});
+
+//builder.Services.ConfigureApplicationCookie(options => options.Cookie.Name = "pepeCookie");
 
 builder.Services.AddDataProtection().UseCryptographicAlgorithms(
 	new AuthenticatedEncryptorConfiguration

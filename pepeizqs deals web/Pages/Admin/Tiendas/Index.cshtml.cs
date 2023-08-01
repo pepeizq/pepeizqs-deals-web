@@ -10,7 +10,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
     {
         public IActionResult OnGet()
         {
-			string id = Request.Query["id"];
+            string id = Request.Query["id"];
 			string tienda = Request.Query["tienda"];
 
 			if (id != null)
@@ -27,7 +27,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					}
 					else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
 					{
-                        APIs.Gamesplanet.Tienda.BuscarOfertas(ViewData);
+                        APIs.Gamesplanet.Tienda.BuscarOfertasUk(ViewData);
 					}
 
 					if (id == "divisas")

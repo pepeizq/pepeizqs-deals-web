@@ -37,8 +37,8 @@ namespace APIs.Gamesplanet
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetfr_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
 				Color = "#000",
-				AdminEnseñar = false,
-				AdminInteractuar = false
+				AdminEnseñar = true,
+				AdminInteractuar = true
 			};
 
 			return tienda;
@@ -54,8 +54,8 @@ namespace APIs.Gamesplanet
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetde_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
 				Color = "#000",
-				AdminEnseñar = false,
-				AdminInteractuar = false
+				AdminEnseñar = true,
+				AdminInteractuar = true
 			};
 
 			return tienda;
@@ -71,31 +71,33 @@ namespace APIs.Gamesplanet
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetus_300x80.png",
 				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
 				Color = "#000",
-				AdminEnseñar = false,
-				AdminInteractuar = false
+				AdminEnseñar = true,
+				AdminInteractuar = true
 			};
 
 			return tienda;
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto)
+		public static void BuscarOfertasUk(ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.GenerarUk().Id, DateTime.Now);
-
 			Task<string> tareauk = Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 			tareauk.Wait();
 
 			string htmluk = tareauk.Result;
+            tareauk.Dispose();
 
 			if (htmluk != null)
 			{
 				XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
 				GamesplanetJuegos listaJuegos = null;
+                TextReader lector = new StringReader(htmluk);
 
-				using (TextReader lector = new StringReader(htmluk))
+                using (lector)
 				{
 					listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
 				}
+
+                lector.Close();
 
 				if (listaJuegos != null)
 				{
@@ -138,14 +140,219 @@ namespace APIs.Gamesplanet
 							}
 						}
 
-						objeto["Mensaje"] = objeto["Mensaje"] + "GamersGate: " + listaJuegos.Juegos.Count.ToString() + " juegos detectados" + Environment.NewLine;
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
 					}
 				}
 			}
-		}
-	}
+        }
 
-	[XmlRoot("products")]
+        public static void BuscarOfertasFr(ViewDataDictionary objeto = null)
+        {
+            Task<string> tareafr = Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
+            tareafr.Wait();
+
+            string htmlfr = tareafr.Result;
+            tareafr.Dispose();
+
+            if (htmlfr != null)
+            {
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                GamesplanetJuegos listaJuegos = null;
+                TextReader lector = new StringReader(htmlfr);
+
+                using (lector)
+                {
+                    listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
+                }
+
+                lector.Close();
+
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+                                string enlace = juego.Enlace;
+
+                                string imagen = juego.Imagen;
+
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+                                if (descuento > 0)
+                                {
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarFr().Id);
+
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Euro,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarFr().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now
+                                    };
+
+                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto);
+                                }
+                            }
+                        }
+
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
+                    }
+                }
+            }
+
+        }
+
+		public static void BuscarOfertasDe(ViewDataDictionary objeto = null)
+		{
+            Task<string> tareade = Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
+            tareade.Wait();
+
+            string htmlde = tareade.Result;
+            tareade.Dispose();
+
+            if (htmlde != null)
+            {
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                GamesplanetJuegos listaJuegos = null;
+                TextReader lector = new StringReader(htmlde);
+
+                using (lector)
+                {
+                    listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
+                }
+
+                lector.Close();
+
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+                                string enlace = juego.Enlace;
+
+                                string imagen = juego.Imagen;
+
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+                                if (descuento > 0)
+                                {
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarDe().Id);
+
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Euro,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarDe().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now
+                                    };
+
+                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto);
+                                }
+                            }
+                        }
+
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
+                    }
+                }
+            }
+        }
+
+		public static void BuscarOfertasUs(ViewDataDictionary objeto = null)
+		{
+            Task<string> tareaus = Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
+            tareaus.Wait();
+
+            string htmlus = tareaus.Result;
+            tareaus.Dispose();
+
+            if (htmlus != null)
+            {
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                GamesplanetJuegos listaJuegos = null;
+                TextReader lector = new StringReader(htmlus);
+
+                using (lector)
+                {
+                    listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
+                }
+
+                lector.Close();
+
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+                                string enlace = juego.Enlace;
+
+                                string imagen = juego.Imagen;
+
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+                                if (descuento > 0)
+                                {
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarUs().Id);
+
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Dolar,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarUs().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now
+                                    };
+
+                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto);
+                                }
+                            }
+                        }
+
+                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
+                    }
+                }
+            }
+        }
+    }
+
+    [XmlRoot("products")]
 	public class GamesplanetJuegos
 	{
 		[XmlElement("product")]

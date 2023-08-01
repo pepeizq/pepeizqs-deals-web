@@ -7,7 +7,6 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.VisualBasic;
 using System.Net;
-using Tiendas2;
 
 namespace APIs.Steam
 {
@@ -30,13 +29,11 @@ namespace APIs.Steam
 			return tienda;
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto)
+		public static void BuscarOfertas(ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Tiendas.Tiempo.Actualizar(Tienda.Generar().Id, DateTime.Now);
+            int juegos = 0;			
 
             int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
-
-			objeto["Mensaje"] = objeto["Mensaje"] + "Steam: " + numPaginas.ToString() + " páginas detectadas" + Environment.NewLine;
 
 			if (numPaginas > 0) 
             {
@@ -47,6 +44,7 @@ namespace APIs.Steam
 					tarea.Wait();
 
 					string html = tarea.Result;
+                    tarea.Dispose();
 
 					if (html != null)
                     {
@@ -239,6 +237,8 @@ namespace APIs.Steam
 														FechaDetectado = DateTime.Now
 													};
 
+                                                    juegos += 1;
+
                                                     BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto);
 												}
 											}
@@ -250,6 +250,8 @@ namespace APIs.Steam
                             }
                         }
                     }
+
+                    BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " juegos detectados");
 
                     i += 1;
                 }

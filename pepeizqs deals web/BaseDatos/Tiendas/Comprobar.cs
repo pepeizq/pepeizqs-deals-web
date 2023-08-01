@@ -39,19 +39,21 @@ namespace BaseDatos.Tiendas
 				{
 					WebApplicationBuilder builder = WebApplication.CreateBuilder();
 					string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
 					SqlConnection conexion = new SqlConnection(conexionTexto);
 
                     using (conexion)
 					{
 						conexion.Open();
 						string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+						SqlCommand comando = new SqlCommand(buscarJuego, conexion);
 
-						using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
+                        using (comando)
 						{
 							comando.Parameters.AddWithValue("@idSteam", idSteam);
 
-							using (SqlDataReader lector = comando.ExecuteReader())
+							SqlDataReader lector = comando.ExecuteReader();
+
+                            using (lector)
 							{
 								if (lector.Read() == false)
 								{
@@ -95,7 +97,11 @@ namespace BaseDatos.Tiendas
 									actualizar = true;
 								}
 							}
+
+							lector.Close();
 						}
+
+						comando.Dispose();
 					}
 
 					conexion.Dispose();
@@ -130,7 +136,6 @@ namespace BaseDatos.Tiendas
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
 			SqlConnection conexion = new SqlConnection(conexionTexto);
 
             using (conexion)
@@ -141,12 +146,15 @@ namespace BaseDatos.Tiendas
 				int idBuscarJuego = 0;
 
 				string buscarTienda = "SELECT * FROM tienda" + oferta.Tienda + " WHERE enlace=@enlace";
+				SqlCommand comandoBuscar = new SqlCommand(buscarTienda, conexion);
 
-				using (SqlCommand comando = new SqlCommand(buscarTienda, conexion))
+                using (comandoBuscar)
 				{
-					comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
+                    comandoBuscar.Parameters.AddWithValue("@enlace", oferta.Enlace);
 
-					using (SqlDataReader lector = comando.ExecuteReader())
+					SqlDataReader lector = comandoBuscar.ExecuteReader();
+
+                    using (lector)
 					{
 						if (lector.Read() == false)
 						{
@@ -157,56 +165,71 @@ namespace BaseDatos.Tiendas
 							idBuscarJuego = lector.GetInt32(3);
 						}
 					}
+
+					lector.Close();
 				}
+
+				comandoBuscar.Dispose();
 
 				if (insertarTienda == true)
 				{
 					string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
+					SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion);
 
-					using (SqlCommand comando = new SqlCommand(buscarNombre, conexion))
+                    using (comandoBuscar2)
 					{
-						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
+                        comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
 
-						using (SqlDataReader lector = comando.ExecuteReader())
+						SqlDataReader lector = comandoBuscar2.ExecuteReader();
+
+                        using (lector)
 						{
 							if (lector.Read() == true)
 							{
 								idBuscarJuego = lector.GetInt32(0);
 							}
 						}
+
+						lector.Close();
 					}
 
 					string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
 						"(enlace, nombre, imagen, idJuegos) VALUES " +
 						"(@enlace, @nombre, @imagen, @idJuegos)";
+					SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion);
 
-					using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
+                    using (comandoInsertar)
 					{
-						comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
-						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
-						comando.Parameters.AddWithValue("@imagen", oferta.Imagen);
-						comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
+                        comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
+                        comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
+                        comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
+                        comandoInsertar.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
 
 						try
 						{
-							comando.ExecuteNonQuery();
+                            comandoInsertar.ExecuteNonQuery();
 						}
 						catch
 						{
 
 						}
 					}
+
+					comandoInsertar.Dispose();
 				}
 
 				if (idBuscarJuego > 0)
 				{
 					string buscarJuego = "SELECT * FROM juegos WHERE id=@id";
+					SqlCommand comandoBuscar3 = new SqlCommand(buscarJuego, conexion);
 
-					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
+                    using (comandoBuscar3)
 					{
-						comando.Parameters.AddWithValue("@id", idBuscarJuego.ToString());
+                        comandoBuscar3.Parameters.AddWithValue("@id", idBuscarJuego.ToString());
 
-						using (SqlDataReader lector = comando.ExecuteReader())
+						SqlDataReader lector = comandoBuscar3.ExecuteReader();
+
+                        using (lector)
 						{
 							if (lector.Read() == true)
 							{
@@ -217,7 +240,11 @@ namespace BaseDatos.Tiendas
 								Juegos.Precios.Actualizar(juego, oferta, objeto);
 							}
 						}
+
+						lector.Close();
 					}
+
+					comandoBuscar3.Dispose();
 				}
 			}
 
