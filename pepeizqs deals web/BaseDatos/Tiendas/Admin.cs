@@ -54,7 +54,7 @@ namespace BaseDatos.Tiendas
                     using (comando)
 					{
 						comando.Parameters.AddWithValue("@id", tienda);
-						comando.Parameters.AddWithValue("@fecha", fecha);
+						comando.Parameters.AddWithValue("@fecha", fecha.ToString());
 						comando.Parameters.AddWithValue("@mensaje", mensaje);
 
 						try
@@ -66,8 +66,6 @@ namespace BaseDatos.Tiendas
 
 						}
 					}
-
-					comando.Dispose();
 				}
 
 				if (actualizar == true)
@@ -80,7 +78,7 @@ namespace BaseDatos.Tiendas
                     using (comando)
 					{
 						comando.Parameters.AddWithValue("@id", tienda);
-						comando.Parameters.AddWithValue("@fecha", fecha);
+						comando.Parameters.AddWithValue("@fecha", fecha.ToString());
 						comando.Parameters.AddWithValue("@mensaje", mensaje);
 
 						SqlDataReader lector = comando.ExecuteReader();
@@ -181,7 +179,7 @@ namespace BaseDatos.Tiendas
                     {
                         if (lector.Read() == true)
                         {
-							orden = int.Parse(lector.GetString(1));
+							orden = lector.GetInt32(1);
                         }
                     }
 

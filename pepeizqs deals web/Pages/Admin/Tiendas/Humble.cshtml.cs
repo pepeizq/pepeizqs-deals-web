@@ -15,17 +15,29 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
             public string Texto { get; set; }
         }
 
-        public void OnGet()
+		private readonly IHttpContextAccessor _contexto;
+
+		public HumbleModel(IHttpContextAccessor contexto)
+		{
+			_contexto = contexto;
+		}
+
+		public void OnGet()
         {
 
         }
 
         public void OnPost() 
-        { 
-            if (Input.Texto != null) 
+        {
+			string nombre = _contexto.HttpContext.User.Identity.Name;
+
+            if (BaseDatos.Usuarios.Buscar.RolDios(nombre) == true)
             {
-                APIs.Humble.Tienda.BuscarOfertas(ViewData, Input.Texto);
-            }
+				if (Input.Texto != null)
+				{
+					APIs.Humble.Tienda.BuscarOfertas(ViewData, Input.Texto);
+				}
+			}			
         }
     }
 }

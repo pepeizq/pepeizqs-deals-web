@@ -18,6 +18,9 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
+//----------------------------------------------------------------------------------
+//Tareas Cron
+
 builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionScopedJobFactory();
@@ -27,10 +30,18 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("CronGestionador-trigger")
-        .WithCronSchedule("10 0/60 * * * ?")
+        .WithCronSchedule("10 0/50 * * * ?")
     );
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+//----------------------------------------------------------------------------------
+//Acceder Usuario en Codigo
+
+builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+
+//----------------------------------------------------------------------------------
 
 //builder.Services.Configure<IdentityOptions>(options =>
 //{

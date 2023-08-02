@@ -29,6 +29,11 @@ namespace APIs.Steam
 			return tienda;
 		}
 
+        public static string Referido(string enlace)
+        {
+            return enlace + "?curator_clanid=33500256";
+        }
+
 		public static void BuscarOfertas(ViewDataDictionary objeto = null)
 		{
             int juegos = 0;			

@@ -8,34 +8,45 @@ namespace Herramientas
         {
             int orden = BaseDatos.Tiendas.Admin.CronLeerOrden();
 
-            if (orden == 0)
+            try
             {
-                APIs.Steam.Tienda.BuscarOfertas();
-            }
-            else if (orden == 1) 
-            { 
-                APIs.GamersGate.Tienda.BuscarOfertas();
-            }
-            else if (orden == 2) 
-            { 
-                APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-            }
-            else if (orden == 3)
+				if (orden == 0)
+				{
+					APIs.Steam.Tienda.BuscarOfertas();
+				}
+				else if (orden == 1)
+				{
+					APIs.GamersGate.Tienda.BuscarOfertas();
+				}
+				else if (orden == 2)
+				{
+					APIs.Gamesplanet.Tienda.BuscarOfertasUk();
+				}
+				else if (orden == 3)
+				{
+					APIs.Gamesplanet.Tienda.BuscarOfertasFr();
+				}
+				else if (orden == 4)
+				{
+					APIs.Gamesplanet.Tienda.BuscarOfertasDe();
+				}
+				else if (orden == 5)
+				{
+					APIs.Gamesplanet.Tienda.BuscarOfertasUs();
+				}
+				else if (orden == 6)
+				{
+					Divisas.Ejecutar();
+				}
+			}
+            catch
             {
-                APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-            }
-            else if (orden == 4)
-            {
-                APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-            }
-            else if (orden == 5)
-            {
-                APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-            }
 
+            }
+            
             orden += 1;
 
-            if (orden == 5)
+            if (orden == 7)
             {
                 orden = 0;
             }

@@ -23,7 +23,7 @@
 
 					@if (Model.juego.IdSteam > 0)
 					{
-						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="https://store.steampowered.com/app/@Model.juego.IdSteam" target="_blank">View on Steam</a></div>
+						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="@Herramientas.EnlaceAcortador.Generar("https://store.steampowered.com/app/@Model.juego.IdSteam", "steam")" target="_blank">View on Steam</a></div>
 					}		
 				</div>
 
@@ -80,7 +80,7 @@
 							{
 								@foreach (JuegoPrecio precio in JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, true))
 								{
-									<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@precio.Enlace" target="_blank">
+									<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@Herramientas.EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 										<div class="perfil-flexible-centrado">
 											<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
@@ -107,6 +107,87 @@
 			}
 		}
 		
+		@if (Model.juego.Media != null)
+		{
+			@if (Model.juego.Media.Capturas != null)
+			{
+				@if (Model.juego.Media.Capturas.Count > 0)
+				{
+					<div class="perfil">
+						<div class="juego-galeria-contenedor">
+							@for (int i = 0; i < Model.juego.Media.Capturas.Count; i++)
+							{
+								<div class="juego-galeria-imagenes">
+									<div class="juego-galeria-numero">@(i + 1) / @Model.juego.Media.Capturas.Count</div>
+									<img src="@Model.juego.Media.Capturas[i]" style="width:100%;">
+								</div>
+							}
+
+							<a class="juego-galeria-atras" onclick="siguienteAtras(-1)">&#10094;</a>
+							<a class="juego-galeria-siguiente" onclick="siguienteAtras(1)">&#10095;</a>
+
+							<div class="juego-galeria-contenedor-texto">
+								<p id="juego-galeria-texto"></p>
+							</div>
+
+							<div class="juego-galeria-fila">
+								@for (int i = 0; i < Model.juego.Media.Capturas.Count; i++)
+								{
+									<div class="juego-galeria-columna">
+										<img class="juego-galeria-capturas juego-galeria-cursor" src="@Model.juego.Media.Capturas[i]" style="width:100%;" onclick="cambiarImagen(@i + 1)">
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				}
+			}
+		}
 		
+
     </div>
 </div>
+
+<script>
+	let imagenPosicion = 1;
+	cargarImagen(imagenPosicion);
+
+	function siguienteAtras(n) {
+		cargarImagen(imagenPosicion += n);
+	}
+
+	function cambiarImagen(n) {
+		cargarImagen(imagenPosicion = n);
+	}
+
+	function cargarImagen(n) {
+		let i;
+		let imagenes = document.getElementsByClassName("juego-galeria-imagenes");
+		let capturas = document.getElementsByClassName("juego-galeria-capturas");
+		let texto = document.getElementById("juego-galeria-texto");
+
+		if (n > imagenes.length) 
+		{ 
+			imagenPosicion = 1 
+		}
+
+		if (n < 1) 
+		{ 
+			imagenPosicion = imagenes.length 
+		}
+
+		for (i = 0; i < imagenes.length; i++) 
+		{
+			imagenes[i].style.display = "none";
+		}
+
+		for (i = 0; i < capturas.length; i++) 
+		{
+			capturas[i].className = capturas[i].className.replace(" juego-galeria-activo", "");
+		}
+
+		imagenes[imagenPosicion - 1].style.display = "block";
+		capturas[imagenPosicion - 1].className += " juego-galeria-activo";
+		texto.innerHTML = capturas[imagenPosicion - 1].alt;
+	}
+</script>

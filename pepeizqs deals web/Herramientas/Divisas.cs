@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using BaseDatos.Divisas;
-using System.Globalization;
 using System.Xml;
 
 namespace Herramientas
@@ -80,7 +79,7 @@ namespace Herramientas
 
 			if (dolar != null)
 			{
-				mensaje = mensaje + "Dolar: " + Calculadora.HaceTiempo(dolar.FechaActualizacion);
+				mensaje = mensaje + "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion);
 			}
 
 			Divisa libra = Buscar.Ejecutar("GBP");
@@ -89,10 +88,10 @@ namespace Herramientas
 			{
 				if (mensaje.Length > 0)
 				{
-					mensaje = mensaje + " • ";
+					mensaje = mensaje + "<br/>";
 				}
 
-				mensaje = mensaje + "Libra: " + Calculadora.HaceTiempo(libra.FechaActualizacion);
+				mensaje = mensaje + "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion);
 			}
 
 			return mensaje;

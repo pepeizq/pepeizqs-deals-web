@@ -44,17 +44,21 @@ namespace BaseDatos.Juegos
 				{
 					WebApplicationBuilder builder = WebApplication.CreateBuilder();
 					string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+					SqlConnection conexion = new SqlConnection(conexionTexto);
 
-					using (SqlConnection conexion = new SqlConnection(conexionTexto))
+					using (conexion)
 					{
 						conexion.Open();
 						string buscar = sqlBuscar;
+						SqlCommand comando = new SqlCommand(buscar, conexion);
 
-						using (SqlCommand comando = new SqlCommand(buscar, conexion))
+						using (comando)
 						{
 							comando.Parameters.AddWithValue(idParametro, idBuscar);
 
-							using (SqlDataReader lector = comando.ExecuteReader())
+							SqlDataReader lector = comando.ExecuteReader();
+
+							using (lector)
 							{
 								if (lector.Read())
 								{
@@ -64,8 +68,14 @@ namespace BaseDatos.Juegos
 									return juego;
 								}
 							}
+
+							lector.Close();
 						}
+
+						comando.Dispose();
 					}
+
+					conexion.Dispose();
 				}
 				catch
 				{
@@ -82,17 +92,19 @@ namespace BaseDatos.Juegos
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
             string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
 			SqlConnection conexion = new SqlConnection(conexionTexto);
 
             using (conexion)
             {
                 conexion.Open();
                 string busqueda = "SELECT * FROM juegos WHERE REPLACE(REPLACE(nombre, '®',''), '™', '') LIKE '%" + nombre.ToLower() + "%'";
+				SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				using (comando)
                 {
-                    using (SqlDataReader lector = comando.ExecuteReader())
+					SqlDataReader lector = comando.ExecuteReader();
+
+					using (lector)
                     {
                         while (lector.Read())
                         {
@@ -102,7 +114,11 @@ namespace BaseDatos.Juegos
                             juegos.Add(juego);
                         }
                     }
+
+					lector.Close();
                 }
+
+				comando.Dispose();
             }
 
 			conexion.Dispose();
@@ -132,15 +148,19 @@ namespace BaseDatos.Juegos
 
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+			SqlConnection conexion = new SqlConnection(conexionTexto);
 
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			using (conexion)
 			{
 				conexion.Open();
 				string busqueda = "SELECT * FROM juegos";
+				SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				using (comando)
 				{
-					using (SqlDataReader lector = comando.ExecuteReader())
+					SqlDataReader lector = comando.ExecuteReader();
+
+					using (lector)
 					{
 						while (lector.Read())
 						{
@@ -150,8 +170,14 @@ namespace BaseDatos.Juegos
 							juegos.Add(juego);
 						}
 					}
+
+					lector.Close();
 				}
+
+				comando.Dispose();
 			}
+
+			conexion.Dispose();
 
 			return juegos;
 		}

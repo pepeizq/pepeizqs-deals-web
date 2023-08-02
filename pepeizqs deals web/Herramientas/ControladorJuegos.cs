@@ -34,5 +34,20 @@ namespace Herramientas
 				return null;
 			}
 		}
-    }
+
+		[HttpGet("link/{id}")]
+		public IActionResult CogerAcortador(int Id)
+		{
+			Enlace enlace = BaseDatos.Enlaces.Buscar.Id(Id.ToString());
+
+			if (enlace != null) 
+			{
+				return Redirect(enlace.Base);
+			}
+			else
+			{
+				return Redirect("~/");
+			}			
+		}
+	}
 }

@@ -214,8 +214,6 @@ namespace BaseDatos.Tiendas
 
 						}
 					}
-
-					comandoInsertar.Dispose();
 				}
 
 				if (idBuscarJuego > 0)

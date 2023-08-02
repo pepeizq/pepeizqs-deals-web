@@ -37,6 +37,11 @@ namespace APIs.Humble
 			return tienda;
 		}
 
+		public static string Referido(string enlace)
+		{
+			return enlace + "?partner=pepeizq";
+		}
+
 		public static Tiendas2.Tienda GenerarChoice()
 		{
 			Tiendas2.Tienda tienda = new Tiendas2.Tienda
@@ -52,6 +57,11 @@ namespace APIs.Humble
 			};
 
 			return tienda;
+		}
+
+		public static string ReferidoChoice(string enlace)
+		{
+			return enlace + "?refc=gXsa9X";
 		}
 
 		public static void BuscarOfertas(ViewDataDictionary objeto, string html)

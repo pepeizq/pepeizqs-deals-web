@@ -27,6 +27,11 @@ namespace APIs.GamersGate
 			return tienda;
 		}
 
+		public static string Referido(string enlace)
+		{
+			return enlace + "?aff=6704538";
+		}
+
 		public static void BuscarOfertas(ViewDataDictionary objeto = null)
 		{
             Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");

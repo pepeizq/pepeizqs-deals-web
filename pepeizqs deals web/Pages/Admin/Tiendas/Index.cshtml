@@ -28,11 +28,11 @@
 							<div style="width: 50%;">
 								@if (tienda.AdminInteractuar == true)
 								{
-									<button class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.ImagenLogo);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button>
+									<button class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button>
 								}
 								else
 								{
-									<p class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.ImagenLogo); background-color: transparent;" id="@tienda.Id" asp-route-id="@tienda.Id"></p>
+									<p class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80); background-color: transparent;" id="@tienda.Id" asp-route-id="@tienda.Id"></p>
 								}					
 							</div>
 							<div style="width: 45%;">

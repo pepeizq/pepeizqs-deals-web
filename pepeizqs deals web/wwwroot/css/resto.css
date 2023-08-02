@@ -453,3 +453,92 @@
     padding: 10px;
     background-color: var(--fondoOscuroTransparente);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.juego-galeria-contenedor {
+    position: relative;
+}
+
+.juego-galeria-imagenes {
+    display: none;
+}
+
+.juego-galeria-cursor {
+    cursor: pointer;
+}
+
+.juego-galeria-atras,
+.juego-galeria-siguiente {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: var(--colorTexto);
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0px;
+    user-select: none;
+    text-decoration: none;
+    -webkit-user-select: none;
+}
+
+.juego-galeria-siguiente {
+    right: 0;
+    border-radius: 0px;
+}
+
+.juego-galeria-atras:hover,
+.juego-galeria-siguiente:hover {
+    background-color: var(--fondoOscuroTransparente);
+}
+
+.juego-galeria-numero {
+    color: var(--colorTexto);
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+
+.juego-galeria-contenedor-texto {
+    text-align: center;
+    background-color: var(--fondoOscuro);
+    padding: 2px 16px;
+    color: white;
+}
+
+.juego-galeria-fila:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.juego-galeria-columna {
+    float: left;
+    width: 16.66%;
+}
+
+.juego-galeria-capturas {
+    opacity: 0.6;
+}
+
+.juego-galeria-activo,
+.juego-galeria-capturas:hover {
+    opacity: 1;
+}

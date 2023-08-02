@@ -78,6 +78,11 @@ namespace APIs.Gamesplanet
 			return tienda;
 		}
 
+		public static string Referido(string enlace)
+		{
+			return enlace + "?ref=pepeizq";
+		}
+
 		public static void BuscarOfertasUk(ViewDataDictionary objeto = null)
 		{
 			Task<string> tareauk = Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
