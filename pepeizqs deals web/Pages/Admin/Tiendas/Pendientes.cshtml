@@ -1,0 +1,20 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.Admin.Tiendas.PendientesModel
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+	ViewData["Title"] = "Tiendas";
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
+	{
+	}
+}

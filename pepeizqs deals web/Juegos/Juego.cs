@@ -91,6 +91,7 @@ namespace Juegos
 	{ 
 		public string Video { get; set; }
 		public List<string> Capturas { get; set; }
+		public List<string> Miniaturas { get; set; }
 	}
 
 	//-------------------------------------------------------

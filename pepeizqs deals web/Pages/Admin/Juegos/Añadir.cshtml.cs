@@ -4,6 +4,7 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 
 namespace pepeizqs_deals_web.Pages.Admin.Juegos
 {
@@ -256,7 +257,16 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 						//----------------------------
 
-						BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir);
+						SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+						using (conexion)
+						{
+							conexion.Open();
+
+							BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir, conexion);
+						}
+
+						conexion.Dispose();
 
 						if (juegoAñadir.IdSteam > 0)
 						{

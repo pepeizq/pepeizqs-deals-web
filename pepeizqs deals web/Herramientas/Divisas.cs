@@ -88,7 +88,7 @@ namespace Herramientas
 			{
 				if (mensaje.Length > 0)
 				{
-					mensaje = mensaje + "<br/>";
+					mensaje = mensaje + Environment.NewLine;
 				}
 
 				mensaje = mensaje + "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion);

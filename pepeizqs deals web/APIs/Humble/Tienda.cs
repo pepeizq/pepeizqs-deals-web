@@ -13,6 +13,7 @@
 using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -70,129 +71,138 @@ namespace APIs.Humble
 			{
 				if (html != "null")
 				{
-					HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
+					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-					if (juegos != null)
+					using (conexion)
 					{
-						int juegos2 = 0;
+						conexion.Open();
 
-						foreach (HumbleJuego juego in juegos.Resultados)
+						HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
+
+						if (juegos != null)
 						{
-							string nombre = WebUtility.HtmlDecode(juego.Titulo);
+							int juegos2 = 0;
 
-							string imagen = juego.ImagenGrande;
-
-							string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
-
-							if (juego.PrecioBase != null && juego.PrecioRebajado != null)
+							foreach (HumbleJuego juego in juegos.Resultados)
 							{
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad);
+								string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioRebajado);
+								string imagen = juego.ImagenGrande;
 
-								if (descuento > 0)
+								string enlace = "https://www.humblebundle.com/store/" + juego.Enlace;
+
+								if (juego.PrecioBase != null && juego.PrecioRebajado != null)
 								{
-									bool añadirChoice = true;
+									decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad);
 
-									if (juego.CosasIncompatibles != null)
+									int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioRebajado);
+
+									if (descuento > 0)
 									{
-										if (juego.CosasIncompatibles.Count > 0)
+										bool añadirChoice = true;
+
+										if (juego.CosasIncompatibles != null)
 										{
-											foreach (var cosa in juego.CosasIncompatibles)
+											if (juego.CosasIncompatibles.Count > 0)
 											{
-												if (cosa == "subscriber-discount-coupons")
+												foreach (var cosa in juego.CosasIncompatibles)
 												{
-													añadirChoice = false;
+													if (cosa == "subscriber-discount-coupons")
+													{
+														añadirChoice = false;
+													}
 												}
 											}
 										}
-									}
 
-									List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
+										List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
-									foreach (string drmTexto in juego.DRMs)
-									{
-										JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
-
-										JuegoPrecio oferta = new JuegoPrecio
+										foreach (string drmTexto in juego.DRMs)
 										{
-											Nombre = nombre,
-											Enlace = enlace,
-											Imagen = imagen,
-											Moneda = JuegoMoneda.Euro,
-											Precio = precioRebajado,
-											Descuento = descuento,
-											Tienda = Generar().Id,
-											DRM = drm,
-											FechaDetectado = DateTime.Now
-										};
+											JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
 
-										if (juego.FechaTermina > 0)
-										{
-											DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-											fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
-											fechaTermina = fechaTermina.ToLocalTime();
-
-											oferta.FechaTermina = fechaTermina;
-										}
-
-										ofertas.Add(oferta);
-
-										if (añadirChoice == true)
-										{
-											decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
-
-											decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
-											precioChoice = Math.Round(precioChoice, 2);
-
-											if (precioChoice < precioRebajado)
+											JuegoPrecio oferta = new JuegoPrecio
 											{
-												int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
+												Nombre = nombre,
+												Enlace = enlace,
+												Imagen = imagen,
+												Moneda = JuegoMoneda.Euro,
+												Precio = precioRebajado,
+												Descuento = descuento,
+												Tienda = Generar().Id,
+												DRM = drm,
+												FechaDetectado = DateTime.Now
+											};
 
-												JuegoPrecio choice = new JuegoPrecio
+											if (juego.FechaTermina > 0)
+											{
+												DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+												fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
+												fechaTermina = fechaTermina.ToLocalTime();
+
+												oferta.FechaTermina = fechaTermina;
+											}
+
+											ofertas.Add(oferta);
+
+											if (añadirChoice == true)
+											{
+												decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
+
+												decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
+												precioChoice = Math.Round(precioChoice, 2);
+
+												if (precioChoice < precioRebajado)
 												{
-													Nombre = nombre,
-													Enlace = enlace,
-													Imagen = imagen,
-													Moneda = JuegoMoneda.Euro,
-													Precio = precioChoice,
-													Descuento = descuentoChoice,
-													Tienda = GenerarChoice().Id,
-													DRM = drm,
-													FechaDetectado = DateTime.Now
-												};
+													int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
 
-												if (juego.FechaTermina > 0)
-												{
-													DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-													fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
-													fechaTermina = fechaTermina.ToLocalTime();
+													JuegoPrecio choice = new JuegoPrecio
+													{
+														Nombre = nombre,
+														Enlace = enlace,
+														Imagen = imagen,
+														Moneda = JuegoMoneda.Euro,
+														Precio = precioChoice,
+														Descuento = descuentoChoice,
+														Tienda = GenerarChoice().Id,
+														DRM = drm,
+														FechaDetectado = DateTime.Now
+													};
 
-													choice.FechaTermina = fechaTermina;
+													if (juego.FechaTermina > 0)
+													{
+														DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+														fechaTermina = fechaTermina.AddSeconds(juego.FechaTermina);
+														fechaTermina = fechaTermina.ToLocalTime();
+
+														choice.FechaTermina = fechaTermina;
+													}
+
+													ofertas.Add(choice);
 												}
-
-												ofertas.Add(choice);
 											}
 										}
-									}
 
-									if (ofertas.Count > 0)
-									{
-                                        juegos2 += 1;
+										if (ofertas.Count > 0)
+										{
+											juegos2 += 1;
 
-                                        BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto);
+											BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto, conexion);
+										}
 									}
 								}
 							}
+
+							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " juegos detectados", conexion);
 						}
 
-                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " juegos detectados");
-                    }
-
-					if (juegos != null)
-					{
-						objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
+						if (juegos != null)
+						{
+							objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
+						}
 					}
+
+					conexion.Dispose();	
 				}
 			}	         
         }
@@ -253,7 +263,7 @@ namespace APIs.Humble
 	public class HumbleJuego
 	{
 		[JsonProperty("human_name")]
-		public string Titulo { get; set; }
+		public string Nombre { get; set; }
 
 		[JsonProperty("machine_name")]
 		public string Id { get; set; }

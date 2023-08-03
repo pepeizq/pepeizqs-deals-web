@@ -1,11 +1,14 @@
-﻿using Juegos;
+﻿#nullable disable
+
+using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
 
 namespace BaseDatos.Juegos
 {
 	public static class Precios
 	{
-		public static void Actualizar(Juego juego, JuegoPrecio nuevoPrecio, ViewDataDictionary objeto)
+		public static void Actualizar(Juego juego, JuegoPrecio nuevoPrecio, ViewDataDictionary objeto, SqlConnection conexion)
 		{
 			bool añadir = true;
 
@@ -102,60 +105,69 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			Juegos.Actualizar.Ejecutar(juego);
+			Juegos.Actualizar.Ejecutar(juego, conexion);
 		}
 
 		public static void Limpiar(string tienda)
 		{
-			List<Juego> juegos = Buscar.Todos();
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			if (juegos.Count > 0) 
+			using (conexion)
 			{
-				foreach (var juego in juegos)
+				conexion.Open();
+
+				List<Juego> juegos = Buscar.Todos();
+
+				if (juegos.Count > 0)
 				{
-					int posicionActual = 0;
-					bool borrarActual = false;
-
-					int i = 0;
-					foreach (var precio in juego.PrecioActualesTiendas)
+					foreach (var juego in juegos)
 					{
-						if (precio.Tienda == tienda)
+						int posicionActual = 0;
+						bool borrarActual = false;
+
+						int i = 0;
+						foreach (var precio in juego.PrecioActualesTiendas)
 						{
-							posicionActual = i;
-							borrarActual = true;
+							if (precio.Tienda == tienda)
+							{
+								posicionActual = i;
+								borrarActual = true;
+							}
+							i += 1;
 						}
-						i += 1;
-					}
 
-					if (borrarActual == true)
-					{
-						juego.PrecioActualesTiendas.RemoveAt(posicionActual);
-
-						Juegos.Actualizar.Ejecutar(juego);
-					}
-
-					int posicionHistorico = 0;
-					bool borrarHistorico = false;
-
-					int j = 0;
-					foreach (var precio in juego.PrecioMinimosHistoricos)
-					{
-						if (precio.Tienda == tienda)
+						if (borrarActual == true)
 						{
-							posicionHistorico = j;
-							borrarHistorico = true;
+							juego.PrecioActualesTiendas.RemoveAt(posicionActual);
+
+							Juegos.Actualizar.Ejecutar(juego, conexion);
 						}
-						j += 1;
-					}
 
-					if (borrarHistorico == true)
-					{
-						juego.PrecioMinimosHistoricos.RemoveAt(posicionHistorico);
+						int posicionHistorico = 0;
+						bool borrarHistorico = false;
 
-						Juegos.Actualizar.Ejecutar(juego);
+						int j = 0;
+						foreach (var precio in juego.PrecioMinimosHistoricos)
+						{
+							if (precio.Tienda == tienda)
+							{
+								posicionHistorico = j;
+								borrarHistorico = true;
+							}
+							j += 1;
+						}
+
+						if (borrarHistorico == true)
+						{
+							juego.PrecioMinimosHistoricos.RemoveAt(posicionHistorico);
+
+							Juegos.Actualizar.Ejecutar(juego, conexion);
+						}
 					}
 				}
-			}	
+			}
+
+			conexion.Dispose();
 		}
 	}
 }

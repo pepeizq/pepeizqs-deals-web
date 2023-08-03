@@ -4,10 +4,10 @@ namespace Herramientas
 {
     public class CronGestionador : IJob
     {
-        public Task Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext contexto)
         {
-            int orden = BaseDatos.Tiendas.Admin.CronLeerOrden();
-
+			int orden = global::BaseDatos.Tiendas.Admin.CronLeerOrden();
+		
             try
             {
 				if (orden == 0)
@@ -36,22 +36,30 @@ namespace Herramientas
 				}
 				else if (orden == 6)
 				{
+					APIs.Fanatical.Tienda.BuscarOfertas();
+				}
+				else if (orden == 7)
+				{
 					Divisas.Ejecutar();
 				}
 			}
-            catch
-            {
+			catch (Exception ex)
+			{
+				throw new JobExecutionException(ex, refireImmediately: true)
+				{
+					UnscheduleFiringTrigger = true,
+					UnscheduleAllTriggers = true
+				};
+			}
 
-            }
-            
-            orden += 1;
+			orden += 1;
 
-            if (orden == 7)
+            if (orden == 8)
             {
                 orden = 0;
             }
 
-            BaseDatos.Tiendas.Admin.CronAumentarOrden(orden);
+			global::BaseDatos.Tiendas.Admin.CronAumentarOrden(orden);
 
             return Task.FromResult(true);
         }

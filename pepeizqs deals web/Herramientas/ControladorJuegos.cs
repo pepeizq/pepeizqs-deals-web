@@ -23,7 +23,7 @@ namespace Herramientas
 		[HttpGet("api/{id}")]
 		public IActionResult CogerApiId(int Id)
 		{
-			Juego juego = BaseDatos.Juegos.Buscar.UnJuego(Id.ToString());
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(Id.ToString());
 
 			if (juego != null)
 			{
@@ -38,7 +38,7 @@ namespace Herramientas
 		[HttpGet("link/{id}")]
 		public IActionResult CogerAcortador(int Id)
 		{
-			Enlace enlace = BaseDatos.Enlaces.Buscar.Id(Id.ToString());
+			Enlace enlace = global::BaseDatos.Enlaces.Buscar.Id(Id.ToString());
 
 			if (enlace != null) 
 			{

@@ -29,7 +29,11 @@ namespace Herramientas
 				{
 					enlace = APIs.Gamesplanet.Tienda.Referido(enlace);
 				}
-            }
+				else if (tienda == APIs.Fanatical.Tienda.Generar().Id)
+				{
+					enlace = APIs.Fanatical.Tienda.Referido(enlace);
+				}
+			}
 
 			//----------------------------------------
 

@@ -7,99 +7,82 @@ namespace BaseDatos.Tiendas
 {
 	public static class Admin
 	{
-		public static void Actualizar(string tienda, DateTime fecha, string mensaje)
+		public static void Actualizar(string tienda, DateTime fecha, string mensaje, SqlConnection conexion)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-			SqlConnection conexion = new SqlConnection(conexionTexto);
+			bool insertar = false;
+			bool actualizar = false;
 
-            using (conexion)
+			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
 			{
-				conexion.Open();
+				comando.Parameters.AddWithValue("@id", tienda);
 
-				bool insertar = false;
-				bool actualizar = false;
+				SqlDataReader lector = comando.ExecuteReader();
 
-				string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
-
-				using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
+				using (lector)
 				{
-					comando.Parameters.AddWithValue("@id", tienda);
-
-					SqlDataReader lector = comando.ExecuteReader();
-
-                    using (lector)
+					if (lector.Read() == false)
 					{
-						if (lector.Read() == false)
-						{
-							insertar = true;
-						}
-						else
-						{
-							actualizar = true;
-						}
+						insertar = true;
 					}
-
-					lector.Close();
-				}
-
-				if (insertar == true)
-				{
-					string sqlAñadir = "INSERT INTO adminTiendas " +
-						"(id, fecha, mensaje) VALUES " +
-						"(@id, @fecha, @mensaje)";
-
-					SqlCommand comando = new SqlCommand(sqlAñadir, conexion);
-
-                    using (comando)
+					else
 					{
-						comando.Parameters.AddWithValue("@id", tienda);
-						comando.Parameters.AddWithValue("@fecha", fecha.ToString());
-						comando.Parameters.AddWithValue("@mensaje", mensaje);
-
-						try
-						{
-							comando.ExecuteNonQuery();
-						}
-						catch
-						{
-
-						}
+						actualizar = true;
 					}
-				}
-
-				if (actualizar == true)
-				{
-					string sqlActualizar = "UPDATE adminTiendas " +
-							"SET id=@id, fecha=@fecha, mensaje=@mensaje WHERE id=@id";
-
-					SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
-
-                    using (comando)
-					{
-						comando.Parameters.AddWithValue("@id", tienda);
-						comando.Parameters.AddWithValue("@fecha", fecha.ToString());
-						comando.Parameters.AddWithValue("@mensaje", mensaje);
-
-						SqlDataReader lector = comando.ExecuteReader();
-
-                        try
-						{
-							comando.ExecuteNonQuery();
-						}
-						catch
-						{
-
-						}
-
-						lector.Close();
-					}
-
-					comando.Dispose();
 				}
 			}
 
-			conexion.Dispose();
+			if (insertar == true)
+			{
+				string sqlAñadir = "INSERT INTO adminTiendas " +
+					"(id, fecha, mensaje) VALUES " +
+					"(@id, @fecha, @mensaje)";
+
+				SqlCommand comando = new SqlCommand(sqlAñadir, conexion);
+
+				using (comando)
+				{
+					comando.Parameters.AddWithValue("@id", tienda);
+					comando.Parameters.AddWithValue("@fecha", fecha.ToString());
+					comando.Parameters.AddWithValue("@mensaje", mensaje);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}
+
+			if (actualizar == true)
+			{
+				string sqlActualizar = "UPDATE adminTiendas " +
+						"SET fecha=@fecha, mensaje=@mensaje WHERE id=@id";
+
+				SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
+
+				using (comando)
+				{
+					comando.Parameters.AddWithValue("@id", tienda);
+					comando.Parameters.AddWithValue("@fecha", fecha.ToString());
+					comando.Parameters.AddWithValue("@mensaje", mensaje);
+
+					SqlDataReader lector = comando.ExecuteReader();
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}
 		}
 
 		public static string ComprobacionMensaje(string tienda)
@@ -126,11 +109,14 @@ namespace BaseDatos.Tiendas
                     using (lector)
 					{
 						if (lector.Read() == true)
-						{
-							mensaje = Calculadora.HaceTiempo(DateTime.Parse(lector.GetString(1)));
-							
+						{	
 							try
 							{
+								if (lector.GetString(1) != null)
+								{
+									mensaje = Calculadora.HaceTiempo(DateTime.Parse(lector.GetString(1)));
+								}
+
                                 if (lector.GetString(2) != null)
                                 {
                                     mensaje = mensaje + " • " + lector.GetString(2);
@@ -142,11 +128,7 @@ namespace BaseDatos.Tiendas
 							}									
 						}
 					}
-
-					lector.Close();
 				}
-
-				comando.Dispose();
 			}
 
 			conexion.Dispose();
@@ -182,14 +164,8 @@ namespace BaseDatos.Tiendas
 							orden = lector.GetInt32(1);
                         }
                     }
-
-                    lector.Close();
                 }
-
-                comando.Dispose();
             }
-
-            conexion.Dispose();
 
 			return orden;
         }
@@ -224,14 +200,8 @@ namespace BaseDatos.Tiendas
                     {
 
                     }
-
-                    lector.Close();
                 }
-
-                comando.Dispose();
             }
-
-            conexion.Dispose();
         }
     }
 }

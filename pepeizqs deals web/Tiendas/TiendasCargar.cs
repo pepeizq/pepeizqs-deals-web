@@ -13,7 +13,8 @@
 				APIs.Gamesplanet.Tienda.GenerarUk(),
 				APIs.Gamesplanet.Tienda.GenerarFr(),
 				APIs.Gamesplanet.Tienda.GenerarDe(),
-				APIs.Gamesplanet.Tienda.GenerarUs()
+				APIs.Gamesplanet.Tienda.GenerarUs(),
+				APIs.Fanatical.Tienda.Generar()
 			};
 
 			return tiendas;

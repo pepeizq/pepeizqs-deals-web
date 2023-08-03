@@ -52,6 +52,10 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 						{
 							APIs.Gamesplanet.Tienda.BuscarOfertasUs(ViewData);
 						}
+						else if (id == APIs.Fanatical.Tienda.Generar().Id)
+						{
+							APIs.Fanatical.Tienda.BuscarOfertas(ViewData);
+						}
 
 						if (id == "divisas")
 						{

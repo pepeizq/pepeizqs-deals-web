@@ -281,7 +281,16 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 					//----------------------------
 
-					BaseDatos.Juegos.Actualizar.Ejecutar(juegoEditar);
+					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+					using (conexion)
+					{
+						conexion.Open();
+
+						BaseDatos.Juegos.Actualizar.Ejecutar(juegoEditar, conexion);
+					}
+
+					conexion.Dispose();				
 				}
 			}
 			else

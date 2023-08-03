@@ -3,6 +3,7 @@
 using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Xml.Serialization;
 
@@ -34,72 +35,81 @@ namespace APIs.GamersGate
 
 		public static void BuscarOfertas(ViewDataDictionary objeto = null)
 		{
-            Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
-			tarea.Wait();
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			string html = tarea.Result;
-		
-			if (html != null) 
+			using (conexion)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
-				GamersGateJuegos listaJuegos = null;
+				conexion.Open();
 
-				using (TextReader lector = new StringReader(html))
-				{
-					listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
-				}
+				Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
+				tarea.Wait();
 
-				if (listaJuegos != null)
+				string html = tarea.Result;
+
+				if (html != null)
 				{
-					if (listaJuegos.Juegos != null)
+					XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
+					GamersGateJuegos listaJuegos = null;
+
+					using (TextReader lector = new StringReader(html))
 					{
-						if (listaJuegos.Juegos.Count > 0) 
-						{ 
-							foreach (GamersGateJuego juego in listaJuegos.Juegos)
+						listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
+					}
+
+					if (listaJuegos != null)
+					{
+						if (listaJuegos.Juegos != null)
+						{
+							if (listaJuegos.Juegos.Count > 0)
 							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
-								
-								string enlace = juego.Enlace;
-
-								string imagen = juego.ImagenGrande;
-
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
-
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-								if (descuento > 0)
+								foreach (GamersGateJuego juego in listaJuegos.Juegos)
 								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+									string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Euro,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = Generar().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now
-									};
+									string enlace = juego.Enlace;
 
-									if (juego.Fecha != null)
+									string imagen = juego.ImagenGrande;
+
+									decimal precioBase = decimal.Parse(juego.PrecioBase);
+									decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+
+									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+									if (descuento > 0)
 									{
-										DateTime fechaTermina = DateTime.Parse(juego.Fecha);
-										oferta.FechaTermina = fechaTermina;
+										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+
+										JuegoPrecio oferta = new JuegoPrecio
+										{
+											Nombre = nombre,
+											Enlace = enlace,
+											Imagen = imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
+											DRM = drm,
+											FechaDetectado = DateTime.Now
+										};
+
+										if (juego.Fecha != null)
+										{
+											DateTime fechaTermina = DateTime.Parse(juego.Fecha);
+											oferta.FechaTermina = fechaTermina;
+										}
+
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 									}
-
-									BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto);
-								}	
+								}
 							}
-						}
 
-                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados");
+							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
+						}
 					}
 				}
 			}
+
+			conexion.Dispose();		
 		}
     }
 

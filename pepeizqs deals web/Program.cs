@@ -25,13 +25,13 @@ builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionScopedJobFactory();
     var jobKey = new JobKey("CronGestionador");
-    q.AddJob<Herramientas.CronGestionador>(opts => opts.WithIdentity(jobKey));
+    q.AddJob<Herramientas.CronGestionador>(opciones => opciones.WithIdentity(jobKey));
 
-    q.AddTrigger(opts => opts
+    q.AddTrigger(opciones => opciones
         .ForJob(jobKey)
         .WithIdentity("CronGestionador-trigger")
-        .WithCronSchedule("10 0/50 * * * ?")
-    );
+		.WithSimpleSchedule(x => x.WithIntervalInMinutes(30).RepeatForever())
+	);
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
@@ -51,14 +51,14 @@ builder.Services.AddHttpContextAccessor();
 //    options.User.RequireUniqueEmail = true;
 //});
 
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-//    options.Cookie.Name = "cookiePepeizq";
-//    options.ExpireTimeSpan = TimeSpan.FromDays(30);
-//    options.LoginPath = "/Identity/Account/Login";
-//    options.SlidingExpiration = true;
-//});
+builder.Services.ConfigureApplicationCookie(opciones =>
+{
+    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    opciones.Cookie.Name = "cookiePepeizq";
+    opciones.ExpireTimeSpan = TimeSpan.FromDays(30);
+    opciones.LoginPath = "/Identity/Account/Login";
+    opciones.SlidingExpiration = false;
+});
 
 //builder.Services.AddAuthentication(options =>
 //{

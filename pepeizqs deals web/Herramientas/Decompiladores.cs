@@ -9,12 +9,19 @@ namespace Herramientas
     {
         public static async Task<string> Estandar(string enlace)
         {
-            HttpClient cliente = new HttpClient();
-            cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+			string contenido = string.Empty;
 
-            HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
-            string contenido = await respuesta.Content.ReadAsStringAsync();
-            respuesta.Dispose();
+			HttpClient cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+			cliente.Timeout = TimeSpan.FromMinutes(5);
+
+			try
+			{
+				HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+				contenido = await respuesta.Content.ReadAsStringAsync();
+				respuesta.Dispose();
+			}
+			catch { }
 
             cliente.Dispose();
 
@@ -27,13 +34,13 @@ namespace Herramientas
 
 			HttpRequestMessage mensaje = new HttpRequestMessage();
             mensaje.RequestUri = new Uri(enlace);
-			mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
-			mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
-			mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
-			mensaje.Headers.Connection.ParseAdd("keep-alive");
-			mensaje.Headers.Host = "www.humblebundle.com";
-			mensaje.Headers.Referrer = new Uri("https://www.humblebundle.com/");
-			mensaje.Headers.Upgrade.ParseAdd("1");
+			//mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+			//mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
+			//mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
+			//mensaje.Headers.Connection.ParseAdd("keep-alive");
+			//mensaje.Headers.Host = "www.humblebundle.com";
+			//mensaje.Headers.Referrer = new Uri("https://www.humblebundle.com/");
+			//mensaje.Headers.Upgrade.ParseAdd("1");
 			mensaje.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Linux; Android 10; Generic Android-x86_64 Build/QD1A.190821.014.C2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/79.0.3945.36 Safari/537.36");
 
 			var cookieContainer = new CookieContainer();
@@ -43,7 +50,7 @@ namespace Herramientas
 				using (HttpClient cliente = new HttpClient(handler) { BaseAddress = new Uri(enlace) })
 				{
 					
-					cookieContainer.Add(new Uri(enlace), new Cookie("_simpleauth_sess", "eyJpZCI6IlA2Zzk4ZW9Md0kifQ==|1690107712|8a4c5b9ae42d246113e05ccc7ff18c2a13392b25"));
+					//cookieContainer.Add(new Uri(enlace), new Cookie("_simpleauth_sess", "eyJpZCI6IlA2Zzk4ZW9Md0kifQ==|1690107712|8a4c5b9ae42d246113e05ccc7ff18c2a13392b25"));
 					
 					Task<HttpResponseMessage> tarea = cliente.SendAsync(mensaje);
 					tarea.Wait();
@@ -53,12 +60,17 @@ namespace Herramientas
 
 					Stream stream = respuesta.Result;
 
-					using (GZipStream descompresion = new GZipStream(stream, CompressionMode.Decompress))
+					//using (GZipStream descompresion = new GZipStream(stream, CompressionMode.Decompress))
+					//{
+					//	using (StreamReader lector = new StreamReader(descompresion))
+					//	{
+					//		html = lector.ReadToEnd();
+					//	}
+					//}
+
+					using (StreamReader lector = new StreamReader(stream))
 					{
-						using (StreamReader lector = new StreamReader(descompresion))
-						{
-							html = lector.ReadToEnd();
-						}
+						html = lector.ReadToEnd();
 					}
 				}
 			}

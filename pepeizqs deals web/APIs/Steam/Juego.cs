@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Herramientas;
+using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -60,13 +61,16 @@ namespace APIs.Steam
 						if (datos.Datos.Capturas.Count > 0)
 						{
 							List<string> capturas = new List<string>();
+							List<string> miniaturas = new List<string>();
 
 							foreach (SteamJuegoAPICaptura captura in datos.Datos.Capturas)
 							{
 								capturas.Add(captura.Enlace);
+								miniaturas.Add(captura.Miniatura);
 							}
 
 							media.Capturas = capturas;
+							media.Miniaturas = miniaturas;
 						}
 					}
 
@@ -257,7 +261,7 @@ namespace APIs.Steam
 	{
 
 		[JsonProperty("path_thumbnail")]
-		public string VistaPrevia { get; set; }
+		public string Miniatura { get; set; }
 
 		[JsonProperty("path_full")]
 		public string Enlace { get; set; }

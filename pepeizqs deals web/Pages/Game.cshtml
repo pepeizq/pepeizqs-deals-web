@@ -10,7 +10,7 @@
 }
 
 <div class="juego-wrap">
-    <img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620"/>
+	<img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620"/>
 
     <div class="juego-contenido">
         <div class="perfil-espacio-bottom juego-cabecera">      
@@ -23,7 +23,7 @@
 
 					@if (Model.juego.IdSteam > 0)
 					{
-						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="@Herramientas.EnlaceAcortador.Generar("https://store.steampowered.com/app/@Model.juego.IdSteam", "steam")" target="_blank">View on Steam</a></div>
+						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="@Herramientas.EnlaceAcortador.Generar("https://store.steampowered.com/app/" + Model.juego.IdSteam.ToString(), "steam")" target="_blank">View on Steam</a></div>
 					}		
 				</div>
 
