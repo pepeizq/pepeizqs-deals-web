@@ -19,7 +19,7 @@ namespace APIs.Gamesplanet
 				Nombre = "Gamesplanet (UK)",
 				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetuk_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -36,7 +36,7 @@ namespace APIs.Gamesplanet
 				Nombre = "Gamesplanet (FR)",
 				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetfr_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -53,7 +53,7 @@ namespace APIs.Gamesplanet
 				Nombre = "Gamesplanet (DE)",
 				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetde_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -70,7 +70,7 @@ namespace APIs.Gamesplanet
 				Nombre = "Gamesplanet (US)",
 				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
 				Imagen300x80 = "/imagenes/tiendas/gamesplanetus_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true

@@ -1,0 +1,42 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	<div class="perfil-flexible-centrado">
+		<div style="width: 30%;">
+			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+			{
+				@if (tienda.Id != "steam")
+				{
+					<button @onclick="@(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="margin: 10px;"><img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))</button>
+				}
+			}
+		</div>
+
+		<div style="width: 65%;">
+			<div class="perfil-flexible-centrado">
+				<div style="width: 30%; padding: 10px;">
+					<img src="@imagenPendiente"/>
+				</div>
+				
+				<div style="width: 70%; padding: 10px;">
+					@nombrePendiente
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	private string imagenPendiente = null;
+	private string nombrePendiente = null;
+
+	private void ClickearTienda(MouseEventArgs e, string id)
+	{
+		nombrePendiente = "yolo";
+	}
+
+}

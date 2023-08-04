@@ -1,5 +1,5 @@
 ﻿@page
-@model pepeizqs_deals_web.Pages.Admin.Tiendas.PendientesModel
+@model PendientesModel
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -8,7 +8,7 @@
 @inject UserManager<Usuario> UserManager
 
 @{
-	ViewData["Title"] = "Tiendas";
+	ViewData["Title"] = "Pendientes";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -16,5 +16,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
+		@(await Html.RenderComponentAsync<pepeizqs_deals_web.Pages.Componentes.Pendientes>(RenderMode.ServerPrerendered))
 	}
 }

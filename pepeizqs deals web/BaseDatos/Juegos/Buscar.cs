@@ -142,42 +142,28 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-        public static List<Juego> Todos()
+        public static List<Juego> Todos(SqlConnection conexion)
 		{
 			List<Juego> juegos = new List<Juego>();
 
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-			SqlConnection conexion = new SqlConnection(conexionTexto);
+			string busqueda = "SELECT * FROM juegos";
+			SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-			using (conexion)
+			using (comando)
 			{
-				conexion.Open();
-				string busqueda = "SELECT * FROM juegos";
-				SqlCommand comando = new SqlCommand(busqueda, conexion);
+				SqlDataReader lector = comando.ExecuteReader();
 
-				using (comando)
+				using (lector)
 				{
-					SqlDataReader lector = comando.ExecuteReader();
-
-					using (lector)
+					while (lector.Read())
 					{
-						while (lector.Read())
-						{
-							Juego juego = new Juego();
-							juego = Cargar.Ejecutar(juego, lector);
+						Juego juego = new Juego();
+						juego = Cargar.Ejecutar(juego, lector);
 
-							juegos.Add(juego);
-						}
+						juegos.Add(juego);
 					}
-
-					lector.Close();
 				}
-
-				comando.Dispose();
 			}
-
-			conexion.Dispose();
 
 			return juegos;
 		}

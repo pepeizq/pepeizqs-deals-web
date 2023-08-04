@@ -7,7 +7,7 @@ namespace Herramientas
         public Task Execute(IJobExecutionContext contexto)
         {
 			int orden = global::BaseDatos.Tiendas.Admin.CronLeerOrden();
-		
+	
             try
             {
 				if (orden == 0)
@@ -48,7 +48,8 @@ namespace Herramientas
 				throw new JobExecutionException(ex, refireImmediately: true)
 				{
 					UnscheduleFiringTrigger = true,
-					UnscheduleAllTriggers = true
+					UnscheduleAllTriggers = true,
+					RefireImmediately = true
 				};
 			}
 

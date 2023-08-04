@@ -10,6 +10,8 @@ using Quartz;
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
 
+builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
+
 builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseSqlServer(conexionTexto));
 
 builder.Services.AddDefaultIdentity<Usuario>(options =>
@@ -43,37 +45,29 @@ builder.Services.AddHttpContextAccessor();
 
 //----------------------------------------------------------------------------------
 
-//builder.Services.Configure<IdentityOptions>(options =>
-//{
-//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-//    options.Lockout.MaxFailedAccessAttempts = 15;
-//    options.Lockout.AllowedForNewUsers = true;
-//    options.User.RequireUniqueEmail = true;
-//});
+builder.Services.Configure<IdentityOptions>(opciones =>
+{
+    opciones.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    opciones.Lockout.MaxFailedAccessAttempts = 15;
+    opciones.Lockout.AllowedForNewUsers = true;
+    opciones.User.RequireUniqueEmail = true;
+});
 
 builder.Services.ConfigureApplicationCookie(opciones =>
 {
     opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
     opciones.Cookie.Name = "cookiePepeizq";
-    opciones.ExpireTimeSpan = TimeSpan.FromDays(30);
+    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
     opciones.LoginPath = "/Identity/Account/Login";
-    opciones.SlidingExpiration = false;
+    opciones.SlidingExpiration = true;
 });
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-//    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-//});
-
-//builder.Services.ConfigureApplicationCookie(options => options.Cookie.Name = "pepeCookie");
-
-builder.Services.AddDataProtection().UseCryptographicAlgorithms(
-	new AuthenticatedEncryptorConfiguration
-	{
-		EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
-		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-	});
+//builder.Services.AddDataProtection().UseCryptographicAlgorithms(
+//	new AuthenticatedEncryptorConfiguration
+//	{
+//		EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+//		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+//	});
 
 builder.Services.AddServerSideBlazor();
 builder.Services.AddRazorPages();

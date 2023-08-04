@@ -116,7 +116,7 @@ namespace BaseDatos.Juegos
 			{
 				conexion.Open();
 
-				List<Juego> juegos = Buscar.Todos();
+				List<Juego> juegos = Buscar.Todos(conexion);
 
 				if (juegos.Count > 0)
 				{

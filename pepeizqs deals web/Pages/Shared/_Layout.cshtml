@@ -48,10 +48,13 @@
                             @if (await UsuarioCoger.RolDios(UserManager, User) == true)
                             {
                                 <li class="nav-item">
-                                    <a class="texto-cabecera" asp-area="" asp-page="/Admin/Juegos/Index">Admin Juegos</a>
+                                    <a class="texto-cabecera" asp-page="/Admin/Juegos/Index">Juegos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="texto-cabecera" asp-page="/Admin/Tiendas/Index">Tiendas</a>
                                 </li>
                                 <li class="nav-item" style="margin-right: 20px;">
-                                    <a class="texto-cabecera" asp-area="" asp-page="/Admin/Tiendas/Index">Admin Tiendas</a>
+                                    <a class="texto-cabecera" asp-page="/Admin/Pendientes">Pendientes</a>
                                 </li>
                             }
                         }

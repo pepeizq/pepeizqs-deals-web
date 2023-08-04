@@ -1,0 +1,48 @@
+﻿@using BaseDatos.Juegos;
+@using Juegos;
+@using Microsoft.Data.SqlClient;
+
+
+@code {
+
+	List<Juego> juegos = new List<Juego>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			conexion.Open();
+
+			List<Juego> juegos = Buscar.Todos(conexion);
+
+			if (juegos.Count > 0)
+			{
+				juegos.Sort(delegate (Juego j1, Juego j2)
+				{
+					DateTime j1Fecha = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+					DateTime j2Fecha = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+
+
+					string j1Limpio = j1.Nombre;
+					j1Limpio = j1Limpio.Replace("®", null);
+					j1Limpio = j1Limpio.Replace("™", null);
+
+					string j2Limpio = j2.Nombre;
+					j2Limpio = j2Limpio.Replace("®", null);
+					j2Limpio = j2Limpio.Replace("™", null);
+
+					return j1Limpio.CompareTo(j2Limpio);
+				});
+
+				foreach (var juego in juegos)
+				{
+					
+				}
+			}
+		}
+	}
+
+}
