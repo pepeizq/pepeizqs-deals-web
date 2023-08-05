@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Herramientas;
-using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -222,6 +221,9 @@ namespace APIs.Steam
 
 		[JsonProperty("developers")]
 		public List<string> Desarrolladores { get; set; }
+
+		[JsonProperty("dlc")]
+		public List<string> DLCs { get; set; }
 
 		[JsonProperty("price_overview")]
 		public SteamJuegoAPIPrecio Precio { get; set; }

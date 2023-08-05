@@ -37,11 +37,12 @@ namespace BaseDatos.Tiendas
 
 				if (numeroId > 0)
 				{
-					string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+					string buscarJuego = "SELECT * FROM juegos WHERE (idSteam=@idSteam OR nombre=@nombre)";
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
 						comando.Parameters.AddWithValue("@idSteam", idSteam);
+						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
 
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{
@@ -86,8 +87,6 @@ namespace BaseDatos.Tiendas
 
 								actualizar = true;
 							}
-
-							lector.Close();
 						}
 					}
 
@@ -161,6 +160,8 @@ namespace BaseDatos.Tiendas
 
 							i += 1;
 						}
+
+
 					}
 				}
 			}
@@ -175,9 +176,7 @@ namespace BaseDatos.Tiendas
 				{
                     comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
 
-					SqlDataReader lector = comandoBuscar2.ExecuteReader();
-
-                    using (lector)
+                    using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
 					{
 						if (lector.Read() == true)
 						{
@@ -187,8 +186,8 @@ namespace BaseDatos.Tiendas
 				}
 
 				string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
-					"(enlace, nombre, imagen, idJuegos) VALUES " +
-					"(@enlace, @nombre, @imagen, @idJuegos)";
+					"(enlace, nombre, imagen, idJuegos, descartado) VALUES " +
+					"(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
 				SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion);
 
                 using (comandoInsertar)
@@ -197,6 +196,7 @@ namespace BaseDatos.Tiendas
                     comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
                     comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
                     comandoInsertar.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
+					comandoInsertar.Parameters.AddWithValue("@descartado", "no");
 
 					try
 					{
@@ -213,24 +213,61 @@ namespace BaseDatos.Tiendas
 			{
 				foreach (int id in listaIds)
 				{
-					string buscarJuego = "SELECT * FROM juegos WHERE id=@id";
-					SqlCommand comandoBuscar3 = new SqlCommand(buscarJuego, conexion);
-
-					using (comandoBuscar3)
+					if (id > 0)
 					{
-						comandoBuscar3.Parameters.AddWithValue("@id", id.ToString());
+						string buscarJuego = "SELECT * FROM juegos WHERE id=@id";
 
-						SqlDataReader lector = comandoBuscar3.ExecuteReader();
-
-						using (lector)
+						using (SqlCommand comandoBuscar3 = new SqlCommand(buscarJuego, conexion))
 						{
-							if (lector.Read() == true)
+							comandoBuscar3.Parameters.AddWithValue("@id", id.ToString());
+
+							using (SqlDataReader lector = comandoBuscar3.ExecuteReader())
 							{
-								Juego juego = JuegoCrear.Generar();
+								if (lector.Read() == true)
+								{
+									Juego juego = JuegoCrear.Generar();
 
-								juego = Juegos.Cargar.Ejecutar(juego, lector);
+									juego = Juegos.Cargar.Ejecutar(juego, lector);
 
-								Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+								}
+							}
+						}
+					}
+					else
+					{
+						string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
+
+						SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion);
+
+						using (comandoBuscar2)
+						{
+							comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
+
+							using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
+							{
+								if (lector.Read() == true)
+								{
+									int idBuscarJuego = lector.GetInt32(0);
+
+									string sqlActualizar = "UPDATE tienda" + oferta.Tienda + " " +
+											"SET idJuegos=@idJuegos WHERE enlace=@enlace";
+
+									using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+									{
+										comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
+										comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
+
+										try
+										{
+											comando.ExecuteNonQuery();
+										}
+										catch
+										{
+
+										}
+									}
+								}
 							}
 						}
 					}

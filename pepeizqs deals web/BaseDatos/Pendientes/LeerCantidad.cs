@@ -14,7 +14,7 @@ namespace BaseDatos.Pendientes
 			{
 				conexion.Open();
 
-				string busqueda = "SELECT * FROM tienda" + tienda;
+				string busqueda = "SELECT * FROM tienda" + tienda + " WHERE (idJuegos='0' AND descartado='no')";
 				SqlCommand comando = new SqlCommand(busqueda, conexion);
 
 				using (comando)
@@ -25,10 +25,7 @@ namespace BaseDatos.Pendientes
 					{
 						while (lector.Read())
 						{
-							if (lector.GetString(3) == "0")
-							{
-								cantidad += 1;
-							}
+							cantidad += 1;
 						}
 					}
 				}

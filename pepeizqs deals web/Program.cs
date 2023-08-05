@@ -21,6 +21,11 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
 //----------------------------------------------------------------------------------
+//Error Detallado en Componentes Razor
+
+builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
+
+//----------------------------------------------------------------------------------
 //Tareas Cron
 
 builder.Services.AddQuartz(q =>
@@ -32,7 +37,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opciones => opciones
         .ForJob(jobKey)
         .WithIdentity("CronGestionador-trigger")
-		.WithSimpleSchedule(x => x.WithIntervalInMinutes(30).RepeatForever())
+		.WithSimpleSchedule(x => x.WithIntervalInMinutes(50).RepeatForever())
 	);
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);

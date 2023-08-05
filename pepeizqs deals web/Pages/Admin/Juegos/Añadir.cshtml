@@ -170,6 +170,19 @@
 							}
 						}
 					}
+
+					@if (Model.juegoAñadir.Media.Miniaturas != null)
+					{
+						@if (Model.juegoAñadir.Media.Miniaturas.Count > 0)
+						{
+							@for (int i = 0; i < Model.juegoAñadir.Media.Miniaturas.Count; i++)
+							{
+								<label class="texto-info-entrada admin-añadir-espacio-top">Miniatura @i.ToString()</label>
+								<input class="entrada-texto" name="miniatura_@i.ToString()" value="@Model.juegoAñadir.Media.Miniaturas[i]" />
+								<img src="@Model.juegoAñadir.Media.Miniaturas[i]" />
+							}
+						}
+					}
 				}
 
 				<hr />

@@ -10,7 +10,8 @@
 }
 
 <div class="juego-wrap">
-	<img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620"/>
+	@(await Html.RenderComponentAsync<Componentes.Fondo>(RenderMode.ServerPrerendered, new { imagen = Model.juego.Imagenes.Library_1920x620 }))
+	@*<img id="juego-fondo-imagen" class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620" onerror="fondoError"/>*@
 
     <div class="juego-contenido">
         <div class="perfil-espacio-bottom juego-cabecera">      

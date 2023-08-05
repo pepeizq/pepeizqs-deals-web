@@ -51,7 +51,10 @@ namespace Juegos
 									}
 								}								
 
-								preciosOrdenados.Add(nuevoPrecio);
+								if (nuevoPrecio.Descuento > 0)
+								{
+									preciosOrdenados.Add(nuevoPrecio);
+								}				
 							}						
 						}
 					}

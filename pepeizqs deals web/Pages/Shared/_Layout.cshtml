@@ -26,7 +26,9 @@
     <meta name="msapplication-TileColor" content="#1b2838">
     <meta name="theme-color" content="#ffffff">
 
+    <base href="~/" />
     <component type="typeof(Juegos.Juego)" render-mode="ServerPrerendered" />
+
 </head>
 
 <body class="cuerpo">
@@ -85,7 +87,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="_framework/blazor.server.js"></script>
+    <script src="_framework/blazor.server.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

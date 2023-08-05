@@ -250,7 +250,36 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 							i += 1;
 						}
 
-						if (media.Video != null & media.Capturas != null)
+						i = 0;
+						while (i < 20)
+						{
+							if (Request.Form["miniatura_" + i.ToString()] != string.Empty)
+							{
+								string miniatura = Request.Form["miniatura_" + i.ToString()];
+
+								if (media.Miniaturas == null)
+								{
+									media.Miniaturas = new List<string>();
+								}
+
+								if (miniatura != null)
+								{
+									media.Miniaturas.Add(miniatura);
+								}
+								else
+								{
+									break;
+								}
+							}
+							else
+							{
+								break;
+							}
+
+							i += 1;
+						}
+
+						if (media.Video != null || media.Capturas != null)
 						{
 							juegoAñadir.Media = media;
 						}

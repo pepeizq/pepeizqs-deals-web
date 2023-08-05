@@ -16,6 +16,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		@(await Html.RenderComponentAsync<pepeizqs_deals_web.Pages.Componentes.Pendientes>(RenderMode.ServerPrerendered))
+		@(await Html.RenderComponentAsync<pepeizqs_deals_web.Pages.Componentes.Pendientes>(RenderMode.Server))
 	}
 }

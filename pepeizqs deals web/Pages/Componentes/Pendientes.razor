@@ -1,4 +1,5 @@
 ﻿@page "/"
+
 @using Microsoft.AspNetCore.Components.Web;
 
 <div class="perfil">
@@ -16,11 +17,29 @@
 		<div style="width: 65%;">
 			<div class="perfil-flexible-centrado">
 				<div style="width: 30%; padding: 10px;">
-					<img src="@imagenPendiente"/>
+					<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
 				</div>
 				
 				<div style="width: 70%; padding: 10px;">
-					@nombrePendiente
+					<div style="margin-bottom: 10px;">
+						<a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+					</div>
+
+					<div>
+						<input @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px;" value="@idsPendiente" />
+					</div>
+
+					<div>
+						<button @onclick="@(e => ClickearDescartar(e, @enlacePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Descartar</button>
+					</div>
+
+					<div>
+						<button @onclick="@(e => ClickearBuscar(e, @nombrePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Buscar</button>
+					</div>
+
+					<div>
+						<button @onclick="@(e => ClickearActualizar(e, @enlacePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Actualizar</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -31,12 +50,60 @@
 
 	#nullable disable
 
+	private string idTienda = null;
 	private string imagenPendiente = null;
 	private string nombrePendiente = null;
+	private string enlacePendiente = null;
+	private string idsPendiente = "0";
 
 	private void ClickearTienda(MouseEventArgs e, string id)
 	{
-		nombrePendiente = "yolo";
+		idTienda = id;
+
+		ClickearTienda(idTienda);
 	}
 
+	private void ClickearTienda(string id)
+	{
+		BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id);
+
+		nombrePendiente = pendiente.nombre;
+
+		string imagen = pendiente.imagen;
+
+		if (imagen != null)
+		{
+			imagen = imagen.Replace("&amp;", "&");
+		}
+
+		imagenPendiente = imagen;
+
+		enlacePendiente = pendiente.enlace;
+
+		idsPendiente = "0";
+	}
+
+	private void ClickearDescartar(MouseEventArgs e, string enlace)
+	{
+		BaseDatos.Pendientes.DescartarJuego.Ejecutar(idTienda, enlace);
+
+		ClickearTienda(idTienda);
+	}
+
+	private void ClickearBuscar(MouseEventArgs e, string nombre)
+	{
+		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombre);
+	}
+
+	private void ClickearActualizar(MouseEventArgs e, string enlace)
+	{
+		BaseDatos.Pendientes.ActualizarJuego.Ejecutar(idTienda, enlace, idsPendiente);
+
+		ClickearTienda(idTienda);
+	}
+
+	private void TextoCambia(ChangeEventArgs texto)
+	{
+		idsPendiente = texto.Value.ToString();
+	}
 }

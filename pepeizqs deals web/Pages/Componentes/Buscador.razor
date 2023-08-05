@@ -2,9 +2,15 @@
 
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Mvc.Razor;
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inherits Juegos.Juego
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <input type="text" @oninput="TextoCambia" class="entrada-texto" />
 
@@ -22,6 +28,11 @@
 
                         <div style="width: 76%; padding-left: 15px; padding-right: 15px;">
                             @juego.Nombre
+
+                            @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+                            {
+                                <br/> @juego.Id
+                            }
                         </div>
 
                         <div style="width: 12%;">
@@ -43,7 +54,7 @@
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString());
+            juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
         } 
         else
         {

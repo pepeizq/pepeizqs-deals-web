@@ -14,9 +14,7 @@ namespace BaseDatos.Juegos
 					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
 					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
 
-			SqlCommand comando = new SqlCommand(sqlAñadir, conexion);
-
-			using (comando)
+			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
 				comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 				comando.Parameters.AddWithValue("@idGog", juego.IdGog);

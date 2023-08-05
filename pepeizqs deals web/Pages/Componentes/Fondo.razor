@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<img class="juego-fondo" src="@imagen" @onload="ErrorCarga" style="@(carga ? "display:block" : "display:none")" />
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string imagen { get; set; }
+
+	public bool carga = true;
+
+	private void ErrorCarga(ProgressEventArgs texto)
+	{
+		if (texto.Loaded == 0)
+		carga = false;
+	}
+
+}
