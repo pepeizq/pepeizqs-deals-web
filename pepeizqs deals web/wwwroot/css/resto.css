@@ -332,12 +332,12 @@
     }
 }
 
-.juego-versteam-espacio {
+.juego-sistemas-espacio {
     margin-top: 10px;
 }
 
 @media(max-width: 800px) {
-    .juego-versteam-espacio {
+    .juego-sistemas-espacio {
         margin-top: 5px;
     }
 }

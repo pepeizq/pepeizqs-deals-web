@@ -3,6 +3,7 @@
 
 @using Herramientas
 @using Juegos
+@using System.Net;
 
 @{
 	ViewData["Title"] = Model.juego.Nombre;
@@ -10,8 +11,7 @@
 }
 
 <div class="juego-wrap">
-	@(await Html.RenderComponentAsync<Componentes.Fondo>(RenderMode.ServerPrerendered, new { imagen = Model.juego.Imagenes.Library_1920x620 }))
-	@*<img id="juego-fondo-imagen" class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620" onerror="fondoError"/>*@
+	<img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" />
 
     <div class="juego-contenido">
         <div class="perfil-espacio-bottom juego-cabecera">      
@@ -22,10 +22,27 @@
 				<div class="juego-titulo">
 					@Model.juego.Nombre <br/>
 
-					@if (Model.juego.IdSteam > 0)
-					{
-						<div class="juego-versteam-espacio"><a class="juego-boton-pequeño" href="@Herramientas.EnlaceAcortador.Generar("https://store.steampowered.com/app/" + Model.juego.IdSteam.ToString(), "steam")" target="_blank">View on Steam</a></div>
-					}		
+					<div class="juego-sistemas-espacio">
+						@if (@Model.juego.Caracteristicas.Windows == true)
+						{
+							<img src="/imagenes/sistemas/windows.png"/>
+						}
+
+						@if (@Model.juego.Caracteristicas.Mac == true)
+						{
+							<img src="/imagenes/sistemas/mac.png" />
+						}
+
+						@if (@Model.juego.Caracteristicas.Linux == true)
+						{
+							<img src="/imagenes/sistemas/linux.png" />
+						}
+
+						@if (Model.juego.IdSteam > 0)
+						{
+							<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@Herramientas.EnlaceAcortador.Generar("https://store.steampowered.com/app/" + Model.juego.IdSteam.ToString(), "steam")" target="_blank">View on Steam</a>
+						}	
+					</div>
 				</div>
 
 				@if (Model.juego.Analisis != null)
@@ -107,7 +124,16 @@
 				}
 			}
 		}
-		
+
+		@if (Model.juego.Caracteristicas.Descripcion != null)
+		{
+			<div class="perfil perfil-flexible-centrado perfil-espacio-bottom">
+				<div style="width: 100%; padding: 10px;">
+					@WebUtility.HtmlDecode(Model.juego.Caracteristicas.Descripcion)
+				</div>
+			</div>
+		}
+
 		@if (Model.juego.Media != null)
 		{
 			@if (Model.juego.Media.Capturas != null)
@@ -131,14 +157,17 @@
 								<p id="juego-galeria-texto"></p>
 							</div>
 
-							<div class="juego-galeria-fila">
-								@for (int i = 0; i < Model.juego.Media.Capturas.Count; i++)
-								{
-									<div class="juego-galeria-columna">
-										<img class="juego-galeria-capturas juego-galeria-cursor" src="@Model.juego.Media.Capturas[i]" style="width:100%;" onclick="cambiarImagen(@i + 1)">
-									</div>
-								}
-							</div>
+							@if (Model.juego.Media.Miniaturas != null)
+							{
+								<div class="juego-galeria-fila">
+									@for (int i = 0; i < Model.juego.Media.Miniaturas.Count; i++)
+									{
+										<div class="juego-galeria-columna">
+											<img class="juego-galeria-capturas juego-galeria-cursor" src="@Model.juego.Media.Miniaturas[i]" style="width: 100%;" onclick="cambiarImagen(@i + 1)">
+										</div>
+									}
+								</div>
+							}						
 						</div>
 					</div>
 				}

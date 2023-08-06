@@ -1,0 +1,77 @@
+﻿@using BaseDatos.Juegos;
+@using Juegos;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Data.SqlClient;
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (juegosMostrar.Count > 0)
+{
+	<div>
+		@foreach (var juego in juegosMostrar)
+		{
+			<div class="perfil-flexible-centrado perfil-espacio-top">
+				<a class="boton-pequeño" href="/game/@juego.Id" target="_blank">
+					<div class="perfil-flexible-centrado">
+						<div style="width: 10%;">
+							<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+						</div>
+
+						<div style="width: 78%; padding-left: 15px; padding-right: 15px; font-size: 13px;">
+							@juego.Nombre
+
+							@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+							{
+								<br /> @juego.Id
+							}
+						</div>
+
+						<div style="width: 12%; font-size: 13px;">
+							@Juegos.JuegoFicha.BuscadorMinimo(juego)
+						</div>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	List<Juego> juegosMostrar = new List<Juego>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			conexion.Open();
+
+			List<Juego> juegos = Buscar.Todos(conexion);
+
+			if (juegos.Count > 0)
+			{
+				juegos.Sort(delegate (Juego j1, Juego j2)
+				{
+					return j2.Id.CompareTo(j1.Id);
+				});
+
+				int i = 0;
+				foreach (var juego in juegos)
+				{
+					if (i < 50)
+					{
+						juegosMostrar.Add(juego);
+					}
+
+					i += 1;
+				}
+			}
+		}
+	}
+}

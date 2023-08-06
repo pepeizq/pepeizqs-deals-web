@@ -97,15 +97,59 @@ namespace BaseDatos.Tiendas
 
 					if (insertar == true && actualizar == false)
 					{
-						Juegos.Insertar.Ejecutar(juego, conexion);
+						bool insertar2 = true;
+						string buscarJuego2 = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+
+						using (SqlCommand comando = new SqlCommand(buscarJuego2, conexion))
+						{
+							comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
+
+							using (SqlDataReader lector = comando.ExecuteReader())
+							{
+								if (lector.Read() == true)
+								{
+									insertar2 = false;
+								}
+							}
+						}
+
+						if (insertar2 == true)
+						{
+							Juegos.Insertar.Ejecutar(juego, conexion);
+						}					
 					}
 
 					if (actualizar == true && insertar == false)
 					{
+						DateTime fechaComprobacion = juego.FechaSteamAPIComprobacion;
+						fechaComprobacion = fechaComprobacion.AddDays(7);
+
+						if (fechaComprobacion < DateTime.Now)
+						{
+							juego = ActualizarDatosAPI(juego);
+						}
+
 						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
 					}
 				}
 			}
+		}
+
+		private static Juego ActualizarDatosAPI(Juego juego)
+		{
+			if (juego.IdSteam > 0)
+			{
+				Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+				tarea.Wait();
+
+				Juego nuevoJuego = tarea.Result;
+
+				juego.Media = nuevoJuego.Media;
+
+				juego.FechaSteamAPIComprobacion = DateTime.Now;
+			}
+
+			return juego;
 		}
 
 		public static void Resto(List<JuegoPrecio> ofertas, ViewDataDictionary objeto, SqlConnection conexion)

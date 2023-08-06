@@ -7,6 +7,4 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@*@(await Html.RenderComponentAsync<Buscador>(RenderMode.ServerPrerendered))*@
-
-<component type="typeof(Juegos.Juego)" render-mode="Static" />
+@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))

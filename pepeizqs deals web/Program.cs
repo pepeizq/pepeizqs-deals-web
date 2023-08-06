@@ -37,7 +37,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opciones => opciones
         .ForJob(jobKey)
         .WithIdentity("CronGestionador-trigger")
-		.WithSimpleSchedule(x => x.WithIntervalInMinutes(50).RepeatForever())
+		.WithSimpleSchedule(x => x.WithIntervalInMinutes(45).RepeatForever())
 	);
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
