@@ -527,3 +527,33 @@
 .juego-galeria-capturas:hover {
     opacity: 1;
 }
+
+.menu-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-dropdown-contenido {
+    display: none;
+    position: absolute;
+    background-color: var(--fondoOscuro);
+    color: var(--colorTexto);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 0px;
+    z-index: 1;
+}
+
+.menu-dropdown-item {
+    display: block;
+    padding: 8px 15px;
+}
+
+.menu-dropdown:hover .menu-dropdown-contenido {
+    display: block;
+}
+
+.menu-dropdown-contenido a:hover {
+    color: var(--colorTextoHover);
+    background-color: var(--fondoBotonHover);
+}

@@ -7,4 +7,9 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))
+<div class="perfil-flexible-centrado">
+	<div style="width: 50%;">
+		@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))
+	</div>
+</div>
+

@@ -74,7 +74,18 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 //	});
 
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor()
+    .AddHubOptions(options =>
+    {
+        options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+        options.EnableDetailedErrors = false;
+        options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+        options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+        options.MaximumParallelInvocationsPerClient = 1;
+        options.MaximumReceiveMessageSize = 32 * 1024;
+        options.StreamBufferCapacity = 10;
+    });
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 

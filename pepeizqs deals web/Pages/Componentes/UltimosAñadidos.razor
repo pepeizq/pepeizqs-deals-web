@@ -12,14 +12,14 @@
 	<div>
 		@foreach (var juego in juegosMostrar)
 		{
-			<div class="perfil-flexible-centrado perfil-espacio-top">
-				<a class="boton-pequeño" href="/game/@juego.Id" target="_blank">
+			<div class="perfil-flexible-centrado" style="margin-top: 10px;">
+				<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id" target="_blank">
 					<div class="perfil-flexible-centrado">
-						<div style="width: 10%;">
+						<div style="width: 20%;">
 							<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 						</div>
 
-						<div style="width: 78%; padding-left: 15px; padding-right: 15px; font-size: 13px;">
+						<div style="width: 60%; padding: 4px 15px; font-size: 13px;">
 							@juego.Nombre
 
 							@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
@@ -28,7 +28,7 @@
 							}
 						</div>
 
-						<div style="width: 12%; font-size: 13px;">
+						<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
 							@Juegos.JuegoFicha.BuscadorMinimo(juego)
 						</div>
 					</div>
