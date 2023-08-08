@@ -547,6 +547,7 @@
 .menu-dropdown-item {
     display: block;
     padding: 8px 15px;
+    margin: 0px;
 }
 
 .menu-dropdown:hover .menu-dropdown-contenido {

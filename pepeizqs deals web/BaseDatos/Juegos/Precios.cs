@@ -25,7 +25,6 @@ namespace BaseDatos.Juegos
 						{
 							precio.Precio = nuevoPrecio.Precio;
 							precio.Descuento = nuevoPrecio.Descuento;
-							precio.FechaDetectado = nuevoPrecio.FechaDetectado;
 							precio.FechaTermina = nuevoPrecio.FechaTermina;
 							precio.CodigoDescuento = nuevoPrecio.CodigoDescuento;
 							precio.CodigoTexto = nuevoPrecio.CodigoTexto;

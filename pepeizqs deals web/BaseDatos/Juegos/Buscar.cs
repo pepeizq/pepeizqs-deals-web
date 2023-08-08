@@ -90,21 +90,16 @@ namespace BaseDatos.Juegos
         {
             List<Juego> juegos = new List<Juego>();
 
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-			SqlConnection conexion = new SqlConnection(conexionTexto);
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-            using (conexion)
+			using (conexion)
             {
                 conexion.Open();
                 string busqueda = "SELECT * FROM juegos WHERE REPLACE(REPLACE(nombre, '®',''), '™', '') LIKE '%" + nombre.ToLower() + "%'";
-				SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-				using (comando)
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
-					SqlDataReader lector = comando.ExecuteReader();
-
-					using (lector)
+					using (SqlDataReader lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
                         {
@@ -114,32 +109,19 @@ namespace BaseDatos.Juegos
                             juegos.Add(juego);
                         }
                     }
-
-					lector.Close();
                 }
-
-				comando.Dispose();
             }
 
 			conexion.Dispose();
 
 			if (juegos.Count > 0)
 			{
-				juegos.Sort(delegate (Juego j1, Juego j2)
-				{
-					string j1Limpio = j1.Nombre;
-					j1Limpio = j1Limpio.Replace("®", null);
-                    j1Limpio = j1Limpio.Replace("™", null);
-
-                    string j2Limpio = j2.Nombre;
-                    j2Limpio = j2Limpio.Replace("®", null);
-                    j2Limpio = j2Limpio.Replace("™", null);
-
-                    return j1Limpio.CompareTo(j2Limpio);
-				});
+				return juegos.OrderBy(x => x.Nombre)
+							 .ThenBy(x => x.Id)
+							 .ToList();
             }
 
-            return juegos;
+            return null;
         }
 
         public static List<Juego> Todos(SqlConnection conexion)

@@ -12,7 +12,7 @@ namespace Herramientas
             {
 				if (orden == 0)
 				{
-					APIs.Steam.Tienda.BuscarOfertas();
+					APIs.Steam.Tienda.BuscarOfertas(true);
 				}
 				else if (orden == 1)
 				{
@@ -38,7 +38,11 @@ namespace Herramientas
 				{
 					APIs.Fanatical.Tienda.BuscarOfertas();
 				}
-				else if (orden == 7)
+                else if (orden == 7)
+                {
+                    APIs.Steam.Tienda.BuscarOfertas(false);
+                }
+                else if (orden == 8)
 				{
 					Divisas.Ejecutar();
 				}
@@ -55,7 +59,7 @@ namespace Herramientas
 
 			orden += 1;
 
-            if (orden == 8)
+            if (orden == 9)
             {
                 orden = 0;
             }

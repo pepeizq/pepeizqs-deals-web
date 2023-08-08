@@ -35,7 +35,7 @@ namespace APIs.Steam
             return enlace + "?curator_clanid=33500256";
         }
 
-		public static void BuscarOfertas(ViewDataDictionary objeto = null)
+		public static void BuscarOfertas(bool mirarOfertas, ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -47,16 +47,35 @@ namespace APIs.Steam
 
 				int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
+				if (mirarOfertas == false)
+				{
+					numPaginas = 500;
+				}
+
 				if (numPaginas > 0)
 				{
 					int i = 1;
 					while (i <= numPaginas)
 					{
-						Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
-						tarea.Wait();
+						string html = null;
 
-						string html = tarea.Result;
-						tarea.Dispose();
+						if (mirarOfertas == true)
+						{
+                            Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
+                            tarea.Wait();
+
+                            html = tarea.Result;
+                            tarea.Dispose();
+                        }
+						else
+						{
+                            Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&ndl=1&page=" + i.ToString() + "&l=english");
+                            tarea.Wait();
+
+                            html = tarea.Result;
+                            tarea.Dispose();
+                        }
+						
 
 						if (html != null)
 						{

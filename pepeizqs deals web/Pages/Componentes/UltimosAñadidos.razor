@@ -56,10 +56,7 @@
 
 			if (juegos.Count > 0)
 			{
-				juegos.Sort(delegate (Juego j1, Juego j2)
-				{
-					return j2.Id.CompareTo(j1.Id);
-				});
+				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
 
 				int i = 0;
 				foreach (var juego in juegos)

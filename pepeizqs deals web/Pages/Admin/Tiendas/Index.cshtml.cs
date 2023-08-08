@@ -30,7 +30,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 					{
 						if (id == APIs.Steam.Tienda.Generar().Id)
 						{
-							APIs.Steam.Tienda.BuscarOfertas(ViewData);
+							APIs.Steam.Tienda.BuscarOfertas(true, ViewData);
 						}
 						else if (id == APIs.GamersGate.Tienda.Generar().Id)
 						{

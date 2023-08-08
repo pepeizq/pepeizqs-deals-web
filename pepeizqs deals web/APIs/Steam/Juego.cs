@@ -207,6 +207,9 @@ namespace APIs.Steam
 		[JsonProperty("steam_appid")]
 		public string Id { get; set; }
 
+		[JsonProperty("is_free")]
+		public string Free2Play { get; set; }
+
 		[JsonProperty("short_description")]
 		public string DescripcionCorta { get; set; }
 

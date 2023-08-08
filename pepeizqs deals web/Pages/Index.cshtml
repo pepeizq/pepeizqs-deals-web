@@ -8,8 +8,12 @@
 }
 
 <div class="perfil-flexible-centrado">
-	<div style="width: 50%;">
+	<div style="width: 50%; padding: 20px;">
 		@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))
+	</div>
+
+	<div style="width: 50%; padding: 20px;">
+		@(await Html.RenderComponentAsync<Componentes.UltimasOfertas>(RenderMode.ServerPrerendered))
 	</div>
 </div>
 

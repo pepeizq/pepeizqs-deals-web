@@ -44,6 +44,40 @@
 			</div>
 		</div>
 	</div>
+
+	<div style="margin-top: 40px; padding: 10px;">
+		<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+		@if (juegosBuscador.Count > 0)
+		{
+			<div>
+				@foreach (var juego in juegosBuscador)
+				{
+					<div class="perfil-flexible-centrado perfil-espacio-top">
+						<a class="boton-pequeño">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 12%;">
+									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+								</div>
+
+								<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
+									@juego.Id - @juego.Nombre
+								</div>
+
+								<div class="admin-busqueda-juego-derecha">
+									<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
+								</div>
+
+								<div class="admin-busqueda-juego-derecha">
+									<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+								</div>
+							</div>
+						</a>
+					</div>
+				}
+			</div>
+		}
+	</div>
 </div>
 
 @code {
@@ -55,6 +89,7 @@
 	private string nombrePendiente = null;
 	private string enlacePendiente = null;
 	private string idsPendiente = "0";
+	private string cadenaBusqueda = null;
 
 	private void ClickearTienda(MouseEventArgs e, string id)
 	{
@@ -80,7 +115,7 @@
 
 		enlacePendiente = pendiente.enlace;
 
-		idsPendiente = "0";
+		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente);
 	}
 
 	private void ClickearDescartar(MouseEventArgs e, string enlace)
@@ -105,5 +140,48 @@
 	private void TextoCambia(ChangeEventArgs texto)
 	{
 		idsPendiente = texto.Value.ToString();
+	}
+
+	//--------------------------------------------------------------------------------------------
+
+	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			cadenaBusqueda = texto.Value.ToString().Trim();
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void ClickearID(MouseEventArgs e, string id)
+	{
+		if (idsPendiente == null)
+		{
+			idsPendiente = id;
+		}
+		else
+		{
+			if (idsPendiente != "0")
+			{
+				idsPendiente = idsPendiente + "," + id;
+			}
+			else
+			{
+				idsPendiente = id;
+			}
+		}	
+	}
+
+	private void ClickearBorrar(MouseEventArgs e, string id)
+	{
+		BaseDatos.Juegos.Borrar.Ejecutar(id);
+
+		juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
 	}
 }

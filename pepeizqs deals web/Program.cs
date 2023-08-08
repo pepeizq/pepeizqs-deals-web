@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Quartz;
+using static Quartz.Logging.OperationName;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -38,7 +39,8 @@ builder.Services.AddQuartz(q =>
         .ForJob(jobKey)
         .WithIdentity("CronGestionador-trigger")
 		.WithSimpleSchedule(x => x.WithIntervalInMinutes(45).RepeatForever())
-	);
+        //.WithSchedule(CronScheduleBuilder.CronSchedule("0 0/45 * * * ?"))
+    );
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
