@@ -166,15 +166,12 @@ namespace BaseDatos.Tiendas
 			List<int> listaIds = new List<int>();
 
 			string buscarTienda = "SELECT * FROM tienda" + oferta.Tienda + " WHERE enlace=@enlace";
-			SqlCommand comandoBuscar = new SqlCommand(buscarTienda, conexion);
 
-            using (comandoBuscar)
+            using (SqlCommand comandoBuscar = new SqlCommand(buscarTienda, conexion))
 			{
                 comandoBuscar.Parameters.AddWithValue("@enlace", oferta.Enlace);
 
-				SqlDataReader lector = comandoBuscar.ExecuteReader();
-
-                using (lector)
+                using (SqlDataReader lector = comandoBuscar.ExecuteReader())
 				{
 					if (lector.Read() == false)
 					{
@@ -213,14 +210,14 @@ namespace BaseDatos.Tiendas
 			if (insertarTienda == true)
 			{
 				int idBuscarJuego = 0;
+
 				string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
-				SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion);
 
-                using (comandoBuscar2)
+				using (SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion))
 				{
-                    comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
+					comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
 
-                    using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
+					using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
 					{
 						if (lector.Read() == true)
 						{
@@ -232,9 +229,8 @@ namespace BaseDatos.Tiendas
 				string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
 					"(enlace, nombre, imagen, idJuegos, descartado) VALUES " +
 					"(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
-				SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion);
 
-                using (comandoInsertar)
+                using (SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion))
 				{
                     comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
                     comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
@@ -252,7 +248,7 @@ namespace BaseDatos.Tiendas
 					}
 				}
 			}
-
+			
 			if (listaIds.Count > 0)
 			{
 				foreach (int id in listaIds)
@@ -273,6 +269,18 @@ namespace BaseDatos.Tiendas
 
 									juego = Juegos.Cargar.Ejecutar(juego, lector);
 
+									if (juego.PrecioActualesTiendas == null)
+									{
+										juego.PrecioActualesTiendas = new List<JuegoPrecio>();
+										juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
+									}
+
+									if (juego.PrecioActualesTiendas.Count == 0)
+									{
+										juego.PrecioActualesTiendas.Add(oferta);
+										juego.PrecioMinimosHistoricos.Add(oferta);
+									}
+
 									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
 								}
 							}
@@ -292,14 +300,14 @@ namespace BaseDatos.Tiendas
 							{
 								if (lector.Read() == true)
 								{
-									int idBuscarJuego = lector.GetInt32(0);
+									int idBuscarJuego2 = lector.GetInt32(0);
 
 									string sqlActualizar = "UPDATE tienda" + oferta.Tienda + " " +
 											"SET idJuegos=@idJuegos WHERE enlace=@enlace";
 
 									using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 									{
-										comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
+										comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego2);
 										comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
 
 										try

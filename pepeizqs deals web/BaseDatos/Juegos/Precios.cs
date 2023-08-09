@@ -121,49 +121,61 @@ namespace BaseDatos.Juegos
 				{
 					foreach (var juego in juegos)
 					{
-						int posicionActual = 0;
-						bool borrarActual = false;
+						juego.PrecioActualesTiendas.Clear();
+						Juegos.Actualizar.Ejecutar(juego, conexion);
 
-						int i = 0;
-						foreach (var precio in juego.PrecioActualesTiendas)
-						{
-							if (precio.Tienda == tienda)
-							{
-								posicionActual = i;
-								borrarActual = true;
-							}
-							i += 1;
-						}
+						//int posicionActual = 0;
+						//bool borrarActual = false;
 
-						if (borrarActual == true)
-						{
-							juego.PrecioActualesTiendas.RemoveAt(posicionActual);
+						//int i = 0;
+						//foreach (var precio in juego.PrecioActualesTiendas)
+						//{
+						//	if (precio.Tienda == tienda)
+						//	{
+						//		posicionActual = i;
+						//		borrarActual = true;
+						//	}
+						//	i += 1;
+						//}
 
-							Juegos.Actualizar.Ejecutar(juego, conexion);
-						}
+						//if (borrarActual == true)
+						//{
+						//	juego.PrecioActualesTiendas.RemoveAt(posicionActual);
 
-						int posicionHistorico = 0;
-						bool borrarHistorico = false;
+						//	Juegos.Actualizar.Ejecutar(juego, conexion);
+						//}
 
-						int j = 0;
-						foreach (var precio in juego.PrecioMinimosHistoricos)
-						{
-							if (precio.Tienda == tienda)
-							{
-								posicionHistorico = j;
-								borrarHistorico = true;
-							}
-							j += 1;
-						}
+						//int posicionHistorico = 0;
+						//bool borrarHistorico = false;
 
-						if (borrarHistorico == true)
-						{
-							juego.PrecioMinimosHistoricos.RemoveAt(posicionHistorico);
+						//int j = 0;
+						//foreach (var precio in juego.PrecioMinimosHistoricos)
+						//{
+						//	if (precio.Tienda == tienda)
+						//	{
+						//		posicionHistorico = j;
+						//		borrarHistorico = true;
+						//	}
+						//	j += 1;
+						//}
 
-							Juegos.Actualizar.Ejecutar(juego, conexion);
-						}
+						//if (borrarHistorico == true)
+						//{
+						//	juego.PrecioMinimosHistoricos.RemoveAt(posicionHistorico);
+
+						//	Juegos.Actualizar.Ejecutar(juego, conexion);
+						//}
 					}
 				}
+
+				//------------------------------------------------------
+
+				//string limpiar = "TRUNCATE TABLE tienda" + tienda;
+
+				//using (SqlCommand comando = new SqlCommand(limpiar, conexion))
+				//{
+				//	comando.ExecuteNonQuery();
+				//}
 			}
 
 			conexion.Dispose();

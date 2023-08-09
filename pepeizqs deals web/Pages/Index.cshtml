@@ -7,7 +7,7 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="perfil-flexible-centrado">
+<div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
 	<div style="width: 50%; padding: 20px;">
 		@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))
 	</div>

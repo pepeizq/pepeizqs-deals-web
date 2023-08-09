@@ -7,6 +7,7 @@ using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Quartz;
 using static Quartz.Logging.OperationName;
+using Herramientas;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -29,20 +30,23 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 //----------------------------------------------------------------------------------
 //Tareas Cron
 
-builder.Services.AddQuartz(q =>
-{
-    q.UseMicrosoftDependencyInjectionScopedJobFactory();
-    var jobKey = new JobKey("CronGestionador");
-    q.AddJob<Herramientas.CronGestionador>(opciones => opciones.WithIdentity(jobKey));
+//builder.Services.AddQuartz(q =>
+//{
+//    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+//    var jobKey = new JobKey("CronGestionador");
+//    q.AddJob<Herramientas.CronGestionador>(opciones => opciones.WithIdentity(jobKey));
 
-    q.AddTrigger(opciones => opciones
-        .ForJob(jobKey)
-        .WithIdentity("CronGestionador-trigger")
-		.WithSimpleSchedule(x => x.WithIntervalInMinutes(45).RepeatForever())
-        //.WithSchedule(CronScheduleBuilder.CronSchedule("0 0/45 * * * ?"))
-    );
-});
-builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+//    q.AddTrigger(opciones => opciones
+//        .ForJob(jobKey)
+//        .WithIdentity("CronGestionador-trigger")
+//		.WithSimpleSchedule(x => x.WithIntervalInMinutes(50).RepeatForever())
+//        //.WithSchedule(CronScheduleBuilder.CronSchedule("0 0/45 * * * ?"))
+//        //.WithCronSchedule("0 0/45 * * * ?")
+//    );
+//});
+//builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+builder.Services.AddHostedService<TareasGestionador>();
 
 //----------------------------------------------------------------------------------
 //Acceder Usuario en Codigo

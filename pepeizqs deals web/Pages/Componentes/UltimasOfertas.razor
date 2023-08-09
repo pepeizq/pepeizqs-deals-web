@@ -53,43 +53,57 @@
 
 				juegos.Sort(delegate (Juego j1, Juego j2)
 				{
-					List<JuegoPrecio> j1Disponibles = new List<JuegoPrecio>();
+					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
-					if (j1.PrecioActualesTiendas.Count > 0)
+					if (j1.PrecioMinimosHistoricos.Count > 0)
 					{
-						foreach (var drm in JuegoDRM2.GenerarListado())
+						//foreach (var drm in JuegoDRM2.GenerarListado())
+						//{
+						//	foreach (var precio in JuegoFicha.OrdenarPrecios(j1.PrecioMinimosHistoricos, drm.Id, false))
+						//	{
+						//		j1Ofertas.Add(precio);
+						//	}
+						//}
+
+						foreach (var j in j1.PrecioMinimosHistoricos)
 						{
-							foreach (var precio in JuegoFicha.OrdenarPrecios(j1.PrecioActualesTiendas, drm.Id, false))
-							{
-								j1Disponibles.Add(precio);
-							}
+							j1Ofertas.Add(j);
 						}
 					}
 
-					List<JuegoPrecio> j2Disponibles = new List<JuegoPrecio>();
+					j1Ofertas.OrderBy(x => x.FechaDetectado);
 
-					if (j2.PrecioActualesTiendas.Count > 0)
+					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+
+					if (j2.PrecioMinimosHistoricos.Count > 0)
 					{
-						foreach (var drm in JuegoDRM2.GenerarListado())
+						//foreach (var drm in JuegoDRM2.GenerarListado())
+						//{
+						//	foreach (var precio in JuegoFicha.OrdenarPrecios(j2.PrecioMinimosHistoricos, drm.Id, false))
+						//	{
+						//		j2Ofertas.Add(precio);
+						//	}
+						//}
+
+						foreach (var j in j2.PrecioMinimosHistoricos)
 						{
-							foreach (var precio in JuegoFicha.OrdenarPrecios(j2.PrecioActualesTiendas, drm.Id, false))
-							{
-								j2Disponibles.Add(precio);
-							}
+							j2Ofertas.Add(j);
 						}
 					}
 
-					if (j1Disponibles.Count > 0 && j2Disponibles.Count > 0)
+					j2Ofertas.OrderBy(x => x.FechaDetectado);
+
+					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
 					{
-						return j1Disponibles[0].Precio.CompareTo(j2Disponibles[0].Precio);
+						return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
 					}
 					else
 					{
-						if (j1Disponibles.Count == 0 && j2Disponibles.Count > 0)
+						if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
 						{
 							return 1;
 						}
-						else if (j1Disponibles.Count > 0 && j2Disponibles.Count == 0)
+						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
 						{
 							return 0;
 						}

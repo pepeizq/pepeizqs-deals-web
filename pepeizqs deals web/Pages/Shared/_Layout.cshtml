@@ -53,7 +53,6 @@
                                     <div class="menu-dropdown">
                                         <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin</button>
                                         <div class="menu-dropdown-contenido">
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Juegos/Index">Juegos</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Juegos/Añadir">Añadir Juego</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Tiendas/Index">Tiendas</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Pendientes">Pendientes</a>
@@ -91,13 +90,12 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="_framework/blazor.server.js" asp-append-version="true"></script>
 
+    @*Reconectar al servidor*@
     <script>
-        // Wait until a 'reload' button appears
         new MutationObserver((mutations, observer) => {
-            if (document.querySelector('#components-reconnect-modal h5 a')) {
-                // Now every 10 seconds, see if the server appears to be back, and if so, reload
+            if (document.querySelector('#components-reconnect-modal')) {
                 async function attemptReload() {
-                    await fetch(''); // Check the server really is back
+                    await fetch(''); 
                     location.reload();
                 }
                 observer.disconnect();

@@ -69,6 +69,7 @@ namespace Juegos
 		public DateTime FechaTermina { get; set; }
 		public int CodigoDescuento { get; set; }
 		public string CodigoTexto { get; set; }
+		public string SteamID { get; set; }
 	}
 
 	public class JuegoAnalisis

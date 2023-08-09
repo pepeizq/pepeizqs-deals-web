@@ -427,6 +427,7 @@
 
 .juego-descuento-precio {
     display: flex;
+    align-items: center;
 }
 
 .juego-descuento {

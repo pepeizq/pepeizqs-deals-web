@@ -118,6 +118,7 @@ namespace APIs.Steam
 						{
 							precioFormateado = precioFormateado.Replace("€", null);
 							precioFormateado = precioFormateado.Replace(",", ".");
+							precioFormateado = precioFormateado.Replace(".--", ".00");
 						}
 
 						string enlacePrecio = "https://store.steampowered.com/app/" + datos.Datos.Id;

@@ -14,7 +14,8 @@
 				APIs.Gamesplanet.Tienda.GenerarFr(),
 				APIs.Gamesplanet.Tienda.GenerarDe(),
 				APIs.Gamesplanet.Tienda.GenerarUs(),
-				APIs.Fanatical.Tienda.Generar()
+				APIs.Fanatical.Tienda.Generar(),
+				APIs.GreenManGaming.Tienda.Generar()
 			};
 
 			return tiendas;

@@ -3,11 +3,36 @@
 
 @using Herramientas
 @using Juegos
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
 @using System.Net;
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 @{
 	ViewData["Title"] = Model.juego.Nombre;
 	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
+	{
+		<div style="margin-bottom: 80px; margin-left: -10px; width: 100%; display: flex; align-items: center;">
+			<a class="juego-boton-pequeño" href="/Admin/Juegos/Editar?id=@Model.juego.Id" target="_blank">Editar Juego</a>
+
+			@if (Model.juego.IdSteam > 0)
+			{
+				<div style="margin-left: 20px; font-size: 14px;">Steam ID: @Model.juego.IdSteam</div>
+			}
+
+			@if (Model.juego.IdGog > 0)
+			{
+				<div style="margin-left: 20px; font-size: 14px;">GOG ID: @Model.juego.IdGog</div>
+			}
+		</div>	
+	}
 }
 
 <div class="juego-wrap">
@@ -83,7 +108,7 @@
 						<div class="perfil juego-drm-imagen">
 							@if (drm == JuegoDRM.DRMFree)
 							{
-								<div style="font-weight: bold;font-size: 18px;">DRM Free</div>
+								<div style="font-weight: bold; font-size: 18px;">DRM Free</div>
 							}
 							else
 							{
@@ -103,6 +128,10 @@
 											<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
 											<div class="juego-descuento-precio">
+												<div style="font-size: 14px; margin: 20px;">
+													@Calculadora.HaceTiempo(precio.FechaDetectado)
+												</div>
+												
 												<div class="juego-descuento">
 													@precio.Descuento.ToString()%
 												</div>

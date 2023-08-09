@@ -56,17 +56,21 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 						{
 							APIs.Fanatical.Tienda.BuscarOfertas(ViewData);
 						}
+						else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
+						{
+							APIs.GreenManGaming.Tienda.BuscarOfertas(ViewData);
+						}
 
 						if (id == "divisas")
 						{
 							Divisas.Ejecutar();
 						}
 
-						///Admin/Tiendas?id=
+						///Admin/Tiendas?id=limpiar&tienda=
 
 						if (id == "limpiar")
 						{
-							BaseDatos.Juegos.Precios.Limpiar(tienda);
+							//BaseDatos.Juegos.Precios.Limpiar(tienda);
 						}
 					}
 				}

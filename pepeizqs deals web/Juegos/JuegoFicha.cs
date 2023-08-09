@@ -53,7 +53,24 @@ namespace Juegos
 
 								if (nuevoPrecio.Descuento > 0)
 								{
-									preciosOrdenados.Add(nuevoPrecio);
+									bool enlace = true;
+
+									if (preciosOrdenados.Count > 0)
+									{
+										foreach (var ordenado in preciosOrdenados)
+										{
+											if (ordenado.Enlace == nuevoPrecio.Enlace)
+											{
+												enlace = false;
+												break;
+											}
+										}
+									}
+
+									if (enlace == true) 
+									{
+										preciosOrdenados.Add(nuevoPrecio);
+									}								
 								}				
 							}						
 						}

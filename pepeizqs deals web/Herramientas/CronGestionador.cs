@@ -7,8 +7,17 @@ namespace Herramientas
         public Task Execute(IJobExecutionContext contexto)
         {
 			int orden = global::BaseDatos.Tiendas.Admin.CronLeerOrden();
-	
-            try
+
+			orden += 1;
+
+			if (orden == 9)
+			{
+				orden = -1;
+			}
+
+			global::BaseDatos.Tiendas.Admin.CronAumentarOrden(orden);
+
+			try
             {
 				if (orden == 0)
 				{
@@ -38,10 +47,14 @@ namespace Herramientas
 				{
 					APIs.Fanatical.Tienda.BuscarOfertas();
 				}
-                else if (orden == 7)
-                {
-                    APIs.Steam.Tienda.BuscarOfertas(false);
-                }
+				else if (orden == 7)
+				{
+					APIs.GreenManGaming.Tienda.BuscarOfertas();
+				}
+				//else if (orden == 8)
+    //            {
+    //                APIs.Steam.Tienda.BuscarOfertas(false);
+    //            }
                 else if (orden == 8)
 				{
 					Divisas.Ejecutar();
@@ -56,15 +69,6 @@ namespace Herramientas
 					RefireImmediately = true
 				};
 			}
-
-			orden += 1;
-
-            if (orden == 9)
-            {
-                orden = 0;
-            }
-
-			global::BaseDatos.Tiendas.Admin.CronAumentarOrden(orden);
 
             return Task.FromResult(true);
         }
