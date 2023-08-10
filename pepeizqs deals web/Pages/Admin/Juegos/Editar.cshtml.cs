@@ -5,6 +5,8 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text;
 
 namespace pepeizqs_deals_web.Pages.Admin.Juegos
 {
@@ -58,7 +60,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
                 using (SqlConnection conexion = new SqlConnection(conexionTexto))
 				{
 					conexion.Open();
-					String seleccionarJuego = sqlBuscar;
+					string seleccionarJuego = sqlBuscar;
 
 					using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
 					{
@@ -104,8 +106,11 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						}
 					}
 
+					Encoding Utf8 = Encoding.UTF8;
+					byte[] utf8Bytes = Utf8.GetBytes(Request.Form["nombre"]);
+					string nombreJuego = Utf8.GetString(utf8Bytes);
 
-					juegoEditar.Nombre = Request.Form["nombre"];
+					juegoEditar.Nombre = nombreJuego;
 					juegoEditar.Tipo = Enum.Parse<JuegoTipo>(Request.Form["tipo"]);
 					juegoEditar.FechaSteamAPIComprobacion = DateTime.Parse(Request.Form["fechacomprobacion"]);
 

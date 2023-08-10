@@ -153,17 +153,17 @@ namespace APIs.Fanatical
 															oferta.FechaTermina = fechaTermina;
 														}
 													}
+													
+													BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 													juegos2 += 1;
-													BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 												}
 											}
 										}
 									}
 								}
 							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " juegos detectados", conexion);
 						}
 					}
 				}

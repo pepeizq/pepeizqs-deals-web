@@ -3,6 +3,7 @@
 using Herramientas;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Text;
 
 namespace APIs.Steam
 {
@@ -83,10 +84,14 @@ namespace APIs.Steam
 
 					//------------------------------------------------------
 
+					Encoding Utf8 = Encoding.UTF8;
+					byte[] utf8Bytes = Utf8.GetBytes(datos.Datos.Nombre);
+					string nombre = Utf8.GetString(utf8Bytes);
+
 					Juegos.Juego juego = new Juegos.Juego
 					{
 						IdSteam = int.Parse(datos.Datos.Id),
-						Nombre = datos.Datos.Nombre,
+						Nombre = nombre,
 						Imagenes = imagenes,
 						Caracteristicas = caracteristicas,
 						Media = media,

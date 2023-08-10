@@ -16,6 +16,7 @@
   <ItemGroup>
     <None Remove="BaseDatos\Juegos\Precios.cs~RF662827a9.TMP" />
     <None Remove="Herramientas\Divisas.cs~RF419ed6bf.TMP" />
+    <None Remove="Herramientas\TareasGestionador.cs~RF6a54dce4.TMP" />
     <None Remove="Pages\Componentes\Buscador.razor~RF47a2b634.TMP" />
   </ItemGroup>
 

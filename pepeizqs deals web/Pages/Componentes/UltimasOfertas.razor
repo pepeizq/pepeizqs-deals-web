@@ -44,54 +44,31 @@
 
 			if (juegos.Count > 0)
 			{
-				//juegos = juegos.OrderBy(x => x.PrecioMinimosHistoricos?.OrderBy(y => y.Precio).Reverse()).ToList();
-
-
-				//juegos.OrderByDescending(x => x.PrecioActualesTiendas.Min(y => y.FechaDetectado))
-				//			.ThenBy(x => x.PrecioActualesTiendas.Min(y => y.Precio))
-				//			.ToList();
-
 				juegos.Sort(delegate (Juego j1, Juego j2)
 				{
 					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
 					if (j1.PrecioMinimosHistoricos.Count > 0)
 					{
-						//foreach (var drm in JuegoDRM2.GenerarListado())
-						//{
-						//	foreach (var precio in JuegoFicha.OrdenarPrecios(j1.PrecioMinimosHistoricos, drm.Id, false))
-						//	{
-						//		j1Ofertas.Add(precio);
-						//	}
-						//}
-
 						foreach (var j in j1.PrecioMinimosHistoricos)
 						{
 							j1Ofertas.Add(j);
 						}
-					}
 
-					j1Ofertas.OrderBy(x => x.FechaDetectado);
+						j1Ofertas.OrderBy(x => x.FechaDetectado);
+					}
 
 					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
 					if (j2.PrecioMinimosHistoricos.Count > 0)
 					{
-						//foreach (var drm in JuegoDRM2.GenerarListado())
-						//{
-						//	foreach (var precio in JuegoFicha.OrdenarPrecios(j2.PrecioMinimosHistoricos, drm.Id, false))
-						//	{
-						//		j2Ofertas.Add(precio);
-						//	}
-						//}
-
 						foreach (var j in j2.PrecioMinimosHistoricos)
 						{
 							j2Ofertas.Add(j);
 						}
-					}
 
-					j2Ofertas.OrderBy(x => x.FechaDetectado);
+						j2Ofertas.OrderBy(x => x.FechaDetectado);
+					}
 
 					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
 					{
@@ -105,7 +82,7 @@
 						}
 						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
 						{
-							return 0;
+							return -1;
 						}
 					}
 

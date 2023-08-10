@@ -115,6 +115,8 @@ namespace APIs.Gamesplanet
 					{
 						if (listaJuegos.Juegos != null)
 						{
+							int juegos2 = 0;
+
 							if (listaJuegos.Juegos.Count > 0)
 							{
 								foreach (GamesplanetJuego juego in listaJuegos.Juegos)
@@ -148,11 +150,12 @@ namespace APIs.Gamesplanet
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
-							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
+							}			
 						}
 					}
 				}
@@ -194,6 +197,8 @@ namespace APIs.Gamesplanet
 						{
 							if (listaJuegos.Juegos.Count > 0)
 							{
+								int juegos2 = 0;
+
 								foreach (GamesplanetJuego juego in listaJuegos.Juegos)
 								{
 									string nombre = WebUtility.HtmlDecode(juego.Nombre);
@@ -225,11 +230,12 @@ namespace APIs.Gamesplanet
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
-							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
+							}		
 						}
 					}
 				}
@@ -271,6 +277,8 @@ namespace APIs.Gamesplanet
 						{
 							if (listaJuegos.Juegos.Count > 0)
 							{
+								int juegos2 = 0;
+
 								foreach (GamesplanetJuego juego in listaJuegos.Juegos)
 								{
 									string nombre = WebUtility.HtmlDecode(juego.Nombre);
@@ -302,11 +310,14 @@ namespace APIs.Gamesplanet
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
 							}
 
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
+							
 						}
 					}
 				}
@@ -348,6 +359,8 @@ namespace APIs.Gamesplanet
 						{
 							if (listaJuegos.Juegos.Count > 0)
 							{
+								int juegos2 = 0;
+
 								foreach (GamesplanetJuego juego in listaJuegos.Juegos)
 								{
 									string nombre = WebUtility.HtmlDecode(juego.Nombre);
@@ -379,11 +392,12 @@ namespace APIs.Gamesplanet
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
 							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
 						}
 					}
 				}

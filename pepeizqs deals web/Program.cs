@@ -46,7 +46,9 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 //});
 //builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
-builder.Services.AddHostedService<TareasGestionador>();
+builder.Services.AddSingleton<TareasGestionador>();
+builder.Services.AddHostedService(
+	provider => provider.GetRequiredService<TareasGestionador>());
 
 //----------------------------------------------------------------------------------
 //Acceder Usuario en Codigo

@@ -185,15 +185,14 @@ namespace APIs.Humble
 
 										if (ofertas.Count > 0)
 										{
-											juegos2 += 1;
-
 											BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto, conexion);
+
+											juegos2 += 1;
+											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 										}
 									}
 								}
-							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " juegos detectados", conexion);
+							}		
 						}
 
 						if (juegos != null)

@@ -53,21 +53,21 @@ namespace Juegos
 
 								if (nuevoPrecio.Descuento > 0)
 								{
-									bool enlace = true;
+									bool verificacionFinal = true;
 
 									if (preciosOrdenados.Count > 0)
 									{
 										foreach (var ordenado in preciosOrdenados)
 										{
-											if (ordenado.Enlace == nuevoPrecio.Enlace)
+											if (ordenado.Enlace == nuevoPrecio.Enlace && ordenado.Tienda == nuevoPrecio.Tienda && ordenado.DRM == nuevoPrecio.DRM)
 											{
-												enlace = false;
+												verificacionFinal = false;
 												break;
 											}
 										}
 									}
 
-									if (enlace == true) 
+									if (verificacionFinal == true) 
 									{
 										preciosOrdenados.Add(nuevoPrecio);
 									}								
@@ -256,7 +256,16 @@ namespace Juegos
 			if (precio > 0)
 			{
 				precioTexto = precio.ToString();
-				precioTexto = precioTexto.Replace(".", ",") + "€";
+				precioTexto = precioTexto.Replace(".", ",");
+
+				int int1 = precioTexto.IndexOf(",");
+
+				if (int1 == precioTexto.Length - 2)
+				{
+					precioTexto = precioTexto + "0";
+				}
+
+				precioTexto = precioTexto + "€";
 			}
 
             return precioTexto;

@@ -268,9 +268,10 @@ namespace APIs.Steam
 															FechaDetectado = DateTime.Now
 														};
 
-														juegos += 1;
-
 														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
+
+														juegos += 1;
+														BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion);
 													}
 												}
 											}
@@ -281,8 +282,6 @@ namespace APIs.Steam
 								}
 							}
 						}
-
-						BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " juegos detectados", conexion);
 
 						i += 1;
 					}

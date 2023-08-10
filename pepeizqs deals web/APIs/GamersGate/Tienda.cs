@@ -62,6 +62,8 @@ namespace APIs.GamersGate
 						{
 							if (listaJuegos.Juegos.Count > 0)
 							{
+								int juegos2 = 0;
+
 								foreach (GamersGateJuego juego in listaJuegos.Juegos)
 								{
 									string nombre = WebUtility.HtmlDecode(juego.Nombre);
@@ -99,11 +101,12 @@ namespace APIs.GamersGate
 										}
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
 							}
-
-							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, listaJuegos.Juegos.Count.ToString() + " juegos detectados", conexion);
 						}
 					}
 				}
