@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas\Pendientes.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
   </ItemGroup>
 
@@ -40,7 +41,6 @@
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Quartz.AspNetCore" Version="3.6.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +49,10 @@
 
   <ItemGroup>
     <None Include="Pages\Admin\Pendientes.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\LastAdded.cshtml" />
   </ItemGroup>
 
 </Project>

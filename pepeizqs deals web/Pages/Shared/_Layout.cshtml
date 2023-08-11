@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/resto.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/pepeizqs_deals_web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -35,7 +36,15 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light cabecera">
             <div class="container">
-                <a class="texto-logo" asp-area="" asp-page="/Index">pepeizq's deals</a>
+                <div class="menu-dropdown">
+                    <button class="texto-cabecera" style="border: 0px; margin-left: 0px; margin-right: 30px;"><i class="fa-solid fa-bars" style="font-size: 20px; line-height: 40px;"></i></button>
+                    <div class="menu-dropdown-contenido">
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/HistoricalLow">Historical Lows</a>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/LastAdded">Last Added</a>
+                    </div>
+                </div>
+
+                <a class="texto-logo" style="line-height: 40px;" asp-area="" asp-page="/Index">pepeizq's deals</a>
 
                 @*Resolucion pequeña*@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -49,7 +58,7 @@
                         {
                             @if (await UsuarioCoger.RolDios(UserManager, User) == true)
                             {
-                                <li class="nav-item" style="margin-right: 20px;">
+                                <li class="nav-item" style="margin-right: 30px;">
                                     <div class="menu-dropdown">
                                         <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin</button>
                                         <div class="menu-dropdown-contenido">
@@ -63,7 +72,10 @@
                         }
 
                         <li class="nav-item">
-                            @(await Html.RenderComponentAsync<Componentes.Buscador>(RenderMode.ServerPrerendered))
+                            <div style="display: flex; flex-direction: row; align-items: center;">
+                                <i class="fa-solid fa-magnifying-glass" style="margin-right: 15px;"></i>
+                                @(await Html.RenderComponentAsync<Componentes.Buscador>(RenderMode.ServerPrerendered))
+                            </div>
                         </li> 
                     </ul>
                 </div>
@@ -92,17 +104,17 @@
 
     @*Reconectar al servidor*@
     <script>
-        new MutationObserver((mutations, observer) => {
-            if (document.querySelector('#components-reconnect-modal')) {
-                async function attemptReload() {
-                    await fetch(''); 
-                    location.reload();
-                }
-                observer.disconnect();
-                attemptReload();
-                setInterval(attemptReload, 10000);
-            }
-        }).observe(document.body, { childList: true, subtree: true });
+        // new MutationObserver((mutations, observer) => {
+        //     if (document.querySelector('#components-reconnect-modal')) {
+        //         async function attemptReload() {
+        //             await fetch(''); 
+        //             location.reload();
+        //         }
+        //         observer.disconnect();
+        //         attemptReload();
+        //         setInterval(attemptReload, 10000);
+        //     }
+        // }).observe(document.body, { childList: true, subtree: true });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

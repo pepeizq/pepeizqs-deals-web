@@ -214,32 +214,46 @@ namespace Juegos
 			return drmPreparado;
 		}
 
-		public static string BuscadorMinimo(Juego juego)
+		private static JuegoPrecio CargarMinimo(Juego juego)
 		{
 			List<JuegoDRM> drms = JuegoDRM2.CargarDRMs();
-			decimal minimo = 10000000;
-			
+			decimal minimoCantidad = 10000000;
+			JuegoPrecio minimoFinal = new JuegoPrecio();
+
 			foreach (var drm in drms)
 			{
-                List<JuegoPrecio> ordenados = OrdenarPrecios(juego.PrecioActualesTiendas, drm, true);
+				List<JuegoPrecio> ordenados = OrdenarPrecios(juego.PrecioActualesTiendas, drm, true);
 
 				if (ordenados.Count > 0)
 				{
 					foreach (var precio in ordenados)
 					{
-						if (precio.Precio < minimo)
+						if (precio.Precio < minimoCantidad)
 						{
-							minimo = precio.Precio;
+							minimoCantidad = precio.Precio;
+							minimoFinal = precio;
 						}
 					}
 				}
-            }
+			}
+
+			return minimoFinal;
+		}
+
+		public static string MostrarMinimoPrecio(Juego juego, bool incluirDesde)
+		{
+			JuegoPrecio oferta = CargarMinimo(juego);
 
 			string mensaje = string.Empty;
 
-            if (minimo != 10000000)
+            if (oferta.Precio > 0)
 			{
-                mensaje = "From " + PrepararPrecio(minimo, JuegoMoneda.Euro);
+				if (incluirDesde == true)
+				{
+					mensaje = "From ";
+				}
+
+                mensaje = mensaje + PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
             }
 			else
 			{
@@ -247,6 +261,26 @@ namespace Juegos
             }
 			
 			return mensaje;
+		}
+
+		public static string MostrarMinimoTienda(Juego juego)
+		{
+			JuegoPrecio oferta = CargarMinimo(juego);
+
+			if (oferta.Precio > 0)
+			{
+				List<Tienda> tiendas = TiendasCargar.GenerarListado();
+
+				foreach (var tienda in tiendas)
+				{
+					if (tienda.Id == oferta.Tienda)
+					{
+						return tienda.ImagenIcono;
+					}
+				}
+			}
+
+			return null;
 		}
 
 		public static string PrepararPrecio(decimal precio, JuegoMoneda moneda)

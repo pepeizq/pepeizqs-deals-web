@@ -136,28 +136,23 @@ namespace BaseDatos.Tiendas
 			return mensaje;
 		}
 
-		public static int CronLeerOrden()
+		public static int TareaLeerOrden()
 		{
 			int orden = 0;
 
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-            SqlConnection conexion = new SqlConnection(conexionTexto);
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
             {
                 conexion.Open();
 
-                string seleccionarJuego = "SELECT * FROM cronGestionador WHERE id=@id";
-                SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
+                string seleccionarTarea = "SELECT * FROM cronGestionador WHERE id=@id";
 
-                using (comando)
+                using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
                 {
                     comando.Parameters.AddWithValue("@id", "0");
 
-                    SqlDataReader lector = comando.ExecuteReader();
-
-                    using (lector)
+                    using (SqlDataReader lector = comando.ExecuteReader())
                     {
                         if (lector.Read() == true)
                         {
@@ -167,14 +162,45 @@ namespace BaseDatos.Tiendas
                 }
             }
 
+			conexion.Dispose();
+
 			return orden;
         }
 
-		public static void CronAumentarOrden(int orden)
+		public static DateTime TareaLeerTienda(string tienda)
 		{
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-            SqlConnection conexion = new SqlConnection(conexionTexto);
+            DateTime fecha = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                conexion.Open();
+
+                string seleccionarTienda = "SELECT * FROM adminTiendas WHERE id=@id";
+
+                using (SqlCommand comando = new SqlCommand(seleccionarTienda, conexion))
+                {
+                    comando.Parameters.AddWithValue("@id", tienda);
+
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        if (lector.Read() == true)
+                        {
+                            fecha = Convert.ToDateTime(lector.GetString(1));
+                        }
+                    }
+                }
+            }
+
+            conexion.Dispose();
+
+			return fecha;
+        }
+
+		public static void TareaCambiarOrden(int orden)
+		{
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
             {
@@ -183,9 +209,7 @@ namespace BaseDatos.Tiendas
                 string sqlActualizar = "UPDATE cronGestionador " +
                             "SET id=@id, posicion=@posicion WHERE id=@id";
 
-                SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
-
-                using (comando)
+                using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
                 {
                     comando.Parameters.AddWithValue("@id", "0");
                     comando.Parameters.AddWithValue("@posicion", orden);
@@ -202,6 +226,8 @@ namespace BaseDatos.Tiendas
                     }
                 }
             }
+
+			conexion.Dispose();
         }
     }
 }

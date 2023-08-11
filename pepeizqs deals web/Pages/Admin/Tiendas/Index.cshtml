@@ -17,57 +17,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		<div class="perfil perfil-espacio-bottom">
-			<form method="post">
-				@foreach (Tienda tienda in TiendasCargar.GenerarListado())
-				{
-					@if (tienda.AdminEnseñar == true)
-					{
-						<div class="perfil-flexible-centrado">
-							<div style="width: 50%;">
-								@if (tienda.AdminInteractuar == true)
-								{
-									<button class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);" id="@tienda.Id" asp-route-id="@tienda.Id" type="submit"></button>
-								}
-								else
-								{
-									<p class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80); background-color: transparent;" id="@tienda.Id" asp-route-id="@tienda.Id"></p>
-								}					
-							</div>
-							<div style="width: 45%;">
-								<div class="admin-tiempohace">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
-							</div>
-						</div>
-					}
-				}
-			</form>
-		</div>
-
-		<div class="perfil perfil-espacio-bottom">
-			@ViewData["Mensaje"]
-		</div>
-
-		<div class="perfil perfil-espacio-bottom">
-			<form method="post">
-				<div class="perfil-flexible-centrado">
-					<div style="width: 20%;">
-						<button class="boton-pequeño" style="text-align: center;" id="divisas" asp-route-id="divisas" type="submit">Actualizar</button>
-					</div>
-					<div style="width: 75%;">
-						<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
-					</div>
-				</div>
-			</form>
-		</div>
-		
-@*		<div class="perfil">
-			<form method="post">
-				<button class="boton-pequeño admin-boton-imagen-300x80" id="test" asp-route-id="test" type="submit">Test</button>
-			</form>
-		</div>*@
+		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.Server))
 	}
-}
-
-@section Scripts {
-	<partial name="_ValidationScriptsPartial" />
 }

@@ -8,12 +8,16 @@
 }
 
 <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
-	<div style="width: 50%; padding: 20px;">
-		@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))
+	<div style="width: 50%;">
+		@(await Html.RenderComponentAsync<Componentes.Portada.UltimosMinimos>(RenderMode.ServerPrerendered))
+
+		<div style="margin: 50px;"></div>
+
+		@(await Html.RenderComponentAsync<Componentes.Portada.UltimosAñadidos>(RenderMode.ServerPrerendered))
 	</div>
 
-	<div style="width: 50%; padding: 20px;">
-		@(await Html.RenderComponentAsync<Componentes.UltimasOfertas>(RenderMode.ServerPrerendered))
+	<div style="width: 50%;">
+		
 	</div>
 </div>
 

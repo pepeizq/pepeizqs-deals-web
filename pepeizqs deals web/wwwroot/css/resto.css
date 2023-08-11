@@ -247,7 +247,6 @@
     padding: 40px;
     height: 60px;
     width: 100%;
-    margin: 15px;
 }
 
 .admin-grid {
@@ -558,4 +557,25 @@
 .menu-dropdown-contenido a:hover {
     color: var(--colorTextoHover);
     background-color: var(--fondoBotonHover);
+}
+
+.juego-icono-tienda {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.components-reconnect-show, .components-reconnect-failed, .components-reconnect-rejected {
+    display: none;
+}
+
+#components-reconnect-modal {
+    display: none;
 }

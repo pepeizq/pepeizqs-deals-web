@@ -4,7 +4,11 @@
 
 @if (juegosMostrar.Count > 0)
 {
-	<div>
+	<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
+		Last Historical Lows
+	</div>
+
+	<div class="perfil" style="padding: 15px 20px;">
 		@foreach (var juego in juegosMostrar)
 		{
 			<div class="perfil-flexible-centrado" style="margin-top: 10px;">
@@ -14,17 +18,25 @@
 							<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 						</div>
 
-						<div style="width: 60%; padding: 4px 15px; font-size: 13px;">
+						<div style="width: 70%; padding: 4px 15px; font-size: 13px;">
 							@juego.Nombre
 						</div>
 
-						<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
-							@Juegos.JuegoFicha.BuscadorMinimo(juego)
+						<div style="width: 5%; height: 16px; position: relative;">
+							<img src="@Juegos.JuegoFicha.MostrarMinimoTienda(juego)" class="juego-icono-tienda"/>
+						</div>
+
+						<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
+							@Juegos.JuegoFicha.MostrarMinimoPrecio(juego, false)
 						</div>
 					</div>
 				</a>
 			</div>
 		}
+
+		<a class="boton-pequeño" style="padding: 10px 15px; margin-top: 20px; margin-bottom: 5px;" href="/HistoricalLow">
+			Load more historical lows
+		</a>
 	</div>
 }
 
@@ -92,7 +104,7 @@
 				int i = 0;
 				foreach (var juego in juegos)
 				{
-					if (i < 50)
+					if (i < 10)
 					{
 						juegosMostrar.Add(juego);
 					}

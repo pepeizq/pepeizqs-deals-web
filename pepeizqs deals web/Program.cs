@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Quartz;
-using static Quartz.Logging.OperationName;
 using Herramientas;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,27 +26,11 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
 
 //----------------------------------------------------------------------------------
-//Tareas Cron
+//Tareas
 
-//builder.Services.AddQuartz(q =>
-//{
-//    q.UseMicrosoftDependencyInjectionScopedJobFactory();
-//    var jobKey = new JobKey("CronGestionador");
-//    q.AddJob<Herramientas.CronGestionador>(opciones => opciones.WithIdentity(jobKey));
-
-//    q.AddTrigger(opciones => opciones
-//        .ForJob(jobKey)
-//        .WithIdentity("CronGestionador-trigger")
-//		.WithSimpleSchedule(x => x.WithIntervalInMinutes(50).RepeatForever())
-//        //.WithSchedule(CronScheduleBuilder.CronSchedule("0 0/45 * * * ?"))
-//        //.WithCronSchedule("0 0/45 * * * ?")
-//    );
-//});
-//builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
-builder.Services.AddSingleton<TareasGestionador>();
-builder.Services.AddHostedService(
-	provider => provider.GetRequiredService<TareasGestionador>());
+builder.Services.AddHostedService<TimedHostedService>();
+builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
+builder.Services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
 
 //----------------------------------------------------------------------------------
 //Acceder Usuario en Codigo
@@ -82,17 +64,17 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 //	});
 
-builder.Services.AddServerSideBlazor()
-    .AddHubOptions(options =>
-    {
-        options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-        options.EnableDetailedErrors = false;
-        options.HandshakeTimeout = TimeSpan.FromSeconds(15);
-        options.KeepAliveInterval = TimeSpan.FromSeconds(15);
-        options.MaximumParallelInvocationsPerClient = 1;
-        options.MaximumReceiveMessageSize = 32 * 1024;
-        options.StreamBufferCapacity = 10;
-    });
+//builder.Services.AddServerSideBlazor()
+//    .AddHubOptions(options =>
+//    {
+//        options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//        options.EnableDetailedErrors = false;
+//        options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+//        options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//        options.MaximumParallelInvocationsPerClient = 1;
+//        options.MaximumReceiveMessageSize = 32 * 1024;
+//        options.StreamBufferCapacity = 10;
+//    });
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
