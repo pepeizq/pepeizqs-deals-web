@@ -35,7 +35,7 @@ namespace APIs.Steam
             return enlace + "?curator_clanid=33500256";
         }
 
-		public static void BuscarOfertas(bool mirarOfertas, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(bool mirarOfertas, ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -45,7 +45,7 @@ namespace APIs.Steam
 
 				int juegos = 0;
 
-				int numPaginas = GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
+				int numPaginas = await GenerarNumPaginas("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=1&l=english");
 
 				if (mirarOfertas == false)
 				{
@@ -61,22 +61,13 @@ namespace APIs.Steam
 
 						if (mirarOfertas == true)
 						{
-                            Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
-                            tarea.Wait();
-
-                            html = tarea.Result;
-                            tarea.Dispose();
+                            html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&specials=1&ndl=1&page=" + i.ToString() + "&l=english");
                         }
 						else
 						{
-                            Task<string> tarea = Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&ndl=1&page=" + i.ToString() + "&l=english");
-                            tarea.Wait();
-
-                            html = tarea.Result;
-                            tarea.Dispose();
+                            html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&ndl=1&page=" + i.ToString() + "&l=english");
                         }
 						
-
 						if (html != null)
 						{
 							if (html.Contains("<!-- List Items -->") == false)
@@ -291,14 +282,11 @@ namespace APIs.Steam
             conexion.Dispose();	
 		}
 
-        public static int GenerarNumPaginas(string enlace)
+        public static async Task<int> GenerarNumPaginas(string enlace)
         {
             int numPaginas = 0;
 
-			Task<string> tarea = Decompiladores.Estandar(enlace);
-			tarea.Wait();
-
-			string html = tarea.Result;
+			string html = await Decompiladores.Estandar(enlace);
 
 			if (html != null)
             {

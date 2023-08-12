@@ -33,7 +33,7 @@ namespace APIs.GreenManGaming
 			return enlace + "?tap_a=1964-996bbb&tap_s=608263-a851ee";
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -41,10 +41,7 @@ namespace APIs.GreenManGaming
 			{
 				conexion.Open();
 
-				Task<string> tarea = Decompiladores.Estandar("https://api.greenmangaming.com/api/productfeed/prices/current?cc=es&cur=eur&lang=en");
-				tarea.Wait();
-
-				string html = tarea.Result;
+				string html = await Decompiladores.Estandar("https://api.greenmangaming.com/api/productfeed/prices/current?cc=es&cur=eur&lang=en");
 
 				if (html != null)
 				{

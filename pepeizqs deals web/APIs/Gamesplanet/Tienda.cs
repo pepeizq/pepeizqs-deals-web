@@ -84,7 +84,7 @@ namespace APIs.Gamesplanet
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static void BuscarOfertasUk(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasUk(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -92,11 +92,7 @@ namespace APIs.Gamesplanet
             {
                 conexion.Open();
 
-				Task<string> tareauk = Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
-				tareauk.Wait();
-
-				string htmluk = tareauk.Result;
-				tareauk.Dispose();
+				string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmluk != null)
 				{
@@ -164,7 +160,7 @@ namespace APIs.Gamesplanet
             conexion.Dispose();		
         }
 
-        public static void BuscarOfertasFr(ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertasFr(ViewDataDictionary objeto = null)
         {
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -172,11 +168,7 @@ namespace APIs.Gamesplanet
             {
                 conexion.Open();
 
-				Task<string> tareafr = Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
-				tareafr.Wait();
-
-				string htmlfr = tareafr.Result;
-				tareafr.Dispose();
+				string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlfr != null)
 				{
@@ -244,7 +236,7 @@ namespace APIs.Gamesplanet
             conexion.Dispose();
         }
 
-		public static void BuscarOfertasDe(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasDe(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -252,11 +244,7 @@ namespace APIs.Gamesplanet
 			{
 				conexion.Open();
 
-				Task<string> tareade = Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
-				tareade.Wait();
-
-				string htmlde = tareade.Result;
-				tareade.Dispose();
+				string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlde != null)
 				{
@@ -326,7 +314,7 @@ namespace APIs.Gamesplanet
 			conexion.Dispose();
         }
 
-		public static void BuscarOfertasUs(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasUs(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -334,11 +322,7 @@ namespace APIs.Gamesplanet
 			{
 				conexion.Open();
 
-				Task<string> tareaus = Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
-				tareaus.Wait();
-
-				string htmlus = tareaus.Result;
-				tareaus.Dispose();
+				string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlus != null)
 				{

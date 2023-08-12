@@ -13,11 +13,11 @@
 		{
 			@if (tienda.AdminEnseñar == true)
 			{
-				<div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15x;">
+				<div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15px;">
 					<div style="width: 50%;">
 						@if (tienda.AdminInteractuar == true)
 						{
-							<button @onclick="@(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);"></button>
+							<button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);"></button>
 						}
 						else
 						{
@@ -36,7 +36,7 @@
 		<form method="post">
 			<div class="perfil-flexible-centrado">
 				<div style="width: 25%;">
-					<button class="boton-pequeño" style="text-align: center;" id="divisas" asp-route-id="divisas" type="submit">Actualizar</button>
+					<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 				</div>
 				<div style="width: 75%; padding-left: 20px;">
 					<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
@@ -49,56 +49,55 @@
 
 @code {
 
-	private void ClickearTienda(MouseEventArgs e, string id)
+	#nullable disable
+
+	private async void ClickearTienda(MouseEventArgs e, string id)
 	{
 		if (id != null)
 		{
-			if (id.Length > 0)
+			if (id == APIs.Steam.Tienda.Generar().Id)
 			{
-				if (id == APIs.Steam.Tienda.Generar().Id)
-				{
-					APIs.Steam.Tienda.BuscarOfertas(true);
-				}
-				else if (id == APIs.GamersGate.Tienda.Generar().Id)
-				{
-					APIs.GamersGate.Tienda.BuscarOfertas();
-				}
-				else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
-				{
-					APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-				}
-				else if (id == APIs.Gamesplanet.Tienda.GenerarFr().Id)
-				{
-					APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-				}
-				else if (id == APIs.Gamesplanet.Tienda.GenerarDe().Id)
-				{
-					APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-				}
-				else if (id == APIs.Gamesplanet.Tienda.GenerarUs().Id)
-				{
-					APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-				}
-				else if (id == APIs.Fanatical.Tienda.Generar().Id)
-				{
-					APIs.Fanatical.Tienda.BuscarOfertas();
-				}
-				else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
-				{
-					APIs.GreenManGaming.Tienda.BuscarOfertas();
-				}
+				await APIs.Steam.Tienda.BuscarOfertas(true);
+			}
+			else if (id == APIs.GamersGate.Tienda.Generar().Id)
+			{
+				await APIs.GamersGate.Tienda.BuscarOfertas();
+			}
+			else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
+			{
+				await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
+			}
+			else if (id == APIs.Gamesplanet.Tienda.GenerarFr().Id)
+			{
+				await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
+			}
+			else if (id == APIs.Gamesplanet.Tienda.GenerarDe().Id)
+			{
+				await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
+			}
+			else if (id == APIs.Gamesplanet.Tienda.GenerarUs().Id)
+			{
+				await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
+			}
+			else if (id == APIs.Fanatical.Tienda.Generar().Id)
+			{
+				await APIs.Fanatical.Tienda.BuscarOfertas();
+			}
+			else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
+			{
+				await APIs.GreenManGaming.Tienda.BuscarOfertas();
+			}
 
-				if (id == "divisas")
-				{
-					Herramientas.Divisas.Ejecutar();
-				}
+			if (id == "divisas")
+			{
+				Herramientas.Divisas.CogerDatos();
+			}
 
-				///Admin/Tiendas?id=limpiar&tienda=
+			///Admin/Tiendas?id=limpiar&tienda=
 
-				if (id == "limpiar")
-				{
-					//BaseDatos.Juegos.Precios.Limpiar(tienda);
-				}
+			if (id == "limpiar")
+			{
+				//BaseDatos.Juegos.Precios.Limpiar(tienda);
 			}
 		}
 	}

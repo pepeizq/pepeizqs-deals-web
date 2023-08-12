@@ -14,7 +14,7 @@ namespace Herramientas
 
 	public static class Divisas
 	{
-		public static void Ejecutar()
+		public static void CogerDatos()
 		{
 			XmlDocument documento = new XmlDocument();
 

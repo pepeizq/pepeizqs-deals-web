@@ -17,8 +17,7 @@ namespace Herramientas
 		{
 			_logger.LogInformation("Timed Hosted Service running.");
 
-			_timer = new Timer(DoWork, null, TimeSpan.Zero,
-				TimeSpan.FromSeconds(5));
+			_timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
 
 			return Task.CompletedTask;
 		}
@@ -53,7 +52,7 @@ namespace Herramientas
 
 	internal class ScopedProcessingService : IScopedProcessingService
 	{
-		private TimeSpan tiempo = TimeSpan.FromMinutes(50);
+		private TimeSpan tiempo = TimeSpan.FromMinutes(90);
 		private readonly ILogger _logger;
 
 		public ScopedProcessingService(ILogger<ScopedProcessingService> logger)
@@ -61,7 +60,7 @@ namespace Herramientas
 			_logger = logger;
 		}
 
-		private void HacerTarea()
+		private async void HacerTarea()
 		{
 			
 			int orden = global::BaseDatos.Tiendas.Admin.TareaLeerOrden();
@@ -74,7 +73,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Steam.Tienda.BuscarOfertas(true);
+						await APIs.Steam.Tienda.BuscarOfertas(true);
 					}
 				}
 				else if (orden == 1)
@@ -83,7 +82,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.GamersGate.Tienda.BuscarOfertas();
+						await APIs.GamersGate.Tienda.BuscarOfertas();
 					}
 				}
 				else if (orden == 2)
@@ -92,7 +91,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Gamesplanet.Tienda.BuscarOfertasUk();
+						await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
 					}
 				}
 				else if (orden == 3)
@@ -101,7 +100,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Gamesplanet.Tienda.BuscarOfertasFr();
+						await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
 					}
 				}
 				else if (orden == 4)
@@ -110,7 +109,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Gamesplanet.Tienda.BuscarOfertasDe();
+						await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
 					}
 				}
 				else if (orden == 5)
@@ -119,7 +118,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Gamesplanet.Tienda.BuscarOfertasUs();
+						await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
 					}
 				}
 				else if (orden == 6)
@@ -128,7 +127,7 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.Fanatical.Tienda.BuscarOfertas();
+						await APIs.Fanatical.Tienda.BuscarOfertas();
 					}
 				}
 				else if (orden == 7)
@@ -137,12 +136,12 @@ namespace Herramientas
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
 					{
-						APIs.GreenManGaming.Tienda.BuscarOfertas();
+						await APIs.GreenManGaming.Tienda.BuscarOfertas();
 					}
 				}
 				else if (orden == 8)
 				{
-					Divisas.Ejecutar();
+					Divisas.CogerDatos();
 				}
 			}
 			catch

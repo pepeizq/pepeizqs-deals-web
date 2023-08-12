@@ -1,9 +1,8 @@
 ﻿@page
-@model pepeizqs_deals_web.Pages.Admin.Tiendas.IndexModel
+@model pepeizqs_deals_web.Pages.Admin.TiendasModel
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
-@using Tiendas2
 
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
@@ -17,6 +16,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.Server))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.ServerPrerendered))
 	}
 }

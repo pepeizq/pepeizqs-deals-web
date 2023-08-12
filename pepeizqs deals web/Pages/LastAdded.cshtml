@@ -2,8 +2,8 @@
 @model pepeizqs_deals_web.Pages.LastAddedModel
 
 @{
-	ViewData["Title"] = "Latest games added to the web";
+	ViewData["Title"] = "Latest Games Added";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-test
+@(await Html.RenderComponentAsync<Componentes.UltimosAñadidos>(RenderMode.ServerPrerendered))

@@ -39,7 +39,7 @@ namespace APIs.Fanatical
 			return enlace + "?ref=pepeizq&refer_a_friend=NTYxZGE0NThkM2IwNTA5YzM4OGM0MDE1";
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -47,10 +47,7 @@ namespace APIs.Fanatical
 			{
 				conexion.Open();
 
-				Task<string> tarea = Decompiladores.Estandar("https://feed.fanatical.com/feed");
-				tarea.Wait();
-
-				string html = tarea.Result;
+				string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
 
 				if (html != null)
 				{

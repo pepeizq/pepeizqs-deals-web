@@ -1,6 +1,11 @@
 ﻿.cabecera {
     height: 70px;
     background-color: var(--fondoOscuro);
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    padding: 14px;
 }
 
 .cuerpo {
@@ -11,7 +16,7 @@
 }
 
 .cuerpo-espacio {
-    padding: 40px 10px 60px 10px;
+    padding: 110px 10px 60px 10px;
 }
 
 .pie {

@@ -33,7 +33,7 @@ namespace APIs.GamersGate
 			return enlace + "?aff=6704538";
 		}
 
-		public static void BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -41,10 +41,7 @@ namespace APIs.GamersGate
 			{
 				conexion.Open();
 
-				Task<string> tarea = Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
-				tarea.Wait();
-
-				string html = tarea.Result;
+				string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 
 				if (html != null)
 				{

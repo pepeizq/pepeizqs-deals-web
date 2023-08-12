@@ -44,7 +44,7 @@
 
 	List<Juego> juegosMostrar = new List<Juego>();
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 

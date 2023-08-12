@@ -80,8 +80,16 @@ namespace Juegos
 			
 			if (preciosOrdenados.Count > 0)
 			{
-				preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2) { 
-					return p1.Precio.CompareTo(p2.Precio); 
+				preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
+				{
+					if (p1.Precio == p2.Precio) 
+					{
+						return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
+					}
+					else
+					{
+						return p1.Precio.CompareTo(p2.Precio);
+					}	
 				});
 			}
 
