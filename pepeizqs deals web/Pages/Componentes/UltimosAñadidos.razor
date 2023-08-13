@@ -1,5 +1,6 @@
 ﻿@using BaseDatos.Juegos;
 @using Juegos;
+@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -9,6 +10,11 @@
 
 @if (juegosMostrar.Count > 0)
 {
+	<div style="position: fixed; z-index: 1; margin-top: -40px; width: 100%; left: 0;">
+		<button @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; font-size: 22px; text-align: center; margin: 40px; left: 0; position: fixed;"><i class="fa-solid fa-chevron-left"></i></button>
+		<button @onclick="ClickearAdelante" class="boton-pequeño" style="width: 50px; font-size: 22px; text-align: center; margin: 40px; right: 0; position: fixed;"><i class="fa-solid fa-chevron-right"></i></button>
+	</div>
+
 	<div class="perfil" style="padding: 15px 20px;">
 		@foreach (var juego in juegosMostrar)
 		{
@@ -42,10 +48,21 @@
 
 	#nullable disable
 
-	List<Juego> juegos = new List<Juego>();
-	List<Juego> juegosMostrar = new List<Juego>();
+	private List<Juego> juegos = new List<Juego>();
+	private List<Juego> juegosMostrar = new List<Juego>();
 
-	protected override async Task OnInitializedAsync()
+	private int minimo = 0;
+	private int maximo = 0;
+
+	protected override void OnInitialized()
+	{
+		minimo = 0;
+		maximo = 50;
+
+		CargarJuegos(minimo, maximo);
+	}
+
+	private void CargarJuegos(int minimo2, int maximo2)
 	{
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -58,18 +75,37 @@
 			if (juegos.Count > 0)
 			{
 				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
+				juegosMostrar.Clear();
 
-				int i = 0;
-				foreach (Juego juego in juegos)
+				for (int i = minimo2; i < maximo2; i += 1)
 				{
-					if (i < 50)
-					{
-						juegosMostrar.Add(juego);
-					}
+					juegosMostrar.Add(juegos[i]);
 
 					i += 1;
 				}
 			}
 		}
+	}
+
+	private void ClickearAdelante()
+	{
+		if (minimo + 50 < juegos.Count && maximo + 50 < juegos.Count)
+		{
+			minimo = minimo + 50;
+			maximo = maximo + 50;
+		}
+
+		CargarJuegos(minimo, maximo);
+	}
+
+	private void ClickearAtras()
+	{
+		if (minimo - 50 >= 0 && maximo - 50 >= 0)
+		{
+			minimo = minimo - 50;
+			maximo = maximo - 50;
+		}
+
+		CargarJuegos(minimo, maximo);
 	}
 }
