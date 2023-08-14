@@ -45,38 +45,30 @@ namespace APIs.Steam
                 conexion.Open();
 
 				int juegos = 0;
+				int tope = 10000;
 
-				for (int i = 0; i < 8000; i += 50)
+				for (int i = 0; i < tope; i += 50)
 				{
-					//BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, i.ToString(), conexion);
-
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&l=english");
-					SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
-					string html = datos.Html;
+					string html = null;
 
 					if (mirarOfertas == true)
 					{
+						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&l=english");
+						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+						html = datos.Html;
 
+						tope = int.Parse(datos.Total);
 					}
 					else
 					{
-						html = await Decompiladores.Estandar("https://store.steampowered.com/search/?cc=fr&supportedlang=english&category1=998%2C21&ndl=1&page=" + i.ToString() + "&l=english");
+						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&hidef2p=1&ndl=1&infinite=1&l=english");
+						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+						html = datos.Html;
 					}
 
 					if (html != null)
 					{
-						if (html.Contains("<!-- List Items -->") == false)
-						{
-							//if (i < numPaginas - 10)
-							//{
-							//    i -= 1;
-							//}
-							//else
-							//{
-							//    break;
-							//}
-						}
-						else
+						if (html.Contains("<!-- List Items -->") == true)
 						{
 							int int1 = html.IndexOf("<!-- List Items -->");
 							html = html.Remove(0, int1);
@@ -204,7 +196,7 @@ namespace APIs.Steam
 												descuento = int.Parse(temp12.Trim());
 											}
 
-											if (descuento > 0)
+											if (descuento >= 0)
 											{
 												int int13 = temp4.IndexOf(Strings.ChrW(34) + "discount_final_price" + Strings.ChrW(34));
 												string temp13 = temp4.Remove(0, int13);
@@ -250,7 +242,7 @@ namespace APIs.Steam
 														FechaDetectado = DateTime.Now
 													};
 
-													//BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
+													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
 
 													juegos += 1;
 													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion);

@@ -89,6 +89,7 @@ namespace APIs.GreenManGaming
 											Tienda = Generar().Id,
 											DRM = drm,
 											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now,
 											SteamID = juego.SteamId
 										};
 

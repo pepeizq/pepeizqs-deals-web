@@ -30,7 +30,7 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 
 builder.Services.AddHostedService<TimedHostedService>();
 builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
-builder.Services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
+builder.Services.AddScoped<IServicioHacerTarea, ServicioHacerTarea>();
 
 //----------------------------------------------------------------------------------
 //Acceder Usuario en Codigo

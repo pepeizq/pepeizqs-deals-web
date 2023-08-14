@@ -6,7 +6,7 @@ namespace Herramientas
 	{
 		private int executionCount = 0;
 		private readonly ILogger<TimedHostedService> _logger;
-		private Timer? _timer = null;
+		private Timer _timer = null;
 
 		public TimedHostedService(ILogger<TimedHostedService> logger)
 		{
@@ -22,12 +22,11 @@ namespace Herramientas
 			return Task.CompletedTask;
 		}
 
-		private void DoWork(object? state)
+		private void DoWork(object state)
 		{
 			var count = Interlocked.Increment(ref executionCount);
 
-			_logger.LogInformation(
-				"Timed Hosted Service is working. Count: {Count}", count);
+			_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
 		}
 
 		public Task StopAsync(CancellationToken stoppingToken)
@@ -45,17 +44,17 @@ namespace Herramientas
 		}
 	}
 
-	internal interface IScopedProcessingService
+	internal interface IServicioHacerTarea
 	{
 		Task DoWork(CancellationToken stoppingToken);
 	}
 
-	internal class ScopedProcessingService : IScopedProcessingService
+	internal class ServicioHacerTarea : IServicioHacerTarea
 	{
-		private TimeSpan tiempo = TimeSpan.FromMinutes(90);
+		private TimeSpan tiempoEntreTareas = TimeSpan.FromMinutes(90);
 		private readonly ILogger _logger;
 
-		public ScopedProcessingService(ILogger<ScopedProcessingService> logger)
+		public ServicioHacerTarea(ILogger<ServicioHacerTarea> logger)
 		{
 			_logger = logger;
 		}
@@ -71,7 +70,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Steam.Tienda.Generar().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Steam.Tienda.BuscarOfertas(true);
 					}
@@ -80,7 +79,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.GamersGate.Tienda.Generar().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.GamersGate.Tienda.BuscarOfertas();
 					}
@@ -89,7 +88,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUk().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
 					}
@@ -98,7 +97,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarFr().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
 					}
@@ -107,7 +106,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarDe().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
 					}
@@ -116,7 +115,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUs().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
 					}
@@ -125,7 +124,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Fanatical.Tienda.Generar().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.Fanatical.Tienda.BuscarOfertas();
 					}
@@ -134,7 +133,7 @@ namespace Herramientas
 				{
 					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.GreenManGaming.Tienda.Generar().Id);
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
 						await APIs.GreenManGaming.Tienda.BuscarOfertas();
 					}
@@ -161,13 +160,13 @@ namespace Herramientas
 			//_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
 		}
 
-		public async Task DoWork(CancellationToken stoppingToken)
+		public async Task DoWork(CancellationToken pararToken)
 		{
-			while (!stoppingToken.IsCancellationRequested)
+			while (!pararToken.IsCancellationRequested)
 			{
 				HacerTarea();
 
-				await Task.Delay(tiempo, stoppingToken);
+				await Task.Delay(tiempoEntreTareas, pararToken);
 			}
 		}
 	}
@@ -187,33 +186,28 @@ namespace Herramientas
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
-			_logger.LogInformation(
-				"Consume Scoped Service Hosted Service running.");
+			_logger.LogInformation("Consume Scoped Service Hosted Service running.");
 
 			await DoWork(stoppingToken);
 		}
 
-		private async Task DoWork(CancellationToken stoppingToken)
+		private async Task DoWork(CancellationToken pararToken)
 		{
-			_logger.LogInformation(
-				"Consume Scoped Service Hosted Service is working.");
+			_logger.LogInformation("Consume Scoped Service Hosted Service is working.");
 
 			using (var scope = Services.CreateScope())
 			{
-				var scopedProcessingService =
-					scope.ServiceProvider
-						.GetRequiredService<IScopedProcessingService>();
+				var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IServicioHacerTarea>();
 
-				await scopedProcessingService.DoWork(stoppingToken);
+				await scopedProcessingService.DoWork(pararToken);
 			}
 		}
 
-		public override async Task StopAsync(CancellationToken stoppingToken)
+		public override async Task StopAsync(CancellationToken pararToken)
 		{
-			_logger.LogInformation(
-				"Consume Scoped Service Hosted Service is stopping.");
+			_logger.LogInformation("Consume Scoped Service Hosted Service is stopping.");
 
-			await base.StopAsync(stoppingToken);
+			await base.StopAsync(pararToken);
 		}
 	}
 

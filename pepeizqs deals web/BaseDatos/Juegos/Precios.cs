@@ -25,6 +25,7 @@ namespace BaseDatos.Juegos
 						{
 							precio.Precio = nuevoPrecio.Precio;
 							precio.Descuento = nuevoPrecio.Descuento;
+							precio.FechaActualizacion = nuevoPrecio.FechaActualizacion;
 							precio.FechaTermina = nuevoPrecio.FechaTermina;
 							precio.CodigoDescuento = nuevoPrecio.CodigoDescuento;
 							precio.CodigoTexto = nuevoPrecio.CodigoTexto;
@@ -76,6 +77,7 @@ namespace BaseDatos.Juegos
 											minimo.Moneda = precio.Moneda;
 											minimo.Descuento = precio.Descuento;
 											minimo.FechaDetectado = precio.FechaDetectado;
+											minimo.FechaActualizacion = precio.FechaActualizacion;
 											minimo.FechaTermina = precio.FechaTermina;
 											minimo.CodigoDescuento = precio.CodigoDescuento;
 											minimo.CodigoTexto = precio.CodigoTexto;

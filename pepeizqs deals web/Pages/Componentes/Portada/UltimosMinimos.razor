@@ -23,11 +23,11 @@
 						</div>
 
 						<div style="width: 5%; height: 16px; position: relative;">
-							<img src="@Juegos.JuegoFicha.MostrarMinimoTienda(juego)" class="juego-icono-tienda"/>
+							<img src="@Juegos.JuegoFicha.IconoMinimoActual(juego)" class="juego-icono-tienda"/>
 						</div>
 
 						<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
-							@Juegos.JuegoFicha.MostrarMinimoPrecio(juego, false)
+							@Juegos.JuegoFicha.MensajeMinimoActual(juego, false)
 						</div>
 					</div>
 				</a>
@@ -56,7 +56,26 @@
 
 			if (juegos.Count > 0)
 			{
-				juegos.Sort(delegate (Juego j1, Juego j2)
+				List<Juego> juegosConMinimos = new List<Juego>();
+
+				foreach (var juego in juegos)
+				{
+					if (juego.PrecioMinimosHistoricos.Count > 0)
+					{
+						foreach (var minimo in juego.PrecioMinimosHistoricos)
+						{
+							bool fechaEncaja = Herramientas.Precios.CalcularAntiguedad(minimo);
+
+							if (fechaEncaja == true)
+							{
+								juegosConMinimos.Add(juego);
+								break;
+							}
+						}
+					}
+				}
+
+				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
 				{
 					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
@@ -102,7 +121,7 @@
 				});
 
 				int i = 0;
-				foreach (var juego in juegos)
+				foreach (var juego in juegosConMinimos)
 				{
 					if (i < 10)
 					{

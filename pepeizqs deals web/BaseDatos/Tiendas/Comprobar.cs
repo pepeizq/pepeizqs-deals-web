@@ -8,7 +8,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto, SqlConnection conexion)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto, SqlConnection conexion)
 		{
 			Juego juego = JuegoCrear.Generar();
 
@@ -50,10 +50,7 @@ namespace BaseDatos.Tiendas
 							{
 								try
 								{
-									Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(idSteam);
-									tarea.Wait();
-
-									juego = tarea.Result;
+									juego = await APIs.Steam.Juego.CargarDatos(idSteam);
 								}
 								catch
 								{
@@ -121,12 +118,12 @@ namespace BaseDatos.Tiendas
 
 					if (actualizar == true && insertar == false)
 					{
-						DateTime fechaComprobacion = juego.FechaSteamAPIComprobacion;
+						DateTime fechaComprobacion = Convert.ToDateTime(juego.FechaSteamAPIComprobacion);
 						fechaComprobacion = fechaComprobacion.AddDays(7);
 
 						if (fechaComprobacion < DateTime.Now)
 						{
-							juego = ActualizarDatosAPI(juego);
+							juego = await ActualizarDatosAPI(juego);
 						}
 
 						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
@@ -135,15 +132,13 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static Juego ActualizarDatosAPI(Juego juego)
+		private static async Task<Juego> ActualizarDatosAPI(Juego juego)
 		{
 			if (juego.IdSteam > 0)
 			{
-				Task<Juego> tarea = APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-				tarea.Wait();
+				Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
-				Juego nuevoJuego = tarea.Result;
-
+				juego.Nombre = nuevoJuego.Nombre;
 				juego.Media = nuevoJuego.Media;
 
 				juego.FechaSteamAPIComprobacion = DateTime.Now;

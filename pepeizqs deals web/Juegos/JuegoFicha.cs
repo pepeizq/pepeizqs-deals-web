@@ -19,22 +19,7 @@ namespace Juegos
 					{
 						if (precio.DRM == drm)
 						{
-							bool fechaEncaja = true;
-
-							if (precio.FechaTermina.Year > 2022)
-							{
-								if (DateTime.Now > precio.FechaTermina)
-								{
-									fechaEncaja = false;
-								}
-							}
-							else
-							{
-								if (precio.FechaDetectado.DayOfYear + 1 < DateTime.Now.DayOfYear)
-								{
-									fechaEncaja = false;
-								}
-							}
+							bool fechaEncaja = Precios.CalcularAntiguedad(precio);
 							
 							if (fechaEncaja == true)
 							{
@@ -222,7 +207,7 @@ namespace Juegos
 			return drmPreparado;
 		}
 
-		private static JuegoPrecio CargarMinimo(Juego juego)
+		private static JuegoPrecio CargarMinimoActual(Juego juego)
 		{
 			List<JuegoDRM> drms = JuegoDRM2.CargarDRMs();
 			decimal minimoCantidad = 10000000;
@@ -242,52 +227,62 @@ namespace Juegos
 							minimoFinal = precio;
 						}
 					}
+
+					return minimoFinal;
 				}
 			}
 
-			return minimoFinal;
+			return null;
 		}
 
-		public static string MostrarMinimoPrecio(Juego juego, bool incluirDesde)
+		public static string MensajeMinimoActual(Juego juego, bool incluirDesde)
 		{
-			JuegoPrecio oferta = CargarMinimo(juego);
+			JuegoPrecio oferta = CargarMinimoActual(juego);
 
-			string mensaje = string.Empty;
-
-            if (oferta.Precio > 0)
+			if (oferta != null)
 			{
-				if (incluirDesde == true)
+				string mensaje = string.Empty;
+
+				if (oferta.Precio > 0)
 				{
-					mensaje = "From ";
+					if (incluirDesde == true)
+					{
+						mensaje = "From ";
+					}
+
+					mensaje = mensaje + PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
+				}
+				else
+				{
+					mensaje = "Not in Sale";
 				}
 
-                mensaje = mensaje + PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
-            }
-			else
-			{
-                mensaje = "Not in Sale";
-            }
+				return mensaje;
+			}
 			
-			return mensaje;
+			return null;
 		}
 
-		public static string MostrarMinimoTienda(Juego juego)
+		public static string IconoMinimoActual(Juego juego)
 		{
-			JuegoPrecio oferta = CargarMinimo(juego);
+			JuegoPrecio oferta = CargarMinimoActual(juego);
 
-			if (oferta.Precio > 0)
+			if (oferta != null) 
 			{
-				List<Tienda> tiendas = TiendasCargar.GenerarListado();
-
-				foreach (var tienda in tiendas)
+				if (oferta.Precio > 0)
 				{
-					if (tienda.Id == oferta.Tienda)
+					List<Tienda> tiendas = TiendasCargar.GenerarListado();
+
+					foreach (var tienda in tiendas)
 					{
-						return tienda.ImagenIcono;
+						if (tienda.Id == oferta.Tienda)
+						{
+							return tienda.ImagenIcono;
+						}
 					}
 				}
 			}
-
+			
 			return null;
 		}
 

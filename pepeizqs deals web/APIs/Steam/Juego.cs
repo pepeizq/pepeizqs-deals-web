@@ -135,6 +135,7 @@ namespace APIs.Steam
 							Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
 							Moneda = JuegoMoneda.Euro,
 							FechaDetectado = DateTime.Now,
+							FechaActualizacion = DateTime.Now,
 							Enlace = enlacePrecio,
 							Tienda = "steam"
 						};

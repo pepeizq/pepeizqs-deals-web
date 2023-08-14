@@ -136,7 +136,8 @@ namespace APIs.Fanatical
 														Descuento = descuento,
 														Tienda = Generar().Id,
 														DRM = drm,
-														FechaDetectado = DateTime.Now
+														FechaDetectado = DateTime.Now,
+														FechaActualizacion = DateTime.Now
 													};
 
 													if (juego.FechaTermina != null)

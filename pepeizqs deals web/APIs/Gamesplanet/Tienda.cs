@@ -142,7 +142,8 @@ namespace APIs.Gamesplanet
 											Descuento = descuento,
 											Tienda = GenerarUk().Id,
 											DRM = drm,
-											FechaDetectado = DateTime.Now
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
@@ -218,7 +219,8 @@ namespace APIs.Gamesplanet
 											Descuento = descuento,
 											Tienda = GenerarFr().Id,
 											DRM = drm,
-											FechaDetectado = DateTime.Now
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
@@ -294,7 +296,8 @@ namespace APIs.Gamesplanet
 											Descuento = descuento,
 											Tienda = GenerarDe().Id,
 											DRM = drm,
-											FechaDetectado = DateTime.Now
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
@@ -372,7 +375,8 @@ namespace APIs.Gamesplanet
 											Descuento = descuento,
 											Tienda = GenerarUs().Id,
 											DRM = drm,
-											FechaDetectado = DateTime.Now
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
 										};
 
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);

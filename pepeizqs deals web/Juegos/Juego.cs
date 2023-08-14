@@ -66,6 +66,7 @@ namespace Juegos
 		public JuegoMoneda Moneda { get; set; }
 		public string Tienda { get; set; }
 		public DateTime FechaDetectado { get; set; }
+		public DateTime FechaActualizacion { get; set; }
 		public DateTime FechaTermina { get; set; }
 		public int CodigoDescuento { get; set; }
 		public string CodigoTexto { get; set; }
