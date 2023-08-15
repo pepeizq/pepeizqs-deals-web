@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
-@using pepeizqs_deals_web.Areas.Identity.Data
+@using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
@@ -59,11 +59,6 @@
 		minimo = 0;
 		maximo = 50;
 
-		CargarJuegos(minimo, maximo);
-	}
-
-	private void CargarJuegos(int minimo2, int maximo2)
-	{
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
@@ -75,15 +70,19 @@
 			if (juegos.Count > 0)
 			{
 				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
-				juegosMostrar.Clear();
-
-				for (int i = minimo2; i < maximo2; i += 1)
-				{
-					juegosMostrar.Add(juegos[i]);
-
-					i += 1;
-				}
 			}
+		}
+
+		CargarJuegos(minimo, maximo);
+	}
+
+	private void CargarJuegos(int minimo2, int maximo2)
+	{
+		juegosMostrar.Clear();
+
+		for (int i = minimo2; i < maximo2; i += 1)
+		{
+			juegosMostrar.Add(juegos[i]);
 		}
 	}
 

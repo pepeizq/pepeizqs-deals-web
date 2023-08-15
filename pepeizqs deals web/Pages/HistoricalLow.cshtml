@@ -1,4 +1,9 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.HistoricalLowModel
+
 @{
+	ViewData["Title"] = "Historical Lows in Games";
+	Layout = "/Pages/Shared/_Layout.cshtml";
 }
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosMinimos2>(RenderMode.ServerPrerendered))

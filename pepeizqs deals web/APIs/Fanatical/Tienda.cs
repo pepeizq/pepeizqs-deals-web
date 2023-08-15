@@ -36,7 +36,7 @@ namespace APIs.Fanatical
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?ref=pepeizq&refer_a_friend=NTYxZGE0NThkM2IwNTA5YzM4OGM0MDE1";
+			return enlace + "?ref=pepeizq";
 		}
 
 		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)

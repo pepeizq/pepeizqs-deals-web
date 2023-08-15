@@ -52,7 +52,7 @@ namespace BaseDatos.Juegos
 			{
 				foreach (JuegoPrecio precio in juego.PrecioActualesTiendas)
 				{
-					if (precio.FechaDetectado.DayOfYear + 2 > DateTime.Now.DayOfYear)
+					if (precio.FechaActualizacion.DayOfYear + 2 > DateTime.Now.DayOfYear)
 					{
 						bool drmEncontrado = false;
 
