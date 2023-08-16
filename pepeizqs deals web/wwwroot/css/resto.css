@@ -521,6 +521,8 @@
 
 .juego-galeria-capturas {
     opacity: 0.6;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
 }
 
 .juego-galeria-activo,
@@ -538,8 +540,8 @@
     position: absolute;
     background-color: var(--fondoOscuro);
     color: var(--colorTexto);
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
     padding: 0px;
     z-index: 1;
 }
@@ -570,12 +572,4 @@
     left: 0;
     right: 0;
     margin: auto;
-}
-
-.components-reconnect-show, .components-reconnect-failed, .components-reconnect-rejected {
-    display: none;
-}
-
-#components-reconnect-modal {
-    display: none;
 }

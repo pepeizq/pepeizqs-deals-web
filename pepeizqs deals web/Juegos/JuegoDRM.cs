@@ -38,7 +38,7 @@ namespace Juegos
 
 			DRM gog = new DRM
 			{
-				Id = JuegoDRM.DRMFree,
+				Id = JuegoDRM.GOG,
 				Nombre = "GOG",
 				Imagen = "/imagenes/drm/gog.png",
 				Acepciones = new List<string> { "gog", "gog galaxy" }

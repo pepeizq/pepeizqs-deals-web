@@ -155,7 +155,7 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion)
+		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null)
 		{
 			bool insertarTienda = false;
 			List<int> listaIds = new List<int>();
@@ -274,6 +274,14 @@ namespace BaseDatos.Tiendas
 									{
 										juego.PrecioActualesTiendas.Add(oferta);
 										juego.PrecioMinimosHistoricos.Add(oferta);
+									}
+
+									if (juego.IdGog == 0)
+									{
+										if (idGog != null)
+										{
+											juego.IdGog = int.Parse(idGog);
+										}
 									}
 
 									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);

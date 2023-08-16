@@ -59,98 +59,15 @@ namespace Herramientas
 			_logger = logger;
 		}
 
-		private async void HacerTarea()
-		{
-			
+		private void HacerTarea()
+		{		
 			int orden = global::BaseDatos.Tiendas.Admin.TareaLeerOrden();
 
-			try
-			{
-				if (orden == 0)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Steam.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Steam.Tienda.BuscarOfertas(true);
-					}
-				}
-				else if (orden == 1)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.GamersGate.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.GamersGate.Tienda.BuscarOfertas();
-					}
-				}
-				else if (orden == 2)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUk().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-					}
-				}
-				else if (orden == 3)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarFr().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-					}
-				}
-				else if (orden == 4)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarDe().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-					}
-				}
-				else if (orden == 5)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUs().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-					}
-				}
-				else if (orden == 6)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.Fanatical.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.Fanatical.Tienda.BuscarOfertas();
-					}
-				}
-				else if (orden == 7)
-				{
-					DateTime ultimaComprobacion = global::BaseDatos.Tiendas.Admin.TareaLeerTienda(APIs.GreenManGaming.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						await APIs.GreenManGaming.Tienda.BuscarOfertas();
-					}
-				}
-				else if (orden == 8)
-				{
-					Divisas.CogerDatos();
-				}
-			}
-			catch
-			{
-
-			}
-
+			Tiendas2.TiendasCargar.TareasGestionador(orden, tiempoEntreTareas);
+			
 			orden += 1;
 
-			if (orden == 9)
+			if (orden + 1 > Tiendas2.TiendasCargar.GenerarListado().Count)
 			{
 				orden = 0;
 			}

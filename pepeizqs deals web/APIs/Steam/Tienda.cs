@@ -239,7 +239,8 @@ namespace APIs.Steam
 														Precio = precio,
 														Moneda = JuegoMoneda.Euro,
 														Enlace = enlace,
-														FechaDetectado = DateTime.Now
+														FechaDetectado = DateTime.Now,
+														FechaActualizacion = DateTime.Now
 													};
 
 													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);

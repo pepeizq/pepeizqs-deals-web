@@ -167,8 +167,9 @@ namespace APIs.Humble
 														Descuento = descuentoChoice,
 														Tienda = GenerarChoice().Id,
 														DRM = drm,
-														FechaDetectado = DateTime.Now
-													};
+														FechaDetectado = DateTime.Now,
+                                                        FechaActualizacion = DateTime.Now
+                                                    };
 
 													if (juego.FechaTermina > 0)
 													{

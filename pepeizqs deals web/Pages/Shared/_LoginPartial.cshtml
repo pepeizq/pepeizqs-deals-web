@@ -8,7 +8,15 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="manage" class="texto-cabecera" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@await UsuarioCoger.Nickname(UserManager, User)</a>
+            <div class="menu-dropdown">
+                <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">@await UsuarioCoger.Nickname(UserManager, User)</button>
+                <div class="menu-dropdown-contenido">
+                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a>
+                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Email">Email</a>
+                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a>
+                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal Data</a>
+                </div>
+            </div>        
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">

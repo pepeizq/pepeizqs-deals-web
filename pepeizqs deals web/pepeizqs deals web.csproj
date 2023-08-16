@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Admin\Tiendas\Pendientes.cshtml" />
+    <Content Remove="Pages\Componentes\Usuario\Perfil.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas\Pendientes.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Usuario\Perfil.razor" />
     <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
   </ItemGroup>
@@ -46,11 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Admin\Tiendas\Pendientes.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Pages\Admin\Pendientes.cshtml" />
+    <None Include="Pages\Componentes\Usuario\Perfil.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +56,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Admin\Tiendas.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Usuario\Perfil.razor" />
   </ItemGroup>
 
 </Project>

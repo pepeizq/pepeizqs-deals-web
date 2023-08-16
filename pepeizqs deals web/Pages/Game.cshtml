@@ -128,16 +128,10 @@
 											<img src="@JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
 											<div class="juego-descuento-precio">
-												@if (SignInManager.IsSignedIn(User))
-												{
-													@if (await UsuarioCoger.RolDios(UserManager, User) == true)
-													{
-														<div style="font-size: 14px; margin: 20px;">
-															@Calculadora.HaceTiempo(precio.FechaActualizacion)
-														</div>
-													}
-												}															
-												
+												<div style="font-size: 14px; margin: 20px;">
+													@Calculadora.HaceTiempo(precio.FechaDetectado)
+												</div>
+
 												<div class="juego-descuento">
 													@precio.Descuento.ToString()%
 												</div>
