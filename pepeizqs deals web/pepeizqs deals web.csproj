@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Componentes\Usuario\Perfil.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="BaseDatos\Juegos\Precios.cs~RF662827a9.TMP" />
     <None Remove="Herramientas\Divisas.cs~RF419ed6bf.TMP" />
     <None Remove="Herramientas\TareasGestionador.cs~RF6a54dce4.TMP" />
@@ -23,7 +19,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Componentes\Usuario\Perfil.razor" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Componentes\Perfil.razor" />
     <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
   </ItemGroup>
@@ -47,7 +43,6 @@
 
   <ItemGroup>
     <None Include="Pages\Admin\Pendientes.cshtml" />
-    <None Include="Pages\Componentes\Usuario\Perfil.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,7 +54,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Componentes\Usuario\Perfil.razor" />
+    <UpToDateCheckInput Remove="Areas\Identity\Componentes\Perfil.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

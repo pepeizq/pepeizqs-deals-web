@@ -1,14 +1,16 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Steam Account";
     ViewData["ActivePage"] = ManageNavPages.Index;
     Layout = "~/Areas/Identity/Pages/Account/Manage/_PerfilLayout.cshtml";
 }
 
 <div class="texto-info">@ViewData["Title"]</div>
 
-<partial name="_StatusMessage" for="StatusMessage" />
+@(await Html.RenderComponentAsync<pepeizqs_deals_web.Areas.Identity.Componentes.Perfil>(RenderMode.ServerPrerendered))
+
+@* <partial name="_StatusMessage" for="StatusMessage" />
 
 <div class="row perfil-espacio-adicional">
     <form id="profile-form" method="post">
@@ -32,8 +34,10 @@
             </div>
         </div> 
     </form>
+
+    
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+} *@

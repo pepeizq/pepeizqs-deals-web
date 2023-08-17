@@ -17,10 +17,29 @@ namespace pepeizqs_deals_web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.7")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FriendlyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Xml")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DataProtectionKeys");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -213,6 +232,9 @@ namespace pepeizqs_deals_web.Migrations
                     b.Property<string>("SteamAccount")
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("SteamAccountLastCheck")
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("SteamGames")
                         .HasColumnType("nvarchar(max)");
 
@@ -225,6 +247,9 @@ namespace pepeizqs_deals_web.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Wishlist")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -92,7 +92,7 @@
 
     <footer class="pie">
         <div class="container">
-            &copy; 2018 - @DateTime.Now.Year.ToString() • pepeizq's deals • <a asp-area="" asp-page="/Privacy" class="texto-pie">Privacy</a>
+            &copy; 2018 - @DateTime.Now.Year.ToString() • pepeizq's deals • <a asp-page="/Privacy" class="texto-pie">Privacy</a>
         </div>
     </footer>
 
@@ -117,16 +117,16 @@
     </script>
 
     <script>
-        var webSocket = new WebSocket("wss://pepeizq-001-site1.ftempurl.com/_blazor");
-        webSocket.onclose = function (event) {
-            if (event.code == 1006) {
-                async function waitAndReload() {
-                    await fetch('');
-                    location.reload(true);
-                }
-                waitAndReload();
-            }
-        };
+        // var webSocket = new WebSocket("wss://pepeizq-001-site1.ftempurl.com/_blazor");
+        // webSocket.onclose = function (event) {
+        //     if (event.code == 1006) {
+        //         async function waitAndReload() {
+        //             await fetch('');
+        //             location.reload(true);
+        //         }
+        //         waitAndReload();
+        //     }
+        // };
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

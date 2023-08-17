@@ -21,12 +21,28 @@ public class Usuario : IdentityUser
 	[Column(TypeName = "nvarchar(256)")]
 	public string? SteamAccount { get; set; }
 
-    [PersonalData]
+	[PersonalData]
+	[Column(TypeName = "nvarchar(256)")]
+	public string? SteamAccountLastCheck { get; set; }
+
+	[PersonalData]
     [Column(TypeName = "nvarchar(max)")]
     public string? SteamGames { get; set; }
 
     [PersonalData]
     [Column(TypeName = "nvarchar(max)")]
     public string? SteamWishlist { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? Wishlist { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(256)")]
+	public string? Avatar { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? OfficialGroup { get; set; }
 }
 

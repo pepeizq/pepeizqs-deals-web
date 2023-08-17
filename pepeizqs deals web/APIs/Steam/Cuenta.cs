@@ -7,7 +7,7 @@ namespace APIs.Steam
 {
     public static class Cuenta
     {
-        public static async Task<SteamJuegosyDeseados> CargarDatos(string enlace)
+        public static async Task<SteamUsuario> CargarDatos(string enlace)
         {
             int cuentaTipo = 0;
             string usuario = string.Empty;
@@ -155,6 +155,7 @@ namespace APIs.Steam
                                     }
                                 }
                             }
+
                             i += 1;
                         }
 
@@ -186,10 +187,34 @@ namespace APIs.Steam
 
                         //----------------------------------------------
 
-                        SteamJuegosyDeseados datos = new SteamJuegosyDeseados
+                        bool grupoOficial = false;
+                        string htmlGrupos = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetUserGroupList/v0001/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador[0].ID64);
+
+                        if (htmlGrupos != null)
                         {
-                            juegos = juegos,
-                            deseados = deseados
+							SteamGruposAPI json = JsonConvert.DeserializeObject<SteamGruposAPI>(htmlGrupos);
+
+                            if (json != null) 
+                            { 
+                                foreach (var grupo in json.Datos.Grupos) 
+                                { 
+                                    if (grupo.Id == "103582791463021664")
+                                    {
+                                        grupoOficial = true;
+                                    }
+                                }
+                            }
+						}
+
+						//----------------------------------------------
+
+						SteamUsuario datos = new SteamUsuario
+                        {
+                            Juegos = juegos,
+                            Deseados = deseados,
+                            Avatar = cuenta.Datos.Jugador[0].Avatar,
+                            Nombre = cuenta.Datos.Jugador[0].Nombre,
+                            GrupoOficial = grupoOficial.ToString()
                         };
 
                         return datos;
@@ -200,87 +225,85 @@ namespace APIs.Steam
             return null;
         }
 
-        public static string Mensaje(SteamJuegosyDeseados datos)
+        public static string MensajeJuegos(string datos)
         {
-            string mensaje = string.Empty;
-
             if (datos != null)
             {
-                if (datos.juegos != string.Empty)
-                {
-                    string juegos = datos.juegos;
+				string juegos = datos;
 
-                    int i = 0;
-                    int j = 100000;
+				int i = 0;
+				int j = 100000;
 
-                    while (i < j)
-                    {
-                        if (juegos.Contains(",") == true)
-                        {
-                            int int1 = juegos.IndexOf(",");
-                            juegos = juegos.Remove(0, int1 + 1);
-                        }
-                        else 
-                        {
-                            break;
-                        }
+				while (i < j)
+				{
+					if (juegos.Contains(",") == true)
+					{
+						int int1 = juegos.IndexOf(",");
+						juegos = juegos.Remove(0, int1 + 1);
+					}
+					else
+					{
+						break;
+					}
 
-                        i += 1;
-                    }
+					i += 1;
+				}
 
-                    if (i > 0)
-                    {
-                        mensaje = i.ToString() + " games detected on your account";
-                    }
-                }
+				if (i > 0)
+				{
+					return i.ToString();
+				}
 
-                if (datos.deseados != string.Empty)
-                {
-                    string deseados = datos.deseados;
+				//if (datos.Deseados != string.Empty)
+				//{
+				//    string deseados = datos.Deseados;
 
-                    int i = 0;
-                    int j = 100000;
+				//    int i = 0;
+				//    int j = 100000;
 
-                    while (i < j)
-                    {
-                        if (deseados.Contains(",") == true)
-                        {
-                            int int1 = deseados.IndexOf(",");
-                            deseados = deseados.Remove(0, int1 + 1);
-                        }
-                        else
-                        {
-                            break;
-                        }
+				//    while (i < j)
+				//    {
+				//        if (deseados.Contains(",") == true)
+				//        {
+				//            int int1 = deseados.IndexOf(",");
+				//            deseados = deseados.Remove(0, int1 + 1);
+				//        }
+				//        else
+				//        {
+				//            break;
+				//        }
 
-                        i += 1;
-                    }
+				//        i += 1;
+				//    }
 
-                    if (i > 0)
-                    {
-                        if (mensaje == string.Empty) 
-                        {
-                            mensaje = (i + 1).ToString() + " games detected in your wishlist";
-                        }
-                        else
-                        {
-                            mensaje = mensaje + " and " + (i + 1).ToString() + " games detected in your wishlist";
-                        }                     
-                    }
-                }
-            }
+				//    if (i > 0)
+				//    {
+				//        if (mensaje == string.Empty) 
+				//        {
+				//            mensaje = (i + 1).ToString() + " games detected in your wishlist";
+				//        }
+				//        else
+				//        {
+				//            mensaje = mensaje + " and " + (i + 1).ToString() + " games detected in your wishlist";
+				//        }                     
+				//    }
+				//}
+			}
 
-            return mensaje;
+            return null;
         }
     }
 
     //----------------------------------------------
 
-    public class SteamJuegosyDeseados
+    public class SteamUsuario
     {
-        public string juegos { get; set; }
-        public string deseados { get; set; }
-    }
+        public string Juegos { get; set; }
+        public string Deseados { get; set; }
+		public string Avatar { get; set; }
+		public string Nombre { get; set; }
+        public string GrupoOficial { get; set; }
+	}
 
     //----------------------------------------------
 
@@ -358,4 +381,24 @@ namespace APIs.Steam
         public string name;
         public string capsule;
     }
+
+	//----------------------------------------------
+
+	public class SteamGruposAPI
+	{
+		[JsonProperty("response")]
+		public SteamGruposAPIDatos Datos { get; set; }
+	}
+
+	public class SteamGruposAPIDatos
+	{
+		[JsonProperty("groups")]
+		public List<SteamGruposAPIGrupo> Grupos { get; set; }
+	}
+
+	public class SteamGruposAPIGrupo
+	{
+		[JsonProperty("gid")]
+		public string Id { get; set; }
+	}
 }
