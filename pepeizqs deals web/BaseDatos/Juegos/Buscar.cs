@@ -42,23 +42,18 @@ namespace BaseDatos.Juegos
 			{
 				try
 				{
-					WebApplicationBuilder builder = WebApplication.CreateBuilder();
-					string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-					SqlConnection conexion = new SqlConnection(conexionTexto);
+					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 					using (conexion)
 					{
 						conexion.Open();
 						string buscar = sqlBuscar;
-						SqlCommand comando = new SqlCommand(buscar, conexion);
 
-						using (comando)
+						using (SqlCommand comando = new SqlCommand(buscar, conexion))
 						{
 							comando.Parameters.AddWithValue(idParametro, idBuscar);
 
-							SqlDataReader lector = comando.ExecuteReader();
-
-							using (lector)
+							using (SqlDataReader lector = comando.ExecuteReader())
 							{
 								if (lector.Read())
 								{
@@ -68,11 +63,7 @@ namespace BaseDatos.Juegos
 									return juego;
 								}
 							}
-
-							lector.Close();
 						}
-
-						comando.Dispose();
 					}
 
 					conexion.Dispose();

@@ -1,0 +1,164 @@
+﻿@using APIs.Steam;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using Newtonsoft.Json;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (SignInManager.IsSignedIn(HttpContextAccessor.HttpContext.User) == true)
+{
+	<div class="perfil" style="padding: 15px 20px;">
+		@foreach (var juego in deseadosMostrar)
+		{
+			<div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15px;">
+				<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id" target="_blank">
+					<div class="perfil-flexible-centrado">
+						<div style="width: 15%;">
+							<img src="@juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+						</div>
+
+						<div style="width: 59%; padding: 4px 15px;">
+							<div>@juego.Nombre</div>
+
+							<div class="perfil-flexible-centrado" style="justify-content: left;">
+								@* <div style="width: 20px; height: 20px;"><img src="@CargarImagenDRM(juego)" style="max-width: 100%; max-height: 100%;" /></div> *@
+
+								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+								{
+									<div style="margin-left: 10px; margin-right: 10px;">@juego.Id</div>
+								}
+							</div>
+						</div>
+
+						<div style="width: 10%; padding: 4px 30px 4px 0px; text-align: right;">
+							@* <img src="@CargarImagenTienda(juego)" style="max-width: 100%; max-height: 100%;" /> *@
+						</div>
+
+						<div style="width: 6%; text-align: center;" class="juego-descuento">
+							@* @juego.PrecioActualesTiendas[0].Descuento.ToString()% *@
+						</div>
+
+						<div style="width: 10%; padding: 4px 15px 4px 15px; text-align: center; font-size: 18px;">
+							@Juegos.JuegoFicha.MensajeMinimoActual(juego, false)
+						</div>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	private List<Juegos.Juego> deseadosMostrar = new List<Juegos.Juego>();
+	private Usuario usuario = new Usuario();
+
+	private int cantidad = 0;
+
+	protected override async void OnInitialized()
+	{
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		deseadosMostrar = new List<Juegos.Juego>();
+		List<UsuarioDeseado> deseados = new List<UsuarioDeseado>();
+		List<string> deseadosSteam = LeerSteamDeseados(usuario.SteamWishlist);
+
+		if (usuario.Wishlist != null)
+		{
+			deseados = JsonConvert.DeserializeObject<List<UsuarioDeseado>>(usuario.Wishlist);
+		}
+
+		foreach (var deseadoSteam in deseadosSteam)
+		{
+			bool añadir = true;
+
+			foreach (var deseado in deseados)
+			{
+				if (deseado.IdSteam == deseadoSteam)
+				{
+					añadir = false;
+				}
+			}
+
+			if (añadir == true)
+			{
+				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(null, deseadoSteam);
+
+				if (juego != null)
+				{
+					UsuarioDeseado nuevoDeseado = new UsuarioDeseado();
+					nuevoDeseado.IdBaseDatos = juego.Id.ToString();
+					nuevoDeseado.IdSteam = deseadoSteam;
+
+					deseados.Add(nuevoDeseado);
+				}
+			}
+		}
+
+		cantidad = deseados.Count;
+
+		usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+		
+
+		if (deseados.Count > 0)
+		{
+			foreach (var deseado in deseados)
+			{
+				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(deseado.IdBaseDatos);
+				deseadosMostrar.Add(juego);
+			}
+		}
+
+		await UserManager.UpdateAsync(usuario);
+	}
+
+	public class UsuarioDeseado
+	{
+		public string IdBaseDatos { get; set; }
+		public string IdSteam { get; set; }
+	}
+
+	private List<string> LeerSteamDeseados(string datos)
+	{
+		if (datos != null)
+		{
+			List<string> deseados = new List<string>();
+			string juegos = datos;
+
+			int i = 0;
+			int j = 100000;
+
+			while (i < j)
+			{
+				if (juegos.Contains(",") == true)
+				{
+					int int1 = juegos.IndexOf(",");
+
+					string añadir = juegos.Remove(int1, juegos.Length - int1);
+					deseados.Add(añadir);
+
+					juegos = juegos.Remove(0, int1 + 1);
+				}
+				else
+				{
+					break;
+				}
+
+				i += 1;
+			}
+
+			if (deseados.Count > 0)
+			{
+				return deseados;
+			}
+		}
+
+		return null;
+	}
+}

@@ -198,7 +198,7 @@ namespace APIs.Steam
                             { 
                                 foreach (var grupo in json.Datos.Grupos) 
                                 { 
-                                    if (grupo.Id == "103582791463021664")
+                                    if (grupo.Id == "40604285")
                                     {
                                         grupoOficial = true;
                                     }
@@ -221,74 +221,6 @@ namespace APIs.Steam
                     }
                 }
             }
-
-            return null;
-        }
-
-        public static string MensajeJuegos(string datos)
-        {
-            if (datos != null)
-            {
-				string juegos = datos;
-
-				int i = 0;
-				int j = 100000;
-
-				while (i < j)
-				{
-					if (juegos.Contains(",") == true)
-					{
-						int int1 = juegos.IndexOf(",");
-						juegos = juegos.Remove(0, int1 + 1);
-					}
-					else
-					{
-						break;
-					}
-
-					i += 1;
-				}
-
-				if (i > 0)
-				{
-					return i.ToString();
-				}
-
-				//if (datos.Deseados != string.Empty)
-				//{
-				//    string deseados = datos.Deseados;
-
-				//    int i = 0;
-				//    int j = 100000;
-
-				//    while (i < j)
-				//    {
-				//        if (deseados.Contains(",") == true)
-				//        {
-				//            int int1 = deseados.IndexOf(",");
-				//            deseados = deseados.Remove(0, int1 + 1);
-				//        }
-				//        else
-				//        {
-				//            break;
-				//        }
-
-				//        i += 1;
-				//    }
-
-				//    if (i > 0)
-				//    {
-				//        if (mensaje == string.Empty) 
-				//        {
-				//            mensaje = (i + 1).ToString() + " games detected in your wishlist";
-				//        }
-				//        else
-				//        {
-				//            mensaje = mensaje + " and " + (i + 1).ToString() + " games detected in your wishlist";
-				//        }                     
-				//    }
-				//}
-			}
 
             return null;
         }

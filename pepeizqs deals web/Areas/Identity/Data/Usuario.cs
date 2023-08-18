@@ -44,5 +44,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(100)")]
 	public string? OfficialGroup { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? Keys { get; set; }
 }
 

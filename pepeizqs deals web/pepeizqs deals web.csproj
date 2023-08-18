@@ -19,8 +19,8 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Identity\Componentes\Perfil.razor" />
     <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Wishlist.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
   </ItemGroup>
 
@@ -54,11 +54,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Identity\Componentes\Perfil.razor" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <UpToDateCheckInput Remove="Pages\Wishlist.cshtml" />
   </ItemGroup>
 
 </Project>
