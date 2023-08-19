@@ -31,7 +31,7 @@
 							<div class="perfil-flexible-centrado" style="justify-content: left;">
 								<div style="width: 20px; height: 20px;"><img src="@CargarImagenDRM(juego)" style="max-width: 100%; max-height: 100%;" /></div>
 
-								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 								{
 									<div style="margin-left: 10px; margin-right: 10px;">@juego.Id</div>
 								}
@@ -47,7 +47,7 @@
 						</div>
 
 						<div style="width: 10%; padding: 4px 15px 4px 15px; text-align: center; font-size: 18px;">
-							@Juegos.JuegoFicha.MensajeMinimoActual(juego, false)
+							@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
 						</div>
 					</div>
 				</a>
@@ -89,7 +89,7 @@
 					{
 						foreach (var minimo in juego.PrecioMinimosHistoricos)
 						{
-							bool fechaEncaja = Herramientas.Precios.CalcularAntiguedad(minimo);
+							bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
 
 							if (fechaEncaja == true && minimo.Descuento > 0)
 							{

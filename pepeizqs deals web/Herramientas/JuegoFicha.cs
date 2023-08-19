@@ -1,9 +1,9 @@
 ﻿#nullable disable
 
-using Herramientas;
+using Juegos;
 using Tiendas2;
 
-namespace Juegos
+namespace Herramientas
 {
 	public static class JuegoFicha
 	{
@@ -11,7 +11,7 @@ namespace Juegos
 		{
 			List<JuegoPrecio> preciosOrdenados = new List<JuegoPrecio>();
 
-			if (precios != null) 
+			if (precios != null)
 			{
 				if (precios.Count > 0)
 				{
@@ -19,8 +19,8 @@ namespace Juegos
 					{
 						if (precio.DRM == drm)
 						{
-							bool fechaEncaja = Precios.CalcularAntiguedad(precio);
-							
+							bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
+
 							if (fechaEncaja == true)
 							{
 								JuegoPrecio nuevoPrecio = precio;
@@ -34,7 +34,7 @@ namespace Juegos
 											nuevoPrecio.Precio = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
 										}
 									}
-								}								
+								}
 
 								if (nuevoPrecio.Descuento > 0)
 								{
@@ -52,29 +52,29 @@ namespace Juegos
 										}
 									}
 
-									if (verificacionFinal == true) 
+									if (verificacionFinal == true)
 									{
 										preciosOrdenados.Add(nuevoPrecio);
-									}								
-								}				
-							}						
+									}
+								}
+							}
 						}
 					}
 				}
 			}
-			
+
 			if (preciosOrdenados.Count > 0)
 			{
 				preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
 				{
-					if (p1.Precio == p2.Precio) 
+					if (p1.Precio == p2.Precio)
 					{
 						return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
 					}
 					else
 					{
 						return p1.Precio.CompareTo(p2.Precio);
-					}	
+					}
 				});
 			}
 
@@ -111,7 +111,7 @@ namespace Juegos
 			return imagen;
 		}
 
-		public static string PrepararMinimo(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
+		public static string CogerMinimoDRM(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
 		{
 			string drmPreparado = string.Empty;
 
@@ -130,7 +130,7 @@ namespace Juegos
 					}
 				}
 			}
-			
+
 			if (minimosOrdenados.Count == 0)
 			{
 				preciosActuales.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2) {
@@ -155,7 +155,7 @@ namespace Juegos
 						return p1.Precio.CompareTo(p2.Precio);
 					});
 				}
-				
+
 				drmPreparado = "Historical low for " + JuegoDRM2.Nombre(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
 
 				bool incluirTiempo = true;
@@ -182,7 +182,7 @@ namespace Juegos
 						}
 					}
 				}
-				
+
 				if (incluirTiempo == true)
 				{
 					List<Tienda> tiendas = TiendasCargar.GenerarListado();
@@ -207,7 +207,33 @@ namespace Juegos
 			return drmPreparado;
 		}
 
-		private static JuegoPrecio CargarMinimoActual(Juego juego)
+
+		public static bool CalcularAntiguedad(JuegoPrecio precio)
+		{
+			bool fechaEncaja = true;
+
+			if (precio.FechaTermina.Year > 2022)
+			{
+				if (DateTime.Now > precio.FechaTermina)
+				{
+					fechaEncaja = false;
+				}
+			}
+			else
+			{
+				if (precio.FechaActualizacion.Year > 2022)
+				{
+					if (precio.FechaActualizacion.DayOfYear + 1 < DateTime.Now.DayOfYear)
+					{
+						fechaEncaja = false;
+					}
+				}
+			}
+
+			return fechaEncaja;
+		}
+
+		private static JuegoPrecio CargarMinimoActualEntreTodosDRMs(Juego juego)
 		{
 			List<JuegoDRM> drms = JuegoDRM2.CargarDRMs();
 			decimal minimoCantidad = 10000000;
@@ -235,9 +261,33 @@ namespace Juegos
 			return null;
 		}
 
-		public static string MensajeMinimoActual(Juego juego, bool incluirDesde)
+		public static JuegoPrecio CargarMinimoActualUnDRM(Juego juego, JuegoDRM drm, bool divisa)
 		{
-			JuegoPrecio oferta = CargarMinimoActual(juego);
+			decimal minimoCantidad = 10000000;
+			JuegoPrecio minimoFinal = new JuegoPrecio();
+
+			List<JuegoPrecio> ordenados = OrdenarPrecios(juego.PrecioActualesTiendas, drm, divisa);
+
+			if (ordenados.Count > 0)
+			{
+				foreach (var precio in ordenados)
+				{
+					if (precio.Precio < minimoCantidad)
+					{
+						minimoCantidad = precio.Precio;
+						minimoFinal = precio;
+					}
+				}
+
+				return minimoFinal;
+			}
+
+			return null;
+		}
+
+		public static string PrecioMinimoActual(Juego juego, bool incluirDesde)
+		{
+			JuegoPrecio oferta = CargarMinimoActualEntreTodosDRMs(juego);
 
 			if (oferta != null)
 			{
@@ -259,15 +309,15 @@ namespace Juegos
 
 				return mensaje;
 			}
-			
-			return null;
+
+			return "Not in Sale";
 		}
 
-		public static string IconoMinimoActual(Juego juego)
+		public static string IconoTiendaMinimoActual(Juego juego)
 		{
-			JuegoPrecio oferta = CargarMinimoActual(juego);
+			JuegoPrecio oferta = CargarMinimoActualEntreTodosDRMs(juego);
 
-			if (oferta != null) 
+			if (oferta != null)
 			{
 				if (oferta.Precio > 0)
 				{
@@ -282,7 +332,7 @@ namespace Juegos
 					}
 				}
 			}
-			
+
 			return null;
 		}
 
@@ -305,7 +355,7 @@ namespace Juegos
 				precioTexto = precioTexto + "€";
 			}
 
-            return precioTexto;
+			return precioTexto;
 		}
 	}
 }

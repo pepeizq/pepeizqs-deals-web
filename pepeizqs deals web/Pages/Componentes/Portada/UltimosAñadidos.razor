@@ -26,14 +26,14 @@
 						<div style="width: 60%; padding: 4px 15px; font-size: 13px;">
 							@juego.Nombre
 
-							@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+							@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 							{
 								<br /> @juego.Id
 							}
 						</div>
 
 						<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
-							@Juegos.JuegoFicha.MensajeMinimoActual(juego, false)
+							@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
 						</div>
 					</div>
 				</a>

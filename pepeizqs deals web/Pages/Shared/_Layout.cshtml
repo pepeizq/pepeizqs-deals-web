@@ -100,35 +100,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="_framework/blazor.server.js" asp-append-version="true"></script>
+    @* <script src="_framework/blazor.server.js" asp-append-version="true"></script> *@
 
-    @*Reconectar al servidor*@
-    <script>
-        // new MutationObserver((mutations, observer) => {
-        //     if (document.querySelector('#components-reconnect-modal')) {
-        //         async function attemptReload() {
-        //             await fetch(''); 
-        //             location.reload();
-        //         }
-        //         observer.disconnect();
-        //         attemptReload();
-        //         setInterval(attemptReload, 10000);
-        //     }
-        // }).observe(document.body, { childList: true, subtree: true });
-    </script>
-
-    <script>
-        // var webSocket = new WebSocket("wss://pepeizq-001-site1.ftempurl.com/_blazor");
-        // webSocket.onclose = function (event) {
-        //     if (event.code == 1006) {
-        //         async function waitAndReload() {
-        //             await fetch('');
-        //             location.reload(true);
-        //         }
-        //         waitAndReload();
-        //     }
-        // };
-    </script>
+    @section Scripts {
+        <script src="~/_framework/blazor.server.js"></script>
+    }
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

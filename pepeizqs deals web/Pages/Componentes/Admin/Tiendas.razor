@@ -6,7 +6,7 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext.User)) == true)
+@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 {
 	<div class="perfil perfil-espacio-bottom" style="padding: 25px 40px;">
 		@foreach (Tienda tienda in TiendasCargar.GenerarListado())
