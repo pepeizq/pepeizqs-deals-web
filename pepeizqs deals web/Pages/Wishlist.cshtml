@@ -1,9 +1,17 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.WishlistModel
 
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+
 @{
 	ViewData["Title"] = "Wishlist";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered))
+@if (SignInManager.IsSignedIn(User))
+{
+	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered))
+}

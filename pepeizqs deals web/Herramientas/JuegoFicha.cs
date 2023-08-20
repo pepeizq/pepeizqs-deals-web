@@ -228,6 +228,16 @@ namespace Herramientas
 						fechaEncaja = false;
 					}
 				}
+				else
+				{
+					if (precio.FechaDetectado.Year > 2022)
+					{
+						if (precio.FechaDetectado.DayOfYear + 7 < DateTime.Now.DayOfYear)
+						{
+							fechaEncaja = false;
+						}
+					}
+				}
 			}
 
 			return fechaEncaja;
@@ -313,10 +323,31 @@ namespace Herramientas
 			return "Not in Sale";
 		}
 
-		public static string IconoTiendaMinimoActual(Juego juego)
+		public static string IconoTiendaMinimoActualEntreTodosDRMs(Juego juego)
 		{
 			JuegoPrecio oferta = CargarMinimoActualEntreTodosDRMs(juego);
 
+			if (oferta != null)
+			{
+				if (oferta.Precio > 0)
+				{
+					List<Tienda> tiendas = TiendasCargar.GenerarListado();
+
+					foreach (var tienda in tiendas)
+					{
+						if (tienda.Id == oferta.Tienda)
+						{
+							return tienda.ImagenIcono;
+						}
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public static string IconoTiendaMinimoActualUnDRM(JuegoPrecio oferta)
+		{
 			if (oferta != null)
 			{
 				if (oferta.Precio > 0)

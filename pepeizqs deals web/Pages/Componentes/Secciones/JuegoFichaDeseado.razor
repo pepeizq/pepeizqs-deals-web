@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using Newtonsoft.Json;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (SignInManager.IsSignedIn(HttpContextAccessor.HttpContext!.User) == true)
+{
+	@mensaje
+}
+
+@code {
+
+	#nullable disable
+
+	public string mensaje = string.Empty;
+
+	[Parameter]
+	public Juegos.Juego juego { get; set; }
+
+	[Parameter]
+	public Juegos.JuegoDRM drm { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	protected override void OnInitialized()
+	{
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		List<Juegos.JuegoDeseado> deseados = new List<Juegos.JuegoDeseado>();
+
+		if (usuario.Wishlist != null)
+		{
+			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
+		}
+		mensaje = deseados.Count.ToString();
+		if (deseados.Count > 0)
+		{
+			foreach (var deseado in deseados)
+			{
+				if (juego.Id == int.Parse(deseado.IdBaseDatos))
+				{
+					if (drm == deseado.DRM)
+					{
+						mensaje = "yolo";
+					}
+				}
+			}
+		}
+	}
+}

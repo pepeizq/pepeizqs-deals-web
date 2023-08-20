@@ -96,7 +96,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(name: "game",
-				pattern: "game/{*id}");
+				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
 
 app.MapRazorPages();
 app.MapBlazorHub();

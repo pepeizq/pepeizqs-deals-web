@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
     <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Wishlist.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
@@ -59,6 +60,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Wishlist.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
   </ItemGroup>
 
 </Project>
