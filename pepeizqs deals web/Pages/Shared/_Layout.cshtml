@@ -105,12 +105,20 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @* <script src="~/_framework/blazor.server.js"></script> *@
 
-    @section Scripts {
-        <script src="~/_framework/blazor.server.js"></script>
-    }
+    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script>
+        Blazor.start().then(() => {
+            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                document.location.reload();
+            }
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+@* @section Scripts {
+    <script src="~/_framework/blazor.server.js"></script>
+} *@

@@ -35,6 +35,10 @@
 	}
 }
 
+<div style="position: fixed; z-index: 1; margin-top: -40px; width: 100%; left: 0;">
+	<button onclick="moverScroll(Steam)" class="boton-pequeño" style="width: 50px; font-size: 22px; text-align: center; margin: 40px; left: 0; position: fixed;"><i class="fa-solid fa-chevron-left"></i></button>
+</div>
+
 <div class="juego-wrap">
 	<img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" />
 
@@ -104,55 +108,57 @@
 			{
 				@if (Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas).Length > 0)
 				{
-					@if (SignInManager.IsSignedIn(User))
-					{
-						@(await Html.RenderComponentAsync<Componentes.Secciones.JuegoFichaDeseado>(RenderMode.ServerPrerendered, new { juego = Model.juego, drm = drm }))
-					}
+					<div id="@drm">	
+						@if (SignInManager.IsSignedIn(User))
+						{
+							@(await Html.RenderComponentAsync<Componentes.Secciones.JuegoFichaDeseado>(RenderMode.ServerPrerendered, new { juego = Model.juego, drm = drm }))
+						}
 
-					<div class="juego-drm-centrado perfil-espacio-bottom">
-						<div class="perfil juego-drm-imagen">
-							@if (drm == JuegoDRM.DRMFree)
-							{
-								<div style="font-weight: bold; font-size: 18px;">DRM Free</div>
-							}
-							else
-							{
-								<img src="@JuegoDRM2.SacarImagen(drm)" />
-							}
-						</div>
-
-						<div class="perfil" style="width: 90%;">
-							<div class="juego-minimo">@Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
-
-							@if (Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, false).Count > 0)
-							{
-								@foreach (JuegoPrecio precio in Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, true))
+						<div class="juego-drm-centrado perfil-espacio-bottom">
+							<div class="perfil juego-drm-imagen">
+								@if (drm == JuegoDRM.DRMFree)
 								{
-									<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@Herramientas.EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
-										<div class="perfil-flexible-centrado">
-											<img src="@Herramientas.JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
+									<div style="font-weight: bold; font-size: 18px;">DRM Free</div>
+								}
+								else
+								{
+									<img src="@JuegoDRM2.SacarImagen(drm)" />
+								}
+							</div>
 
-											<div class="juego-descuento-precio">
-												<div style="font-size: 14px; margin: 20px;">
-													@Calculadora.HaceTiempo(precio.FechaDetectado)
-												</div>
+							<div class="perfil" style="width: 90%;">
+								<div class="juego-minimo">@Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
 
-												<div style="width: 75px; text-align: center;" class="juego-descuento">
-													@precio.Descuento.ToString()%
-												</div>
+								@if (Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, false).Count > 0)
+								{
+									@foreach (JuegoPrecio precio in Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, true))
+									{
+										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@Herramientas.EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
+											<div class="perfil-flexible-centrado">
+												<img src="@Herramientas.JuegoFicha.SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
-												<div class="juego-precio">
-													@Herramientas.JuegoFicha.PrepararPrecio(precio.Precio, precio.Moneda)
+												<div class="juego-descuento-precio">
+													<div style="font-size: 14px; margin: 20px;">
+														@Calculadora.HaceTiempo(precio.FechaDetectado)
+													</div>
+
+													<div style="width: 75px; text-align: center;" class="juego-descuento">
+														@precio.Descuento.ToString()%
+													</div>
+
+													<div class="juego-precio">
+														@Herramientas.JuegoFicha.PrepararPrecio(precio.Precio, precio.Moneda)
+													</div>
 												</div>
 											</div>
-										</div>
-									</a>
+										</a>
+									}
 								}
-							}
-							else
-							{
-								<div>There are currently no deals for this platform</div>
-							}
+								else
+								{
+									<div>There are currently no deals for this platform</div>
+								}
+							</div>
 						</div>
 					</div>
 				}
@@ -251,5 +257,9 @@
 		imagenes[imagenPosicion - 1].style.display = "block";
 		capturas[imagenPosicion - 1].className += " juego-galeria-activo";
 		texto.innerHTML = capturas[imagenPosicion - 1].alt;
+	}
+
+	function moverScroll(id) {
+		document.getElementById(id).scrollIntoView(true);
 	}
 </script>

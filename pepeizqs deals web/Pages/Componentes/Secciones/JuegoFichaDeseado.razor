@@ -8,8 +8,34 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @if (SignInManager.IsSignedIn(HttpContextAccessor.HttpContext!.User) == true)
-{
-	@mensaje
+{	
+	@if (mensaje.Length > 0)
+	{
+		<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta);">
+			<div class="perfil-flexible-centrado">
+				<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+
+				<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+			</div>
+		</div>
+	}	
+	else
+	{
+		@if (ComprobarSiEstaDeseado() == true)
+		{
+			<button @onclick="(e => CambiarEstadoDeseado(e, false))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+				<div class="perfil-flexible-centrado">
+					<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+
+					<div style="text-align: left; padding-left: 25px; width: 100%;">It's already on your Wishlist</div>
+				</div>
+			</button>
+		}
+		else
+		{
+			<button @onclick="(e => CambiarEstadoDeseado(e, true))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">Add to Wishlist</button>
+		}		
+	}
 }
 
 @code {
@@ -30,13 +56,88 @@
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
 
+		if (juego.IdSteam > 0 && drm == Juegos.JuegoDRM.Steam)
+		{
+			if (usuario.SteamGames != null)
+			{
+				List<string> juegosSteam = GenerarLista(usuario.SteamGames);
+
+				if (juegosSteam.Count > 0)
+				{
+					foreach (var juegoSteam in juegosSteam)
+					{
+						if (int.Parse(juegoSteam) == juego.IdSteam)
+						{
+							mensaje = "You already have this game on the linked Steam account";
+							break;
+						}
+					}
+				}
+			}
+		}	
+
+		if (mensaje == string.Empty)
+		{
+			List<string> deseadosSteam = GenerarLista(usuario.SteamWishlist);
+
+			if (deseadosSteam.Count > 0)
+			{
+				foreach (var deseado in deseadosSteam)
+				{
+					if (juego.IdSteam > 0)
+					{
+						if (juego.IdSteam == int.Parse(deseado) && drm == Juegos.JuegoDRM.Steam)
+						{
+							mensaje = "This game was automatically added to your wishlist when your account was linked from Steam";
+							break;
+						}
+					}			
+				}
+			}
+		}		
+	}
+
+	private List<string> GenerarLista(string contenido)
+	{
+		List<string> lista = new List<string>();
+
+		if (contenido != null)
+		{
+			int i = 0;
+			int j = 100000;
+
+			while (i < j)
+			{
+				if (contenido.Contains(",") == true)
+				{
+					int int1 = contenido.IndexOf(",");
+					string temp1 = contenido.Remove(int1, contenido.Length - int1);
+					lista.Add(temp1);
+
+					contenido = contenido.Remove(0, int1 + 1);
+				}
+				else
+				{
+					lista.Add(contenido);
+					break;
+				}
+
+				i += 1;
+			}
+		}
+
+		return lista;
+	}
+
+	private bool ComprobarSiEstaDeseado()
+	{
 		List<Juegos.JuegoDeseado> deseados = new List<Juegos.JuegoDeseado>();
 
 		if (usuario.Wishlist != null)
 		{
 			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
 		}
-		mensaje = deseados.Count.ToString();
+
 		if (deseados.Count > 0)
 		{
 			foreach (var deseado in deseados)
@@ -45,10 +146,75 @@
 				{
 					if (drm == deseado.DRM)
 					{
-						mensaje = "yolo";
+						return true;
 					}
 				}
 			}
+		}
+
+		return false;
+	}
+
+	private async void CambiarEstadoDeseado(MouseEventArgs e, bool estado)
+	{
+		List<Juegos.JuegoDeseado> deseados = new List<Juegos.JuegoDeseado>();
+
+		if (usuario.Wishlist != null)
+		{
+			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
+		}
+
+		if (estado == true)
+		{
+			bool añadir = true;
+
+			if (deseados.Count > 0)
+			{
+				foreach (var deseado in deseados)
+				{
+					if (int.Parse(deseado.IdBaseDatos) == juego.Id && deseado.DRM == drm)
+					{
+						añadir = false;
+					}
+				}
+			}
+
+			if (añadir == true)
+			{
+				Juegos.JuegoDeseado deseado = new Juegos.JuegoDeseado();
+				deseado.IdBaseDatos = juego.Id.ToString();
+				deseado.DRM = drm;
+
+				deseados.Add(deseado);
+			}
+
+			usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+			await UserManager.UpdateAsync(usuario);
+		}
+		else
+		{
+			int posicion = -1;
+
+			if (deseados.Count > 0)
+			{
+				for (int i = 0; i < deseados.Count; i += 1)
+				{
+					if (int.Parse(deseados[i].IdBaseDatos) == juego.Id && deseados[i].DRM == drm)
+					{
+						posicion = i;
+					}
+				}
+			}
+
+			if (posicion >= 0)
+			{
+				deseados.RemoveAt(posicion);
+			}
+
+			usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+			await UserManager.UpdateAsync(usuario);
 		}
 	}
 }
