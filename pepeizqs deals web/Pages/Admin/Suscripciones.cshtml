@@ -1,5 +1,5 @@
 ﻿@page
-@model PendientesModel
+@model pepeizqs_deals_web.Pages.Admin.SuscripcionesModel
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -8,7 +8,7 @@
 @inject UserManager<Usuario> UserManager
 
 @{
-	ViewData["Title"] = "Admin Pendientes";
+	ViewData["Title"] = "Admin Suscripciones";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -16,6 +16,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Pendientes>(RenderMode.Server))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Suscripciones>(RenderMode.ServerPrerendered))
 	}
 }

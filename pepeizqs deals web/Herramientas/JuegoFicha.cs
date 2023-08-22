@@ -52,6 +52,11 @@ namespace Herramientas
 										}
 									}
 
+									if (drm == JuegoDRM.NoEspecificado)
+									{
+										verificacionFinal = false;
+									}
+
 									if (verificacionFinal == true)
 									{
 										preciosOrdenados.Add(nuevoPrecio);
@@ -211,6 +216,11 @@ namespace Herramientas
 		public static bool CalcularAntiguedad(JuegoPrecio precio)
 		{
 			bool fechaEncaja = true;
+
+			if (precio.FechaTermina.Year < 2023 && precio.FechaActualizacion.Year < 2023)
+			{
+				fechaEncaja = false;
+			}
 
 			if (precio.FechaTermina.Year > 2022)
 			{

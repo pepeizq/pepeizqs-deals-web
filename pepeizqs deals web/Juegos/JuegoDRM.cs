@@ -13,7 +13,8 @@ namespace Juegos
 		Microsoft,
 		Epic,
 		NoEspecificado,
-		GOG
+		GOG,
+		Amazon
 	}
 
 	public static class JuegoDRM2
@@ -104,6 +105,18 @@ namespace Juegos
 			};
 
 			drms.Add(microsoft);
+
+			//----------------------------
+
+			DRM amazon = new DRM
+			{
+				Id = JuegoDRM.Amazon,
+				Nombre = "Amazon Games",
+				Imagen = "/imagenes/drm/amazongames.png",
+				Acepciones = new List<string> { "amazon games", "amazon" }
+			};
+
+			drms.Add(amazon);
 
 			//----------------------------
 

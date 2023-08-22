@@ -35,10 +35,6 @@
 	}
 }
 
-<div style="position: fixed; z-index: 1; margin-top: -40px; width: 100%; left: 0;">
-	<button onclick="moverScroll(Steam)" class="boton-pequeño" style="width: 50px; font-size: 22px; text-align: center; margin: 40px; left: 0; position: fixed;"><i class="fa-solid fa-chevron-left"></i></button>
-</div>
-
 <div class="juego-wrap">
 	<img class="juego-fondo" src="@Model.juego.Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" />
 
@@ -101,6 +97,26 @@
 				}
 			</div>
         </div>   
+
+		<div style="display: flex; flex-flow: column wrap;position: fixed; z-index: 0; margin-top: -40px; width: 100%; left: 0; top: 45%;">
+			@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+			{
+				@if (drm != JuegoDRM.NoEspecificado)
+				{
+					@if (Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas).Length > 0)
+					{
+						@if (drm == JuegoDRM.DRMFree)
+						{
+							<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; margin: 10px 20px;"><div style="font-weight: bold; font-size: 16px;">DRM Free</div></button>
+						}
+						else
+						{
+							<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; margin: 10px 20px;"><img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;"/></button>
+						}					
+					}
+				}
+			}			
+		</div>
 		
 		@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 		{
@@ -260,6 +276,6 @@
 	}
 
 	function moverScroll(id) {
-		document.getElementById(id).scrollIntoView(true);
+		document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "center" });
 	}
 </script>

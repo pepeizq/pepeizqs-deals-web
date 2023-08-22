@@ -1,0 +1,159 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+	@if (juegosBuscador.Count > 0)
+	{
+		<div>
+			@foreach (var juego in juegosBuscador)
+			{
+				<div class="perfil-flexible-centrado perfil-espacio-top">
+					<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Library_600x900, @juego.Nombre))" class="boton-pequeño">
+						<div class="perfil-flexible-centrado">
+							<div style="width: 12%;">
+								<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+							</div>
+
+							<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+								@juego.Id - @juego.Nombre
+							</div>
+						</div>
+					</button>
+				</div>
+			}
+		</div>
+	}
+
+	@if (idSeleccionada != null)
+	{
+		<div style="margin-top: 40px;">
+			<div style="display: flex;">
+				<div style="width: 15%;">
+					<img src="@imagenSeleccionada" style="max-height:100%; max-width:100%;" />
+				</div>
+
+				<div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+					@nombreSeleccionado <br/>
+					@idSeleccionada
+
+					<div style="display: flex; margin-top: 20px;">
+						<div class="opciones-combobox" style="width: 33%;">
+							<select @onchange="@(e => CambiarSuscripcion(e))">
+								@foreach (Juegos.Suscripcion suscripcion in Juegos.Suscripcion2.GenerarListado())
+								{
+									<option value="@suscripcion.Id">@suscripcion.Nombre</option>
+								}
+							</select>
+						</div>
+
+						<div class="opciones-combobox" style="width: 33%;">
+							<select @onchange="@(e => CambiarDRM(e))">
+								@foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+								{
+									@if (drm.Id != Juegos.JuegoDRM.NoEspecificado)
+									{
+										<option value="@drm.Id">@drm.Nombre</option>
+									}
+								}
+							</select>
+						</div>
+
+						<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+					</div>
+
+					<div style="display: flex; margin-top: 20px;">
+						<div style="margin: 10px;">
+							@suscripcionSeleccionada
+						</div>
+
+						<div style="margin: 10px;">
+							@drmSeleccionado
+						</div>
+
+						<div style="margin: 10px;">
+							@fechaSeleccionada
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+	}
+</div>
+
+@code {
+
+	#nullable disable
+
+	private string cadenaBusqueda = null;
+
+	private string idSeleccionada = null;
+	private string imagenSeleccionada = null;
+	private string nombreSeleccionado = null;
+
+	private string suscripcionSeleccionada = null;
+	private string drmSeleccionado = null;
+	private string fechaSeleccionada = null;
+
+	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			cadenaBusqueda = texto.Value.ToString().Trim();
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void SeleccionarJuego(MouseEventArgs e, string id, string imagen, string nombre)
+	{
+		cadenaBusqueda = null;
+		juegosBuscador = new List<Juegos.Juego>();
+
+		idSeleccionada = id;
+		imagenSeleccionada = imagen;
+		nombreSeleccionado = nombre;
+
+		// ----------------------------------
+
+		if (suscripcionSeleccionada == null)
+		{
+			suscripcionSeleccionada = Juegos.Suscripcion2.GenerarListado()[0].Id.ToString();
+		}
+
+		if (suscripcionSeleccionada == Juegos.Suscripcion2.GenerarListado()[0].Id.ToString())
+		{
+			fechaSeleccionada = Juegos.Suscripcion2.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+		}
+
+		if (drmSeleccionado == null)
+		{
+			drmSeleccionado = Juegos.JuegoDRM2.GenerarListado()[0].Id.ToString();
+		}
+	}
+
+	private void CambiarSuscripcion(ChangeEventArgs texto)
+	{
+		suscripcionSeleccionada = texto.Value.ToString();
+
+		fechaSeleccionada = Juegos.Suscripcion2.DevolverSuscripcion(suscripcionSeleccionada).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+		drmSeleccionado = Juegos.Suscripcion2.DevolverSuscripcion(suscripcionSeleccionada).DRMDefecto.ToString();
+	}
+
+	private void CambiarDRM(ChangeEventArgs texto)
+	{
+		drmSeleccionado = texto.Value.ToString();
+	}
+
+	private void CambiarFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+}

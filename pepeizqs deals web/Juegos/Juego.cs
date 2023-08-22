@@ -23,6 +23,9 @@ namespace Juegos
 		public JuegoCaracteristicas Caracteristicas { get; set; }
 		public JuegoMedia Media { get; set; }
 		public DateTime FechaSteamAPIComprobacion { get; set; }
+		public string Bundles { get; set; }
+		public string Gratis { get; set; }
+		public string Suscripciones { get; set; }
 	}
 
 	public static class JuegoCrear
