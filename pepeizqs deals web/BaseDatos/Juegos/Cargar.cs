@@ -82,6 +82,19 @@ namespace BaseDatos.Juegos
 				catch { }
 			}
 
+			if (lector.IsDBNull(12) == false)
+			{
+				if (lector.GetString(12) != null)
+				{
+					try
+					{
+						juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
+					}
+					catch { }
+				}
+			}
+			
+
 			return juego;
 		}
 	}

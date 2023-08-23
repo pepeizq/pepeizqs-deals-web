@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Suscripciones2;
 
 <div class="perfil">
 	<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
@@ -30,7 +31,7 @@
 		<div style="margin-top: 40px;">
 			<div style="display: flex;">
 				<div style="width: 15%;">
-					<img src="@imagenSeleccionada" style="max-height:100%; max-width:100%;" />
+					<img src="@imagenSeleccionada" style="max-height: 100%; max-width: 100%;" />
 				</div>
 
 				<div style="width: 85%; padding-left: 20px; padding-right: 20px;">
@@ -40,7 +41,7 @@
 					<div style="display: flex; margin-top: 20px;">
 						<div class="opciones-combobox" style="width: 33%;">
 							<select @onchange="@(e => CambiarSuscripcion(e))">
-								@foreach (Juegos.Suscripcion suscripcion in Juegos.Suscripcion2.GenerarListado())
+								@foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
 								{
 									<option value="@suscripcion.Id">@suscripcion.Nombre</option>
 								}
@@ -63,6 +64,10 @@
 					</div>
 
 					<div style="display: flex; margin-top: 20px;">
+						<input @onchange="@(e => CambiarEnlace(e))" class="entrada-texto" value="@enlaceSeleccionado">
+					</div>
+
+					<div style="display: flex; margin-top: 20px;">
 						<div style="margin: 10px;">
 							@suscripcionSeleccionada
 						</div>
@@ -75,6 +80,10 @@
 							@fechaSeleccionada
 						</div>
 					</div>
+
+					<div style="display: flex; margin-top: 20px; width: 20%;">
+						<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Juego</button>
+					</div>					
 				</div>
 			</div>
 
@@ -96,6 +105,7 @@
 	private string suscripcionSeleccionada = null;
 	private string drmSeleccionado = null;
 	private string fechaSeleccionada = null;
+	private string enlaceSeleccionado = null;
 
 	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
@@ -125,17 +135,22 @@
 
 		if (suscripcionSeleccionada == null)
 		{
-			suscripcionSeleccionada = Juegos.Suscripcion2.GenerarListado()[0].Id.ToString();
+			suscripcionSeleccionada = SuscripcionesCargar.GenerarListado()[0].Id.ToString();
 		}
 
-		if (suscripcionSeleccionada == Juegos.Suscripcion2.GenerarListado()[0].Id.ToString())
+		if (suscripcionSeleccionada == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
 		{
-			fechaSeleccionada = Juegos.Suscripcion2.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+			fechaSeleccionada = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
 		}
 
 		if (drmSeleccionado == null)
 		{
 			drmSeleccionado = Juegos.JuegoDRM2.GenerarListado()[0].Id.ToString();
+		}
+
+		if (enlaceSeleccionado == null)
+		{
+			enlaceSeleccionado = SuscripcionesCargar.GenerarListado()[0].Enlace;
 		}
 	}
 
@@ -143,8 +158,9 @@
 	{
 		suscripcionSeleccionada = texto.Value.ToString();
 
-		fechaSeleccionada = Juegos.Suscripcion2.DevolverSuscripcion(suscripcionSeleccionada).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
-		drmSeleccionado = Juegos.Suscripcion2.DevolverSuscripcion(suscripcionSeleccionada).DRMDefecto.ToString();
+		fechaSeleccionada = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+		drmSeleccionado = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).DRMDefecto.ToString();
+		enlaceSeleccionado = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Enlace;
 	}
 
 	private void CambiarDRM(ChangeEventArgs texto)
@@ -155,5 +171,37 @@
 	private void CambiarFecha(ChangeEventArgs texto)
 	{
 		fechaSeleccionada = texto.Value.ToString();
+	}
+
+	private void CambiarEnlace(ChangeEventArgs texto)
+	{
+		enlaceSeleccionado = texto.Value.ToString();
+	}
+
+	private void AñadirJuego(MouseEventArgs e)
+	{
+		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionada);
+
+		if (juego != null)
+		{
+			Juegos.JuegoSuscripcion suscripcion = new Juegos.JuegoSuscripcion();
+			suscripcion.Suscripcion = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
+			suscripcion.JuegoId = int.Parse(idSeleccionada);
+			suscripcion.Nombre = nombreSeleccionado;
+			suscripcion.Imagen = imagenSeleccionada;
+			suscripcion.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionado);
+			suscripcion.Enlace = enlaceSeleccionado;
+			suscripcion.FechaEmpieza = DateTime.Now;
+			suscripcion.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+
+			if (juego.Suscripciones == null)
+			{
+				juego.Suscripciones = new List<Juegos.JuegoSuscripcion>();
+			}
+
+			juego.Suscripciones.Add(suscripcion);
+
+			BaseDatos.Suscripciones.Insertar.Ejecutar(int.Parse(idSeleccionada), juego.Suscripciones, suscripcion);
+		}
 	}
 }

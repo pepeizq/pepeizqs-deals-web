@@ -120,13 +120,10 @@ namespace BaseDatos.Juegos
 			List<Juego> juegos = new List<Juego>();
 
 			string busqueda = "SELECT * FROM juegos";
-			SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-			using (comando)
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
-				SqlDataReader lector = comando.ExecuteReader();
-
-				using (lector)
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
 					while (lector.Read())
 					{

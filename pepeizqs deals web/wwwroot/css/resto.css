@@ -446,7 +446,7 @@
     width: 100%;
     left: 0;
     top: 0;
-    overflow: scroll;
+    overflow-x: auto;
     position: fixed;
     z-index: 1000;
     margin-top: 5%;

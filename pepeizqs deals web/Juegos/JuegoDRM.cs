@@ -135,7 +135,7 @@ namespace Juegos
 			return drms;
 		}
 
-		public static string Nombre(JuegoDRM drmBuscar)
+		public static string DevolverDRM(JuegoDRM drmBuscar)
 		{
 			string texto = string.Empty;
 
@@ -155,6 +155,26 @@ namespace Juegos
 			}
 
 			return texto;
+		}
+
+		public static JuegoDRM DevolverDRM(string drmBuscar)
+		{
+			List<DRM> drms = GenerarListado();
+
+			foreach (DRM drm in drms)
+			{
+				if (drm.Id.ToString() == drmBuscar)
+				{
+					return drm.Id;
+				}
+			}
+
+			return JuegoDRM.NoEspecificado;
+		}
+
+		public static JuegoDRM DevolverDRM(int posicion)
+		{
+			return CargarDRMs()[posicion];
 		}
 
 		public static JuegoDRM Traducir(string drmTexto, string tienda)

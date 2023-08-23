@@ -103,7 +103,7 @@
 			{
 				@if (drm != JuegoDRM.NoEspecificado)
 				{
-					@if (Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas).Length > 0)
+					@if (Herramientas.JuegoFicha.VerificarMostrarDRM(drm, Model.juego) == true)
 					{
 						@if (drm == JuegoDRM.DRMFree)
 						{
@@ -122,7 +122,7 @@
 		{
 			@if (drm != JuegoDRM.NoEspecificado)
 			{
-				@if (Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas).Length > 0)
+				@if (Herramientas.JuegoFicha.VerificarMostrarDRM(drm, Model.juego) == true)
 				{
 					<div id="@drm">	
 						@if (SignInManager.IsSignedIn(User))
@@ -143,8 +143,10 @@
 							</div>
 
 							<div class="perfil" style="width: 90%;">
-								<div class="juego-minimo">@Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas)</div>
+								@Html.Raw(Herramientas.JuegoFicha.CogerMinimoDRM(drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas, true))
 
+								@Html.Raw(Herramientas.JuegoFicha.PrepararSuscripcion(Model.juego.Suscripciones, drm))
+								
 								@if (Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, false).Count > 0)
 								{
 									@foreach (JuegoPrecio precio in Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, true))

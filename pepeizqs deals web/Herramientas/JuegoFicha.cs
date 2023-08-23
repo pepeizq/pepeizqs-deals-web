@@ -1,6 +1,9 @@
 ﻿#nullable disable
 
 using Juegos;
+using Microsoft.VisualBasic;
+using Suscripciones2;
+using System.Runtime.Intrinsics.Arm;
 using Tiendas2;
 
 namespace Herramientas
@@ -116,9 +119,9 @@ namespace Herramientas
 			return imagen;
 		}
 
-		public static string CogerMinimoDRM(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
+		public static string CogerMinimoDRM(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales, bool añadirHtml)
 		{
-			string drmPreparado = string.Empty;
+			string drmPreparado = null;
 
 			List<JuegoPrecio> minimosOrdenados = new List<JuegoPrecio>();
 
@@ -161,7 +164,7 @@ namespace Herramientas
 					});
 				}
 
-				drmPreparado = "Historical low for " + JuegoDRM2.Nombre(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
+				drmPreparado = "Historical low for " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
 
 				bool incluirTiempo = true;
 
@@ -207,6 +210,11 @@ namespace Herramientas
 				{
 					drmPreparado = drmPreparado + " (Active Now)";
 				}
+			}
+
+			if (añadirHtml == true && drmPreparado != null)
+			{
+				drmPreparado = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + drmPreparado + "</div>";
 			}
 
 			return drmPreparado;
@@ -397,6 +405,57 @@ namespace Herramientas
 			}
 
 			return precioTexto;
+		}
+
+		public static bool VerificarMostrarDRM(JuegoDRM drm, Juego juego)
+		{
+			bool mostrar = false;
+
+			if (CogerMinimoDRM(drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, false) != null)
+			{
+				mostrar = true;
+			}
+			else if (PrepararSuscripcion(juego.Suscripciones, drm) != null) 
+			{
+				mostrar = true;
+			}
+
+			return mostrar;
+		}
+
+		public static string PrepararSuscripcion(List<JuegoSuscripcion> suscripciones, JuegoDRM drm)
+		{
+			if (suscripciones != null)
+			{
+				if (suscripciones.Count > 0) 
+				{ 
+					foreach (var suscripcion in suscripciones)
+					{
+						if (drm == suscripcion.DRM)
+						{
+							string mensaje = null;
+
+							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+							{
+								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace) + Strings.ChrW(34) + ">Currently available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + "</a>";
+							}
+                            else
+                            {
+								mensaje = "It was available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina);
+							}
+
+							if (mensaje != null)
+							{
+								mensaje = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + mensaje + "</div>";
+							}
+
+                            return mensaje;
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }

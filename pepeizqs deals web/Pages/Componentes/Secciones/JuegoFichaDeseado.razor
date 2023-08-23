@@ -68,7 +68,15 @@
 					{
 						if (int.Parse(juegoSteam) == juego.IdSteam)
 						{
-							mensaje = "You already have this game on the linked Steam account";
+							if (juego.Tipo == Juegos.JuegoTipo.Game)
+							{
+								mensaje = "You already have this game on the linked Steam account";
+							}
+							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+							{
+								mensaje = "You already have this DLC on the linked Steam account";
+							}
+							
 							break;
 						}
 					}
@@ -88,7 +96,15 @@
 					{
 						if (juego.IdSteam == int.Parse(deseado) && drm == Juegos.JuegoDRM.Steam)
 						{
-							mensaje = "This game was automatically added to your wishlist when your account was linked from Steam";
+							if (juego.Tipo == Juegos.JuegoTipo.Game)
+							{
+								mensaje = "This game was automatically added to your wishlist when your account was linked from Steam";
+							}
+							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+							{
+								mensaje = "This DLC was automatically added to your wishlist when your account was linked from Steam";
+							}
+					
 							break;
 						}
 					}			

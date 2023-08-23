@@ -23,6 +23,11 @@ namespace BaseDatos.Juegos
 							nuevoPrecio.Tienda == precio.Tienda &&
 							nuevoPrecio.Moneda == precio.Moneda)
 						{
+							if (nuevoPrecio.Precio < precio.Precio) 
+							{
+								precio.FechaDetectado = nuevoPrecio.FechaDetectado;
+							}
+
 							precio.Precio = nuevoPrecio.Precio;
 							precio.Descuento = nuevoPrecio.Descuento;
 							precio.FechaActualizacion = nuevoPrecio.FechaActualizacion;

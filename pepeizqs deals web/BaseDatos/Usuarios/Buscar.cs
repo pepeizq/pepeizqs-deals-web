@@ -10,23 +10,18 @@ namespace BaseDatos.Usuarios
 		{
 			if (string.IsNullOrEmpty(username) == false) 
 			{
-				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-				SqlConnection conexion = new SqlConnection(conexionTexto);
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 				using (conexion)
 				{
 					conexion.Open();
 					string busqueda = "SELECT * FROM AspNetUsers WHERE UserName=@UserName";
-					SqlCommand comando = new SqlCommand(busqueda, conexion);
 
-					using (comando)
+					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
 						comando.Parameters.AddWithValue("@UserName", username);
 
-						SqlDataReader lector = comando.ExecuteReader();
-
-						using (lector)
+						using (SqlDataReader lector = comando.ExecuteReader())
 						{
 							while (lector.Read())
 							{
@@ -36,11 +31,7 @@ namespace BaseDatos.Usuarios
 								}
 							}
 						}
-
-						lector.Close();
 					}
-
-					comando.Dispose();
 				}
 
 				conexion.Dispose();

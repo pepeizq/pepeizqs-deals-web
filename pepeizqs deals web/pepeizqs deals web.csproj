@@ -10,17 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BaseDatos\Juegos\Cargar.cs~RF3943d089.TMP" />
     <None Remove="BaseDatos\Juegos\Precios.cs~RF662827a9.TMP" />
     <None Remove="Herramientas\Divisas.cs~RF419ed6bf.TMP" />
     <None Remove="Herramientas\TareasGestionador.cs~RF6a54dce4.TMP" />
     <None Remove="Juegos\JuegoDRM.cs~RF33e4e895.TMP" />
     <None Remove="Juegos\JuegoFicha.cs~RF864f1e.TMP" />
     <None Remove="Pages\Componentes\Buscador.razor~RF47a2b634.TMP" />
+    <None Remove="Pages\Componentes\Secciones\Suscripciones2.razor~RF3be9a021.TMP" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Suscripciones2.razor" />
     <_ContentIncludedByDefault Remove="Pages\LastAdded.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Wishlist.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
@@ -65,6 +68,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Suscripciones2.razor" />
   </ItemGroup>
 
 </Project>
