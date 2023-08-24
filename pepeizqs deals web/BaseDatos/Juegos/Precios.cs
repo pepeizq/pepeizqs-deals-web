@@ -114,6 +114,89 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion);
 		}
 
+		public static List<Juego> DevolverMinimos()
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				conexion.Open();
+
+				List<Juego> juegos = Buscar.Todos(conexion);
+
+				if (juegos.Count > 0)
+				{
+					List<Juego> juegosConMinimos = new List<Juego>();
+
+					foreach (var juego in juegos)
+					{
+						if (juego.PrecioMinimosHistoricos.Count > 0)
+						{
+							foreach (var minimo in juego.PrecioMinimosHistoricos)
+							{
+								bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
+
+								if (fechaEncaja == true && minimo.Descuento > 0)
+								{
+									juegosConMinimos.Add(juego);
+									break;
+								}
+							}
+						}
+					}
+
+					juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+					{
+						List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+
+						if (j1.PrecioMinimosHistoricos.Count > 0)
+						{
+							foreach (var j in j1.PrecioMinimosHistoricos)
+							{
+								j1Ofertas.Add(j);
+							}
+
+							j1Ofertas.OrderBy(x => x.FechaDetectado);
+						}
+
+						List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+
+						if (j2.PrecioMinimosHistoricos.Count > 0)
+						{
+							foreach (var j in j2.PrecioMinimosHistoricos)
+							{
+								j2Ofertas.Add(j);
+							}
+
+							j2Ofertas.OrderBy(x => x.FechaDetectado);
+						}
+
+						if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+						{
+							return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
+						}
+						else
+						{
+							if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
+							{
+								return 1;
+							}
+							else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
+							{
+								return -1;
+							}
+						}
+
+						return 0;
+					});
+
+					return juegosConMinimos;
+				}
+			}
+
+			return null;
+		}
+
 		public static void Limpiar(string tienda)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();

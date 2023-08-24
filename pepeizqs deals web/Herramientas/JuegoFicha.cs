@@ -437,7 +437,7 @@ namespace Herramientas
 
 							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
 							{
-								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace) + Strings.ChrW(34) + ">Currently available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + "</a>";
+								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Suscripcion) + Strings.ChrW(34) + ">Currently available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + "</a>";
 							}
                             else
                             {

@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	Título:
+	<input type="text" class="entrada-texto" value="@titulo"/>
+
+	<div style="display: flex; margin-top: 20px;">
+		<div class="opciones-combobox" style="width: 33%;">
+			<select @onchange="@(e => CambiarSuscripcion(e))">
+				@foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
+				{
+					<option value="@suscripcion.Id">@suscripcion.Nombre</option>
+				}
+			</select>
+		</div>
+	</div>
+	
+</div>
+
+@code {
+
+	private string titulo = null;
+	private string fechaSeleccionada = null;
+
+}

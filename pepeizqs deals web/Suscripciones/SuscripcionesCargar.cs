@@ -36,6 +36,19 @@ namespace Suscripciones2
 			return null;
 		}
 
+		public static Suscripcion DevolverSuscripcion(SuscripcionTipo suscripcionTipo)
+		{
+			foreach (var suscripcion in GenerarListado())
+			{
+				if (suscripcion.Id == suscripcionTipo)
+				{
+					return suscripcion;
+				}
+			}
+
+			return null;
+		}
+
 		public static Suscripcion DevolverSuscripcion(int posicion)
 		{
 			SuscripcionTipo suscripcion2 = CargarSuscripciones()[posicion];

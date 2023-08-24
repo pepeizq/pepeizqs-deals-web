@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using BaseDatos.Enlaces;
+using Suscripciones2;
 
 namespace Herramientas
 {
@@ -37,6 +38,25 @@ namespace Herramientas
 				{
 					enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
 				}
+			}
+
+			//----------------------------------------
+
+			Enlace enlaceFinal = Buscar.Base(enlace);
+
+			if (enlaceFinal == null)
+			{
+				enlaceFinal = Insertar.Ejecutar(enlace);
+			}
+
+			return "/link/" + enlaceFinal.Id;
+		}
+
+		public static string Generar(string enlace, SuscripcionTipo tipo)
+		{
+			if (tipo == SuscripcionTipo.HumbleChoice)
+			{
+				enlace = APIs.Humble.Suscripcion.Referido(enlace);
 			}
 
 			//----------------------------------------

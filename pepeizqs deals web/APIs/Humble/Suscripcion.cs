@@ -40,5 +40,10 @@ namespace APIs.Humble
 
 			return humbleChoice;
 		}
+
+		public static string Referido(string enlace)
+		{
+			return enlace + "?partner=pepeizq&refc=gXsa9X";
+		}
 	}
 }

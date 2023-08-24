@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Herramientas;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -33,10 +34,12 @@ builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
 builder.Services.AddScoped<IServicioHacerTarea, ServicioHacerTarea>();
 
 //----------------------------------------------------------------------------------
-//Acceder Usuario en Codigo
+#region Acceder Usuario en Codigo
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
+
+#endregion
 
 //----------------------------------------------------------------------------------
 
@@ -57,22 +60,23 @@ builder.Services.ConfigureApplicationCookie(opciones =>
     opciones.SlidingExpiration = true;
 });
 
-//builder.Services.AddDataProtection().UseCryptographicAlgorithms(
-//	new AuthenticatedEncryptorConfiguration
-//	{
-//		EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
-//		ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-//	});
+builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
+{
+    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+});
 
 builder.Services.AddServerSideBlazor().AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-    options.EnableDetailedErrors = false;
-    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
-    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
-    options.MaximumParallelInvocationsPerClient = 1;
-    options.MaximumReceiveMessageSize = 32 * 1024;
-    options.StreamBufferCapacity = 10;
+    options.ClientTimeoutInterval = TimeSpan.FromMinutes(15);
+    options.EnableDetailedErrors = true;
+    options.HandshakeTimeout = null;
+    options.KeepAliveInterval = null;
+});
+
+builder.Services.Configure<HubOptions>(options =>
+{
+	options.MaximumReceiveMessageSize = null;
 });
 
 builder.Services.AddRazorPages();
