@@ -32,27 +32,28 @@
 		}
 	</div>
 
-	<div class="perfil perfil-espacio-bottom">
-		<form method="post">
-			<div class="perfil-flexible-centrado">
-				<div style="width: 25%;">
-					<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
-				</div>
-				<div style="width: 75%; padding-left: 20px;">
-					<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
-				</div>
+	<div class="perfil">
+		<div class="perfil-flexible-centrado">
+			<div style="width: 25%;">
+				<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 			</div>
-		</form>
+			<div style="width: 75%; padding-left: 20px;">
+				<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
+			</div>
+		</div>
 	</div>
 }
-
 
 @code {
 
 	#nullable disable
 
+	private string tiendaElegida = null;
+
 	private void ClickearTienda(MouseEventArgs e, string id)
 	{
+		tiendaElegida = id;
+
 		if (id != null)
 		{
 			TiendasCargar.AdminTiendas(id);

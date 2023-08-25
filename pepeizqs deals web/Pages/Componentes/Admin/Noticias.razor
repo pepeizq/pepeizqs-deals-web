@@ -1,25 +1,304 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.VisualBasic;
 
 <div class="perfil">
-	Título:
-	<input type="text" class="entrada-texto" value="@titulo"/>
 
-	<div style="display: flex; margin-top: 20px;">
+	<div style="display: flex; margin-bottom: 30px;">
+		<div class="opciones-combobox" style="width: 33%;">
+			<select @onchange="@(e => CambiarNoticiaTipo(e))">
+				@foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
+				{
+					<option value="@tipo">@tipo</option>
+				}
+			</select>
+		</div>
+	</div>
+
+	@if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+	{
 		<div class="opciones-combobox" style="width: 33%;">
 			<select @onchange="@(e => CambiarSuscripcion(e))">
-				@foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
+				@foreach (Suscripciones2.Suscripcion suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
 				{
 					<option value="@suscripcion.Id">@suscripcion.Nombre</option>
 				}
 			</select>
 		</div>
-	</div>
-	
+
+		@if (suscripcionSeleccionada != null)
+		{
+			<div style="margin-top: 20px;">
+				@foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionada).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
+				{
+					if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+					{
+						<button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+							<div style="display: flex; align-items: center;">
+								@if (juegos != null)
+								{
+									@if (juegos.Contains(suscripcion.JuegoId.ToString()) == true)
+									{
+										<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+									}
+								}							
+
+								<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion).Imagen" style="width: 12%; margin: 10px;" />
+								<div style="margin-left: 20px;">@suscripcion.Nombre</div>
+							</div>
+						</button>
+					}
+				}
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Juegos:</label>
+				<input type="text" class="entrada-texto" value="@juegos" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Título:</label>
+				<input type="text" class="entrada-texto" value="@titulo" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Contenido:</label>
+				<textarea class="entrada-texto" rows="8">@contenido</textarea>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Fecha Termina:</label>
+				<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			</div>
+
+			<div style="display: flex; margin-top: 20px; width: 20%;">
+				<button @onclick="@(e => AñadirSuscripcionNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
+			</div>
+		}
+	}
+
 </div>
 
 @code {
 
+	#nullable disable
+
+	private string noticiaTipoSeleccionada = null;
+
+	private string juegos = null;
+
+	private string suscripcionSeleccionada = null;
+
 	private string titulo = null;
+	private string contenido = null;
 	private string fechaSeleccionada = null;
 
+	private void CambiarNoticiaTipo(ChangeEventArgs texto)
+	{
+		noticiaTipoSeleccionada = texto.Value.ToString();	
+
+		//-------------------------------------------------------
+
+		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+		{
+			suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
+		}
+	}
+
+	#region Suscripciones	
+
+	private void CambiarSuscripcion(ChangeEventArgs texto)
+	{
+		suscripcionSeleccionada = texto.Value.ToString();
+	}
+
+	private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId)
+	{
+		if (string.IsNullOrEmpty(juegos) == true)
+		{
+			juegos = juegoId.ToString();
+		}
+		else
+		{
+			if (juegos.Contains(juegoId.ToString()) == false)
+			{
+				juegos = juegos + "," + juegoId.ToString();
+			}
+			else
+			{
+				int int1 = juegos.IndexOf(juegoId.ToString() + ",");
+
+				if (int1 == -1)
+				{
+					int1 = juegos.IndexOf(juegoId.ToString());
+					juegos = juegos.Remove(int1, juegoId.ToString().Length);
+				}
+				else
+				{
+					juegos = juegos.Remove(int1, juegoId.ToString().Length + 1);
+				}
+
+				if (juegos.Trim().Length == 1)
+				{
+					juegos = null;
+				}
+			}
+		}
+
+		SuscripcionGenerarTitulo();
+		SuscripcionGenerarContenido();
+		SuscripcionGenerarFecha();
+	}
+
+	private void CambiarSuscripcionFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+
+	private void SuscripcionGenerarTitulo()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			titulo = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " • ";
+
+			if (lista.Count == 1)
+			{
+				titulo = titulo + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " has been added";
+			}
+			else if (lista.Count == 2)
+			{
+				titulo = titulo + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " and " + 
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " has been added";
+			}
+			else if (lista.Count > 2)
+			{
+				titulo = titulo + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " and more games have been added";
+			}
+		}
+		else
+		{
+			titulo = null;
+		}
+	}
+
+	private void SuscripcionGenerarContenido()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			contenido = "The subscription service " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " ";
+
+			if (lista.Count == 1)
+			{
+				contenido = contenido + "has added the following game:";
+			}
+			else if (lista.Count > 1)
+			{
+				contenido = contenido + "has added the following games:";
+			}
+
+			contenido = contenido + Environment.NewLine + "<ul>" + Environment.NewLine;
+
+			foreach (var juego in lista)
+			{
+				Juegos.JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(juego));
+
+				contenido = contenido + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Suscripcion) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
+			}
+
+			contenido = contenido + "</ul>";
+		}
+		else
+		{
+			contenido = null;
+		}
+	}
+
+	private void SuscripcionGenerarFecha()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			Juegos.JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0]));
+
+			fechaSeleccionada = suscripcion.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+		}
+		else
+		{
+			fechaSeleccionada = null;
+		}
+	}
+
+	private void AñadirSuscripcionNoticia(MouseEventArgs e)
+	{
+		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+		noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
+		noticia.Titulo = titulo;
+		noticia.Contenido = contenido;
+		noticia.Juegos = juegos;		
+		noticia.FechaEmpieza = DateTime.Now;
+		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+		noticia.SuscripcionTipo = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
+
+		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+		suscripcionSeleccionada = null;
+		titulo = null;
+		contenido = null;
+		juegos = null;
+	}
+
+	#endregion
+
+	private List<string> GenerarLista(string datos)
+	{
+		if (datos != null)
+		{
+			List<string> lista = new List<string>();
+			string datos2 = datos;
+
+			int i = 0;
+			int j = 100000;
+
+			while (i < j)
+			{
+				if (datos2.Contains(",") == true)
+				{
+					int int1 = datos2.IndexOf(",");
+
+					string añadir = datos2.Remove(int1, datos2.Length - int1);
+
+					if (añadir.Length > 0)
+					{
+						lista.Add(añadir);
+					}
+					
+					datos2 = datos2.Remove(0, int1 + 1);
+				}
+				else
+				{
+					if (datos2.Length > 0)
+					{
+						lista.Add(datos2);
+					}
+					
+					break;
+				}
+
+				i += 1;
+			}
+
+			if (lista.Count > 0)
+			{
+				return lista;
+			}
+		}
+
+		return null;
+	}
 }

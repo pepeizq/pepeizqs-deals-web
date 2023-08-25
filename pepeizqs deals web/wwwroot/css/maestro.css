@@ -24,3 +24,8 @@
     font-weight: normal;
     font-style: normal;
 }
+
+dl, ol, ul {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

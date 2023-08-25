@@ -2,7 +2,7 @@
 {
 	public enum NoticiaTipo
 	{
-		OfertaFallo,
+		Ofertas,
 		Bundles,
 		Gratis,
 		Suscripciones,
@@ -10,8 +10,13 @@
 		Sorteos
 	}
 
-	public class NoticiasCargar
+	public static class NoticiasCargar
 	{
+		public static List<NoticiaTipo> CargarNoticiasTipo()
+		{
+			List<NoticiaTipo> tipos = Enum.GetValues(typeof(NoticiaTipo)).Cast<NoticiaTipo>().ToList();
 
+			return tipos;
+		}
 	}
 }

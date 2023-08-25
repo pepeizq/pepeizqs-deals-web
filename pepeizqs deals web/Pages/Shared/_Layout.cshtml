@@ -48,6 +48,7 @@
                         <hr>
                         <a class="texto-cabecera menu-dropdown-item" asp-page="/Subscriptions">Subscriptions</a>
                         <hr>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/LastNews">Last News</a>
                         <a class="texto-cabecera menu-dropdown-item" asp-page="/LastAdded">Last Added</a>
                     </div>
                 </div>
@@ -61,7 +62,7 @@
                 </button> *@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1" style="align-items: center;">
+                    <ul class="navbar-nav flex-grow-1" style="align-items: center; margin-top: 0px;">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             @if (await UsuarioCoger.RolDios(UserManager, User) == true)
@@ -112,19 +113,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="_framework/blazor.server.js"></script>
     <script>
-        Blazor.start().then(() => {
-            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                document.location.reload();
-            }
-        });
+        // Blazor.start().then(() => {
+        //     Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+        //         document.location.reload();
+        //     }
+        // });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-@* @section Scripts {
-    <script src="~/_framework/blazor.server.js"></script>
-} *@

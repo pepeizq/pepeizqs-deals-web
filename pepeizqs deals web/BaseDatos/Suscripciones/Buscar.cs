@@ -1,13 +1,16 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#nullable disable
+
+using Juegos;
+using Microsoft.Data.SqlClient;
 using Suscripciones2;
 
 namespace BaseDatos.Suscripciones
 {
     public static class Buscar
     {
-        public static List<global::Juegos.JuegoSuscripcion> Todos()
+        public static List<JuegoSuscripcion> Todos()
         {
-            List<global::Juegos.JuegoSuscripcion> suscripciones = new List<global::Juegos.JuegoSuscripcion>();
+            List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
 
             SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -23,13 +26,13 @@ namespace BaseDatos.Suscripciones
                     {
                         while (lector.Read())
                         {
-							global::Juegos.JuegoSuscripcion suscripcion = new global::Juegos.JuegoSuscripcion
+							JuegoSuscripcion suscripcion = new JuegoSuscripcion
 							{
 								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
-								DRM = global::Juegos.JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
 								Enlace = lector.GetString(5),
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
@@ -45,5 +48,89 @@ namespace BaseDatos.Suscripciones
 
             return suscripciones;
         }
-    }
+
+		public static List<JuegoSuscripcion> UnTipo(string suscripcionTexto)
+		{
+			List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				conexion.Open();
+
+				string busqueda = "SELECT * FROM suscripciones WHERE suscripcion=@suscripcion";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@suscripcion", SuscripcionesCargar.DevolverSuscripcion(suscripcionTexto).Id);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							JuegoSuscripcion suscripcion = new JuegoSuscripcion
+							{
+								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+								JuegoId = lector.GetInt32(1),
+								Nombre = lector.GetString(2),
+								Imagen = lector.GetString(3),
+								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+								Enlace = lector.GetString(5),
+								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+								FechaTermina = Convert.ToDateTime(lector.GetString(7))
+							};
+
+							suscripciones.Add(suscripcion);
+						}
+					}
+				}
+			}
+
+			conexion.Dispose();
+
+			return suscripciones;
+		}
+
+		public static JuegoSuscripcion UnJuego(int juegoId)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				conexion.Open();
+
+				string busqueda = "SELECT * FROM suscripciones WHERE juegoId=(SELECT max(@juegoId) FROM suscripciones)";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@juegoId", juegoId);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							JuegoSuscripcion suscripcion = new JuegoSuscripcion
+							{
+								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+								JuegoId = lector.GetInt32(1),
+								Nombre = lector.GetString(2),
+								Imagen = lector.GetString(3),
+								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+								Enlace = lector.GetString(5),
+								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+								FechaTermina = Convert.ToDateTime(lector.GetString(7))
+							};
+
+							return suscripcion;
+						}
+					}
+				}
+			}
+
+			conexion.Dispose();
+
+			return null;
+		}
+	}
 }

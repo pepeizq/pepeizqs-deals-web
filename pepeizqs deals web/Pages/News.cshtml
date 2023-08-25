@@ -2,8 +2,41 @@
 @model pepeizqs_deals_web.Pages.NewsModel
 
 @{
-	ViewData["Title"] = "News";
+	ViewData["Title"] = Model.noticia.Titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Noticias>(RenderMode.ServerPrerendered))
+<div class="juego-wrap">
+	@if (@Model.fondo != null)
+	{
+		<img class="juego-fondo" src="@Model.fondo" onerror="this.parentNode.removeChild(this)" />
+	}
+	
+    <div class="juego-contenido">
+		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; margin-bottom: 40px;">
+			<div style="width: 12%;">
+				<img src="@Model.imagenLogo" style="max-width: 100%;"/>
+			</div>	
+
+			<div style="width: 76%; font-size: 22px; padding-left: 40px; padding-right: 40px;">
+				@Model.titulo
+			</div>
+
+			<div style="width: 12%; font-size: 22px;">
+				@Model.fechaEmpieza
+			</div>
+		</div>
+
+		<div class="perfil" style="margin-bottom: 40px;">
+			@Html.Raw(Model.noticia.Contenido)
+		</div>
+
+		@if (Model.fechaTermina != null)
+		{
+			<div class="perfil" style="flex-direction: row;">
+				<i class="fa-solid fa-exclamation" style="font-size: 20px; margin-right: 20px;"></i> @Model.fechaTermina
+			</div>
+		}
+
+	</div>
+</div>

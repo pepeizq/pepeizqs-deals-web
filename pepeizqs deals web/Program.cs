@@ -68,15 +68,20 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(new Authenticate
 
 builder.Services.AddServerSideBlazor().AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromMinutes(15);
-    options.EnableDetailedErrors = true;
-    options.HandshakeTimeout = null;
-    options.KeepAliveInterval = null;
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(15);
+	options.EnableDetailedErrors = true;
+    options.HandshakeTimeout = TimeSpan.FromMinutes(15);
+    options.KeepAliveInterval = TimeSpan.FromMinutes(15);
 });
 
 builder.Services.Configure<HubOptions>(options =>
 {
 	options.MaximumReceiveMessageSize = null;
+});
+
+builder.Services.AddSignalR(options =>
+{
+    options.KeepAliveInterval = TimeSpan.FromMinutes(60);
 });
 
 builder.Services.AddRazorPages();

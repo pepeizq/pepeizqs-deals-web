@@ -1,0 +1,9 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.LastNewsModel
+
+@{
+	ViewData["Title"] = "Last News";
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias2>(RenderMode.ServerPrerendered))
