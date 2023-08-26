@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	<div>
+		<label style="margin-bottom: 10px;">Juego:</label>
+		<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+		@if (juegosBuscador.Count > 0)
+		{
+			<div>
+				@foreach (var juego in juegosBuscador)
+				{
+					<div class="perfil-flexible-centrado perfil-espacio-top">
+						<button @onclick="@(e => ClickearJuego(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 12%;">
+									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+								</div>
+
+								<div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+									@juego.Id - @juego.Nombre
+								</div>
+
+							</div>
+						</button>
+					</div>
+				}
+			</div>
+		}
+	</div>
+
+	@if (idSeleccionada != null)
+	{
+		<div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
+			<select @onchange="@(e => CambiarGratis(e))">
+				@foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
+				{
+					<option value="@gratis.Id">@gratis.Nombre</option>
+				}
+			</select>
+		</div>
+
+		<div style="display: flex; margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Enlace:</label>
+			<input @onchange="@(e => CambiarEnlace(e))" class="entrada-texto" value="@enlace">
+		</div>
+
+		<div style="display: flex; margin-top: 20px;">
+			<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+		</div>
+		
+	}
+
+</div>
+
+@code {
+
+	#nullable disable
+
+	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+	private string idSeleccionada = null;
+	private string tipo = null;
+	private string enlace = null;
+	private string fechaSeleccionada = null;
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void ClickearJuego(MouseEventArgs e, string id)
+	{
+		juegosBuscador = new List<Juegos.Juego>();
+
+		idSeleccionada = id;
+	}
+
+	private void CambiarGratis(ChangeEventArgs texto)
+	{
+		tipo = texto.Value.ToString();
+	}
+
+	private void CambiarEnlace(ChangeEventArgs texto)
+	{
+		enlace = texto.Value.ToString();
+	}
+
+	private void CambiarFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+
+
+}

@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <base href="~/" />
-    <component type="typeof(Juegos.Juego)" render-mode="ServerPrerendered" />
+    <component type="typeof(Juegos.Juego)" render-mode="Server" />
 
 </head>
 
@@ -76,6 +76,7 @@
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Pendientes">Pendientes</a>
                                             <hr>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Noticias">Noticias</a>
+                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Gratis">Gratis</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Suscripciones">Suscripciones</a>
                                         </div>
                                     </div>
@@ -113,14 +114,41 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js"></script>
+    <script src="_framework/blazor.server.js" autostart="false"></script>
     <script>
-        // Blazor.start().then(() => {
-        //     Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-        //         document.location.reload();
-        //     }
-        // });
+        Blazor.start().then(() => {
+            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                document.getElementById('components-reconnect-modal').style.display = 'none';
+                document.location.reload();
+            }
+        });
     </script>
+
+    <script>
+        // window.onload = function () {
+        //     const c = document.getElementById('components-reconnect-modal');
+        //     c.style.display = 'none';
+        // }
+        $(document).ready(function () {
+            if ($('.components-reconnect-modal').is(':visible')) {
+                $('.components-reconnect-modal').hide();
+            }
+        });
+    </script>
+
+@*     <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            configureSignalR: function (builder) {
+                let c = builder.build();
+                c.serverTimeoutInMilliseconds = 3000000;
+                c.keepAliveIntervalInMilliseconds = 1500000;
+                builder.build = () => {
+                    return c;
+                };
+            }
+        });
+    </script> *@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

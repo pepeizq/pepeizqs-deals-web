@@ -49,5 +49,11 @@ namespace Herramientas
 				return Redirect("~/");
 			}			
 		}
+
+		[HttpGet("news/{id}")]
+		public IActionResult CogerNoticiaId(int Id)
+		{
+			return Redirect("~/news?id=" + Id.ToString());
+		}
 	}
 }

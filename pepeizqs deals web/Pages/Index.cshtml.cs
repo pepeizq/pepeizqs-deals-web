@@ -5,8 +5,8 @@ namespace pepeizqs_deals_web.Pages
 {
 	public class IndexModel : PageModel
 	{
-		public string buscador = string.Empty;
-
+		public string idioma = string.Empty;
+		
 		private readonly ILogger<IndexModel> _logger;
 
 		public IndexModel(ILogger<IndexModel> logger)
@@ -16,7 +16,7 @@ namespace pepeizqs_deals_web.Pages
 
 		public void OnGet()
 		{
-
-		}
+            idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+        }
     }
 }

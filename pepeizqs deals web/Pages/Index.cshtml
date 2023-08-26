@@ -8,16 +8,6 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
-	<div style="width: 50%;">
-		@(await Html.RenderComponentAsync<Componentes.Portada.UltimosMinimos>(RenderMode.ServerPrerendered))
+@Model.idioma
 
-		<div style="margin: 50px;"></div>
-
-		@(await Html.RenderComponentAsync<Componentes.Portada.UltimosAñadidos>(RenderMode.ServerPrerendered))
-	</div>
-
-	<div style="width: 50%;">
-
-	</div>
-</div>
+@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered))

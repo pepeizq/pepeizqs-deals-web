@@ -16,6 +16,7 @@ namespace pepeizqs_deals_web.Pages
 		public string titulo = null;
 		public string fechaEmpieza = null;
 		public string fechaTermina = null;
+		public List<Juego> juegos = new List<Juego>();
 
         public void OnGet()
         {
@@ -76,8 +77,25 @@ namespace pepeizqs_deals_web.Pages
 						fechaTermina = "This promotion has ended.";
 					}
 				}
-            }
-            
+
+				if (noticia.Juegos != null)
+				{
+					List<string> listaJuegos = GenerarLista(noticia.Juegos);
+
+					if (listaJuegos.Count > 0) 
+					{ 
+						foreach (var listaJuego in listaJuegos)
+						{
+							Juego juego = BaseDatos.Juegos.Buscar.UnJuego(listaJuego);
+
+							if (juego != null) 
+							{
+								juegos.Add(juego);
+							}
+						}
+					}
+				}
+            }          
 		}
 
 		private List<string> GenerarLista(string datos)

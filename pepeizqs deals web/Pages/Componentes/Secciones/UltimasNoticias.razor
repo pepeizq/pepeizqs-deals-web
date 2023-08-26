@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+@if (noticiasMostrar.Count > 0)
+{
+	@for (int i = 0; i < noticiasMostrar.Count; i += 1)
+	{
+		@if (i == 0 || (i > 0 && FechaIncluir(noticiasMostrar[i - 1], noticiasMostrar[i]) == true))
+		{
+			<hr/>
+
+			<div style="margin-top: 60px; margin-bottom: 30px; font-size: 22px;">@FechaTexto(noticiasMostrar[i].FechaEmpieza)</div>
+		}
+
+		<div class="perfil" style="margin-left: 150px; margin-bottom: 130px; margin-top: -100px;">
+			<div style="font-size: 20px; margin-bottom: 15px;">@noticiasMostrar[i].Titulo</div>
+
+			<div>@((MarkupString)@noticiasMostrar[i].Contenido)</div>
+		</div>	
+	}
+}
+
+@code {
+
+	#nullable disable
+
+	private List<string> fechas = new List<string>();
+	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
+
+	protected override void OnInitialized()
+	{
+		List<Noticias.Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+		foreach (var noticia in noticias)
+		{
+			if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+			{
+				noticiasMostrar.Add(noticia);
+			}
+		}
+	}
+
+	private bool FechaIncluir(Noticias.Noticia noticiaAnterior, Noticias.Noticia noticia)
+	{
+		bool incluir = true;
+
+		if (noticiaAnterior.FechaEmpieza.DayOfYear == noticia.FechaEmpieza.DayOfYear)
+		{
+			incluir = false;
+		}
+
+		return incluir;
+	}
+
+	private string FechaTexto(DateTime fechaDate)
+	{
+		string fechaTexto = string.Empty;
+
+		fechaTexto = fechaDate.Day.ToString() + "/" + fechaDate.Month.ToString() + "/" + fechaDate.Year.ToString();
+
+		return fechaTexto;
+	}
+}

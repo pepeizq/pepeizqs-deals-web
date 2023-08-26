@@ -13,7 +13,7 @@
 	}
 	
     <div class="juego-contenido">
-		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; margin-bottom: 40px;">
+		<div class="juego-cabecera" style="padding: 40px; flex-direction: row;">
 			<div style="width: 12%;">
 				<img src="@Model.imagenLogo" style="max-width: 100%;"/>
 			</div>	
@@ -27,16 +27,37 @@
 			</div>
 		</div>
 
-		<div class="perfil" style="margin-bottom: 40px;">
+		<div class="perfil" style="margin-top: 40px;">
 			@Html.Raw(Model.noticia.Contenido)
 		</div>
 
 		@if (Model.fechaTermina != null)
 		{
-			<div class="perfil" style="flex-direction: row;">
+			<div class="perfil" style="flex-direction: row; margin-top: 40px;">
 				<i class="fa-solid fa-exclamation" style="font-size: 20px; margin-right: 20px;"></i> @Model.fechaTermina
 			</div>
 		}
 
+		@if (Model.juegos.Count > 0)
+		{
+			<div class="perfil" style="margin-top: 40px;">
+				<div style="margin-bottom: 20px;">
+					Games in the database:
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 20px;">
+					@foreach (var juego in Model.juegos)
+					{
+						<div style="max-width: 200px;">
+							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 10px;" target="_blank">
+								<div>
+									<img src="@juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
+								</div>
+							</a>
+						</div>
+					}
+				</div>
+			</div>	
+		}
 	</div>
 </div>

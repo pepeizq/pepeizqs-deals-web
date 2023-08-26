@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿//https://github.com/damienbod/AspNetCoreHangfire
+
+#nullable disable
 
 namespace Herramientas
 {

@@ -68,7 +68,7 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(new Authenticate
 
 builder.Services.AddServerSideBlazor().AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(15);
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
 	options.EnableDetailedErrors = true;
     options.HandshakeTimeout = TimeSpan.FromMinutes(15);
     options.KeepAliveInterval = TimeSpan.FromMinutes(15);
@@ -108,6 +108,6 @@ app.MapControllerRoute(name: "game",
 				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
 
 app.MapRazorPages();
-app.MapBlazorHub();
+app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.Run();

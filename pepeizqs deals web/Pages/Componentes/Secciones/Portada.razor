@@ -1,0 +1,211 @@
+﻿@using BaseDatos.Juegos;
+@using Juegos;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Data.SqlClient;
+@using Noticias;
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
+	<div style="width: 50%; padding-right: 10px;">
+	
+		@if (juegosMinimosMostrar.Count > 0)
+		{
+			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
+				Last Historical Lows
+			</div>
+
+			<div class="perfil" style="padding: 15px 20px;">
+				@foreach (var juego in juegosMinimosMostrar)
+				{
+					<div class="perfil-flexible-centrado" style="margin-top: 10px;">
+						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 20%;">
+									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+								</div>
+
+								<div style="width: 70%; padding: 4px 15px; font-size: 13px;">
+									@juego.Nombre
+								</div>
+
+								<div style="width: 5%; height: 16px; position: relative;">
+									<img src="@CargarIconoTienda(juego)" class="juego-icono-tienda" />
+								</div>
+
+								<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
+									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
+								</div>
+							</div>
+						</a>
+					</div>
+				}
+
+				<a class="boton-pequeño" style="padding: 10px 15px; margin-top: 20px; margin-bottom: 5px;" href="/HistoricalLow">
+					Load more historical lows
+				</a>
+			</div>
+		}
+
+		<div style="margin: 50px;"></div>
+
+		@if (juegosAñadidosMostrar.Count > 0)
+		{
+			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
+				Last Added
+			</div>
+
+			<div class="perfil" style="padding: 15px 20px;">
+				@foreach (var juego in juegosAñadidosMostrar)
+				{
+					<div class="perfil-flexible-centrado" style="margin-top: 5px; margin-bottom: 5px;">
+						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 20%;">
+									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+								</div>
+
+								<div style="width: 60%; padding: 4px 15px; font-size: 13px;">
+									@juego.Nombre
+
+									@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
+									{
+										<br /> @juego.Id
+									}
+								</div>
+
+								<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
+									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
+								</div>
+							</div>
+						</a>
+					</div>
+				}
+
+				<a class="boton-pequeño" style="padding: 10px 15px; margin-top: 20px; margin-bottom: 5px;" href="/LastAdded">
+					Load more added games
+				</a>
+			</div>
+		}
+		
+	</div>
+
+	<div style="width: 50%; padding-left: 10px;">
+		@if (noticiasMostrar.Count > 0)
+		{
+			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
+				Last News
+			</div>
+
+			<div class="perfil" style="padding: 15px 20px;">
+				@foreach (var noticia in noticiasMostrar)
+				{
+					<div class="perfil-flexible-centrado" style="margin-top: 10px;">
+						<a class="boton-pequeño" style="padding: 20px;" href="/news/@noticia.Id">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 80%;">
+									@noticia.Titulo
+								</div>
+
+								<div style="width: 20%; text-align: right;">
+									@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
+								</div>			
+							</div>
+						</a>
+					</div>
+				}
+			</div>
+		}
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	List<Juego> juegosMinimosMostrar = new List<Juego>();
+	List<Juego> juegosAñadidosMostrar = new List<Juego>();
+	List<Noticia> noticiasMostrar = new List<Noticia>();
+
+	protected override void OnInitialized()
+	{
+		#region Minimos
+		List<Juego> juegosConMinimos = BaseDatos.Juegos.Precios.DevolverMinimos();
+
+		if (juegosConMinimos != null)
+		{
+			if (juegosConMinimos.Count > 0)
+			{
+				juegosMinimosMostrar.Clear();
+
+				for (int i = 0; i < 10; i += 1)
+				{
+					juegosMinimosMostrar.Add(juegosConMinimos[i]);
+				}
+			}
+		}
+		#endregion
+
+		//----------------------------------------------------------
+
+		#region Añadidos
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			conexion.Open();
+
+			List<Juego> juegos = Buscar.Todos(conexion);
+
+			if (juegos.Count > 0)
+			{
+				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
+
+				int i = 0;
+				foreach (Juego juego in juegos)
+				{
+					if (i < 10)
+					{
+						juegosAñadidosMostrar.Add(juego);
+					}
+
+					i += 1;
+				}
+			}
+		}
+		#endregion
+
+		//----------------------------------------------------------
+
+		#region Noticias
+		List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+		foreach (var noticia in noticias)
+		{
+			if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+			{
+				noticiasMostrar.Add(noticia);
+			}
+		}
+		#endregion
+	}
+
+	private string CargarIconoTienda(Juego juego)
+	{
+		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
+		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+		foreach (var tienda in tiendas)
+		{
+			if (tienda.Id == oferta.Tienda)
+			{
+				return tienda.ImagenIcono;
+			}
+		}
+
+		return null;
+	}
+
+}
