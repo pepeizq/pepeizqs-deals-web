@@ -8,6 +8,8 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+@Herramientas.IdiomaBuscar.CogerCadena(idioma, "test")
+
 <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between;">
 	<div style="width: 50%; padding-right: 10px;">
 	
@@ -124,6 +126,9 @@
 @code {
 
 	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
 
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 	List<Juego> juegosAñadidosMostrar = new List<Juego>();

@@ -66,9 +66,16 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(new Authenticate
     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 });
 
-builder.Services.AddServerSideBlazor().AddHubOptions(options =>
+builder.Services.AddServerSideBlazor(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+    options.DetailedErrors = true;
+    options.DisconnectedCircuitMaxRetained = 100;
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(15);
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+    options.MaxBufferedUnacknowledgedRenderBatches = 10;
+}).AddHubOptions(options =>
+{
+    options.ClientTimeoutInterval = TimeSpan.FromMinutes(60);
 	options.EnableDetailedErrors = true;
     options.HandshakeTimeout = TimeSpan.FromMinutes(15);
     options.KeepAliveInterval = TimeSpan.FromMinutes(15);
@@ -108,6 +115,8 @@ app.MapControllerRoute(name: "game",
 				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
 
 app.MapRazorPages();
+
+app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.Run();
