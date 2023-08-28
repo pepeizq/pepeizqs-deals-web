@@ -9,8 +9,10 @@ namespace Noticias
 		public int Id;
 		public NoticiaTipo Tipo;
 		public SuscripcionTipo SuscripcionTipo;
-		public string Titulo;
-		public string Contenido;
+		public string TituloEn;
+		public string TituloEs;
+		public string ContenidoEn;
+		public string ContenidoEs;
 		public string Imagen;
 		public string Enlace;
 		public string Juegos;

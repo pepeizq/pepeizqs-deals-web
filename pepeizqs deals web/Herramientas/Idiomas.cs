@@ -14,10 +14,17 @@ namespace Herramientas
 	{
 		public static string CogerCadena(string idiomaUsuario, string cadena)
 		{
-			if (File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
+			if (idiomaUsuario == "es")
+			{
+				idiomaUsuario = "es-ES";
+			}
+
+			if (idiomaUsuario == null || File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
 			{
 				idiomaUsuario = "en-US";
 			}
+
+			string devolver = null;
 
 			using (StreamReader r = new StreamReader("Idiomas/" + idiomaUsuario + ".json"))
 			{
@@ -28,12 +35,19 @@ namespace Herramientas
 				{
 					if (item.Id == cadena)
 					{
-						return item.Valor;
+						devolver = item.Valor;
 					}
-				}
+				}			
 			}
 
-			return null;
+			if (devolver != null)
+			{
+				return devolver;
+			}
+			else
+			{
+				return CogerCadena("en-US", cadena);
+			}
 		}
 	}
 	

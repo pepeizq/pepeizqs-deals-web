@@ -9,7 +9,9 @@ namespace pepeizqs_deals_web.Pages
 {
     public class NewsModel : PageModel
     {
-        public Noticia noticia = new Noticia();
+		public string idioma = string.Empty;
+
+		public Noticia noticia = new Noticia();
 
 		public string imagenLogo = null;
         public string fondo = null;
@@ -20,6 +22,8 @@ namespace pepeizqs_deals_web.Pages
 
         public void OnGet()
         {
+			idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
 			string id = Request.Query["id"];
 
 			noticia = BaseDatos.Noticias.Buscar.UnaNoticia(int.Parse(id));
@@ -46,9 +50,9 @@ namespace pepeizqs_deals_web.Pages
 					}
 				}
 
-				if (noticia.Titulo != null)
+				if (noticia.TituloEn != null)
 				{
-					titulo = noticia.Titulo;
+					titulo = noticia.TituloEn;
 
 					if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{

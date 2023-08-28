@@ -119,4 +119,6 @@ app.MapRazorPages();
 app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
+app.UseRequestLocalization();
+
 app.Run();

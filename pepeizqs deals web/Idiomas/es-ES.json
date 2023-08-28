@@ -1,6 +1,78 @@
 [
   {
-    "Id": "test",
-    "Valor": "yolo"
+    "Id": "Layout.Wishlist",
+    "Valor": "Lista de Deseados"
+  },
+  {
+    "Id": "Layout.HistoricalLows",
+    "Valor": "Mínimos Históricos"
+  },
+  {
+    "Id": "Layout.Subscriptions",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "Layout.LastNews",
+    "Valor": "Últimas Noticias"
+  },
+  {
+    "Id": "Layout.LastAdded",
+    "Valor": "Últimos Añadidos"
+  },
+  {
+    "Id": "Index.Title",
+    "Valor": "Inicio"
+  },
+  {
+    "Id": "Index.LastLows",
+    "Valor": "Últimos Mínimos Históricos"
+  },
+  {
+    "Id": "Index.LastLowsMore",
+    "Valor": "Cargar más mínimos históricos"
+  },
+  {
+    "Id": "Index.LastAdded",
+    "Valor": "Últimos Añadidos"
+  },
+  {
+    "Id": "Index.LastAddedMore",
+    "Valor": "Cargar más juegos añadidos"
+  },
+  {
+    "Id": "Index.LastNews",
+    "Valor": "Últimas Noticias"
+  },
+  {
+    "Id": "Index.LastNewsMore",
+    "Valor": "Cargar todas las noticias"
+  },
+  {
+    "Id": "News.SubscriptionString1",
+    "Valor": "ha sido añadido"
+  },
+  {
+    "Id": "News.SubscriptionString2",
+    "Valor": "y"
+  },
+  {
+    "Id": "News.SubscriptionString3",
+    "Valor": "han sido añadidos"
+  },
+  {
+    "Id": "News.SubscriptionString4",
+    "Valor": "y más juegos han sido añadidos"
+  },
+  {
+    "Id": "News.SubscriptionString5",
+    "Valor": "El servicio de suscripción"
+  },
+  {
+    "Id": "News.SubscriptionString6",
+    "Valor": "ha añadido el siguiente juego:"
+  },
+  {
+    "Id": "News.SubscriptionString7",
+    "Valor": "ha añadido los siguientes juegos:"
   }
 ]

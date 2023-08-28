@@ -2,7 +2,27 @@
 @model pepeizqs_deals_web.Pages.NewsModel
 
 @{
-	ViewData["Title"] = Model.noticia.Titulo;
+	#nullable disable
+
+	string titulo = null;
+
+	if (Model.idioma != null)
+	{
+		if (Model.idioma == "es" || Model.idioma == "es-ES")
+		{
+			titulo = Model.noticia.TituloEs;
+		}
+		else
+		{
+			titulo = Model.noticia.TituloEn;
+		}
+	}
+	else
+	{
+		titulo = Model.noticia.TituloEn;
+	}
+
+	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -28,7 +48,7 @@
 		</div>
 
 		<div class="perfil" style="margin-top: 40px;">
-			@Html.Raw(Model.noticia.Contenido)
+			@Html.Raw(Model.noticia.ContenidoEn)
 		</div>
 
 		@if (Model.fechaTermina != null)

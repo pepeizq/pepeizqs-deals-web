@@ -1,6 +1,78 @@
 [
   {
-    "Id": "test",
-    "Valor": "yolo2"
+    "Id": "Layout.Wishlist",
+    "Valor": "Wishlist"
+  },
+  {
+    "Id": "Layout.HistoricalLows",
+    "Valor": "Historical Lows"
+  },
+  {
+    "Id": "Layout.Subscriptions",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "Layout.LastNews",
+    "Valor": "Last News"
+  },
+  {
+    "Id": "Layout.LastAdded",
+    "Valor": "Last Added"
+  },
+  {
+    "Id": "Index.Title",
+    "Valor": "Home Page"
+  },
+  {
+    "Id": "Index.LastLows",
+    "Valor": "Last Historical Lows"
+  },
+  {
+    "Id": "Index.LastLowsMore",
+    "Valor": "Load more historical lows"
+  },
+  {
+    "Id": "Index.LastAdded",
+    "Valor": "Last Added"
+  },
+  {
+    "Id": "Index.LastAddedMore",
+    "Valor": "Load more added games"
+  },
+  {
+    "Id": "Index.LastNews",
+    "Valor": "Last News"
+  },
+  {
+    "Id": "Index.LastNewsMore",
+    "Valor": "Last all news"
+  },
+  {
+    "Id": "News.SubscriptionString1",
+    "Valor": "has been added"
+  },
+  {
+    "Id": "News.SubscriptionString2",
+    "Valor": "and"
+  },
+  {
+    "Id": "News.SubscriptionString3",
+    "Valor": "has been added"
+  },
+  {
+    "Id": "News.SubscriptionString4",
+    "Valor": "and more games have been added"
+  },
+  {
+    "Id": "News.SubscriptionString5",
+    "Valor": "The subscription service"
+  },
+  {
+    "Id": "News.SubscriptionString6",
+    "Valor": "has added the following game:"
+  },
+  {
+    "Id": "News.SubscriptionString7",
+    "Valor": "has added the following games:"
   }
 ]

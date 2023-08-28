@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Builder;
 
 @{
-	ViewData["Title"] = "Home Page";
+	ViewData["Title"] = Herramientas.IdiomaBuscar.CogerCadena(Model.idioma, "Index.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 

@@ -4,6 +4,12 @@
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
+@{
+    #nullable disable
+
+    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,15 +47,25 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Wishlist">Wishlist</a>
+                            <a class="texto-cabecera menu-dropdown-item" asp-page="/wishlist">
+                                @Herramientas.IdiomaBuscar.CogerCadena(idioma, "Layout.Wishlist")
+                            </a>
                         }
                         
-                        <a class="texto-cabecera menu-dropdown-item" asp-page="/HistoricalLow">Historical Lows</a>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/historicallow">
+                            @Herramientas.IdiomaBuscar.CogerCadena(idioma, "Layout.HistoricalLows")
+                        </a>
                         <hr>
-                        <a class="texto-cabecera menu-dropdown-item" asp-page="/Subscriptions">Subscriptions</a>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/subscriptions">
+                            @Herramientas.IdiomaBuscar.CogerCadena(idioma, "Layout.Subscriptions")
+                        </a>
                         <hr>
-                        <a class="texto-cabecera menu-dropdown-item" asp-page="/LastNews">Last News</a>
-                        <a class="texto-cabecera menu-dropdown-item" asp-page="/LastAdded">Last Added</a>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/lastnews">
+                            @Herramientas.IdiomaBuscar.CogerCadena(idioma, "Layout.LastNews")
+                        </a>
+                        <a class="texto-cabecera menu-dropdown-item" asp-page="/lastadded">
+                            @Herramientas.IdiomaBuscar.CogerCadena(idioma, "Layout.LastAdded")
+                        </a>
                     </div>
                 </div>
 
