@@ -20,10 +20,6 @@
     "Valor": "Últimos Añadidos"
   },
   {
-    "Id": "Index.Title",
-    "Valor": "Inicio"
-  },
-  {
     "Id": "Index.LastLows",
     "Valor": "Últimos Mínimos Históricos"
   },
@@ -48,8 +44,108 @@
     "Valor": "Cargar todas las noticias"
   },
   {
+    "Id": "Index.Title",
+    "Valor": "Inicio"
+  },
+  {
+    "Id": "Game.String1",
+    "Valor": "Ver en Steam"
+  },
+  {
+    "Id": "Game.String2",
+    "Valor": "Reseñas en Steam"
+  },
+  {
+    "Id": "Game.String3",
+    "Valor": "Ya está en tu Lista de Deseados"
+  },
+  {
+    "Id": "Game.String4",
+    "Valor": "Añade a tu Lista de Deseados"
+  },
+  {
+    "Id": "Game.String5",
+    "Valor": "Ya tienes este juego en la cuenta de Steam vinculada"
+  },
+  {
+    "Id": "Game.String6",
+    "Valor": "Ya tienes este DLC en la cuenta de Steam vinculada"
+  },
+  {
+    "Id": "Game.String7",
+    "Valor": "Este juego se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de Steam"
+  },
+  {
+    "Id": "Game.String8",
+    "Valor": "Este DLC se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de Steam"
+  },
+  {
+    "Id": "Game.String9",
+    "Valor": "reseñas"
+  },
+  {
+    "Id": "Game.String10",
+    "Valor": "Mínimo histórico para"
+  },
+  {
+    "Id": "Game.String11",
+    "Valor": "En oferta actualmente"
+  },
+  {
+    "Id": "Game.String12",
+    "Valor": "Actualmente no hay ofertas para esta plataforma"
+  },
+  {
+    "Id": "Game.String13",
+    "Valor": "en"
+  },
+  {
+    "Id": "Game.String14",
+    "Valor": "Actualmente disponible en la suscripción"
+  },
+  {
+    "Id": "Game.String15",
+    "Valor": "Estuvo disponible en la suscripción"
+  },
+  {
+    "Id": "Game.String16",
+    "Valor": "Actualmente gratis en"
+  },
+  {
+    "Id": "Game.String17",
+    "Valor": "Estuvo gratis en"
+  },
+  {
+    "Id": "Game.String18",
+    "Valor": "Ha estado gratis {0} veces"
+  },
+  {
+    "Id": "LastNews.Title",
+    "Valor": "Últimas Noticias"
+  },
+  {
+    "Id": "News.String1",
+    "Valor": "Esta promoción termina en {0} días."
+  },
+  {
+    "Id": "News.String2",
+    "Valor": "Esta promoción termina en {0} día."
+  },
+  {
+    "Id": "News.String3",
+    "Valor": "Esta promoción termina hoy."
+  },
+  {
+    "Id": "News.String4",
+    "Valor": "Esta promoción ha terminado."
+  },
+  {
+    "Id": "News.String5",
+    "Valor": "Juegos en la base de datos:"
+  },
+  {
     "Id": "News.SubscriptionString1",
-    "Valor": "ha sido añadido"
+    "Valor": "ha sido añadido a la suscripción"
   },
   {
     "Id": "News.SubscriptionString2",
@@ -57,11 +153,11 @@
   },
   {
     "Id": "News.SubscriptionString3",
-    "Valor": "han sido añadidos"
+    "Valor": "han sido añadidos a la suscripción"
   },
   {
     "Id": "News.SubscriptionString4",
-    "Valor": "y más juegos han sido añadidos"
+    "Valor": "y más juegos han sido añadidos a la suscripción"
   },
   {
     "Id": "News.SubscriptionString5",
@@ -74,5 +170,49 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "ha añadido los siguientes juegos:"
+  },
+  {
+    "Id": "Timer.String1",
+    "Valor": "hace {0} segundos"
+  },
+  {
+    "Id": "Timer.String2",
+    "Valor": "hace {0} minutos"
+  },
+  {
+    "Id": "Timer.String3",
+    "Valor": "hace 1 minuto"
+  },
+  {
+    "Id": "Timer.String4",
+    "Valor": "hace {0} horas"
+  },
+  {
+    "Id": "Timer.String5",
+    "Valor": "hace 1 hora"
+  },
+  {
+    "Id": "Timer.String6",
+    "Valor": "hace {0} días"
+  },
+  {
+    "Id": "Timer.String7",
+    "Valor": "ayer"
+  },
+  {
+    "Id": "Timer.String8",
+    "Valor": "hace {0} meses"
+  },
+  {
+    "Id": "Timer.String9",
+    "Valor": "hace 1 mes"
+  },
+  {
+    "Id": "Timer.String10",
+    "Valor": "hace {0} años"
+  },
+  {
+    "Id": "Timer.String11",
+    "Valor": "hace 1 año"
   }
 ]

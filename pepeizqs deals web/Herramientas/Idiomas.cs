@@ -10,7 +10,7 @@ namespace Herramientas
 		public string Valor { get; set; }
 	}
 
-	public static class IdiomaBuscar
+	public static class Idiomas
 	{
 		public static string CogerCadena(string idiomaUsuario, string cadena)
 		{
@@ -47,6 +47,25 @@ namespace Herramientas
 			else
 			{
 				return CogerCadena("en-US", cadena);
+			}
+		}
+
+		public static string MirarTexto(string idiomaUsuario, string textoIngles, string textoEspañol)
+		{
+			if (idiomaUsuario != null)
+			{
+				if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
+				{
+					return textoEspañol;
+				}
+				else
+				{
+					return textoIngles;
+				}
+			}
+			else
+			{
+				return textoIngles;
 			}
 		}
 	}

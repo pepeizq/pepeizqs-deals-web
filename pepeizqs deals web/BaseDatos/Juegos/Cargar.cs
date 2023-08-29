@@ -93,7 +93,30 @@ namespace BaseDatos.Juegos
 					catch { }
 				}
 			}
-			
+
+			if (lector.IsDBNull(13) == false)
+			{
+				if (lector.GetString(13) != null)
+				{
+					try
+					{
+						//juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
+					}
+					catch { }
+				}
+			}
+
+			if (lector.IsDBNull(14) == false)
+			{
+				if (lector.GetString(14) != null)
+				{
+					try
+					{
+						juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(14));
+					}
+					catch { }
+				}
+			}
 
 			return juego;
 		}

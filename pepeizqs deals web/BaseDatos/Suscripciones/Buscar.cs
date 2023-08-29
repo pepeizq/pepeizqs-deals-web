@@ -28,7 +28,7 @@ namespace BaseDatos.Suscripciones
                         {
 							JuegoSuscripcion suscripcion = new JuegoSuscripcion
 							{
-								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
@@ -71,7 +71,7 @@ namespace BaseDatos.Suscripciones
 						{
 							JuegoSuscripcion suscripcion = new JuegoSuscripcion
 							{
-								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
@@ -112,7 +112,7 @@ namespace BaseDatos.Suscripciones
 						{
 							JuegoSuscripcion suscripcion = new JuegoSuscripcion
 							{
-								Suscripcion = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),

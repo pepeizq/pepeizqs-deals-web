@@ -1,4 +1,6 @@
-﻿namespace Gratis2
+﻿#nullable disable
+
+namespace Gratis2
 {
 	public enum GratisTipo
 	{
@@ -18,10 +20,32 @@
 			{
 				APIs.Desconocido.Gratis.Generar(),
 				APIs.Steam.Gratis.Generar(),
-				APIs.EpicGames.Gratis.Generar()
+				APIs.EpicGames.Gratis.Generar(),
+				APIs.GOG.Gratis.Generar()
 			};
 
 			return gratis;
+		}
+
+		public static string LimpiarEnlace(string enlace)
+		{
+			enlace = enlace.Replace("store.epicgames.com/en-US/", "store.epicgames.com/");
+			enlace = enlace.Replace("store.epicgames.com/es-ES/", "store.epicgames.com/");
+
+			return enlace;
+		}
+
+		public static Gratis DevolverGratis(string gratisTexto)
+		{
+			foreach (var gratis in GenerarListado())
+			{
+				if (gratis.Id.ToString() == gratisTexto)
+				{
+					return gratis;
+				}
+			}
+
+			return null;
 		}
 
 		public static List<GratisTipo> CargarGratis()

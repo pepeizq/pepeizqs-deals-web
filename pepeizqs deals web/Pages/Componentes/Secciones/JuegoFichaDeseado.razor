@@ -27,13 +27,13 @@
 				<div class="perfil-flexible-centrado">
 					<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
-					<div style="text-align: left; padding-left: 25px; width: 100%;">It's already on your Wishlist</div>
+					<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String3")</div>
 				</div>
 			</button>
 		}
 		else
 		{
-			<button @onclick="(e => CambiarEstadoDeseado(e, true))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">Add to Wishlist</button>
+			<button @onclick="(e => CambiarEstadoDeseado(e, true))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String4")</button>
 		}		
 	}
 }
@@ -43,6 +43,9 @@
 	#nullable disable
 
 	public string mensaje = string.Empty;
+
+	[Parameter]
+	public string idioma { get; set; }
 
 	[Parameter]
 	public Juegos.Juego juego { get; set; }
@@ -70,11 +73,11 @@
 						{
 							if (juego.Tipo == Juegos.JuegoTipo.Game)
 							{
-								mensaje = "You already have this game on the linked Steam account";
+								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String5");
 							}
 							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
 							{
-								mensaje = "You already have this DLC on the linked Steam account";
+								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String6");
 							}
 							
 							break;
@@ -98,11 +101,11 @@
 						{
 							if (juego.Tipo == Juegos.JuegoTipo.Game)
 							{
-								mensaje = "This game was automatically added to your wishlist when your account was linked from Steam";
+								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String7");
 							}
 							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
 							{
-								mensaje = "This DLC was automatically added to your wishlist when your account was linked from Steam";
+								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String8");
 							}
 					
 							break;

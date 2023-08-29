@@ -2,44 +2,49 @@
 @using Suscripciones2;
 
 <div class="perfil">
-	<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
-
-	@if (juegosBuscador.Count > 0)
+	@if (idSeleccionada == null)
 	{
 		<div>
-			@foreach (var juego in juegosBuscador)
-			{
-				<div class="perfil-flexible-centrado perfil-espacio-top">
-					<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Library_600x900, @juego.Nombre))" class="boton-pequeño">
-						<div class="perfil-flexible-centrado">
-							<div style="width: 12%;">
-								<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-							</div>
+			<label style="margin-bottom: 10px;">Juego:</label>
+			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
 
-							<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
-								@juego.Id - @juego.Nombre
-							</div>
+			@if (juegosBuscador.Count > 0)
+			{
+				<div>
+					@foreach (var juego in juegosBuscador)
+					{
+						<div class="perfil-flexible-centrado perfil-espacio-top">
+							<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Library_600x900, @juego.Nombre))" class="boton-pequeño">
+								<div class="perfil-flexible-centrado">
+									<div style="width: 12%;">
+										<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+									</div>
+
+									<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+										@juego.Id - @juego.Nombre
+									</div>
+								</div>
+							</button>
 						</div>
-					</button>
+					}
 				</div>
 			}
 		</div>
 	}
-
-	@if (idSeleccionada != null)
+	else
 	{
-		<div style="margin-top: 40px;">
+		<div>
 			<div style="display: flex;">
 				<div style="width: 15%;">
 					<img src="@imagenSeleccionada" style="max-height: 100%; max-width: 100%;" />
 				</div>
 
 				<div style="width: 85%; padding-left: 20px; padding-right: 20px;">
-					@nombreSeleccionado <br/>
-					@idSeleccionada
+					@nombreSeleccionado
 
-					<div style="display: flex; margin-top: 20px;">
-						<div class="opciones-combobox" style="width: 33%;">
+					<div style="width: 33%; margin-top: 20px;">
+						<label style="margin-bottom: 10px;">Suscripcion:</label>
+						<div class="opciones-combobox">
 							<select @onchange="@(e => CambiarSuscripcion(e))">
 								@foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
 								{
@@ -47,42 +52,32 @@
 								}
 							</select>
 						</div>
+					</div>
 
-						<div class="opciones-combobox" style="width: 33%;">
-							<select @onchange="@(e => CambiarDRM(e))">
+					<div style="width: 33%; margin-top: 20px;">
+						<label style="margin-bottom: 10px;">DRM:</label>
+						<div class="opciones-combobox">
+							<select @onchange="@(e => CambiarDRM(e))" value="@drmSeleccionado">
 								@foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
 								{
-									@if (drm.Id != Juegos.JuegoDRM.NoEspecificado)
-									{
-										<option value="@drm.Id">@drm.Nombre</option>
-									}
+									<option value="@drm.Id">@drm.Nombre</option>
 								}
 							</select>
 						</div>
-
-						<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
 					</div>
 
-					<div style="display: flex; margin-top: 20px;">
+					<div style="margin-top: 20px;">
+						<label style="margin-bottom: 10px;">Enlace:</label>
 						<input @onchange="@(e => CambiarEnlace(e))" class="entrada-texto" value="@enlaceSeleccionado">
 					</div>
 
-					<div style="display: flex; margin-top: 20px;">
-						<div style="margin: 10px;">
-							@suscripcionSeleccionada
-						</div>
-
-						<div style="margin: 10px;">
-							@drmSeleccionado
-						</div>
-
-						<div style="margin: 10px;">
-							@fechaSeleccionada
-						</div>
+					<div style="margin-top: 20px;">
+						<label style="margin-bottom: 10px;">Fecha Termina:</label>
+						<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
 					</div>
 
 					<div style="display: flex; margin-top: 20px; width: 20%;">
-						<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Juego</button>
+						<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Suscripcion</button>
 					</div>					
 				</div>
 			</div>
@@ -183,7 +178,7 @@
 		if (juego != null)
 		{
 			Juegos.JuegoSuscripcion suscripcion = new Juegos.JuegoSuscripcion();
-			suscripcion.Suscripcion = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
+			suscripcion.Tipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
 			suscripcion.JuegoId = int.Parse(idSeleccionada);
 			suscripcion.Nombre = nombreSeleccionado;
 			suscripcion.Imagen = imagenSeleccionada;
@@ -201,5 +196,7 @@
 
 			BaseDatos.Suscripciones.Insertar.Ejecutar(int.Parse(idSeleccionada), juego.Suscripciones, suscripcion);
 		}
+
+		idSeleccionada = null;
 	}
 }

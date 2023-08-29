@@ -17,7 +17,11 @@ namespace pepeizqs_deals_web.Pages
 
 		public void OnGet()
 		{
-            idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
-        }
+			try
+			{
+				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+			}
+			catch { }
+		}
     }
 }

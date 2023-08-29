@@ -12,9 +12,9 @@
 		}
 
 		<div class="perfil" style="margin-left: 150px; margin-bottom: 130px; margin-top: -100px;">
-			<div style="font-size: 20px; margin-bottom: 15px;">@noticiasMostrar[i].TituloEn</div>
+			<div style="font-size: 20px; margin-bottom: 15px;">@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].TituloEn, noticiasMostrar[i].TituloEs)</div>
 
-			<div>@((MarkupString)@noticiasMostrar[i].ContenidoEn)</div>
+			<div>@((MarkupString)@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].ContenidoEn, noticiasMostrar[i].ContenidoEs))</div>
 		</div>	
 	}
 }
@@ -22,6 +22,9 @@
 @code {
 
 	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
 
 	private List<string> fechas = new List<string>();
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();

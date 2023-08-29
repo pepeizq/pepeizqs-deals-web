@@ -14,7 +14,7 @@
 		@if (juegosMinimosMostrar.Count > 0)
 		{
 			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
-				@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastLows")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")
 			</div>
 
 			<div class="perfil" style="padding: 15px 20px;">
@@ -44,7 +44,7 @@
 				}
 
 				<a class="boton-pequeño" style="padding: 10px 15px; margin-top: 20px; margin-bottom: 5px;" href="/historicallow">
-					@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastLowsMore")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 				</a>
 			</div>
 		}
@@ -54,7 +54,7 @@
 		@if (juegosAñadidosMostrar.Count > 0)
 		{
 			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
-				@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastAdded")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAdded")
 			</div>
 
 			<div class="perfil" style="padding: 15px 20px;">
@@ -85,7 +85,7 @@
 				}
 
 				<a class="boton-pequeño" style="padding: 10px 15px; margin-top: 20px; margin-bottom: 5px;" href="/lastadded">					
-					@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastAddedMore")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAddedMore")
 				</a>
 			</div>
 		}
@@ -96,7 +96,7 @@
 		@if (noticiasMostrar.Count > 0)
 		{
 			<div style="font-size: 20px; margin-bottom: 10px; margin-left: 20px;">
-				@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastNews")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNews")
 			</div>
 
 			<div class="perfil" style="padding: 15px 20px;">
@@ -106,21 +106,7 @@
 						<a class="boton-pequeño" style="padding: 20px;" href="/news/@noticia.Id">
 							<div class="perfil-flexible-centrado">
 								<div style="width: 80%;">
-									@if (idioma != null)
-									{
-										@if (idioma == "es" || idioma == "es-ES")
-										{
-											@noticia.TituloEs
-										}
-										else
-										{
-											@noticia.TituloEn
-										}
-									}
-									else
-									{
-										@noticia.TituloEn
-									}													
+									@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
 								</div>
 
 								<div style="width: 20%; text-align: right;">
@@ -132,7 +118,7 @@
 				}
 
 				<a class="boton-pequeño" style="padding: 15px 20px; margin-top: 20px; margin-bottom: 5px;" href="/lastnews">
-					@Herramientas.IdiomaBuscar.CogerCadena(idioma, "Index.LastNewsMore")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
 				</a>
 			</div>
 		}

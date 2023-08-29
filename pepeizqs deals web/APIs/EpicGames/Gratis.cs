@@ -13,7 +13,23 @@
 			};
 
 			DateTime fechaEpic = DateTime.Now;
-			fechaEpic = fechaEpic.AddDays(7);
+			fechaEpic = fechaEpic.AddDays(1);
+
+			int i = 1;
+			while (i <= 7)
+			{
+				if (fechaEpic.DayOfWeek == DayOfWeek.Thursday)
+				{
+					break;
+				}
+				else
+				{
+					fechaEpic = fechaEpic.AddDays(1);
+				}
+
+				i += 1;
+			}
+
 			fechaEpic = new DateTime(fechaEpic.Year, fechaEpic.Month, fechaEpic.Day, 17, 0, 0);
 
 			epicGames.FechaSugerencia = fechaEpic;

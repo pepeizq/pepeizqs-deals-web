@@ -1,9 +1,9 @@
 ﻿#nullable disable
 
+using Gratis2;
 using Juegos;
 using Microsoft.VisualBasic;
 using Suscripciones2;
-using System.Runtime.Intrinsics.Arm;
 using Tiendas2;
 
 namespace Herramientas
@@ -119,7 +119,7 @@ namespace Herramientas
 			return imagen;
 		}
 
-		public static string CogerMinimoDRM(JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales, bool añadirHtml)
+		public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales, bool añadirHtml)
 		{
 			string drmPreparado = null;
 
@@ -164,7 +164,7 @@ namespace Herramientas
 					});
 				}
 
-				drmPreparado = "Historical low for " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
+				drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
 
 				bool incluirTiempo = true;
 
@@ -204,11 +204,11 @@ namespace Herramientas
 						}
 					}
 
-					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(minimosOrdenados[0].FechaDetectado) + " on " + tiendaFinal + ")";
+					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(minimosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "Game.String13") + " " + tiendaFinal + ")";
 				}
 				else
 				{
-					drmPreparado = drmPreparado + " (Active Now)";
+					drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "Game.String11") + ")";
 				}
 			}
 
@@ -407,15 +407,19 @@ namespace Herramientas
 			return precioTexto;
 		}
 
-		public static bool VerificarMostrarDRM(JuegoDRM drm, Juego juego)
+		public static bool VerificarMostrarDRM(string idioma, JuegoDRM drm, Juego juego)
 		{
 			bool mostrar = false;
 
-			if (CogerMinimoDRM(drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, false) != null)
+			if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, false) != null)
 			{
 				mostrar = true;
 			}
-			else if (PrepararSuscripcion(juego.Suscripciones, drm) != null) 
+			else if (PrepararGratis(idioma, juego.Gratis, drm) != null)
+			{
+				mostrar = true;
+			}
+			else if (PrepararSuscripcion(idioma, juego.Suscripciones, drm) != null) 
 			{
 				mostrar = true;
 			}
@@ -423,35 +427,80 @@ namespace Herramientas
 			return mostrar;
 		}
 
-		public static string PrepararSuscripcion(List<JuegoSuscripcion> suscripciones, JuegoDRM drm)
+		public static string PrepararGratis(string idioma, List<JuegoGratis> listaGratis, JuegoDRM drm)
 		{
-			if (suscripciones != null)
+			if (listaGratis != null)
 			{
-				if (suscripciones.Count > 0) 
-				{ 
-					foreach (var suscripcion in suscripciones)
+				if (listaGratis.Count > 0)
+				{
+					int veces = 0;
+					string mensaje = null;
+
+					foreach (var gratis in listaGratis)
+					{
+						if (drm == gratis.DRM)
+						{
+							if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+							{
+								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Idiomas.CogerCadena(idioma, "Game.String16") + " " + GratisCargar.DevolverGratis(gratis.Tipo.ToString()).Nombre + "</a>";
+							}
+							else
+							{
+								veces += 1;
+
+								if (veces == 1)
+								{
+									mensaje = Idiomas.CogerCadena(idioma, "Game.String17") + " " + GratisCargar.DevolverGratis(gratis.Tipo.ToString()).Nombre + " " + Calculadora.HaceTiempo(gratis.FechaTermina, idioma);
+								}
+								else if (veces > 1)
+								{
+									mensaje = string.Format(Idiomas.CogerCadena(idioma, "Game.String18"), veces);
+								}
+							}
+						}
+					}
+
+					if (mensaje != null)
+					{
+						mensaje = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + mensaje + "</div>";
+					}
+
+					return mensaje;
+				}
+			}
+
+			return null;
+		}
+
+		public static string PrepararSuscripcion(string idioma, List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm)
+		{
+			if (listaSuscripciones != null)
+			{
+				if (listaSuscripciones.Count > 0) 
+				{
+					string mensaje = null;
+
+					foreach (var suscripcion in listaSuscripciones)
 					{
 						if (drm == suscripcion.DRM)
 						{
-							string mensaje = null;
-
 							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
 							{
-								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Suscripcion) + Strings.ChrW(34) + ">Currently available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + "</a>";
+								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Idiomas.CogerCadena(idioma, "Game.String14") + " " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo.ToString()).Nombre + "</a>";
 							}
                             else
                             {
-								mensaje = "It was available on subscription " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Suscripcion.ToString()).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina);
-							}
-
-							if (mensaje != null)
-							{
-								mensaje = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + mensaje + "</div>";
-							}
-
-                            return mensaje;
+								mensaje = Idiomas.CogerCadena(idioma, "Game.String15") + " " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo.ToString()).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina, idioma);
+							}	    
 						}
 					}
+
+					if (mensaje != null)
+					{
+						mensaje = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + mensaje + "</div>";
+					}
+
+					return mensaje;
 				}
 			}
 

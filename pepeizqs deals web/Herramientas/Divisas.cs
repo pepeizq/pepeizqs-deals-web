@@ -79,7 +79,7 @@ namespace Herramientas
 
 			if (dolar != null)
 			{
-				mensaje = mensaje + "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion);
+				mensaje = mensaje + "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
 			}
 
 			Divisa libra = Buscar.Ejecutar("GBP");
@@ -91,7 +91,7 @@ namespace Herramientas
 					mensaje = mensaje + Environment.NewLine;
 				}
 
-				mensaje = mensaje + "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion);
+				mensaje = mensaje + "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
 			}
 
 			return mensaje;

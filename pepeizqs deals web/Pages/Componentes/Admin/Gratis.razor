@@ -1,54 +1,84 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using Gratis2;
+@using Microsoft.AspNetCore.Components.Web;
 
 <div class="perfil">
-	<div>
-		<label style="margin-bottom: 10px;">Juego:</label>
-		<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
-
-		@if (juegosBuscador.Count > 0)
-		{
-			<div>
-				@foreach (var juego in juegosBuscador)
-				{
-					<div class="perfil-flexible-centrado perfil-espacio-top">
-						<button @onclick="@(e => ClickearJuego(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">
-							<div class="perfil-flexible-centrado">
-								<div style="width: 12%;">
-									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-								</div>
-
-								<div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
-									@juego.Id - @juego.Nombre
-								</div>
-
-							</div>
-						</button>
-					</div>
-				}
-			</div>
-		}
-	</div>
-
-	@if (idSeleccionada != null)
+	@if (idSeleccionada == null)
 	{
-		<div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
-			<select @onchange="@(e => CambiarGratis(e))">
-				@foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
-				{
-					<option value="@gratis.Id">@gratis.Nombre</option>
-				}
-			</select>
-		</div>
+		<div>
+			<label style="margin-bottom: 10px;">Juego:</label>
+			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
 
-		<div style="display: flex; margin-top: 20px;">
-			<label style="margin-bottom: 10px;">Enlace:</label>
-			<input @onchange="@(e => CambiarEnlace(e))" class="entrada-texto" value="@enlace">
-		</div>
+			@if (juegosBuscador.Count > 0)
+			{
+				<div>
+					@foreach (var juego in juegosBuscador)
+					{
+						<div class="perfil-flexible-centrado perfil-espacio-top">
+							<button @onclick="@(e => ClickearJuego(e, @juego.Id.ToString(), @juego.Nombre, juego.Imagenes.Library_600x900))" class="boton-pequeño" style="text-align:center;">
+								<div class="perfil-flexible-centrado">
+									<div style="width: 12%;">
+										<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+									</div>
 
-		<div style="display: flex; margin-top: 20px;">
-			<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+									<div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+										@juego.Id - @juego.Nombre
+									</div>
+								</div>
+							</button>
+						</div>
+					}
+				</div>
+			}
 		</div>
-		
+	}
+	else
+	{
+		<div style="display: flex;">
+			<div style="width: 15%;">
+				<img src="@imagenSeleccionada" style="max-height: 100%; max-width: 100%;" />
+			</div>
+
+			<div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+				<div>
+					@nombreSeleccionado
+				</div>
+
+				<div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
+					<select @onchange="@(e => CambiarGratis(e))">
+						@foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
+						{
+							<option value="@gratis.Id">@gratis.Nombre</option>
+						}
+					</select>
+				</div>
+
+				<div style="width: 33%; margin-top: 20px;">
+					<label style="margin-bottom: 10px;">DRM:</label>
+					<div class="opciones-combobox">
+						<select @onchange="@(e => CambiarDRM(e))" value="@drmSeleccionado">
+							@foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+							{
+								<option value="@drm.Id">@drm.Nombre</option>
+							}
+						</select>
+					</div>
+				</div>
+
+				<div style="margin-top: 20px;">
+					<label style="margin-bottom: 10px;">Enlace:</label>
+					<input @onchange="@(e => CambiarEnlace(e))" class="entrada-texto" value="@enlaceSeleccionado">
+				</div>
+
+				<div style="margin-top: 20px;">
+					<label style="margin-bottom: 10px;">Fecha Termina:</label>
+					<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+				</div>
+
+				<div style="display: flex; margin-top: 20px; width: 20%;">
+					<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Gratis</button>
+				</div>
+			</div>
+		</div>	
 	}
 
 </div>
@@ -60,8 +90,11 @@
 	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
 	private string idSeleccionada = null;
+	private string nombreSeleccionado = null;
+	private string imagenSeleccionada = null;
 	private string tipo = null;
-	private string enlace = null;
+	private string drmSeleccionado = null;
+	private string enlaceSeleccionado = null;
 	private string fechaSeleccionada = null;
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
@@ -76,21 +109,33 @@
 		}
 	}
 
-	private void ClickearJuego(MouseEventArgs e, string id)
+	private void ClickearJuego(MouseEventArgs e, string id, string nombre, string imagen)
 	{
 		juegosBuscador = new List<Juegos.Juego>();
 
 		idSeleccionada = id;
+		nombreSeleccionado = nombre;
+		imagenSeleccionada = imagen;
 	}
 
 	private void CambiarGratis(ChangeEventArgs texto)
 	{
 		tipo = texto.Value.ToString();
+
+		fechaSeleccionada = Gratis2.GratisCargar.DevolverGratis(tipo).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+		drmSeleccionado = Gratis2.GratisCargar.DevolverGratis(tipo).DRMDefecto.ToString();
+	}
+
+	private void CambiarDRM(ChangeEventArgs texto)
+	{
+		drmSeleccionado = texto.Value.ToString();
 	}
 
 	private void CambiarEnlace(ChangeEventArgs texto)
 	{
-		enlace = texto.Value.ToString();
+		enlaceSeleccionado = texto.Value.ToString();
+
+		enlaceSeleccionado = Gratis2.GratisCargar.LimpiarEnlace(enlaceSeleccionado);
 	}
 
 	private void CambiarFecha(ChangeEventArgs texto)
@@ -98,5 +143,32 @@
 		fechaSeleccionada = texto.Value.ToString();
 	}
 
+	private void AñadirJuego(MouseEventArgs e)
+	{
+		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionada);
 
+		if (juego != null)
+		{
+			Juegos.JuegoGratis gratis = new Juegos.JuegoGratis();
+			gratis.Tipo = GratisCargar.DevolverGratis(tipo).Id;
+			gratis.JuegoId = int.Parse(idSeleccionada);
+			gratis.Nombre = nombreSeleccionado;
+			gratis.Imagen = imagenSeleccionada;
+			gratis.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionado);
+			gratis.Enlace = enlaceSeleccionado;
+			gratis.FechaEmpieza = DateTime.Now;
+			gratis.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+
+			if (juego.Gratis == null)
+			{
+				juego.Gratis = new List<Juegos.JuegoGratis>();
+			}
+
+			juego.Gratis.Add(gratis);
+
+			BaseDatos.Gratis.Insertar.Ejecutar(int.Parse(idSeleccionada), juego.Gratis, gratis);
+		}
+
+		idSeleccionada = null;
+	}
 }

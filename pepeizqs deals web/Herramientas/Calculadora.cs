@@ -19,7 +19,7 @@
 			return descuento;
 		}
 
-		public static string RedondearAnalisis(string cantidad)
+		public static string RedondearAnalisis(string idioma, string cantidad)
 		{
 			int numCantidad = int.Parse(cantidad.Replace(",", null));
 			string cantidadFinal = string.Empty;
@@ -55,43 +55,88 @@
 
 				numCantidad = (int)(Math.Round(double.Parse(cantidad.Replace(",", null)) / divisor, 0) * divisor);
 
-				cantidadFinal = numCantidad.ToString("N0") + "+ reviews";
+				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.CogerCadena(idioma, "Game.String9");
 			}
 
 			return cantidadFinal;
 		}
 
-		public static string HaceTiempo(this DateTime fecha)
+		public static string HaceTiempo(this DateTime fecha, string idioma)
 		{
-			string resultado = string.Empty;
+			string mensaje = string.Empty;
 			TimeSpan diferenciaTiempo = DateTime.Now.Subtract(fecha);
 
 			if (diferenciaTiempo <= TimeSpan.FromSeconds(60))
 			{
-				resultado = string.Format("{0} seconds ago", diferenciaTiempo.Seconds);
+				mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String1"), diferenciaTiempo.Seconds);
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromMinutes(60))
 			{
-				resultado = diferenciaTiempo.Minutes > 1 ? string.Format("{0} minutes ago", diferenciaTiempo.Minutes) : "about a minute ago";
+				if (diferenciaTiempo.Minutes == 1)
+				{
+					mensaje = Idiomas.CogerCadena(idioma, "Timer.String3");
+				}
+				else if (diferenciaTiempo.Minutes > 1)
+				{
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String2"), diferenciaTiempo.Minutes);
+				}
+
+				//mensaje = diferenciaTiempo.Minutes > 1 ? string.Format(Idiomas.CogerCadena(idioma, "Timer.String2"), diferenciaTiempo.Minutes) : Idiomas.CogerCadena(idioma, "Timer.String3");
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromHours(24))
 			{
-				resultado = diferenciaTiempo.Hours > 1 ? string.Format("{0} hours ago", diferenciaTiempo.Hours) : "about an hour ago";
+				if (diferenciaTiempo.Hours == 1)
+				{
+					mensaje = Idiomas.CogerCadena(idioma, "Timer.String5");
+				}
+				else if (diferenciaTiempo.Hours > 1)
+				{
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String4"), diferenciaTiempo.Hours);
+				}
+
+				//mensaje = diferenciaTiempo.Hours > 1 ? string.Format(Idiomas.CogerCadena(idioma, "Timer.String4"), diferenciaTiempo.Hours) : Idiomas.CogerCadena(idioma, "Timer.String5");
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromDays(30))
 			{
-				resultado = diferenciaTiempo.Days > 1 ? string.Format("{0} days ago", diferenciaTiempo.Days) : "yesterday";
+				if (diferenciaTiempo.Days == 1)
+				{
+					mensaje = Idiomas.CogerCadena(idioma, "Timer.String7");
+				}
+				else if (diferenciaTiempo.Days > 1)
+				{
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String6"), diferenciaTiempo.Days);
+				}
+
+				//mensaje = diferenciaTiempo.Days > 1 ? string.Format(Idiomas.CogerCadena(idioma, "Timer.String6"), diferenciaTiempo.Days) : Idiomas.CogerCadena(idioma, "Timer.String7");
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromDays(365))
 			{
-				resultado = diferenciaTiempo.Days > 30 ? string.Format("{0} months ago", diferenciaTiempo.Days / 30) : "about a month ago";
+				if (diferenciaTiempo.Days > 30 && diferenciaTiempo.Days < 60)
+				{
+					mensaje = Idiomas.CogerCadena(idioma, "Timer.String9");
+				}
+				else if (diferenciaTiempo.Days >= 60)
+				{
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String8"), diferenciaTiempo.Days / 30);
+				}
+
+				//mensaje = diferenciaTiempo.Days > 30 ? string.Format(Idiomas.CogerCadena(idioma, "Timer.String8"), diferenciaTiempo.Days / 30) : Idiomas.CogerCadena(idioma, "Timer.String9");
 			}
 			else
 			{
-				resultado = diferenciaTiempo.Days > 365 ? string.Format("{0} years ago", diferenciaTiempo.Days / 365) : "about a year ago";
+				if (diferenciaTiempo.Days > 365 && diferenciaTiempo.Days < 730)
+				{
+					mensaje = Idiomas.CogerCadena(idioma, "Timer.String11");
+				}
+				else if (diferenciaTiempo.Days >= 730)
+				{
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer.String10"), diferenciaTiempo.Days / 365);
+				}
+
+				//mensaje = diferenciaTiempo.Days > 365 ? string.Format(Idiomas.CogerCadena(idioma, "Timer.String10"), diferenciaTiempo.Days / 365) : Idiomas.CogerCadena(idioma, "Timer.String11");
 			}
 
-			return resultado;
+			return mensaje;
 		}
 
 	}

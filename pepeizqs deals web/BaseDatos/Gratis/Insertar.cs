@@ -2,11 +2,11 @@
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
-namespace BaseDatos.Suscripciones
+namespace BaseDatos.Gratis
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(int id, List<JuegoSuscripcion> listaVecesSuscripciones, JuegoSuscripcion actual)
+		public static void Ejecutar(int id, List<JuegoGratis> listaVecesGratis, JuegoGratis actual)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -15,12 +15,12 @@ namespace BaseDatos.Suscripciones
 				conexion.Open();
 
 				string sqlActualizarJuego = "UPDATE juegos " +
-					"SET suscripciones=@suscripciones WHERE id=@id";
+					"SET gratis=@gratis WHERE id=@id";
 
 				using (SqlCommand comando = new SqlCommand(sqlActualizarJuego, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", id);
-					comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(listaVecesSuscripciones));
+					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(listaVecesGratis));
 
 					try
 					{
@@ -32,13 +32,13 @@ namespace BaseDatos.Suscripciones
 					}
 				}
 
-				string sqlInsertar = "INSERT INTO suscripciones " +
-					"(suscripcion, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina) VALUES " +
-					"(@suscripcion, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina) ";
+				string sqlInsertar = "INSERT INTO gratis " +
+					"(gratis, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina) VALUES " +
+					"(@gratis, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
-					comando.Parameters.AddWithValue("@suscripcion", actual.Tipo);
+					comando.Parameters.AddWithValue("@gratis", actual.Tipo);
 					comando.Parameters.AddWithValue("@juegoId", actual.JuegoId);
 					comando.Parameters.AddWithValue("@nombre", actual.Nombre);
 					comando.Parameters.AddWithValue("@imagen", actual.Imagen);

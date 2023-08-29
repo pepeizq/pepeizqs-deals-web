@@ -114,7 +114,7 @@ namespace BaseDatos.Tiendas
 							{
 								if (lector.GetString(1) != null)
 								{
-									mensaje = Calculadora.HaceTiempo(DateTime.Parse(lector.GetString(1)));
+									mensaje = Calculadora.HaceTiempo(DateTime.Parse(lector.GetString(1)), "es-ES");
 								}
 
                                 if (lector.GetString(2) != null)

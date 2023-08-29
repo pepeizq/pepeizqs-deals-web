@@ -16,13 +16,18 @@ namespace pepeizqs_deals_web.Pages
 		public string imagenLogo = null;
         public string fondo = null;
 		public string titulo = null;
+		public string contenido = null;
 		public string fechaEmpieza = null;
 		public string fechaTermina = null;
 		public List<Juego> juegos = new List<Juego>();
 
         public void OnGet()
         {
-			idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+			try
+			{
+				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+			}
+			catch { }		
 
 			string id = Request.Query["id"];
 
@@ -50,10 +55,10 @@ namespace pepeizqs_deals_web.Pages
 					}
 				}
 
-				if (noticia.TituloEn != null)
-				{
-					titulo = noticia.TituloEn;
+				titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
 
+				if (titulo != null)
+				{
 					if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
 						foreach (var suscripcion in SuscripcionesCargar.GenerarListado())
@@ -62,6 +67,8 @@ namespace pepeizqs_deals_web.Pages
 						}
 					}
 				}
+
+				contenido = Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs);
 
 				if (noticia.FechaTermina.Year > 2022)
 				{
@@ -72,13 +79,21 @@ namespace pepeizqs_deals_web.Pages
 				{
 					TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
 
-					if (diferenciaTiempo.Days >= 0)
+					if (diferenciaTiempo.Days > 1)
 					{
-						fechaTermina = string.Format("This promotion ends in {0} days.", diferenciaTiempo.Days);
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
 					}
-					else
+					else if (diferenciaTiempo.Days == 1)
 					{
-						fechaTermina = "This promotion has ended.";
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+					}
+					else if (diferenciaTiempo.Days == 0)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+					}
+					else if (diferenciaTiempo.Days < 0)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
 					}
 				}
 

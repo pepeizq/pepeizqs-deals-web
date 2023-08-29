@@ -2,8 +2,8 @@
 @model pepeizqs_deals_web.Pages.LastNewsModel
 
 @{
-	ViewData["Title"] = "Last News";
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "LastNews.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias>(RenderMode.ServerPrerendered))
+@(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))

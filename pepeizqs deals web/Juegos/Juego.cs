@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using Suscripciones2;
+using Gratis2;
 
 namespace Juegos
 {
@@ -25,7 +26,7 @@ namespace Juegos
 		public JuegoMedia Media { get; set; }
 		public DateTime FechaSteamAPIComprobacion { get; set; }
 		public string Bundles { get; set; }
-		public string Gratis { get; set; }
+		public List<JuegoGratis> Gratis { get; set; }
 		public List<JuegoSuscripcion> Suscripciones { get; set; }
 	}
 
@@ -100,9 +101,21 @@ namespace Juegos
 		public List<string> Miniaturas { get; set; }
 	}
 
+	public class JuegoGratis
+	{
+		public GratisTipo Tipo { get; set; }
+		public int JuegoId { get; set; }
+		public string Nombre { get; set; }
+		public string Imagen { get; set; }
+		public DateTime FechaEmpieza { get; set; }
+		public DateTime FechaTermina { get; set; }
+		public JuegoDRM DRM { get; set; }
+		public string Enlace { get; set; }
+	}
+
 	public class JuegoSuscripcion
 	{
-		public SuscripcionTipo Suscripcion { get; set; }
+		public SuscripcionTipo Tipo { get; set; }
 		public int JuegoId { get; set; }
 		public string Nombre { get; set; }
 		public string Imagen { get; set; }
