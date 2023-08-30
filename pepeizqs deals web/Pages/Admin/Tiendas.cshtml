@@ -16,6 +16,8 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
+        Hangfire.RecurringJob.AddOrUpdate<Herramientas.ITareasGestionador>(job => job.HacerTarea(), Hangfire.Cron.Hourly);
+
 		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.ServerPrerendered))
 	}
 }

@@ -9,7 +9,8 @@
 				Id = Gratis2.GratisTipo.Steam,
 				Nombre = "Steam",
 				Imagen = "/imagenes/tiendas/steam_logo.png",
-				DRMDefecto = Juegos.JuegoDRM.Steam
+				DRMDefecto = Juegos.JuegoDRM.Steam,
+				DRMEnseñar = false
 			};
 
 			DateTime fechaSteam = DateTime.Now;

@@ -8,7 +8,8 @@
 			{
 				Id = Gratis2.GratisTipo.Desconocido,
 				Nombre = "Desconocido",
-				DRMDefecto = Juegos.JuegoDRM.Steam
+				DRMDefecto = Juegos.JuegoDRM.Steam,
+				DRMEnseñar = true
 			};
 
 			DateTime fechaDesconocido = DateTime.Now;

@@ -7,6 +7,8 @@ using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Herramientas;
 using Microsoft.AspNetCore.SignalR;
+using Hangfire;
+using Hangfire.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -29,11 +31,42 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 //----------------------------------------------------------------------------------
 //Tareas
 
-builder.Services.AddHostedService<TimedHostedService>();
-builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
-builder.Services.AddScoped<IServicioHacerTarea, ServicioHacerTarea>();
+//builder.Services.AddHostedService<TimedHostedService>();
+//builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
+//builder.Services.AddScoped<IServicioHacerTarea, ServicioHacerTarea>();
+
+#region Tareas
+
+builder.Services.AddScoped<ITareasGestionador, TareasGestionador>();
+
+builder.Services.AddHangfire(hangfire =>
+{
+	hangfire.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
+	hangfire.UseSimpleAssemblyNameTypeSerializer();
+	hangfire.UseRecommendedSerializerSettings();
+	hangfire.UseColouredConsoleLogProvider();
+	hangfire.UseSqlServerStorage(conexionTexto,
+		new SqlServerStorageOptions
+		{
+			CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+			SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+			QueuePollInterval = TimeSpan.Zero,
+			UseRecommendedIsolationLevel = true,
+			DisableGlobalLocks = true
+		});
+
+	var server = new BackgroundJobServer(new BackgroundJobServerOptions
+	{
+		ServerName = "hangfire-test",
+	});
+});
+
+builder.Services.AddHangfireServer();
+
+#endregion
 
 //----------------------------------------------------------------------------------
+
 #region Acceder Usuario en Codigo
 
 builder.Services.AddControllers();
@@ -120,5 +153,7 @@ app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.UseRequestLocalization();
+
+app.UseHangfireDashboard();
 
 app.Run();

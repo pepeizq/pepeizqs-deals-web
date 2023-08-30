@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Gratis2;
 using Microsoft.Data.SqlClient;
 using Suscripciones2;
 
@@ -62,7 +63,7 @@ namespace BaseDatos.Noticias
 
 							if (lector.IsDBNull(8) == false)
 							{
-								//gratisTipo
+								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Id;
 							}
 
 							if (lector.IsDBNull(9) == false)

@@ -16,7 +16,74 @@
 
 	@if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
 	{
-		
+		<div class="opciones-combobox" style="width: 33%;">
+			<select @onchange="@(e => CambiarGratis(e))">
+				@foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
+				{
+					<option value="@gratis.Id">@gratis.Nombre</option>
+				}
+			</select>
+		</div>
+
+		@if (gratisSeleccionado != null)
+		{
+			<div style="margin-top: 20px;">
+				@foreach (var gratis in BaseDatos.Gratis.Buscar.UnTipo(gratisSeleccionado, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
+				{
+					if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+					{
+						<button @onclick="@(e => ClickearGratisJuego(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+							<div style="display: flex; align-items: center;">
+								@if (juegos != null)
+								{
+									@if (juegos.Contains(gratis.JuegoId.ToString()) == true)
+									{
+										<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+									}
+								}
+
+								<img src="@Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Imagen" style="width: 12%; margin: 10px;" />
+								<div style="margin-left: 20px;">@gratis.Nombre</div>
+							</div>
+						</button>
+					}
+				}
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Juegos:</label>
+				<input type="text" class="entrada-texto" value="@juegos" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Título EN:</label>
+				<input type="text" class="entrada-texto" value="@tituloEn" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Título ES:</label>
+				<input type="text" class="entrada-texto" value="@tituloEs" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Contenido EN:</label>
+				<textarea class="entrada-texto" rows="8">@contenidoEn</textarea>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Contenido ES:</label>
+				<textarea class="entrada-texto" rows="8">@contenidoEs</textarea>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Fecha Termina:</label>
+				<input type="datetime-local" @onchange="@(e => CambiarGratisFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			</div>
+
+			<div style="display: flex; margin-top: 20px; width: 20%;">
+				<button @onclick="@(e => AñadirGratisNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
+			</div>
+		}
 	}
 	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
 	{
@@ -32,25 +99,22 @@
 		@if (suscripcionSeleccionada != null)
 		{
 			<div style="margin-top: 20px;">
-				@foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionada).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
+				@foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionada, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
 				{
-					if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
-					{
-						<button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
-							<div style="display: flex; align-items: center;">
-								@if (juegos != null)
+					<button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+						<div style="display: flex; align-items: center;">
+							@if (juegos != null)
+							{
+								@if (juegos.Contains(suscripcion.JuegoId.ToString()) == true)
 								{
-									@if (juegos.Contains(suscripcion.JuegoId.ToString()) == true)
-									{
-										<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
-									}
-								}							
+									<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+								}
+							}
 
-								<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Imagen" style="width: 12%; margin: 10px;" />
-								<div style="margin-left: 20px;">@suscripcion.Nombre</div>
-							</div>
-						</button>
-					}
+							<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Imagen" style="width: 12%; margin: 10px;" />
+							<div style="margin-left: 20px;">@suscripcion.Nombre</div>
+						</div>
+					</button>
 				}
 			</div>
 
@@ -100,6 +164,7 @@
 
 	private string juegos = null;
 
+	private string gratisSeleccionado = null;
 	private string suscripcionSeleccionada = null;
 
 	private string tituloEn = null;
@@ -115,11 +180,190 @@
 
 		//-------------------------------------------------------
 
-		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+		{
+			gratisSeleccionado = Gratis2.GratisCargar.GenerarListado()[0].Id.ToString();
+		}
+		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
 		{
 			suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
 		}
 	}
+
+	#region Gratis
+
+	private void CambiarGratis(ChangeEventArgs texto)
+	{
+		gratisSeleccionado = texto.Value.ToString();
+	}
+
+	private void ClickearGratisJuego(MouseEventArgs e, int juegoId)
+	{
+		if (string.IsNullOrEmpty(juegos) == true)
+		{
+			juegos = juegoId.ToString();
+		}
+		else
+		{
+			if (juegos.Contains(juegoId.ToString()) == false)
+			{
+				juegos = juegos + "," + juegoId.ToString();
+			}
+			else
+			{
+				int int1 = juegos.IndexOf(juegoId.ToString() + ",");
+
+				if (int1 == -1)
+				{
+					int1 = juegos.IndexOf(juegoId.ToString());
+					juegos = juegos.Remove(int1, juegoId.ToString().Length);
+				}
+				else
+				{
+					juegos = juegos.Remove(int1, juegoId.ToString().Length + 1);
+				}
+
+				if (juegos.Trim().Length == 1)
+				{
+					juegos = null;
+				}
+			}
+		}
+
+		GratisGenerarTitulo();
+		GratisGenerarContenido();
+		GratisGenerarFecha();
+	}
+
+	private void CambiarGratisFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+
+	private void GratisGenerarTitulo()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			tituloEn = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " • ";
+			tituloEs = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " • ";
+
+			if (lista.Count == 1)
+			{
+				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString1");
+				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString1");
+			}
+			else if (lista.Count == 2)
+			{
+				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString2") + " " +
+					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString3");
+				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString2") + " " +
+					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString3");
+			}
+			else if (lista.Count > 2)
+			{
+				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString4");
+				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString4");
+			}
+		}
+		else
+		{
+			tituloEn = null;
+			tituloEs = null;
+		}
+	}
+
+	private void GratisGenerarContenido()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			if (lista.Count == 1)
+			{
+				contenidoEn = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString5");
+				contenidoEs = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString5");
+			}
+			else if (lista.Count > 1)
+			{
+				contenidoEn = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString6");
+				contenidoEs = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString6");
+			}
+
+			contenidoEn = contenidoEn + Environment.NewLine + "<ul>" + Environment.NewLine;
+			contenidoEs = contenidoEs + Environment.NewLine + "<ul>" + Environment.NewLine;
+
+			foreach (var juego in lista)
+			{
+				Juegos.JuegoGratis gratis = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(juego));
+
+				if (Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).DRMEnseñar == true)
+				{
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
+				}
+				else
+				{
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
+				}		
+			}
+
+			contenidoEn = contenidoEn + "</ul>";
+			contenidoEs = contenidoEs + "</ul>";
+		}
+		else
+		{
+			contenidoEn = null;
+			contenidoEs = null;
+		}
+	}
+
+	private void GratisGenerarFecha()
+	{
+		List<string> lista = GenerarLista(juegos);
+
+		if (lista != null)
+		{
+			Juegos.JuegoGratis gratis = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0]));
+
+			fechaSeleccionada = gratis.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+		}
+		else
+		{
+			fechaSeleccionada = null;
+		}
+	}
+
+	private void AñadirGratisNoticia(MouseEventArgs e)
+	{
+		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+		noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
+		noticia.TituloEn = tituloEn;
+		noticia.TituloEs = tituloEs;
+		noticia.ContenidoEn = contenidoEn;
+		noticia.ContenidoEs = contenidoEs;
+		noticia.Juegos = juegos;
+		noticia.FechaEmpieza = DateTime.Now;
+		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+		noticia.GratisTipo = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Id;
+
+		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+		gratisSeleccionado = null;
+		tituloEn = null;
+		tituloEs = null;
+		contenidoEn = null;
+		contenidoEs = null;
+		fechaSeleccionada = null;
+		juegos = null;
+	}
+
+	#endregion
 
 	#region Suscripciones	
 

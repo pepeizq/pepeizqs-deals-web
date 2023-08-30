@@ -6,4 +6,8 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
+<div style="font-size: 23px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "LastNews.Title")
+</div>
+
 @(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))

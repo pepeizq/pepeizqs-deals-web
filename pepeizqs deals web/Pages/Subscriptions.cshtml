@@ -2,8 +2,8 @@
 @model pepeizqs_deals_web.Pages.SubscriptionsModel
 
 @{
-	ViewData["Title"] = "Subscriptions";
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Subscriptions.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))

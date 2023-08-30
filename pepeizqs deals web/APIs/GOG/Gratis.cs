@@ -9,7 +9,8 @@
 				Id = Gratis2.GratisTipo.GOG,
 				Nombre = "GOG",
 				Imagen = "/imagenes/tiendas/gog_logo.png",
-				DRMDefecto = Juegos.JuegoDRM.GOG
+				DRMDefecto = Juegos.JuegoDRM.GOG,
+				DRMEnseñar = false
 			};
 
 			DateTime fechaGog = DateTime.Now;

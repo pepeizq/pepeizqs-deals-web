@@ -490,7 +490,7 @@ namespace Herramientas
 							}
                             else
                             {
-								mensaje = Idiomas.CogerCadena(idioma, "Game.String15") + " " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo.ToString()).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina, idioma);
+								mensaje = Idiomas.CogerCadena(idioma, "Game.String15") + " " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina, idioma);
 							}	    
 						}
 					}

@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div style="font-size: 23px;">
+	@Herramientas.Idiomas.CogerCadena(idioma, "Free.String1")
+</div>
+
+@foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+{
+	@if (BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Actual).Count > 0)
+	{
+		<hr>
+
+		<div style="display: flex; align-items: start;">
+			<div class="perfil" style="width: 12%;">
+				<img src="@gratis.Imagen" />
+			</div>
+
+			<div class="perfil" style="width: 88%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+				@foreach (var juego in BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Actual))
+				{
+					<div>
+						<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px; max-width: 180px;" target="_blank">
+							<div>
+								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+							</div>
+
+							@if (gratis.DRMEnseñar == true)
+							{
+								<div style="text-align: right; margin-top: 10px; height: 30px;">
+									<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
+								</div>
+							}						
+						</a>
+					</div>
+				}
+			</div>
+		</div>
+	}
+}
+
+<div style="font-size: 23px; margin-top: 60px">
+	@Herramientas.Idiomas.CogerCadena(idioma, "Free.String2")
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+}

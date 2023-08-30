@@ -8,6 +8,10 @@
     "Valor": "Historical Lows"
   },
   {
+    "Id": "Layout.Free",
+    "Valor": "Free"
+  },
+  {
     "Id": "Layout.Subscriptions",
     "Valor": "Subscriptions"
   },
@@ -125,23 +129,51 @@
   },
   {
     "Id": "News.String1",
-    "Valor": "This promotion ends in {0} days."
+    "Valor": "This promotion ends in {0} days"
   },
   {
     "Id": "News.String2",
-    "Valor": "This promotion ends in {0} day."
+    "Valor": "This promotion ends in {0} day"
   },
   {
     "Id": "News.String3",
-    "Valor": "This promotion ends today."
+    "Valor": "This promotion ends today"
   },
   {
     "Id": "News.String4",
-    "Valor": "This promotion has ended."
+    "Valor": "This promotion has ended"
   },
   {
     "Id": "News.String5",
     "Valor": "Games in the database:"
+  },
+  {
+    "Id": "News.String6",
+    "Valor": "Added"
+  },
+  {
+    "Id": "News.FreeString1",
+    "Valor": "is free to claim"
+  },
+  {
+    "Id": "News.FreeString2",
+    "Valor": "and"
+  },
+  {
+    "Id": "News.FreeString3",
+    "Valor": "are free to claim"
+  },
+  {
+    "Id": "News.FreeString4",
+    "Valor": "and more games are free to claim"
+  },
+  {
+    "Id": "News.FreeString5",
+    "Valor": "has set up the following game to claim at no cost:"
+  },
+  {
+    "Id": "News.FreeString6",
+    "Valor": "has set up the following games to claim at no cost:"
   },
   {
     "Id": "News.SubscriptionString1",
@@ -170,6 +202,30 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "has added the following games:"
+  },
+  {
+    "Id": "Free.Title",
+    "Valor": "Free"
+  },
+  {
+    "Id": "Free.String1",
+    "Valor": "Free Available"
+  },
+  {
+    "Id": "Free.String2",
+    "Valor": "Free Not Available"
+  },
+  {
+    "Id": "Subscriptions.Title",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "Subscriptions.String1",
+    "Valor": "Subscriptions Available"
+  },
+  {
+    "Id": "Subscriptions.String2",
+    "Valor": "Subscriptions Not Available"
   },
   {
     "Id": "Timer.String1",

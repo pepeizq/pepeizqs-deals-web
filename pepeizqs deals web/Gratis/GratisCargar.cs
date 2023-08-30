@@ -48,6 +48,34 @@ namespace Gratis2
 			return null;
 		}
 
+		public static Gratis DevolverGratis(GratisTipo gratisTipo)
+		{
+			foreach (var gratis in GenerarListado())
+			{
+				if (gratis.Id == gratisTipo)
+				{
+					return gratis;
+				}
+			}
+
+			return null;
+		}
+
+		public static Gratis DevolverGratis(int posicion)
+		{
+			GratisTipo gratis2 = CargarGratis()[posicion];
+
+			foreach (var gratis in GenerarListado())
+			{
+				if (gratis.Id == gratis2)
+				{
+					return gratis;
+				}
+			}
+
+			return null;
+		}
+
 		public static List<GratisTipo> CargarGratis()
 		{
 			List<GratisTipo> gratis = Enum.GetValues(typeof(GratisTipo)).Cast<GratisTipo>().ToList();

@@ -1,5 +1,12 @@
 ﻿namespace Herramientas
 {
+	public enum Tiempo
+	{
+		Atemporal,
+		Actual,
+		Pasado
+	}
+
 	public static class Calculadora
 	{
 		public static int SacarDescuento(decimal precioBase, decimal precioRebajado)

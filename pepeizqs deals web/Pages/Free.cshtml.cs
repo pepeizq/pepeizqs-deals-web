@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace pepeizqs_deals_web.Pages
 {
-    public class SubscriptionsModel : PageModel
+    public class FreeModel : PageModel
     {
 		public string idioma = string.Empty;
 

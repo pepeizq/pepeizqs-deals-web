@@ -12,5 +12,6 @@ namespace Gratis2
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
+		public bool DRMEnseñar;
 	}
 }

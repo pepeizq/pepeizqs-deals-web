@@ -49,7 +49,7 @@ namespace BaseDatos.Suscripciones
             return suscripciones;
         }
 
-		public static List<JuegoSuscripcion> UnTipo(string suscripcionTexto)
+		public static List<JuegoSuscripcion> UnTipo(string suscripcionTexto, Herramientas.Tiempo tiempo)
 		{
 			List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
 
@@ -81,13 +81,35 @@ namespace BaseDatos.Suscripciones
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
 
-							suscripciones.Add(suscripcion);
+							if (tiempo == Herramientas.Tiempo.Atemporal)
+							{
+								suscripciones.Add(suscripcion);
+							}
+							else if (tiempo == Herramientas.Tiempo.Actual)
+							{ 
+								if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+								{
+									suscripciones.Add(suscripcion);
+								}
+							}
+							else if (tiempo == Herramientas.Tiempo.Pasado)
+							{
+								if (DateTime.Now > suscripcion.FechaTermina)
+								{
+									suscripciones.Add(suscripcion);
+								}
+							}
 						}
 					}
 				}
 			}
 
 			conexion.Dispose();
+
+			if (suscripciones.Count > 0) 
+			{
+				suscripciones = suscripciones.OrderBy(x => x.Nombre).ToList();
+			}
 
 			return suscripciones;
 		}

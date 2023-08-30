@@ -1,7 +1,9 @@
 #nullable disable
 
+using Gratis2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualBasic;
 using Noticias;
 using Suscripciones2;
 
@@ -17,6 +19,7 @@ namespace pepeizqs_deals_web.Pages
         public string fondo = null;
 		public string titulo = null;
 		public string contenido = null;
+		public string video = null;
 		public string fechaEmpieza = null;
 		public string fechaTermina = null;
 		public List<Juego> juegos = new List<Juego>();
@@ -35,7 +38,11 @@ namespace pepeizqs_deals_web.Pages
 
             if (noticia != null) 
             { 
-				if (noticia.Tipo == NoticiaTipo.Suscripciones)
+				if (noticia.Tipo == NoticiaTipo.Gratis)
+				{
+					imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).Imagen;
+				}
+				else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 				{
 					imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).Imagen;
 				}
@@ -59,7 +66,14 @@ namespace pepeizqs_deals_web.Pages
 
 				if (titulo != null)
 				{
-					if (noticia.Tipo == NoticiaTipo.Suscripciones)
+					if (noticia.Tipo == NoticiaTipo.Gratis)
+					{
+						foreach (var gratis in GratisCargar.GenerarListado())
+						{
+							titulo = titulo.Replace(gratis.Nombre + " • ", null);
+						}
+					}
+					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
 						foreach (var suscripcion in SuscripcionesCargar.GenerarListado())
 						{
@@ -72,7 +86,7 @@ namespace pepeizqs_deals_web.Pages
 
 				if (noticia.FechaTermina.Year > 2022)
 				{
-					fechaEmpieza = noticia.FechaEmpieza.Day.ToString() + "/" + noticia.FechaEmpieza.Month.ToString() + "/" + noticia.FechaEmpieza.Year.ToString();
+					fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.HaceTiempo(noticia.FechaEmpieza, idioma);
 				}
 
 				if (noticia.FechaTermina.Year > 2022)
@@ -113,6 +127,11 @@ namespace pepeizqs_deals_web.Pages
 							}
 						}
 					}
+				}
+
+				if (juegos.Count == 1)
+				{
+					video = "<video controls autoplay src=" + Strings.ChrW(34) + juegos[0].Media.Video + Strings.ChrW(34) + "/>";
 				}
             }          
 		}

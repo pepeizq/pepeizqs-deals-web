@@ -7,14 +7,27 @@
 		@if (i == 0 || (i > 0 && FechaIncluir(noticiasMostrar[i - 1], noticiasMostrar[i]) == true))
 		{
 			<hr/>
-
-			<div style="margin-top: 60px; margin-bottom: 30px; font-size: 22px;">@FechaTexto(noticiasMostrar[i].FechaEmpieza)</div>
 		}
 
-		<div class="perfil" style="margin-left: 150px; margin-bottom: 130px; margin-top: -100px;">
-			<div style="font-size: 20px; margin-bottom: 15px;">@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].TituloEn, noticiasMostrar[i].TituloEs)</div>
+		<div style="display: flex; margin-top: 10px; margin-bottom: 10px;">
+			@if (i == 0 || (i > 0 && FechaIncluir(noticiasMostrar[i - 1], noticiasMostrar[i]) == true))
+			{
+				<div style="width: 20%; font-size: 22px; padding: 40px; text-align: center;">@FechaTexto(noticiasMostrar[i].FechaEmpieza)</div>
+			}
+			else
+			{
+				<div style="width: 20%; font-size: 22px; padding: 40px; text-align: center;"></div>
+			}
 
-			<div>@((MarkupString)@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].ContenidoEn, noticiasMostrar[i].ContenidoEs))</div>
+			<div class="perfil" style="width: 80%;">
+				<div style="font-size: 20px; margin-bottom: 15px;">@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].TituloEn, noticiasMostrar[i].TituloEs)</div>
+
+				<div>@((MarkupString)@Herramientas.Idiomas.MirarTexto(idioma, noticiasMostrar[i].ContenidoEn, noticiasMostrar[i].ContenidoEs))</div>
+
+				<div style="text-align: right;">
+					<a href="/news/@noticiasMostrar[i].Id"><i class="fa-solid fa-plus"></i></a>
+				</div>
+			</div>
 		</div>	
 	}
 }

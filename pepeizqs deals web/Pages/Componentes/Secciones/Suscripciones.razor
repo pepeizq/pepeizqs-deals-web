@@ -1,99 +1,76 @@
-﻿@if (suscripcionesActivasChoice.Count > 0)
-{
-	<div id="@suscripcionesActivasChoice[0].Tipo" class="perfil" style="margin-bottom: 80px;">
-		<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionesActivasChoice[0].Tipo).Imagen" style="width: 20%; margin-bottom: 10px;" />
+﻿@using Microsoft.AspNetCore.Components.Web;
 
+<div style="font-size: 23px;">
+	@Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions.String1")
+</div>
+
+@foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+{
+	@if (BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Actual).Count > 0)
+	{
 		<hr>
 
-		@if (suscripcionesActivasChoice.Count > 0)
-		{
-			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-				@foreach (var suscripcion in suscripcionesActivasChoice)
+		<div style="display: flex; align-items: start;">
+			<div class="perfil" style="width: 20%;">
+				<img src="@suscripcion.Imagen" />
+			</div>
+
+			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+				@foreach (var juego in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Actual))
 				{
 					<div>
-						<a href="@Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
+						<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
 							<div>
-								<img src="@suscripcion.Imagen" style="max-width: 100%; max-height: 100%;" />
+								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
 							</div>
 
 							<div style="text-align: right; margin-top: 10px; height: 30px;">
-								<img src="@Juegos.JuegoDRM2.SacarImagen(suscripcion.DRM)" style="max-width: 30px; max-height: 30px;" />
+								<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
 							</div>
 						</a>
 					</div>
 				}
 			</div>
-		}
-	</div>
+		</div>
+	}	
 }
 
-@if (suscripcionesActivasPrime.Count > 0)
-{
-	<div id="@suscripcionesActivasPrime[0].Tipo" class="perfil">
-		<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionesActivasPrime[0].Tipo).Imagen" style="width: 20%; margin-bottom: 10px;" />
+<div style="font-size: 23px; margin-top: 60px">
+	@Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions.String2")
+</div>
 
+@foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+{
+	@if (BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Pasado).Count > 0)
+	{
 		<hr>
-		
-		@if (suscripcionesActivasPrime.Count > 0)
-		{
-			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-				@foreach (var suscripcion in suscripcionesActivasPrime)
+
+		<div style="display: flex; align-items: start;">
+			<div class="perfil" style="width: 20%;">
+				<img src="@suscripcion.Imagen" />
+			</div>
+
+			<div class="perfil" style="width: 80%;">
+				@foreach (var juego in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Pasado))
 				{
 					<div>
-						<a href="@Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
-							<div>
-								<img src="@suscripcion.Imagen" style="max-width: 100%; max-height: 100%;" />
-							</div>
-
-							<div style="text-align: right; margin-top: 10px; height: 30px;">
-								<img src="@Juegos.JuegoDRM2.SacarImagen(suscripcion.DRM)" style="max-width: 30px; max-height: 30px;" />
-							</div>
-						</a>
+						<a href="/game/@juego.JuegoId">@juego.Nombre</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
 					</div>
 				}
 			</div>
-		}		
-	</div>
+		</div>
+	}
 }
 
 @code {
 
 	#nullable disable
 
-	List<Juegos.JuegoSuscripcion> suscripcionesActivasChoice = new List<Juegos.JuegoSuscripcion>();
-	List<Juegos.JuegoSuscripcion> suscripcionesActivasPrime = new List<Juegos.JuegoSuscripcion>();
-
-	List<Juegos.JuegoSuscripcion> suscripcionesCaducadas = new List<Juegos.JuegoSuscripcion>();
+	[Parameter]
+	public string idioma { get; set; }
 
 	protected override void OnInitialized()
 	{
-		foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.Todos())
-		{
-			if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
-			{
-				if (suscripcion.Tipo == global::Suscripciones2.SuscripcionTipo.HumbleChoice)
-				{
-					suscripcionesActivasChoice.Add(suscripcion);
-				}
-				else if (suscripcion.Tipo == global::Suscripciones2.SuscripcionTipo.PrimeGaming)
-				{
-					suscripcionesActivasPrime.Add(suscripcion);
-				}
-			}
-			else
-			{
-				suscripcionesCaducadas.Add(suscripcion);
-			}
-		}
-
-		if (suscripcionesActivasChoice.Count > 0)
-		{
-			suscripcionesActivasChoice = suscripcionesActivasChoice.OrderBy(x => x.Nombre).ToList();
-		}
-
-		if (suscripcionesActivasPrime.Count > 0)
-		{
-			suscripcionesActivasPrime = suscripcionesActivasPrime.OrderBy(x => x.Nombre).ToList();
-		}
+		
 	}
 }

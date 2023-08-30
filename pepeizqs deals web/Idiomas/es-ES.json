@@ -8,6 +8,10 @@
     "Valor": "Mínimos Históricos"
   },
   {
+    "Id": "Layout.Free",
+    "Valor": "Gratis"
+  },
+  {
     "Id": "Layout.Subscriptions",
     "Valor": "Suscripciones"
   },
@@ -125,23 +129,51 @@
   },
   {
     "Id": "News.String1",
-    "Valor": "Esta promoción termina en {0} días."
+    "Valor": "Esta promoción termina en {0} días"
   },
   {
     "Id": "News.String2",
-    "Valor": "Esta promoción termina en {0} día."
+    "Valor": "Esta promoción termina en {0} día"
   },
   {
     "Id": "News.String3",
-    "Valor": "Esta promoción termina hoy."
+    "Valor": "Esta promoción termina hoy"
   },
   {
     "Id": "News.String4",
-    "Valor": "Esta promoción ha terminado."
+    "Valor": "Esta promoción ha terminado"
   },
   {
     "Id": "News.String5",
     "Valor": "Juegos en la base de datos:"
+  },
+  {
+    "Id": "News.String6",
+    "Valor": "Añadido"
+  },
+  {
+    "Id": "News.FreeString1",
+    "Valor": "está gratis para reclamar"
+  },
+  {
+    "Id": "News.FreeString2",
+    "Valor": "y"
+  },
+  {
+    "Id": "News.FreeString3",
+    "Valor": "están gratis para reclamar"
+  },
+  {
+    "Id": "News.FreeString4",
+    "Valor": "y más juegos están gratis para reclamar"
+  },
+  {
+    "Id": "News.FreeString5",
+    "Valor": "ha puesto para reclamar sin coste alguno el siguiente juego:"
+  },
+  {
+    "Id": "News.FreeString6",
+    "Valor": "ha puesto para reclamar sin coste alguno los siguientes juegos:"
   },
   {
     "Id": "News.SubscriptionString1",
@@ -170,6 +202,30 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "ha añadido los siguientes juegos:"
+  },
+  {
+    "Id": "Free.Title",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "Free.String1",
+    "Valor": "Gratis Disponibles"
+  },
+  {
+    "Id": "Free.String2",
+    "Valor": "Gratis Antiguos"
+  },
+  {
+    "Id": "Subscriptions.Title",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "Subscriptions.String1",
+    "Valor": "Suscripciones Disponibles"
+  },
+  {
+    "Id": "Subscriptions.String2",
+    "Valor": "Suscripciones Antiguas"
   },
   {
     "Id": "Timer.String1",

@@ -40,38 +40,31 @@ namespace BaseDatos.Juegos
 
 			if (sqlBuscar != string.Empty) 
 			{
-				try
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
 				{
-					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+					conexion.Open();
+					string buscar = sqlBuscar;
 
-					using (conexion)
+					using (SqlCommand comando = new SqlCommand(buscar, conexion))
 					{
-						conexion.Open();
-						string buscar = sqlBuscar;
+						comando.Parameters.AddWithValue(idParametro, idBuscar);
 
-						using (SqlCommand comando = new SqlCommand(buscar, conexion))
+						using (SqlDataReader lector = comando.ExecuteReader())
 						{
-							comando.Parameters.AddWithValue(idParametro, idBuscar);
-
-							using (SqlDataReader lector = comando.ExecuteReader())
+							if (lector.Read())
 							{
-								if (lector.Read())
-								{
-									Juego juego = JuegoCrear.Generar();
-									juego = Cargar.Ejecutar(juego, lector);
+								Juego juego = JuegoCrear.Generar();
+								juego = Cargar.Ejecutar(juego, lector);
 
-									return juego;
-								}
+								return juego;
 							}
 						}
 					}
-
-					conexion.Dispose();
 				}
-				catch
-				{
 
-				}
+				conexion.Dispose();
 			}	
 
 			return null;

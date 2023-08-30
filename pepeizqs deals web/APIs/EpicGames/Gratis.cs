@@ -9,7 +9,8 @@
 				Id = Gratis2.GratisTipo.EpicGames,
 				Nombre = "Epic Games Store",
 				Imagen = "/imagenes/tiendas/epic_logo.png",
-				DRMDefecto = Juegos.JuegoDRM.Epic
+				DRMDefecto = Juegos.JuegoDRM.Epic,
+				DRMEnseñar = false
 			};
 
 			DateTime fechaEpic = DateTime.Now;

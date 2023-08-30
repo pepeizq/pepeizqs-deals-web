@@ -15,17 +15,29 @@
 	}
 	
     <div class="juego-contenido">
-		<div class="juego-cabecera" style="padding: 40px; flex-direction: row;">
-			<div style="width: 12%;">
-				<img src="@Model.imagenLogo" style="max-width: 100%;"/>
-			</div>	
+		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; align-items: center;">
+			@if (@Model.imagenLogo != null)
+			{
+				<div>
+					<img src="@Model.imagenLogo" style="max-width: 140px; max-height: 80px;" />
+				</div>
+			}
+			
+			<div style="padding-left: 40px; padding-right: 40px;">
+				<div style="font-size: 22px;">
+					@Model.titulo
+				</div>
 
-			<div style="width: 76%; font-size: 22px; padding-left: 40px; padding-right: 40px;">
-				@Model.titulo
-			</div>
+				<div style="display: flex; font-size: 14px; margin-top: 20px;">
+					<div>@Model.fechaEmpieza</div>
 
-			<div style="width: 12%; font-size: 22px;">
-				@Model.fechaEmpieza
+					@if (Model.fechaTermina != null)
+					{
+						<div style="margin-left: 30px;">
+							@Model.fechaTermina
+						</div>
+					}
+				</div>
 			</div>
 		</div>
 
@@ -33,10 +45,10 @@
 			@Html.Raw(Model.contenido)
 		</div>
 
-		@if (Model.fechaTermina != null)
+		@if (Model.video != null)
 		{
-			<div class="perfil" style="flex-direction: row; margin-top: 40px;">
-				<i class="fa-solid fa-exclamation" style="font-size: 20px; margin-right: 20px;"></i> @Model.fechaTermina
+			<div class="perfil" style="margin-top: 40px;">
+				@Html.Raw(Model.video)
 			</div>
 		}
 
