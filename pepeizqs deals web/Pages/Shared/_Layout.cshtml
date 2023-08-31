@@ -8,6 +8,17 @@
     #nullable disable
 
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
+    string titulo = string.Empty;
+
+    if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
+    {
+        titulo = "pepeizq's deals";
+    }
+    else
+    {
+        titulo = ViewData["Title"].ToString() + " • pepeizq's deals";
+    }
 }
 
 <!DOCTYPE html>
@@ -15,7 +26,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] • pepeizq's deals</title>
+    <title>@titulo</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/maestro.css" asp-append-version="true" />
@@ -95,6 +106,7 @@
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Pendientes">Pendientes</a>
                                             <hr>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Noticias">Noticias</a>
+                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Bundles">Bundles</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Gratis">Gratis</a>
                                             <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Suscripciones">Suscripciones</a>
                                         </div>

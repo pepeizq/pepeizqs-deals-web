@@ -25,6 +25,10 @@
     font-style: normal;
 }
 
+a {
+    color: #5b9dfe;
+}
+
 dl, ol, ul {
     margin-top: 15px;
     margin-bottom: 15px;

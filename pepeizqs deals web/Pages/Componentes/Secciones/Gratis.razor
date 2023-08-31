@@ -11,11 +11,11 @@
 		<hr>
 
 		<div style="display: flex; align-items: start;">
-			<div class="perfil" style="width: 12%;">
+			<div class="perfil" style="width: 20%;">
 				<img src="@gratis.Imagen" />
 			</div>
 
-			<div class="perfil" style="width: 88%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
 				@foreach (var juego in BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Actual))
 				{
 					<div>
@@ -41,6 +41,38 @@
 <div style="font-size: 23px; margin-top: 60px">
 	@Herramientas.Idiomas.CogerCadena(idioma, "Free.String2")
 </div>
+
+@foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+{
+	@if (BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Pasado).Count > 0)
+	{
+		<hr>
+
+		<div style="display: flex; align-items: start;">
+			<div class="perfil" style="width: 20%;">
+				<img src="@gratis.Imagen" />
+			</div>
+
+			<div class="perfil" style="width: 80%;">
+				@foreach (var juego in BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Pasado))
+				{
+					@if (gratis.DRMEnseñar == true)
+					{
+						<div>
+							<a href="/game/@juego.JuegoId">@juego.Nombre</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
+						</div>
+					}
+					else
+					{
+						<div>
+							<a href="/game/@juego.JuegoId">@juego.Nombre</a> @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
+						</div>						
+					}
+				}
+			</div>
+		</div>
+	}
+}
 
 @code {
 

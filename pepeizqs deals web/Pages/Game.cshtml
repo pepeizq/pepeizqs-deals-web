@@ -50,17 +50,17 @@
 					<div class="juego-sistemas-espacio">
 						@if (@Model.juego.Caracteristicas.Windows == true)
 						{
-							<img src="/imagenes/sistemas/windows.png"/>
+							<img src="/imagenes/sistemas/windows.webp"/>
 						}
 
 						@if (@Model.juego.Caracteristicas.Mac == true)
 						{
-							<img src="/imagenes/sistemas/mac.png" />
+							<img src="/imagenes/sistemas/mac.webp" />
 						}
 
 						@if (@Model.juego.Caracteristicas.Linux == true)
 						{
-							<img src="/imagenes/sistemas/linux.png" />
+							<img src="/imagenes/sistemas/linux.webp" />
 						}
 
 						@if (Model.juego.IdSteam > 0)
@@ -78,17 +78,17 @@
 						<div class="juego-analisis-display">
 							@if (int.Parse(Model.juego.Analisis.Porcentaje) > 74)
 							{
-								<img src="/imagenes/analisis/positive2.png" class="juego-analisis-imagen" />
+								<img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" />
 							}
 
 							@if (int.Parse(Model.juego.Analisis.Porcentaje) > 49 && int.Parse(Model.juego.Analisis.Porcentaje) < 75)
 							{
-								<img src="/imagenes/analisis/mixed2.png" class="juego-analisis-imagen" />
+								<img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" />
 							}
 
 							@if (int.Parse(Model.juego.Analisis.Porcentaje) < 50)
 							{
-								<img src="/imagenes/analisis/negative2.png" class="juego-analisis-imagen" />
+								<img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" />
 							}
 
 							<div class="juego-analisis-texto">@Model.juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(Model.idioma, Model.juego.Analisis.Cantidad)</div>

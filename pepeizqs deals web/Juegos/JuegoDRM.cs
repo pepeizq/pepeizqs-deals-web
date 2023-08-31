@@ -29,7 +29,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Steam,
 				Nombre = "Steam",
-				Imagen = "/imagenes/drm/steam.png",
+				Imagen = "/imagenes/drm/steam.webp",
 				Acepciones = new List<string> { "steam", "steamworks" }
 			};
 
@@ -41,7 +41,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.GOG,
 				Nombre = "GOG",
-				Imagen = "/imagenes/drm/gog.png",
+				Imagen = "/imagenes/drm/gog.webp",
 				Acepciones = new List<string> { "gog", "gog galaxy" }
 			};
 
@@ -64,7 +64,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Ubisoft,
 				Nombre = "Ubisoft Connect",
-				Imagen = "/imagenes/drm/ubisoft.png",
+				Imagen = "/imagenes/drm/ubisoft.webp",
 				Acepciones = new List<string> { "ubisoft connect", "ubisoft", "uplay" }
 			};
 
@@ -76,7 +76,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.EA,
 				Nombre = "EA App",
-				Imagen = "/imagenes/drm/ea.png",
+				Imagen = "/imagenes/drm/ea.webp",
 				Acepciones = new List<string> { "ea app", "electronic arts", "origin" }
 			};
 
@@ -88,7 +88,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Rockstar,
 				Nombre = "Rockstar Games Launcher",
-				Imagen = "/imagenes/drm/rockstar.png",
+				Imagen = "/imagenes/drm/rockstar.webp",
 				Acepciones = new List<string> { "rockstar social club", "rockstar" }
 			};
 
@@ -100,7 +100,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Microsoft,
 				Nombre = "Microsoft Store",
-				Imagen = "/imagenes/drm/microsoft.png",
+				Imagen = "/imagenes/drm/microsoft.webp",
 				Acepciones = new List<string> { "microsoft store", "microsoft" }
 			};
 
@@ -112,7 +112,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Amazon,
 				Nombre = "Amazon Games",
-				Imagen = "/imagenes/drm/amazongames.png",
+				Imagen = "/imagenes/drm/amazongames.webp",
 				Acepciones = new List<string> { "amazon games", "amazon" }
 			};
 
@@ -124,7 +124,7 @@ namespace Juegos
 			{
 				Id = JuegoDRM.Epic,
 				Nombre = "Epic Games Store",
-				Imagen = "/imagenes/drm/epic.png",
+				Imagen = "/imagenes/drm/epic.webp",
 				Acepciones = new List<string> { "epic game store", "epic games store", "epic games", "epic" }
 			};
 

@@ -10,7 +10,7 @@ namespace APIs.PrimeGaming
 			{
 				Id = Suscripciones2.SuscripcionTipo.PrimeGaming,
 				Nombre = "Prime Gaming",
-				Imagen = "/imagenes/suscripciones/primegaming.png",
+				Imagen = "/imagenes/suscripciones/primegaming.webp",
 				Enlace = "https://gaming.amazon.com/",
 				DRMDefecto = JuegoDRM.Amazon
 			};

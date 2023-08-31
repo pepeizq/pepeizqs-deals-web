@@ -24,16 +24,14 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
 //----------------------------------------------------------------------------------
-//Error Detallado en Componentes Razor
+
+#region Detallado en Componentes Razor
 
 builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
 
-//----------------------------------------------------------------------------------
-//Tareas
+#endregion
 
-//builder.Services.AddHostedService<TimedHostedService>();
-//builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
-//builder.Services.AddScoped<IServicioHacerTarea, ServicioHacerTarea>();
+//----------------------------------------------------------------------------------
 
 #region Tareas
 
@@ -55,9 +53,9 @@ builder.Services.AddHangfire(hangfire =>
 			DisableGlobalLocks = true
 		});
 
-	var server = new BackgroundJobServer(new BackgroundJobServerOptions
+	var servidor = new BackgroundJobServer(new BackgroundJobServerOptions
 	{
-		ServerName = "hangfire-test",
+		ServerName = "hangfire",
 	});
 });
 
@@ -108,7 +106,7 @@ builder.Services.AddServerSideBlazor(options =>
     options.MaxBufferedUnacknowledgedRenderBatches = 10;
 }).AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromMinutes(60);
+    options.ClientTimeoutInterval = TimeSpan.FromMinutes(600);
 	options.EnableDetailedErrors = true;
     options.HandshakeTimeout = TimeSpan.FromMinutes(15);
     options.KeepAliveInterval = TimeSpan.FromMinutes(15);

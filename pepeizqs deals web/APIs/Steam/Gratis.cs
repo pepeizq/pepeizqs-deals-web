@@ -8,7 +8,7 @@
 			{
 				Id = Gratis2.GratisTipo.Steam,
 				Nombre = "Steam",
-				Imagen = "/imagenes/tiendas/steam_logo.png",
+				Imagen = "/imagenes/tiendas/steam_300x80.png",
 				DRMDefecto = Juegos.JuegoDRM.Steam,
 				DRMEnseñar = false
 			};

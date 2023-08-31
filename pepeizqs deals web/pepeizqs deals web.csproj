@@ -17,11 +17,13 @@
     <None Remove="Herramientas\TareasGestionador.cs~RF6a54dce4.TMP" />
     <None Remove="Juegos\JuegoDRM.cs~RF33e4e895.TMP" />
     <None Remove="Juegos\JuegoFicha.cs~RF864f1e.TMP" />
+    <None Remove="Pages\Componentes\Admin\Bundles.razor~RF628a6c2c.TMP" />
     <None Remove="Pages\Componentes\Buscador.razor~RF47a2b634.TMP" />
     <None Remove="Pages\Componentes\Secciones\Suscripciones2.razor~RF3be9a021.TMP" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Admin\Bundles.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Noticias.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
@@ -91,6 +93,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Free.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Admin\Bundles.cshtml" />
   </ItemGroup>
 
 </Project>

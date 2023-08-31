@@ -1,0 +1,237 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	<div>
+		<label style="margin-bottom: 10px;">Enlace:</label>
+		<input type="text" @oninput="TextoCambiaEnlace" class="entrada-texto" value="@bundle.Enlace"/>
+	</div>
+
+	@if (enlaceBundle != null)
+	{
+		<div style="margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Nombre:</label>
+			<input @onchange="@(e => TextoCambiaNombre(e))" class="entrada-texto" value="@bundle.Nombre">
+		</div>
+
+		<div style="margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Imagen:</label>
+			<input @onchange="@(e => TextoCambiaImagen(e))" class="entrada-texto" value="@bundle.Imagen">
+			<img src="@bundle.Imagen" style="max-width: 200px; max-height: 200px; margin-top: 10px;"/>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<label>Tiers:</label>
+
+			@if (bundle.Tiers != null)
+			{
+				@if (bundle.Tiers.Count > 0)
+				{
+					@foreach (var tier in bundle.Tiers)
+					{
+						<div style="width: 10%; display: flex; margin-top: 10px;">
+							<input @onchange="@(e => TextoCambiaTierPosicion(e, tier))" class="entrada-texto" value="@tier.Posicion" style="text-align: center; margin-right: 20px;" />
+							<input @onchange="@(e => TextoCambiaTierPrecio(e, tier))" class="entrada-texto" value="@tier.Precio" style="text-align: center;" />
+						</div>
+					}
+				}
+			}
+
+			<div style="margin-top: 10px; width: 5%;">
+				<button @onclick="@(e => AñadirTier(e))" class="boton-pequeño" style="text-align: center;"><i class="fa-solid fa-plus"></i></button>
+			</div>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Juegos:</label>
+			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="margin-bottom: 20px;" value="@cadenaBusqueda" />
+
+			@if (juegosBuscador != null)
+			{
+				@if (juegosBuscador.Count > 0)
+				{
+					<div>
+						@foreach (var juego in juegosBuscador)
+						{
+							<div class="perfil-flexible-centrado perfil-espacio-top">
+								<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Library_600x900, @juego.Nombre))" class="boton-pequeño">
+									<div class="perfil-flexible-centrado">
+										<div style="width: 12%;">
+											<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+										</div>
+
+										<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+											@juego.Id - @juego.Nombre
+										</div>
+									</div>
+								</button>
+							</div>
+						}
+					</div>
+				}
+			}			
+
+			@if (bundle.Juegos != null)
+			{
+				@if (bundle.Juegos.Count > 0)
+				{
+					<div>
+						@foreach (var juego in bundle.Juegos)
+						{
+							<div class="perfil-flexible-centrado" style="margin-top: 10px;">
+								<div style="width: 12%;">
+									<img src="@juego.Imagen" style="max-height:100%; max-width:100%;" />
+								</div>
+
+								<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+									<div>@juego.JuegoId - @juego.Nombre</div>
+
+									<div style="width: 4%; margin-top: 20px;">
+										<label style="margin-bottom: 10px;">Tier:</label>
+										<input @onchange="@(e => CambiarTierJuego(e, juego))" class="entrada-texto" value="@juego.Tier.Posicion" style="text-align: center; margin-right: 20px;" />
+									</div>
+
+									<div style="width: 33%; margin-top: 20px;">
+										<label style="margin-bottom: 10px;">DRM:</label>
+										<div class="opciones-combobox">
+											<select @onchange="@(e => CambiarDRMJuego(e, juego))" value="@juego.DRM">
+												@foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+												{
+													<option value="@drm.Id">@drm.Nombre</option>
+												}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+				}
+			}
+		</div>
+
+
+	}
+	
+</div>
+
+@code {
+
+	#nullable disable
+
+	private string enlaceBundle = null;
+	private Bundles2.Bundle bundle = new Bundles2.Bundle();
+
+	private string cadenaBusqueda = null;
+	private List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+	private void TextoCambiaEnlace(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			enlaceBundle = texto.Value.ToString().Trim();
+		}
+		else
+		{
+			enlaceBundle = null;
+		}
+
+		if (enlaceBundle != null)
+		{
+			Task<Bundles2.Bundle> tarea = Task.Run(() =>
+			{
+				return Bundles2.BundlesCargar.SeleccionarBundle(enlaceBundle);
+			});
+
+			bundle = tarea.Result;
+		}
+	}
+
+	private void TextoCambiaNombre(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			bundle.Nombre = texto.Value.ToString().Trim();
+		}
+	}
+
+	private void TextoCambiaImagen(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			bundle.Imagen = texto.Value.ToString().Trim();
+		}
+	}
+
+	private void TextoCambiaTierPosicion(ChangeEventArgs texto, Bundles2.BundleTier tier)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			tier.Posicion = int.Parse(texto.Value.ToString());
+		}
+	}
+
+	private void TextoCambiaTierPrecio(ChangeEventArgs texto, Bundles2.BundleTier tier)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			tier.Precio = texto.Value.ToString();
+		}
+	}
+
+	private void AñadirTier(MouseEventArgs e)
+	{
+		Bundles2.BundleTier tier = new Bundles2.BundleTier
+		{
+			Posicion = 0,
+			Precio = "0"
+		};
+
+		bundle.Tiers.Add(tier);
+	}
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			cadenaBusqueda = texto.Value.ToString().Trim();
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void SeleccionarJuego(MouseEventArgs e, string id, string imagen, string nombre)
+	{
+		cadenaBusqueda = null;
+		juegosBuscador = new List<Juegos.Juego>();
+
+		if (bundle.Juegos == null)
+		{
+			bundle.Juegos = new List<Bundles2.BundleJuego>();
+		}
+
+		Bundles2.BundleJuego juegoBundle = new Bundles2.BundleJuego();
+		juegoBundle.JuegoId = id;
+		juegoBundle.Nombre = nombre;
+		juegoBundle.Imagen = imagen;
+		juegoBundle.DRM = Juegos.JuegoDRM.Steam;
+		juegoBundle.Tier = bundle.Tiers[0];
+
+		bundle.Juegos.Add(juegoBundle);
+	}
+
+	private void CambiarTierJuego(ChangeEventArgs texto, Bundles2.BundleJuego juego)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			
+		}
+	}
+
+	private void CambiarDRMJuego(ChangeEventArgs texto, Bundles2.BundleJuego juego)
+	{
+		juego.DRM = Juegos.JuegoDRM2.DevolverDRM(texto.Value.ToString());
+	}
+}
