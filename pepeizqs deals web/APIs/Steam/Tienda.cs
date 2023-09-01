@@ -20,8 +20,8 @@ namespace APIs.Steam
 			{
 				Id = "steam",
 				Nombre = "Steam",
-				ImagenLogo = "/imagenes/tiendas/steam_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/steam_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/steam_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/steam_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/steam_icono.ico",
 				Color = "#2e4460",
                 AdminEnseñar = true,

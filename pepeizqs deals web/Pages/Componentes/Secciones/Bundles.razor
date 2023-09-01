@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+@if (BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual).Count > 0)
+{
+	<div style="font-size: 23px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String1")
+	</div>
+
+	@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual))
+	{
+		<hr>
+
+		<div style="display: flex; align-items: center; margin-top: 40px; margin-bottom: 40px;">
+			<div style="width: 40%;">
+				<div class="perfil">
+					@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
+					{
+						<div style="display: flex; align-items: center;">
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 30%;">
+								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
+							</a>
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 40%; padding-left: 15px; padding-right: 15px;">
+								<img src="@bundle.Imagen" style="max-width: 100%;" />
+							</a>
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 30%;">
+								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
+							</a>
+						</div>
+					}
+					else
+					{
+						<div>
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank">
+								<img src="@bundle.Imagen" style="max-width: 100%;" />
+							</a>
+						</div>
+					}
+
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="padding: 10px; text-align: center; margin-top: 30px;" target="_blank">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+					</a>
+				</div>
+
+				<div style="margin-top: 20px; text-align: center; font-size: 14px;">
+					@MostrarFechaTermina(bundle.FechaTermina)
+				</div>
+			</div>
+
+			<div style="width: 60%; padding-left: 20px;">
+				@foreach (var tier in OrdenarTiers(bundle.Tiers))
+				{
+					<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
+						<div style="text-align: center; margin-bottom: 20px;">
+							@MostrarPrecio(tier)
+						</div>
+
+						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+							@foreach (var juego in bundle.Juegos)
+							{
+								@if (juego.Tier.Posicion == tier.Posicion)
+								{
+									<div style="text-align: center;">
+										<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
+											<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+										</a>
+									</div>
+								}
+							}
+						</div>
+					</div>
+				}
+			</div>					
+		</div>
+	}
+}
+
+@if (BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Pasado).Count > 0)
+{
+	<div style="font-size: 23px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private string MostrarFechaTermina(DateTime fecha)
+	{
+		if (fecha.Year > 2022)
+		{
+			TimeSpan diferenciaTiempo = fecha.Subtract(DateTime.Now);
+
+			if (diferenciaTiempo.Days > 1)
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+			}
+			else if (diferenciaTiempo.Days == 1)
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+			}
+			else if (diferenciaTiempo.Days == 0)
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+			}
+			else if (diferenciaTiempo.Days < 0)
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+			}
+		}
+
+		return null;
+	}
+
+	private string MostrarPrecio(Bundles2.BundleTier tier)
+	{
+		string mensaje = "Tier " + tier.Posicion.ToString() + " • ";
+
+		string precio = tier.Precio;
+		precio = precio.Replace(".", ",");
+		precio = precio + "€";
+
+		return mensaje + precio;
+	}
+
+	private List<Bundles2.BundleTier> OrdenarTiers(List<Bundles2.BundleTier> tiers)
+	{
+		tiers.Sort(delegate (Bundles2.BundleTier t1, Bundles2.BundleTier t2)
+		{
+			return t1.Posicion.CompareTo(t2.Posicion);
+		});
+
+		return tiers;
+	}
+
+}

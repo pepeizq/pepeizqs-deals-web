@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using BaseDatos.Enlaces;
+using Bundles2;
 using Gratis2;
 using Suscripciones2;
 
@@ -39,6 +40,29 @@ namespace Herramientas
 				{
 					enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
 				}
+			}
+
+			//----------------------------------------
+
+			Enlace enlaceFinal = Buscar.Base(enlace);
+
+			if (enlaceFinal == null)
+			{
+				enlaceFinal = Insertar.Ejecutar(enlace);
+			}
+
+			return "/link/" + enlaceFinal.Id;
+		}
+
+		public static string Generar(string enlace, BundleTipo tipo)
+		{
+			if (tipo == BundleTipo.HumbleBundle)
+			{
+				enlace = APIs.Humble.Bundle.Referido(enlace);
+			}
+			else if (tipo == BundleTipo.Fanatical)
+			{
+				enlace = APIs.Fanatical.Bundle.Referido(enlace);
 			}
 
 			//----------------------------------------

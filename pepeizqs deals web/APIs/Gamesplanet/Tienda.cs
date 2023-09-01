@@ -17,9 +17,9 @@ namespace APIs.Gamesplanet
 			{
 				Id = "gamesplanetuk",
 				Nombre = "Gamesplanet (UK)",
-				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/gamesplanetuk_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
+				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/gamesplanetuk_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.webp",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -34,9 +34,9 @@ namespace APIs.Gamesplanet
 			{
 				Id = "gamesplanetfr",
 				Nombre = "Gamesplanet (FR)",
-				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/gamesplanetfr_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
+				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/gamesplanetfr_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.webp",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -51,9 +51,9 @@ namespace APIs.Gamesplanet
 			{
 				Id = "gamesplanetde",
 				Nombre = "Gamesplanet (DE)",
-				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/gamesplanetde_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
+				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/gamesplanetde_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.webp",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -68,9 +68,9 @@ namespace APIs.Gamesplanet
 			{
 				Id = "gamesplanetus",
 				Nombre = "Gamesplanet (US)",
-				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/gamesplanetus_300x80.png",
-				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.png",
+				ImagenLogo = "/imagenes/tiendas/gamesplanet_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/gamesplanetus_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/gamesplanet_icono.webp",
 				Color = "#000",
 				AdminEnseñar = true,
 				AdminInteractuar = true

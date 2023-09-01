@@ -145,6 +145,8 @@
 							<div class="perfil" style="width: 90%;">
 								@Html.Raw(Herramientas.JuegoFicha.CogerMinimoDRM(Model.idioma, drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas, true))
 
+								@Html.Raw(Herramientas.JuegoFicha.PrepararBundles(Model.idioma, Model.juego.Bundles, drm))
+
 								@Html.Raw(Herramientas.JuegoFicha.PrepararGratis(Model.idioma, Model.juego.Gratis, drm))
 
 								@Html.Raw(Herramientas.JuegoFicha.PrepararSuscripcion(Model.idioma, Model.juego.Suscripciones, drm))

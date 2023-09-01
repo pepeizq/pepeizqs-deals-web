@@ -8,6 +8,10 @@
     "Valor": "Mínimos Históricos"
   },
   {
+    "Id": "Layout.Bundles",
+    "Valor": "Bundles"
+  },
+  {
     "Id": "Layout.Free",
     "Valor": "Gratis"
   },
@@ -105,7 +109,7 @@
   },
   {
     "Id": "Game.String14",
-    "Valor": "Actualmente disponible en la suscripción"
+    "Valor": "Disponible en la suscripción"
   },
   {
     "Id": "Game.String15",
@@ -113,7 +117,7 @@
   },
   {
     "Id": "Game.String16",
-    "Valor": "Actualmente gratis en"
+    "Valor": "Gratis en"
   },
   {
     "Id": "Game.String17",
@@ -122,6 +126,10 @@
   {
     "Id": "Game.String18",
     "Valor": "Ha estado gratis {0} veces"
+  },
+  {
+    "Id": "Game.String19",
+    "Valor": "Disponible en un bundle de "
   },
   {
     "Id": "LastNews.Title",
@@ -202,6 +210,22 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "ha añadido los siguientes juegos:"
+  },
+  {
+    "Id": "Bundles.Title",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Bundles.String1",
+    "Valor": "Bundles Disponibles"
+  },
+  {
+    "Id": "Bundles.String2",
+    "Valor": "Bundles Antiguos"
+  },
+  {
+    "Id": "Bundles.String3",
+    "Valor": "Abrir el Bundle"
   },
   {
     "Id": "Free.Title",

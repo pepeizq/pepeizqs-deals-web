@@ -17,8 +17,8 @@ namespace APIs.GOG
 			{
 				Id = "gog",
 				Nombre = "GOG",
-				ImagenLogo = "/imagenes/tiendas/gog_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/gog_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/gog_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/gog_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/gog_icono.ico",
 				Color = "#7f3694",
 				AdminEnseñar = true,

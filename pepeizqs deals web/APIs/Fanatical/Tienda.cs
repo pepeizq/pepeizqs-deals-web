@@ -23,8 +23,8 @@ namespace APIs.Fanatical
 			{
 				Id = "fanatical",
 				Nombre = "Fanatical",
-				ImagenLogo = "/imagenes/tiendas/fanatical_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/fanatical_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/fanatical_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/fanatical_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/fanatical_icono.ico",
 				Color = "#ffcf89",
 				AdminEnseñar = true,

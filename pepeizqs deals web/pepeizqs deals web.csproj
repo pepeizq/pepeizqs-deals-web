@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\imagenes\tiendas\ea_300x80.webp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="BaseDatos\Juegos\Cargar.cs~RF3943d089.TMP" />
     <None Remove="BaseDatos\Juegos\Precios.cs~RF662827a9.TMP" />
     <None Remove="Herramientas\Divisas.cs~RF419ed6bf.TMP" />
@@ -25,6 +29,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Bundles.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Bundles.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Noticias.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
     <_ContentIncludedByDefault Remove="Pages\Free.cshtml" />
@@ -33,6 +38,7 @@
     <_ContentIncludedByDefault Remove="Pages\News.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Wishlist.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\imagenes\drm\microsoft.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\imagenes\tiendas\ea_300x80.webp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +63,7 @@
 
   <ItemGroup>
     <None Include="Pages\Admin\Pendientes.cshtml" />
+    <None Include="wwwroot\imagenes\tiendas\ea_300x80.webp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,6 +104,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Admin\Bundles.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Bundles.cshtml" />
   </ItemGroup>
 
 </Project>

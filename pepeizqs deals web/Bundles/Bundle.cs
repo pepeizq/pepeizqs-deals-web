@@ -7,14 +7,16 @@ namespace Bundles2
 {
 	public class Bundle
 	{
-		public BundleTipo Id;
+		public int Id;
+		public BundleTipo Tipo;
 		public string Nombre;
 		public string Tienda;
 		public string Imagen;
 		public List<string> ImagenesExtra;
 		public string Enlace;
 		public string EnlaceBase;
-		public DateTime FechaSugerencia;
+		public DateTime FechaEmpieza;
+		public DateTime FechaTermina;
 		public List<BundleJuego> Juegos;
 		public List<BundleTier> Tiers;
 		public bool Pick;

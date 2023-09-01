@@ -100,7 +100,7 @@ namespace BaseDatos.Juegos
 				{
 					try
 					{
-						//juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundles>>(lector.GetString(13));
+						juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(13));
 					}
 					catch { }
 				}

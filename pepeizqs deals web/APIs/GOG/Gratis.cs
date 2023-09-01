@@ -8,7 +8,7 @@
 			{
 				Id = Gratis2.GratisTipo.GOG,
 				Nombre = "GOG",
-				Imagen = "/imagenes/tiendas/gog_300x80.png",
+				Imagen = "/imagenes/tiendas/gog_300x80.webp",
 				DRMDefecto = Juegos.JuegoDRM.GOG,
 				DRMEnseñar = false
 			};

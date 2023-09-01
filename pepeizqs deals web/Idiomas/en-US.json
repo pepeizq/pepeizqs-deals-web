@@ -8,6 +8,10 @@
     "Valor": "Historical Lows"
   },
   {
+    "Id": "Layout.Bundles",
+    "Valor": "Bundles"
+  },
+  {
     "Id": "Layout.Free",
     "Valor": "Free"
   },
@@ -105,7 +109,7 @@
   },
   {
     "Id": "Game.String14",
-    "Valor": "Currently available on subscription"
+    "Valor": "Available on subscription"
   },
   {
     "Id": "Game.String15",
@@ -113,7 +117,7 @@
   },
   {
     "Id": "Game.String16",
-    "Valor": "Currently free on"
+    "Valor": "Free on"
   },
   {
     "Id": "Game.String17",
@@ -122,6 +126,10 @@
   {
     "Id": "Game.String18",
     "Valor": "Has been free {0} times"
+  },
+  {
+    "Id": "Game.String19",
+    "Valor": "Available in a bundle of"
   },
   {
     "Id": "LastNews.Title",
@@ -202,6 +210,22 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "has added the following games:"
+  },
+  {
+    "Id": "Bundles.Title",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Bundles.String1",
+    "Valor": "Bundles Available"
+  },
+  {
+    "Id": "Bundles.String2",
+    "Valor": "Bundles Not Available"
+  },
+  {
+    "Id": "Bundles.String3",
+    "Valor": "Open the Bundle"
   },
   {
     "Id": "Free.Title",

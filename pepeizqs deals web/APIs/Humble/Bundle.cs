@@ -1,4 +1,6 @@
-﻿using Herramientas;
+﻿#nullable disable
+
+using Herramientas;
 using Microsoft.VisualBasic;
 using System.Net;
 
@@ -10,7 +12,7 @@ namespace APIs.Humble
 		{
 			Bundles2.Bundle bundle = new Bundles2.Bundle()
 			{
-				Id = Bundles2.BundleTipo.HumbleBundle,
+				Tipo = Bundles2.BundleTipo.HumbleBundle,
 				Tienda = "Humble Bundle",
 				EnlaceBase = "humblebundle.com",
 				Pick = false,
@@ -21,9 +23,14 @@ namespace APIs.Humble
 			fechaBundle = fechaBundle.AddDays(14);
 			fechaBundle = new DateTime(fechaBundle.Year, fechaBundle.Month, fechaBundle.Day, 20, 0, 0);
 
-			bundle.FechaSugerencia = fechaBundle;
+			bundle.FechaTermina = fechaBundle;
 
 			return bundle;
+		}
+
+		public static string Referido(string enlace)
+		{
+			return enlace + "?partner=pepeizq";
 		}
 
 		public static async Task<Bundles2.Bundle> ExtraerDatos(Bundles2.Bundle bundle)

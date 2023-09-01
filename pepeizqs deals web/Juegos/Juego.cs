@@ -1,11 +1,12 @@
 ﻿#nullable disable
 
+using Bundles2;
+using Gratis2;
 using Herramientas;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using Suscripciones2;
-using Gratis2;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Juegos
 {
@@ -25,7 +26,7 @@ namespace Juegos
 		public JuegoCaracteristicas Caracteristicas { get; set; }
 		public JuegoMedia Media { get; set; }
 		public DateTime FechaSteamAPIComprobacion { get; set; }
-		public string Bundles { get; set; }
+		public List<JuegoBundle> Bundles { get; set; }
 		public List<JuegoGratis> Gratis { get; set; }
 		public List<JuegoSuscripcion> Suscripciones { get; set; }
 	}
@@ -99,6 +100,20 @@ namespace Juegos
 		public string Video { get; set; }
 		public List<string> Capturas { get; set; }
 		public List<string> Miniaturas { get; set; }
+	}
+
+	public class JuegoBundle
+	{
+		public int BundleId { get; set; }
+		public BundleTipo Tipo { get; set; }
+		public int JuegoId { get; set; }
+		public string Nombre { get; set; }
+		public string Imagen { get; set; }
+		public string Enlace { get; set; }
+		public DateTime FechaEmpieza { get; set; }
+		public DateTime FechaTermina { get; set; }
+		public JuegoDRM DRM { get; set; }
+		public BundleTier Tier { get; set; }
 	}
 
 	public class JuegoGratis

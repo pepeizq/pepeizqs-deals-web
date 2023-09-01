@@ -6,7 +6,7 @@
 		{
 			Bundles2.Bundle bundle = new Bundles2.Bundle()
 			{
-				Id = Bundles2.BundleTipo.Desconocido,
+				Tipo = Bundles2.BundleTipo.Desconocido,
 				Tienda = "Desconocido"
 			};
 
@@ -14,7 +14,7 @@
 			fechaBundle = fechaBundle.AddDays(14);
 			fechaBundle = new DateTime(fechaBundle.Year, fechaBundle.Month, fechaBundle.Day, 19, 0, 0);
 
-			bundle.FechaSugerencia = fechaBundle;
+			bundle.FechaTermina = fechaBundle;
 
 			return bundle;
 		}

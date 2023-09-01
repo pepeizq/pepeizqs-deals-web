@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Bundles2;
 using Gratis2;
 using Juegos;
 using Microsoft.VisualBasic;
@@ -415,6 +416,10 @@ namespace Herramientas
 			{
 				mostrar = true;
 			}
+			else if (PrepararBundles(idioma, juego.Bundles, drm) != null)
+			{
+				mostrar = true;
+			}
 			else if (PrepararGratis(idioma, juego.Gratis, drm) != null)
 			{
 				mostrar = true;
@@ -425,6 +430,37 @@ namespace Herramientas
 			}
 
 			return mostrar;
+		}
+
+		public static string PrepararBundles(string idioma, List<JuegoBundle> listaBundles, JuegoDRM drm)
+		{
+			if (listaBundles != null)
+			{
+				if (listaBundles.Count > 0)
+				{
+					string mensaje = null;
+
+					foreach (var bundle in listaBundles)
+					{
+						if (drm == bundle.DRM)
+						{
+							if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+							{
+								mensaje = "<a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Idiomas.CogerCadena(idioma, "Game.String19") + " " + BundlesCargar.DevolverBundle(bundle.Tipo).Tienda + "</a>";
+							}
+						}
+					}
+
+					if (mensaje != null)
+					{
+						mensaje = "<div class=" + Strings.ChrW(34) + "juego-minimo" + Strings.ChrW(34) + ">" + mensaje + "</div>";
+					}
+
+					return mensaje;
+				}
+			}
+
+			return null;
 		}
 
 		public static string PrepararGratis(string idioma, List<JuegoGratis> listaGratis, JuegoDRM drm)

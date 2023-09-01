@@ -27,8 +27,8 @@ namespace APIs.Humble
 			{
 				Id = "humblestore",
 				Nombre = "Humble Store",
-				ImagenLogo = "/imagenes/tiendas/humblestore_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/humblestore_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/humblestore_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/humblestore_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Color = "#ea9192",
 				AdminEnseñar = true,
@@ -49,8 +49,8 @@ namespace APIs.Humble
 			{
 				Id = "humblechoice",
 				Nombre = "Humble Choice",
-				ImagenLogo = "/imagenes/tiendas/humblechoice_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/humblechoice_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/humblechoice_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/humblechoice_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Color = "#ea9192",
 				AdminEnseñar = false,

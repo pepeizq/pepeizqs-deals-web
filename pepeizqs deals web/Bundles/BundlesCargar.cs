@@ -31,11 +31,19 @@ namespace Bundles2
 				{
 					if (enlace.Contains(bundle.EnlaceBase) == true)
 					{
-						if (bundle.Id == BundleTipo.HumbleBundle)
+						if (bundle.Tipo == BundleTipo.HumbleBundle)
 						{
 							Bundle nuevoBundle = bundle;
 							nuevoBundle.Enlace = LimpiarEnlace(enlace);
 							nuevoBundle = await APIs.Humble.Bundle.ExtraerDatos(nuevoBundle);
+
+							return nuevoBundle;
+						}
+						else if (bundle.Tipo == BundleTipo.Fanatical)
+						{
+							Bundle nuevoBundle = bundle;
+							nuevoBundle.Enlace = LimpiarEnlace(enlace);
+							nuevoBundle = await APIs.Fanatical.Bundle.ExtraerDatos(nuevoBundle);
 
 							return nuevoBundle;
 						}
@@ -54,7 +62,44 @@ namespace Bundles2
 				enlace = enlace.Remove(int1, enlace.Length - int1);
 			}
 
+			enlace = enlace.Replace("/en/", "/");
+
 			return enlace;
+		}
+
+		public static Bundle DevolverBundle(BundleTipo bundleTipo)
+		{
+			foreach (var bundle in GenerarListado())
+			{
+				if (bundle.Tipo == bundleTipo)
+				{
+					return bundle;
+				}
+			}
+
+			return null;
+		}
+
+		public static Bundle DevolverBundle(int posicion)
+		{
+			BundleTipo tipo = CargarBundles()[posicion];
+
+			foreach (var bundle in GenerarListado())
+			{
+				if (bundle.Tipo == tipo)
+				{
+					return bundle;
+				}
+			}
+
+			return null;
+		}
+
+		public static List<BundleTipo> CargarBundles()
+		{
+			List<BundleTipo> bundles = Enum.GetValues(typeof(BundleTipo)).Cast<BundleTipo>().ToList();
+
+			return bundles;
 		}
 	}
 }

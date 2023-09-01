@@ -17,8 +17,8 @@ namespace APIs.GreenManGaming
 			{
 				Id = "greenmangaming",
 				Nombre = "Green Man Gaming",
-				ImagenLogo = "/imagenes/tiendas/greenmangaming_logo.png",
-				Imagen300x80 = "/imagenes/tiendas/greenmangaming_300x80.png",
+				ImagenLogo = "/imagenes/tiendas/greenmangaming_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/greenmangaming_300x80.webp",
 				ImagenIcono = "/imagenes/tiendas/greenmangaming_icono.ico",
 				Color = "#97ff9a",
 				AdminEnseñar = true,
