@@ -226,6 +226,21 @@ namespace Juegos
 			return null;
 		}
 
+		public static string SacarImagen(string drmImagen)
+		{
+			List<DRM> drms = GenerarListado();
+
+			foreach (DRM drm in drms)
+			{
+				if (drm.Id.ToString() == drmImagen)
+				{
+					return drm.Imagen;
+				}
+			}
+
+			return null;
+		}
+
 		public static List<JuegoDRM> CargarDRMs()
 		{
 			List<JuegoDRM> drms = Enum.GetValues(typeof(JuegoDRM)).Cast<JuegoDRM>().ToList();

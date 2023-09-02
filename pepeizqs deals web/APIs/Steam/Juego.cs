@@ -121,6 +121,11 @@ namespace APIs.Steam
 
 						if (precioFormateado != null)
 						{
+							if (precioFormateado == "Free")
+							{
+								precioFormateado = "0.00";
+							}
+
 							precioFormateado = precioFormateado.Replace("€", null);
 							precioFormateado = precioFormateado.Replace(",", ".");
 							precioFormateado = precioFormateado.Replace(".--", ".00");
@@ -173,6 +178,8 @@ namespace APIs.Steam
 
 		public static string LimpiarID(string enlace)
 		{
+			enlace = enlace.Replace("http://store.steampowered.com/app/", null);
+			enlace = enlace.Replace("http://store.steampowered.com/dlc/", null);
 			enlace = enlace.Replace("https://store.steampowered.com/app/", null);
 			enlace = enlace.Replace("https://store.steampowered.com/dlc/", null);
 			enlace = enlace.Replace("https://steamdb.info/app/", null);

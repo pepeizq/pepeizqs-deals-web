@@ -43,11 +43,11 @@
 						</div>
 
 						<div style="width: 6%; text-align: center;" class="juego-descuento">
-							@juego.PrecioMinimosHistoricos[0].Descuento.ToString()%
+							@CargarDescuento(juego)
 						</div>
 
 						<div style="width: 10%; padding: 4px 15px 4px 15px; text-align: center; font-size: 18px;">
-							@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
+							@CargarPrecio(juego)
 						</div>
 					</div>
 				</a>
@@ -116,24 +116,115 @@
 
 	private string CargarImagenDRM(Juego juego)
 	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
+		string imagen = null;
+		decimal precio = 10000000;
 
-		return JuegoDRM2.SacarImagen(oferta.DRM);
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (minimo.Precio < precio)
+			{
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				imagen = oferta.DRM.ToString();
+			}
+		}
+
+		if (imagen != null)
+		{
+			return JuegoDRM2.SacarImagen(imagen);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private string CargarImagenTienda(Juego juego)
 	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+		string imagen = null;
+		decimal precio = 10000000;
 
-		foreach (var tienda in tiendas)
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
 		{
-			if (tienda.Id == oferta.Tienda)
+			if (minimo.Precio < precio)
 			{
-				return tienda.Imagen300x80;
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+				foreach (var tienda in tiendas)
+				{
+					if (tienda.Id == oferta.Tienda)
+					{
+						imagen = tienda.Imagen300x80;
+					}
+				}
 			}
 		}
 
-		return null;
+		if (imagen != null)
+		{
+			return imagen;
+		}
+		else
+		{
+			return null;
+		}	
+	}
+
+	private string CargarDescuento(Juego juego)
+	{
+		string descuento = null;
+		decimal precio = 10000000;
+
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (minimo.Precio < precio)
+			{
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				descuento = oferta.Descuento.ToString() + "%";
+			}
+		}
+
+		if (descuento != null)
+		{
+			return descuento;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private string CargarPrecio(Juego juego)
+	{
+		string precioMensaje = null;
+		decimal precio = 10000000;
+
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (minimo.Precio < precio)
+			{
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				precioMensaje = oferta.Precio.ToString();
+				precioMensaje = precioMensaje.Replace(".", ",");
+				precioMensaje = precioMensaje + "€";
+			}
+		}
+
+		if (precioMensaje != null)
+		{
+			return precioMensaje;
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

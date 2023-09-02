@@ -6,7 +6,7 @@
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String1")
 	</div>
 
-	@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual))
+	@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual).OrderBy(x => x.FechaTermina).ToList())
 	{
 		<hr>
 
@@ -20,7 +20,7 @@
 								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
 							</a>
 							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 40%; padding-left: 15px; padding-right: 15px;">
-								<img src="@bundle.Imagen" style="max-width: 100%;" />
+								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
 							</a>
 							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 30%;">
 								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
@@ -31,7 +31,7 @@
 					{
 						<div>
 							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank">
-								<img src="@bundle.Imagen" style="max-width: 100%;" />
+								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
 							</a>
 						</div>
 					}
@@ -39,6 +39,13 @@
 					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="padding: 10px; text-align: center; margin-top: 30px;" target="_blank">
 						@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
 					</a>
+
+					@if (bundle.Pick == true)
+					{
+						<div style="margin-top: 20px; text-align: center;">
+							@((MarkupString)MostrarMensajePick(bundle.Tiers))
+						</div>
+					}
 				</div>
 
 				<div style="margin-top: 20px; text-align: center; font-size: 14px;">
@@ -47,28 +54,46 @@
 			</div>
 
 			<div style="width: 60%; padding-left: 20px;">
-				@foreach (var tier in OrdenarTiers(bundle.Tiers))
+				@if (bundle.Pick == false)
+				{
+					@foreach (var tier in OrdenarTiers(bundle.Tiers))
+					{
+						<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
+							<div style="text-align: center; margin-bottom: 20px;">
+								@MostrarPrecio(tier)
+							</div>
+
+							<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+								@foreach (var juego in bundle.Juegos)
+								{
+									@if (juego.Tier.Posicion == tier.Posicion)
+									{
+										<div style="text-align: center;">
+											<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
+												<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+											</a>
+										</div>
+									}
+								}
+							</div>
+						</div>
+					}
+				}
+				else
 				{
 					<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
-						<div style="text-align: center; margin-bottom: 20px;">
-							@MostrarPrecio(tier)
-						</div>
-
 						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
 							@foreach (var juego in bundle.Juegos)
 							{
-								@if (juego.Tier.Posicion == tier.Posicion)
-								{
-									<div style="text-align: center;">
-										<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
-											<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
-										</a>
-									</div>
-								}
+								<div style="text-align: center;">
+									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
+										<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+									</a>
+								</div>
 							}
 						</div>
 					</div>
-				}
+				}				
 			</div>					
 		</div>
 	}
@@ -79,6 +104,36 @@
 	<div style="font-size: 23px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
 	</div>
+
+	@foreach (var tipo in Bundles2.BundlesCargar.CargarBundles())
+	{
+		@if (@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda != null)
+		{
+			<hr>
+
+			<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
+				<div style="width: 25%;">
+					<div class="perfil">
+						<img src="@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda" style="max-width: 100%;" />
+					</div>
+				</div>
+
+				<div style="width: 75%; padding-left: 20px;">
+					<div class="perfil">
+						@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Pasado))
+						{
+							if (tipo == bundle.Tipo)
+							{
+								<div>
+									<a href="/bundle/@bundle.Id">@bundle.NombreBundle</a> @bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
+								</div>
+							}
+						}
+					</div>
+				</div>
+			</div>
+		}	
+	}
 }
 
 @code {
@@ -96,19 +151,19 @@
 
 			if (diferenciaTiempo.Days > 1)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String4"), diferenciaTiempo.Days);
 			}
 			else if (diferenciaTiempo.Days == 1)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String5"), diferenciaTiempo.Days);
 			}
-			else if (diferenciaTiempo.Days == 0)
+			else if (diferenciaTiempo.Days == 0 && diferenciaTiempo.Minutes > 0)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String6"), diferenciaTiempo.Days);
 			}
-			else if (diferenciaTiempo.Days < 0)
+			else
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String7"), diferenciaTiempo.Days);
 			}
 		}
 
@@ -136,4 +191,19 @@
 		return tiers;
 	}
 
+	private string MostrarMensajePick(List<Bundles2.BundleTier> tiers)
+	{
+		string mensaje = string.Empty;
+
+		foreach (var tier in tiers)
+		{
+			string precio = tier.Precio;
+			precio = precio.Replace(".", ",");
+			precio = precio + "€";
+
+			mensaje = mensaje + "<div>" + tier.CantidadJuegos.ToString() + "  " + Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") + " • " + precio + "</div>";
+		}
+
+		return mensaje;
+	}
 }

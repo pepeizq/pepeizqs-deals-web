@@ -14,7 +14,8 @@ namespace APIs.Fanatical
 			Bundles2.Bundle bundle = new Bundles2.Bundle()
 			{
 				Tipo = Bundles2.BundleTipo.Fanatical,
-				Tienda = "Fanatical",
+				NombreTienda = "Fanatical",
+				ImagenTienda = "/imagenes/bundles/fanatical_300x80.webp",
 				EnlaceBase = "fanatical.com",
 				Pick = false
 			};
@@ -38,7 +39,43 @@ namespace APIs.Fanatical
 		{
 			if (bundle.Enlace.Contains("/pick-and-mix/") == true)
 			{
+				bundle.Pick = true;
 
+				string html = await Decompiladores.Estandar(bundle.Enlace);
+
+				if (html != null)
+				{
+					if (html.Contains("<title>") == true)
+					{
+						int int1 = html.IndexOf("<title>");
+						string temp1 = html.Remove(0, int1 + 7);
+
+						int int2 = temp1.IndexOf("</title>");
+						string temp2 = temp1.Remove(int2, temp1.Length - int2);
+
+						if (temp2.Contains("|") == true)
+						{
+							int int3 = temp2.IndexOf("|");
+							temp2 = temp2.Remove(int3, temp2.Length - int3);
+						}
+
+						bundle.NombreBundle = temp2.Trim();
+					}
+
+					if (html.Contains("<img srcset=") == true)
+					{
+						int int1 = html.LastIndexOf("<img srcset=");
+						string temp1 = html.Remove(0, int1 + 7);
+
+						int int2 = temp1.IndexOf("https://fanatical");
+						string temp2 = temp1.Remove(0, int2);
+
+						int int3 = temp2.IndexOf("?");
+						string temp3 = temp2.Remove(int3, temp2.Length - int3);
+
+						bundle.ImagenBundle = temp3.Trim();
+					}
+				}
 			}
             else
             {
@@ -61,11 +98,11 @@ namespace APIs.Fanatical
 							{
 								if (juego.Enlace == bundle.Enlace)
 								{
-									bundle.Nombre = WebUtility.HtmlDecode(juego.Nombre);
+									bundle.NombreBundle = WebUtility.HtmlDecode(juego.Nombre);
 
 									string imagen = juego.Imagen;
 									imagen = imagen.Replace("/400x225/", "/1280x720/");
-									bundle.Imagen = imagen;
+									bundle.ImagenBundle = imagen;
 
 									DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 									fechaTermina = fechaTermina.AddSeconds(Convert.ToDouble(juego.FechaTermina));

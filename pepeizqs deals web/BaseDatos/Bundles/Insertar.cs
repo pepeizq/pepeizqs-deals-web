@@ -22,9 +22,9 @@ namespace BaseDatos.Bundles
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
 					comando.Parameters.AddWithValue("@bundleTipo", bundle.Tipo);
-					comando.Parameters.AddWithValue("@nombre", bundle.Nombre);
-					comando.Parameters.AddWithValue("@tienda", bundle.Tienda);
-					comando.Parameters.AddWithValue("@imagen", bundle.Imagen);
+					comando.Parameters.AddWithValue("@nombre", bundle.NombreBundle);
+					comando.Parameters.AddWithValue("@tienda", bundle.NombreTienda);
+					comando.Parameters.AddWithValue("@imagen", bundle.ImagenBundle);
 					comando.Parameters.AddWithValue("@enlace", bundle.Enlace);
 					comando.Parameters.AddWithValue("@fechaEmpieza", bundle.FechaEmpieza.ToString());
 					comando.Parameters.AddWithValue("@fechaTermina", bundle.FechaTermina.ToString());

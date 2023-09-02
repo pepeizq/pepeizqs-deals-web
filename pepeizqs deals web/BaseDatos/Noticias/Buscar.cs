@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Bundles2;
 using Gratis2;
 using Microsoft.Data.SqlClient;
 using Suscripciones2;
@@ -58,7 +59,7 @@ namespace BaseDatos.Noticias
 
 							if (lector.IsDBNull(7) == false)
 							{
-								//bundleTipo
+								noticia.BundleTipo = BundlesCargar.DevolverBundle(int.Parse(lector.GetString(7))).Tipo;
 							}
 
 							if (lector.IsDBNull(8) == false)

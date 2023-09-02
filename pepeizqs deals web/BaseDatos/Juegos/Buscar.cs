@@ -2,6 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 
 namespace BaseDatos.Juegos
 {
@@ -70,7 +71,7 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-        public static List<Juego> Nombre(string nombre)
+        public static List<Juego> Nombre(string nombre, bool usuario)
         {
             List<Juego> juegos = new List<Juego>();
 
@@ -79,21 +80,36 @@ namespace BaseDatos.Juegos
 			using (conexion)
             {
                 conexion.Open();
-                string busqueda = "SELECT * FROM juegos WHERE REPLACE(REPLACE(nombre, '®',''), '™', '') LIKE '%" + nombre.ToLower() + "%'";
+				string busqueda = null;
+				
+				if (usuario == true)
+				{
+					busqueda = "SELECT * FROM juegos WHERE " + ConstruirReplaces() + " LIKE '%" + nombre.ToLower() + "%'";
+				}
+				else
+				{
+					busqueda = "SELECT * FROM juegos WHERE nombre LIKE '%" + nombre.ToLower() + "%'";
+				}
 
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-                {
-					using (SqlDataReader lector = comando.ExecuteReader())
+				try
+				{
+                    using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                     {
-                        while (lector.Read())
+                        using (SqlDataReader lector = comando.ExecuteReader())
                         {
-                            Juego juego = new Juego();
-                            juego = Cargar.Ejecutar(juego, lector);
-
-                            juegos.Add(juego);
+                            while (lector.Read())
+                            {
+                                Juego juego = new Juego();
+                                juego = Cargar.Ejecutar(juego, lector);
+                                juegos.Add(juego);
+                            }
                         }
                     }
                 }
+				catch
+				{
+
+				}			
             }
 
 			conexion.Dispose();
@@ -129,6 +145,30 @@ namespace BaseDatos.Juegos
 			}
 
 			return juegos;
+		}
+
+		private static string ConstruirReplaces()
+		{
+            List<string> caracteres = new List<string>
+            {
+                ":", ",", ".", "®", "™", "_", "-"
+            };
+
+			string mensaje = string.Empty;
+
+			for (int i = 0; i < caracteres.Count; i += 1)
+			{
+				if (i == 0)
+				{
+					mensaje = "REPLACE(nombre, '" + caracteres[i] + "','')";
+                }
+				else
+				{
+					mensaje = "REPLACE(" + mensaje + ", '" + caracteres[i] + "', '')";
+				}
+			}
+
+			return mensaje;
 		}
 	}
 }

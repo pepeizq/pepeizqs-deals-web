@@ -129,7 +129,15 @@
   },
   {
     "Id": "Game.String19",
-    "Valor": "Disponible en un bundle de "
+    "Valor": "Disponible en el bundle:"
+  },
+  {
+    "Id": "Game.String20",
+    "Valor": "Disponible en los bundles:"
+  },
+  {
+    "Id": "Game.String21",
+    "Valor": "Estuvo en estos bundles:"
   },
   {
     "Id": "LastNews.Title",
@@ -160,8 +168,20 @@
     "Valor": "Añadido"
   },
   {
+    "Id": "News.BundleString1",
+    "Valor": "El bundle {0} ha sido añadido en {1}"
+  },
+  {
+    "Id": "News.BundleString2",
+    "Valor": "En {0} hay un nuevo bundle con los siguientes juegos:"
+  },
+  {
+    "Id": "News.BundleString3",
+    "Valor": "Abrir Bundle"
+  },
+  {
     "Id": "News.FreeString1",
-    "Valor": "está gratis para reclamar"
+    "Valor": "está gratis para reclamar en"
   },
   {
     "Id": "News.FreeString2",
@@ -169,11 +189,11 @@
   },
   {
     "Id": "News.FreeString3",
-    "Valor": "están gratis para reclamar"
+    "Valor": "están gratis para reclamar en"
   },
   {
     "Id": "News.FreeString4",
-    "Valor": "y más juegos están gratis para reclamar"
+    "Valor": "y más juegos están gratis para reclamar en"
   },
   {
     "Id": "News.FreeString5",
@@ -185,7 +205,7 @@
   },
   {
     "Id": "News.SubscriptionString1",
-    "Valor": "ha sido añadido a la suscripción"
+    "Valor": "ha sido añadido a la suscripción de {0}"
   },
   {
     "Id": "News.SubscriptionString2",
@@ -193,11 +213,11 @@
   },
   {
     "Id": "News.SubscriptionString3",
-    "Valor": "han sido añadidos a la suscripción"
+    "Valor": "han sido añadidos a la suscripción de {0}"
   },
   {
     "Id": "News.SubscriptionString4",
-    "Valor": "y más juegos han sido añadidos a la suscripción"
+    "Valor": "y más juegos han sido añadidos a la suscripción de {0}"
   },
   {
     "Id": "News.SubscriptionString5",
@@ -226,6 +246,26 @@
   {
     "Id": "Bundles.String3",
     "Valor": "Abrir el Bundle"
+  },
+  {
+    "Id": "Bundles.String4",
+    "Valor": "Este bundle termina en {0} días"
+  },
+  {
+    "Id": "Bundles.String5",
+    "Valor": "Este bundle termina en {0} día"
+  },
+  {
+    "Id": "Bundles.String6",
+    "Valor": "Este bundle termina hoy"
+  },
+  {
+    "Id": "Bundles.String7",
+    "Valor": "Este bundle ha acabado"
+  },
+  {
+    "Id": "Bundles.String8",
+    "Valor": "juegos"
   },
   {
     "Id": "Free.Title",

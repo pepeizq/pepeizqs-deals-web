@@ -129,7 +129,15 @@
   },
   {
     "Id": "Game.String19",
-    "Valor": "Available in a bundle of"
+    "Valor": "Available in the bundle:"
+  },
+  {
+    "Id": "Game.String20",
+    "Valor": "Available in bundles:"
+  },
+  {
+    "Id": "Game.String21",
+    "Valor": "It was in these bundles:"
   },
   {
     "Id": "LastNews.Title",
@@ -160,8 +168,20 @@
     "Valor": "Added"
   },
   {
+    "Id": "News.BundleString1",
+    "Valor": "The {0} bundle has been added to {1}"
+  },
+  {
+    "Id": "News.BundleString2",
+    "Valor": "At {0} there is a new bundle with the following games:"
+  },
+  {
+    "Id": "News.BundleString3",
+    "Valor": "Open Bundle"
+  },
+  {
     "Id": "News.FreeString1",
-    "Valor": "is free to claim"
+    "Valor": "is free to claim at"
   },
   {
     "Id": "News.FreeString2",
@@ -169,7 +189,7 @@
   },
   {
     "Id": "News.FreeString3",
-    "Valor": "are free to claim"
+    "Valor": "are free to claim at"
   },
   {
     "Id": "News.FreeString4",
@@ -185,7 +205,7 @@
   },
   {
     "Id": "News.SubscriptionString1",
-    "Valor": "has been added to the subscription"
+    "Valor": "has been added to the {0} subscription"
   },
   {
     "Id": "News.SubscriptionString2",
@@ -193,11 +213,11 @@
   },
   {
     "Id": "News.SubscriptionString3",
-    "Valor": "have been added to the subscription"
+    "Valor": "have been added to the {0} subscription"
   },
   {
     "Id": "News.SubscriptionString4",
-    "Valor": "and more games have been added to the subscription"
+    "Valor": "and more games have been added to the {0} subscription"
   },
   {
     "Id": "News.SubscriptionString5",
@@ -226,6 +246,26 @@
   {
     "Id": "Bundles.String3",
     "Valor": "Open the Bundle"
+  },
+  {
+    "Id": "Bundles.String4",
+    "Valor": "This bundle ends in {0} days"
+  },
+  {
+    "Id": "Bundles.String5",
+    "Valor": "This bundle ends in {0} day"
+  },
+  {
+    "Id": "Bundles.String6",
+    "Valor": "This bundle ends today"
+  },
+  {
+    "Id": "Bundles.String7",
+    "Valor": "This bundle has ended"
+  },
+  {
+    "Id": "Bundles.String8",
+    "Valor": "games"
   },
   {
     "Id": "Free.Title",

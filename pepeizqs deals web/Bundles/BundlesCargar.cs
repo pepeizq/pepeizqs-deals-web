@@ -80,6 +80,19 @@ namespace Bundles2
 			return null;
 		}
 
+		public static Bundle DevolverBundle(string bundleTipo)
+		{
+			foreach (var bundle in GenerarListado())
+			{
+				if (bundle.Tipo.ToString() == bundleTipo)
+				{
+					return bundle;
+				}
+			}
+
+			return null;
+		}
+
 		public static Bundle DevolverBundle(int posicion)
 		{
 			BundleTipo tipo = CargarBundles()[posicion];

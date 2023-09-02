@@ -10,13 +10,13 @@
 	{
 		<div style="margin-top: 20px;">
 			<label style="margin-bottom: 10px;">Nombre:</label>
-			<input @onchange="@(e => TextoCambiaNombre(e))" class="entrada-texto" value="@bundle.Nombre">
+			<input @onchange="@(e => TextoCambiaNombre(e))" class="entrada-texto" value="@bundle.NombreBundle">
 		</div>
 
 		<div style="margin-top: 20px;">
 			<label style="margin-bottom: 10px;">Imagen:</label>
-			<input @onchange="@(e => TextoCambiaImagen(e))" class="entrada-texto" value="@bundle.Imagen">
-			<img src="@bundle.Imagen" style="max-width: 200px; max-height: 200px; margin-top: 10px;"/>
+			<input @onchange="@(e => TextoCambiaImagen(e))" class="entrada-texto" value="@bundle.ImagenBundle">
+			<img src="@bundle.ImagenBundle" style="max-width: 200px; max-height: 200px; margin-top: 10px;"/>
 		</div>
 
 		<div style="margin-top: 20px;">
@@ -26,7 +26,7 @@
 
 		<div style="margin-top: 20px;">
 			<label style="margin-bottom: 10px;">Pick Up:</label>
-			<input type="checkbox" @onchange="@(e => CambiarPick(e))" class="entrada-texto" style="width: 3%; min-width: 10px;" value="@bundle.Pick">
+			<input @onchange="@(e => CambiarPick(e))" class="entrada-texto" value="@bundle.Pick.ToString()" />
 		</div>
 
 		<div style="margin-top: 20px;">
@@ -38,10 +38,21 @@
 				{
 					@foreach (var tier in bundle.Tiers)
 					{
-						<div style="width: 10%; display: flex; margin-top: 10px;">
-							<input @onchange="@(e => TextoCambiaTierPosicion(e, tier))" class="entrada-texto" value="@tier.Posicion" style="text-align: center; margin-right: 20px;" />
-							<input @onchange="@(e => TextoCambiaTierPrecio(e, tier))" class="entrada-texto" value="@tier.Precio" style="text-align: center;" />
-						</div>
+						@if (bundle.Pick == false)
+						{
+							<div style="width: 10%; display: flex; margin-top: 10px;">
+								<input @onchange="@(e => TextoCambiaTierPosicion(e, tier))" class="entrada-texto" value="@tier.Posicion" style="text-align: center; margin-right: 20px;" />
+								<input @onchange="@(e => TextoCambiaTierPrecio(e, tier))" class="entrada-texto" value="@tier.Precio" style="text-align: center;" />
+							</div>
+						}
+						else
+						{
+							<div style="width: 10%; display: flex; margin-top: 10px;">
+								<input @onchange="@(e => TextoCambiaTierPosicion(e, tier))" class="entrada-texto" value="@tier.Posicion" style="text-align: center; margin-right: 20px;" />
+								<input @onchange="@(e => TextoCambiaTierPrecio(e, tier))" class="entrada-texto" value="@tier.Precio" style="text-align: center; margin-right: 20px;" />
+								<input @onchange="@(e => TextoCambiaTierCantidadJuegos(e, tier))" class="entrada-texto" value="@tier.CantidadJuegos" style="text-align: center;" />
+							</div>
+						}
 					}
 				}
 			}
@@ -96,23 +107,26 @@
 									<div>@juego.JuegoId - @juego.Nombre</div>
 
 									<div style="display: flex; margin-top: 10px;">
-										<div style="width: 10%; margin-right: 20px;">
-											<label style="margin-bottom: 10px;">Tier:</label>
-											<div class="opciones-combobox">
-												<select @onchange="@(e => CambiarTierJuego(e, juego))" value="@juego.Tier.Posicion">
-													@if (bundle.Tiers != null)
-													{
-														@if (bundle.Tiers.Count > 0)
+										@if (bundle.Pick == false)
+										{
+											<div style="width: 10%; margin-right: 20px;">
+												<label style="margin-bottom: 10px;">Tier:</label>
+												<div class="opciones-combobox">
+													<select @onchange="@(e => CambiarTierJuego(e, juego))" value="@juego.Tier.Posicion">
+														@if (bundle.Tiers != null)
 														{
-															@foreach (var tier in bundle.Tiers)
+															@if (bundle.Tiers.Count > 0)
 															{
-																<option value="@tier.Posicion">@tier.Posicion</option>
+																@foreach (var tier in bundle.Tiers)
+																{
+																	<option value="@tier.Posicion">@tier.Posicion</option>
+																}
 															}
 														}
-													}
-												</select>
+													</select>
+												</div>
 											</div>
-										</div>
+										}									
 
 										<div style="width: 33%;">
 											<label style="margin-bottom: 10px;">DRM:</label>
@@ -177,7 +191,7 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			bundle.Nombre = texto.Value.ToString().Trim();
+			bundle.NombreBundle = texto.Value.ToString().Trim();
 		}
 	}
 
@@ -185,7 +199,7 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			bundle.Imagen = texto.Value.ToString().Trim();
+			bundle.ImagenBundle = texto.Value.ToString().Trim();
 		}
 	}
 
@@ -233,12 +247,32 @@
 		}
 	}
 
+	private void TextoCambiaTierCantidadJuegos(ChangeEventArgs texto, Bundles2.BundleTier tier)
+	{
+		if (texto.Value.ToString().Trim().Length > 0)
+		{
+			for (int i = 0; i < bundle.Tiers.Count; i += 1)
+			{
+				if (bundle.Tiers[i].Posicion == tier.Posicion)
+				{
+					bundle.Tiers[i].CantidadJuegos = int.Parse(texto.Value.ToString());
+				}
+			}
+		}
+	}
+
 	private void AñadirTier(MouseEventArgs e)
 	{
+		if (bundle.Tiers == null)
+		{
+			bundle.Tiers = new List<Bundles2.BundleTier>();
+		}
+
 		Bundles2.BundleTier tier = new Bundles2.BundleTier
 		{
-			Posicion = 0,
-			Precio = "0"
+			Posicion = bundle.Tiers.Count + 1,
+			Precio = "0",
+			CantidadJuegos = 0
 		};
 
 		bundle.Tiers.Add(tier);
@@ -249,7 +283,7 @@
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
 			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, false);
 		}
 		else
 		{
@@ -281,13 +315,23 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 0)
 		{
-			for (int i = 0; i < bundle.Juegos.Count; i += 1)
+			// var tierElegido = new Bundles2.BundleTier();
+
+			foreach (var tier in bundle.Tiers)
 			{
-				if (bundle.Juegos[i].JuegoId == juego.JuegoId)
+				if (tier.Posicion == int.Parse(texto.Value.ToString()))
 				{
-					bundle.Juegos[i].Tier.Posicion = int.Parse(texto.Value.ToString());
+					foreach (var juegob in bundle.Juegos)
+					{
+						if (juegob.JuegoId == juego.JuegoId)
+						{
+							juegob.Tier = tier;
+						}
+					}
 				}
 			}
+
+			
 		}
 	}
 

@@ -14,7 +14,67 @@
 		</div>
 	</div>
 
-	@if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+	@if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+	{
+		<div class="opciones-combobox" style="width: 33%;">
+			<select @onchange="@(e => CambiarBundle(e))">
+				@foreach (Bundles2.Bundle bundle in Bundles2.BundlesCargar.GenerarListado())
+				{
+					<option value="@bundle.Tipo">@bundle.NombreTienda</option>
+				}
+			</select>
+		</div>
+
+		@if (bundleSeleccionado != null)
+		{
+			<div style="margin-top: 20px;">
+				@foreach (var bundle in BaseDatos.Bundles.Buscar.UnTipo(bundleSeleccionado, Herramientas.Tiempo.Actual))
+				{
+					<button @onclick="@(e => ClickearBundle(e, bundle.Id))" class="boton-pequeño" style="margin: 10px 0px;">
+						<div style="display: flex; align-items: center;">
+							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="width: 12%; margin: 10px;" />
+							<div style="margin-left: 20px;">@bundle.NombreBundle</div>
+						</div>
+					</button>
+				}
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Juegos:</label>
+				<input type="text" class="entrada-texto" value="@juegos" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Título EN:</label>
+				<input type="text" class="entrada-texto" value="@tituloEn" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Título ES:</label>
+				<input type="text" class="entrada-texto" value="@tituloEs" />
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Contenido EN:</label>
+				<textarea class="entrada-texto" rows="8">@contenidoEn</textarea>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Contenido ES:</label>
+				<textarea class="entrada-texto" rows="8">@contenidoEs</textarea>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<label>Fecha Termina:</label>
+				<input type="datetime-local" @onchange="@(e => CambiarBundleFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			</div>
+
+			<div style="display: flex; margin-top: 20px; width: 20%;">
+				<button @onclick="@(e => AñadirBundleNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
+			</div>
+		}
+	}
+	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
 	{
 		<div class="opciones-combobox" style="width: 33%;">
 			<select @onchange="@(e => CambiarGratis(e))">
@@ -30,23 +90,20 @@
 			<div style="margin-top: 20px;">
 				@foreach (var gratis in BaseDatos.Gratis.Buscar.UnTipo(gratisSeleccionado, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
 				{
-					if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-					{
-						<button @onclick="@(e => ClickearGratisJuego(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
-							<div style="display: flex; align-items: center;">
-								@if (juegos != null)
+					<button @onclick="@(e => ClickearGratisJuego(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+						<div style="display: flex; align-items: center;">
+							@if (juegos != null)
+							{
+								@if (juegos.Contains(gratis.JuegoId.ToString()) == true)
 								{
-									@if (juegos.Contains(gratis.JuegoId.ToString()) == true)
-									{
-										<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
-									}
+									<div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
 								}
+							}
 
-								<img src="@Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Imagen" style="width: 12%; margin: 10px;" />
-								<div style="margin-left: 20px;">@gratis.Nombre</div>
-							</div>
-						</button>
-					}
+							<img src="@Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Imagen" style="width: 12%; margin: 10px;" />
+							<div style="margin-left: 20px;">@gratis.Nombre</div>
+						</div>
+					</button>
 				}
 			</div>
 
@@ -164,6 +221,7 @@
 
 	private string juegos = null;
 
+	private string bundleSeleccionado = null;
 	private string gratisSeleccionado = null;
 	private string suscripcionSeleccionada = null;
 
@@ -180,7 +238,11 @@
 
 		//-------------------------------------------------------
 
-		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+		{
+			bundleSeleccionado = Bundles2.BundlesCargar.GenerarListado()[1].Id.ToString();
+		}
+		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
 		{
 			gratisSeleccionado = Gratis2.GratisCargar.GenerarListado()[0].Id.ToString();
 		}
@@ -189,6 +251,112 @@
 			suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
 		}
 	}
+
+	#region Bundles
+
+	private void CambiarBundle(ChangeEventArgs texto)
+	{
+		bundleSeleccionado = texto.Value.ToString();
+	}
+
+	private void ClickearBundle(MouseEventArgs e, int bundleId)
+	{
+		Bundles2.Bundle bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+
+		if (bundle != null)
+		{
+			juegos = null;
+
+			for (int i = 0; i < bundle.Juegos.Count; i += 1)
+			{
+				if (i == 0)
+				{
+					juegos = bundle.Juegos[i].JuegoId;
+				}
+				else
+				{
+					juegos = juegos + "," + bundle.Juegos[i].JuegoId;
+				}
+			}
+
+			fechaSeleccionada = bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+			BundleGenerarTitulo(bundle);
+			BundleGenerarContenido(bundle);
+		}
+	}
+
+	private void CambiarBundleFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+
+	private void BundleGenerarTitulo(Bundles2.Bundle bundle)
+	{
+		tituloEn = string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+		tituloEs = string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+	}
+
+	private void BundleGenerarContenido(Bundles2.Bundle bundle)
+	{
+		if (bundle.Pick == false)
+		{
+			contenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div> ";
+			contenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString2"), bundle.NombreTienda) + "</div>";
+
+			foreach (var tier in bundle.Tiers)
+			{
+				string precio = tier.Precio;
+				precio = precio.Replace(".", ",");
+				precio = precio + "€";
+
+				contenidoEn = contenidoEn + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
+				contenidoEs = contenidoEs + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
+
+				foreach (var juego in bundle.Juegos)
+				{
+					if (juego.Tier.Posicion == tier.Posicion)
+					{
+						contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
+						contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
+					}
+				}
+
+				contenidoEn = contenidoEn + "</ul></div>";
+				contenidoEs = contenidoEs + "</ul></div>";
+
+				contenidoEn = contenidoEn + "<div><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString3") + "</a></div>";
+				contenidoEs = contenidoEs + "<div><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString3") + "</a></div>";
+			}
+		}
+	}
+
+	private void AñadirBundleNoticia(MouseEventArgs e)
+	{
+		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+		noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
+		noticia.TituloEn = tituloEn;
+		noticia.TituloEs = tituloEs;
+		noticia.ContenidoEn = contenidoEn;
+		noticia.ContenidoEs = contenidoEs;
+		noticia.Juegos = juegos;
+		noticia.FechaEmpieza = DateTime.Now;
+		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+		noticia.BundleTipo = Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado).Tipo;
+
+		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+		bundleSeleccionado = null;
+		tituloEn = null;
+		tituloEs = null;
+		contenidoEn = null;
+		contenidoEs = null;
+		fechaSeleccionada = null;
+		juegos = null;
+	}
+
+	#endregion
 
 	#region Gratis
 
@@ -246,9 +414,6 @@
 
 		if (lista != null)
 		{
-			tituloEn = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " • ";
-			tituloEs = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " • ";
-
 			if (lista.Count == 1)
 			{
 				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString1");
@@ -268,6 +433,9 @@
 				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString4");
 			}
+
+			tituloEn = tituloEn + " " + Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre;
+			tituloEs = tituloEs + " " + Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre;
 		}
 		else
 		{
@@ -421,27 +589,24 @@
 
 		if (lista != null)
 		{
-			tituloEn = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " • ";
-			tituloEs = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " • ";
-
 			if (lista.Count == 1)
 			{
-				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString1");
-				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString1");
+				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
+				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 			else if (lista.Count == 2)
 			{
 				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString2") + " " +
-					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString3");
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString3"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString2") + " " +
-					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString3");
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString3"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 			else if (lista.Count > 2)
 			{
 				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
-					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString4");
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString4"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
-					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString4");
+					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString4"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 		}
 		else

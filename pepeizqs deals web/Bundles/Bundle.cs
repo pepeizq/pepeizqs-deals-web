@@ -2,6 +2,7 @@
 
 using Herramientas;
 using Juegos;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Bundles2
 {
@@ -9,9 +10,10 @@ namespace Bundles2
 	{
 		public int Id;
 		public BundleTipo Tipo;
-		public string Nombre;
-		public string Tienda;
-		public string Imagen;
+		public string NombreBundle;
+		public string NombreTienda;
+		public string ImagenBundle;
+		public string ImagenTienda;
 		public List<string> ImagenesExtra;
 		public string Enlace;
 		public string EnlaceBase;
@@ -27,6 +29,7 @@ namespace Bundles2
 		public int Posicion;
 		public string Precio;
 		public JuegoMoneda Moneda;
+		public int CantidadJuegos;
 	}
 
 	public class BundleJuego

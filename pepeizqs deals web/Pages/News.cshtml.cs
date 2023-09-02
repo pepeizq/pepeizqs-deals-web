@@ -1,5 +1,6 @@
 #nullable disable
 
+using Bundles2;
 using Gratis2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -34,106 +35,98 @@ namespace pepeizqs_deals_web.Pages
 
 			string id = Request.Query["id"];
 
-			noticia = BaseDatos.Noticias.Buscar.UnaNoticia(int.Parse(id));
+            if (id != null)
+            {
+				noticia = BaseDatos.Noticias.Buscar.UnaNoticia(int.Parse(id));
 
-            if (noticia != null) 
-            { 
-				if (noticia.Tipo == NoticiaTipo.Gratis)
+				if (noticia != null)
 				{
-					imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).Imagen;
-				}
-				else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-				{
-					imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).Imagen;
-				}
-
-                if (noticia.Juegos != null)
-				{
-					List<string> juegos = GenerarLista(noticia.Juegos);
-
-					if (juegos != null)
+                    if (noticia.Tipo == NoticiaTipo.Bundles)
+                    {
+                        imagenLogo = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
+                    }
+                    else if (noticia.Tipo == NoticiaTipo.Gratis)
 					{
-						Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
-
-						if (juego != null)
-						{
-							fondo = juego.Imagenes.Library_1920x620;
-						}
-					}
-				}
-
-				titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
-
-				if (titulo != null)
-				{
-					if (noticia.Tipo == NoticiaTipo.Gratis)
-					{
-						foreach (var gratis in GratisCargar.GenerarListado())
-						{
-							titulo = titulo.Replace(gratis.Nombre + " • ", null);
-						}
+						imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).Imagen;
 					}
 					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
-						foreach (var suscripcion in SuscripcionesCargar.GenerarListado())
+						imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).Imagen;
+					}
+
+					if (noticia.Juegos != null)
+					{
+						List<string> juegos = GenerarLista(noticia.Juegos);
+
+						if (juegos != null)
 						{
-							titulo = titulo.Replace(suscripcion.Nombre + " • ", null);
-						}
-					}
-				}
+							Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
 
-				contenido = Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs);
-
-				if (noticia.FechaTermina.Year > 2022)
-				{
-					fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.HaceTiempo(noticia.FechaEmpieza, idioma);
-				}
-
-				if (noticia.FechaTermina.Year > 2022)
-				{
-					TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
-
-					if (diferenciaTiempo.Days > 1)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days == 1)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days == 0)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days < 0)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
-					}
-				}
-
-				if (noticia.Juegos != null)
-				{
-					List<string> listaJuegos = GenerarLista(noticia.Juegos);
-
-					if (listaJuegos.Count > 0) 
-					{ 
-						foreach (var listaJuego in listaJuegos)
-						{
-							Juego juego = BaseDatos.Juegos.Buscar.UnJuego(listaJuego);
-
-							if (juego != null) 
+							if (juego != null)
 							{
-								juegos.Add(juego);
+								fondo = juego.Imagenes.Library_1920x620;
 							}
 						}
 					}
-				}
 
-				if (juegos.Count == 1)
-				{
-					video = "<video controls autoplay src=" + Strings.ChrW(34) + juegos[0].Media.Video + Strings.ChrW(34) + "/>";
+					titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+
+					contenido = Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs);
+
+					if (noticia.FechaTermina.Year > 2022)
+					{
+						fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.HaceTiempo(noticia.FechaEmpieza, idioma);
+					}
+
+					if (noticia.FechaTermina.Year > 2022)
+					{
+						TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
+
+						if (diferenciaTiempo.Days > 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days < 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+						}
+					}
+
+					if (noticia.Juegos != null)
+					{
+						List<string> listaJuegos = GenerarLista(noticia.Juegos);
+
+						if (listaJuegos.Count > 0)
+						{
+							foreach (var listaJuego in listaJuegos)
+							{
+								Juego juego = BaseDatos.Juegos.Buscar.UnJuego(listaJuego);
+
+								if (juego != null)
+								{
+									juegos.Add(juego);
+								}
+							}
+						}
+					}
+
+					if (juegos.Count == 1)
+					{
+						if (juegos[0].Media.Video != null)
+						{
+							video = "<video controls autoplay src=" + Strings.ChrW(34) + juegos[0].Media.Video + Strings.ChrW(34) + "/>";
+						}
+					}
 				}
-            }          
+			}
 		}
 
 		private List<string> GenerarLista(string datos)

@@ -36,7 +36,7 @@
 								</div>
 
 								<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
-									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
+									@CargarPrecio(juego)
 								</div>
 							</div>
 						</a>
@@ -210,18 +210,63 @@
 
 	private string CargarIconoTienda(Juego juego)
 	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+		string imagen = null;
+		decimal precio = 10000000;
 
-		foreach (var tienda in tiendas)
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
 		{
-			if (tienda.Id == oferta.Tienda)
+			if (minimo.Precio < precio)
 			{
-				return tienda.ImagenIcono;
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+				foreach (var tienda in tiendas)
+				{
+					if (tienda.Id == oferta.Tienda)
+					{
+						imagen = tienda.ImagenIcono;
+					}
+				}
 			}
 		}
 
-		return null;
+		if (imagen != null)
+		{
+			return imagen;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
+	private string CargarPrecio(Juego juego)
+	{
+		string precioMensaje = null;
+		decimal precio = 10000000;
+
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (minimo.Precio < precio)
+			{
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				precioMensaje = oferta.Precio.ToString();
+				precioMensaje = precioMensaje.Replace(".", ",");
+				precioMensaje = precioMensaje + "€";
+			}
+		}
+
+		if (precioMensaje != null)
+		{
+			return precioMensaje;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

@@ -29,6 +29,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Admin\Bundles.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Admin\Tiendas.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Bundle.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Bundles.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Noticias.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\JuegoFichaDeseado.razor" />
@@ -59,6 +60,7 @@
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -108,6 +110,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Bundles.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Bundle.cshtml" />
   </ItemGroup>
 
 </Project>

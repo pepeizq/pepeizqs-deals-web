@@ -103,11 +103,11 @@
 			{
 				@if (drm != JuegoDRM.NoEspecificado)
 				{
-					@if (Herramientas.JuegoFicha.VerificarMostrarDRM(Model.idioma, drm, Model.juego) == true)
+					@if (Model.VerificarMostrarDRM(Model.idioma, drm, Model.juego) == true)
 					{
 						@if (drm == JuegoDRM.DRMFree)
 						{
-							<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; margin: 10px 20px;"><div style="font-weight: bold; font-size: 16px;">DRM Free</div></button>
+							<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; margin: 10px 20px;"><div style="font-weight: bold; font-size: 10px;">DRM Free</div></button>
 						}
 						else
 						{
@@ -122,7 +122,7 @@
 		{
 			@if (drm != JuegoDRM.NoEspecificado)
 			{
-				@if (Herramientas.JuegoFicha.VerificarMostrarDRM(Model.idioma, drm, Model.juego) == true)
+				@if (Model.VerificarMostrarDRM(Model.idioma, drm, Model.juego) == true)
 				{
 					<div id="@drm">	
 						@if (SignInManager.IsSignedIn(User))
@@ -145,11 +145,11 @@
 							<div class="perfil" style="width: 90%;">
 								@Html.Raw(Herramientas.JuegoFicha.CogerMinimoDRM(Model.idioma, drm, Model.juego.PrecioMinimosHistoricos, Model.juego.PrecioActualesTiendas, true))
 
-								@Html.Raw(Herramientas.JuegoFicha.PrepararBundles(Model.idioma, Model.juego.Bundles, drm))
+								@Html.Raw(Model.PrepararBundles(Model.idioma, Model.juego.Bundles, drm))
 
-								@Html.Raw(Herramientas.JuegoFicha.PrepararGratis(Model.idioma, Model.juego.Gratis, drm))
+								@Html.Raw(Model.PrepararGratis(Model.idioma, Model.juego.Gratis, drm))
 
-								@Html.Raw(Herramientas.JuegoFicha.PrepararSuscripcion(Model.idioma, Model.juego.Suscripciones, drm))
+								@Html.Raw(Model.PrepararSuscripcion(Model.idioma, Model.juego.Suscripciones, drm))
 								
 								@if (Herramientas.JuegoFicha.OrdenarPrecios(Model.juego.PrecioActualesTiendas, drm, false).Count > 0)
 								{

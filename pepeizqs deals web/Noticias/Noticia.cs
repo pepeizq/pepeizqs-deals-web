@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Bundles2;
 using Gratis2;
 using Suscripciones2;
 
@@ -9,6 +10,7 @@ namespace Noticias
 	{
 		public int Id;
 		public NoticiaTipo Tipo;
+		public BundleTipo BundleTipo;
 		public GratisTipo GratisTipo;
 		public SuscripcionTipo SuscripcionTipo;
 		public string TituloEn;
