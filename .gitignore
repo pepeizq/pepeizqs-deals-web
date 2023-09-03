@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Conexion Base Datos
-/appsettings.json
+app*.json
