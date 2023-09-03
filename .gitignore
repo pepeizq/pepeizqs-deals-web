@@ -365,3 +365,5 @@ FodyWeavers.xsd
 # Conexion Base Datos
 */appsettings.json
 */appsettings.Development.json
+/pepeizqs deals web/appsettings.json
+/pepeizqs deals web/appsettings.Development.json
