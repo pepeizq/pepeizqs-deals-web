@@ -28,6 +28,14 @@
     "Valor": "Last Added"
   },
   {
+    "Id": "Layout.Privacy",
+    "Valor": "Privacy and your data"
+  },
+  {
+    "Id": "Layout.SourceCode",
+    "Valor": "Source Code"
+  },
+  {
     "Id": "Index.LastLows",
     "Valor": "Last Historical Lows"
   },
@@ -168,6 +176,18 @@
     "Valor": "Added"
   },
   {
+    "Id": "News.String7",
+    "Valor": "Open Bundle"
+  },
+  {
+    "Id": "News.String8",
+    "Valor": "Open Free"
+  },
+  {
+    "Id": "News.String9",
+    "Valor": "Open Subscription"
+  },
+  {
     "Id": "News.BundleString1",
     "Valor": "The {0} bundle has been added to {1}"
   },
@@ -177,7 +197,11 @@
   },
   {
     "Id": "News.BundleString3",
-    "Valor": "Open Bundle"
+    "Valor": "At {0} there is a new bundle where you can get the games you want for a certain price:"
+  },
+  {
+    "Id": "News.BundleString4",
+    "Valor": "games"
   },
   {
     "Id": "News.FreeString1",
@@ -290,6 +314,42 @@
   {
     "Id": "Subscriptions.String2",
     "Valor": "Subscriptions Not Available"
+  },
+  {
+    "Id": "Privacy.Title",
+    "Valor": "Privacy and Your Data"
+  },
+  {
+    "Id": "Privacy.String1",
+    "Valor": "Cookies"
+  },
+  {
+    "Id": "Privacy.String2",
+    "Valor": "As a developer of this website and other projects, I am aware of the harmful use that can be made of data collection through the use of cookies. By developing this website from scratch I have been able to maintain the use of cookies to the minimum necessary, to give you an idea:"
+  },
+  {
+    "Id": "Privacy.String3",
+    "Valor": "If you decide to use this website without registering an account, the website will not use any cookies."
+  },
+  {
+    "Id": "Privacy.String4",
+    "Valor": "If you decide to use this website by registering an account, the website only needs 3 cookies to operate correctly. I need them so that your browser and my server do not forget each other every time you open the website."
+  },
+  {
+    "Id": "Privacy.String5",
+    "Valor": "Note: This website is multilingual but the identification of the user's language is not done with any cookie, but through the request sent by the web browser."
+  },
+  {
+    "Id": "Privacy.String6",
+    "Valor": "Your Data"
+  },
+  {
+    "Id": "Privacy.String7",
+    "Valor": "If you decide to register an account on the website, I want to be as transparent as possible and I promise that I will only use your data 'inside the website, not outside'. But if you have doubts that I might turn evil, you can delete your account at any time from 'Personal Data' or download all the data I have about you."
+  },
+  {
+    "Id": "Privacy.String8",
+    "Valor": "In fact, on this website I am not going to use services like Google Analytics, although Google will surely punish me in its search engine for it."
   },
   {
     "Id": "Timer.String1",

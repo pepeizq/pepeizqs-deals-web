@@ -132,16 +132,28 @@ namespace BaseDatos.Juegos
 					{
 						if (juego.PrecioMinimosHistoricos.Count > 0)
 						{
-							foreach (var minimo in juego.PrecioMinimosHistoricos)
+							decimal precio = 10000000;
+							JuegoPrecio minimo = null;
+
+							foreach (var minimo2 in juego.PrecioMinimosHistoricos)
+							{
+								if (minimo2.Precio < precio)
+								{
+									precio = minimo2.Precio;
+
+									minimo = minimo2;
+								}
+							}
+
+							if (minimo != null) 
 							{
 								bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
 
 								if (fechaEncaja == true && minimo.Descuento > 0)
 								{
 									juegosConMinimos.Add(juego);
-									break;
 								}
-							}
+							}						
 						}
 					}
 
@@ -151,24 +163,46 @@ namespace BaseDatos.Juegos
 
 						if (j1.PrecioMinimosHistoricos.Count > 0)
 						{
-							foreach (var j in j1.PrecioMinimosHistoricos)
+							decimal precio = 10000000;
+							JuegoPrecio minimo = null;
+
+							foreach (var minimo2 in j1.PrecioMinimosHistoricos)
 							{
-								j1Ofertas.Add(j);
+								if (minimo2.Precio < precio)
+								{
+									precio = minimo2.Precio;
+
+									minimo = minimo2;
+								}
 							}
 
-							j1Ofertas.OrderBy(x => x.FechaDetectado);
+							if (minimo != null)
+							{
+								j1Ofertas.Add(minimo);
+							}
 						}
 
 						List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
 						if (j2.PrecioMinimosHistoricos.Count > 0)
 						{
-							foreach (var j in j2.PrecioMinimosHistoricos)
+							decimal precio = 10000000;
+							JuegoPrecio minimo = null;
+
+							foreach (var minimo2 in j2.PrecioMinimosHistoricos)
 							{
-								j2Ofertas.Add(j);
+								if (minimo2.Precio < precio)
+								{
+									precio = minimo2.Precio;
+
+									minimo = minimo2;
+								}
 							}
 
-							j2Ofertas.OrderBy(x => x.FechaDetectado);
+							if (minimo != null)
+							{
+								j2Ofertas.Add(minimo);
+							}
 						}
 
 						if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)

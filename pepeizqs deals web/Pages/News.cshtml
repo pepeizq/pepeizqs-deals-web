@@ -41,6 +41,15 @@
 			</div>
 		</div>
 
+		@if (Model.enlace != null)
+		{
+			<a href="@Model.enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
+				<div>
+					<label>@Model.mensajeEnlace</label>
+				</div>
+			</a>
+		}
+
 		<div class="perfil" style="margin-top: 40px;">
 			@Html.Raw(Model.contenido)
 		</div>

@@ -13,7 +13,7 @@
 
     if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
     {
-        titulo = "pepeizq's deals";
+        titulo = "pepeizq's deals • Now with more bugs than all Bethesda games";
     }
     else
     {
@@ -140,7 +140,15 @@
 
     <footer class="pie">
         <div class="container">
-            &copy; 2018 - @DateTime.Now.Year.ToString() • pepeizq's deals • <a asp-page="/Privacy" class="texto-pie">Privacy</a>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 80%; text-align: left;">
+                    &copy; 2018 - @DateTime.Now.Year.ToString() • pepeizq's deals • <a asp-page="/Privacy" class="texto-pie">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Privacy")</a>
+                </div>
+
+                <div style="width: 20%; text-align: right;">
+                    <a href="https://github.com/pepeizq/pepeizqs-deals-web/" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Layout.SourceCode")</a>
+                </div>
+            </div>          
         </div>
     </footer>
 
@@ -148,12 +156,14 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js"></script>
+    <script src="_framework/blazor.server.js" autostart="false"></script>
 
     <script>
         Blazor.start().then(() => {
             Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                document.location.reload();
+                if (window.location.href.indexOf("/Admin/") == -1) {
+                    document.location.reload();
+                }
             }
         });
     </script>

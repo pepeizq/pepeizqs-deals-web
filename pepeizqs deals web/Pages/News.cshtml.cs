@@ -19,6 +19,8 @@ namespace pepeizqs_deals_web.Pages
 		public string imagenLogo = null;
         public string fondo = null;
 		public string titulo = null;
+		public string enlace = null;
+		public string mensajeEnlace = null;
 		public string contenido = null;
 		public string video = null;
 		public string fechaEmpieza = null;
@@ -43,20 +45,38 @@ namespace pepeizqs_deals_web.Pages
 				{
                     if (noticia.Tipo == NoticiaTipo.Bundles)
                     {
+						if (noticia.Enlace != null)
+						{
+							enlace = noticia.Enlace;
+							mensajeEnlace = Herramientas.Idiomas.CogerCadena(idioma, "News.String7");
+						}
+
                         imagenLogo = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
                     }
                     else if (noticia.Tipo == NoticiaTipo.Gratis)
 					{
+						if (noticia.Enlace != null)
+						{
+							enlace = noticia.Enlace;
+							mensajeEnlace = Herramientas.Idiomas.CogerCadena(idioma, "News.String8");
+						}
+
 						imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).Imagen;
 					}
 					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
+						if (noticia.Enlace != null)
+						{
+							enlace = noticia.Enlace;
+							mensajeEnlace = Herramientas.Idiomas.CogerCadena(idioma, "News.String9");
+						}
+
 						imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).Imagen;
 					}
 
 					if (noticia.Juegos != null)
 					{
-						List<string> juegos = GenerarLista(noticia.Juegos);
+						List<string> juegos = Herramientas.Listados.Generar(noticia.Juegos);
 
 						if (juegos != null)
 						{
@@ -102,7 +122,7 @@ namespace pepeizqs_deals_web.Pages
 
 					if (noticia.Juegos != null)
 					{
-						List<string> listaJuegos = GenerarLista(noticia.Juegos);
+						List<string> listaJuegos = Herramientas.Listados.Generar(noticia.Juegos);
 
 						if (listaJuegos.Count > 0)
 						{
@@ -127,53 +147,6 @@ namespace pepeizqs_deals_web.Pages
 					}
 				}
 			}
-		}
-
-		private List<string> GenerarLista(string datos)
-		{
-			if (datos != null)
-			{
-				List<string> lista = new List<string>();
-				string datos2 = datos;
-
-				int i = 0;
-				int j = 100000;
-
-				while (i < j)
-				{
-					if (datos2.Contains(",") == true)
-					{
-						int int1 = datos2.IndexOf(",");
-
-						string añadir = datos2.Remove(int1, datos2.Length - int1);
-
-						if (añadir.Length > 0)
-						{
-							lista.Add(añadir);
-						}
-
-						datos2 = datos2.Remove(0, int1 + 1);
-					}
-					else
-					{
-						if (datos2.Length > 0)
-						{
-							lista.Add(datos2);
-						}
-
-						break;
-					}
-
-					i += 1;
-				}
-
-				if (lista.Count > 0)
-				{
-					return lista;
-				}
-			}
-
-			return null;
 		}
 	}
 }

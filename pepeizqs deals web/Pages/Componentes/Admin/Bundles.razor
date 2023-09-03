@@ -63,7 +63,12 @@
 		</div>
 
 		<div style="margin-top: 20px;">
-			<label style="margin-bottom: 10px;">Juegos:</label>
+			<label style="margin-bottom: 10px;">Juegos IDs:</label>
+			<input type="text" @oninput="TextoCambiaIDs" class="entrada-texto" value="@juegosIds" />
+		</div>
+
+		<div style="margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Juegos Buscador:</label>
 			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="margin-bottom: 20px;" value="@cadenaBusqueda" />
 
 			@if (juegosBuscador != null)
@@ -162,6 +167,7 @@
 	private string enlaceBundle = null;
 	private Bundles2.Bundle bundle = new Bundles2.Bundle();
 
+	private string juegosIds = null;
 	private string cadenaBusqueda = null;
 	private List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
@@ -278,6 +284,48 @@
 		bundle.Tiers.Add(tier);
 	}
 
+	private void TextoCambiaIDs(ChangeEventArgs texto)
+	{
+		bundle.Juegos = new List<Bundles2.BundleJuego>();
+
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			juegosIds = texto.Value.ToString().Trim();
+
+			foreach (var id in Herramientas.Listados.Generar(juegosIds))
+			{
+				Juegos.Juego juegoBuscado = BaseDatos.Juegos.Buscar.UnJuego(id);
+
+				if (juegoBuscado != null)
+				{
+					Bundles2.BundleJuego juegoBundle = new Bundles2.BundleJuego();
+					juegoBundle.JuegoId = id;
+					juegoBundle.Nombre = juegoBuscado.Nombre;
+					juegoBundle.Imagen = juegoBuscado.Imagenes.Capsule_231x87;
+					juegoBundle.DRM = Juegos.JuegoDRM.Steam;
+
+					if (bundle.Tiers == null)
+					{
+						bundle.Tiers = new List<Bundles2.BundleTier>();
+
+						Bundles2.BundleTier tier = new Bundles2.BundleTier
+						{
+							Posicion = bundle.Tiers.Count + 1,
+							Precio = "0",
+							CantidadJuegos = 0
+						};
+
+						bundle.Tiers.Add(tier);
+					}
+
+					juegoBundle.Tier = bundle.Tiers[0];
+
+					bundle.Juegos.Add(juegoBundle);
+				}			
+			}
+		}
+	}
+
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
@@ -306,17 +354,43 @@
 		juegoBundle.Nombre = nombre;
 		juegoBundle.Imagen = imagen;
 		juegoBundle.DRM = Juegos.JuegoDRM.Steam;
+
+		if (bundle.Tiers == null)
+		{
+			bundle.Tiers = new List<Bundles2.BundleTier>();
+
+			Bundles2.BundleTier tier = new Bundles2.BundleTier
+			{
+				Posicion = bundle.Tiers.Count + 1,
+				Precio = "0",
+				CantidadJuegos = 0
+			};
+
+			bundle.Tiers.Add(tier);
+		}
+
 		juegoBundle.Tier = bundle.Tiers[0];
 
 		bundle.Juegos.Add(juegoBundle);
+
+		juegosIds = null;
+		for (int i = 0; i < bundle.Juegos.Count; i += 1)
+		{
+			if (i == 0)
+			{
+				juegosIds = bundle.Juegos[i].JuegoId;
+			}
+			else
+			{
+				juegosIds = juegosIds + "," + bundle.Juegos[i].JuegoId;
+			}
+		}
 	}
 
 	private void CambiarTierJuego(ChangeEventArgs texto, Bundles2.BundleJuego juego)
 	{
 		if (texto.Value.ToString().Trim().Length > 0)
 		{
-			// var tierElegido = new Bundles2.BundleTier();
-
 			foreach (var tier in bundle.Tiers)
 			{
 				if (tier.Posicion == int.Parse(texto.Value.ToString()))
@@ -330,8 +404,6 @@
 					}
 				}
 			}
-
-			
 		}
 	}
 

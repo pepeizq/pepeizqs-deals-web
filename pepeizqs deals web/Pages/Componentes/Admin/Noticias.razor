@@ -39,35 +39,60 @@
 				}
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Juegos:</label>
+			<hr />
+
+			<div style="margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Juegos:</label>
 				<input type="text" class="entrada-texto" value="@juegos" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título EN:</label>
-				<input type="text" class="entrada-texto" value="@tituloEn" />
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Título EN:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEn(e))" class="entrada-texto" value="@tituloEn" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título ES:</label>
-				<input type="text" class="entrada-texto" value="@tituloEs" />
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Título ES:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEs(e))" class="entrada-texto" value="@tituloEs" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido EN:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEn</textarea>
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido EN:</label>
+				<textarea @onchange="@(e => CambiarContenidoEn(e))" class="entrada-texto" rows="8">@contenidoEn</textarea>
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido ES:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEs</textarea>
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEn)
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Fecha Termina:</label>
-				<input type="datetime-local" @onchange="@(e => CambiarBundleFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido ES:</label>
+				<textarea @onchange="@(e => CambiarContenidoEs(e))" class="entrada-texto" rows="8">@contenidoEs</textarea>
 			</div>
+
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEs)
+			</div>
+
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Fecha Termina:</label>
+				<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			</div>
+
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Enlace:</label>
+				<input type="text" class="entrada-texto" value="@enlace" />
+			</div>
+
+			<hr />
 
 			<div style="display: flex; margin-top: 20px; width: 20%;">
 				<button @onclick="@(e => AñadirBundleNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
@@ -107,35 +132,60 @@
 				}
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Juegos:</label>
+			<hr />
+
+			<div style="margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Juegos:</label>
 				<input type="text" class="entrada-texto" value="@juegos" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título EN:</label>
-				<input type="text" class="entrada-texto" value="@tituloEn" />
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Título EN:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEn(e))" class="entrada-texto" value="@tituloEn" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título ES:</label>
-				<input type="text" class="entrada-texto" value="@tituloEs" />
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Título ES:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEs(e))" class="entrada-texto" value="@tituloEs" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido EN:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEn</textarea>
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido EN:</label>
+				<textarea @onchange="@(e => CambiarContenidoEn(e))" class="entrada-texto" rows="8">@contenidoEn</textarea>
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido ES:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEs</textarea>
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEn)
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Fecha Termina:</label>
-				<input type="datetime-local" @onchange="@(e => CambiarGratisFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido ES:</label>
+				<textarea @onchange="@(e => CambiarContenidoEs(e))" class="entrada-texto" rows="8">@contenidoEs</textarea>
 			</div>
+
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEs)
+			</div>
+
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Fecha Termina:</label>
+				<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+			</div>
+
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Enlace:</label>
+				<input type="text" class="entrada-texto" value="@enlace" />
+			</div>
+
+			<hr />
 
 			<div style="display: flex; margin-top: 20px; width: 20%;">
 				<button @onclick="@(e => AñadirGratisNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
@@ -175,42 +225,123 @@
 				}
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Juegos:</label>
+			<hr />
+
+			<div style="margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Juegos:</label>
 				<input type="text" class="entrada-texto" value="@juegos" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título EN:</label>
-				<input type="text" class="entrada-texto" value="@tituloEn" />
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Título EN:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEn(e))" class="entrada-texto" value="@tituloEn" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Título ES:</label>
-				<input type="text" class="entrada-texto" value="@tituloEs" />
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Título ES:</label>
+				<input type="text" @onchange="@(e => CambiarTituloEs(e))" class="entrada-texto" value="@tituloEs" />
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido EN:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEn</textarea>
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido EN:</label>
+				<textarea @onchange="@(e => CambiarContenidoEn(e))" class="entrada-texto" rows="8">@contenidoEn</textarea>
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Contenido ES:</label>
-				<textarea class="entrada-texto" rows="8">@contenidoEs</textarea>
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEn)
 			</div>
 
-			<div style="margin-top: 20px;">
-				<label>Fecha Termina:</label>
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Contenido ES:</label>
+				<textarea @onchange="@(e => CambiarContenidoEs(e))" class="entrada-texto" rows="8">@contenidoEs</textarea>
+			</div>
+
+			<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+				@((MarkupString)contenidoEs)
+			</div>
+
+			<hr />
+
+			<div style="margin-left: 20px;">
+				<label style="margin: 10px;">Fecha Termina:</label>
 				<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
 			</div>
+
+			<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+				<label style="margin: 10px;">Enlace:</label>
+				<input type="text" class="entrada-texto" value="@enlace" />
+			</div>
+
+			<hr />
 
 			<div style="display: flex; margin-top: 20px; width: 20%;">
 				<button @onclick="@(e => AñadirSuscripcionNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
 			</div>
 		}
 	}
+	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Eventos.ToString())
+	{
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Título EN:</label>
+			<input type="text" @onchange="@(e => CambiarTituloEn(e))" class="entrada-texto" value="@tituloEn" />
+		</div>
 
+		<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Título ES:</label>
+			<input type="text" @onchange="@(e => CambiarTituloEs(e))" class="entrada-texto" value="@tituloEs" />
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Contenido EN:</label>
+			<textarea @onchange="@(e => CambiarContenidoEn(e))" class="entrada-texto" rows="8">@contenidoEn</textarea>
+		</div>
+
+		<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+			@((MarkupString)contenidoEn)
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Contenido ES:</label>
+			<textarea @onchange="@(e => CambiarContenidoEs(e))" class="entrada-texto" rows="8">@contenidoEs</textarea>
+		</div>
+
+		<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+			@((MarkupString)contenidoEs)
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Fecha Termina:</label>
+			<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+		</div>
+
+		<div style="margin-top: 10px; margin-left: 20px;">
+			<label style="margin: 10px;">Imagen:</label>
+			<input type="text" @onchange="@(e => CambiarImagen(e))" class="entrada-texto" value="@imagen" />
+		</div>
+
+		<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Enlace:</label>
+			<input type="text" class="entrada-texto" value="@enlace" />
+		</div>
+
+		<hr />
+
+		<div style="display: flex; margin-top: 20px; width: 20%;">
+			<button @onclick="@(e => AñadirEventoNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
+		</div>
+	}
 </div>
 
 @code {
@@ -229,6 +360,8 @@
 	private string tituloEs = null;
 	private string contenidoEn = null;
 	private string contenidoEs = null;
+	private string enlace = null;
+	private string imagen = null;
 
 	private string fechaSeleccionada = null;
 
@@ -250,6 +383,31 @@
 		{
 			suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
 		}
+	}
+
+	private void CambiarTituloEn(ChangeEventArgs texto)
+	{
+		tituloEn = texto.Value.ToString();
+	}
+
+	private void CambiarTituloEs(ChangeEventArgs texto)
+	{
+		tituloEs = texto.Value.ToString();
+	}
+
+	private void CambiarContenidoEn(ChangeEventArgs texto)
+	{
+		contenidoEn = texto.Value.ToString();
+	}
+
+	private void CambiarContenidoEs(ChangeEventArgs texto)
+	{
+		contenidoEs = texto.Value.ToString();
+	}
+
+	private void CambiarImagen(ChangeEventArgs texto)
+	{
+		imagen = texto.Value.ToString();
 	}
 
 	#region Bundles
@@ -280,6 +438,7 @@
 			}
 
 			fechaSeleccionada = bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+			enlace = Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
 
 			BundleGenerarTitulo(bundle);
 			BundleGenerarContenido(bundle);
@@ -301,7 +460,7 @@
 	{
 		if (bundle.Pick == false)
 		{
-			contenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div> ";
+			contenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div>";
 			contenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString2"), bundle.NombreTienda) + "</div>";
 
 			foreach (var tier in bundle.Tiers)
@@ -324,10 +483,34 @@
 
 				contenidoEn = contenidoEn + "</ul></div>";
 				contenidoEs = contenidoEs + "</ul></div>";
-
-				contenidoEn = contenidoEn + "<div><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString3") + "</a></div>";
-				contenidoEs = contenidoEs + "<div><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString3") + "</a></div>";
 			}
+		}
+		else
+		{
+			contenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString3"), bundle.NombreTienda) + "</div>";
+			contenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString3"), bundle.NombreTienda) + "</div>";
+
+			foreach (var tier in bundle.Tiers)
+			{
+				string precio = tier.Precio;
+				precio = precio.Replace(".", ",");
+				precio = precio + "€";
+
+				contenidoEn = contenidoEn + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString4") + " (" + precio + ")";
+				contenidoEs = contenidoEs + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString4") + " (" + precio + ")";
+			}
+
+			contenidoEn = contenidoEn + "<div><ul>";
+			contenidoEs = contenidoEs + "<div><ul>";
+
+			foreach (var juego in bundle.Juegos)
+			{
+				contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
+				contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
+			}
+
+			contenidoEn = contenidoEn + "</ul></div>";
+			contenidoEs = contenidoEs + "</ul></div>";
 		}
 	}
 
@@ -344,6 +527,7 @@
 		noticia.FechaEmpieza = DateTime.Now;
 		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
 		noticia.BundleTipo = Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado).Tipo;
+		noticia.Enlace = enlace;
 
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
@@ -354,6 +538,7 @@
 		contenidoEs = null;
 		fechaSeleccionada = null;
 		juegos = null;
+		enlace = null;
 	}
 
 	#endregion
@@ -410,27 +595,27 @@
 
 	private void GratisGenerarTitulo()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
 			if (lista.Count == 1)
 			{
-				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString1");
-				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString1");
+				tituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString1");
+				tituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString1");
 			}
 			else if (lista.Count == 2)
 			{
-				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString2") + " " +
+				tituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString2") + " " +
 					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString3");
-				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString2") + " " +
+				tituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString2") + " " +
 					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString3");
 			}
 			else if (lista.Count > 2)
 			{
-				tituloEn = tituloEn + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+				tituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString4");
-				tituloEs = tituloEs + BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+				tituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.FreeString4");
 			}
 
@@ -446,7 +631,7 @@
 
 	private void GratisGenerarContenido()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
@@ -468,16 +653,24 @@
 			{
 				Juegos.JuegoGratis gratis = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(juego));
 
-				if (Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).DRMEnseñar == true)
+				if (gratis != null)
 				{
-					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
-					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
-				}
-				else
-				{
-					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
-					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
-				}		
+					if (lista.Count == 1)
+					{
+						enlace = Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo);
+					}
+
+					if (Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).DRMEnseñar == true)
+					{
+						contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
+						contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
+					}
+					else
+					{
+						contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
+						contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
+					}
+				}						
 			}
 
 			contenidoEn = contenidoEn + "</ul>";
@@ -492,7 +685,7 @@
 
 	private void GratisGenerarFecha()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
@@ -519,6 +712,7 @@
 		noticia.FechaEmpieza = DateTime.Now;
 		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
 		noticia.GratisTipo = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Id;
+		noticia.Enlace = enlace;
 
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
@@ -529,6 +723,7 @@
 		contenidoEs = null;
 		fechaSeleccionada = null;
 		juegos = null;
+		enlace = null;
 	}
 
 	#endregion
@@ -585,27 +780,27 @@
 
 	private void SuscripcionGenerarTitulo()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
 			if (lista.Count == 1)
 			{
-				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
-				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
+				tituloEn = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
+				tituloEs = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 			else if (lista.Count == 2)
 			{
-				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString2") + " " +
+				tituloEn = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString2") + " " +
 					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString3"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
-				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString2") + " " +
+				tituloEs = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString2") + " " +
 					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString3"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 			else if (lista.Count > 2)
 			{
-				tituloEn = tituloEn + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+				tituloEn = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString4"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
-				tituloEs = tituloEs + BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
+				tituloEs = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString4"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
 		}
@@ -618,7 +813,7 @@
 
 	private void SuscripcionGenerarContenido()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
@@ -639,12 +834,39 @@
 			contenidoEn = contenidoEn + Environment.NewLine + "<ul>" + Environment.NewLine;
 			contenidoEs = contenidoEs + Environment.NewLine + "<ul>" + Environment.NewLine;
 
+			bool mismoEnlace = true;
+			string enlaceSuscripcion = string.Empty;
+
 			foreach (var juego in lista)
 			{
 				Juegos.JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(juego));
 
-				contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
-				contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
+				if (suscripcion != null)
+				{
+					if (enlaceSuscripcion == string.Empty)
+					{
+						enlaceSuscripcion = Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo);
+					}
+					else
+					{
+						if (enlaceSuscripcion != Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo))
+						{
+							mismoEnlace = false;
+						}
+					}
+
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
+				}
+			}
+
+			if (mismoEnlace == true)
+			{
+				enlace = enlaceSuscripcion;
+			}
+			else
+			{
+				enlace = null;
 			}
 
 			contenidoEn = contenidoEn + "</ul>";
@@ -659,7 +881,7 @@
 
 	private void SuscripcionGenerarFecha()
 	{
-		List<string> lista = GenerarLista(juegos);
+		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
@@ -686,6 +908,7 @@
 		noticia.FechaEmpieza = DateTime.Now;
 		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
 		noticia.SuscripcionTipo = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
+		noticia.Enlace = enlace;
 
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
@@ -696,54 +919,38 @@
 		contenidoEs = null;
 		fechaSeleccionada = null;
 		juegos = null;
+		enlace = null;
 	}
 
 	#endregion
 
-	private List<string> GenerarLista(string datos)
+	#region Eventos
+
+	private void AñadirEventoNoticia(MouseEventArgs e)
 	{
-		if (datos != null)
-		{
-			List<string> lista = new List<string>();
-			string datos2 = datos;
+		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
 
-			int i = 0;
-			int j = 100000;
+		noticia.Tipo = global::Noticias.NoticiaTipo.Eventos;
+		noticia.TituloEn = tituloEn;
+		noticia.TituloEs = tituloEs;
+		noticia.ContenidoEn = contenidoEn;
+		noticia.ContenidoEs = contenidoEs;
+		noticia.Juegos = juegos;
+		noticia.FechaEmpieza = DateTime.Now;
+		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+		noticia.Enlace = enlace;
+		noticia.Imagen = imagen;
 
-			while (i < j)
-			{
-				if (datos2.Contains(",") == true)
-				{
-					int int1 = datos2.IndexOf(",");
+		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
-					string añadir = datos2.Remove(int1, datos2.Length - int1);
-
-					if (añadir.Length > 0)
-					{
-						lista.Add(añadir);
-					}
-					
-					datos2 = datos2.Remove(0, int1 + 1);
-				}
-				else
-				{
-					if (datos2.Length > 0)
-					{
-						lista.Add(datos2);
-					}
-					
-					break;
-				}
-
-				i += 1;
-			}
-
-			if (lista.Count > 0)
-			{
-				return lista;
-			}
-		}
-
-		return null;
+		tituloEn = null;
+		tituloEs = null;
+		contenidoEn = null;
+		contenidoEs = null;
+		fechaSeleccionada = null;
+		enlace = null;
+		imagen = null;
 	}
+
+	#endregion
 }

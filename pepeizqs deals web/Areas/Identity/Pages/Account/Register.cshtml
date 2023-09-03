@@ -27,7 +27,9 @@
             <input asp-for="Input.ConfirmPassword" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="password" />
             <span asp-validation-for="Input.ConfirmPassword" class="texto-peligro-entrada"></span>
         </div>
-        <button id="registerSubmit" type="submit" class="boton">Register</button>
+
+        <label class="texto-info-entrada">Registration disabled</label>
+        @* <button id="registerSubmit" type="submit" class="boton">Register</button> *@
     </form>
 
     @if (Model.errorMensaje.Length > 0)

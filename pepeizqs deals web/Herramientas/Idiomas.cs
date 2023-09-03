@@ -14,10 +14,13 @@ namespace Herramientas
 	{
 		public static string CogerCadena(string idiomaUsuario, string cadena)
 		{
-			if (idiomaUsuario == "es")
+			if (idiomaUsuario != null)
 			{
-				idiomaUsuario = "es-ES";
-			}
+				if (idiomaUsuario == "es")
+				{
+					idiomaUsuario = "es-ES";
+				}
+			}		
 
 			if (idiomaUsuario == null || File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
 			{
@@ -67,6 +70,21 @@ namespace Herramientas
 			{
 				return textoIngles;
 			}
+		}
+
+		public static string CogerRSS(string idiomaUsuario)
+		{
+			string rss = "/rss-en.xml";
+
+			if (idiomaUsuario != null)
+			{
+				if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
+				{
+					rss = "/rss-es.xml";
+				}
+			}
+
+			return rss;
 		}
 	}
 	

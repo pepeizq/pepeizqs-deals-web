@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#Conexion Base Datos
+/pepeizqs deals web/appsettings.json

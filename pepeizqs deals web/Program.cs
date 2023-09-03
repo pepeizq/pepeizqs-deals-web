@@ -102,14 +102,14 @@ builder.Services.AddServerSideBlazor(options =>
     options.DetailedErrors = true;
     options.DisconnectedCircuitMaxRetained = 100;
     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(15);
-    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(15);
     options.MaxBufferedUnacknowledgedRenderBatches = 10;
 }).AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromMinutes(600);
+    options.ClientTimeoutInterval = TimeSpan.FromMinutes(15);
 	options.EnableDetailedErrors = true;
     options.HandshakeTimeout = TimeSpan.FromMinutes(15);
-    options.KeepAliveInterval = TimeSpan.FromMinutes(15);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(10);
 });
 
 builder.Services.Configure<HubOptions>(options =>

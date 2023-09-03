@@ -28,6 +28,14 @@
     "Valor": "Últimos Añadidos"
   },
   {
+    "Id": "Layout.Privacy",
+    "Valor": "Privacidad y vuestros datos"
+  },
+  {
+    "Id": "Layout.SourceCode",
+    "Valor": "Código Fuente"
+  },
+  {
     "Id": "Index.LastLows",
     "Valor": "Últimos Mínimos Históricos"
   },
@@ -168,6 +176,18 @@
     "Valor": "Añadido"
   },
   {
+    "Id": "News.String7",
+    "Valor": "Abrir Bundle"
+  },
+  {
+    "Id": "News.String8",
+    "Valor": "Abrir Gratis"
+  },
+  {
+    "Id": "News.String9",
+    "Valor": "Abrir Suscripción"
+  },
+  {
     "Id": "News.BundleString1",
     "Valor": "El bundle {0} ha sido añadido en {1}"
   },
@@ -177,7 +197,11 @@
   },
   {
     "Id": "News.BundleString3",
-    "Valor": "Abrir Bundle"
+    "Valor": "En {0} hay un nuevo bundle donde puedes coger los juegos que quieras por un precio determinado:"
+  },
+  {
+    "Id": "News.BundleString4",
+    "Valor": "juegos"
   },
   {
     "Id": "News.FreeString1",
@@ -290,6 +314,42 @@
   {
     "Id": "Subscriptions.String2",
     "Valor": "Suscripciones Antiguas"
+  },
+  {
+    "Id": "Privacy.Title",
+    "Valor": "Privacidad y Vuestros Datos"
+  },
+  {
+    "Id": "Privacy.String1",
+    "Valor": "Cookies"
+  },
+  {
+    "Id": "Privacy.String2",
+    "Valor": "Como desarrollador de esta web y de otros proyectos, soy consciente del uso pernicioso que se puede hacer de la recolección de datos a través del uso de cookies. Al desarrollar desde cero esta web he podido mantener al mantener al mínimo necesario el uso de cookies, para que os hagáis una idea:"
+  },
+  {
+    "Id": "Privacy.String3",
+    "Valor": "Si decidís usar esta web sin registrar una cuenta, la web no usará ninguna cookie."
+  },
+  {
+    "Id": "Privacy.String4",
+    "Valor": "Si decidís usar esta web registrando una cuenta, la web solo necesita 3 cookies para operar correctamente. Las necesito para que vuestro navegador y mi servidor no se olviden ninguno del otro cada vez que abras la web."
+  },
+  {
+    "Id": "Privacy.String5",
+    "Valor": "Nota: Esta web es multilenguaje pero la identificación del idioma del usuario no se hace con ninguna cookie, sino a través de la petición que envía el navegador web."
+  },
+  {
+    "Id": "Privacy.String6",
+    "Valor": "Vuestros Datos"
+  },
+  {
+    "Id": "Privacy.String7",
+    "Valor": "Si decidís registraros una cuenta en la web quiero que ser lo mas transparente posible y prometo que solo usaré vuestros datos 'dentro de la web, no fuera'. Pero si tienes dudas de que me pueda volver malvado puedes borrar tu cuenta en cualquier momento desde 'Personal Data' o descargar todos los datos que tengo sobre ti."
+  },
+  {
+    "Id": "Privacy.String8",
+    "Valor": "De hecho, en esta web no voy a usar servicios como Google Analytics, aunque seguramente Google me castigará en su buscador por ello."
   },
   {
     "Id": "Timer.String1",
