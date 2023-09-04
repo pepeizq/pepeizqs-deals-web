@@ -2,11 +2,28 @@
 @using Juegos;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
+@using Microsoft.VisualBasic;
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
+
+@if (noticiaEvento.Count == 1)
+{
+	<div style="margin-bottom: 50px;">
+		<a href="@CargarEnlaceNoticia(noticiaEvento[0])" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
+			<div style="overflow: hidden; position: relative; height: 150px; display: flex; align-items: center;">
+				<img style="opacity: 0.2; position: absolute; left: 0; top: 0; width: 100%; height: auto;" src="@CargarFondoNoticia(noticiaEvento[0])">
+				<div style="position: relative; left: 50%; transform: translateX(-50%);">
+					<div style="font-size: 24px;">
+						@Herramientas.Idiomas.MirarTexto(idioma, @noticiaEvento[0].TituloEn, @noticiaEvento[0].TituloEs)
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+}
 
 <div class="portada-columnas">
 	<div class="portada-columna portada-columna-izq">
@@ -140,6 +157,7 @@
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 	List<Juego> juegosAñadidosMostrar = new List<Juego>();
 	List<Noticia> noticiasMostrar = new List<Noticia>();
+	List<Noticia> noticiaEvento = new List<Noticia>();
 
 	protected override void OnInitialized()
 	{
@@ -201,11 +219,28 @@
 			{
 				if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 				{
-					if (i < 10)
+					if (i < 15)
 					{
-						noticiasMostrar.Add(noticia);
+						if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
+						{
+							DateTime fechaEncabezado = noticia.FechaEmpieza;
+							fechaEncabezado = fechaEncabezado.AddDays(3);
+
+							if (DateTime.Now < fechaEncabezado)
+							{
+								noticiaEvento.Add(noticia);
+							}
+							else
+							{
+								noticiasMostrar.Add(noticia);
+							}
+						}
+						else
+						{
+							noticiasMostrar.Add(noticia);
+						}					
 					}
-					
+
 					i += 1;
 				}
 			}
@@ -273,5 +308,90 @@
 		{
 			return null;
 		}
+	}
+
+	private string CargarEnlaceNoticia(Noticia noticia)
+	{
+		string enlace = string.Empty;
+
+		if (noticia.Enlace != null)
+		{
+			enlace = noticia.Enlace;
+		}
+		else
+		{
+			enlace = "/news/" + noticia.Id.ToString();
+		}
+
+		return enlace;
+	}
+
+	private string CargarFondoNoticia(Noticia noticia)
+	{
+		string imagen = null;
+
+		if (noticia != null)
+		{
+			if (noticia.Imagen != null)
+			{
+				imagen = noticia.Imagen;
+			}
+
+			if (imagen == null)
+			{
+				if (noticia.Juegos != null)
+				{
+					List<string> juegos = Herramientas.Listados.Generar(noticia.Juegos);
+
+					if (juegos != null)
+					{
+						Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
+
+						if (juego != null)
+						{
+							imagen = juego.Imagenes.Library_1920x620;
+						}
+					}
+				}
+			}
+
+			if (imagen == null)
+			{
+				if (noticia.ContenidoEn != null)
+				{
+					if (noticia.ContenidoEn.Contains(".png") == true || noticia.ContenidoEn.Contains(".webp") == true || noticia.ContenidoEn.Contains(".jpg") == true)
+					{
+						int contador = 4;
+						int int1 = noticia.ContenidoEn.IndexOf(".png");
+
+						if (int1 == -1)
+						{
+							contador = 5;
+							int1 = noticia.ContenidoEn.IndexOf(".webp");
+						}
+
+						if (int1 == -1)
+						{
+							contador = 4;
+							int1 = noticia.ContenidoEn.IndexOf(".jpg");
+						}
+
+						if (int1 > - 1)
+						{
+							string temp1 = noticia.ContenidoEn.Remove(int1 + contador, noticia.ContenidoEn.Length - int1 - contador);
+
+							int int2 = temp1.LastIndexOf("https://");
+							string temp2 = temp1.Remove(0, int2);
+
+							temp2 = temp2.Replace(Strings.ChrW(34).ToString(), null);
+
+							imagen = temp2.Trim();
+						}
+					}
+				}
+			}
+		}
+
+		return imagen;
 	}
 }

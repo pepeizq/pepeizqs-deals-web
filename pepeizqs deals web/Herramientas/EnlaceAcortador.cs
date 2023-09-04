@@ -40,6 +40,10 @@ namespace Herramientas
 				{
 					enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
 				}
+				else if (tienda == APIs.IndieGala.Tienda.Generar().Id)
+				{
+					enlace = APIs.IndieGala.Tienda.Referido(enlace);
+				}
 			}
 
 			//----------------------------------------

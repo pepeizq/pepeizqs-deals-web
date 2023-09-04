@@ -67,7 +67,7 @@ namespace Herramientas
 		[HttpGet("rss-es.xml")]
 		public IActionResult GenerarEsRSS()
 		{
-			SyndicationFeed feed = new SyndicationFeed("pepeizq's deals", "RSS in English from the web", new Uri(dominio), "RSSUrl", DateTime.Now)
+			SyndicationFeed feed = new SyndicationFeed("pepeizq's deals", "RSS en Español de la web", new Uri(dominio), "RSSUrl", DateTime.Now)
 			{
 				Copyright = new TextSyndicationContent($"{DateTime.Now.Year}")
 			};

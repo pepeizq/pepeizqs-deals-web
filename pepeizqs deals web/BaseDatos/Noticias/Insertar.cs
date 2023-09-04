@@ -1,4 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#nullable disable
+
+using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 
 namespace BaseDatos.Noticias
 {
@@ -101,25 +104,63 @@ namespace BaseDatos.Noticias
 				}
 				else if (noticia.Tipo == global::Noticias.NoticiaTipo.Eventos)
 				{
+					string añadirImagen1 = string.Empty;
+					string añadirImagen2 = string.Empty;
+
+					if (noticia.Imagen != null)
+					{
+						añadirImagen1 = ", imagen";
+						añadirImagen2 = ", @imagen";
+					}
+					else
+					{
+						añadirImagen1 = null;
+						añadirImagen2 = null;
+					}
+
+					string añadirEnlace1 = string.Empty;
+					string añadirEnlace2 = string.Empty;
+
+					if (noticia.Enlace != null)
+					{
+						añadirEnlace1 = ", enlace";
+						añadirEnlace2 = ", @enlace";
+					}
+					else
+					{
+						añadirEnlace1 = null;
+						añadirEnlace2 = null;
+					}
+
 					string sqlInsertar = "INSERT INTO noticias " +
-						"(noticiaTipo, imagen, enlace, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
-						"(@noticiaTipo, @imagen, @enlace, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
+						"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
+						"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
 
 					using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 					{
 						comando.Parameters.AddWithValue("@noticiaTipo", noticia.Tipo);
-						comando.Parameters.AddWithValue("@imagen", noticia.Imagen);
-						comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+
+						if (noticia.Imagen != null)
+						{
+							comando.Parameters.AddWithValue("@imagen", noticia.Imagen);
+						}
+						
+						if (noticia.Enlace != null)
+						{
+							comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+						}
+						
 						comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 						comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
 						comando.Parameters.AddWithValue("@tituloEn", noticia.TituloEn);
 						comando.Parameters.AddWithValue("@tituloEs", noticia.TituloEs);
 						comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);
 						comando.Parameters.AddWithValue("@contenidoEs", noticia.ContenidoEs);
-
+						
 						try
 						{
 							comando.ExecuteNonQuery();
+
 						}
 						catch
 						{

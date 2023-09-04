@@ -91,7 +91,7 @@
 }
 
 .boton-pequeño:hover {
-    color: var(--colorTexto);
+    color: var(--colorTextoHover);
     background-color: var(--fondoBotonPequeñoHover);
 }
 

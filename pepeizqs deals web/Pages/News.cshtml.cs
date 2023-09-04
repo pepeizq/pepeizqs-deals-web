@@ -93,6 +93,11 @@ namespace pepeizqs_deals_web.Pages
 
 					contenido = Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs);
 
+					if (contenido != null)
+					{
+						contenido = contenido.Replace("<img ", "<img style=" + Strings.ChrW(34) + "max-width: 100%; margin-top: 20px; margin-bottom: 20px;" + Strings.ChrW(34)) + " ";
+					}
+
 					if (noticia.FechaTermina.Year > 2022)
 					{
 						fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.HaceTiempo(noticia.FechaEmpieza, idioma);

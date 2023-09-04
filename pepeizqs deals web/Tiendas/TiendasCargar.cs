@@ -19,7 +19,8 @@ namespace Tiendas2
 				APIs.Gamesplanet.Tienda.GenerarUs(),
 				APIs.Fanatical.Tienda.Generar(),
 				APIs.GreenManGaming.Tienda.Generar(),
-				APIs.GOG.Tienda.Generar()
+				APIs.GOG.Tienda.Generar(),
+                APIs.IndieGala.Tienda.Generar()
 			};
 
 			return tiendas;
@@ -62,6 +63,10 @@ namespace Tiendas2
 			else if (id == APIs.GOG.Tienda.Generar().Id)
 			{
 				await APIs.GOG.Tienda.BuscarOfertas();
+			}
+			else if (id == APIs.IndieGala.Tienda.Generar().Id)
+			{
+				await APIs.IndieGala.Tienda.BuscarOfertas();
 			}
 		}
 

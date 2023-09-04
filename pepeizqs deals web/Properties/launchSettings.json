@@ -25,6 +25,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "https://pepeizqdeals.com/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },

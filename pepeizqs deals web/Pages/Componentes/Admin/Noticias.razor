@@ -935,12 +935,19 @@
 		noticia.TituloEs = tituloEs;
 		noticia.ContenidoEn = contenidoEn;
 		noticia.ContenidoEs = contenidoEs;
-		noticia.Juegos = juegos;
 		noticia.FechaEmpieza = DateTime.Now;
 		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
-		noticia.Enlace = enlace;
-		noticia.Imagen = imagen;
 
+		if (enlace != null)
+		{
+			noticia.Enlace = enlace;
+		}
+
+		if (imagen != null)
+		{
+			noticia.Imagen = imagen;
+		}
+		
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
 		tituloEn = null;
