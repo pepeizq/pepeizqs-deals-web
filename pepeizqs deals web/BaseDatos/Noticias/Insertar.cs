@@ -102,7 +102,7 @@ namespace BaseDatos.Noticias
 						}
 					}
 				}
-				else if (noticia.Tipo == global::Noticias.NoticiaTipo.Eventos)
+				else
 				{
 					string añadirImagen1 = string.Empty;
 					string añadirImagen2 = string.Empty;
@@ -132,9 +132,23 @@ namespace BaseDatos.Noticias
 						añadirEnlace2 = null;
 					}
 
+					string añadirJuegos1 = string.Empty;
+					string añadirJuegos2 = string.Empty;
+
+					if (noticia.Juegos != null)
+					{
+						añadirJuegos1 = ", juegos";
+						añadirJuegos2 = ", @juegos";
+					}
+					else
+					{
+						añadirJuegos1 = null;
+						añadirJuegos2 = null;
+					}
+
 					string sqlInsertar = "INSERT INTO noticias " +
-						"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
-						"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
+						"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + añadirJuegos1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
+						"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + añadirJuegos2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
 
 					using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 					{
@@ -149,7 +163,12 @@ namespace BaseDatos.Noticias
 						{
 							comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
 						}
-						
+
+						if (noticia.Juegos != null)
+						{
+							comando.Parameters.AddWithValue("@juegos", noticia.Juegos);
+						}
+
 						comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 						comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
 						comando.Parameters.AddWithValue("@tituloEn", noticia.TituloEn);

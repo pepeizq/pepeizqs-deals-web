@@ -44,6 +44,10 @@ namespace Herramientas
 				{
 					enlace = APIs.IndieGala.Tienda.Referido(enlace);
 				}
+				else if (tienda == APIs.WinGameStore.Tienda.Generar().Id)
+				{
+					enlace = APIs.WinGameStore.Tienda.Referido(enlace);
+				}
 			}
 
 			//----------------------------------------

@@ -7,7 +7,9 @@
 		Gratis,
 		Suscripciones,
 		Eventos,
-		Sorteos
+		Sorteos,
+		Rumores,
+		Otros
 	}
 
 	public static class NoticiasCargar

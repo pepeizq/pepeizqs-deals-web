@@ -3,6 +3,16 @@
 
 @if (noticiasMostrar.Count > 0)
 {
+	<div style="display: flex; align-items: center; width: 100%;">
+		<div style="width: 80%; font-size: 23px; text-align: left;">
+			@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.Title")
+		</div>
+
+		<div style="width: 20%; font-size: 20px; text-align: right;">
+			<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank"><i class="fa-solid fa-rss"></i></a>
+		</div>
+	</div>
+
 	@for (int i = 0; i < noticiasMostrar.Count; i += 1)
 	{
 		@if (i == 0 || (i > 0 && FechaIncluir(noticiasMostrar[i - 1], noticiasMostrar[i]) == true))
@@ -33,6 +43,22 @@
 	}
 }
 
+@if (noticiasAntiguas.Count > 0)
+{
+	<div style="font-size: 23px; margin-top: 80px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.String1")
+	</div>
+
+	<hr/>
+
+	<ul>
+		@foreach (var antigua in noticiasAntiguas)
+		{
+			<li><a href="/news/@antigua.Id">@Herramientas.Idiomas.MirarTexto(idioma, antigua.TituloEn, antigua.TituloEs)</a> (@antigua.FechaEmpieza.Day/@antigua.FechaEmpieza.Month/@antigua.FechaEmpieza.Year)</li>
+		}
+	</ul>
+}
+
 @code {
 
 	#nullable disable
@@ -42,6 +68,7 @@
 
 	private List<string> fechas = new List<string>();
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
+	private List<Noticias.Noticia> noticiasAntiguas = new List<Noticias.Noticia>();
 
 	protected override void OnInitialized()
 	{
@@ -52,6 +79,10 @@
 			if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 			{
 				noticiasMostrar.Add(noticia);
+			}
+			else
+			{
+				noticiasAntiguas.Add(noticia);
 			}
 		}
 	}

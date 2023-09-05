@@ -1,6 +1,15 @@
-﻿#nullable disable
+﻿//https://www.indiegala.com/games/ajax/on-sale/percentage-off/1
+//https://www.indiegala.com/store_games_rss?&sale=true&page=1
 
+#nullable disable
+
+using Herramientas;
+using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
+using System.Net;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace APIs.IndieGala
 {
@@ -30,7 +39,149 @@ namespace APIs.IndieGala
 
 		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
 		{
-			//https://www.indiegala.com/games/ajax/on-sale/percentage-off/15
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				conexion.Open();
+
+				int i = 1;
+				while (i < 10)
+				{
+					string html = Decompiladores.GZipFormato("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
+
+					if (html != null)
+					{
+						if (html == "None")
+						{
+							break;
+						}
+
+						XmlSerializer xml = new XmlSerializer(typeof(IndieGalaRSS));
+						IndieGalaRSS listaJuegos = null;
+
+						using (TextReader lector = new StringReader(html))
+						{
+							listaJuegos = (IndieGalaRSS)xml.Deserialize(lector);
+						}
+
+						if (listaJuegos != null)
+						{
+							if (listaJuegos.Canal.Buscador.Juegos != null)
+							{
+								if (listaJuegos.Canal.Buscador.Juegos.Count > 0)
+								{
+									int juegos2 = 0;
+
+									foreach (IndieGalaJuego juego in listaJuegos.Canal.Buscador.Juegos)
+									{
+										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+										string enlace = juego.Enlace;
+
+										string imagen = juego.Imagen;
+
+										if (imagen.Contains("https://www.indiegalacdn.com/") == false)
+										{
+											imagen = "https://www.indiegalacdn.com/" + imagen;
+										}
+
+										decimal precioBase = decimal.Parse(juego.PrecioBase);
+										decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+										int descuento = Convert.ToInt32(Math.Round(decimal.Parse(juego.Descuento), MidpointRounding.AwayFromZero));
+
+										if (descuento > 0)
+										{
+											JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+
+											JuegoPrecio oferta = new JuegoPrecio
+											{
+												Nombre = nombre,
+												Enlace = enlace,
+												Imagen = imagen,
+												Moneda = JuegoMoneda.Euro,
+												Precio = precioRebajado,
+												Descuento = descuento,
+												Tienda = Generar().Id,
+												DRM = drm,
+												FechaDetectado = DateTime.Now,
+												FechaActualizacion = DateTime.Now
+											};
+
+											if (juego.Fecha != null)
+											{
+												DateTime fechaTermina = DateTime.Parse(juego.Fecha);
+												oferta.FechaTermina = fechaTermina;
+											}
+
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+											juegos2 += 1;
+											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					i += 1;
+				}
+			}
+
+			conexion.Dispose();
 		}
+	}
+
+	[XmlRoot("rss")]
+	public class IndieGalaRSS
+	{
+		[XmlElement("channel")]
+		public IndieGalaCanal Canal { get; set; }
+	}
+
+	public class IndieGalaCanal
+	{
+		[XmlElement("totalPages")]
+		public int TotalPaginas { get; set; }
+
+		[XmlElement("totalGames")]
+		public int TotalJuegos { get; set; }
+
+		[XmlElement("browse")]
+		public IndieGalaJuegos Buscador { get; set; }
+	}
+
+	public class IndieGalaJuegos
+	{
+		[XmlElement("item")]
+		public List<IndieGalaJuego> Juegos { get; set; }
+	}
+
+	public class IndieGalaJuego
+	{
+		[XmlElement("title")]
+		public string Nombre { get; set; }
+
+		[XmlElement("link")]
+		public string Enlace { get; set; }
+
+		[XmlElement("discountPercentEUR")]
+		public string Descuento { get; set; }
+
+		[XmlElement("discountPriceEUR")]
+		public string PrecioRebajado { get; set; }
+
+		[XmlElement("priceEUR")]
+		public string PrecioBase { get; set; }
+
+		[XmlElement("boximg")]
+		public string Imagen { get; set; }
+
+		[XmlElement("drminfo")]
+		public string DRM { get; set; }
+
+		[XmlElement("discountEnd")]
+		public string Fecha { get; set; }
 	}
 }

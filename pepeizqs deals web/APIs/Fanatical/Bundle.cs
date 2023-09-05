@@ -110,51 +110,22 @@ namespace APIs.Fanatical
 
 									bundle.FechaTermina = Convert.ToDateTime(fechaTermina);
 
-									if (juego.Bundle.Tier1 != null)
+									if (bundle.Tiers == null)
 									{
-										if (juego.Bundle.Tier1.Juegos != null)
+										bundle.Tiers = new List<Bundles2.BundleTier>();
+
+										Bundles2.BundleTier tier1 = new Bundles2.BundleTier
 										{
-											if (juego.Bundle.Tier1.Juegos.Count > 0)
-											{
-												if (bundle.Tiers == null)
-												{
-													bundle.Tiers = new List<Bundles2.BundleTier>();
-												}
+											Posicion = 1,
+											Precio = juego.PrecioRebajado.EUR
+										};
 
-												Bundles2.BundleTier tier1 = new Bundles2.BundleTier
-												{
-													Posicion = 1,
-													Precio = juego.PrecioRebajado.EUR
-												};
-
-												bundle.Tiers.Add(tier1);
-
-												foreach (var juegob in juego.Bundle.Tier1.Juegos)
-												{
-													Juegos.Juego juegoc = BaseDatos.Juegos.Buscar.UnJuego(null, juegob.SteamId);
-
-													if (juegoc != null)
-													{
-														if (bundle.Juegos == null)
-														{
-															bundle.Juegos = new List<Bundles2.BundleJuego>();
-														}
-
-														Bundles2.BundleJuego juegod = new Bundles2.BundleJuego();
-
-														juegod.JuegoId = juegoc.Id.ToString();
-														juegod.Nombre = juegoc.Nombre;
-														juegod.Imagen = juegoc.Imagenes.Capsule_231x87;
-														juegod.DRM = Juegos.JuegoDRM.Steam;
-														juegod.Tier = bundle.Tiers[0];
-
-														bundle.Juegos.Add(juegod);
-													}
-												}
-											}
-										}
+										bundle.Tiers.Add(tier1);
 									}
-									
+
+									ComprobarTierBundle(bundle, juego.Bundle.Tier1);
+									ComprobarTierBundle(bundle, juego.Bundle.Tier2);
+									ComprobarTierBundle(bundle, juego.Bundle.Tier3);
 								}
 							}
 						}
@@ -163,6 +134,57 @@ namespace APIs.Fanatical
 			}
 
             return bundle;
+		}
+	
+		private static void ComprobarTierBundle(Bundles2.Bundle bundle, FanaticalJuegoBundleTier tier)
+		{
+			if (tier != null)
+			{
+				if (tier.Juegos != null)
+				{
+					if (tier.Juegos.Count > 0)
+					{
+						foreach (var juegob in tier.Juegos)
+						{
+							Juegos.Juego juegoc = BaseDatos.Juegos.Buscar.UnJuego(null, juegob.SteamId);
+
+							if (juegoc != null)
+							{
+								if (bundle.Juegos == null)
+								{
+									bundle.Juegos = new List<Bundles2.BundleJuego>();
+								}
+
+								Bundles2.BundleJuego juegod = new Bundles2.BundleJuego();
+
+								juegod.JuegoId = juegoc.Id.ToString();
+								juegod.Nombre = juegoc.Nombre;
+								juegod.Imagen = juegoc.Imagenes.Capsule_231x87;
+								juegod.DRM = Juegos.JuegoDRM.Steam;
+								juegod.Tier = bundle.Tiers[0];
+
+								bool añadir = true;
+
+								if (bundle.Juegos.Count > 0)
+								{
+									foreach (var juegoe in bundle.Juegos)
+									{
+										if (juegoe.JuegoId == juegod.JuegoId)
+										{
+											añadir = false;
+										}
+									}
+								}
+
+								if (añadir == true)
+								{
+									bundle.Juegos.Add(juegod);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

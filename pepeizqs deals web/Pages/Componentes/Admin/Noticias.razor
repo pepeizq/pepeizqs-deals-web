@@ -342,6 +342,100 @@
 			<button @onclick="@(e => AñadirEventoNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
 		</div>
 	}
+	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+	{
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Título EN:</label>
+			<input type="text" @onchange="@(e => CambiarTituloEn(e))" class="entrada-texto" value="@tituloEn" />
+		</div>
+
+		<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Título ES:</label>
+			<input type="text" @onchange="@(e => CambiarTituloEs(e))" class="entrada-texto" value="@tituloEs" />
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Contenido EN:</label>
+			<textarea @onchange="@(e => CambiarContenidoEn(e))" class="entrada-texto" rows="8">@contenidoEn</textarea>
+		</div>
+
+		<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+			@((MarkupString)contenidoEn)
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Contenido ES:</label>
+			<textarea @onchange="@(e => CambiarContenidoEs(e))" class="entrada-texto" rows="8">@contenidoEs</textarea>
+		</div>
+
+		<div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+			@((MarkupString)contenidoEs)
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Juegos IDs:</label>
+			<input type="text" class="entrada-texto" value="@juegos" />
+		</div>
+
+		<div style="margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Juegos Buscador:</label>
+			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="margin-bottom: 20px;"/>
+
+			@if (juegosBuscador != null)
+			{
+				@if (juegosBuscador.Count > 0)
+				{
+					<div>
+						@foreach (var juego in juegosBuscador)
+						{
+							<div class="perfil-flexible-centrado perfil-espacio-top">
+								<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Capsule_231x87, @juego.Nombre))" class="boton-pequeño">
+									<div class="perfil-flexible-centrado">
+										<div style="width: 12%;">
+											<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+										</div>
+
+										<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+											@juego.Id - @juego.Nombre
+										</div>
+									</div>
+								</button>
+							</div>
+						}
+					</div>
+				}
+			}
+		</div>
+
+		<hr />
+
+		<div style="margin-left: 20px;">
+			<label style="margin: 10px;">Fecha Termina:</label>
+			<input type="datetime-local" @onchange="@(e => CambiarSuscripcionFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+		</div>
+
+		<div style="margin-top: 10px; margin-left: 20px;">
+			<label style="margin: 10px;">Imagen:</label>
+			<input type="text" @onchange="@(e => CambiarImagen(e))" class="entrada-texto" value="@imagen" />
+		</div>
+
+		<div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+			<label style="margin: 10px;">Enlace:</label>
+			<input type="text" class="entrada-texto" value="@enlace" />
+		</div>
+
+		<hr />
+
+		<div style="display: flex; margin-top: 20px; width: 20%;">
+			<button @onclick="@(e => AñadirRumorNoticia(e))" class="boton-pequeño" style="text-align: center;">Añadir Noticia</button>
+		</div>
+	}
 </div>
 
 @code {
@@ -351,6 +445,7 @@
 	private string noticiaTipoSeleccionada = null;
 
 	private string juegos = null;
+	private List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
 	private string bundleSeleccionado = null;
 	private string gratisSeleccionado = null;
@@ -408,6 +503,52 @@
 	private void CambiarImagen(ChangeEventArgs texto)
 	{
 		imagen = texto.Value.ToString();
+	}
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), false);
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void SeleccionarJuego(MouseEventArgs e, string id, string imagen, string nombre)
+	{
+		if (juegos == null)
+		{
+			juegos = id;
+		}
+		else
+		{
+			juegos = juegos + "," + id;	
+		}
+
+		juegosBuscador = new List<Juegos.Juego>();
+
+		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+		{
+			contenidoEn = "<ul>" + Environment.NewLine;
+			contenidoEs = "<ul>" + Environment.NewLine;
+
+			foreach (string juego in Herramientas.Listados.Generar(juegos))
+			{
+				Juegos.Juego juegob = BaseDatos.Juegos.Buscar.UnJuego(juego);
+
+				if (juegob != null)
+				{
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "/game/" + juegob.Id.ToString() + Strings.ChrW(34) + ">" + juegob.Nombre + "</a></li>" + Environment.NewLine;
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "/game/" + juegob.Id.ToString() + Strings.ChrW(34) + ">" + juegob.Nombre + "</a></li>" + Environment.NewLine;
+				}
+			}
+
+			contenidoEn = Environment.NewLine + contenidoEn + "</ul>";
+			contenidoEs = Environment.NewLine + contenidoEs + "</ul>";
+		}
 	}
 
 	#region Bundles
@@ -948,6 +1089,48 @@
 			noticia.Imagen = imagen;
 		}
 		
+		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+		tituloEn = null;
+		tituloEs = null;
+		contenidoEn = null;
+		contenidoEs = null;
+		fechaSeleccionada = null;
+		enlace = null;
+		imagen = null;
+	}
+
+	#endregion
+
+	#region Rumores
+
+	private void AñadirRumorNoticia(MouseEventArgs e)
+	{
+		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+		noticia.Tipo = global::Noticias.NoticiaTipo.Rumores;
+		noticia.TituloEn = tituloEn;
+		noticia.TituloEs = tituloEs;
+		noticia.ContenidoEn = contenidoEn;
+		noticia.ContenidoEs = contenidoEs;
+		noticia.FechaEmpieza = DateTime.Now;
+		noticia.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+
+		if (enlace != null)
+		{
+			noticia.Enlace = enlace;
+		}
+
+		if (imagen != null)
+		{
+			noticia.Imagen = imagen;
+		}
+
+		if (juegos != null)
+		{
+			noticia.Juegos = juegos;
+		}
+
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
 
 		tituloEn = null;

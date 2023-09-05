@@ -20,7 +20,8 @@ namespace Tiendas2
 				APIs.Fanatical.Tienda.Generar(),
 				APIs.GreenManGaming.Tienda.Generar(),
 				APIs.GOG.Tienda.Generar(),
-                APIs.IndieGala.Tienda.Generar()
+                APIs.IndieGala.Tienda.Generar(),
+                APIs.WinGameStore.Tienda.Generar()
 			};
 
 			return tiendas;
@@ -67,6 +68,10 @@ namespace Tiendas2
 			else if (id == APIs.IndieGala.Tienda.Generar().Id)
 			{
 				await APIs.IndieGala.Tienda.BuscarOfertas();
+			}
+			else if (id == APIs.WinGameStore.Tienda.Generar().Id)
+			{
+				await APIs.WinGameStore.Tienda.BuscarOfertas();
 			}
 		}
 
@@ -155,7 +160,25 @@ namespace Tiendas2
                         await APIs.GOG.Tienda.BuscarOfertas();
                     }
                 }
-                else if (orden == 9)
+				else if (orden == 9)
+				{
+					DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.IndieGala.Tienda.Generar().Id);
+
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+					{
+						await APIs.IndieGala.Tienda.BuscarOfertas();
+					}
+				}
+				else if (orden == 10)
+				{
+					DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.WinGameStore.Tienda.Generar().Id);
+
+					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+					{
+						await APIs.WinGameStore.Tienda.BuscarOfertas();
+					}
+				}
+				else if (orden == 11)
                 {
                     Divisas.CogerDatos();
                 }

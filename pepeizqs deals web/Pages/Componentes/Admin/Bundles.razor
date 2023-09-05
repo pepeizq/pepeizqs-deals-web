@@ -190,6 +190,24 @@
 			});
 
 			bundle = tarea.Result;
+
+			if (bundle.Juegos != null)
+			{
+				if (bundle.Juegos.Count > 0)
+				{
+					foreach (var juego in bundle.Juegos)
+					{
+						if (juegosIds == null)
+						{
+							juegosIds = juego.JuegoId;
+						}
+						else
+						{
+							juegosIds = juegosIds + "," + juego.JuegoId;
+						}
+					}
+				}
+			}
 		}
 	}
 

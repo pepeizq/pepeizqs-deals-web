@@ -23,7 +23,13 @@ namespace APIs.Steam
 				html = html.Remove(0, int1 + 1);
 				html = html.Remove(html.Length - 1, 1);
 
-				SteamJuegoAPI datos = JsonConvert.DeserializeObject<SteamJuegoAPI>(html);
+				SteamJuegoAPI datos = null;
+				
+				try
+				{
+					datos = JsonConvert.DeserializeObject<SteamJuegoAPI>(html);
+				}
+				catch { }				
 
 				if (datos != null)
 				{

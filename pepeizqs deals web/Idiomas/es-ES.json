@@ -152,6 +152,10 @@
     "Valor": "Últimas Noticias"
   },
   {
+    "Id": "LastNews.String1",
+    "Valor": "Antiguas Noticias"
+  },
+  {
     "Id": "News.String1",
     "Valor": "Esta promoción termina en {0} días"
   },

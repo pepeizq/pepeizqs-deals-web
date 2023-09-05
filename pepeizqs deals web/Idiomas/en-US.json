@@ -152,6 +152,10 @@
     "Valor": "Last News"
   },
   {
+    "Id": "LastNews.String1",
+    "Valor": "Old News"
+  },
+  {
     "Id": "News.String1",
     "Valor": "This promotion ends in {0} days"
   },
