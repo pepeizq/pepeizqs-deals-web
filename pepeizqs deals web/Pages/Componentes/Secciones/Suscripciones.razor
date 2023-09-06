@@ -54,7 +54,7 @@
 				@foreach (var juego in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Pasado))
 				{
 					<div>
-						<a href="/game/@juego.JuegoId">@juego.Nombre</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
+						<a href="/game/@juego.JuegoId">@LimpiarNombre(juego.Nombre)</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
 					</div>
 				}
 			</div>
@@ -71,6 +71,14 @@
 
 	protected override void OnInitialized()
 	{
-		
+
+	}
+
+	private string LimpiarNombre(string nombre)
+	{
+		nombre = nombre.Replace("???", null);
+		nombre = nombre.Trim();
+
+		return nombre;
 	}
 }

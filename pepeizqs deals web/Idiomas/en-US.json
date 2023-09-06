@@ -60,6 +60,10 @@
     "Valor": "Last all news"
   },
   {
+    "Id": "Index.LastNewsFollow",
+    "Valor": "You can also follow the news on these social networks:"
+  },
+  {
     "Id": "Index.Title",
     "Valor": "Home Page"
   },

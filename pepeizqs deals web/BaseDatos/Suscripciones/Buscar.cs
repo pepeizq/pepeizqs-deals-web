@@ -116,13 +116,14 @@ namespace BaseDatos.Suscripciones
 
 		public static JuegoSuscripcion UnJuego(int juegoId)
 		{
+			List<JuegoSuscripcion> resultados = new List<JuegoSuscripcion>();
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
 				conexion.Open();
 
-				string busqueda = "SELECT * FROM suscripciones WHERE juegoId=(SELECT max(@juegoId) FROM suscripciones)";
+				string busqueda = "SELECT * FROM suscripciones WHERE juegoId=@juegoId";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -144,10 +145,15 @@ namespace BaseDatos.Suscripciones
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
 
-							return suscripcion;
+							resultados.Add(suscripcion);
 						}
 					}
 				}
+			}
+
+			if (resultados.Count > 0)
+			{
+				return resultados[resultados.Count - 1];
 			}
 
 			conexion.Dispose();

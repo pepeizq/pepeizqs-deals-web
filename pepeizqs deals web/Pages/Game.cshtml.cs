@@ -202,6 +202,8 @@ namespace pepeizqs_deals_web.Pages
 							{
 								mensaje = Idiomas.CogerCadena(idioma, "Game.String15") + " " + SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " " + Calculadora.HaceTiempo(suscripcion.FechaTermina, idioma);
 							}
+
+							break;
 						}
 					}
 

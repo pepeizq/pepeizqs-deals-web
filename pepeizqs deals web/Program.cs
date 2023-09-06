@@ -106,9 +106,9 @@ builder.Services.AddServerSideBlazor(options =>
     options.MaxBufferedUnacknowledgedRenderBatches = 10;
 }).AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromMinutes(15);
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(20);
 	options.EnableDetailedErrors = true;
-    options.HandshakeTimeout = TimeSpan.FromMinutes(15);
+    options.HandshakeTimeout = TimeSpan.FromSeconds(10);
     options.KeepAliveInterval = TimeSpan.FromSeconds(10);
 });
 

@@ -60,6 +60,10 @@
     "Valor": "Cargar todas las noticias"
   },
   {
+    "Id": "Index.LastNewsFollow",
+    "Valor": "También puedes seguir las noticias en estas redes sociales:"
+  },
+  {
     "Id": "Index.Title",
     "Valor": "Inicio"
   },
