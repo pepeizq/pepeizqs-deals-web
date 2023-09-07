@@ -72,15 +72,37 @@
 					@foreach (var juego in Model.juegos)
 					{
 						<div style="min-width: 150px; max-width: 200px;">
-							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 8px;">
+							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
 								<div>
-									<img src="@juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
+									<img src="@juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='@juego.Imagenes.Capsule_231x87';" />
 								</div>
 							</a>
 						</div>
 					}
 				</div>
 			</div>	
+		}
+
+		@if (Model.dlcs.Count > 0)
+		{
+			<div class="perfil" style="margin-top: 40px;">
+				<div style="margin-bottom: 20px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String10")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+					@foreach (var juego in Model.dlcs)
+					{
+						<div style="min-width: 200px; max-width: 250px;">
+							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
+								<div>
+									<img src="@juego.Imagenes.Capsule_231x87" style="max-width: 100%; max-height: 100%;" />
+								</div>
+							</a>
+						</div>
+					}
+				</div>
+			</div>
 		}
 	</div>
 </div>

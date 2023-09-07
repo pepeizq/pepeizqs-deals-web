@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <a class="texto-logo" asp-area="" asp-page="/Index">pepeizq's deals</a>
+                <a class="texto-logo" href="/Index">pepeizq's deals</a>
 
                 @*Resolucion pequeña*@
 @*                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -161,9 +161,9 @@
     <script>
         Blazor.start().then(() => {
             Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                if (window.location.href.indexOf("/Admin/") == -1) {
-                    document.location.reload();
-                }
+                // if (window.location.href.indexOf("/Admin/") == -1) {
+                //     document.location.reload();
+                // }
             }
         });
     </script>

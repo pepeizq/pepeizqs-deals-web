@@ -25,7 +25,9 @@ namespace pepeizqs_deals_web.Pages
 		public string video = null;
 		public string fechaEmpieza = null;
 		public string fechaTermina = null;
+
 		public List<Juego> juegos = new List<Juego>();
+		public List<Juego> dlcs = new List<Juego>();
 
         public void OnGet()
         {
@@ -137,7 +139,14 @@ namespace pepeizqs_deals_web.Pages
 
 								if (juego != null)
 								{
-									juegos.Add(juego);
+									if (juego.Tipo == JuegoTipo.Game)
+									{
+										juegos.Add(juego);
+									}
+									else if (juego.Tipo == JuegoTipo.DLC)
+									{
+										dlcs.Add(juego);
+									}
 								}
 							}
 						}

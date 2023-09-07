@@ -609,7 +609,7 @@
 			contenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div>";
 			contenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString2"), bundle.NombreTienda) + "</div>";
 
-			foreach (var tier in bundle.Tiers)
+			foreach (var tier in bundle.Tiers.OrderBy(x => x.Posicion))
 			{
 				string precio = tier.Precio;
 				precio = precio.Replace(".", ",");

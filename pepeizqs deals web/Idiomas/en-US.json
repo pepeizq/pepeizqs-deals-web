@@ -196,8 +196,12 @@
     "Valor": "Open Subscription"
   },
   {
+    "Id": "News.String10",
+    "Valor": "DLCs in the database:"
+  },
+  {
     "Id": "News.BundleString1",
-    "Valor": "The {0} bundle has been added to {1}"
+    "Valor": "The {0} bundle has been released on {1}"
   },
   {
     "Id": "News.BundleString2",

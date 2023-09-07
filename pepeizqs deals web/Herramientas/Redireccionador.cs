@@ -73,7 +73,6 @@ namespace Herramientas
 			return Redirect("~/bundle?id=" + Id.ToString());
         }
 
-        [ResponseCache(Duration = 2000)]
         [HttpGet("news-rss")]
         public IActionResult CogerNoticiasRSS()
         {
