@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <a class="texto-logo" href="/Index">pepeizq's deals</a>
+                <a class="texto-logo" asp-page="/Index">pepeizq's deals</a>
 
                 @*Resolucion pequeña*@
 @*                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -104,14 +104,14 @@
                                     <div class="menu-dropdown">
                                         <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin</button>
                                         <div class="menu-dropdown-contenido">
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Juegos/Añadir">Añadir Juego</a>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Tiendas">Tiendas</a>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Pendientes">Pendientes</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Juegos/Añadir">Añadir Juego</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Tiendas">Tiendas</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Pendientes">Pendientes</a>
                                             <hr>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Noticias">Noticias</a>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Bundles">Bundles</a>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Gratis">Gratis</a>
-                                            <a class="texto-cabecera menu-dropdown-item" asp-page="/Admin/Suscripciones">Suscripciones</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Noticias">Noticias</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Bundles">Bundles</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Gratis">Gratis</a>
+                                            <a class="texto-cabecera menu-dropdown-item" href="https://pepeizq-001-site2.ftempurl.com/Admin/Suscripciones">Suscripciones</a>
                                         </div>
                                     </div>
                                 </li>
@@ -161,9 +161,9 @@
     <script>
         Blazor.start().then(() => {
             Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                // if (window.location.href.indexOf("/Admin/") == -1) {
-                //     document.location.reload();
-                // }
+                if (window.location.href.indexOf("/Admin/") == -1) {
+                    document.location.reload();
+                }
             }
         });
     </script>

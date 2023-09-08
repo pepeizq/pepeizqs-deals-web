@@ -216,6 +216,10 @@
     "Valor": "juegos"
   },
   {
+    "Id": "News.BundleString5",
+    "Valor": "El {0} ha sido lanzado en {1}"
+  },
+  {
     "Id": "News.FreeString1",
     "Valor": "está gratis para reclamar en"
   },

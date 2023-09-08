@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using Hangfire;
+@using Hangfire.Storage;
+@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using Tiendas2
@@ -49,6 +51,19 @@
 	#nullable disable
 
 	private string tiendaElegida = null;
+
+	protected override void OnInitialized()
+	{
+		// Hangfire.RecurringJob.AddOrUpdate<Herramientas.ITareasGestionador>(job => job.HacerTarea(), Hangfire.Cron.MinuteInterval(20));
+
+		using (var conexion = JobStorage.Current.GetConnection())
+		{
+			foreach (var tareasActivas in StorageConnectionExtensions.GetRecurringJobs(conexion))
+			{
+				RecurringJob.RemoveIfExists(tareasActivas.Id);
+			}
+		}
+	}
 
 	private void ClickearTienda(MouseEventArgs e, string id)
 	{

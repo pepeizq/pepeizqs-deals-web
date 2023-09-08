@@ -593,13 +593,16 @@
 
 	private void BundleGenerarTitulo(Bundles2.Bundle bundle)
 	{
-		string nombreBundle = bundle.NombreBundle;
-
-		nombreBundle = nombreBundle.Replace(" bundle", null);
-		nombreBundle = nombreBundle.Replace(" Bundle", null);
-
-		tituloEn = string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString1"), nombreBundle, bundle.NombreTienda);
-		tituloEs = string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString1"), nombreBundle, bundle.NombreTienda);
+		if (bundle.NombreBundle.ToLower().Contains("bundle") == false)
+		{
+			tituloEn = string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+			tituloEs = string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+		}
+		else
+		{
+			tituloEn = string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
+			tituloEs = string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
+		}
 	}
 
 	private void BundleGenerarContenido(Bundles2.Bundle bundle)

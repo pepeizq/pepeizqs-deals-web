@@ -15,7 +15,7 @@ namespace Herramientas
 		{
 			int orden = global::BaseDatos.Tiendas.Admin.TareaLeerOrden();
 
-			Tiendas2.TiendasCargar.TareasGestionador(orden, TimeSpan.FromMinutes(30));
+			Tiendas2.TiendasCargar.TareasGestionador(orden, TimeSpan.FromMinutes(20));
 
 			orden += 1;
 

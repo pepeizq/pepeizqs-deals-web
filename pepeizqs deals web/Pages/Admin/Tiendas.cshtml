@@ -15,9 +15,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
-	{
-		Hangfire.RecurringJob.AddOrUpdate<Herramientas.ITareasGestionador>(job => job.HacerTarea(), Hangfire.Cron.MinuteInterval(30));
-
+	{	
 		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.ServerPrerendered))
 	}
 }

@@ -216,6 +216,10 @@
     "Valor": "games"
   },
   {
+    "Id": "News.BundleString5",
+    "Valor": "The {0} has been released on {1}"
+  },
+  {
     "Id": "News.FreeString1",
     "Valor": "is free to claim at"
   },
