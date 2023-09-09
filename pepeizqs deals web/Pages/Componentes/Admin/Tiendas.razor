@@ -10,6 +10,13 @@
 
 @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 {
+	<div class="perfil perfil-espacio-bottom">
+		@foreach (var tarea in tareasActivas)
+		{
+			<div>@tarea</div>
+		}
+	</div>
+
 	<div class="perfil perfil-espacio-bottom" style="padding: 25px 40px;">
 		@foreach (Tienda tienda in TiendasCargar.GenerarListado())
 		{
@@ -52,15 +59,28 @@
 
 	private string tiendaElegida = null;
 
+	private List<string> tareasActivas = new List<string>();
+
 	protected override void OnInitialized()
 	{
-		// Hangfire.RecurringJob.AddOrUpdate<Herramientas.ITareasGestionador>(job => job.HacerTarea(), Hangfire.Cron.MinuteInterval(20));
+		int orden = BaseDatos.Tiendas.Admin.TareaLeerOrden();
+
+		// RecurringJobManager manager = new RecurringJobManager();
+		// manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.HacerTarea(), Cron.MinuteInterval(30));
 
 		using (var conexion = JobStorage.Current.GetConnection())
 		{
-			foreach (var tareasActivas in StorageConnectionExtensions.GetRecurringJobs(conexion))
+			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
 			{
-				RecurringJob.RemoveIfExists(tareasActivas.Id);
+				if (tareaActiva.NextExecution != null)
+				{
+					DateTime proximo = tareaActiva.NextExecution.Value;
+					TimeSpan diferenciaTiempo = DateTime.Now.Subtract(proximo);
+
+					tareasActivas.Add(tareaActiva.Id + " " + diferenciaTiempo.Minutes.ToString() + " orden " + orden.ToString());
+				}
+				
+				// RecurringJob.RemoveIfExists(tareaActiva.Id);
 			}
 		}
 	}

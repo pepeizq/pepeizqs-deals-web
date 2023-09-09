@@ -25,6 +25,32 @@
 	</div>
 }
 
+@if (juegosDestacadosMostrar.Count > 0)
+{
+	<div style="margin-bottom: 50px;">
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+			@foreach (var destacado in juegosDestacadosMostrar)
+			{
+				<div style="min-width: 150px; max-width: 200px;">
+					<a href="game/@destacado.Id" class="boton-pequeño" style="padding: 3px;">
+						<div>
+							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
+						</div>
+						<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
+							<div class="juego-descuento" style="margin: 0px; padding: 5px 10px;">
+								@CargarDescuento(destacado)
+							</div>
+							<div style="padding: 5px 10px;">
+								@CargarPrecio(destacado)
+							</div>							
+						</div>
+					</a>
+				</div>
+			}
+		</div>
+	</div>
+}
+
 <div class="portada-columnas">
 	<div class="portada-columna portada-columna-izq">
 		@if (juegosMinimosMostrar.Count > 0)
@@ -33,17 +59,17 @@
 				<a href="/historicallow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
 			</div>
 
-			<div class="perfil" style="padding: 15px 20px;">
+			<div class="perfil" style="padding: 5px 15px;">
 				@foreach (var juego in juegosMinimosMostrar)
 				{
-					<div class="perfil-flexible-centrado" style="margin-top: 10px;">
+					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
 						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
 							<div class="perfil-flexible-centrado">
-								<div style="width: 20%;">
+								<div style="width: 22%;">
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 								</div>
 
-								<div style="width: 70%; padding: 4px 15px; font-size: 13px;">
+								<div style="width: 68%; padding: 4px 15px; font-size: 13px;">
 									@juego.Nombre
 								</div>
 
@@ -60,7 +86,7 @@
 				}
 
 				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 15px;" href="/historicallow">
+					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/historicallow">
 						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 					</a>
 				</div>
@@ -75,17 +101,17 @@
 				<a href="/lastadded" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAdded")</a>
 			</div>
 
-			<div class="perfil" style="padding: 15px 20px;">
+			<div class="perfil" style="padding: 5px 15px;">
 				@foreach (var juego in juegosAñadidosMostrar)
 				{
-					<div class="perfil-flexible-centrado" style="margin-top: 5px; margin-bottom: 5px;">
+					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
 						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
 							<div class="perfil-flexible-centrado">
-								<div style="width: 20%;">
+								<div style="width: 22%;">
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 								</div>
 
-								<div style="width: 60%; padding: 4px 15px; font-size: 13px;">
+								<div style="width: 58%; padding: 4px 15px; font-size: 13px;">
 									@juego.Nombre
 
 									@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
@@ -103,7 +129,7 @@
 				}
 
 				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 15px;" href="/lastadded">
+					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/lastadded">
 						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAddedMore")
 					</a>
 				</div>
@@ -125,7 +151,7 @@
 				</div>
 			</div>
 
-			<div class="perfil" style="padding: 10px 15px;">
+			<div class="perfil" style="padding: 5px 15px;">
 				@foreach (var noticia in noticiasMostrar)
 				{
 					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
@@ -182,6 +208,7 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	List<Juego> juegosDestacadosMostrar = new List<Juego>();
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 	List<Juego> juegosAñadidosMostrar = new List<Juego>();
 	List<Noticia> noticiasMostrar = new List<Noticia>();
@@ -196,11 +223,49 @@
 		{
 			if (juegosConMinimos.Count > 0)
 			{
+				juegosDestacadosMostrar.Clear();
 				juegosMinimosMostrar.Clear();
 
-				for (int i = 0; i < 10; i += 1)
+				int i = 0;
+
+				foreach (var minimo in juegosConMinimos)
 				{
-					juegosMinimosMostrar.Add(juegosConMinimos[i]);
+					if (i < 6)
+					{
+						if (minimo.Analisis != null)
+						{
+							if (minimo.Analisis.Cantidad.Length >= 6)
+							{
+								juegosDestacadosMostrar.Add(minimo);
+								i += 1;
+							}
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				for (int j = 0; juegosMinimosMostrar.Count < 10; j += 1)
+				{
+					bool añadir = true;
+
+					if (juegosDestacadosMostrar.Count > 0)
+					{
+						foreach (var destacado in juegosDestacadosMostrar)
+						{
+							if (destacado.Id == juegosConMinimos[j].Id)
+							{
+								añadir = false;
+							}
+						}
+					}
+
+					if (añadir == true)
+					{
+						juegosMinimosMostrar.Add(juegosConMinimos[j]);
+					}					
 				}
 			}
 		}
@@ -247,7 +312,7 @@
 			{
 				if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 				{
-					if (i < 15)
+					if (i < 12)
 					{
 						if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
 						{
@@ -303,6 +368,33 @@
 		if (imagen != null)
 		{
 			return imagen;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private string CargarDescuento(Juego juego)
+	{
+		string descuentoMensaje = null;
+		decimal precio = 10000000;
+
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (minimo.Precio < precio)
+			{
+				precio = minimo.Precio;
+
+				JuegoPrecio oferta = minimo;
+				descuentoMensaje = oferta.Descuento.ToString();
+				descuentoMensaje = descuentoMensaje + "%";
+			}
+		}
+
+		if (descuentoMensaje != null)
+		{
+			return descuentoMensaje;
 		}
 		else
 		{

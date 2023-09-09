@@ -75,9 +75,11 @@ namespace Tiendas2
 			}
 		}
 
-		public static async void TareasGestionador(int orden, TimeSpan tiempoEntreTareas)
+		public static async void TareasGestionador(TimeSpan tiempoEntreTareas)
 		{
-            try
+			int orden = Admin.TareaLeerOrden();
+
+			try
             {
                 if (orden == 0)
                 {
@@ -85,7 +87,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Steam.Tienda.BuscarOfertas(true);
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Steam.Tienda.BuscarOfertas(true);
                     }
                 }
                 else if (orden == 1)
@@ -94,7 +97,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.GamersGate.Tienda.BuscarOfertas();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.GamersGate.Tienda.BuscarOfertas();
                     }
                 }
                 else if (orden == 2)
@@ -103,7 +107,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
                     }
                 }
                 else if (orden == 3)
@@ -112,7 +117,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
                     }
                 }
                 else if (orden == 4)
@@ -121,7 +127,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
                     }
                 }
                 else if (orden == 5)
@@ -130,7 +137,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
                     }
                 }
                 else if (orden == 6)
@@ -139,7 +147,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.Fanatical.Tienda.BuscarOfertas();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.Fanatical.Tienda.BuscarOfertas();
                     }
                 }
                 else if (orden == 7)
@@ -148,7 +157,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.GreenManGaming.Tienda.BuscarOfertas();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.GreenManGaming.Tienda.BuscarOfertas();
                     }
                 }
                 else if (orden == 8)
@@ -157,7 +167,8 @@ namespace Tiendas2
 
                     if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
                     {
-                        await APIs.GOG.Tienda.BuscarOfertas();
+						Admin.TareaCambiarOrden(orden += 1);
+						await APIs.GOG.Tienda.BuscarOfertas();
                     }
                 }
 				else if (orden == 9)
@@ -166,6 +177,7 @@ namespace Tiendas2
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
+						Admin.TareaCambiarOrden(orden += 1);
 						await APIs.IndieGala.Tienda.BuscarOfertas();
 					}
 				}
@@ -175,19 +187,25 @@ namespace Tiendas2
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 					{
+						Admin.TareaCambiarOrden(orden += 1);
 						await APIs.WinGameStore.Tienda.BuscarOfertas();
 					}
 				}
 				else if (orden == 11)
                 {
-                    Divisas.CogerDatos();
-                }
+					Admin.TareaCambiarOrden(orden += 1);
+					Divisas.CogerDatos();
+				}
             }
             catch
             {
 
             }
 
-        }
+			if (orden > 11)
+			{
+				Admin.TareaCambiarOrden(0);
+			}
+		}
     }
 }
