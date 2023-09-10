@@ -262,6 +262,20 @@
 						}
 					}
 
+					if (juegosConMinimos[j].Gratis != null)
+					{
+						if (juegosConMinimos[j].Gratis.Count > 0)
+						{
+							foreach (var gratis in juegosConMinimos[j].Gratis)
+							{
+								if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+								{
+									añadir = false;
+								}
+							}
+						}
+					}
+
 					if (añadir == true)
 					{
 						juegosMinimosMostrar.Add(juegosConMinimos[j]);

@@ -28,8 +28,20 @@
     "Valor": "Last Added"
   },
   {
+    "Id": "Layout.Login",
+    "Valor": "Login"
+  },
+  {
+    "Id": "Layout.Logout",
+    "Valor": "Logout"
+  },
+  {
+    "Id": "Layout.Register",
+    "Valor": "Register"
+  },
+  {
     "Id": "Layout.Privacy",
-    "Valor": "Privacy and your data"
+    "Valor": "Privacy and Your Data"
   },
   {
     "Id": "Layout.SourceCode",

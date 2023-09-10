@@ -28,8 +28,20 @@
     "Valor": "Últimos Añadidos"
   },
   {
+    "Id": "Layout.Login",
+    "Valor": "Iniciar Sesión"
+  },
+  {
+    "Id": "Layout.Logout",
+    "Valor": "Cerrar Sesión"
+  },
+  {
+    "Id": "Layout.Register",
+    "Valor": "Registrar Cuenta"
+  },
+  {
     "Id": "Layout.Privacy",
-    "Valor": "Privacidad y vuestros datos"
+    "Valor": "Privacidad y Vuestros Datos"
   },
   {
     "Id": "Layout.SourceCode",

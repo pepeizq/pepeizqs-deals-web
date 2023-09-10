@@ -4,33 +4,45 @@
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
+@{
+    #nullable disable
+
+    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
+}
+
 <ul class="navbar-nav" style="margin-top: 0px;">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
             <div class="menu-dropdown">
                 <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">@await UsuarioCoger.Nickname(UserManager, User)</button>
-                <div class="menu-dropdown-contenido">
-                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Steam</a>
-                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Email">Email</a>
-                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a>
-                    <a class="texto-cabecera menu-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal Data</a>
+                <div class="menu-dropdown-contenido" style="right: 0;">
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/Index">Steam</a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/Email">Email</a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal Data</a>
+                    <hr>                   
+                    <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                        <button id="logout" type="submit" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
+                        </button>
+                    </form>
                 </div>
             </div>        
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit" class="border-0 texto-cabecera">Logout</button>
-            </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="texto-cabecera" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="texto-cabecera" id="login" asp-area="Identity" asp-page="/Account/Login">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
+            </a>
         </li>
         <li class="nav-item">
-            <a class="texto-cabecera" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="texto-cabecera" id="register" asp-area="Identity" asp-page="/Account/Register">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
+            </a>
         </li>
     }
 </ul>

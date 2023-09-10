@@ -561,6 +561,11 @@
     background-color: var(--fondoBotonHover);
 }
 
+.menu-dropdown-contenido button:hover {
+    color: var(--colorTextoHover);
+    background-color: var(--fondoBotonHover);
+}
+
 .juego-icono-tienda {
     max-height: 100%;
     max-width: 100%;

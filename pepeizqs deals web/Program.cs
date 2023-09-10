@@ -9,6 +9,8 @@ using Herramientas;
 using Microsoft.AspNetCore.SignalR;
 using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -68,6 +70,7 @@ builder.Services.AddHangfireServer();
 #region Acceder Usuario en Codigo
 
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddHttpContextAccessor();
 
 #endregion
@@ -101,8 +104,8 @@ builder.Services.AddServerSideBlazor(options =>
 {
     options.DetailedErrors = true;
     options.DisconnectedCircuitMaxRetained = 100;
-    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(15);
-    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(15);
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
     options.MaxBufferedUnacknowledgedRenderBatches = 10;
 }).AddHubOptions(options =>
 {
@@ -117,13 +120,17 @@ builder.Services.Configure<HubOptions>(options =>
 	options.MaximumReceiveMessageSize = null;
 });
 
-builder.Services.AddSignalR(options =>
-{
-    options.KeepAliveInterval = TimeSpan.FromMinutes(60);
-});
-
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddRateLimiter(_ => _
+    .AddFixedWindowLimiter(policyName: "fixed", options =>
+    {
+        options.PermitLimit = 4;
+        options.Window = TimeSpan.FromSeconds(12);
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 2;
+    }));
 
 var app = builder.Build();
 
@@ -153,5 +160,7 @@ app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1,
 app.UseRequestLocalization();
 
 app.UseHangfireDashboard();
+
+app.UseRateLimiter();
 
 app.Run();
