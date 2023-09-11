@@ -16,8 +16,6 @@ namespace BaseDatos.Suscripciones
 
             using (conexion)
             {
-                conexion.Open();
-
                 string busqueda = "SELECT * FROM suscripciones";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -57,8 +55,6 @@ namespace BaseDatos.Suscripciones
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM suscripciones WHERE suscripcion=@suscripcion";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -121,8 +117,6 @@ namespace BaseDatos.Suscripciones
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM suscripciones WHERE juegoId=@juegoId";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

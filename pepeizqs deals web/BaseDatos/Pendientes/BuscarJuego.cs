@@ -12,8 +12,6 @@ namespace BaseDatos.Pendientes
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM juegos WHERE nombre=@nombre";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

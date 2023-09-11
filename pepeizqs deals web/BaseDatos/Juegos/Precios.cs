@@ -120,8 +120,6 @@ namespace BaseDatos.Juegos
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				List<Juego> juegos = Buscar.Todos(conexion);
 
 				if (juegos.Count > 0)
@@ -237,8 +235,6 @@ namespace BaseDatos.Juegos
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				List<Juego> juegos = Buscar.Todos(conexion);
 
 				if (juegos.Count > 0)

@@ -9,13 +9,10 @@ namespace BaseDatos.Divisas
 	{
 		public static void Ejecutar(Divisa divisa)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+            using (conexion)
 			{
-				conexion.Open();
-
 				string sqlAñadir = "INSERT INTO divisas " +
 					"(id, cantidad, fecha) VALUES " +
 					"(@id, @cantidad, @fecha) ";
@@ -36,6 +33,8 @@ namespace BaseDatos.Divisas
 					}
 				}
 			}
+
+			conexion.Dispose();
 		}
 	}
 }

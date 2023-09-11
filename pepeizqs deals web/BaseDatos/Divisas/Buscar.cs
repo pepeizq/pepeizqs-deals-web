@@ -11,12 +11,10 @@ namespace BaseDatos.Divisas
 		{
 			if (id != null) 
 			{
-				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+                SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-				using (SqlConnection conexion = new SqlConnection(conexionTexto))
+                using (conexion)
 				{
-					conexion.Open();
 					string sqlBuscar = "SELECT * FROM divisas WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
@@ -39,6 +37,8 @@ namespace BaseDatos.Divisas
 						}
 					}
 				}
+
+				conexion.Dispose();
 			}
 
 			return null;

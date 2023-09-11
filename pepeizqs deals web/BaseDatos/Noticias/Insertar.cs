@@ -13,8 +13,6 @@ namespace BaseDatos.Noticias
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				if (noticia.Tipo == global::Noticias.NoticiaTipo.Bundles)
 				{
 					string sqlInsertar = "INSERT INTO noticias " +

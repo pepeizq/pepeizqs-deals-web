@@ -75,8 +75,6 @@ namespace APIs.Humble
 
 					using (conexion)
 					{
-						conexion.Open();
-
 						HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
 
 						if (juegos != null)

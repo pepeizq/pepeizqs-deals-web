@@ -14,7 +14,6 @@ namespace BaseDatos.Usuarios
 
 				using (conexion)
 				{
-					conexion.Open();
 					string busqueda = "SELECT * FROM AspNetUsers WHERE UserName=@UserName";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))

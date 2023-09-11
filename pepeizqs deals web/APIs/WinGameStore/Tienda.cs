@@ -39,8 +39,6 @@ namespace APIs.WinGameStore
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string html = await Decompiladores.Estandar("https://www.macgamestore.com/affiliate/feeds/p_C1B2A3.json");
 
 				if (html != null)

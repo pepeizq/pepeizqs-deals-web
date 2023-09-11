@@ -45,7 +45,6 @@ namespace BaseDatos.Juegos
 
 				using (conexion)
 				{
-					conexion.Open();
 					string buscar = sqlBuscar;
 
 					using (SqlCommand comando = new SqlCommand(buscar, conexion))
@@ -76,11 +75,10 @@ namespace BaseDatos.Juegos
             List<Juego> juegos = new List<Juego>();
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
+	
 			using (conexion)
             {
-                conexion.Open();
-				string busqueda = null;
+                string busqueda = null;
 				
 				if (usuario == true)
 				{

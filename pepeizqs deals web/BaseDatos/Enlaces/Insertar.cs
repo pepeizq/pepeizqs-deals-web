@@ -9,13 +9,10 @@ namespace BaseDatos.Enlaces
 	{
 		public static Enlace Ejecutar(string enlace)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+            using (conexion)
 			{
-				conexion.Open();
-
 				string sqlAñadir = "INSERT INTO enlaces " +
 					"(base) VALUES " +
 					"(@base) ";
@@ -35,7 +32,9 @@ namespace BaseDatos.Enlaces
 				}
 			}
 
-			return Buscar.Base(enlace);
+            conexion.Dispose();
+
+            return Buscar.Base(enlace);
 		}
 	}
 }

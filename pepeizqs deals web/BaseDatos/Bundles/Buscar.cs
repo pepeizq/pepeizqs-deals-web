@@ -15,8 +15,6 @@ namespace BaseDatos.Bundles
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM bundles";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -76,8 +74,6 @@ namespace BaseDatos.Bundles
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM bundles";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -141,8 +137,6 @@ namespace BaseDatos.Bundles
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM bundles WHERE id=@id";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

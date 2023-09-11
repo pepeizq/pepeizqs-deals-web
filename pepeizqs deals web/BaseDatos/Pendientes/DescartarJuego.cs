@@ -11,8 +11,6 @@ namespace BaseDatos.Pendientes
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string sqlActualizar = "UPDATE tienda" + idTienda + " " +
 					"SET descartado=@descartado WHERE enlace=@enlace";
 

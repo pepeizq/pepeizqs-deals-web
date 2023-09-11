@@ -16,8 +16,6 @@ namespace BaseDatos.Gratis
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM gratis WHERE gratis=@gratis";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -74,8 +72,6 @@ namespace BaseDatos.Gratis
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM gratis WHERE juegoId=(SELECT max(@juegoId) FROM gratis)";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

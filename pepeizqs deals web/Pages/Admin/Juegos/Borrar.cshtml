@@ -15,7 +15,6 @@
 
 		using (SqlConnection conexion = new SqlConnection(conexionTexto))
 		{
-			conexion.Open();
 			String borrarJuego = "DELETE FROM juegos WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(borrarJuego, conexion))

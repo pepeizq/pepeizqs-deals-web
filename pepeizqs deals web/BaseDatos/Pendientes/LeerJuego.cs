@@ -12,8 +12,6 @@ namespace BaseDatos.Pendientes
 
             using (conexion)
             {
-                conexion.Open();
-
                 string busqueda = "SELECT * FROM tienda" + tienda + " WHERE (idJuegos='0' AND descartado='no')";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))

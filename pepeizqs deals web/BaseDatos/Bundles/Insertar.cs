@@ -13,8 +13,6 @@ namespace BaseDatos.Bundles
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string sqlInsertar = "INSERT INTO bundles " +
 					"(bundleTipo, nombre, tienda, imagen, enlace, fechaEmpieza, fechaTermina, juegos, tiers, pick) VALUES " +
 					"(@bundleTipo, @nombre, @tienda, @imagen, @enlace, @fechaEmpieza, @fechaTermina, @juegos, @tiers, @pick) ";

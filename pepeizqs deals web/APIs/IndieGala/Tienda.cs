@@ -43,8 +43,6 @@ namespace APIs.IndieGala
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				int i = 1;
 				while (i < 10)
 				{

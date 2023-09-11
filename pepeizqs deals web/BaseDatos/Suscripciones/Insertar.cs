@@ -12,8 +12,6 @@ namespace BaseDatos.Suscripciones
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string sqlActualizarJuego = "UPDATE juegos " +
 					"SET suscripciones=@suscripciones WHERE id=@id";
 

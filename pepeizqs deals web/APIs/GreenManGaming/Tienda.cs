@@ -39,8 +39,6 @@ namespace APIs.GreenManGaming
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string html = await Decompiladores.Estandar("https://api.greenmangaming.com/api/productfeed/prices/current?cc=es&cur=eur&lang=en");
 
 				if (html != null)

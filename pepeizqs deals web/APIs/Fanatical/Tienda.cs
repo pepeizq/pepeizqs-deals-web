@@ -45,8 +45,6 @@ namespace APIs.Fanatical
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
 
 				if (html != null)

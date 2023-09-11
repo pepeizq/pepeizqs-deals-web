@@ -90,8 +90,6 @@ namespace APIs.Gamesplanet
 
             using (conexion)
             {
-                conexion.Open();
-
 				string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmluk != null)
@@ -167,8 +165,6 @@ namespace APIs.Gamesplanet
 
             using (conexion)
             {
-                conexion.Open();
-
 				string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlfr != null)
@@ -244,8 +240,6 @@ namespace APIs.Gamesplanet
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlde != null)
@@ -323,8 +317,6 @@ namespace APIs.Gamesplanet
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
 				if (htmlus != null)

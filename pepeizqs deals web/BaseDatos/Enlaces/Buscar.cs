@@ -11,12 +11,10 @@ namespace BaseDatos.Enlaces
 		{
 			if (string.IsNullOrEmpty(id) == false)
 			{
-				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+                SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-				using (SqlConnection conexion = new SqlConnection(conexionTexto))
+                using (conexion)
 				{
-					conexion.Open();
 					string sqlBuscar = "SELECT * FROM enlaces WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
@@ -38,6 +36,8 @@ namespace BaseDatos.Enlaces
 						}
 					}
 				}
+
+				conexion.Dispose();
 			}
 
 			return null;
@@ -47,12 +47,10 @@ namespace BaseDatos.Enlaces
 		{
 			if (string.IsNullOrEmpty(enlace) == false)
 			{
-				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+                SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-				using (SqlConnection conexion = new SqlConnection(conexionTexto))
+                using (conexion)
 				{
-					conexion.Open();
 					string sqlBuscar = "SELECT * FROM enlaces WHERE base=@base";
 
 					using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
@@ -74,6 +72,8 @@ namespace BaseDatos.Enlaces
 						}
 					}
 				}
+
+				conexion.Dispose();
 			}
 
 			return null;

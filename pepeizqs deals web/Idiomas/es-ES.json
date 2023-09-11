@@ -40,6 +40,10 @@
     "Valor": "Registrar Cuenta"
   },
   {
+    "Id": "Layout.PersonalData",
+    "Valor": "Datos Personales"
+  },
+  {
     "Id": "Layout.Privacy",
     "Valor": "Privacidad y Vuestros Datos"
   },

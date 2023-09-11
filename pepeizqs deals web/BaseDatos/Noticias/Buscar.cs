@@ -15,8 +15,6 @@ namespace BaseDatos.Noticias
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string busqueda = "SELECT * FROM noticias WHERE id=@id";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -111,8 +109,6 @@ namespace BaseDatos.Noticias
 
             using (conexion)
             {
-                conexion.Open();
-
                 string busqueda = "SELECT * FROM noticias";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))

@@ -10,8 +10,6 @@ namespace BaseDatos.Juegos
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				String borrarJuego = "DELETE FROM juegos WHERE id=@id";
 
 				using (SqlCommand comando = new SqlCommand(borrarJuego, conexion))

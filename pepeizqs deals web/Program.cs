@@ -113,7 +113,12 @@ builder.Services.AddServerSideBlazor(options =>
 	options.EnableDetailedErrors = true;
     options.HandshakeTimeout = TimeSpan.FromSeconds(10);
     options.KeepAliveInterval = TimeSpan.FromSeconds(10);
-});
+}).AddCircuitOptions(options =>
+{
+    options.DetailedErrors = true;
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromSeconds(0);
+    options.DisconnectedCircuitMaxRetained = 0;
+}); ;
 
 builder.Services.Configure<HubOptions>(options =>
 {

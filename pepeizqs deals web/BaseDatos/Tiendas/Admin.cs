@@ -89,14 +89,10 @@ namespace BaseDatos.Tiendas
 		{
 			string mensaje = string.Empty;
 
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-			SqlConnection conexion = new SqlConnection(conexionTexto);
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
 			{
-				conexion.Open();
-
 				string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
 				SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
 
@@ -144,8 +140,6 @@ namespace BaseDatos.Tiendas
 
             using (conexion)
             {
-                conexion.Open();
-
                 string seleccionarTarea = "SELECT * FROM cronGestionador WHERE id=@id";
 
                 using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
@@ -175,8 +169,6 @@ namespace BaseDatos.Tiendas
 
             using (conexion)
             {
-                conexion.Open();
-
                 string seleccionarTienda = "SELECT * FROM adminTiendas WHERE id=@id";
 
                 using (SqlCommand comando = new SqlCommand(seleccionarTienda, conexion))
@@ -204,8 +196,6 @@ namespace BaseDatos.Tiendas
 
             using (conexion)
             {
-                conexion.Open();
-
                 string sqlActualizar = "UPDATE cronGestionador " +
                             "SET id=@id, posicion=@posicion WHERE id=@id";
 

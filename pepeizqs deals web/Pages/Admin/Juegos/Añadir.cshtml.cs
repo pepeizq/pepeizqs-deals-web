@@ -290,8 +290,6 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 						using (conexion)
 						{
-							conexion.Open();
-
 							BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir, conexion);
 						}
 

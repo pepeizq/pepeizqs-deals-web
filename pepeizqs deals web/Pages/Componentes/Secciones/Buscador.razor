@@ -54,7 +54,7 @@
     List<Juegos.Juego> juegos = new List<Juegos.Juego>();
 
     private void TextoCambia(ChangeEventArgs texto)
-    {
+    {     
         if (texto.Value.ToString().Trim().Length > 1)
         {
             juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), true);

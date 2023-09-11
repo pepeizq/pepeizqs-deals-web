@@ -13,8 +13,6 @@ namespace BaseDatos.Juegos
 
 			using (SqlConnection conexion = new SqlConnection(conexionTexto))
 			{
-				conexion.Open();
-
 				string limpiar = "TRUNCATE TABLE juegos";
 
 				using (SqlCommand comando = new SqlCommand(limpiar, conexion))

@@ -40,6 +40,10 @@
     "Valor": "Register"
   },
   {
+    "Id": "Layout.PersonalData",
+    "Valor": "Personal Data"
+  },
+  {
     "Id": "Layout.Privacy",
     "Valor": "Privacy and Your Data"
   },

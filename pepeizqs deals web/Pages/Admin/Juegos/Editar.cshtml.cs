@@ -54,12 +54,10 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 			
             try
             {
-                WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+                SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-                using (SqlConnection conexion = new SqlConnection(conexionTexto))
+                using (conexion)
 				{
-					conexion.Open();
 					string seleccionarJuego = sqlBuscar;
 
 					using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
@@ -75,6 +73,8 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						}
 					}
 				}
+
+				conexion.Dispose();
 			}
             catch (Exception ex) 
             { 
@@ -319,8 +319,6 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 					using (conexion)
 					{
-						conexion.Open();
-
 						BaseDatos.Juegos.Actualizar.Ejecutar(juegoEditar, conexion);
 					}
 

@@ -12,8 +12,6 @@ namespace BaseDatos.Gratis
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string sqlActualizarJuego = "UPDATE juegos " +
 					"SET gratis=@gratis WHERE id=@id";
 

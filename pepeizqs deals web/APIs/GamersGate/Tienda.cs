@@ -39,8 +39,6 @@ namespace APIs.GamersGate
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 
 				if (html != null)

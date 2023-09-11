@@ -21,7 +21,9 @@
                     <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/Index">Steam</a>
                     <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/Email">Email</a>
                     <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a>
-                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal Data</a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" asp-area="Identity" asp-page="/Account/Manage/PersonalData">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Layout.PersonalData")
+                    </a>
                     <hr>                   
                     <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                         <button id="logout" type="submit" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%;">

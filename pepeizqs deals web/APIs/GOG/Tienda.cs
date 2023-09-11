@@ -34,8 +34,6 @@ namespace APIs.GOG
 
 			using (conexion)
 			{
-				conexion.Open();
-
 				int juegos2 = 0;
 
 				int i = 1;

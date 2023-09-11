@@ -42,8 +42,6 @@ namespace APIs.Steam
 
 			using (conexion)
             {
-                conexion.Open();
-
 				int juegos = 0;
 				int tope = 10000;
 
