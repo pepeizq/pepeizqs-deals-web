@@ -2,53 +2,66 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.Title");
     Layout = "~/Areas/Identity/Pages/_CuentaLayout.cshtml";
 }
 
 <div class="cuerpo-login">
     <form id="account" method="post">
-        <div class="texto-info">Log in with an account</div>
+        <div class="texto-info">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String1")</div>
 
         <hr/>
-
+        
         <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
         <div class="mb-3">
-            <label asp-for="Input.Email" class="texto-info-entrada">Email</label>
-            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <label asp-for="Input.Email" class="texto-info-entrada">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String2")
+            </label>
+            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String4")" />
             <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Input.Password" class="texto-info-entrada">Password</label>
-            <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="password" />
+            <label asp-for="Input.Password" class="texto-info-entrada">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String3")
+            </label>
+            <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String5")" />
             <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
         </div>
         <div class="checkbox mb-3">
             <label asp-for="Input.RememberMe" class="form-label">
-                <input class="caja-confirmacion" asp-for="Input.RememberMe" />
-                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                <input class="caja-confirmacion" asp-for="Input.RememberMe"/>
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String6")
             </label>
         </div>
         <div>
-            <button id="login-submit" type="submit" class="boton">Log in</button>
+            <button id="login-submit" type="submit" class="boton">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String7")
+            </button>
         </div>
 
         <hr />
 
         <div>
             <p>
-                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                <a id="forgot-password" asp-page="./ForgotPassword">                   
+                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String8")
+                </a>
             </p>
             <p>
-                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">                  
+                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String9")
+                </a>
             </p>
             <p>
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">                   
+                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "Login.String10")
+                </a>
             </p>
         </div>
     </form>
 </div>
 
 @section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <partial name="_ValidationScriptsPartial" />
 }

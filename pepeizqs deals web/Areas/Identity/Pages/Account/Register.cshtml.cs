@@ -3,29 +3,35 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using Herramientas;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Owl.reCAPTCHA;
+using Owl.reCAPTCHA.v3;
 using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<Usuario> _signInManager;
+		public string idioma = string.Empty;
+
+		private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
         private readonly IUserStore<Usuario> _userStore;
         private readonly IUserEmailStore<Usuario> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IreCAPTCHASiteVerifyV3 _verificador;
 
         public string errorMensaje = string.Empty;
 
         public RegisterModel(UserManager<Usuario> userManager, IUserStore<Usuario> userStore, SignInManager<Usuario> signInManager,
-            ILogger<RegisterModel> logger, IEmailSender emailSender)
+            ILogger<RegisterModel> logger, IEmailSender emailSender, IreCAPTCHASiteVerifyV3 verificador)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -33,6 +39,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _verificador = verificador;
         }
 
         [BindProperty]
@@ -61,74 +68,87 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+			try
+			{
+				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+			}
+			catch { }
+
+			ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string token, string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (ModelState.IsValid)
+            reCAPTCHASiteVerifyV3Response respuesta = await _verificador.Verify(new reCAPTCHASiteVerifyRequest
             {
-                Usuario usuario = CreateUser();
+                Response = token,
+                RemoteIp = HttpContext.Connection.RemoteIpAddress.ToString()
+            });
 
-                usuario.Role = "Peasent";
+            if (respuesta.Success == true)
+            {
+                returnUrl ??= Url.Content("~/");
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-				await _userStore.SetUserNameAsync(usuario, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(usuario, Input.Email, CancellationToken.None);
-
-                try
+                if (ModelState.IsValid)
                 {
-                    var result = await _userManager.CreateAsync(usuario, Input.Password);
+                    Usuario usuario = CrearUsuario();
 
-                    if (result.Succeeded)
+                    usuario.Role = "Peasent";
+
+                    await _userStore.SetUserNameAsync(usuario, Input.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(usuario, Input.Email, CancellationToken.None);
+
+                    try
                     {
-                        _logger.LogInformation("User created a new account with password.");
+                        IdentityResult resultado = await _userManager.CreateAsync(usuario, Input.Password);
 
-                        var userId = await _userManager.GetUserIdAsync(usuario);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                            protocol: Request.Scheme);
-
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        if (resultado.Succeeded)
                         {
-                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                            _logger.LogInformation("User created a new account with password.");
+
+                            string usuarioId = await _userManager.GetUserIdAsync(usuario);
+                            string codigo = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
+                            codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = usuarioId, code = codigo, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+
+                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                            }
+                            else
+                            {
+                                await _signInManager.SignInAsync(usuario, isPersistent: false);
+                                return LocalRedirect(returnUrl);
+                            }
                         }
-                        else
+
+                        foreach (var error in resultado.Errors)
                         {
-                            await _signInManager.SignInAsync(usuario, isPersistent: false);
-                            return LocalRedirect(returnUrl);
+                            ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
-
-                    foreach (var error in result.Errors)
+                    catch (Exception ex)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        errorMensaje = ex.Message;
                     }
                 }
-                catch (Exception ex) 
-                {
-                    errorMensaje = ex.Message;
-                }
-                
-            }
+            }                
 
             return Page();
         }
 
-        private Usuario CreateUser()
+        private Usuario CrearUsuario()
         {
             try
             {

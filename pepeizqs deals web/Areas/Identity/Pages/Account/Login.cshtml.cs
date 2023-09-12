@@ -11,6 +11,10 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        public string idioma = string.Empty;
+
+        public string mensaje = string.Empty;
+
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
@@ -23,7 +27,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -40,12 +44,17 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            try
+            {
+                idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+            }
+            catch { }
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -53,10 +62,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
         }
@@ -70,7 +76,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Microsoft.AspNetCore.Identity.SignInResult resultado = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                
+
                 if (resultado.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

@@ -40,6 +40,18 @@
     "Valor": "Registrar Cuenta"
   },
   {
+    "Id": "Layout.Steam",
+    "Valor": "Cuenta de Steam"
+  },
+  {
+    "Id": "Layout.Email",
+    "Valor": "Cambiar Correo"
+  },
+  {
+    "Id": "Layout.Password",
+    "Valor": "Cambiar Contraseña"
+  },
+  {
     "Id": "Layout.PersonalData",
     "Valor": "Datos Personales"
   },
@@ -82,6 +94,86 @@
   {
     "Id": "Index.Title",
     "Valor": "Inicio"
+  },
+  {
+    "Id": "Login.Title",
+    "Valor": "Iniciar Sesión"
+  },
+  {
+    "Id": "Login.String1",
+    "Valor": "Iniciar sesión con una cuenta"
+  },
+  {
+    "Id": "Login.String2",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "Login.String3",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "Login.String4",
+    "Valor": "nombre@ejemplo.com"
+  },
+  {
+    "Id": "Login.String5",
+    "Valor": "contraseña"
+  },
+  {
+    "Id": "Login.String6",
+    "Valor": "¿Recordar sesión?"
+  },
+  {
+    "Id": "Login.String7",
+    "Valor": "Iniciar sesión"
+  },
+  {
+    "Id": "Login.String8",
+    "Valor": "¿Olvidaste tu contraseña?"
+  },
+  {
+    "Id": "Login.String9",
+    "Valor": "Registrar un nuevo usuario"
+  },
+  {
+    "Id": "Login.String10",
+    "Valor": "Reenviar confirmación por correo"
+  },
+  {
+    "Id": "Register.Title",
+    "Valor": "Registrar Cuenta"
+  },
+  {
+    "Id": "Register.String1",
+    "Valor": "Crear una nueva cuenta"
+  },
+  {
+    "Id": "Register.String2",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "Register.String3",
+    "Valor": "nombre@ejemplo.com"
+  },
+  {
+    "Id": "Register.String4",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "Register.String5",
+    "Valor": "contraseña"
+  },
+  {
+    "Id": "Register.String6",
+    "Valor": "Confirmar Contraseña"
+  },
+  {
+    "Id": "Register.String7",
+    "Valor": "Registrar Cuenta"
+  },
+  {
+    "Id": "Register.String8",
+    "Valor": "La contraseña y la contraseña de confirmación no coinciden."
   },
   {
     "Id": "Game.String1",

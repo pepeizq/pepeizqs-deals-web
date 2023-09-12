@@ -144,7 +144,8 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                        await Task.Delay(30);
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
 										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
@@ -219,7 +220,8 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                        await Task.Delay(30);
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
 										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
@@ -294,7 +296,8 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                        await Task.Delay(30);
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
 										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
@@ -371,7 +374,8 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                        await Task.Delay(30);
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
 										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);

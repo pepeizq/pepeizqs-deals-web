@@ -11,6 +11,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Owl.reCAPTCHA;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -123,6 +124,12 @@ builder.Services.AddServerSideBlazor(options =>
 builder.Services.Configure<HubOptions>(options =>
 {
 	options.MaximumReceiveMessageSize = null;
+});
+
+builder.Services.AddreCAPTCHAV3(x =>
+{
+    x.SiteKey = "6Lfxf4AUAAAAAKK-pxZOeWCZOeyx9OVrEvn1Fu2-";
+    x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
 });
 
 builder.Services.AddRazorPages();

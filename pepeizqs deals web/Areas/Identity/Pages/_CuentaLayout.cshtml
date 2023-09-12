@@ -1,4 +1,8 @@
 ﻿@{
+	#nullable disable
+
+	string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -9,12 +13,12 @@
 				<ul class="nav nav-tabs card-header-tabs">
 					<li class="nav-item">
 						<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Login">
-							Login	
+							@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Register">
-							Register
+							@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
 						</a>
 					</li>
 				</ul>
@@ -35,20 +39,20 @@
 	@await RenderSectionAsync("Scripts", required: false)
 
 	<script>
-		//$(function () 
-		//	{
-		//		const paginaActual = location.pathname;
+		// $(function () 
+		// 	{
+		// 		const paginaActual = location.pathname;
 
-		//		$('.nav-tabs li a').each(function () 
-		//		{
-		//			const $this = $(this);
+		// 		$('.nav-tabs li a').each(function () 
+		// 		{
+		// 			const $this = $(this);
 
-		//			if (paginaActual.toLowerCase().indexOf($this.attr('href').toLowerCase() != -1)
-		//			{
-		//				$this.addClass('active');
-		//			}
-		//		} )
-		//	}
-		//)
+		// 			if (paginaActual.toLowerCase().indexOf($this.attr('href').toLowerCase() != -1)
+		// 			{
+		// 				$this.addClass('active');
+		// 			}
+		// 		} )
+		// 	}
+		// )
 	</script>
 }

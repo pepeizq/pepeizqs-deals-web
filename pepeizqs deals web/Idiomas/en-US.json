@@ -40,6 +40,18 @@
     "Valor": "Register"
   },
   {
+    "Id": "Layout.Steam",
+    "Valor": "Steam Account"
+  },
+  {
+    "Id": "Layout.Email",
+    "Valor": "Change Email"
+  },
+  {
+    "Id": "Layout.Password",
+    "Valor": "Change Password"
+  },
+  {
     "Id": "Layout.PersonalData",
     "Valor": "Personal Data"
   },
@@ -82,6 +94,86 @@
   {
     "Id": "Index.Title",
     "Valor": "Home Page"
+  },
+  {
+    "Id": "Login.Title",
+    "Valor": "Log in"
+  },
+  {
+    "Id": "Login.String1",
+    "Valor": "Log in with an account"
+  },
+  {
+    "Id": "Login.String2",
+    "Valor": "Email"
+  },
+  {
+    "Id": "Login.String3",
+    "Valor": "Password"
+  },
+  {
+    "Id": "Login.String4",
+    "Valor": "name@example.com"
+  },
+  {
+    "Id": "Login.String5",
+    "Valor": "password"
+  },
+  {
+    "Id": "Login.String6",
+    "Valor": "Remember me?"
+  },
+  {
+    "Id": "Login.String7",
+    "Valor": "Log in"
+  },
+  {
+    "Id": "Login.String8",
+    "Valor": "Forgot your password?"
+  },
+  {
+    "Id": "Login.String9",
+    "Valor": "Register as a new user"
+  },
+  {
+    "Id": "Login.String10",
+    "Valor": "Resend email confirmation"
+  },
+  {
+    "Id": "Register.Title",
+    "Valor": "Register"
+  },
+  {
+    "Id": "Register.String1",
+    "Valor": "Create a new account"
+  },
+  {
+    "Id": "Register.String2",
+    "Valor": "Email"
+  },
+  {
+    "Id": "Register.String3",
+    "Valor": "name@example.com"
+  },
+  {
+    "Id": "Register.String4",
+    "Valor": "Password"
+  },
+  {
+    "Id": "Register.String5",
+    "Valor": "password"
+  },
+  {
+    "Id": "Register.String6",
+    "Valor": "Confirm Password"
+  },
+  {
+    "Id": "Register.String7",
+    "Valor": "Register"
+  },
+  {
+    "Id": "Register.String8",
+    "Valor": "The password and confirmation password do not match."
   },
   {
     "Id": "Game.String1",

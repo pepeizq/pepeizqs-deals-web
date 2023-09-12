@@ -48,21 +48,40 @@ namespace APIs.Steam
 				for (int i = 0; i < tope; i += 50)
 				{
 					string html = null;
+					await Task.Delay(100);
 
 					if (mirarOfertas == true)
 					{
 						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&l=english");
 						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
-						html = datos.Html;
 
+						if (datos != null)
+						{
+                            html = datos.Html;
+                        }
+						
 						tope = int.Parse(datos.Total);
 					}
 					else
 					{
 						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&hidef2p=1&ndl=1&infinite=1&l=english");
-						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
-						html = datos.Html;
-					}
+						
+						try
+						{
+                            SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+
+                            if (datos != null)
+                            {
+                                html = datos.Html;
+                            }
+                        }
+						catch { }
+
+						if (html == null)
+						{
+							html = html2;
+                        }						
+                    }
 
 					if (html != null)
 					{
@@ -260,60 +279,6 @@ namespace APIs.Steam
 
             conexion.Dispose();	
 		}
-
-        public static async Task<int> GenerarNumPaginas(string enlace)
-        {
-            int numPaginas = 0;
-
-			string html = await Decompiladores.Estandar(enlace);
-
-			if (html != null)
-            {
-                if (html.Contains("<div class=" + Strings.ChrW(34) + "search_pagination_right" + Strings.ChrW(34) + ">") == true)
-                {
-                    int int1 = html.IndexOf("<div class=" + Strings.ChrW(34) + "search_pagination_right" + Strings.ChrW(34) + ">");
-                    string temp1 = html.Remove(0, int1);
-
-                    int int2 = temp1.IndexOf("</div>");
-                    string temp2 = temp1.Remove(int2, temp1.Length - int2);
-
-                    if (temp2.Contains("<a href=") == true)
-                    {
-                        int i = 0;
-                        while (i < 10)
-                        {
-                            if (temp2.Contains("<a href=") == true)
-                            {
-                                int int3 = temp2.IndexOf("<a href=");
-                                string temp3 = temp2.Remove(0, int3 + 3);
-
-                                temp2 = temp3;
-
-                                int int4 = temp3.IndexOf(">");
-                                string temp4 = temp3.Remove(0, int4 + 1);
-
-                                int int5 = temp4.IndexOf("</a>");
-                                string temp5 = temp4.Remove(int5, temp4.Length - int5);
-
-                                if (temp5.Contains("&gt;") == false)
-                                {
-									if (temp5.Contains("&lt;") == false)
-									{
-                                        if (int.Parse(temp5.Trim()) > numPaginas)
-                                        {
-                                            numPaginas = int.Parse(temp5.Trim());
-                                        }
-									}
-								}
-                            }
-							i += 1;
-                        }
-                    }
-                }
-            }
-
-            return numPaginas;
-        }
 	}
 
 	public class SteamQueryAPI

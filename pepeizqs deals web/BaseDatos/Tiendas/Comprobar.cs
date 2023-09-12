@@ -136,12 +136,21 @@ namespace BaseDatos.Tiendas
 		{
 			if (juego.IdSteam > 0)
 			{
-				Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+				Juego nuevoJuego = null;
+				
+				try
+				{
+                    nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+                }
+				catch { }
+				
+				if (nuevoJuego != null)
+				{
+                    juego.Nombre = nuevoJuego.Nombre;
+                    juego.Media = nuevoJuego.Media;
 
-				juego.Nombre = nuevoJuego.Nombre;
-				juego.Media = nuevoJuego.Media;
-
-				juego.FechaSteamAPIComprobacion = DateTime.Now;
+                    juego.FechaSteamAPIComprobacion = DateTime.Now;
+                }
 			}
 
 			return juego;

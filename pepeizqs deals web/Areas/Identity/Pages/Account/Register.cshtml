@@ -1,35 +1,61 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.Title");
     Layout = "~/Areas/Identity/Pages/_CuentaLayout.cshtml";
 }
 
 <div class="cuerpo-registro">
     <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-        <div class="texto-info">Create a new account</div>
+        <div class="texto-info">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String1")</div>
 
         <hr />
 
         <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
         <div class="mb-3">
-            <label asp-for="Input.Email" class="texto-info-entrada">Email</label>
-            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <label asp-for="Input.Email" class="texto-info-entrada">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String2")
+            </label>
+            <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String3")" />
             <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Input.Password" class="texto-info-entrada">Password</label>
-            <input asp-for="Input.Password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <label asp-for="Input.Password" class="texto-info-entrada">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String4")
+            </label>
+            <input asp-for="Input.Password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String5")" />
             <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Input.ConfirmPassword" class="texto-info-entrada">Confirm Password</label>
-            <input asp-for="Input.ConfirmPassword" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="password" />
+            <label asp-for="Input.ConfirmPassword" class="texto-info-entrada">
+                @Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String6")
+            </label>
+            <input asp-for="Input.ConfirmPassword" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String5")" />
             <span asp-validation-for="Input.ConfirmPassword" class="texto-peligro-entrada"></span>
         </div>
 
-        <label class="texto-info-entrada">Registration disabled</label>
-        @* <button id="registerSubmit" type="submit" class="boton">Register</button> *@
+        <button id="registerSubmit" type="submit" class="boton">
+            @Herramientas.Idiomas.CogerCadena(Model.idioma, "Register.String7")
+        </button>
+
+        @addTagHelper *, Owl.reCAPTCHA
+
+        <div style="display: none;">
+            <form method="POST">
+                <input id="token" name="token" type="text" />
+                <input id="submit" type="submit" value="submit" />
+            </form>
+        </div>
+
+        <recaptcha-script-v3 />
+
+        <script>
+            function callback(token) {
+                document.getElementById("token").value = token;
+            }
+        </script>
+
+        <recaptcha-script-v3-js action="login" callback="callback" />
     </form>
 
     @if (Model.errorMensaje.Length > 0)
