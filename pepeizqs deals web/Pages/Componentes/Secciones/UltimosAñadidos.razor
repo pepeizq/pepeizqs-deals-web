@@ -35,7 +35,7 @@
 						</div>
 
 						<div style="width: 20%; padding: 4px 30px 4px 0px; text-align: right;">
-							@Herramientas.JuegoFicha.PrecioMinimoActual(juego, true)
+							@Herramientas.JuegoFicha.PrecioMinimoActual(juego, true, idioma)
 						</div>
 					</div>
 				</a>
@@ -47,6 +47,9 @@
 @code {
 
 	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
 
 	private List<Juego> juegos = new List<Juego>();
 	private List<Juego> juegosMostrar = new List<Juego>();

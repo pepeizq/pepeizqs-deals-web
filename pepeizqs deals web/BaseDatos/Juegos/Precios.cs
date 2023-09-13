@@ -128,31 +128,54 @@ namespace BaseDatos.Juegos
 
 					foreach (var juego in juegos)
 					{
-						if (juego.PrecioMinimosHistoricos.Count > 0)
+						bool descartar = false;
+
+						if (juego.Bundles != null)
 						{
-							decimal precio = 10000000;
-							JuegoPrecio minimo = null;
+							descartar = true;
+						}
 
-							foreach (var minimo2 in juego.PrecioMinimosHistoricos)
+						if (juego.Gratis != null)
+						{
+							descartar = true;
+						}
+
+						if (juego.Suscripciones != null)
+						{
+							descartar = true;
+						}
+
+						if (descartar == false)
+						{
+							if (juego.PrecioMinimosHistoricos.Count > 0)
 							{
-								if (minimo2.Precio < precio)
-								{
-									precio = minimo2.Precio;
+								decimal precio = 10000000;
+								JuegoPrecio minimo = null;
 
-									minimo = minimo2;
+								foreach (var minimo2 in juego.PrecioMinimosHistoricos)
+								{
+									if (minimo2.Precio < precio)
+									{
+										if (minimo2.DRM != JuegoDRM.NoEspecificado)
+										{
+											precio = minimo2.Precio;
+
+											minimo = minimo2;
+										}
+									}
+								}
+
+								if (minimo != null)
+								{
+									bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
+
+									if (fechaEncaja == true && minimo.Descuento > 0 && juego.Analisis != null)
+									{
+										juegosConMinimos.Add(juego);
+									}
 								}
 							}
-
-							if (minimo != null) 
-							{
-								bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
-
-								if (fechaEncaja == true && minimo.Descuento > 0)
-								{
-									juegosConMinimos.Add(juego);
-								}
-							}						
-						}
+						}						
 					}
 
 					juegosConMinimos.Sort(delegate (Juego j1, Juego j2)

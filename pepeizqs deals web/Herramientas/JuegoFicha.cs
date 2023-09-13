@@ -233,7 +233,7 @@ namespace Herramientas
 
 			if (precio.FechaTermina.Year > 2022)
 			{
-				if (DateTime.Now > precio.FechaTermina)
+				if (DateTime.Now >= precio.FechaTermina)
 				{
 					fechaEncaja = false;
 				}
@@ -242,7 +242,7 @@ namespace Herramientas
 			{
 				if (precio.FechaActualizacion.Year > 2022)
 				{
-					if (precio.FechaActualizacion.DayOfYear + 1 < DateTime.Now.DayOfYear)
+					if (precio.FechaActualizacion.DayOfYear + 1 <= DateTime.Now.DayOfYear)
 					{
 						fechaEncaja = false;
 					}
@@ -251,7 +251,7 @@ namespace Herramientas
 				{
 					if (precio.FechaDetectado.Year > 2022)
 					{
-						if (precio.FechaDetectado.DayOfYear + 7 < DateTime.Now.DayOfYear)
+						if (precio.FechaDetectado.DayOfYear + 7 <= DateTime.Now.DayOfYear)
 						{
 							fechaEncaja = false;
 						}
@@ -314,32 +314,30 @@ namespace Herramientas
 			return null;
 		}
 
-		public static string PrecioMinimoActual(Juego juego, bool incluirDesde)
+		public static string PrecioMinimoActual(Juego juego, bool incluirDesde, string idioma)
 		{
 			JuegoPrecio oferta = CargarMinimoActualEntreTodosDRMs(juego);
 
 			if (oferta != null)
 			{
-				string mensaje = string.Empty;
-
 				if (oferta.Precio > 0)
 				{
 					if (incluirDesde == true)
 					{
-						mensaje = "From ";
+						return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), PrepararPrecio(oferta.Precio, JuegoMoneda.Euro));
 					}
-
-					mensaje = mensaje + PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
+					else
+					{
+						return PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
+                    }
 				}
 				else
 				{
-					mensaje = "Not in Sale";
+					return Idiomas.CogerCadena(idioma, "Search.String2");
 				}
-
-				return mensaje;
 			}
 
-			return "Not in Sale";
+			return Idiomas.CogerCadena(idioma, "Search.String2");
 		}
 
 		public static string IconoTiendaMinimoActualEntreTodosDRMs(Juego juego)

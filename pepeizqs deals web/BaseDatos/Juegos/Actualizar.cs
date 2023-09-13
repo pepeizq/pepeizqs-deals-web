@@ -47,8 +47,8 @@ namespace BaseDatos.Juegos
 
 				try
 				{
-					comando.ExecuteNonQuery();
-				}
+                    comando.ExecuteNonQuery();
+                }
 				catch
 				{
 

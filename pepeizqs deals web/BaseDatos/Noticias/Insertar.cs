@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic;
 
 namespace BaseDatos.Noticias
 {
@@ -177,7 +176,6 @@ namespace BaseDatos.Noticias
 						try
 						{
 							comando.ExecuteNonQuery();
-
 						}
 						catch
 						{

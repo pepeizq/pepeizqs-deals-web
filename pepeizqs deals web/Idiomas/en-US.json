@@ -518,5 +518,21 @@
   {
     "Id": "Timer.String11",
     "Valor": "about a year ago"
+  },
+  {
+    "Id": "Search.String1",
+    "Valor": "From {0}"
+  },
+  {
+    "Id": "Search.String2",
+    "Valor": "Not in Sale"
+  },
+  {
+    "Id": "HistoricalLow.Title",
+    "Valor": "Historical Lows"
+  },
+  {
+    "Id": "HistoricalLow.String1",
+    "Valor": "Historical Lows in Games and DLCs"
   }
 ]

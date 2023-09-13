@@ -150,8 +150,7 @@ namespace APIs.Fanatical
 														}
 													}
 
-                                                    await Task.Delay(10);
-                                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+													BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 													juegos2 += 1;
 													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);

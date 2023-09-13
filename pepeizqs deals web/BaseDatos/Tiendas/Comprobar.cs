@@ -205,8 +205,6 @@ namespace BaseDatos.Tiendas
 
 							i += 1;
 						}
-
-
 					}
 				}
 			}
@@ -324,8 +322,8 @@ namespace BaseDatos.Tiendas
 
 										try
 										{
-											comando.ExecuteNonQuery();
-										}
+                                            comando.ExecuteNonQuery();
+                                        }
 										catch
 										{
 

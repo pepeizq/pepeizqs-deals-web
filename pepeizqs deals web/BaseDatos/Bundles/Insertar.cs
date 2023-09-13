@@ -29,12 +29,11 @@ namespace BaseDatos.Bundles
 					comando.Parameters.AddWithValue("@juegos", JsonConvert.SerializeObject(bundle.Juegos));
 					comando.Parameters.AddWithValue("@tiers", JsonConvert.SerializeObject(bundle.Tiers));
 					comando.Parameters.AddWithValue("@pick", bundle.Pick.ToString());
-
-					comando.ExecuteNonQuery();
+					
 					try
 					{
-						
-					}
+                        comando.ExecuteNonQuery();
+                    }
 					catch
 					{
 

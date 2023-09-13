@@ -121,7 +121,7 @@
 								</div>
 
 								<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
-									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false)
+									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false, idioma)
 								</div>
 							</div>
 						</a>
@@ -260,6 +260,11 @@
 								añadir = false;
 							}
 						}
+					}
+
+					if (juegosConMinimos[j].Analisis == null)
+					{
+						añadir = false;
 					}
 
 					if (juegosConMinimos[j].Gratis != null)

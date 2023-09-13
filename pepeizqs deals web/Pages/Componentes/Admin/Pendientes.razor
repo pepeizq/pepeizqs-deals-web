@@ -46,35 +46,38 @@
 	<div style="margin-top: 40px; padding: 10px;">
 		<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
 
-		@if (juegosBuscador.Count > 0)
+		@if (juegosBuscador != null)
 		{
-			<div>
-				@foreach (var juego in juegosBuscador)
-				{
-					<div class="perfil-flexible-centrado perfil-espacio-top">
-						<a class="boton-pequeño">
-							<div class="perfil-flexible-centrado">
-								<div style="width: 12%;">
-									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-								</div>
+			@if (juegosBuscador.Count > 0)
+			{
+				<div>
+					@foreach (var juego in juegosBuscador)
+					{
+						<div class="perfil-flexible-centrado perfil-espacio-top">
+							<a class="boton-pequeño">
+								<div class="perfil-flexible-centrado">
+									<div style="width: 12%;">
+										<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+									</div>
 
-								<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
-									@juego.Id - @juego.Nombre
-								</div>
+									<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
+										@juego.Id - @juego.Nombre
+									</div>
 
-								<div class="admin-busqueda-juego-derecha">
-									<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
-								</div>
+									<div class="admin-busqueda-juego-derecha">
+										<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
+									</div>
 
-								<div class="admin-busqueda-juego-derecha">
-									<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+									<div class="admin-busqueda-juego-derecha">
+										<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+									</div>
 								</div>
-							</div>
-						</a>
-					</div>
-				}
-			</div>
-		}
+							</a>
+						</div>
+					}
+				</div>
+			}
+		}		
 	</div>
 </div>
 

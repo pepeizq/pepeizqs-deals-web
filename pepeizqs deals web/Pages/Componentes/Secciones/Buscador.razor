@@ -38,7 +38,7 @@
                             </div>
 
                             <div style="width: 12%; text-align: center;">
-                                @Herramientas.JuegoFicha.PrecioMinimoActual(juego, true)
+                                @Herramientas.JuegoFicha.PrecioMinimoActual(juego, true, idioma)
                             </div>
                         </div>
                     </a>
@@ -49,14 +49,16 @@
 }
 
 @code {
+
     #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
 
     List<Juegos.Juego> juegos = new List<Juegos.Juego>();
 
-    private async void TextoCambia(ChangeEventArgs texto)
+    private void TextoCambia(ChangeEventArgs texto)
     {
-        await Task.Delay(50);
-
         if (texto.Value.ToString().Trim().Length > 1)
         {
             juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), true);

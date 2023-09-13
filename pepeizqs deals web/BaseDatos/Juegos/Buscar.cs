@@ -110,7 +110,7 @@ namespace BaseDatos.Juegos
 				}			
             }
 
-			conexion.Dispose();
+			//conexion.Dispose();
 
 			if (juegos.Count > 0)
 			{

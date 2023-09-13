@@ -518,5 +518,21 @@
   {
     "Id": "Timer.String11",
     "Valor": "hace 1 año"
+  },
+  {
+    "Id": "Search.String1",
+    "Valor": "Desde {0}"
+  },
+  {
+    "Id": "Search.String2",
+    "Valor": "No hay Ofertas"
+  },
+  {
+    "Id": "HistoricalLow.Title",
+    "Valor": "Mínimos Históricos"
+  },
+  {
+    "Id": "HistoricalLow.String1",
+    "Valor": "Mínimos Históricos en Juegos y DLCs"
   }
 ]

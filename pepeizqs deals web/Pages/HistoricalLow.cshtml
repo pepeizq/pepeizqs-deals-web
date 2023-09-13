@@ -2,8 +2,8 @@
 @model pepeizqs_deals_web.Pages.HistoricalLowModel
 
 @{
-	ViewData["Title"] = "Historical Lows in Games";
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "HistoricalLow.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosMinimos>(RenderMode.ServerPrerendered))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))

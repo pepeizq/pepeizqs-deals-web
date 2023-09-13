@@ -144,6 +144,13 @@ builder.Services.AddRateLimiter(_ => _
         options.QueueLimit = 2;
     }));
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+	serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+	serverOptions.AllowSynchronousIO = true;
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

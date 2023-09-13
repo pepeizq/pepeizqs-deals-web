@@ -1,5 +1,4 @@
-﻿using Herramientas;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 namespace BaseDatos.Pendientes
 {

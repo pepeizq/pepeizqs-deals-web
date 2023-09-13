@@ -184,7 +184,6 @@ namespace Juegos
 			if (string.IsNullOrEmpty(drmTexto) == false)
 			{
 				drmTexto = drmTexto.Replace("key", null);
-				drmTexto = drmTexto.Replace(" ", null);
 				drmTexto = drmTexto.ToLower();
 				drmTexto = drmTexto.Trim();
 

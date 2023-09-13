@@ -91,7 +91,6 @@ namespace APIs.GreenManGaming
 											SteamID = juego.SteamId
 										};
 
-										await Task.Delay(10);
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;

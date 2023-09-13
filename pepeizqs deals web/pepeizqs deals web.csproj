@@ -7,7 +7,16 @@
     <RootNamespace>pepeizqs_deals_web</RootNamespace>
     <UserSecretsId>0e01717b-b8fb-4a4e-8d56-378f1a9f3771</UserSecretsId>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <ThreadPoolMinThreads>4</ThreadPoolMinThreads>
+    <ThreadPoolMaxThreads>25</ThreadPoolMaxThreads>
   </PropertyGroup>
+
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
+    <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\imagenes\tiendas\ea_300x80.webp" />
@@ -23,6 +32,7 @@
     <None Remove="Juegos\JuegoFicha.cs~RF864f1e.TMP" />
     <None Remove="Pages\Componentes\Admin\Bundles.razor~RF628a6c2c.TMP" />
     <None Remove="Pages\Componentes\Buscador.razor~RF47a2b634.TMP" />
+    <None Remove="Pages\Componentes\Secciones\Minimos.razor~RFa6e84dfb.TMP" />
     <None Remove="Pages\Componentes\Secciones\Suscripciones2.razor~RF3be9a021.TMP" />
   </ItemGroup>
 
