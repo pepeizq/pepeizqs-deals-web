@@ -167,11 +167,14 @@ namespace BaseDatos.Juegos
 
 								if (minimo != null)
 								{
-									bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
-
-									if (fechaEncaja == true && minimo.Descuento > 0 && juego.Analisis != null)
+									if (minimo.DRM != JuegoDRM.NoEspecificado)
 									{
-										juegosConMinimos.Add(juego);
+										bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
+
+										if (fechaEncaja == true && minimo.Descuento > 0 && juego.Analisis != null)
+										{
+											juegosConMinimos.Add(juego);
+										}
 									}
 								}
 							}
@@ -191,9 +194,12 @@ namespace BaseDatos.Juegos
 							{
 								if (minimo2.Precio < precio)
 								{
-									precio = minimo2.Precio;
+									if (minimo2.DRM != JuegoDRM.NoEspecificado)
+									{
+										precio = minimo2.Precio;
 
-									minimo = minimo2;
+										minimo = minimo2;
+									}
 								}
 							}
 
@@ -214,9 +220,12 @@ namespace BaseDatos.Juegos
 							{
 								if (minimo2.Precio < precio)
 								{
-									precio = minimo2.Precio;
+									if (minimo2.DRM != JuegoDRM.NoEspecificado)
+									{
+										precio = minimo2.Precio;
 
-									minimo = minimo2;
+										minimo = minimo2;
+									}
 								}
 							}
 
@@ -250,6 +259,11 @@ namespace BaseDatos.Juegos
 			}
 
 			return null;
+		}
+
+		public static void Codigos()
+		{
+
 		}
 
 		public static void Limpiar(string tienda)

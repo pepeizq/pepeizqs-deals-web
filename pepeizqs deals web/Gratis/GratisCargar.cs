@@ -21,7 +21,8 @@ namespace Gratis2
 				APIs.Desconocido.Gratis.Generar(),
 				APIs.Steam.Gratis.Generar(),
 				APIs.EpicGames.Gratis.Generar(),
-				APIs.GOG.Gratis.Generar()
+				APIs.GOG.Gratis.Generar(),
+				APIs.Fanatical.Gratis.Generar()
 			};
 
 			return gratis;

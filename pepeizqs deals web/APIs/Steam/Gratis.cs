@@ -21,5 +21,10 @@
 
 			return steam;
 		}
-	}
+
+        public static string Referido(string enlace)
+        {
+            return enlace + "?curator_clanid=33500256";
+        }
+    }
 }

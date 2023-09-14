@@ -144,7 +144,6 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-                                        await Task.Delay(30);
                                         BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
@@ -220,7 +219,6 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-                                        await Task.Delay(30);
                                         BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
@@ -296,7 +294,6 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-                                        await Task.Delay(30);
                                         BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
@@ -374,7 +371,6 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-                                        await Task.Delay(30);
                                         BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;

@@ -63,93 +63,108 @@
     {
         usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
 
-        deseadosMostrar = new List<JuegoDeseadoMostrar>();
-        List<JuegoDeseado> deseados = new List<JuegoDeseado>();
-        List<string> deseadosSteam = LeerSteamDeseados(usuario.SteamWishlist);
-
-        if (usuario.Wishlist != null)
+        if (usuario != null)
         {
-            deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
-        }
+            deseadosMostrar = new List<JuegoDeseadoMostrar>();
+            List<JuegoDeseado> deseados = new List<JuegoDeseado>();
+            List<string> deseadosSteam = new List<string>();
 
-        foreach (var deseadoSteam in deseadosSteam)
-        {
-            bool añadir = true;
-
-            foreach (var deseado in deseados)
+            if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
             {
-                if (deseado.IdSteam == deseadoSteam)
-                {
-                    añadir = false;
-                }
+                deseadosSteam = LeerSteamDeseados(usuario.SteamWishlist);
             }
 
-            if (añadir == true)
+            if (string.IsNullOrEmpty(usuario.Wishlist) == false)
             {
-                Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(null, deseadoSteam);
-
-                if (juego != null)
+                try
                 {
-                    JuegoDeseado nuevoDeseado = new JuegoDeseado();
-                    nuevoDeseado.IdBaseDatos = juego.Id.ToString();
-                    nuevoDeseado.IdSteam = deseadoSteam;
-                    nuevoDeseado.DRM = Juegos.JuegoDRM.Steam;
-
-                    deseados.Add(nuevoDeseado);
+                    deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
                 }
-            }
-        }
-
-        cantidad = deseados.Count;
-
-        usuario.Wishlist = JsonConvert.SerializeObject(deseados);
-
-        if (deseados.Count > 0)
-        {
-            foreach (var deseado in deseados)
-            {
-                Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(deseado.IdBaseDatos);
-
-                bool añadir = false;
-
-                List<Juegos.JuegoPrecio> ordenados = Herramientas.JuegoFicha.OrdenarPrecios(juego.PrecioActualesTiendas, deseado.DRM, true);
-
-                if (ordenados.Count > 0)
-                {
-                    añadir = true;
-                }
-
-                if (añadir == true)
-                {
-                    Juegos.Juego nuevoJuego = juego;
-                    nuevoJuego.PrecioActualesTiendas = ordenados;
-
-                    JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
-                    nuevoDeseado.Juego = nuevoJuego;
-                    nuevoDeseado.DRM = deseado.DRM;
-                    nuevoDeseado.Precio = ordenados[0];
-
-                    deseadosMostrar.Add(nuevoDeseado);
-                }				
+                catch { }          
             }
 
-            if (deseadosMostrar.Count > 0)
+            if (deseadosSteam.Count > 0)
             {
-                deseadosMostrar.Sort(delegate (JuegoDeseadoMostrar p1, JuegoDeseadoMostrar p2)
+                foreach (var deseadoSteam in deseadosSteam)
                 {
-                    if (p1.Juego.PrecioActualesTiendas[0].Precio == p2.Juego.PrecioActualesTiendas[0].Precio)
+                    bool añadir = true;
+
+                    foreach (var deseado in deseados)
                     {
-                        return p2.Juego.PrecioActualesTiendas[0].FechaDetectado.CompareTo(p1.Juego.PrecioActualesTiendas[0].FechaDetectado);
+                        if (deseado.IdSteam == deseadoSteam)
+                        {
+                            añadir = false;
+                        }
                     }
-                    else
-                    {
-                        return p1.Juego.PrecioActualesTiendas[0].Precio.CompareTo(p2.Juego.PrecioActualesTiendas[0].Precio);
-                    }
-                });
-            }
-        }
 
-        GuardarUsuario();
+                    if (añadir == true)
+                    {
+                        Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(null, deseadoSteam);
+
+                        if (juego != null)
+                        {
+                            JuegoDeseado nuevoDeseado = new JuegoDeseado();
+                            nuevoDeseado.IdBaseDatos = juego.Id.ToString();
+                            nuevoDeseado.IdSteam = deseadoSteam;
+                            nuevoDeseado.DRM = Juegos.JuegoDRM.Steam;
+
+                            deseados.Add(nuevoDeseado);
+                        }
+                    }
+                }
+            }
+            
+            cantidad = deseados.Count;
+
+            usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+            if (deseados.Count > 0)
+            {
+                foreach (var deseado in deseados)
+                {
+                    Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(deseado.IdBaseDatos);
+
+                    bool añadir = false;
+
+                    List<Juegos.JuegoPrecio> ordenados = Herramientas.JuegoFicha.OrdenarPrecios(juego.PrecioActualesTiendas, deseado.DRM, true);
+
+                    if (ordenados.Count > 0)
+                    {
+                        añadir = true;
+                    }
+
+                    if (añadir == true)
+                    {
+                        Juegos.Juego nuevoJuego = juego;
+                        nuevoJuego.PrecioActualesTiendas = ordenados;
+
+                        JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
+                        nuevoDeseado.Juego = nuevoJuego;
+                        nuevoDeseado.DRM = deseado.DRM;
+                        nuevoDeseado.Precio = ordenados[0];
+
+                        deseadosMostrar.Add(nuevoDeseado);
+                    }
+                }
+
+                if (deseadosMostrar.Count > 0)
+                {
+                    deseadosMostrar.Sort(delegate (JuegoDeseadoMostrar p1, JuegoDeseadoMostrar p2)
+                    {
+                        if (p1.Juego.PrecioActualesTiendas[0].Precio == p2.Juego.PrecioActualesTiendas[0].Precio)
+                        {
+                            return p2.Juego.PrecioActualesTiendas[0].FechaDetectado.CompareTo(p1.Juego.PrecioActualesTiendas[0].FechaDetectado);
+                        }
+                        else
+                        {
+                            return p1.Juego.PrecioActualesTiendas[0].Precio.CompareTo(p2.Juego.PrecioActualesTiendas[0].Precio);
+                        }
+                    });
+                }
+            }
+
+            GuardarUsuario();
+        }      
     }
 
     private async void GuardarUsuario()

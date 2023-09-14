@@ -14,7 +14,8 @@ namespace Juegos
 		Epic,
 		NoEspecificado,
 		GOG,
-		Amazon
+		Amazon,
+		ElderScrolls
 	}
 
 	public static class JuegoDRM2
@@ -132,6 +133,18 @@ namespace Juegos
 
 			//----------------------------
 
+			DRM elderscrolls = new DRM
+			{
+				Id = JuegoDRM.ElderScrolls,
+				Nombre = "Elder Scrolls Online",
+				Imagen = "/imagenes/drm/elderscrolls.webp",
+				Acepciones = new List<string> { "esonline" }
+			};
+
+			drms.Add(elderscrolls);
+
+			//----------------------------
+
 			return drms;
 		}
 
@@ -191,13 +204,23 @@ namespace Juegos
 
 				foreach (DRM drm in drms)
 				{
+					bool encontroDRM = false;
+
 					foreach (string acepcion in drm.Acepciones)
 					{
 						if (acepcion.ToLower() == drmTexto)
 						{
 							drmFinal = drm.Id;
+
+							encontroDRM = true;
+							break;
 						}
-					}			
+					}	
+					
+					if (encontroDRM == true)
+					{
+						break;
+					}
 				}
 
 				if (tienda == "humblestore")

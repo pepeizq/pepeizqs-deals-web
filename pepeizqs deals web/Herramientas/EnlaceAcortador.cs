@@ -87,14 +87,18 @@ namespace Herramientas
 
 		public static string Generar(string enlace, GratisTipo tipo)
 		{
-			//if (tipo == SuscripcionTipo.HumbleChoice)
-			//{
-			//	enlace = APIs.Humble.Suscripcion.Referido(enlace);
-			//}
+            if (tipo == APIs.Steam.Gratis.Generar().Id)
+            {
+                enlace = APIs.Steam.Gratis.Referido(enlace);
+            }
+			else if (tipo == APIs.Fanatical.Gratis.Generar().Id)
+            {
+                enlace = APIs.Fanatical.Gratis.Referido(enlace);
+            }
 
-			//----------------------------------------
+            //----------------------------------------
 
-			Enlace enlaceFinal = Buscar.Base(enlace);
+            Enlace enlaceFinal = Buscar.Base(enlace);
 
 			if (enlaceFinal == null)
 			{

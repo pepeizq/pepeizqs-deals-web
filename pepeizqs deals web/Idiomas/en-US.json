@@ -534,5 +534,29 @@
   {
     "Id": "HistoricalLow.String1",
     "Valor": "Historical Lows in Games and DLCs"
+  },
+  {
+    "Id": "HistoricalLow.String2",
+    "Valor": "Order By"
+  },
+  {
+    "Id": "HistoricalLow.String3",
+    "Valor": "Last Detected"
+  },
+  {
+    "Id": "HistoricalLow.String4",
+    "Valor": "Reviews"
+  },
+  {
+    "Id": "HistoricalLow.String5",
+    "Valor": "Price"
+  },
+  {
+    "Id": "HistoricalLow.String6",
+    "Valor": "Discount"
+  },
+  {
+    "Id": "Settings.String1",
+    "Valor": "Change your account settings"
   }
 ]

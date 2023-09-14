@@ -1,10 +1,10 @@
 ﻿.cabecera {
     height: 70px;
     background-color: var(--fondoOscuro);
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    right: 0;
+    z-index: 9999;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     padding: 14px;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .cuerpo-espacio {
-    padding: 110px 10px 60px 10px;
+    padding: 40px 10px 60px 10px;
 }
 
 .pie {

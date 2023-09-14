@@ -1,18 +1,24 @@
 ﻿@inject SignInManager<Usuario> SignInManager
+
 @{
     //var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+
+    #nullable disable
+
+    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 }
-<ul class="nav nav-pills flex-column">
+
+<ul class="nav nav-pills flex-column" style="margin-top: 0px;">
     <li class="nav-item">
-        <a class="perfil-lateral @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Steam</a>
+        <a class="perfil-lateral @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Steam")</a>
     </li>
 
     <li class="nav-item">
-        <a class="perfil-lateral @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a>
+        <a class="perfil-lateral @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Email")</a>
     </li>
 
     <li class="nav-item">
-        <a class="perfil-lateral @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
+        <a class="perfil-lateral @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Password")</a>
     </li>
     
     @*@if (hasExternalLogins)
@@ -25,6 +31,6 @@
     </li>*@
 
     <li class="nav-item">
-        <a class="perfil-lateral @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal Data</a>
+        <a class="perfil-lateral @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.PersonalData")</a>
     </li>
 </ul>

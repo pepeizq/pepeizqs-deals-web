@@ -73,15 +73,15 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == true)
             {
                 Microsoft.AspNetCore.Identity.SignInResult resultado = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 if (resultado.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
-                }
+					//return Redirect("./Manage");
+				}
 
                 if (resultado.RequiresTwoFactor)
                 {
@@ -90,7 +90,6 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
                 if (resultado.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else

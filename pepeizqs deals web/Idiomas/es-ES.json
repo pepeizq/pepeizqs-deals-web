@@ -534,5 +534,29 @@
   {
     "Id": "HistoricalLow.String1",
     "Valor": "Mínimos Históricos en Juegos y DLCs"
+  },
+  {
+    "Id": "HistoricalLow.String2",
+    "Valor": "Ordenar Por"
+  },
+  {
+    "Id": "HistoricalLow.String3",
+    "Valor": "Últimos Detectados"
+  },
+  {
+    "Id": "HistoricalLow.String4",
+    "Valor": "Reseñas"
+  },
+  {
+    "Id": "HistoricalLow.String5",
+    "Valor": "Precio"
+  },
+  {
+    "Id": "HistoricalLow.String6",
+    "Valor": "Descuento"
+  },
+  {
+    "Id": "Settings.String1",
+    "Valor": "Cambia la configuración de tu cuenta"
   }
 ]

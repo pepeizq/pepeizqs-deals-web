@@ -79,7 +79,7 @@
 
 					tareasActivas.Add(tareaActiva.Id + " " + diferenciaTiempo.Minutes.ToString() + " orden " + orden.ToString());
 				}
-				
+
 				// RecurringJob.RemoveIfExists(tareaActiva.Id);
 			}
 		}
@@ -103,6 +103,11 @@
 			if (id == "limpiar")
 			{
 				//BaseDatos.Juegos.Precios.Limpiar(tienda);
+			}
+
+			if (id == "codigo")
+			{
+				BaseDatos.Juegos.Precios.Codigos();
 			}
 		}
 	}

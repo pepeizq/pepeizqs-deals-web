@@ -93,7 +93,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
                 returnUrl ??= Url.Content("~/");
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid == true)
                 {
                     Usuario usuario = CrearUsuario();
 
@@ -129,8 +129,9 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
                             else
                             {
                                 await _signInManager.SignInAsync(usuario, isPersistent: false);
-                                return LocalRedirect(returnUrl);
-                            }
+								//return LocalRedirect(returnUrl);
+								return Redirect("./Manage");
+							}
                         }
 
                         foreach (var error in resultado.Errors)

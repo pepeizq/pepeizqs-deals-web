@@ -1,4 +1,6 @@
-﻿@{
+﻿@inject SignInManager<Usuario> SignInManager
+
+@{
 	#nullable disable
 
 	string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
@@ -6,33 +8,40 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="row justify-content-center">
-	<div class="carta-ancho">
-		<div class="carta login-logout-card">
-			<div class="card-header">
-				<ul class="nav nav-tabs card-header-tabs">
-					<li class="nav-item">
-						<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Login">
-							@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Register">
-							@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="card-body">
-				<div class="row justify-content-center">
-					<div class="col-10">
-						@RenderBody()
+@if (SignInManager.IsSignedIn(User) == false)
+{
+	<div class="row justify-content-center">
+		<div class="carta-ancho">
+			<div class="carta login-logout-card">
+				<div class="card-header">
+					<ul class="nav nav-tabs card-header-tabs">
+						<li class="nav-item">
+							<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Login">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="texto-cabecera texto-cabecera-carta" href="/Identity/Account/Register">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="card-body">
+					<div class="row justify-content-center">
+						<div class="col-10">
+							@RenderBody()
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+}
+else
+{
+
+}
 
 @section Scripts 
 {
