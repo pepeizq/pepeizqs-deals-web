@@ -180,92 +180,43 @@
 
 	private string CargarImagenDRM(Juego juego)
 	{
-		string imagen = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
-			{
-				if (minimo.Precio < precio)
-				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					imagen = oferta.DRM.ToString();
-				}
-			}			
+			return JuegoDRM2.SacarImagen(oferta.DRM.ToString());
 		}
 
-		if (imagen != null)
-		{
-			return JuegoDRM2.SacarImagen(imagen);
-		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
 
 	private string CargarImagenTienda(Juego juego)
 	{
-		string imagen = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
+			List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+			foreach (var tienda in tiendas)
 			{
-				if (minimo.Precio < precio)
+				if (tienda.Id == oferta.Tienda)
 				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
-
-					foreach (var tienda in tiendas)
-					{
-						if (tienda.Id == oferta.Tienda)
-						{
-							imagen = tienda.Imagen300x80;
-						}
-					}
+					return tienda.Imagen300x80;
 				}
-			}			
+			}
 		}
 
-		if (imagen != null)
-		{
-			return imagen;
-		}
-		else
-		{
-			return null;
-		}	
+		return null;	
 	}
 
 	private string CargarDescuento(Juego juego)
 	{
-		string descuento = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
-			{
-				if (minimo.Precio < precio)
-				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					descuento = oferta.Descuento.ToString() + "%";
-				}
-			}			
-		}
-
-		if (descuento != null)
-		{
-			return descuento;
+			return oferta.Descuento.ToString() + "%";
 		}
 		else
 		{
@@ -273,29 +224,15 @@
 		}
 	}
 
-	private string CargarPrecio(Juego juego)
+	private static string CargarPrecio(Juego juego)
 	{
-		string precioMensaje = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
-			{
-				if (minimo.Precio < precio)
-				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					precioMensaje = oferta.Precio.ToString();
-					precioMensaje = precioMensaje.Replace(".", ",");
-					precioMensaje = precioMensaje + "€";
-				}
-			}			
-		}
-
-		if (precioMensaje != null)
-		{
+			string precioMensaje = oferta.Precio.ToString();
+			precioMensaje = precioMensaje.Replace(".", ",");
+			precioMensaje = precioMensaje + "€";
 			return precioMensaje;
 		}
 		else
@@ -306,26 +243,11 @@
 
 	private string CargarDetectado(Juego juego)
 	{
-		string detectado = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
-			{
-				if (minimo.Precio < precio)
-				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					detectado = Herramientas.Calculadora.HaceTiempo(oferta.FechaDetectado, idioma);
-				}
-			}
-		}
-
-		if (detectado != null)
-		{
-			return detectado;
+			return Herramientas.Calculadora.HaceTiempo(oferta.FechaDetectado, idioma); 
 		}
 		else
 		{
@@ -335,26 +257,11 @@
 
 	private string CargarEnlace(Juego juego)
 	{
-		string enlace = null;
-		decimal precio = 10000000;
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
-		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		if (oferta != null)
 		{
-			if (minimo.DRM != JuegoDRM.NoEspecificado)
-			{
-				if (minimo.Precio < precio)
-				{
-					precio = minimo.Precio;
-
-					JuegoPrecio oferta = minimo;
-					enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
-				}
-			}
-		}
-
-		if (enlace != null)
-		{
-			return enlace;
+			return Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
 		}
 		else
 		{

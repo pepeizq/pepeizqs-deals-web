@@ -165,7 +165,9 @@ namespace Herramientas
 					});
 				}
 
-				drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimosOrdenados[0].Precio, minimosOrdenados[0].Moneda);
+				JuegoPrecio minimoOrdenado = minimosOrdenados[0];
+
+				drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimoOrdenado.Precio, false, minimoOrdenado.Moneda);
 
 				bool incluirTiempo = true;
 
@@ -324,11 +326,11 @@ namespace Herramientas
 				{
 					if (incluirDesde == true)
 					{
-						return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), PrepararPrecio(oferta.Precio, JuegoMoneda.Euro));
+						return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), PrepararPrecio(oferta.Precio, false, JuegoMoneda.Euro));
 					}
 					else
 					{
-						return PrepararPrecio(oferta.Precio, JuegoMoneda.Euro);
+						return PrepararPrecio(oferta.Precio, false, JuegoMoneda.Euro);
                     }
 				}
 				else
@@ -384,10 +386,18 @@ namespace Herramientas
 			return null;
 		}
 
-		public static string PrepararPrecio(decimal precio, JuegoMoneda moneda)
+		public static string PrepararPrecio(decimal precio, bool hacerCambioDivisa, JuegoMoneda moneda)
 		{
 			string precioTexto = string.Empty;
 
+			if (hacerCambioDivisa == true)
+			{
+				if (moneda != JuegoMoneda.Euro)
+				{
+					precio = Divisas.Cambio(precio, moneda);
+				}
+			}
+			
 			if (precio >= 0)
 			{
 				precioTexto = precio.ToString();

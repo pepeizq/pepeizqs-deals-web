@@ -185,26 +185,29 @@ namespace BaseDatos.Tiendas
 					{
 						string tempIds = lector.GetString(3);
 
-						int i = 0;
-						while (i < 100)
+						if (tempIds != null)
 						{
-							if (tempIds.Contains(",") == true)
+							int i = 0;
+							while (i < 100)
 							{
-								int int1 = tempIds.IndexOf(",");
-								string temp1 = tempIds.Remove(int1, tempIds.Length - int1);
+								if (tempIds.Contains(",") == true)
+								{
+									int int1 = tempIds.IndexOf(",");
+									string temp1 = tempIds.Remove(int1, tempIds.Length - int1);
 
-								listaIds.Add(int.Parse(temp1));
+									listaIds.Add(int.Parse(temp1));
 
-								tempIds = tempIds.Remove(0, int1 + 1);
+									tempIds = tempIds.Remove(0, int1 + 1);
+								}
+								else
+								{
+									listaIds.Add(int.Parse(tempIds));
+									break;
+								}
+
+								i += 1;
 							}
-							else
-							{
-								listaIds.Add(int.Parse(tempIds));
-								break;
-							}
-
-							i += 1;
-						}
+						}						
 					}
 				}
 			}
@@ -213,11 +216,11 @@ namespace BaseDatos.Tiendas
 			{
 				int idBuscarJuego = 0;
 
-				string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
+				string buscarNombre = "SELECT * FROM juegos WHERE nombreCodigo=@nombreCodigo";
 
 				using (SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion))
 				{
-					comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
+					comandoBuscar2.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(oferta.Nombre));
 
 					using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
 					{
@@ -250,7 +253,7 @@ namespace BaseDatos.Tiendas
 					}
 				}
 			}
-			
+
 			if (listaIds.Count > 0)
 			{
 				foreach (int id in listaIds)
@@ -261,7 +264,7 @@ namespace BaseDatos.Tiendas
 
 						using (SqlCommand comandoBuscar3 = new SqlCommand(buscarJuego, conexion))
 						{
-							comandoBuscar3.Parameters.AddWithValue("@id", id.ToString());
+							comandoBuscar3.Parameters.AddWithValue("@id", id);
 
 							using (SqlDataReader lector = comandoBuscar3.ExecuteReader())
 							{
@@ -298,13 +301,13 @@ namespace BaseDatos.Tiendas
 					}
 					else
 					{
-						string buscarNombre = "SELECT * FROM juegos WHERE nombre=@nombre";
+						string buscarNombre = "SELECT * FROM juegos WHERE nombreCodigo=@nombreCodigo";
 
 						SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion);
 
 						using (comandoBuscar2)
 						{
-							comandoBuscar2.Parameters.AddWithValue("@nombre", oferta.Nombre);
+							comandoBuscar2.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(oferta.Nombre));
 
 							using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
 							{

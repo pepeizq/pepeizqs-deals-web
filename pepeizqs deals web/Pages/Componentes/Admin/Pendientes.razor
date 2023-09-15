@@ -152,7 +152,7 @@
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
 			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, true);
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
 		}
 		else
 		{
@@ -183,6 +183,6 @@
 	{
 		BaseDatos.Juegos.Borrar.Ejecutar(id);
 
-		juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, true);
+		juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
 	}
 }

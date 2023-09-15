@@ -11,8 +11,8 @@ namespace BaseDatos.Juegos
 		public static void Ejecutar(Juego juego, SqlConnection conexion)
 		{
 			string sqlAñadir = "INSERT INTO juegos " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media) VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media) ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo) VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo) ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -27,6 +27,7 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 
 				try
 				{

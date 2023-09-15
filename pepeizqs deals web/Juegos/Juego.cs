@@ -29,6 +29,7 @@ namespace Juegos
 		public List<JuegoBundle> Bundles { get; set; }
 		public List<JuegoGratis> Gratis { get; set; }
 		public List<JuegoSuscripcion> Suscripciones { get; set; }
+		public string NombreCodigo { get; set; }
 	}
 
 	public static class JuegoCrear

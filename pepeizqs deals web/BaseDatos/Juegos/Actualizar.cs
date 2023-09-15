@@ -13,7 +13,7 @@ namespace BaseDatos.Juegos
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -33,6 +33,7 @@ namespace BaseDatos.Juegos
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
 				comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 				comando.Parameters.AddWithValue("@idGog", juego.IdGog);
 				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
@@ -44,11 +45,33 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+				comando.ExecuteNonQuery();
+				try
+				{
+                    
+                }
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void UnParametro(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET nombreCodigo=@nombreCodigo WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 
 				try
 				{
-                    comando.ExecuteNonQuery();
-                }
+					comando.ExecuteNonQuery();
+				}
 				catch
 				{
 

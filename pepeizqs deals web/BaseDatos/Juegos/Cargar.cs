@@ -118,6 +118,18 @@ namespace BaseDatos.Juegos
 				}
 			}
 
+			if (lector.IsDBNull(15) == false)
+			{
+				if (lector.GetString(15) != null)
+				{
+					try
+					{
+						juego.NombreCodigo = lector.GetString(15);
+					}
+					catch { }
+				}
+			}
+
 			return juego;
 		}
 	}

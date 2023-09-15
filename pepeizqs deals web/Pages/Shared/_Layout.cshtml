@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <a class="texto-logo" href="https://pepeizqdeals.com/">pepeizq's deals</a>
+                <a class="texto-logo" asp-page="/Index" target="_blank">pepeizq's deals</a>
 
                 @*Resolucion pequeña*@
 @*                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -156,16 +156,22 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="_framework/blazor.server.js" @* autostart="false" *@></script>
 
     <script>
-        Blazor.start().then(() => {
-            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                if (window.location.href.indexOf("/Admin/") == -1) {
-                    document.location.reload();
-                }
+        // Blazor.start().then(() => {
+        //     Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+        //         if (window.location.href.indexOf("/Admin/") == -1) {
+        //             document.location.reload();
+        //         }
+        //     }
+        // });
+
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+            if (window.location.href.indexOf("/Admin/") == -1) {
+                document.location.reload();
             }
-        });
+        };
     </script>
 
     <div id="components-reconnect-modal" style="display: none"/>

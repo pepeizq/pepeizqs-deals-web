@@ -69,7 +69,7 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-        public static List<Juego> Nombre(string nombre, bool usuario)
+        public static List<Juego> Nombre(string nombre)
         {
             List<Juego> juegos = new List<Juego>();
 
@@ -77,22 +77,13 @@ namespace BaseDatos.Juegos
 	
 			using (conexion)
             {
-                string busqueda = null;
-				
-				if (usuario == true)
-				{
-					busqueda = "SELECT * FROM juegos WHERE " + ConstruirReplaces() + " LIKE '%" + nombre.ToLower() + "%'";
-				}
-				else
-				{
-					busqueda = "SELECT * FROM juegos WHERE nombre LIKE '%" + nombre.ToLower() + "%'";
-				}
+                string busqueda = "SELECT * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 
 				try
 				{
                     using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                     {
-                        using (SqlDataReader lector = comando.ExecuteReader())
+						using (SqlDataReader lector = comando.ExecuteReader())
                         {
                             while (lector.Read())
                             {
@@ -142,30 +133,6 @@ namespace BaseDatos.Juegos
 			}
 
 			return juegos;
-		}
-
-		private static string ConstruirReplaces()
-		{
-            List<string> caracteres = new List<string>
-            {
-                ":", ",", ".", "®", "™", "_", "-"
-            };
-
-			string mensaje = string.Empty;
-
-			for (int i = 0; i < caracteres.Count; i += 1)
-			{
-				if (i == 0)
-				{
-					mensaje = "REPLACE(nombre, '" + caracteres[i] + "','')";
-                }
-				else
-				{
-					mensaje = "REPLACE(" + mensaje + ", '" + caracteres[i] + "', '')";
-				}
-			}
-
-			return mensaje;
 		}
 	}
 }

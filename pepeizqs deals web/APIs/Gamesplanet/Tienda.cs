@@ -144,7 +144,7 @@ namespace APIs.Gamesplanet
 											FechaActualizacion = DateTime.Now
 										};
 
-                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
 										juegos2 += 1;
 										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);

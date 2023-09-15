@@ -8,7 +8,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Precios
 	{
-		public static void Actualizar(Juego juego, JuegoPrecio nuevoPrecio, ViewDataDictionary objeto, SqlConnection conexion)
+		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, ViewDataDictionary objeto, SqlConnection conexion)
 		{
 			bool añadir = true;
 
@@ -18,24 +18,24 @@ namespace BaseDatos.Juegos
 				{
 					foreach (JuegoPrecio precio in juego.PrecioActualesTiendas)
 					{
-						if (nuevoPrecio.Enlace == precio.Enlace && 
-							nuevoPrecio.DRM == precio.DRM && 
-							nuevoPrecio.Tienda == precio.Tienda &&
-							nuevoPrecio.Moneda == precio.Moneda)
+						if (nuevaOferta.Enlace == precio.Enlace && 
+							nuevaOferta.DRM == precio.DRM && 
+							nuevaOferta.Tienda == precio.Tienda &&
+							nuevaOferta.Moneda == precio.Moneda)
 						{
-							if (nuevoPrecio.Precio < precio.Precio) 
+							if (nuevaOferta.Precio < precio.Precio) 
 							{
-								precio.FechaDetectado = nuevoPrecio.FechaDetectado;
+								precio.FechaDetectado = nuevaOferta.FechaDetectado;
 							}
 
-							precio.Precio = nuevoPrecio.Precio;
-							precio.Descuento = nuevoPrecio.Descuento;
-							precio.FechaActualizacion = nuevoPrecio.FechaActualizacion;
-							precio.FechaTermina = nuevoPrecio.FechaTermina;
-							precio.CodigoDescuento = nuevoPrecio.CodigoDescuento;
-							precio.CodigoTexto = nuevoPrecio.CodigoTexto;
-							precio.Nombre = nuevoPrecio.Nombre;
-							precio.Imagen = nuevoPrecio.Imagen;
+							precio.Precio = nuevaOferta.Precio;
+							precio.Descuento = nuevaOferta.Descuento;
+							precio.FechaActualizacion = nuevaOferta.FechaActualizacion;
+							precio.FechaTermina = nuevaOferta.FechaTermina;
+							precio.CodigoDescuento = nuevaOferta.CodigoDescuento;
+							precio.CodigoTexto = nuevaOferta.CodigoTexto;
+							precio.Nombre = nuevaOferta.Nombre;
+							precio.Imagen = nuevaOferta.Imagen;
 
 							añadir = false;
 							break;
@@ -50,7 +50,7 @@ namespace BaseDatos.Juegos
 
 			if (añadir == true)
 			{
-				juego.PrecioActualesTiendas.Add(nuevoPrecio);
+				juego.PrecioActualesTiendas.Add(nuevaOferta);
 			}
 
 			if (juego.PrecioActualesTiendas.Count > 0)
@@ -147,34 +147,41 @@ namespace BaseDatos.Juegos
 
 						if (descartar == false)
 						{
-							if (juego.PrecioMinimosHistoricos.Count > 0)
+							if (juego.PrecioActualesTiendas.Count > 0)
 							{
-								decimal precio = 10000000;
-								JuegoPrecio minimo = null;
-
-								foreach (var minimo2 in juego.PrecioMinimosHistoricos)
+								foreach (var minimo2 in juego.PrecioActualesTiendas)
 								{
-									if (minimo2.Precio < precio)
+									if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
 									{
-										if (minimo2.DRM != JuegoDRM.NoEspecificado)
-										{
-											precio = minimo2.Precio;
+										minimo2.Precio = Herramientas.Divisas.Cambio(minimo2.Precio, minimo2.Moneda);
+									}
 
-											minimo = minimo2;
+									if (minimo2.DRM == JuegoDRM.NoEspecificado) 
+									{
+										minimo2.Precio = 100000000;
+									}
+
+									foreach (var historico2 in juego.PrecioMinimosHistoricos)
+									{
+										if (historico2.DRM == minimo2.DRM)
+										{
+											if (historico2.Precio < minimo2.Precio)
+											{
+												minimo2.Precio = 100000000;
+											}
 										}
 									}
 								}
 
-								if (minimo != null)
+								juego.PrecioActualesTiendas = juego.PrecioActualesTiendas.OrderBy(x => x.Precio).ToList();
+								
+								if (juego.PrecioActualesTiendas[0] != null)
 								{
-									if (minimo.DRM != JuegoDRM.NoEspecificado)
-									{
-										bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(minimo);
+									bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(juego.PrecioActualesTiendas[0]);
 
-										if (fechaEncaja == true && minimo.Descuento > 0 && juego.Analisis != null)
-										{
-											juegosConMinimos.Add(juego);
-										}
+									if (fechaEncaja == true && juego.PrecioActualesTiendas[0].Descuento > 0 && juego.PrecioActualesTiendas[0].Precio < 1000 && juego.Analisis != null)
+									{
+										juegosConMinimos.Add(juego);
 									}
 								}
 							}
@@ -185,18 +192,25 @@ namespace BaseDatos.Juegos
 					{
 						List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
-						if (j1.PrecioMinimosHistoricos.Count > 0)
+						if (j1.PrecioActualesTiendas.Count > 0)
 						{
 							decimal precio = 10000000;
 							JuegoPrecio minimo = null;
 
-							foreach (var minimo2 in j1.PrecioMinimosHistoricos)
+							foreach (var minimo2 in j1.PrecioActualesTiendas)
 							{
-								if (minimo2.Precio < precio)
+								decimal precio2 = minimo2.Precio;
+
+								//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
+								//{
+								//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
+								//}
+
+								if (precio2 < precio)
 								{
 									if (minimo2.DRM != JuegoDRM.NoEspecificado)
 									{
-										precio = minimo2.Precio;
+										precio = precio2;
 
 										minimo = minimo2;
 									}
@@ -211,18 +225,25 @@ namespace BaseDatos.Juegos
 
 						List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
-						if (j2.PrecioMinimosHistoricos.Count > 0)
+						if (j2.PrecioActualesTiendas.Count > 0)
 						{
 							decimal precio = 10000000;
 							JuegoPrecio minimo = null;
 
-							foreach (var minimo2 in j2.PrecioMinimosHistoricos)
+							foreach (var minimo2 in j2.PrecioActualesTiendas)
 							{
-								if (minimo2.Precio < precio)
+								decimal precio2 = minimo2.Precio;
+
+								//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
+								//{
+								//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
+								//}
+
+								if (precio2 < precio)
 								{
 									if (minimo2.DRM != JuegoDRM.NoEspecificado)
 									{
-										precio = minimo2.Precio;
+										precio = precio2;
 
 										minimo = minimo2;
 									}
@@ -253,17 +274,12 @@ namespace BaseDatos.Juegos
 
 						return 0;
 					});
-
+					
 					return juegosConMinimos;
 				}
 			}
 
 			return null;
-		}
-
-		public static void Codigos()
-		{
-
 		}
 
 		public static void Limpiar(string tienda)
