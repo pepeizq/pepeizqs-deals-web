@@ -12,6 +12,7 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Owl.reCAPTCHA;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -134,6 +135,13 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews().AddMvcOptions(options =>
+//	options.Filters.Add(
+//		new ResponseCacheAttribute
+//		{
+//			NoStore = true,
+//			Location = ResponseCacheLocation.None
+//		}));
 
 builder.Services.AddRateLimiter(_ => _
     .AddFixedWindowLimiter(policyName: "fixed", options =>
@@ -144,12 +152,12 @@ builder.Services.AddRateLimiter(_ => _
         options.QueueLimit = 2;
     }));
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-	serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-	serverOptions.AllowSynchronousIO = true;
-});
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//	serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+//	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+//	serverOptions.AllowSynchronousIO = true;
+//});
 
 var app = builder.Build();
 
@@ -165,6 +173,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+//app.UseResponseCaching();
 
 app.UseAuthorization();
 

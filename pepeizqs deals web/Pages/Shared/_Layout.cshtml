@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.Extensions.Caching.Memory;
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject SignInManager<Usuario> SignInManager
@@ -156,7 +157,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js" @* autostart="false" *@></script>
+    <script src="_framework/blazor.server.js" @* autostart="false" *@ ></script>
 
     <script>
         // Blazor.start().then(() => {
@@ -166,12 +167,6 @@
         //         }
         //     }
         // });
-
-        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-            if (window.location.href.indexOf("/Admin/") == -1) {
-                document.location.reload();
-            }
-        };
     </script>
 
     <div id="components-reconnect-modal" style="display: none"/>

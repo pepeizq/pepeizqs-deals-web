@@ -28,7 +28,7 @@
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="margin-bottom: 50px;">
-		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+		<div style="display: grid; grid-auto-flow: column; overflow-x: auto; gap: 15px;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
 				<div style="min-width: 150px; max-width: 200px;">
