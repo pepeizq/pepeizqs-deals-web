@@ -1,7 +1,7 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.HistoricalLowModel
 
-@using Microsoft.Extensions.Caching.Memory;
+@* @using Microsoft.Extensions.Caching.Memory; *@
 
 @{
 	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "HistoricalLow.Title");
@@ -9,6 +9,6 @@
 }
 
 @* vary-by-user="true" *@
-<cache priority="CacheItemPriority.Normal" expires-sliding="@TimeSpan.FromSeconds(180)" vary-by="@Model.idioma">
+@* <cache priority="CacheItemPriority.Low" expires-after="@TimeSpan.FromMinutes(10)" vary-by="@Model.idioma"> *@
 	@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
-</cache>
+@* </cache> *@

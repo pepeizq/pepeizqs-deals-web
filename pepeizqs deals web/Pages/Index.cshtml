@@ -8,6 +8,7 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<cache priority="CacheItemPriority.NeverRemove" expires-sliding="@TimeSpan.FromSeconds(30)" vary-by="@Model.idioma">
+@* <cache priority="CacheItemPriority.Low" expires-sliding="@TimeSpan.FromMinutes(5)" vary-by="@Model.idioma"> *@
 	@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
-</cache>
+@* </cache>
+ *@

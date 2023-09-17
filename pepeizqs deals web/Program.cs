@@ -9,13 +9,10 @@ using Herramientas;
 using Microsoft.AspNetCore.SignalR;
 using Hangfire;
 using Hangfire.SqlServer;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Threading.RateLimiting;
 using Owl.reCAPTCHA;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-var conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection") ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
+var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
 
@@ -34,8 +31,6 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
 
 #endregion
-
-//----------------------------------------------------------------------------------
 
 #region Tareas
 
@@ -67,8 +62,6 @@ builder.Services.AddHangfireServer();
 
 #endregion
 
-//----------------------------------------------------------------------------------
-
 #region Acceder Usuario en Codigo
 
 builder.Services.AddControllers();
@@ -78,6 +71,8 @@ builder.Services.AddHttpContextAccessor();
 #endregion
 
 //----------------------------------------------------------------------------------
+
+builder.Services.AddResponseCaching();
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -111,14 +106,14 @@ builder.Services.AddServerSideBlazor(options =>
     options.MaxBufferedUnacknowledgedRenderBatches = 10;
 }).AddHubOptions(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(20);
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
 	options.EnableDetailedErrors = true;
-    options.HandshakeTimeout = TimeSpan.FromSeconds(10);
-    options.KeepAliveInterval = TimeSpan.FromSeconds(10);
+    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
 }).AddCircuitOptions(options =>
 {
     options.DetailedErrors = true;
-    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromSeconds(0);
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
     options.DisconnectedCircuitMaxRetained = 0;
 }); ;
 
@@ -135,22 +130,15 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
-//builder.Services.AddControllersWithViews().AddMvcOptions(options =>
-//	options.Filters.Add(
-//		new ResponseCacheAttribute
-//		{
-//			NoStore = true,
-//			Location = ResponseCacheLocation.None
-//		}));
 
-builder.Services.AddRateLimiter(_ => _
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
-    {
-        options.PermitLimit = 4;
-        options.Window = TimeSpan.FromSeconds(12);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 2;
-    }));
+//builder.Services.AddRateLimiter(_ => _
+//    .AddFixedWindowLimiter(policyName: "fixed", options =>
+//    {
+//        options.PermitLimit = 4;
+//        options.Window = TimeSpan.FromSeconds(12);
+//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        options.QueueLimit = 2;
+//    }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
 //{
@@ -161,13 +149,13 @@ builder.Services.AddRateLimiter(_ => _
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
+//if (!app.Environment.IsDevelopment())
+//{
     //app.UseExceptionHandler("/Error");
     app.UseDeveloperExceptionPage();
 
 	app.UseHsts();
-}
+//}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -190,6 +178,6 @@ app.UseRequestLocalization();
 
 app.UseHangfireDashboard();
 
-app.UseRateLimiter();
+app.UseResponseCaching();
 
 app.Run();

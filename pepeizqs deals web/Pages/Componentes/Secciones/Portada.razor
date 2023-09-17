@@ -2,6 +2,7 @@
 @using Juegos;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
+@using Microsoft.Extensions.Caching.Distributed;
 @using Microsoft.VisualBasic;
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -216,104 +217,14 @@
 
 	protected override void OnInitialized()
 	{
-		#region Minimos
-		List<Juego> juegosConMinimos = BaseDatos.Juegos.Precios.DevolverMinimos();
-
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosDestacadosMostrar.Clear();
-				juegosMinimosMostrar.Clear();
-
-				int i = 0;
-
-				foreach (var minimo in juegosConMinimos)
-				{
-					if (i < 6)
-					{
-						if (minimo.Analisis != null)
-						{
-							if (minimo.Analisis.Cantidad.Length >= 6)
-							{
-								juegosDestacadosMostrar.Add(minimo);
-								i += 1;
-							}
-						}
-					}
-					else
-					{
-						break;
-					}
-				}
-
-				for (int j = 0; juegosMinimosMostrar.Count < 10; j += 1)
-				{
-					bool añadir = true;
-
-					if (juegosDestacadosMostrar.Count > 0)
-					{
-						foreach (var destacado in juegosDestacadosMostrar)
-						{
-							if (destacado.Id == juegosConMinimos[j].Id)
-							{
-								añadir = false;
-							}
-						}
-					}
-
-					if (juegosConMinimos[j].Analisis == null)
-					{
-						añadir = false;
-					}
-
-					if (juegosConMinimos[j].Gratis != null)
-					{
-						if (juegosConMinimos[j].Gratis.Count > 0)
-						{
-							foreach (var gratis in juegosConMinimos[j].Gratis)
-							{
-								if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-								{
-									añadir = false;
-								}
-							}
-						}
-					}
-
-					if (añadir == true)
-					{
-						juegosMinimosMostrar.Add(juegosConMinimos[j]);
-					}					
-				}
-			}
-		}
-		#endregion
-
-		//----------------------------------------------------------
-
-		#region Añadidos
+		#region Juegos
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
 		{
-			List<Juego> juegos = Buscar.Todos(conexion);
-
-			if (juegos.Count > 0)
-			{
-				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
-
-				int i = 0;
-				foreach (Juego juego in juegos)
-				{
-					if (i < 10)
-					{
-						juegosAñadidosMostrar.Add(juego);
-					}
-
-					i += 1;
-				}
-			}
+			juegosDestacadosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+			juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
+			juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
 		}
 		#endregion
 

@@ -114,169 +114,176 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion);
 		}
 
-		public static List<Juego> DevolverMinimos()
+		public static List<Juego> DevolverMinimos(List<Juego> juegos = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+			if (juegos == null)
 			{
-				List<Juego> juegos = Buscar.Todos(conexion);
+				juegos = new List<Juego>();
 
-				if (juegos.Count > 0)
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
 				{
-					List<Juego> juegosConMinimos = new List<Juego>();
+					juegos = Buscar.Todos(conexion);
+				}
 
-					foreach (var juego in juegos)
+				conexion.Dispose();
+			}
+			
+			if (juegos.Count > 0)
+			{
+				List<Juego> juegosConMinimos = new List<Juego>();
+
+				foreach (var juego in juegos)
+				{
+					bool descartar = false;
+
+					if (juego.Bundles != null)
 					{
-						bool descartar = false;
+						descartar = true;
+					}
 
-						if (juego.Bundles != null)
-						{
-							descartar = true;
-						}
+					if (juego.Gratis != null)
+					{
+						descartar = true;
+					}
 
-						if (juego.Gratis != null)
-						{
-							descartar = true;
-						}
+					if (juego.Suscripciones != null)
+					{
+						descartar = true;
+					}
 
-						if (juego.Suscripciones != null)
+					if (descartar == false)
+					{
+						if (juego.PrecioActualesTiendas.Count > 0)
 						{
-							descartar = true;
-						}
-
-						if (descartar == false)
-						{
-							if (juego.PrecioActualesTiendas.Count > 0)
+							foreach (var minimo2 in juego.PrecioActualesTiendas)
 							{
-								foreach (var minimo2 in juego.PrecioActualesTiendas)
+								if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
 								{
-									if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
-									{
-										minimo2.Precio = Herramientas.Divisas.Cambio(minimo2.Precio, minimo2.Moneda);
-									}
+									minimo2.Precio = Herramientas.Divisas.Cambio(minimo2.Precio, minimo2.Moneda);
+								}
 
-									if (minimo2.DRM == JuegoDRM.NoEspecificado) 
-									{
-										minimo2.Precio = 100000000;
-									}
+								if (minimo2.DRM == JuegoDRM.NoEspecificado)
+								{
+									minimo2.Precio = 100000000;
+								}
 
-									foreach (var historico2 in juego.PrecioMinimosHistoricos)
+								foreach (var historico2 in juego.PrecioMinimosHistoricos)
+								{
+									if (historico2.DRM == minimo2.DRM)
 									{
-										if (historico2.DRM == minimo2.DRM)
+										if (historico2.Precio < minimo2.Precio)
 										{
-											if (historico2.Precio < minimo2.Precio)
-											{
-												minimo2.Precio = 100000000;
-											}
+											minimo2.Precio = 100000000;
 										}
 									}
 								}
+							}
 
-								juego.PrecioActualesTiendas = juego.PrecioActualesTiendas.OrderBy(x => x.Precio).ToList();
-								
-								if (juego.PrecioActualesTiendas[0] != null)
+							juego.PrecioActualesTiendas = juego.PrecioActualesTiendas.OrderBy(x => x.Precio).ToList();
+
+							if (juego.PrecioActualesTiendas[0] != null)
+							{
+								bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(juego.PrecioActualesTiendas[0]);
+
+								if (fechaEncaja == true && juego.PrecioActualesTiendas[0].Descuento > 0 && juego.PrecioActualesTiendas[0].Precio < 1000 && juego.Analisis != null)
 								{
-									bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(juego.PrecioActualesTiendas[0]);
-
-									if (fechaEncaja == true && juego.PrecioActualesTiendas[0].Descuento > 0 && juego.PrecioActualesTiendas[0].Precio < 1000 && juego.Analisis != null)
-									{
-										juegosConMinimos.Add(juego);
-									}
+									juegosConMinimos.Add(juego);
 								}
 							}
-						}						
+						}
+					}
+				}
+
+				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+				{
+					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+
+					if (j1.PrecioActualesTiendas.Count > 0)
+					{
+						decimal precio = 10000000;
+						JuegoPrecio minimo = null;
+
+						foreach (var minimo2 in j1.PrecioActualesTiendas)
+						{
+							decimal precio2 = minimo2.Precio;
+
+							//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
+							//{
+							//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
+							//}
+
+							if (precio2 < precio)
+							{
+								if (minimo2.DRM != JuegoDRM.NoEspecificado)
+								{
+									precio = precio2;
+
+									minimo = minimo2;
+								}
+							}
+						}
+
+						if (minimo != null)
+						{
+							j1Ofertas.Add(minimo);
+						}
 					}
 
-					juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+
+					if (j2.PrecioActualesTiendas.Count > 0)
 					{
-						List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+						decimal precio = 10000000;
+						JuegoPrecio minimo = null;
 
-						if (j1.PrecioActualesTiendas.Count > 0)
+						foreach (var minimo2 in j2.PrecioActualesTiendas)
 						{
-							decimal precio = 10000000;
-							JuegoPrecio minimo = null;
+							decimal precio2 = minimo2.Precio;
 
-							foreach (var minimo2 in j1.PrecioActualesTiendas)
+							//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
+							//{
+							//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
+							//}
+
+							if (precio2 < precio)
 							{
-								decimal precio2 = minimo2.Precio;
-
-								//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
-								//{
-								//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
-								//}
-
-								if (precio2 < precio)
+								if (minimo2.DRM != JuegoDRM.NoEspecificado)
 								{
-									if (minimo2.DRM != JuegoDRM.NoEspecificado)
-									{
-										precio = precio2;
+									precio = precio2;
 
-										minimo = minimo2;
-									}
+									minimo = minimo2;
 								}
 							}
-
-							if (minimo != null)
-							{
-								j1Ofertas.Add(minimo);
-							}
 						}
 
-						List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
-
-						if (j2.PrecioActualesTiendas.Count > 0)
+						if (minimo != null)
 						{
-							decimal precio = 10000000;
-							JuegoPrecio minimo = null;
-
-							foreach (var minimo2 in j2.PrecioActualesTiendas)
-							{
-								decimal precio2 = minimo2.Precio;
-
-								//if (minimo2.Moneda != Herramientas.JuegoMoneda.Euro)
-								//{
-								//	precio2 = Herramientas.Divisas.Cambio(precio2, minimo2.Moneda);
-								//}
-
-								if (precio2 < precio)
-								{
-									if (minimo2.DRM != JuegoDRM.NoEspecificado)
-									{
-										precio = precio2;
-
-										minimo = minimo2;
-									}
-								}
-							}
-
-							if (minimo != null)
-							{
-								j2Ofertas.Add(minimo);
-							}
+							j2Ofertas.Add(minimo);
 						}
+					}
 
-						if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+					{
+						return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
+					}
+					else
+					{
+						if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
 						{
-							return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
+							return 1;
 						}
-						else
+						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
 						{
-							if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
-							{
-								return 1;
-							}
-							else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
-							{
-								return -1;
-							}
+							return -1;
 						}
+					}
 
-						return 0;
-					});
-					
-					return juegosConMinimos;
-				}
+					return 0;
+				});
+
+				return juegosConMinimos;
 			}
 
 			return null;

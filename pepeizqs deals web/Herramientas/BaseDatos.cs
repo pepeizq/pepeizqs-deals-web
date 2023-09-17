@@ -7,10 +7,12 @@ namespace Herramientas
 {
 	public static class BaseDatos
 	{
+		public static string cadenaConexion = "pepeizqs_deals_webContextConnection";
+
 		public static SqlConnection Conectar()
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
+			string conexionTexto = builder.Configuration.GetConnectionString(cadenaConexion);
 			SqlConnection conexion = new SqlConnection(conexionTexto);
 
             ConnectionState estado = conexion.State;

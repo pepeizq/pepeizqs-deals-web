@@ -112,11 +112,22 @@ namespace BaseDatos.Juegos
             return null;
         }
 
-        public static List<Juego> Todos(SqlConnection conexion)
+        public static List<Juego> Todos(SqlConnection conexion, string tabla = null)
 		{
+			string tabla2 = string.Empty;
+
+			if (tabla == null)
+			{
+				tabla2 = "juegos";
+			}
+			else
+			{
+				tabla2 = tabla;
+			}
+
 			List<Juego> juegos = new List<Juego>();
 
-			string busqueda = "SELECT * FROM juegos";
+			string busqueda = "SELECT * FROM " + tabla2;
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{

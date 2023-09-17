@@ -244,7 +244,7 @@ namespace Herramientas
 			{
 				if (precio.FechaActualizacion.Year > 2022)
 				{
-					if (precio.FechaActualizacion.DayOfYear + 1 <= DateTime.Now.DayOfYear)
+					if (precio.FechaActualizacion.DayOfYear + 2 <= DateTime.Now.DayOfYear)
 					{
 						fechaEncaja = false;
 					}
