@@ -130,6 +130,15 @@ namespace BaseDatos.Juegos
 				}
 			}
 
+			if (lector.IsDBNull(16) == false)
+			{
+				try
+				{
+					juego.IdMaestra = lector.GetInt32(16);
+				}
+				catch { }
+			}
+
 			return juego;
 		}
 	}

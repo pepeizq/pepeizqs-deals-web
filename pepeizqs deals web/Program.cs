@@ -177,6 +177,7 @@ app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1,
 app.UseRequestLocalization();
 
 app.UseHangfireDashboard();
+app.MapHangfireDashboard();
 
 app.UseResponseCaching();
 

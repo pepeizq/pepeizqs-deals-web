@@ -66,25 +66,31 @@
 		int orden = BaseDatos.Tiendas.Admin.TareaLeerOrden();
 
 		RecurringJobManager manager = new RecurringJobManager();
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "0 */5 * ? * *");
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "0 */20 * ? * *");
 
 		using (var conexion = JobStorage.Current.GetConnection())
 		{
 			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
 			{
+				RecurringJob.RemoveIfExists(tareaActiva.Id);
+			}
+
+			RecurringJobOptions opciones = new RecurringJobOptions();
+			opciones.TimeZone = TimeZoneInfo.Local;
+
+			// manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
+			// manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
+
+			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+			{
 				if (tareaActiva.NextExecution != null)
 				{
-					DateTime proximo = tareaActiva.NextExecution.Value;
-					TimeSpan diferenciaTiempo = DateTime.Now.Subtract(proximo);
-
 					if (tareaActiva.Id == "tiendas")
 					{
-						tareasActivas.Add(tareaActiva.Id + " " + diferenciaTiempo.Minutes.ToString() + " orden " + orden.ToString());
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString());
 					}
 					else
 					{
-						tareasActivas.Add(tareaActiva.Id + " " + diferenciaTiempo.Minutes.ToString());
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString());
 					}
 					
 				}

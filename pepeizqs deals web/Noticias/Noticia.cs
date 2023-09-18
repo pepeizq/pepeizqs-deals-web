@@ -22,5 +22,6 @@ namespace Noticias
 		public string Juegos;
 		public DateTime FechaEmpieza;
 		public DateTime FechaTermina;
+		public int IdMaestra;
 	}
 }

@@ -33,7 +33,7 @@
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
 				<div style="min-width: 150px; max-width: 200px;">
-					<a href="game/@destacado.Id" class="boton-pequeño" style="padding: 3px;">
+					<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
 						</div>
@@ -64,7 +64,7 @@
 				@foreach (var juego in juegosMinimosMostrar)
 				{
 					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
+						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
 							<div class="perfil-flexible-centrado">
 								<div style="width: 22%;">
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
@@ -106,7 +106,7 @@
 				@foreach (var juego in juegosAñadidosMostrar)
 				{
 					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
+						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
 							<div class="perfil-flexible-centrado">
 								<div style="width: 22%;">
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
@@ -117,7 +117,7 @@
 
 									@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 									{
-										<br /> @juego.Id
+										<br /> @juego.IdMaestra
 									}
 								</div>
 
@@ -156,7 +156,7 @@
 				@foreach (var noticia in noticiasMostrar)
 				{
 					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 20px;" href="/news/@noticia.Id">
+						<a class="boton-pequeño" style="padding: 20px;" href="/news/@noticia.IdMaestra">
 							<div class="perfil-flexible-centrado">
 								<div style="width: 80%;">
 									@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
@@ -217,7 +217,6 @@
 
 	protected override void OnInitialized()
 	{
-		#region Juegos
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
@@ -225,48 +224,10 @@
 			juegosDestacadosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
 			juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
 			juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
+
+			noticiasMostrar = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
+			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
 		}
-		#endregion
-
-		//----------------------------------------------------------
-
-		#region Noticias
-		List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-		if (noticias.Count > 0)
-		{
-			int i = 0;
-			foreach (var noticia in noticias)
-			{
-				if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
-				{
-					if (i < 12)
-					{
-						if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-						{
-							DateTime fechaEncabezado = noticia.FechaEmpieza;
-							fechaEncabezado = fechaEncabezado.AddDays(3);
-
-							if (DateTime.Now < fechaEncabezado)
-							{
-								noticiaEvento.Add(noticia);
-							}
-							else
-							{
-								noticiasMostrar.Add(noticia);
-							}
-						}
-						else
-						{
-							noticiasMostrar.Add(noticia);
-						}					
-					}
-
-					i += 1;
-				}
-			}
-		}	
-		#endregion
 	}
 
 	private string CargarIconoTienda(Juego juego)
@@ -339,7 +300,7 @@
 		}
 		else
 		{
-			enlace = "/news/" + noticia.Id.ToString();
+			enlace = "/news/" + noticia.IdMaestra.ToString();
 		}
 
 		return enlace;
