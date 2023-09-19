@@ -67,19 +67,19 @@
 
 		RecurringJobManager manager = new RecurringJobManager();
 
-		using (var conexion = JobStorage.Current.GetConnection())
+		RecurringJobOptions opciones = new RecurringJobOptions();
+		opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
+
+		// foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+		// {
+		// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
+		// }
+
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
+
+		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
 		{
-			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
-			{
-				RecurringJob.RemoveIfExists(tareaActiva.Id);
-			}
-
-			RecurringJobOptions opciones = new RecurringJobOptions();
-			opciones.TimeZone = TimeZoneInfo.Local;
-
-			// manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
-			// manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
-
 			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
 			{
 				if (tareaActiva.NextExecution != null)

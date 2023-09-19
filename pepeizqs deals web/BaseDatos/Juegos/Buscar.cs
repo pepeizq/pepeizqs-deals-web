@@ -69,38 +69,18 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-        public static List<Juego> Nombre(string nombre)
+		public static List<Juego> Nombre(string nombre)
         {
             List<Juego> juegos = new List<Juego>();
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-	
+
 			using (conexion)
-            {
-                string busqueda = "SELECT * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
+			{
+				juegos = Nombre(nombre, conexion);
+            }		
 
-				try
-				{
-                    using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-                    {
-						using (SqlDataReader lector = comando.ExecuteReader())
-                        {
-                            while (lector.Read())
-                            {
-                                Juego juego = new Juego();
-                                juego = Cargar.Ejecutar(juego, lector);
-                                juegos.Add(juego);
-                            }
-                        }
-                    }
-                }
-				catch
-				{
-
-				}			
-            }
-
-			//conexion.Dispose();
+            conexion.Dispose();
 
 			if (juegos.Count > 0)
 			{
@@ -110,6 +90,42 @@ namespace BaseDatos.Juegos
             }
 
             return null;
+        }
+
+        public static List<Juego> Nombre(string nombre, SqlConnection conexion)
+		{
+            List<Juego> juegos = new List<Juego>();
+
+            string busqueda = "SELECT TOP 100 * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%';";
+
+            try
+            {
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Juego juego = new Juego();
+                            juego = Cargar.Ejecutar(juego, lector);
+                            juegos.Add(juego);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+
+            if (juegos.Count > 0)
+            {
+                return juegos.OrderBy(x => x.Nombre)
+                             .ThenBy(x => x.Id)
+                             .ToList();
+            }
+
+            return juegos;
         }
 
         public static List<Juego> Todos(SqlConnection conexion, string tabla = null)

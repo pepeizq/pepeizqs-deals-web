@@ -1,10 +1,9 @@
-﻿@page "/Buscador"
-
-@using Microsoft.AspNetCore.Components;
+﻿@using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc;
 @using Microsoft.AspNetCore.Mvc.Razor;
+@using Microsoft.Data.SqlClient;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inherits Juegos.Juego
@@ -14,12 +13,12 @@
 
 <input type="text" @oninput="TextoCambia" class="entrada-texto" />
 
-@if (juegos != null)
+@if (juegosMostrar != null)
 {
-    @if (juegos.Count > 0)
+    @if (juegosMostrar.Count > 0)
     {
         <div class="buscador-panel">
-            @foreach (var juego in juegos)
+            @foreach (var juego in juegosMostrar)
             {
                 <div class="perfil-flexible-centrado perfil-espacio-top">
                     <a class="boton-pequeño" href="/game/@juego.Id">
@@ -55,18 +54,70 @@
     [Parameter]
     public string idioma { get; set; }
 
-    List<Juegos.Juego> juegos = new List<Juegos.Juego>();
+    List<Juegos.Juego> juegosMostrar = new List<Juegos.Juego>();
+
+    Task<List<Juegos.Juego>> tarea;
+
+    protected override void OnInitialized()
+    {
+
+    }
 
     private void TextoCambia(ChangeEventArgs texto)
     {
-        if (texto.Value.ToString().Trim().Length > 1)
+        List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        if (conexion.State == System.Data.ConnectionState.Open)
         {
-            juegos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
-        } 
+            using (conexion)
+            {
+                if (texto.Value.ToString().Trim().Length > 1)
+                {
+                    if ((tarea != null) && (tarea.IsCompleted == false ||
+                               tarea.Status == TaskStatus.Running ||
+                               tarea.Status == TaskStatus.WaitingToRun ||
+                               tarea.Status == TaskStatus.WaitingForActivation))
+                    {
+                        tarea.Dispose();
+                        juegosBuscador = new List<Juegos.Juego>();
+                    }
+                    else
+                    {
+                        tarea = Task.Factory.StartNew(() =>
+                        {
+                            List<Juegos.Juego> juegos2 = new List<Juegos.Juego>();
+
+                            juegos2 = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion);
+
+                            return juegos2;
+                        });
+
+                        juegosBuscador = tarea.Result;
+                    }
+                }
+                else
+                {
+                    juegosBuscador = new List<Juegos.Juego>();
+                }
+            }
+        }
         else
         {
-            juegos = new List<Juegos.Juego>();
+            juegosBuscador = new List<Juegos.Juego>();
+            conexion.Dispose();
         }
+
+        if (juegosBuscador != null)
+        {
+            juegosMostrar.Clear();
+
+            if (juegosBuscador.Count > 0)
+            {
+                juegosMostrar = juegosBuscador;
+            }
+        } 
     }
 }
 

@@ -228,6 +228,8 @@
 			noticiasMostrar = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
 		}
+
+		conexion.Dispose();
 	}
 
 	private string CargarIconoTienda(Juego juego)

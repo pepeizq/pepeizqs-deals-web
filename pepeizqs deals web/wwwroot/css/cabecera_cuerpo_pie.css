@@ -8,6 +8,13 @@
     padding: 14px;
 }
 
+.cabecera-poner {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .cuerpo {
     background-color: var(--fondoCuerpo);
     color: var(--colorTexto);
@@ -15,7 +22,16 @@
     font-family: 'Motiva Sans';
 }
 
-.cuerpo-espacio {
+.cuerpo-ancho {
+    max-width: 1320px;
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.cuerpo-espacio {   
     padding: 40px 10px 60px 10px;
 }
 

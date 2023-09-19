@@ -30,25 +30,5 @@ namespace Herramientas
 
 			return null;
 		}
-
-		public static void ActualizarCodigos()
-		{
-			SqlConnection conexion = BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				List<Juego> juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
-
-				if (juegos != null)
-				{
-					foreach (var juego in juegos)
-					{
-						global::BaseDatos.Juegos.Actualizar.UnParametro(juego, conexion);
-					}
-				}
-			}
-
-			conexion.Dispose();
-		}
 	}
 }
