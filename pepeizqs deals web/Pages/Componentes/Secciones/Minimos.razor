@@ -110,6 +110,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string modo { get; set; }
+
 	private List<Juego> juegosConMinimos = new List<Juego>();
 	private List<Juego> juegosMostrar = new List<Juego>();
 
@@ -121,21 +124,26 @@
 		minimo = 0;
 		maximo = 50;
 
-		juegosConMinimos = BaseDatos.Juegos.Precios.DevolverMinimos();
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-		if (juegosConMinimos != null)
+		using (conexion)
 		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
-				{
-					int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
-					int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
-
-					return j2Analisis.CompareTo(j1Analisis);
-				});
-			}
+			juegosConMinimos = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
 		}
+
+		conexion.Dispose();
+
+		if (juegosConMinimos.Count > 0)
+		{
+			if (modo == "last")
+			{
+				OrdenarUltimosAñadidos();
+			}
+			else
+			{
+				OrdenarReseñas();
+			}
+		}		
 
 		CargarJuegos(minimo, maximo);
 	}

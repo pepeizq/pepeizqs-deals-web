@@ -114,22 +114,8 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion);
 		}
 
-		public static List<Juego> DevolverMinimos(List<Juego> juegos = null)
-		{
-			if (juegos == null)
-			{
-				juegos = new List<Juego>();
-
-				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-				using (conexion)
-				{
-					juegos = Buscar.Todos(conexion);
-				}
-
-				conexion.Dispose();
-			}
-			
+		public static List<Juego> DevolverMinimos(List<Juego> juegos)
+		{		
 			if (juegos.Count > 0)
 			{
 				List<Juego> juegosConMinimos = new List<Juego>();

@@ -58,7 +58,10 @@ builder.Services.AddHangfire(hangfire =>
 	});
 });
 
-builder.Services.AddHangfireServer();
+builder.Services.AddHangfireServer(options =>
+{
+	options.Queues = new[] { "prioritario", "defecto" };
+});
 
 #endregion
 

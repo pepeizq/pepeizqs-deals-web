@@ -70,7 +70,7 @@
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 								</div>
 
-								<div style="width: 68%; padding: 4px 15px; font-size: 13px;">
+								<div style="width: 68%; padding: 4px 15px; font-size: 14px;">
 									@juego.Nombre
 								</div>
 
@@ -78,7 +78,7 @@
 									<img src="@CargarIconoTienda(juego)" class="juego-icono-tienda" />
 								</div>
 
-								<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
+								<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 14px; text-align: right;">
 									@CargarPrecio(juego)
 								</div>
 							</div>
@@ -112,7 +112,7 @@
 									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 								</div>
 
-								<div style="width: 58%; padding: 4px 15px; font-size: 13px;">
+								<div style="width: 58%; padding: 4px 15px; font-size: 14px;">
 									@juego.Nombre
 
 									@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
@@ -121,7 +121,7 @@
 									}
 								</div>
 
-								<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 13px; text-align: right;">
+								<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 14px; text-align: right;">
 									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false, idioma)
 								</div>
 							</div>

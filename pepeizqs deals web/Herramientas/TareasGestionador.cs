@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Hangfire;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Noticias;
@@ -9,11 +10,13 @@ namespace Herramientas
 	public interface ITareasGestionador
 	{
 		public void PortadaTarea();
+		public void MinimosTarea();
 		public void TiendasTarea();
 	}
 
 	public class TareasGestionador : ITareasGestionador
 	{
+		[Queue("prioritario")]
 		public void PortadaTarea()
 		{
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
@@ -211,8 +214,40 @@ namespace Herramientas
 					}
 				}
 			}
+
+			conexion.Dispose();
 		}
 
+		[Queue("defecto")]
+		public void MinimosTarea()
+		{
+			List<Juego> juegosConMinimos = new List<Juego>();
+
+			SqlConnection conexion = BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				List<Juego> juegos = new List<Juego>();
+
+				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
+
+				juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
+			}
+
+			if (juegosConMinimos.Count > 0)
+			{
+				global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
+
+				foreach (var juego in juegosConMinimos)
+				{
+					global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
+				}
+			}
+
+			conexion.Dispose();
+		}
+
+		[Queue("prioritario")]
 		public void TiendasTarea()
 		{
 			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(30));

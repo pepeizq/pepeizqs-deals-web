@@ -5,7 +5,6 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text;
 
 namespace pepeizqs_deals_web.Pages.Admin.Juegos

@@ -76,6 +76,7 @@
 		// }
 
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("minimos", job => job.MinimosTarea(), "*/5 * * * *", opciones);
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
 
 		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
@@ -86,13 +87,12 @@
 				{
 					if (tareaActiva.Id == "tiendas")
 					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString());
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() + " " + tareaActiva.Error);
 					}
 					else
 					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString());
-					}
-					
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " " + tareaActiva.Error);
+					}				
 				}
 
 				// RecurringJob.RemoveIfExists(tareaActiva.Id);
