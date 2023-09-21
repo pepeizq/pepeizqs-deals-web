@@ -10,7 +10,6 @@ namespace Herramientas
 	public interface ITareasGestionador
 	{
 		public void PortadaTarea();
-		public void MinimosTarea();
 		public void TiendasTarea();
 	}
 
@@ -27,6 +26,8 @@ namespace Herramientas
 
 			using (conexion)
 			{
+				#region Juegos
+
 				List<Juego> juegos = new List<Juego>();
 
 				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
@@ -125,6 +126,16 @@ namespace Herramientas
 					}
 				}
 
+				if (juegosConMinimos.Count > 0)
+				{
+					global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
+
+					foreach (var juego in juegosConMinimos)
+					{
+						global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
+					}
+				}
+
 				//----------------------------------------------------------
 
 				if (juegos.Count > 0)
@@ -153,7 +164,9 @@ namespace Herramientas
 					}
 				}
 
-				//----------------------------------------------------------
+				#endregion
+
+				#region Noticias
 
 				List<Noticia> noticiasMostrar = new List<Noticia>();
 				List<Noticia> noticiaEvento = new List<Noticia>();
@@ -213,35 +226,8 @@ namespace Herramientas
 						global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
 					}
 				}
-			}
 
-			conexion.Dispose();
-		}
-
-		[Queue("defecto")]
-		public void MinimosTarea()
-		{
-			List<Juego> juegosConMinimos = new List<Juego>();
-
-			SqlConnection conexion = BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				List<Juego> juegos = new List<Juego>();
-
-				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
-
-				juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
-			}
-
-			if (juegosConMinimos.Count > 0)
-			{
-				global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
-
-				foreach (var juego in juegosConMinimos)
-				{
-					global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
-				}
+				#endregion
 			}
 
 			conexion.Dispose();

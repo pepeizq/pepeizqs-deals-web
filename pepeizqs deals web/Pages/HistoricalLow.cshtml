@@ -2,8 +2,17 @@
 @model pepeizqs_deals_web.Pages.HistoricalLowModel
 
 @{
+	#nullable disable
+
 	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "HistoricalLow.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	string enlaceBase = Url.RouteUrl(ViewContext.RouteData.Values);
+	string enlaceArgumentos = ViewContext.HttpContext.Request.QueryString.Value;
+	string enlaceFinal = $"{enlaceBase}{enlaceArgumentos}";
+
+	enlaceFinal = enlaceFinal.Replace("https://pepeizqdeals.com/", null);
+	enlaceFinal = enlaceFinal.Replace("https://pepeizq-001-site2.ftempurl.com", null);
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, modo = @Model.modo }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, modo = @Model.modo, enlace = @enlaceFinal }))

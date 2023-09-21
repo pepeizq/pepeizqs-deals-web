@@ -34,10 +34,10 @@
 				
 				@if (minimo >= 50)
 				{
-					<a @onclick="ClickearAtras" class="boton-pequeño" href="/HistoricalLow#top" target="_top" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-left"></i></a>
+					<a @onclick="ClickearAtras" class="boton-pequeño" href="@enlace#top" target="_top" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-left"></i></a>
 				}
 
-				<a @onclick="ClickearAdelante" class="boton-pequeño" href="/HistoricalLow#top" target="_top" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-right"></i></a>
+				<a @onclick="ClickearAdelante" class="boton-pequeño" href="@enlace#top" target="_top" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-right"></i></a>
 			</div>
 		</div>
 	</div>
@@ -79,7 +79,7 @@
 
 								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 								{
-									<div style="margin-left: 20px; font-size: 13px;">@juego.Id</div>
+									<div style="margin-left: 20px; font-size: 13px;">@juego.IdMaestra</div>
 									<div style="margin-left: 20px; font-size: 13px;">@int.Parse(juego.Analisis.Cantidad.Replace(",", null))</div>
 								}
 							</div>						
@@ -105,22 +105,25 @@
 
 @code {
 
-	#nullable disable
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
 
 	[Parameter]
-	public string idioma { get; set; }
+	public string enlace { get; set; }
 
-	[Parameter]
-	public string modo { get; set; }
+    [Parameter]
+    public string modo { get; set; }
 
-	private List<Juego> juegosConMinimos = new List<Juego>();
-	private List<Juego> juegosMostrar = new List<Juego>();
+    private List<Juego> juegosConMinimos = new List<Juego>();
+    private List<Juego> juegosMostrar = new List<Juego>();
 
-	private int minimo = 0;
-	private int maximo = 0;
+    private int minimo = 0;
+    private int maximo = 0;
 
-	protected override void OnInitialized()
-	{
+    protected override void OnInitialized()
+    {
 		minimo = 0;
 		maximo = 50;
 
@@ -240,7 +243,16 @@
 		{
 			string precioMensaje = oferta.Precio.ToString();
 			precioMensaje = precioMensaje.Replace(".", ",");
+
+			int int1 = precioMensaje.IndexOf(",");
+
+			if (int1 == precioMensaje.Length - 2)
+			{
+				precioMensaje = precioMensaje + "0";
+			}
+
 			precioMensaje = precioMensaje + "€";
+
 			return precioMensaje;
 		}
 		else

@@ -132,7 +132,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_WebToolingArtifacts Remove="Properties\PublishProfiles\comprobador.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\beta.pubxml" />
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\web.pubxml" />
   </ItemGroup>
 

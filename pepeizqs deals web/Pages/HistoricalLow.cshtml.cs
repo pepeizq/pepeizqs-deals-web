@@ -18,6 +18,6 @@ namespace pepeizqs_deals_web.Pages
             catch { }
 
 			modo = Request.Query["mode"];
-		}
+        }
     }
 }

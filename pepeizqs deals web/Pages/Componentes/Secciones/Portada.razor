@@ -87,7 +87,7 @@
 				}
 
 				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/historicallow">
+					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/HistoricalLow?mode=last">
 						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 					</a>
 				</div>
@@ -280,6 +280,14 @@
 
 		precioMensaje = juego.PrecioActualesTiendas[0].Precio.ToString();
 		precioMensaje = precioMensaje.Replace(".", ",");
+
+		int int1 = precioMensaje.IndexOf(",");
+
+		if (int1 == precioMensaje.Length - 2)
+		{
+			precioMensaje = precioMensaje + "0";
+		}
+
 		precioMensaje = precioMensaje + "€";
 
 		if (precioMensaje != null)

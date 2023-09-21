@@ -76,7 +76,6 @@
 		// }
 
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("minimos", job => job.MinimosTarea(), "*/5 * * * *", opciones);
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
 
 		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
