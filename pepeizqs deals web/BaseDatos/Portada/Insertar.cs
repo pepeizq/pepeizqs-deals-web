@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#nullable disable
+
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Noticias;
 
@@ -41,18 +43,36 @@ namespace BaseDatos.Portada
 
 		public static void Noticia(Noticia noticia, string tabla, SqlConnection conexion)
 		{
+			string añadirEnlace1 = string.Empty;
+			string añadirEnlace2 = string.Empty;
+
+			if (noticia.Enlace != null)
+			{
+				añadirEnlace1 = ", enlace";
+				añadirEnlace2 = ", @enlace";
+			}
+			else
+			{
+				añadirEnlace1 = null;
+				añadirEnlace2 = null;
+			}
+
 			string sqlInsertar = "INSERT INTO " + tabla + " " +
-						"(noticiaTipo, enlace, juegos, fechaEmpieza, fechaTermina, bundleTipo, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
-						"(@noticiaTipo, @enlace, @juegos, @fechaEmpieza, @fechaTermina, @bundleTipo, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
+						"(noticiaTipo" + añadirEnlace1 + ", juegos, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
+						"(@noticiaTipo" + añadirEnlace2 + ", @juegos, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
 
 			using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 			{
 				comando.Parameters.AddWithValue("@noticiaTipo", noticia.Tipo);
-				comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+
+				if (noticia.Enlace != null)
+				{
+					comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+				}
+
 				comando.Parameters.AddWithValue("@juegos", noticia.Juegos);
 				comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 				comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
-				comando.Parameters.AddWithValue("@bundleTipo", noticia.BundleTipo);
 				comando.Parameters.AddWithValue("@tituloEn", noticia.TituloEn);
 				comando.Parameters.AddWithValue("@tituloEs", noticia.TituloEs);
 				comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);

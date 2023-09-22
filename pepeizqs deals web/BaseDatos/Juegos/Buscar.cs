@@ -161,5 +161,28 @@ namespace BaseDatos.Juegos
 
 			return juegos;
 		}
-	}
+
+        public static List<Juego> Ultimos(SqlConnection conexion, string tabla, int cantidad)
+        {
+            List<Juego> juegos = new List<Juego>();
+
+			string busqueda = "SELECT TOP (" + cantidad + ") * FROM " + tabla + " ORDER BY id DESC";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+            {
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        Juego juego = new Juego();
+                        juego = Cargar.Ejecutar(juego, lector);
+
+                        juegos.Add(juego);
+                    }
+                }
+            }
+
+            return juegos;
+        }
+    }
 }

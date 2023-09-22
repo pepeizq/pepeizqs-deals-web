@@ -72,14 +72,33 @@ namespace BaseDatos.Noticias
 				}
 				else if (noticia.Tipo == global::Noticias.NoticiaTipo.Suscripciones)
 				{
+					string añadirEnlace1 = string.Empty;
+					string añadirEnlace2 = string.Empty;
+
+					if (noticia.Enlace != null)
+					{
+						añadirEnlace1 = ", enlace";
+						añadirEnlace2 = ", @enlace";
+					}
+					else
+					{
+						añadirEnlace1 = null;
+						añadirEnlace2 = null;
+					}
+
 					string sqlInsertar = "INSERT INTO noticias " +
-						"(noticiaTipo, enlace, juegos, fechaEmpieza, fechaTermina, suscripcionTipo, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
-						"(@noticiaTipo, @enlace, @juegos, @fechaEmpieza, @fechaTermina, @suscripcionTipo, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
+						"(noticiaTipo" + añadirEnlace1 + ", juegos, fechaEmpieza, fechaTermina, suscripcionTipo, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
+						"(@noticiaTipo" + añadirEnlace2 + ", @juegos, @fechaEmpieza, @fechaTermina, @suscripcionTipo, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
 
 					using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 					{
 						comando.Parameters.AddWithValue("@noticiaTipo", noticia.Tipo);
-						comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+
+						if (noticia.Enlace != null)
+						{
+							comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
+						}
+						
 						comando.Parameters.AddWithValue("@juegos", noticia.Juegos);
 						comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 						comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
@@ -88,10 +107,10 @@ namespace BaseDatos.Noticias
 						comando.Parameters.AddWithValue("@tituloEs", noticia.TituloEs);
 						comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);
 						comando.Parameters.AddWithValue("@contenidoEs", noticia.ContenidoEs);
-
+						comando.ExecuteNonQuery();
 						try
 						{
-							comando.ExecuteNonQuery();
+							
 						}
 						catch
 						{

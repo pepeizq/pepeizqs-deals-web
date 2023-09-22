@@ -556,6 +556,14 @@
     "Valor": "Descuento"
   },
   {
+    "Id": "LastAdded.Title",
+    "Valor": "Últimos Juegos Añadidos"
+  },
+  {
+    "Id": "LastAdded.String1",
+    "Valor": "Últimos Juegos y DLCs Añadidos a la Base de Datos"
+  },
+  {
     "Id": "Settings.String1",
     "Valor": "Cambia la configuración de tu cuenta"
   }

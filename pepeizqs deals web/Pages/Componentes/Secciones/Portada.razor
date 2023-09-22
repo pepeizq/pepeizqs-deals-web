@@ -130,7 +130,7 @@
 				}
 
 				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/lastadded">
+					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/LastAdded">
 						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAddedMore")
 					</a>
 				</div>
@@ -176,7 +176,7 @@
 					</a>				
 				</div>
 
-				<div style="text-align: center; margin-top: 40px; margin-bottom: 10px;">
+				<div style="text-align: center; margin-top: 40px; margin-bottom: 15px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsFollow")
 
 					<div style="display: flex; align-items: center; justify-content: center; font-size: 25px; text-align: center; margin-top: 10px;">
@@ -215,8 +215,13 @@
 	List<Noticia> noticiasMostrar = new List<Noticia>();
 	List<Noticia> noticiaEvento = new List<Noticia>();
 
-	protected override void OnInitialized()
+	protected override async void OnInitialized()
 	{
+		// await Herramientas.Imagenes.DescargarYGuardar("https://cdn.akamai.steamstatic.com/steam/apps/1366540/header.jpg?t=1679453191", "imagenes", "test.jpg");
+
+
+		//----------------
+
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)

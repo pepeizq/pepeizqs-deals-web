@@ -556,6 +556,14 @@
     "Valor": "Discount"
   },
   {
+    "Id": "LastAdded.Title",
+    "Valor": "Latest Games Added"
+  },
+  {
+    "Id": "LastAdded.String1",
+    "Valor": "Latest Games and DLCs Added to the Database"
+  },
+  {
     "Id": "Settings.String1",
     "Valor": "Change your account settings"
   }
