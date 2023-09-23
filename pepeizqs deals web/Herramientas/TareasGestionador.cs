@@ -234,6 +234,7 @@ namespace Herramientas
 		}
 
 		[Queue("prioritario")]
+		//[AutomaticRetry(Attempts = 5)]
 		public void TiendasTarea()
 		{
 			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(30));

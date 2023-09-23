@@ -52,7 +52,7 @@ builder.Services.AddHangfire(hangfire =>
 			DisableGlobalLocks = true
 		});
 
-	var servidor = new BackgroundJobServer(new BackgroundJobServerOptions
+	BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
 	{
 		ServerName = "hangfire",
 	});

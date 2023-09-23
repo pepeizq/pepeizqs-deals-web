@@ -75,8 +75,8 @@
 		// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
 		// }
 
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada", job => job.PortadaTarea(), "*/2 * * * *", opciones);
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas", job => job.TiendasTarea(), "*/20 * * * *", opciones);
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *", opciones);
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *", opciones);
 
 		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
 		{
