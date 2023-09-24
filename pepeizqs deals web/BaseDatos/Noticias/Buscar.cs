@@ -3,7 +3,6 @@
 using Bundles2;
 using Gratis2;
 using Microsoft.Data.SqlClient;
-using pepeizqs_deals_web.Pages.Componentes.Admin;
 using Suscripciones2;
 
 namespace BaseDatos.Noticias
@@ -148,67 +147,119 @@ namespace BaseDatos.Noticias
 
 						if (lector.IsDBNull(2) == false)
 						{
-							noticia.Imagen = lector.GetString(2);
+							try
+							{
+								noticia.Imagen = lector.GetString(2);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(3) == false)
 						{
-							noticia.Enlace = lector.GetString(3);
+							try
+							{
+								noticia.Enlace = lector.GetString(3);
+							}
+							catch { }						
 						}
 
 						if (lector.IsDBNull(4) == false)
 						{
-							noticia.Juegos = lector.GetString(4);
+							try
+							{
+								noticia.Juegos = lector.GetString(4);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(5) == false)
 						{
-							noticia.FechaEmpieza = DateTime.Parse(lector.GetString(5));
+							try
+							{
+								noticia.FechaEmpieza = DateTime.Parse(lector.GetString(5));
+							}
+							catch { }						
 						}
 
 						if (lector.IsDBNull(6) == false)
 						{
-							noticia.FechaTermina = DateTime.Parse(lector.GetString(6));
+							try
+							{
+								noticia.FechaTermina = DateTime.Parse(lector.GetString(6));
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(7) == false)
 						{
-							noticia.BundleTipo = BundlesCargar.DevolverBundle(int.Parse(lector.GetString(7))).Tipo;
+							try
+							{
+								noticia.BundleTipo = BundlesCargar.DevolverBundle(int.Parse(lector.GetString(7))).Tipo;
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(8) == false)
 						{
-							noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Id;
+							try
+							{
+								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Id;
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(9) == false)
 						{
-							noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(int.Parse(lector.GetString(9))).Id;
+							try
+							{
+								noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(int.Parse(lector.GetString(9))).Id;
+							}
+							catch { }					
 						}
 
 						if (lector.IsDBNull(10) == false)
 						{
-							noticia.TituloEn = lector.GetString(10);
+							try
+							{
+								noticia.TituloEn = lector.GetString(10);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(11) == false)
 						{
-							noticia.TituloEs = lector.GetString(11);
+							try
+							{
+								noticia.TituloEs = lector.GetString(11);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(12) == false)
 						{
-							noticia.ContenidoEn = lector.GetString(12);
+							try
+							{
+								noticia.ContenidoEn = lector.GetString(12);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(13) == false)
 						{
-							noticia.ContenidoEs = lector.GetString(13);
+							try
+							{
+								noticia.ContenidoEs = lector.GetString(13);
+							}
+							catch { }							
 						}
 
 						if (lector.IsDBNull(14) == false)
 						{
-							noticia.IdMaestra = lector.GetInt32(14);
+							try
+							{
+								noticia.IdMaestra = lector.GetInt32(14);
+							}
+							catch { }							
 						}
 
 						noticias.Add(noticia);

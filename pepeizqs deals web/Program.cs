@@ -54,14 +54,24 @@ builder.Services.AddHangfire(hangfire =>
 
 	BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
 	{
-		ServerName = "hangfire",
+		ServerName = "servidor",
+        Queues = new[] { "portada", "tiendas" }
 	});
 });
 
-builder.Services.AddHangfireServer(options =>
-{
-	options.Queues = new[] { "prioritario", "defecto" };
-});
+//builder.Services.AddHangfireServer(action =>
+//{
+//	action.ServerName = "portada";
+//	action.Queues = new[] { "portada" };
+//	//action.WorkerCount = 1;
+//});
+
+//builder.Services.AddHangfireServer(action =>
+//{
+//	action.ServerName = "tiendas";
+//	action.Queues = new[] { "tiendas" };
+//	//action.WorkerCount = 1 /*Environment.ProcessorCount * 5*/;
+//});
 
 #endregion
 

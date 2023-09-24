@@ -69,22 +69,23 @@
 
 		RecurringJobOptions opciones = new RecurringJobOptions();
 		opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
-
-		// foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
-		// {
-		// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
-		// }
+		opciones.MisfireHandling = MisfireHandlingMode.Strict;
 
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *", opciones);
 		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *", opciones);
 
 		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
 		{
+			// foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+			// {
+			// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
+			// }
+
 			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
 			{
 				if (tareaActiva.NextExecution != null)
 				{
-					if (tareaActiva.Id == "tiendas")
+					if (tareaActiva.Id == "tiendas comprobador")
 					{
 						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() + " " + tareaActiva.Error);
 					}
@@ -93,8 +94,6 @@
 						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " " + tareaActiva.Error);
 					}				
 				}
-
-				// RecurringJob.RemoveIfExists(tareaActiva.Id);
 			}
 		}
 	}
