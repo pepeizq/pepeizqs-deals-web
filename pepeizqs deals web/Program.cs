@@ -54,8 +54,8 @@ builder.Services.AddHangfire(hangfire =>
 
 	BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
 	{
-		ServerName = "servidor",
-        Queues = new[] { "portada", "tiendas" }
+		ServerName = "servidor"
+        //Queues = new[] { "portada", "tiendas" }
 	});
 });
 

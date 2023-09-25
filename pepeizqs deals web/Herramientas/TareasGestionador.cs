@@ -15,7 +15,7 @@ namespace Herramientas
 
 	public class TareasGestionador : ITareasGestionador
 	{
-		[Queue("portada")]
+		//[Queue("portada")]
 		public void PortadaTarea()
 		{
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
@@ -233,8 +233,8 @@ namespace Herramientas
 			conexion.Dispose();
 		}
 
-		[Queue("tiendas")]
-		[AutomaticRetry(Attempts = 0)]
+		//[Queue("tiendas")]
+		//[AutomaticRetry(Attempts = 0)]
 		public void TiendasTarea()
 		{
 			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(30));

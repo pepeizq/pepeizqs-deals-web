@@ -3,13 +3,15 @@
 
 @if (noticiasMostrar.Count > 0)
 {
-	<div style="display: flex; align-items: center; width: 100%;">
-		<div style="width: 80%; font-size: 23px; text-align: left;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.Title")
-		</div>
+	<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
+		<div style="display: flex; align-items: center; width: 100%;">
+			<div style="width: 80%; font-size: 23px; text-align: left;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.Title")
+			</div>
 
-		<div style="width: 20%; font-size: 20px; text-align: right;">
-			<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank"><i class="fa-solid fa-rss"></i></a>
+			<div style="width: 20%; font-size: 20px; text-align: right;">
+				<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank"><i class="fa-solid fa-rss"></i></a>
+			</div>
 		</div>
 	</div>
 
