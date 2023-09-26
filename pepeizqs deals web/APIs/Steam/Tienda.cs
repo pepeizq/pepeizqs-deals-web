@@ -73,13 +73,19 @@ namespace APIs.Steam
 						if (tope == 10000)
 						{
 							int int1 = html2.IndexOf("total_count");
-							string temp1 = html.Remove(0, int1);
 
-							int int2 = temp1.IndexOf(":");
-							string temp2 = temp1.Remove(0, int2 + 1);
+							if (int1 != -1)
+							{
+								string temp1 = html.Remove(0, int1);
 
-							int int3 = temp2.IndexOf(",");
-							string temp3 = temp2.Remove(int3, temp2.Length - int3);
+								int int2 = temp1.IndexOf(":");
+								string temp2 = temp1.Remove(0, int2 + 1);
+
+								int int3 = temp2.IndexOf(",");
+								string temp3 = temp2.Remove(int3, temp2.Length - int3);
+
+								tope = int.Parse(temp3.Trim());
+							}							
 						}
 					}
 					else

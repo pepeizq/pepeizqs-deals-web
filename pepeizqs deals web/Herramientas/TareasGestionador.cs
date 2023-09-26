@@ -1,243 +1,48 @@
 ﻿#nullable disable
 
-using Hangfire;
-using Juegos;
-using Microsoft.Data.SqlClient;
-using Noticias;
-
 namespace Herramientas
 {
-	public interface ITareasGestionador
-	{
-		public void PortadaTarea();
-		public void TiendasTarea();
-	}
+	record TareasGestionadorEstado(bool IsEnabled);
 
-	public class TareasGestionador : ITareasGestionador
+	public class TareasGestionador : BackgroundService
 	{
-		//[Queue("portada")]
-		public void PortadaTarea()
+		private readonly ILogger<TareasGestionador> _logger;
+		private readonly IServiceScopeFactory _factoria;
+
+		public TareasGestionador(ILogger<TareasGestionador> logger, IServiceScopeFactory factory)	
 		{
-			List<Juego> juegosDestacadosMostrar = new List<Juego>();
-			List<Juego> juegosMinimosMostrar = new List<Juego>();
-			List<Juego> juegosAñadidosMostrar = new List<Juego>();
-
-			SqlConnection conexion = BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				#region Juegos
-
-				List<Juego> juegos = new List<Juego>();
-
-				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
-
-				//----------------------------------------------------------
-
-				List<Juego> juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
-
-				if (juegosConMinimos != null)
-				{
-					if (juegosConMinimos.Count > 0)
-					{
-						juegosDestacadosMostrar.Clear();
-						juegosMinimosMostrar.Clear();
-
-						int i = 0;
-
-						foreach (var minimo in juegosConMinimos)
-						{
-							if (i < 6)
-							{
-								if (minimo.Analisis != null)
-								{
-									if (minimo.Analisis.Cantidad.Length >= 6)
-									{
-										juegosDestacadosMostrar.Add(minimo);
-										i += 1;
-									}
-								}
-							}
-							else
-							{
-								break;
-							}
-						}
-
-						for (int j = 0; juegosMinimosMostrar.Count < 10; j += 1)
-						{
-							bool añadir = true;
-
-							if (juegosDestacadosMostrar.Count > 0)
-							{
-								foreach (var destacado in juegosDestacadosMostrar)
-								{
-									if (destacado.Id == juegosConMinimos[j].Id)
-									{
-										añadir = false;
-									}
-								}
-							}
-
-							if (juegosConMinimos[j].Analisis == null)
-							{
-								añadir = false;
-							}
-
-							if (juegosConMinimos[j].Gratis != null)
-							{
-								if (juegosConMinimos[j].Gratis.Count > 0)
-								{
-									foreach (var gratis in juegosConMinimos[j].Gratis)
-									{
-										if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-										{
-											añadir = false;
-										}
-									}
-								}
-							}
-
-							if (añadir == true)
-							{
-								juegosMinimosMostrar.Add(juegosConMinimos[j]);
-							}
-						}
-					}
-				}
-
-				if (juegosDestacadosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
-					
-					foreach (var juego in juegosDestacadosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
-					}
-				}
-
-				if (juegosMinimosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
-
-					foreach (var juego in juegosMinimosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
-					}
-				}
-
-				if (juegosConMinimos.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
-
-					foreach (var juego in juegosConMinimos)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
-					}
-				}
-
-				//----------------------------------------------------------
-
-				if (juegos.Count > 0)
-				{
-					juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
-
-					int i = 0;
-					foreach (Juego juego in juegos)
-					{
-						if (i < 10)
-						{
-							juegosAñadidosMostrar.Add(juego);
-						}
-
-						i += 1;
-					}
-				}
-
-				if (juegosAñadidosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosAnadidos", conexion);
-
-					foreach (var juego in juegosAñadidosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosAnadidos", conexion);
-					}
-				}
-
-				#endregion
-
-				#region Noticias
-
-				List<Noticia> noticiasMostrar = new List<Noticia>();
-				List<Noticia> noticiaEvento = new List<Noticia>();
-
-				List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-				if (noticias.Count > 0)
-				{
-					int i = 0;
-					foreach (var noticia in noticias)
-					{
-						if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
-						{
-							if (i < 10)
-							{
-								if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-								{
-									DateTime fechaEncabezado = noticia.FechaEmpieza;
-									fechaEncabezado = fechaEncabezado.AddDays(3);
-
-									if (DateTime.Now < fechaEncabezado)
-									{
-										noticiaEvento.Add(noticia);
-									}
-									else
-									{
-										noticiasMostrar.Add(noticia);
-									}
-								}
-								else
-								{
-									noticiasMostrar.Add(noticia);
-								}
-							}
-
-							i += 1;
-						}
-					}
-				}
-
-				if (noticiasMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
-
-					foreach (var noticia in noticiasMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
-					}
-				}
-
-				if (noticiaEvento.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
-
-					foreach (var noticia in noticiaEvento)
-					{
-						global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
-					}
-				}
-
-				#endregion
-			}
-
-			conexion.Dispose();
+			_logger = logger;
+			_factoria = factory;
 		}
 
-		//[Queue("tiendas")]
-		//[AutomaticRetry(Attempts = 0)]
-		public void TiendasTarea()
+		private readonly TimeSpan _periodo = TimeSpan.FromSeconds(120);
+
+		public bool EstaActivado { get; set; }
+
+		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(30));
+			using PeriodicTimer contadorTiempo = new PeriodicTimer(_periodo);
+
+			while (!tokenParar.IsCancellationRequested && await contadorTiempo.WaitForNextTickAsync(tokenParar))
+			{
+				if (EstaActivado == true)
+				{
+					await using AsyncServiceScope scope = _factoria.CreateAsyncScope();
+
+					Tareas tareas = scope.ServiceProvider.GetRequiredService<Tareas>();
+
+					await tareas.PortadaTarea();
+					await tareas.TiendasTarea();
+				}
+				try
+				{
+					
+				}
+				catch
+				{
+
+				}
+			}
 		}
 	}
 }

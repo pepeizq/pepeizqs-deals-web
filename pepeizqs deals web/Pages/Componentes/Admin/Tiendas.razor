@@ -10,6 +10,8 @@
 
 @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 {
+	@* <button @onclick="IniciarTiendas" class="boton-pequeño">Iniciar</button> *@
+
 	<div class="perfil perfil-espacio-bottom">
 		@foreach (var tarea in tareasActivas)
 		{
@@ -63,40 +65,46 @@
 
 	protected override void OnInitialized()
 	{
-		int orden = BaseDatos.Tiendas.Admin.TareaLeerOrden();
 
-		RecurringJobManager manager = new RecurringJobManager();
-
-		// RecurringJobOptions opciones = new RecurringJobOptions();
-		// opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
-		// opciones.MisfireHandling = MisfireHandlingMode.Strict;
-
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *");
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *");
-
-		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
-		{
-			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
-			{
-				RecurringJob.RemoveIfExists(tareaActiva.Id);
-			}
-
-			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
-			{
-				if (tareaActiva.NextExecution != null)
-				{
-					if (tareaActiva.Id == "tiendas comprobador")
-					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() + " " + tareaActiva.LoadException.Message);
-					}
-					else
-					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " " + tareaActiva.LoadException.Message);
-					}				
-				}
-			}
-		}
 	}
+
+	// private void IniciarTiendas()
+	// {
+	// 	int orden = BaseDatos.Tiendas.Admin.TareaLeerOrden();
+
+	// 	RecurringJobManager manager = new RecurringJobManager();
+
+	// 	// RecurringJobOptions opciones = new RecurringJobOptions();
+	// 	// opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
+	// 	// opciones.MisfireHandling = MisfireHandlingMode.Strict;
+
+	// 	manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *");
+	// 	manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *");
+
+	// 	using (IStorageConnection conexion = JobStorage.Current.GetConnection())
+	// 	{
+	// 		// foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+	// 		// {
+	// 		// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
+	// 		// }
+
+	// 		foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+	// 		{
+	// 			if (tareaActiva.NextExecution != null)
+	// 			{
+	// 				if (tareaActiva.Id == "tiendas comprobador")
+	// 				{
+	// 					tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() /* + " " + tareaActiva.LoadException.Message */);
+	// 				}
+	// 				else
+	// 				{
+	// 					tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() /* + " " + tareaActiva.LoadException.Message */);
+	// 				}				
+	// 			}
+	// 		}
+	// 	}
+	
+	// }
 
 	private void ClickearTienda(MouseEventArgs e, string id)
 	{

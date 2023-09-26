@@ -81,128 +81,121 @@ namespace Tiendas2
 		{
 			int orden = Admin.TareaLeerOrden();
 
-			try
-            {
-                if (orden == 0)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Steam.Tienda.Generar().Id);
+			if (orden == 0)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Steam.Tienda.Generar().Id);
 
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Steam.Tienda.BuscarOfertas(true);
-                    }
-                }
-                else if (orden == 1)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GamersGate.Tienda.Generar().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.GamersGate.Tienda.BuscarOfertas();
-                    }
-                }
-                else if (orden == 2)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUk().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-                    }
-                }
-                else if (orden == 3)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarFr().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-                    }
-                }
-                else if (orden == 4)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarDe().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-                    }
-                }
-                else if (orden == 5)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUs().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-                    }
-                }
-                else if (orden == 6)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Fanatical.Tienda.Generar().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.Fanatical.Tienda.BuscarOfertas();
-                    }
-                }
-                else if (orden == 7)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GreenManGaming.Tienda.Generar().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.GreenManGaming.Tienda.BuscarOfertas();
-                    }
-                }
-                else if (orden == 8)
-                {
-                    DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GOG.Tienda.Generar().Id);
-
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-                    {
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.GOG.Tienda.BuscarOfertas();
-                    }
-                }
-				else if (orden == 9)
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
 				{
-					DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.IndieGala.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.IndieGala.Tienda.BuscarOfertas();
-					}
-				}
-				else if (orden == 10)
-				{
-					DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.WinGameStore.Tienda.Generar().Id);
-
-					if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
-					{
-						Admin.TareaCambiarOrden(orden += 1);
-						await APIs.WinGameStore.Tienda.BuscarOfertas();
-					}
-				}
-				else if (orden == 11)
-                {
 					Admin.TareaCambiarOrden(orden += 1);
-					Divisas.CogerDatos();
+					await APIs.Steam.Tienda.BuscarOfertas(true);
 				}
-            }
-            catch
-            {
+			}
+			else if (orden == 1)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GamersGate.Tienda.Generar().Id);
 
-            }
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.GamersGate.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 2)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUk().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
+				}
+			}
+			else if (orden == 3)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarFr().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
+				}
+			}
+			else if (orden == 4)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarDe().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
+				}
+			}
+			else if (orden == 5)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUs().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
+				}
+			}
+			else if (orden == 6)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Fanatical.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Fanatical.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 7)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GreenManGaming.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.GreenManGaming.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 8)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GOG.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.GOG.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 9)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.IndieGala.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.IndieGala.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 10)
+			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.WinGameStore.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.WinGameStore.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 11)
+			{
+				Admin.TareaCambiarOrden(orden += 1);
+				Divisas.CogerDatos();
+			}
 
 			if (orden > 11)
 			{
