@@ -52,11 +52,11 @@ builder.Services.AddHangfire(hangfire =>
 			DisableGlobalLocks = true
 		});
 
-	BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
-	{
-		ServerName = "servidor"
-        //Queues = new[] { "portada", "tiendas" }
-	});
+	//BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
+	//{
+	//	ServerName = "servidor"
+ //       //Queues = new[] { "portada", "tiendas" }
+	//});
 });
 
 //builder.Services.AddHangfireServer(action =>
@@ -169,6 +169,23 @@ var app = builder.Build();
 
 	app.UseHsts();
 //}
+
+//app.Use(async (contexto, siguiente) => {
+//	if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
+//	{
+//		string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
+//		string contenido = "User-agent: *  \nDisallow: /";
+		
+//		if (File.Exists(robotsFichero))
+//		{
+//			contenido = await File.ReadAllTextAsync(robotsFichero);
+//		}
+
+//		contexto.Response.ContentType = "text/plain";
+//		await contexto.Response.WriteAsync(contenido);
+//	}
+//	else await siguiente();
+//});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

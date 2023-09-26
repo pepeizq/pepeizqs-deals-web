@@ -48,19 +48,39 @@ namespace APIs.Steam
 				for (int i = 0; i < tope; i += 50)
 				{
 					string html = null;
-					await Task.Delay(100);
 
 					if (mirarOfertas == true)
 					{
 						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&l=english");
-						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
-
-						if (datos != null)
+						try
 						{
-                            html = datos.Html;
-                        }
-						
-						tope = int.Parse(datos.Total);
+							SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+
+							if (datos != null)
+							{
+								html = datos.Html;
+							}
+
+							tope = int.Parse(datos.Total);
+						}
+						catch { }
+
+						if (html == null)
+						{
+							html = html2;
+						}
+
+						if (tope == 10000)
+						{
+							int int1 = html2.IndexOf("total_count");
+							string temp1 = html.Remove(0, int1);
+
+							int int2 = temp1.IndexOf(":");
+							string temp2 = temp1.Remove(0, int2 + 1);
+
+							int int3 = temp2.IndexOf(",");
+							string temp3 = temp2.Remove(int3, temp2.Length - int3);
+						}
 					}
 					else
 					{

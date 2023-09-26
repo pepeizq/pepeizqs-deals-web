@@ -1,0 +1,5 @@
+﻿User-agent: *
+Allow: /Index
+Disallow: /
+
+Sitemap: https://www.example.com/sitemap.xml

@@ -67,19 +67,19 @@
 
 		RecurringJobManager manager = new RecurringJobManager();
 
-		RecurringJobOptions opciones = new RecurringJobOptions();
-		opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
-		opciones.MisfireHandling = MisfireHandlingMode.Strict;
+		// RecurringJobOptions opciones = new RecurringJobOptions();
+		// opciones.TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
+		// opciones.MisfireHandling = MisfireHandlingMode.Strict;
 
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *", opciones);
-		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *", opciones);
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("portada y secciones", job => job.PortadaTarea(), "*/2 * * * *");
+		manager.AddOrUpdate<Herramientas.ITareasGestionador>("tiendas comprobador", job => job.TiendasTarea(), "*/20 * * * *");
 
 		using (IStorageConnection conexion = JobStorage.Current.GetConnection())
 		{
-			// foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
-			// {
-			// 	RecurringJob.RemoveIfExists(tareaActiva.Id);
-			// }
+			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
+			{
+				RecurringJob.RemoveIfExists(tareaActiva.Id);
+			}
 
 			foreach (RecurringJobDto tareaActiva in StorageConnectionExtensions.GetRecurringJobs(conexion))
 			{
@@ -87,11 +87,11 @@
 				{
 					if (tareaActiva.Id == "tiendas comprobador")
 					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() + " " + tareaActiva.Error);
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " • orden " + orden.ToString() + " " + tareaActiva.LoadException.Message);
 					}
 					else
 					{
-						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " " + tareaActiva.Error);
+						tareasActivas.Add(tareaActiva.Id + " • " + tareaActiva.NextExecution.Value.ToString() + " " + tareaActiva.LoadException.Message);
 					}				
 				}
 			}
@@ -122,5 +122,4 @@
 			}
 		}
 	}
-
 }
