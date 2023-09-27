@@ -196,8 +196,13 @@ namespace Tiendas2
 				Admin.TareaCambiarOrden(orden += 1);
 				Divisas.CogerDatos();
 			}
+			else if (orden == 12)
+			{
+				Admin.TareaCambiarOrden(orden += 1);
+				await APIs.Steam.Tienda.BuscarOfertas(false);
+			}
 
-			if (orden > 11)
+			if (orden > 12)
 			{
 				Admin.TareaCambiarOrden(0);
 			}

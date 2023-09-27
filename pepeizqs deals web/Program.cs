@@ -7,10 +7,7 @@ using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Herramientas;
 using Microsoft.AspNetCore.SignalR;
-using Hangfire;
-using Hangfire.SqlServer;
 using Owl.reCAPTCHA;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -38,45 +35,6 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 builder.Services.AddScoped<Tareas>();
 builder.Services.AddSingleton<TareasGestionador>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<TareasGestionador>());
-
-//builder.Services.AddScoped<ITareasGestionador, TareasGestionador>();
-
-//builder.Services.AddHangfire(hangfire =>
-//{
-//	hangfire.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
-//	hangfire.UseSimpleAssemblyNameTypeSerializer();
-//	hangfire.UseRecommendedSerializerSettings();
-//	hangfire.UseColouredConsoleLogProvider();
-//	hangfire.UseSqlServerStorage(conexionTexto,
-//		new SqlServerStorageOptions
-//		{
-//			CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-//			SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-//			QueuePollInterval = TimeSpan.Zero,
-//			UseRecommendedIsolationLevel = true,
-//			DisableGlobalLocks = true
-//		});
-
-//    BackgroundJobServer servidor = new BackgroundJobServer(new BackgroundJobServerOptions
-//    {
-//        ServerName = "servidor3"
-//		//Queues = new[] { "portada", "tiendas" }
-//	});
-//});
-
-//builder.Services.AddHangfireServer(action =>
-//{
-//	action.ServerName = "portada";
-//	action.Queues = new[] { "portada" };
-//	//action.WorkerCount = 1;
-//});
-
-//builder.Services.AddHangfireServer(action =>
-//{
-//	action.ServerName = "tiendas";
-//	action.Queues = new[] { "tiendas" };
-//	//action.WorkerCount = 1 /*Environment.ProcessorCount * 5*/;
-//});
 
 #endregion
 
@@ -211,19 +169,6 @@ app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.UseRequestLocalization();
-
-//app.UseHangfireDashboard();
-//app.MapHangfireDashboard();
-
-app.MapGet("/background", (TareasGestionador service) =>
-{
-	return new TareasGestionadorEstado(true);
-});
-
-app.MapMethods("/background", new[] { "PATCH" }, (TareasGestionadorEstado state, TareasGestionador service) =>
-{
-	service.EstaActivado = state.IsEnabled;
-});
 
 app.UseResponseCaching();
 
