@@ -32,6 +32,11 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors =
 
 #region Tareas
 
+builder.Services.Configure<HostOptions>(hostOptions =>
+{
+	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+});
+
 builder.Services.AddScoped<Tareas>();
 builder.Services.AddSingleton<TareasGestionador>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<TareasGestionador>());
