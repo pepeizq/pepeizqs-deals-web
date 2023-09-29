@@ -8,6 +8,7 @@ using pepeizqs_deals_web.Data;
 using Herramientas;
 using Microsoft.AspNetCore.SignalR;
 using Owl.reCAPTCHA;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -157,7 +158,11 @@ app.Use(async (contexto, siguiente) =>
 });
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "imagenes")),
+	RequestPath = "/imagenes"
+});
 
 app.UseRouting();
 

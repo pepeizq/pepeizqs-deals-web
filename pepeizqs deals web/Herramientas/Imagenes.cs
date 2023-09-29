@@ -2,26 +2,29 @@
 
 using ImageProcessor;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
-using System.IO;
-using System.Net;
+using Juegos;
 
 namespace Herramientas
 {
-	public static class Imagenes
+    public static class Imagenes
 	{
-		public static async Task DescargarYGuardar(string fichero, string destinationFolder, string destinationFileName)
+		public static async void ComprobarJuego(Juego juego)
 		{
-			Stream ficheroStream = await GetFileStream(fichero);
+			await DescargarYGuardar(juego.Imagenes.Logo, juego.Id.ToString(), "logo");
+			await DescargarYGuardar(juego.Imagenes.Capsule_231x87, juego.Id.ToString(), "capsule_231x87");
+		}
 
-			if (ficheroStream != Stream.Null)
+		public static async Task DescargarYGuardar(string fichero, string destinoCarpeta, string destinoFichero)
+		{
+			Stream ficheroStream = await CogerStreamFichero(fichero);
+
+            if (ficheroStream != Stream.Null)
 			{
-				await SaveStream(ficheroStream, destinationFolder, destinationFileName);
+				await GuardarStream(ficheroStream, destinoCarpeta, destinoFichero);
 			}
 		}
 
-		public static async Task<Stream> GetFileStream(string ficheroEnlace)
+		public static async Task<Stream> CogerStreamFichero(string ficheroEnlace)
 		{
 			HttpClient cliente = new HttpClient();
 
@@ -36,18 +39,34 @@ namespace Herramientas
 			}
 		}
 
-		public static async Task SaveStream(Stream fileStream, string destinationFolder, string destinationFileName)
+		public static async Task GuardarStream(Stream ficheroStream, string nombreCarpeta, string nombreFichero)
 		{
-			if (!Directory.Exists(destinationFolder))
+			string nuevaCarpeta = Path.GetFullPath("wwwroot") + "\\imagenes\\" + nombreCarpeta;
+
+			if (!Directory.Exists(nuevaCarpeta))
 			{
-				Directory.CreateDirectory(string.Format("{0}{1}{2}", Path.GetFullPath("wwwroot"), "\\", destinationFolder));
+				Directory.CreateDirectory(nuevaCarpeta);
 			}
 				
-			string path = Path.Combine(destinationFolder, destinationFileName);
+			string ruta = Path.Combine(nuevaCarpeta, nombreFichero);
 
-			using (FileStream outputFileStream = new FileStream(path, FileMode.CreateNew))
+			using (FileStream ficheroSalidaStream = new FileStream(ruta + ".jpg", FileMode.Create))
 			{
-				await fileStream.CopyToAsync(outputFileStream);
+				try
+				{
+					await ficheroStream.CopyToAsync(ficheroSalidaStream);
+				}
+				catch { }
+
+				using (var ficheroWebpStream = new FileStream(ruta + ".webp", FileMode.Create))
+				{
+					using (ImageFactory imagenFabrica = new ImageFactory(preserveExifData: false))
+					{
+						FormFile ficheroWebp = new FormFile(ficheroSalidaStream, 0, ficheroSalidaStream.Length, null, nombreFichero + ".webp");
+
+						imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Quality(50).Save(ficheroWebpStream);
+					}
+				}
 			}
 		}
 	}
