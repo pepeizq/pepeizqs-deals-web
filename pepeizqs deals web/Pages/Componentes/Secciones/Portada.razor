@@ -57,7 +57,7 @@
 		@if (juegosMinimosMostrar.Count > 0)
 		{
 			<div style="font-size: 20px; padding-bottom: 10px; padding-left: 20px;">
-				<a href="/historicallow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
+				<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
 			</div>
 
 			<div class="perfil" style="padding: 5px 15px;">
@@ -99,7 +99,7 @@
 		@if (juegosAñadidosMostrar.Count > 0)
 		{
 			<div style="font-size: 20px; padding-bottom: 10px; padding-left: 20px;">
-				<a href="/lastadded" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAdded")</a>
+				<a href="/LastAdded" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAdded")</a>
 			</div>
 
 			<div class="perfil" style="padding: 5px 15px;">
@@ -206,24 +206,41 @@
 
 	#nullable disable
 
-	[Parameter]
-	public string idioma { get; set; }
+		[Parameter]
+		public string idioma { get; set; }
 
-	List<Juego> juegosDestacadosMostrar = new List<Juego>();
-	List<Juego> juegosMinimosMostrar = new List<Juego>();
-	List<Juego> juegosAñadidosMostrar = new List<Juego>();
-	List<Noticia> noticiasMostrar = new List<Noticia>();
-	List<Noticia> noticiaEvento = new List<Noticia>();
+		List<Juego> juegosDestacadosMostrar = new List<Juego>();
+		List<Juego> juegosMinimosMostrar = new List<Juego>();
+		List<Juego> juegosAñadidosMostrar = new List<Juego>();
+		List<Noticia> noticiasMostrar = new List<Noticia>();
+		List<Noticia> noticiaEvento = new List<Noticia>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
 		{
 			juegosDestacadosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+
+			foreach (var juego in juegosDestacadosMostrar)
+			{
+				juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900");
+			}
+
 			juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
+
+			foreach (var juego in juegosMinimosMostrar)
+			{
+				juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+			}
+
 			juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
+
+			foreach (var juego in juegosAñadidosMostrar)
+			{
+				juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+			}
 
 			noticiasMostrar = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
 

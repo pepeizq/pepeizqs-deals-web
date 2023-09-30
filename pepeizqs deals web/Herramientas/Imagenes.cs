@@ -2,26 +2,24 @@
 
 using ImageProcessor;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using Juegos;
 
 namespace Herramientas
 {
     public static class Imagenes
 	{
-		public static async void ComprobarJuego(Juego juego)
+		public static async Task<string> DescargarYGuardar(string fichero, string subCarpeta, string nombreCarpeta, string nombreFichero)
 		{
-			await DescargarYGuardar(juego.Imagenes.Logo, juego.Id.ToString(), "logo");
-			await DescargarYGuardar(juego.Imagenes.Capsule_231x87, juego.Id.ToString(), "capsule_231x87");
-		}
-
-		public static async Task DescargarYGuardar(string fichero, string destinoCarpeta, string destinoFichero)
-		{
-			Stream ficheroStream = await CogerStreamFichero(fichero);
-
-            if (ficheroStream != Stream.Null)
+			if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false) 
 			{
-				await GuardarStream(ficheroStream, destinoCarpeta, destinoFichero);
+				Stream ficheroStream = await CogerStreamFichero(fichero);
+
+				if (ficheroStream != Stream.Null)
+				{
+					await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+				}
 			}
+			
+			return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
 		}
 
 		public static async Task<Stream> CogerStreamFichero(string ficheroEnlace)
@@ -39,15 +37,15 @@ namespace Herramientas
 			}
 		}
 
-		public static async Task GuardarStream(Stream ficheroStream, string nombreCarpeta, string nombreFichero)
+		public static async Task GuardarStream(Stream ficheroStream, string subCarpeta, string nombreCarpeta, string nombreFichero)
 		{
-			string nuevaCarpeta = Path.GetFullPath("wwwroot") + "\\imagenes\\" + nombreCarpeta;
+			string nuevaCarpeta = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta;
 
 			if (!Directory.Exists(nuevaCarpeta))
 			{
 				Directory.CreateDirectory(nuevaCarpeta);
 			}
-				
+
 			string ruta = Path.Combine(nuevaCarpeta, nombreFichero);
 
 			using (FileStream ficheroSalidaStream = new FileStream(ruta + ".jpg", FileMode.Create))

@@ -266,30 +266,24 @@ namespace Herramientas
 
 		private static JuegoPrecio CargarMinimoActualEntreTodosDRMs(Juego juego)
 		{
-			List<JuegoDRM> drms = JuegoDRM2.CargarDRMs();
 			decimal minimoCantidad = 10000000;
 			JuegoPrecio minimoFinal = new JuegoPrecio();
 
-			foreach (var drm in drms)
+			foreach (var precio in juego.PrecioActualesTiendas)
 			{
-				List<JuegoPrecio> ordenados = OrdenarPrecios(juego.PrecioActualesTiendas, drm, true);
+				bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
 
-				if (ordenados.Count > 0)
+				if (fechaEncaja == true)
 				{
-					foreach (var precio in ordenados)
+					if (precio.Precio < minimoCantidad)
 					{
-						if (precio.Precio < minimoCantidad)
-						{
-							minimoCantidad = precio.Precio;
-							minimoFinal = precio;
-						}
+						minimoCantidad = precio.Precio;
+						minimoFinal = precio;
 					}
-
-					return minimoFinal;
-				}
+				}					
 			}
 
-			return null;
+			return minimoFinal;
 		}
 
 		public static JuegoPrecio CargarMinimoActualUnDRM(Juego juego, JuegoDRM drm, bool divisa)

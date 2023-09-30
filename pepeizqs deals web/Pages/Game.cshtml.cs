@@ -29,8 +29,6 @@ namespace pepeizqs_deals_web.Pages
 			string idGog = Request.Query["idGog"];
 
 			juego = BaseDatos.Juegos.Buscar.UnJuego(id, idSteam, idGog);
-
-			Imagenes.ComprobarJuego(juego);
 		}
 
 		public bool VerificarMostrarDRM(string idioma, JuegoDRM drm, Juego juego)

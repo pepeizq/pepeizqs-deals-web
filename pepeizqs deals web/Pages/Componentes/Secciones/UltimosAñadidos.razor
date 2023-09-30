@@ -77,7 +77,7 @@
 	private int minimo = 0;
 	private int maximo = 0;
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		minimo = 0;
 		maximo = 50;
@@ -90,6 +90,11 @@
 
 			if (juegos.Count > 0)
 			{
+				foreach (var juego in juegos)
+				{
+					juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87");
+				}
+
 				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
 			}
 		}
