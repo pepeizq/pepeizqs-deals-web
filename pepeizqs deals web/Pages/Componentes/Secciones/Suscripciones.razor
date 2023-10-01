@@ -6,7 +6,7 @@
 
 @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
 {
-	@if (BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Actual).Count > 0)
+	@if (juegosActuales.Count > 0)
 	{
 		<hr>
 
@@ -16,19 +16,22 @@
 			</div>
 
 			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-				@foreach (var juego in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Actual))
+				@foreach (var juego in juegosActuales)
 				{
-					<div>
-						<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
-							<div>
-								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
-							</div>
+					@if (juego.Tipo == suscripcion.Id)
+					{
+						<div>
+							<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
+								<div>
+									<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+								</div>
 
-							<div style="text-align: right; margin-top: 10px; height: 30px;">
-								<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
-							</div>
-						</a>
-					</div>
+								<div style="text-align: right; margin-top: 10px; height: 30px;">
+									<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
+								</div>
+							</a>
+						</div>
+					}					
 				}
 			</div>
 		</div>
@@ -41,7 +44,7 @@
 
 @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
 {
-	@if (BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Pasado).Count > 0)
+	@if (juegosPasados.Count > 0)
 	{
 		<hr>
 
@@ -50,12 +53,15 @@
 				<img src="@suscripcion.Imagen" />
 			</div>
 
-			<div class="perfil" style="width: 80%;">
-				@foreach (var juego in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcion.Id.ToString(), Herramientas.Tiempo.Pasado))
+			<div class="perfil" style="width: 80%;">				
+				@foreach (var juego in juegosPasados)
 				{
-					<div>
-						<a href="/game/@juego.JuegoId">@LimpiarNombre(juego.Nombre)</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
-					</div>
+					@if (juego.Tipo == suscripcion.Id)
+					{
+						<div>
+							<a href="/game/@juego.JuegoId">@LimpiarNombre(juego.Nombre)</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
+						</div>
+					}					
 				}
 			</div>
 		</div>
@@ -68,6 +74,44 @@
 
 	[Parameter]
 	public string idioma { get; set; }
+
+	List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
+
+	List<Juegos.JuegoSuscripcion> juegosActuales = new List<Juegos.JuegoSuscripcion>();
+	List<Juegos.JuegoSuscripcion> juegosPasados = new List<Juegos.JuegoSuscripcion>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		juegos = BaseDatos.Suscripciones.Buscar.Todos();
+
+		if (juegos.Count > 0)
+		{
+			foreach (var juego in juegos)
+			{
+				Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+				juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900");
+
+				if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
+				{
+					juegosActuales.Add(juego);
+				}
+				else
+				{
+					juegosPasados.Add(juego);
+				}
+			}
+		}
+
+		if (juegosActuales.Count > 0)
+		{
+			juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
+		}
+
+		if (juegosPasados.Count > 0)
+		{
+			juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
+		}
+	}
 
 	private string LimpiarNombre(string nombre)
 	{

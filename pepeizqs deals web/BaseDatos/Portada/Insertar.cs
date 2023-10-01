@@ -29,7 +29,7 @@ namespace BaseDatos.Portada
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 				comando.Parameters.AddWithValue("@idMaestra", juego.Id);
-			
+
 				try
 				{
 					comando.ExecuteNonQuery();

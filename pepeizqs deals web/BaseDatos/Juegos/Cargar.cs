@@ -73,14 +73,17 @@ namespace BaseDatos.Juegos
 			juego.IdSteam = lector.GetInt32(9);
 			juego.IdGog = lector.GetInt32(10);
 
-			if (lector.GetString(11) != null)
+			if (lector.IsDBNull(11) == false)
 			{
-				try
+				if (lector.GetString(11) != null)
 				{
-					juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+					try
+					{
+						juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+					}
+					catch { }
 				}
-				catch { }
-			}
+			}				
 
 			if (lector.IsDBNull(12) == false)
 			{

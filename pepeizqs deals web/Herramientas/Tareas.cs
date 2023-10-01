@@ -17,7 +17,7 @@ namespace Herramientas
 
 		public async Task PortadaTarea()
 		{
-			await Task.Delay(100);
+			await Task.Delay(1000);
 
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
 			List<Juego> juegosMinimosMostrar = new List<Juego>();
