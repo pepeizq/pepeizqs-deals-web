@@ -1,22 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 
-<div style="font-size: 23px;">
-	@Herramientas.Idiomas.CogerCadena(idioma, "Free.String1")
-</div>
-
-@foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+@if (gratisActuales.Count > 0)
 {
-	@if (BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Actual).Count > 0)
+	<div style="font-size: 23px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Free.String1")
+	</div>
+
+	@foreach (var gratisActual in gratisActuales)
 	{
 		<hr>
 
 		<div style="display: flex; align-items: start;">
 			<div class="perfil" style="width: 20%;">
-				<img src="@gratis.Imagen" />
+				<img src="@gratisActual.Tipo.Imagen" />
 			</div>
 
 			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-				@foreach (var juego in BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Actual))
+				@foreach (var juego in gratisActual.Juegos)
 				{
 					<div>
 						<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px; max-width: 180px;" target="_blank">
@@ -24,12 +24,12 @@
 								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
 							</div>
 
-							@if (gratis.DRMEnseñar == true)
+							@if (gratisActual.Tipo.DRMEnseñar == true)
 							{
 								<div style="text-align: right; margin-top: 10px; height: 30px;">
 									<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
 								</div>
-							}						
+							}
 						</a>
 					</div>
 				}
@@ -38,25 +38,25 @@
 	}
 }
 
-<div style="font-size: 23px; margin-top: 60px">
-	@Herramientas.Idiomas.CogerCadena(idioma, "Free.String2")
-</div>
-
-@foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+@if (gratisPasados.Count > 0)
 {
-	@if (BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Pasado).Count > 0)
+	<div style="font-size: 23px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Free.String2")
+	</div>
+
+	@foreach (var gratisPasado in gratisPasados)
 	{
 		<hr>
 
 		<div style="display: flex; align-items: start;">
 			<div class="perfil" style="width: 20%;">
-				<img src="@gratis.Imagen" />
+				<img src="@gratisPasado.Tipo.Imagen" />
 			</div>
 
 			<div class="perfil" style="width: 80%;">
-				@foreach (var juego in BaseDatos.Gratis.Buscar.UnTipo(gratis.Id.ToString(), Herramientas.Tiempo.Pasado))
+				@foreach (var juego in gratisPasado.Juegos)
 				{
-					@if (gratis.DRMEnseñar == true)
+					@if (gratisPasado.Tipo.DRMEnseñar == true)
 					{
 						<div>
 							<a href="/game/@juego.JuegoId">@juego.Nombre</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
@@ -66,7 +66,7 @@
 					{
 						<div>
 							<a href="/game/@juego.JuegoId">@juego.Nombre</a> @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
-						</div>						
+						</div>
 					}
 				}
 			</div>
@@ -81,9 +81,94 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	List<Gratis2.GratisComponente> gratisActuales = new List<Gratis2.GratisComponente>();
+	List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
+
 	protected override async Task OnInitializedAsync()
 	{
-		
-	}
+		List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
 
+		if (juegosTodos.Count > 0)
+		{
+			List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
+			List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
+
+			foreach (var juego in juegosTodos)
+			{
+				if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
+				{
+					Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+
+					if (juego2.Tipo == Juegos.JuegoTipo.Game)
+					{
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900");
+					}
+					else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
+					{
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87");
+					}
+
+					juegosActuales.Add(juego);
+				}
+				else
+				{
+					juegosPasados.Add(juego);
+				}
+			}
+
+			if (juegosActuales.Count > 0)
+			{
+				juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
+
+				foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+				{
+					List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
+
+					foreach (var juego in juegosActuales)
+					{
+						if (juego.Tipo == gratis.Id)
+						{
+							juegos2.Add(juego);
+						}
+					}
+
+					if (juegos2.Count > 0)
+					{
+						Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
+						componente.Juegos = juegos2;
+						componente.Tipo = gratis;
+
+						gratisActuales.Add(componente);
+					}
+				}			
+			}
+
+			if (juegosPasados.Count > 0)
+			{
+				juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
+
+				foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+				{
+					List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
+
+					foreach (var juego in juegosPasados)
+					{
+						if (juego.Tipo == gratis.Id)
+						{
+							juegos2.Add(juego);
+						}
+					}
+
+					if (juegos2.Count > 0)
+					{
+						Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
+						componente.Juegos = juegos2;
+						componente.Tipo = gratis;
+
+						gratisPasados.Add(componente);
+					}
+				}
+			}
+		}
+	}
 }

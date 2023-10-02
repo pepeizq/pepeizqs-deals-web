@@ -39,14 +39,21 @@ namespace Herramientas
 
 		public static async Task GuardarStream(Stream ficheroStream, string subCarpeta, string nombreCarpeta, string nombreFichero)
 		{
-			string nuevaCarpeta = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta;
+			string nuevaCarpeta = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta;
 
 			if (!Directory.Exists(nuevaCarpeta))
 			{
 				Directory.CreateDirectory(nuevaCarpeta);
 			}
 
-			string ruta = Path.Combine(nuevaCarpeta, nombreFichero);
+			string nuevaCarpeta2 = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta;
+
+			if (!Directory.Exists(nuevaCarpeta2))
+			{
+				Directory.CreateDirectory(nuevaCarpeta2);
+			}
+
+			string ruta = Path.Combine(nuevaCarpeta2, nombreFichero);
 
 			using (FileStream ficheroSalidaStream = new FileStream(ruta + ".jpg", FileMode.Create))
 			{

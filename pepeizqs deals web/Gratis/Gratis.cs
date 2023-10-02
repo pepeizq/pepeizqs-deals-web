@@ -14,4 +14,10 @@ namespace Gratis2
 		public JuegoDRM DRMDefecto;
 		public bool DRMEnseñar;
 	}
+
+	public class GratisComponente
+	{
+		public Gratis Tipo;
+		public List<JuegoGratis> Juegos;
+	}
 }

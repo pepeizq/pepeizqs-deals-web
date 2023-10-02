@@ -88,11 +88,19 @@
 		{
 			foreach (var juego in juegos)
 			{
-				Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-				juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900");
-
 				if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
 				{
+					Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+
+					if (juego2.Tipo == Juegos.JuegoTipo.Game)
+					{
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900");
+					}
+					else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
+					{
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87");
+					}
+
 					juegosActuales.Add(juego);
 				}
 				else
