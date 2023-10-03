@@ -7,7 +7,7 @@ namespace BaseDatos.Bundles
 {
 	public static class Buscar
 	{
-		public static List<Bundles2.Bundle> Todos(Herramientas.Tiempo tiempo)
+		public static List<Bundles2.Bundle> Todos()
 		{
 			List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
 
@@ -38,24 +38,7 @@ namespace BaseDatos.Bundles
 								Pick = Convert.ToBoolean(lector.GetString(10))
 							};
 
-							if (tiempo == Herramientas.Tiempo.Atemporal)
-							{
-								bundles.Add(bundle);
-							}
-							else if (tiempo == Herramientas.Tiempo.Actual)
-							{
-								if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-								{
-									bundles.Add(bundle);
-								}
-							}
-							else if (tiempo == Herramientas.Tiempo.Pasado)
-							{
-								if (DateTime.Now > bundle.FechaTermina)
-								{
-									bundles.Add(bundle);
-								}
-							}
+							bundles.Add(bundle);
 						}
 					}
 				}

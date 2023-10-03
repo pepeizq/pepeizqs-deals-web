@@ -1,12 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 
-@if (BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual).Count > 0)
+@if (bundlesActuales.Count > 0)
 {
 	<div style="font-size: 23px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String1")
 	</div>
 
-	@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Actual).OrderBy(x => x.FechaTermina).ToList())
+	@foreach (var bundle in bundlesActuales)
 	{
 		<hr>
 
@@ -99,7 +99,7 @@
 	}
 }
 
-@if (BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Pasado).Count > 0)
+@if (bundlesPasados.Count > 0)
 {
 	<div style="font-size: 23px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
@@ -120,7 +120,7 @@
 
 				<div style="width: 75%; padding-left: 20px;">
 					<div class="perfil">
-						@foreach (var bundle in BaseDatos.Bundles.Buscar.Todos(Herramientas.Tiempo.Pasado))
+						@foreach (var bundle in bundlesPasados)
 						{
 							if (tipo == bundle.Tipo)
 							{
@@ -143,9 +143,40 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
+	List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
+
 	protected override async Task OnInitializedAsync()
 	{
-		
+		List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
+
+		if (bundles.Count > 0)
+		{
+			foreach (var bundle in bundles)
+			{
+				if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+				{
+					foreach (var juego in bundle.Juegos)
+					{
+						Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87");
+					}
+
+					bundle.ImagenBundle = await Herramientas.Imagenes.DescargarYGuardar(bundle.ImagenBundle, "bundles", bundle.Id.ToString(), "header");
+
+					bundlesActuales.Add(bundle);
+				}
+				else
+				{
+					bundlesPasados.Add(bundle);
+				}
+			}
+
+			if (bundlesActuales.Count > 0)
+			{
+				bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
+			}
+		}
 	}
 
 	private string MostrarFechaTermina(DateTime fecha)
