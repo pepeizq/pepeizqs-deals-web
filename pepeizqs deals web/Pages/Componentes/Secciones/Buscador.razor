@@ -37,7 +37,7 @@
                             </div>
 
                             <div style="width: 12%; text-align: center;">
-                                @Herramientas.JuegoFicha.PrecioMinimoActual(juego, true, idioma)
+                                @GenerarMensaje(juego)
                             </div>
                         </div>
                     </a>
@@ -57,11 +57,6 @@
     List<Juegos.Juego> juegosMostrar = new List<Juegos.Juego>();
 
     Task<List<Juegos.Juego>> tarea;
-
-    protected override void OnInitialized()
-    {
-
-    }
 
     private void TextoCambia(ChangeEventArgs texto)
     {
@@ -95,6 +90,17 @@
                         });
 
                         juegosBuscador = tarea.Result;
+
+                        if (juegosBuscador.Count > 0)
+                        {
+                            foreach (var juego in juegosBuscador)
+                            {
+                                if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\juegos\\" + juego.Id.ToString() + "\\capsule_231x87.webp") == true)
+                                {
+                                    juego.Imagenes.Capsule_231x87 = "/imagenes/juegos/" + juego.Id.ToString() + "/capsule_231x87.webp";
+                                }
+                            }
+                        }
                     }
                 }
                 else
@@ -118,6 +124,55 @@
                 juegosMostrar = juegosBuscador;
             }
         } 
+    }
+
+    private string GenerarMensaje(Juegos.Juego juego)
+    {
+        string mensaje = string.Empty;
+
+        if (juego.Gratis != null)
+        {
+            if (juego.Gratis.Count > 0)
+            {
+                foreach (var gratis in juego.Gratis)
+                {
+                    if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String5");
+                    }
+                }
+            }
+        }
+
+        if (juego.Bundles != null)
+        {
+            if (juego.Bundles.Count > 0)
+            {
+                foreach (var bundle in juego.Bundles)
+                {
+                    if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String4");
+                    }
+                }
+            }
+        }
+
+        if (juego.Suscripciones != null)
+        {
+            if (juego.Suscripciones.Count > 0)
+            {
+                foreach (var suscripcion in juego.Suscripciones)
+                {
+                    if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String3");
+                    }
+                }
+            }
+        }
+        
+        return Herramientas.JuegoFicha.PrecioMinimoActual(juego, true, idioma);
     }
 }
 

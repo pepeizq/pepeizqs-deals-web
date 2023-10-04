@@ -14,8 +14,8 @@ namespace BaseDatos.Bundles
 			using (conexion)
 			{
 				string sqlInsertar = "INSERT INTO bundles " +
-					"(bundleTipo, nombre, tienda, imagen, enlace, fechaEmpieza, fechaTermina, juegos, tiers, pick) VALUES " +
-					"(@bundleTipo, @nombre, @tienda, @imagen, @enlace, @fechaEmpieza, @fechaTermina, @juegos, @tiers, @pick) ";
+					"(bundleTipo, nombre, tienda, imagen, enlace, fechaEmpieza, fechaTermina, juegos, tiers, pick, imagenNoticia) VALUES " +
+					"(@bundleTipo, @nombre, @tienda, @imagen, @enlace, @fechaEmpieza, @fechaTermina, @juegos, @tiers, @pick, @imagenNoticia) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
@@ -29,7 +29,8 @@ namespace BaseDatos.Bundles
 					comando.Parameters.AddWithValue("@juegos", JsonConvert.SerializeObject(bundle.Juegos));
 					comando.Parameters.AddWithValue("@tiers", JsonConvert.SerializeObject(bundle.Tiers));
 					comando.Parameters.AddWithValue("@pick", bundle.Pick.ToString());
-					
+					comando.Parameters.AddWithValue("@imagenNoticia", bundle.ImagenNoticia);
+
 					try
 					{
                         comando.ExecuteNonQuery();

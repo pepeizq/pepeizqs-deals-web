@@ -38,6 +38,11 @@ namespace BaseDatos.Bundles
 								Pick = Convert.ToBoolean(lector.GetString(10))
 							};
 
+							if (lector.IsDBNull(11) == false)
+							{
+								bundle.ImagenNoticia = lector.GetString(11);
+							}
+
 							bundles.Add(bundle);
 						}
 					}
@@ -78,7 +83,12 @@ namespace BaseDatos.Bundles
 								Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
 								Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
 								Pick = Convert.ToBoolean(lector.GetString(10))
-							};
+                            };
+
+							if (lector.IsDBNull(11) == false)
+							{
+								bundle.ImagenNoticia = lector.GetString(11);
+							}
 
 							if (tipo != "0")
 							{
@@ -142,8 +152,13 @@ namespace BaseDatos.Bundles
 								FechaTermina = Convert.ToDateTime(lector.GetString(7)),
 								Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
 								Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
-								Pick = Convert.ToBoolean(lector.GetString(10))
-							};
+								Pick = Convert.ToBoolean(lector.GetString(10))                            
+                            };
+
+							if (lector.IsDBNull(11) == false)
+							{
+								bundle.ImagenNoticia = lector.GetString(11);
+							}
 
 							return bundle;
 						}

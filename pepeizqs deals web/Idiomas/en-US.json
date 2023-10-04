@@ -528,6 +528,18 @@
     "Valor": "Not in Sale"
   },
   {
+    "Id": "Search.String3",
+    "Valor": "In a Subscription"
+  },
+  {
+    "Id": "Search.String4",
+    "Valor": "In a Bundle"
+  },
+  {
+    "Id": "Search.String5",
+    "Valor": "Free to Claim"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Historical Lows"
   },

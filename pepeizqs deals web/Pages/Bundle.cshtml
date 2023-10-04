@@ -17,7 +17,7 @@
 						<img src="@Bundles2.BundlesCargar.DevolverBundle(Model.bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
 					</a>
 					<a href="@Herramientas.EnlaceAcortador.Generar(Model.bundle.Enlace, Model.bundle.Tipo)" target="_blank" style="width: 40%; padding-left: 15px; padding-right: 15px;">
-						<img src="@Model.bundle.ImagenBundle" style="max-width: 100%;" />
+						<img src="@await Herramientas.Imagenes.DescargarYGuardar(@Model.bundle.ImagenBundle, "bundles", @Model.bundle.Id.ToString(), "header")" style="max-width: 100%;" />
 					</a>
 					<a href="@Herramientas.EnlaceAcortador.Generar(Model.bundle.Enlace, Model.bundle.Tipo)" target="_blank" style="width: 30%;">
 						<img src="@Bundles2.BundlesCargar.DevolverBundle(Model.bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
@@ -28,7 +28,7 @@
 			{
 				<div>
 					<a href="@Herramientas.EnlaceAcortador.Generar(Model.bundle.Enlace, Model.bundle.Tipo)" target="_blank">
-						<img src="@Model.bundle.ImagenBundle" style="max-width: 100%;" />
+						<img src="@await Herramientas.Imagenes.DescargarYGuardar(@Model.bundle.ImagenBundle, "bundles", @Model.bundle.Id.ToString(), "header")" style="max-width: 100%;" />
 					</a>
 				</div>
 			}
@@ -67,7 +67,7 @@
 							{
 								<div style="text-align: center;">
 									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
-										<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+										<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagen, "juegos", juego.JuegoId.ToString(), "capsule_231x87")" style="max-width: 100%;" />
 									</a>
 								</div>
 							}
@@ -84,7 +84,7 @@
 					{
 						<div style="text-align: center;">
 							<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent;">
-								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+								<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagen, "juegos", juego.JuegoId.ToString(), "capsule_231x87")" style="max-width: 100%;" />
 							</a>
 						</div>
 					}

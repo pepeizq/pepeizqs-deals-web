@@ -63,7 +63,7 @@ namespace APIs.Humble
 
 					#endregion
 
-					#region Imagen
+					#region ImagenLogo
 
 					int int6 = temp2.IndexOf(Strings.ChrW(34) + "image" + Strings.ChrW(34));
 					string temp6 = temp2.Remove(0, int6 + 8);
@@ -132,8 +132,26 @@ namespace APIs.Humble
 					#endregion
 
 					bundle.Tiers = tiers;
-				}
-			}
+
+					#region ImagenNoticia
+
+					int int18 = html.IndexOf("itemprop=" + Strings.ChrW(34) + "image" + Strings.ChrW(34));
+					string temp18 = html.Remove(int18, html.Length - int18);
+
+					int int19 = temp18.LastIndexOf("<meta content=");
+					string temp19 = temp18.Remove(0, int19 + 2);
+
+					int int20 = temp19.IndexOf(Strings.ChrW(34));
+					string temp20 = temp19.Remove(0, int20 + 1);
+
+					temp20 = temp20.Replace(Strings.ChrW(34).ToString(), null);
+					temp20 = temp20.Trim();
+
+					bundle.ImagenNoticia = temp20;
+
+                    #endregion
+                }
+            }
 
 			return bundle;
 		}

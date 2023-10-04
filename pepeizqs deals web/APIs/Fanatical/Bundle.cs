@@ -74,6 +74,7 @@ namespace APIs.Fanatical
 						string temp3 = temp2.Remove(int3, temp2.Length - int3);
 
 						bundle.ImagenBundle = temp3.Trim();
+						bundle.ImagenNoticia = temp3.Trim();
 					}
 				}
 			}
@@ -103,6 +104,7 @@ namespace APIs.Fanatical
 									string imagen = juego.Imagen;
 									imagen = imagen.Replace("/400x225/", "/1280x720/");
 									bundle.ImagenBundle = imagen;
+									bundle.ImagenNoticia = imagen;
 
 									DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 									fechaTermina = fechaTermina.AddSeconds(Convert.ToDouble(juego.FechaTermina));

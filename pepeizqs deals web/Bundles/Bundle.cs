@@ -13,6 +13,7 @@ namespace Bundles2
 		public string NombreTienda;
 		public string ImagenBundle;
 		public string ImagenTienda;
+		public string ImagenNoticia;
 		public List<string> ImagenesExtra;
 		public string Enlace;
 		public string EnlaceBase;

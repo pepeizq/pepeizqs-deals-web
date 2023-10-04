@@ -14,9 +14,15 @@
 		</div>
 
 		<div style="margin-top: 20px;">
-			<label style="margin-bottom: 10px;">Imagen:</label>
-			<input @onchange="@(e => TextoCambiaImagen(e))" class="entrada-texto" value="@bundle.ImagenBundle">
-			<img src="@bundle.ImagenBundle" style="max-width: 200px; max-height: 200px; margin-top: 10px;"/>
+			<label style="margin-bottom: 10px;">Imagen Bundle:</label>
+			<input @onchange="@(e => TextoCambiaImagenBundle(e))" class="entrada-texto" value="@bundle.ImagenBundle">
+			<img src="@bundle.ImagenBundle" style="max-width: 300px; max-height: 300px; margin-top: 10px;"/>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<label style="margin-bottom: 10px;">Imagen Noticia:</label>
+			<input @onchange="@(e => TextoCambiaImagenNoticia(e))" class="entrada-texto" value="@bundle.ImagenNoticia">
+			<img src="@bundle.ImagenNoticia" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
 		</div>
 
 		<div style="margin-top: 20px;">
@@ -219,11 +225,19 @@
 		}
 	}
 
-	private void TextoCambiaImagen(ChangeEventArgs texto)
+	private void TextoCambiaImagenBundle(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
 			bundle.ImagenBundle = texto.Value.ToString().Trim();
+		}
+	}
+
+	private void TextoCambiaImagenNoticia(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			bundle.ImagenNoticia = texto.Value.ToString().Trim();
 		}
 	}
 

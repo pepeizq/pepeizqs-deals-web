@@ -528,6 +528,18 @@
     "Valor": "No hay Ofertas"
   },
   {
+    "Id": "Search.String3",
+    "Valor": "En una Suscripción"
+  },
+  {
+    "Id": "Search.String4",
+    "Valor": "En un Bundle"
+  },
+  {
+    "Id": "Search.String5",
+    "Valor": "Gratis para Reclamar"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Mínimos Históricos"
   },
