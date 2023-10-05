@@ -6,7 +6,7 @@
 		{
 			Gratis2.Gratis epicGames = new Gratis2.Gratis
 			{
-				Id = Gratis2.GratisTipo.EpicGames,
+				Tipo = Gratis2.GratisTipo.EpicGames,
 				Nombre = "Epic Games Store",
 				Imagen = "/imagenes/tiendas/epic_300x80.webp",
 				DRMDefecto = Juegos.JuegoDRM.Epic,

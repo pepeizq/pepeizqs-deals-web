@@ -50,7 +50,7 @@
 					<select @onchange="@(e => CambiarGratis(e))">
 						@foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
 						{
-							<option value="@gratis.Id">@gratis.Nombre</option>
+							<option value="@gratis.Tipo">@gratis.Nombre</option>
 						}
 					</select>
 				</div>
@@ -77,6 +77,16 @@
 					<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
 				</div>
 
+				<hr />
+
+				<div style="">
+					<label style="margin: 10px;">Imagen Noticia:</label>
+					<input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticia">
+					<img src="@imagenNoticia" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+				</div>
+
+				<hr/>
+
 				<div style="display: flex; margin-top: 20px; width: 20%;">
 					<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Gratis</button>
 				</div>
@@ -99,6 +109,7 @@
 	private string drmSeleccionado = null;
 	private string enlaceSeleccionado = null;
 	private string fechaSeleccionada = null;
+	private string imagenNoticia = null;
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
@@ -146,6 +157,11 @@
 		fechaSeleccionada = texto.Value.ToString();
 	}
 
+	private void CambiarImagenNoticia(ChangeEventArgs texto)
+	{
+		imagenNoticia = texto.Value.ToString();
+	}
+
 	private void AñadirJuego(MouseEventArgs e)
 	{
 		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionada);
@@ -153,7 +169,7 @@
 		if (juego != null)
 		{
 			Juegos.JuegoGratis gratis = new Juegos.JuegoGratis();
-			gratis.Tipo = GratisCargar.DevolverGratis(tipo).Id;
+			gratis.Tipo = GratisCargar.DevolverGratis(tipo).Tipo;
 			gratis.JuegoId = int.Parse(idSeleccionada);
 			gratis.Nombre = nombreSeleccionado;
 			gratis.Imagen = imagenSeleccionada;

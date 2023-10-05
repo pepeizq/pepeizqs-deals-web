@@ -40,7 +40,7 @@ namespace Gratis2
 		{
 			foreach (var gratis in GenerarListado())
 			{
-				if (gratis.Id.ToString() == gratisTexto)
+				if (gratis.Tipo.ToString() == gratisTexto)
 				{
 					return gratis;
 				}
@@ -53,7 +53,7 @@ namespace Gratis2
 		{
 			foreach (var gratis in GenerarListado())
 			{
-				if (gratis.Id == gratisTipo)
+				if (gratis.Tipo == gratisTipo)
 				{
 					return gratis;
 				}
@@ -68,7 +68,7 @@ namespace Gratis2
 
 			foreach (var gratis in GenerarListado())
 			{
-				if (gratis.Id == gratis2)
+				if (gratis.Tipo == gratis2)
 				{
 					return gratis;
 				}

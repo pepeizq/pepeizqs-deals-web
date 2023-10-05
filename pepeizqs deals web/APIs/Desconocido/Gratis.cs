@@ -6,7 +6,7 @@
 		{
 			Gratis2.Gratis desconocido = new Gratis2.Gratis
 			{
-				Id = Gratis2.GratisTipo.Desconocido,
+				Tipo = Gratis2.GratisTipo.Desconocido,
 				Nombre = "Desconocido",
 				DRMDefecto = Juegos.JuegoDRM.Steam,
 				DRMEnseñar = true

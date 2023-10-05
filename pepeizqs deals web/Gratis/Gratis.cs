@@ -6,13 +6,15 @@ namespace Gratis2
 {
 	public class Gratis
 	{
-		public GratisTipo Id;
+		public GratisTipo Tipo;
 		public string Nombre;
 		public string Imagen;
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
 		public bool DRMEnseñar;
+		public int id;
+		public string ImagenNoticia;
 	}
 
 	public class GratisComponente

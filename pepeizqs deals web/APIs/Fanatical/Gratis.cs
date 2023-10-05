@@ -6,7 +6,7 @@
         {
             Gratis2.Gratis fanatical = new Gratis2.Gratis
             {
-                Id = Gratis2.GratisTipo.Fanatical,
+                Tipo = Gratis2.GratisTipo.Fanatical,
                 Nombre = "Fanatical",
                 Imagen = "/imagenes/tiendas/fanatical_300x80.webp",
                 DRMDefecto = Juegos.JuegoDRM.Steam,

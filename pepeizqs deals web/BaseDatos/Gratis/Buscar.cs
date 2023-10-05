@@ -26,7 +26,7 @@ namespace BaseDatos.Gratis
 						{
 							JuegoGratis gratis = new JuegoGratis
 							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Id,
+								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
@@ -35,6 +35,11 @@ namespace BaseDatos.Gratis
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
+
+							if (lector.IsDBNull(9) == false)
+							{
+								gratis.ImagenNoticia = lector.GetString(9);
+							}
 
 							listaGratis.Add(gratis);
 						}
@@ -59,7 +64,7 @@ namespace BaseDatos.Gratis
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
-					comando.Parameters.AddWithValue("@gratis", GratisCargar.DevolverGratis(gratisTexto).Id);
+					comando.Parameters.AddWithValue("@gratis", GratisCargar.DevolverGratis(gratisTexto).Tipo);
 
 					using (SqlDataReader lector = comando.ExecuteReader())
 					{
@@ -67,7 +72,7 @@ namespace BaseDatos.Gratis
 						{
 							JuegoGratis gratis = new JuegoGratis
 							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Id,
+								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
@@ -76,6 +81,11 @@ namespace BaseDatos.Gratis
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
+
+							if (lector.IsDBNull(9) == false)
+							{
+								gratis.ImagenNoticia = lector.GetString(9);
+							}
 
 							if (tiempo == Herramientas.Tiempo.Atemporal)
 							{
@@ -123,7 +133,7 @@ namespace BaseDatos.Gratis
 						{
 							JuegoGratis gratis = new JuegoGratis
 							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Id,
+								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
 								JuegoId = lector.GetInt32(1),
 								Nombre = lector.GetString(2),
 								Imagen = lector.GetString(3),
@@ -132,6 +142,11 @@ namespace BaseDatos.Gratis
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
+
+							if (lector.IsDBNull(9) == false)
+							{
+								gratis.ImagenNoticia = lector.GetString(9);
+							}
 
 							return gratis;
 						}

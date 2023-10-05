@@ -6,7 +6,7 @@
 		{
 			Gratis2.Gratis steam = new Gratis2.Gratis
 			{
-				Id = Gratis2.GratisTipo.Steam,
+				Tipo = Gratis2.GratisTipo.Steam,
 				Nombre = "Steam",
 				Imagen = "/imagenes/tiendas/steam_300x80.webp",
 				DRMDefecto = Juegos.JuegoDRM.Steam,

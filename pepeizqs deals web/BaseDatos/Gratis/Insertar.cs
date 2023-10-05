@@ -31,8 +31,8 @@ namespace BaseDatos.Gratis
 				}
 
 				string sqlInsertar = "INSERT INTO gratis " +
-					"(gratis, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina) VALUES " +
-					"(@gratis, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina) ";
+					"(gratis, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina, imagenNoticia) VALUES " +
+					"(@gratis, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina, @imagenNoticia) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
@@ -44,6 +44,7 @@ namespace BaseDatos.Gratis
 					comando.Parameters.AddWithValue("@enlace", actual.Enlace);
 					comando.Parameters.AddWithValue("@fechaEmpieza", actual.FechaEmpieza.ToString());
 					comando.Parameters.AddWithValue("@fechaTermina", actual.FechaTermina.ToString());
+					comando.Parameters.AddWithValue("@imagenNoticia", actual.ImagenNoticia);
 
 					try
 					{

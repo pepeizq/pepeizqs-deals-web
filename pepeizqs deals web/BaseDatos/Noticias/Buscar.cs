@@ -62,7 +62,7 @@ namespace BaseDatos.Noticias
 
 							if (lector.IsDBNull(8) == false)
 							{
-								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Id;
+								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Tipo;
 							}
 
 							if (lector.IsDBNull(9) == false)
@@ -203,7 +203,7 @@ namespace BaseDatos.Noticias
 						{
 							try
 							{
-								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Id;
+								noticia.GratisTipo = GratisCargar.DevolverGratis(int.Parse(lector.GetString(8))).Tipo;
 							}
 							catch { }							
 						}

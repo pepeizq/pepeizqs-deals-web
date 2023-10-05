@@ -6,7 +6,7 @@
 		{
 			Gratis2.Gratis gog = new Gratis2.Gratis
 			{
-				Id = Gratis2.GratisTipo.GOG,
+				Tipo = Gratis2.GratisTipo.GOG,
 				Nombre = "GOG",
 				Imagen = "/imagenes/tiendas/gog_300x80.webp",
 				DRMDefecto = Juegos.JuegoDRM.GOG,

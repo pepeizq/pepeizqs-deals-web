@@ -87,11 +87,11 @@ namespace Herramientas
 
 		public static string Generar(string enlace, GratisTipo tipo)
 		{
-            if (tipo == APIs.Steam.Gratis.Generar().Id)
+            if (tipo == APIs.Steam.Gratis.Generar().Tipo)
             {
                 enlace = APIs.Steam.Gratis.Referido(enlace);
             }
-			else if (tipo == APIs.Fanatical.Gratis.Generar().Id)
+			else if (tipo == APIs.Fanatical.Gratis.Generar().Tipo)
             {
                 enlace = APIs.Fanatical.Gratis.Referido(enlace);
             }
