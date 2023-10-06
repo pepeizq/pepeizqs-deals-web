@@ -31,8 +31,8 @@ namespace BaseDatos.Suscripciones
 				}
 
 				string sqlInsertar = "INSERT INTO suscripciones " +
-					"(suscripcion, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina) VALUES " +
-					"(@suscripcion, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina) ";
+					"(suscripcion, juegoId, nombre, imagen, drm, enlace, fechaEmpieza, fechaTermina, imagenNoticia) VALUES " +
+					"(@suscripcion, @juegoId, @nombre, @imagen, @drm, @enlace, @fechaEmpieza, @fechaTermina, @imagenNoticia) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
@@ -44,6 +44,7 @@ namespace BaseDatos.Suscripciones
 					comando.Parameters.AddWithValue("@enlace", actual.Enlace);
 					comando.Parameters.AddWithValue("@fechaEmpieza", actual.FechaEmpieza.ToString());
 					comando.Parameters.AddWithValue("@fechaTermina", actual.FechaTermina.ToString());
+					comando.Parameters.AddWithValue("@imagenNoticia", actual.ImagenNoticia);
 
 					try
 					{

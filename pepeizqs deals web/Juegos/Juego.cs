@@ -141,6 +141,7 @@ namespace Juegos
 		public DateTime FechaTermina { get; set; }
 		public JuegoDRM DRM { get; set; }
 		public string Enlace { get; set; }
+		public string ImagenNoticia { get; set; }
 	}
 
 	//-------------------------------------------------------

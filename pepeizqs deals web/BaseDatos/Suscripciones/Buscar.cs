@@ -36,6 +36,11 @@ namespace BaseDatos.Suscripciones
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
 
+							if (lector.IsDBNull(8) == false)
+							{
+								suscripcion.ImagenNoticia = lector.GetString(8);
+							}
+
 							suscripciones.Add(suscripcion);
                         }
                     }
@@ -76,6 +81,11 @@ namespace BaseDatos.Suscripciones
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
+
+							if (lector.IsDBNull(8) == false)
+							{
+								suscripcion.ImagenNoticia = lector.GetString(8);
+							}
 
 							if (tiempo == Herramientas.Tiempo.Atemporal)
 							{
@@ -138,6 +148,11 @@ namespace BaseDatos.Suscripciones
 								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
 								FechaTermina = Convert.ToDateTime(lector.GetString(7))
 							};
+
+							if (lector.IsDBNull(8) == false)
+							{
+								suscripcion.ImagenNoticia = lector.GetString(8);
+							}
 
 							resultados.Add(suscripcion);
 						}

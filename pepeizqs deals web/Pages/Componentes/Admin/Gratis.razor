@@ -79,7 +79,7 @@
 
 				<hr />
 
-				<div style="">
+				<div>
 					<label style="margin: 10px;">Imagen Noticia:</label>
 					<input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticia">
 					<img src="@imagenNoticia" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
@@ -177,6 +177,7 @@
 			gratis.Enlace = enlaceSeleccionado;
 			gratis.FechaEmpieza = DateTime.Now;
 			gratis.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+			gratis.ImagenNoticia = imagenNoticia;
 
 			if (juego.Gratis == null)
 			{

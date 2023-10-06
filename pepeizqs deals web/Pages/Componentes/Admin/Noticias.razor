@@ -587,36 +587,8 @@
 
 			#endregion
 
-			#region Imagen
+			#region Contenido
 
-			if (BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia != null)
-			{
-				imagen = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia;
-			}
-
-			#endregion
-		}
-		else
-		{
-			tituloEn = null;
-			tituloEs = null;
-
-			imagen = null;
-		}
-
-
-
-		GratisGenerarContenido();
-		GratisGenerarFecha();
-	}
-
-
-	private void GratisGenerarContenido()
-	{
-		List<string> lista = Herramientas.Listados.Generar(juegos);
-
-		if (lista != null)
-		{
 			if (lista.Count == 1)
 			{
 				contenidoEn = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Nombre + " " + Herramientas.Idiomas.CogerCadena("en-US", "News.FreeString5");
@@ -652,31 +624,44 @@
 						contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
 						contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
 					}
-				}						
+				}
 			}
 
 			contenidoEn = contenidoEn + "</ul>";
 			contenidoEs = contenidoEs + "</ul>";
+
+			#endregion
+
+			#region Imagen
+
+			if (BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia != null)
+			{
+				imagen = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia;
+			}
+			else
+			{
+				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).JuegoId.ToString());
+				imagen = juego.Imagenes.Library_1920x620;
+			}
+
+			#endregion
+
+			#region Fecha
+
+			fechaSeleccionada = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+			#endregion
 		}
 		else
 		{
+			tituloEn = null;
+			tituloEs = null;
+
 			contenidoEn = null;
 			contenidoEs = null;
-		}
-	}
 
-	private void GratisGenerarFecha()
-	{
-		List<string> lista = Herramientas.Listados.Generar(juegos);
+			imagen = null;
 
-		if (lista != null)
-		{
-			Juegos.JuegoGratis gratis = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0]));
-
-			fechaSeleccionada = gratis.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
-		}
-		else
-		{
 			fechaSeleccionada = null;
 		}
 	}
@@ -723,17 +708,12 @@
 			}
 		}
 
-		SuscripcionGenerarTitulo();
-		SuscripcionGenerarContenido();
-		SuscripcionGenerarFecha();
-	}
-
-	private void SuscripcionGenerarTitulo()
-	{
 		List<string> lista = Herramientas.Listados.Generar(juegos);
 
 		if (lista != null)
 		{
+			#region Titulo
+
 			if (lista.Count == 1)
 			{
 				tituloEn = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString1"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
@@ -753,20 +733,11 @@
 				tituloEs = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
 					BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + string.Format(Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString4"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre);
 			}
-		}
-		else
-		{
-			tituloEn = null;
-			tituloEs = null;
-		}
-	}
 
-	private void SuscripcionGenerarContenido()
-	{
-		List<string> lista = Herramientas.Listados.Generar(juegos);
+			#endregion
 
-		if (lista != null)
-		{
+			#region Contenido
+
 			contenidoEn = Herramientas.Idiomas.CogerCadena("en-US", "News.SubscriptionString5") + " " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " ";
 			contenidoEs = Herramientas.Idiomas.CogerCadena("es-ES", "News.SubscriptionString5") + " " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Nombre + " ";
 
@@ -821,26 +792,39 @@
 
 			contenidoEn = contenidoEn + "</ul>";
 			contenidoEs = contenidoEs + "</ul>";
+
+			#endregion
+
+			#region Imagen
+
+			if (BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia != null)
+			{
+				imagen = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia;
+			}
+			else
+			{
+				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).JuegoId.ToString());
+				imagen = juego.Imagenes.Library_1920x620;
+			}
+
+			#endregion
+
+			#region Fecha
+
+			fechaSeleccionada = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+			#endregion
 		}
 		else
 		{
+			tituloEn = null;
+			tituloEs = null;
+
 			contenidoEn = null;
 			contenidoEs = null;
-		}
-	}
 
-	private void SuscripcionGenerarFecha()
-	{
-		List<string> lista = Herramientas.Listados.Generar(juegos);
+			imagen = null;
 
-		if (lista != null)
-		{
-			Juegos.JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0]));
-
-			fechaSeleccionada = suscripcion.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
-		}
-		else
-		{
 			fechaSeleccionada = null;
 		}
 	}

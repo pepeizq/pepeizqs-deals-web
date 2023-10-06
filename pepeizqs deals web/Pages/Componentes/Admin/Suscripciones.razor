@@ -76,6 +76,16 @@
 						<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
 					</div>
 
+					<hr/>
+
+					<div>
+						<label style="margin: 10px;">Imagen Noticia:</label>
+						<input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticia">
+						<img src="@imagenNoticia" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+					</div>
+
+					<hr/>
+
 					<div style="display: flex; margin-top: 20px; width: 20%;">
 						<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Suscripcion</button>
 					</div>					
@@ -100,14 +110,23 @@
 	private string fechaSeleccionada = null;
 	private string enlaceSeleccionado = null;
 
+	private string imagenNoticia = null;
+
 	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+			try
+			{
+				cadenaBusqueda = texto.Value.ToString().Trim();
+				juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+			}
+			catch
+			{
+				juegosBuscador = new List<Juegos.Juego>();
+			}
 		}
 		else
 		{
@@ -171,6 +190,11 @@
 		enlaceSeleccionado = texto.Value.ToString();
 	}
 
+	private void CambiarImagenNoticia(ChangeEventArgs texto)
+	{
+		imagenNoticia = texto.Value.ToString();
+	}
+
 	private void AñadirJuego(MouseEventArgs e)
 	{
 		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionada);
@@ -186,6 +210,7 @@
 			suscripcion.Enlace = enlaceSeleccionado;
 			suscripcion.FechaEmpieza = DateTime.Now;
 			suscripcion.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+			suscripcion.ImagenNoticia = imagenNoticia;
 
 			if (juego.Suscripciones == null)
 			{

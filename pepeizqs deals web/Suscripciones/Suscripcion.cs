@@ -12,5 +12,6 @@ namespace Suscripciones2
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
+		public string ImagenNoticia;
 	}
 }
