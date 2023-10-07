@@ -181,29 +181,22 @@ namespace Herramientas
 					{
 						if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 						{
-							if (i < 10)
+							if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
 							{
-								if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-								{
-									DateTime fechaEncabezado = noticia.FechaEmpieza;
-									fechaEncabezado = fechaEncabezado.AddDays(3);
+								DateTime fechaEncabezado = noticia.FechaEmpieza;
+								fechaEncabezado = fechaEncabezado.AddDays(3);
 
-									if (DateTime.Now < fechaEncabezado)
-									{
-										noticiaEvento.Add(noticia);
-									}
-									else
-									{
-										noticiasMostrar.Add(noticia);
-									}
-								}
-								else
+								if (DateTime.Now < fechaEncabezado)
 								{
-									noticiasMostrar.Add(noticia);
+									noticiaEvento.Add(noticia);
 								}
 							}
 
-							i += 1;
+							if (i < 6)
+							{
+								noticiasMostrar.Add(noticia);
+								i += 1;
+							}
 						}
 					}
 				}

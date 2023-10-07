@@ -174,7 +174,7 @@
 
 			if (bundlesActuales.Count > 0)
 			{
-				bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
+				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
 			}
 		}
 	}

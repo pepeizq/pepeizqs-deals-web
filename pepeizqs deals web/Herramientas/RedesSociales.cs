@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Herramientas
 {
@@ -23,45 +24,68 @@ namespace Herramientas
 			List<SyndicationItem> items = new List<SyndicationItem>();
 			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas();
 
-			foreach (Noticias.Noticia noticia in noticias)
+			if (noticias.Count > 0)
 			{
-				string enlace = string.Empty;
+				noticias = noticias.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-				if (noticia.Enlace.Contains(dominio) == false)
+				foreach (Noticias.Noticia noticia in noticias)
 				{
-					enlace = dominio + noticia.Enlace;
-				}
-				else
-				{
-					enlace = noticia.Enlace;
+					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+					{
+						string enlace = noticia.Enlace;
+
+						if (enlace != null)
+						{
+							if (enlace.Contains(dominio) == false)
+							{
+								enlace = dominio + noticia.Enlace;
+							}
+						}
+
+						string titulo = noticia.TituloEn;
+						string contenido = noticia.ContenidoEn;
+						Uri enlaceUri = null;
+
+						if (enlace != null)
+						{
+							enlaceUri = new Uri(enlace);
+						}
+
+						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
+						
+						if (noticia.Imagen != null)
+						{
+							item.ElementExtensions.Add(new XElement("image", dominio + "/imagenes/noticias/" + noticia.Id.ToString() + "/header.webp"));
+						}
+						
+						items.Add(item);
+					}
 				}
 
-				string titulo = noticia.TituloEn;
-				string contenido = string.Empty;
-				items.Add(new SyndicationItem(titulo, contenido, new Uri(enlace), noticia.Id.ToString(), noticia.FechaEmpieza));
+				feed.Items = items;
+
+				XmlWriterSettings opciones = new XmlWriterSettings
+				{
+					Encoding = Encoding.UTF8,
+					NewLineHandling = NewLineHandling.Entitize,
+					NewLineOnAttributes = true,
+					Indent = true
+				};
+
+				using (MemoryStream stream = new MemoryStream())
+				{
+					using (XmlWriter xmlEscritor = XmlWriter.Create(stream, opciones))
+					{
+						Rss20FeedFormatter rssFormateador = new Rss20FeedFormatter(feed, false);
+						rssFormateador.WriteTo(xmlEscritor);
+						xmlEscritor.Flush();
+					}
+
+					return File(stream.ToArray(), "application/rss+xml; charset=utf-8");
+				}
 			}
 
-			feed.Items = items;
-
-			XmlWriterSettings opciones = new XmlWriterSettings
-			{
-				Encoding = Encoding.UTF8,
-				NewLineHandling = NewLineHandling.Entitize,
-				NewLineOnAttributes = true,
-				Indent = true
-			};
-
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (XmlWriter xmlEscritor = XmlWriter.Create(stream, opciones))
-				{
-					Rss20FeedFormatter rssFormateador = new Rss20FeedFormatter(feed, false);
-					rssFormateador.WriteTo(xmlEscritor);
-					xmlEscritor.Flush();
-				}
-
-				return File(stream.ToArray(), "application/rss+xml; charset=utf-8");
-			}
+			return null;
 		}
 
 		[HttpGet("rss-es.xml")]
@@ -75,52 +99,68 @@ namespace Herramientas
 			List<SyndicationItem> items = new List<SyndicationItem>();
 			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas();
 
-			foreach (Noticias.Noticia noticia in noticias)
+			if (noticias.Count > 0)
 			{
-				string enlace = string.Empty;
+				noticias = noticias.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-				if (noticia.Enlace != null)
+				foreach (Noticias.Noticia noticia in noticias)
 				{
-					if (noticia.Enlace.Contains(dominio) == false)
+					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 					{
-						enlace = dominio + noticia.Enlace;
+						string enlace = noticia.Enlace;
+
+						if (enlace != null)
+						{
+							if (enlace.Contains(dominio) == false)
+							{
+								enlace = dominio + noticia.Enlace;
+							}
+						}
+
+						string titulo = noticia.TituloEs;
+						string contenido = noticia.ContenidoEs;
+						Uri enlaceUri = null;
+
+						if (enlace != null)
+						{
+							enlaceUri = new Uri(enlace);
+						}
+
+						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
+						
+						if (noticia.Imagen != null)
+						{
+							item.ElementExtensions.Add(new XElement("image", dominio + "/imagenes/noticias/" + noticia.Id.ToString() + "/header.webp"));
+						}
+
+						items.Add(item);
 					}
-					else
+				}
+
+				feed.Items = items;
+
+				XmlWriterSettings opciones = new XmlWriterSettings
+				{
+					Encoding = Encoding.UTF8,
+					NewLineHandling = NewLineHandling.Entitize,
+					NewLineOnAttributes = true,
+					Indent = true
+				};
+
+				using (MemoryStream stream = new MemoryStream())
+				{
+					using (XmlWriter xmlEscritor = XmlWriter.Create(stream, opciones))
 					{
-						enlace = noticia.Enlace;
-					}		
-				}
-				else
-				{
-					enlace = dominio + "/news/" + noticia.Id.ToString();
-				}
+						Rss20FeedFormatter rssFormateador = new Rss20FeedFormatter(feed, false);
+						rssFormateador.WriteTo(xmlEscritor);
+						xmlEscritor.Flush();
+					}
 
-				string titulo = noticia.TituloEs;
-				string contenido = string.Empty;
-				items.Add(new SyndicationItem(titulo, contenido, new Uri(enlace), noticia.Id.ToString(), noticia.FechaEmpieza));
+					return File(stream.ToArray(), "application/rss+xml; charset=utf-8");
+				}
 			}
 
-			feed.Items = items;
-
-			XmlWriterSettings opciones = new XmlWriterSettings
-			{
-				Encoding = Encoding.UTF8,
-				NewLineHandling = NewLineHandling.Entitize,
-				NewLineOnAttributes = true,
-				Indent = true
-			};
-
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (XmlWriter xmlEscritor = XmlWriter.Create(stream, opciones))
-				{
-					Rss20FeedFormatter rssFormateador = new Rss20FeedFormatter(feed, false);
-					rssFormateador.WriteTo(xmlEscritor);
-					xmlEscritor.Flush();
-				}
-
-				return File(stream.ToArray(), "application/rss+xml; charset=utf-8");
-			}
+			return null;
 		}
 	}
 }

@@ -58,8 +58,8 @@ namespace BaseDatos.Portada
 			}
 
 			string sqlInsertar = "INSERT INTO " + tabla + " " +
-						"(noticiaTipo" + añadirEnlace1 + ", juegos, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
-						"(@noticiaTipo" + añadirEnlace2 + ", @juegos, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
+						"(noticiaTipo" + añadirEnlace1 + ", imagen, juegos, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
+						"(@noticiaTipo" + añadirEnlace2 + ", @imagen, @juegos, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
 
 			using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 			{
@@ -70,6 +70,7 @@ namespace BaseDatos.Portada
 					comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
 				}
 
+				comando.Parameters.AddWithValue("@imagen", noticia.Imagen);
 				comando.Parameters.AddWithValue("@juegos", noticia.Juegos);
 				comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 				comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
