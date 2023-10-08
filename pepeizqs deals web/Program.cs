@@ -1,14 +1,14 @@
+using Herramientas;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Herramientas;
-using Microsoft.AspNetCore.SignalR;
-using Owl.reCAPTCHA;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -110,7 +110,11 @@ builder.Services.AddreCAPTCHAV3(x =>
     x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
 });
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+	options.Conventions.AddPageRoute("/Sitemap", "Sitemap.xml");
+});
+
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddRateLimiter(_ => _
@@ -141,20 +145,20 @@ var app = builder.Build();
 
 app.Use(async (contexto, siguiente) =>
 {
-	if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
-	{
-		string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
-		string contenido = "User-agent: *  \nDisallow: /";
+    if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
+    {
+        string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
+        string contenido = "User-agent: *\r\nAllow: /\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
 
-		if (File.Exists(robotsFichero))
-		{
-			contenido = await File.ReadAllTextAsync(robotsFichero);
-		}
+        if (File.Exists(robotsFichero))
+        {
+            contenido = await File.ReadAllTextAsync(robotsFichero);
+        }
 
-		contexto.Response.ContentType = "text/plain";
-		await contexto.Response.WriteAsync(contenido);
-	}
-	else await siguiente();
+        contexto.Response.ContentType = "text/plain";
+        await contexto.Response.WriteAsync(contenido);
+    }
+    else await siguiente();
 });
 
 app.UseHttpsRedirection();
