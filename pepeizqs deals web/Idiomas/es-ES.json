@@ -568,6 +568,14 @@
     "Valor": "Descuento"
   },
   {
+    "Id": "Wishlist.Title",
+    "Valor": "Lista de Deseados"
+  },
+  {
+    "Id": "Wishlist.String1",
+    "Valor": "Lista de Deseados"
+  },
+  {
     "Id": "LastAdded.Title",
     "Valor": "Últimos Juegos Añadidos"
   },

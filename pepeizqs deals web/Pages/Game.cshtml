@@ -36,8 +36,11 @@
 }
 
 <div class="juego-wrap">
-	<img class="juego-fondo" src="@await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Library_1920x620, "juegos", @Model.juego.Id.ToString(), "library_1920x620")" onerror="this.parentNode.removeChild(this)" />
-
+	@if (Model.juego.Tipo == JuegoTipo.Game)
+	{
+		<img class="juego-fondo" src="@await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Library_1920x620, "juegos", @Model.juego.Id.ToString(), "library_1920x620")" onerror="this.parentNode.removeChild(this)" />
+	}
+	
     <div class="juego-contenido">
         <div class="perfil-espacio-bottom juego-cabecera">      
 			<div class="perfil-flexible-centrado">

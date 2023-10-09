@@ -11,48 +11,77 @@
 
 @if (SignInManager.IsSignedIn(HttpContextAccessor.HttpContext!.User) == true)
 {
-	<div class="perfil" style="padding: 15px 20px;">
-		@foreach (var juego in deseadosMostrar)
-		{
-			<div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15px;">
-				<a class="boton-pequeño" style="padding: 0px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
-					<div class="perfil-flexible-centrado">
-						<div style="width: 15%;">
-							<img src="@juego.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
-						</div>
+    @if (deseadosMostrar.Count > 0)
+    {
+        <div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="width: 70%; font-size: 23px; text-align: left;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String1")
+                </div>
 
-						<div style="width: 69%; padding: 4px 15px;">
-							<div>@juego.Juego.Nombre</div>
+                <div style="display: flex; align-items: center; width: 30%; justify-content: right;">
+                    <div class="menu-dropdown" style="margin-right: 30px;">
+                        <button class="boton-pequeño" style="padding: 9px 12px; margin: 0; border: 0px; color: var(--colorTextoVisitado);"><i class="fa-solid fa-sort" style="margin-right: 10px; font-size: 19px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String2")</button>
+                        <div class="menu-dropdown-contenido" style="right: 0;">
+                            <button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarReseñas">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String4")</button>
+                            <button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarPrecio">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String5")</button>
+                            <button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarDescuento">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String6")</button>
+                        </div>
+                    </div>
 
-							<div class="perfil-flexible-centrado" style="justify-content: left;">
-								<div style="width: 20px; height: 20px;"><img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 100%; max-height: 100%;" /></div>
+                    <div style="font-size: 16px; text-align: right;">
+                        @deseadosMostrar.Count.ToString()
+                    </div>
+                </div>
+            </div>
+        </div>
 
-								<div style="width: 20px; height: 20px; margin-left: 10px;"><img src="@Herramientas.JuegoFicha.IconoTiendaMinimoActualUnDRM(juego.Precio)" style="max-width: 100%; max-height: 100%;" /></div>
+        <div class="perfil" style="padding: 15px 20px;">
+            @foreach (var juego in deseadosMostrar)
+            {
+                <div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15px;">
+                    <a class="boton-pequeño" style="padding: 0px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
+                        <div class="perfil-flexible-centrado">
+                            <div style="width: 15%;">
+                                <img src="@juego.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+                            </div>
 
-								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
-								{
-									<div style="margin-left: 10px;">@juego.Juego.Id</div>
-								}
-							</div>
-						</div>
+                            <div style="width: 69%; padding: 4px 15px;">
+                                <div>@juego.Juego.Nombre</div>
 
-						<div style="width: 6%; text-align: center;" class="juego-descuento">
-							@juego.Precio.Descuento.ToString()%
-						</div>
+                                <div class="perfil-flexible-centrado" style="justify-content: left;">
+                                    <div style="width: 20px; height: 20px;"><img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 100%; max-height: 100%;" /></div>
 
-						<div style="width: 10%; padding: 4px 15px 4px 15px; text-align: center; font-size: 18px;">
-							@Herramientas.JuegoFicha.PrepararPrecio(juego.Precio.Precio, false, Herramientas.JuegoMoneda.Euro)
-						</div>
-					</div>
-				</a>
-			</div>
-		}
-	</div>
+                                    <div style="width: 20px; height: 20px; margin-left: 10px;"><img src="@Herramientas.JuegoFicha.IconoTiendaMinimoActualUnDRM(juego.Precio)" style="max-width: 100%; max-height: 100%;" /></div>
+
+                                    @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
+                                    {
+                                        <div style="margin-left: 10px;">@juego.Juego.Id</div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div style="width: 6%; text-align: center;" class="juego-descuento">
+                                @juego.Precio.Descuento.ToString()%
+                            </div>
+
+                            <div style="width: 10%; padding: 4px 15px 4px 15px; text-align: center; font-size: 18px;">
+                                @Herramientas.JuegoFicha.PrepararPrecio(juego.Precio.Precio, false, Herramientas.JuegoMoneda.Euro)
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }  
 }
 
 @code {
 
     #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
 
     private List<JuegoDeseadoMostrar> deseadosMostrar = new List<JuegoDeseadoMostrar>();
     private Usuario usuario = new Usuario();

@@ -7,11 +7,11 @@
 @inject SignInManager<Usuario> SignInManager
 
 @{
-	ViewData["Title"] = "Wishlist";
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Wishlist.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
 @if (SignInManager.IsSignedIn(User))
 {
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered))
+	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
 }
