@@ -576,6 +576,22 @@
     "Valor": "Wishlist"
   },
   {
+    "Id": "Wishlist.String2",
+    "Valor": "Order By"
+  },
+  {
+    "Id": "Wishlist.String3",
+    "Valor": "Reviews"
+  },
+  {
+    "Id": "Wishlist.String4",
+    "Valor": "Price"
+  },
+  {
+    "Id": "Wishlist.String5",
+    "Valor": "Discount"
+  },
+  {
     "Id": "LastAdded.Title",
     "Valor": "Latest Games Added"
   },
