@@ -205,45 +205,45 @@
 						}
 					}
 
-                    if (añadir == true)
-                    {
-                        Juegos.Juego nuevoJuego = juego;
-                        nuevoJuego.PrecioActualesTiendas = ordenados;
+					if (añadir == true)
+					{
+						Juegos.Juego nuevoJuego = juego;
+						nuevoJuego.PrecioActualesTiendas = ordenados;
 						nuevoJuego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87");
 
-                        JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
-                        nuevoDeseado.Juego = nuevoJuego;
-                        nuevoDeseado.DRM = deseado.DRM;
-                        nuevoDeseado.Precio = ordenados[0];
+						JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
+						nuevoDeseado.Juego = nuevoJuego;
+						nuevoDeseado.DRM = deseado.DRM;
+						nuevoDeseado.Precio = ordenados[0];
 
-                        deseadosMostrar.Add(nuevoDeseado);
-                    }
-                }
+						deseadosMostrar.Add(nuevoDeseado);
+					}
+				}
 
-                if (deseadosMostrar.Count > 0)
-                {
-                    deseadosMostrar.Sort(delegate (JuegoDeseadoMostrar p1, JuegoDeseadoMostrar p2)
-                    {
-                        if (p1.Juego.PrecioActualesTiendas[0].Precio == p2.Juego.PrecioActualesTiendas[0].Precio)
-                        {
-                            return p2.Juego.PrecioActualesTiendas[0].FechaDetectado.CompareTo(p1.Juego.PrecioActualesTiendas[0].FechaDetectado);
-                        }
-                        else
-                        {
-                            return p1.Juego.PrecioActualesTiendas[0].Precio.CompareTo(p2.Juego.PrecioActualesTiendas[0].Precio);
-                        }
-                    });
-                }
-            }
+				if (deseadosMostrar.Count > 0)
+				{
+					deseadosMostrar.Sort(delegate (JuegoDeseadoMostrar p1, JuegoDeseadoMostrar p2)
+					{
+						if (p1.Juego.PrecioActualesTiendas[0].Precio == p2.Juego.PrecioActualesTiendas[0].Precio)
+						{
+							return p2.Juego.PrecioActualesTiendas[0].FechaDetectado.CompareTo(p1.Juego.PrecioActualesTiendas[0].FechaDetectado);
+						}
+						else
+						{
+							return p1.Juego.PrecioActualesTiendas[0].Precio.CompareTo(p2.Juego.PrecioActualesTiendas[0].Precio);
+						}
+					});
+				}
+			}
 
-            GuardarUsuario();
-        }      
-    }
+			GuardarUsuario();
+		}      
+	}
 
-    private async void GuardarUsuario()
-    {
-        await UserManager.UpdateAsync(usuario);
-    }
+	private async void GuardarUsuario()
+	{
+		await UserManager.UpdateAsync(usuario);
+	}
 
 	private List<string> LeerSteamDeseados(string datos)
 	{
@@ -281,6 +281,11 @@
 		}
 
 		return null;
+	}
+
+	private bool DetectarMinimo(Juegos.Juego juego, )
+	{
+		
 	}
 
 	#region Ordenar
