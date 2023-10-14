@@ -58,6 +58,13 @@
 							</div>
 						</div>
 
+						@if (DetectarMinimo(juego.Juego, juego.Precio.Precio, juego.DRM) == true)
+						{
+							<div style="width: 6%; text-align: center;">
+								x
+							</div>
+						}
+						
 						<div style="width: 6%; text-align: center;" class="juego-descuento">
 							@juego.Precio.Descuento.ToString()%
 						</div>
@@ -283,9 +290,20 @@
 		return null;
 	}
 
-	private bool DetectarMinimo(Juegos.Juego juego, )
+	private bool DetectarMinimo(Juegos.Juego juego, decimal precio, Juegos.JuegoDRM drm)
 	{
-		
+		foreach (var minimo in juego.PrecioMinimosHistoricos)
+		{
+			if (drm == minimo.DRM)
+			{
+				if (precio == minimo.Precio)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	#region Ordenar

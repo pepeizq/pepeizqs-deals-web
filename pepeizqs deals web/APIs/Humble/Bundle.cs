@@ -127,7 +127,23 @@ namespace APIs.Humble
 						Precio = temp17.Trim()
 					};
 
-					tiers.Add(tier2);
+					bool añadir = true;
+
+					if (tiers.Count > 0)
+					{
+						foreach (var tier in tiers)
+						{
+							if (tier.Precio == tier2.Precio) 
+							{
+								añadir = false;
+							}
+						}
+					}
+
+					if (añadir == true)
+					{
+						tiers.Add(tier2);
+					}					
 
 					#endregion
 
