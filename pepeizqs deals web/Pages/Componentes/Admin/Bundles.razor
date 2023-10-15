@@ -27,6 +27,7 @@
 
 		<div style="margin-top: 20px;">
 			<label style="margin-bottom: 10px;">Fecha Termina:</label>
+			<label style="margin-bottom: 10px;">@bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss")</label>
 			<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss")">
 		</div>
 
@@ -245,7 +246,8 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			bundle.FechaTermina = Convert.ToDateTime(texto.Value.ToString());
+			string fecha = texto.Value.ToString().Trim();
+			bundle.FechaTermina = fecha.ToString("yyyy-MM-ddTHH:mm:ss");
 		}
 	}
 
