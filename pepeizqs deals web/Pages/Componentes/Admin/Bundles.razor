@@ -246,8 +246,7 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			string fecha = texto.Value.ToString().Trim();
-			bundle.FechaTermina = fecha.ToString("yyyy-MM-ddTHH:mm:ss");
+			bundle.FechaTermina = Convert.ToDateTime(texto.Value.ToString().Trim());
 		}
 	}
 
