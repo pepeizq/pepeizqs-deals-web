@@ -592,6 +592,10 @@
     "Valor": "Descuento"
   },
   {
+    "Id": "Wishlist.String6",
+    "Valor": "Mínimo Histórico"
+  },
+  {
     "Id": "LastAdded.Title",
     "Valor": "Últimos Juegos Añadidos"
   },

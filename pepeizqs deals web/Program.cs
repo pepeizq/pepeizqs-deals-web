@@ -161,6 +161,16 @@ app.Use(async (contexto, siguiente) =>
     else await siguiente();
 });
 
+app.Use(async (context, next) =>
+{
+	await next();
+	if (context.Response.StatusCode == 404)
+	{
+		context.Request.Path = "/Index";
+		await next();
+	}
+});
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

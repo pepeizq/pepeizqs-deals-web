@@ -43,7 +43,7 @@
 							<img src="@juego.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
 						</div>
 
-						<div style="width: 69%; padding: 4px 15px;">
+						<div style="width: 61%; padding: 4px 15px;">
 							<div>@juego.Juego.Nombre</div>
 
 							<div class="perfil-flexible-centrado" style="justify-content: left;">
@@ -60,8 +60,13 @@
 
 						@if (DetectarMinimo(juego.Juego, juego.Precio.Precio, juego.DRM) == true)
 						{
-							<div style="width: 6%; text-align: center;">
-								x
+							<div style="width: 10%; text-align: center; font-size: 14px; padding: 4px 15px 4px 15px;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String6")
+							</div>
+						}
+						else
+						{
+							<div style="width: 10%; text-align: center; padding: 4px 15px 4px 15px;">
 							</div>
 						}
 						
@@ -292,6 +297,39 @@
 
 	private bool DetectarMinimo(Juegos.Juego juego, decimal precio, Juegos.JuegoDRM drm)
 	{
+		if (juego.Bundles != null)
+		{
+			foreach (var bundle in juego.Bundles)
+			{
+				if (bundle.DRM == drm)
+				{
+					return false;
+				}
+			}
+		}
+
+		if (juego.Gratis != null)
+		{
+			foreach (var gratis in juego.Gratis)
+			{
+				if (gratis.DRM == drm)
+				{
+					return false;
+				}
+			}
+		}
+
+		if (juego.Suscripciones != null)
+		{
+			foreach (var suscripcion in juego.Suscripciones)
+			{
+				if (suscripcion.DRM == drm)
+				{
+					return false;
+				}
+			}
+		}
+
 		foreach (var minimo in juego.PrecioMinimosHistoricos)
 		{
 			if (drm == minimo.DRM)
