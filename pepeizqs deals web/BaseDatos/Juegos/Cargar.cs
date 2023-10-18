@@ -13,7 +13,11 @@ namespace BaseDatos.Juegos
 
 			if (lector.GetString(2) != null)
 			{
-				juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
+				try
+				{
+					juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
+				}
+				catch { }				
 			}
 
 			if (lector.GetString(3) != null)
