@@ -32,15 +32,27 @@ namespace Herramientas
 			using (StreamReader r = new StreamReader("Idiomas/" + idiomaUsuario + ".json"))
 			{
 				string json = r.ReadToEnd();
-				List<Idioma> items = JsonConvert.DeserializeObject<List<Idioma>>(json);
-
-				foreach (var item in items)
+				List<Idioma> items = new List<Idioma>();
+				
+				try
 				{
-					if (item.Id == cadena)
+					items = JsonConvert.DeserializeObject<List<Idioma>>(json);
+				}
+				catch { }
+				
+				if (items != null)
+				{
+					if (items.Count > 0) 
 					{
-						devolver = item.Valor;
+						foreach (var item in items)
+						{
+							if (item.Id == cadena)
+							{
+								devolver = item.Valor;
+							}
+						}
 					}
-				}			
+				}							
 			}
 
 			if (devolver != null)

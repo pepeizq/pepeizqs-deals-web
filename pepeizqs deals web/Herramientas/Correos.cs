@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NETCore.MailKit.Core;
+
+//https://blog.christian-schou.dk/send-emails-with-asp-net-core-with-mailkit/
 
 namespace Herramientas
 {
-	public class Correos : Controller
+	public class Correos : IEmailService
 	{
-		private readonly IEmailService servicio;
+		private readonly Email servicio;
 
 		public Correos(IEmailService _servicio)
 		{
