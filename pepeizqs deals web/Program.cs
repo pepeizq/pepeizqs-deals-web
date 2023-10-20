@@ -56,22 +56,24 @@ builder.Services.AddHttpContextAccessor();
 
 #region Correos
 
-builder.Services.AddMailKit(options =>
-{
-	options.UseMailKit(new MailKitOptions()
-	{
-		Server = "mail5017.site4now.net",
-		Port = 25,
-		SenderName = "pepeizq's deals",
-		SenderEmail = "deals@pepeizqdeals.com",
+//builder.Services.AddMailKit(options =>
+//{
+//	options.UseMailKit(new MailKitOptions()
+//	{
+//		Server = "mail5017.site4now.net",
+//		Port = 25,
+//		SenderName = "pepeizq's deals",
+//		SenderEmail = "deals@pepeizqdeals.com",
 
-		// can be optional with no authentication 
-		//Account = Configuration["Account"],
-		//Password = Configuration["Password"],
-		// enable ssl or tls
-		Security = true
-	});
-});
+//		// can be optional with no authentication 
+//		//Account = Configuration["Account"],
+//		//Password = Configuration["Password"],
+//		// enable ssl or tls
+//		Security = true
+//	});
+//});
+
+builder.Services.Configure<Correo>(builder.Configuration.GetSection(nameof(Correo)));
 
 #endregion
 
