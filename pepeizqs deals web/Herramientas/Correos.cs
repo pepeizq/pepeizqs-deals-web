@@ -1,146 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 //https://blog.christian-schou.dk/send-emails-with-asp-net-core-with-mailkit/
 
 namespace Herramientas
 {
-	public class Correos : ICorreos
+	public static class Correos
 	{
-		private readonly Correo _configuracion;
-
-		public Correos(IOptions<Correo> configuracion)
+		public static void Enviar(string correoDesde, string correoHacia, string host, string contraseña)
 		{
-			_configuracion = configuracion.Value;
-		}
+			MailMessage mensaje = new MailMessage();
+			mensaje.From = new MailAddress(correoDesde);
+			mensaje.To.Add(correoHacia);
+			mensaje.Subject = "This is a test";
+			mensaje.Body = "This is a sample message using SMTP authentication";
 
-		public async Task<bool> SendAsync(CorreoDatos datos, CancellationToken ct = default)
-		{
-			try
+			SmtpClient cliente = new SmtpClient();
+			cliente.Host = host;
+
+			string texto1 = "gmail.com";
+			string texto2 = correoDesde.ToLower();
+
+			if (texto2.Contains(texto1) == true)
 			{
-				// Initialize a new instance of the MimeKit.MimeMessage class
-				var mail = new MimeMessage();
-
-				#region Sender / Receiver
-				// Sender
-				mail.From.Add(new MailboxAddress(_configuracion.DisplayName, datos.From ?? _configuracion.From));
-				mail.Sender = new MailboxAddress(datos.DisplayName ?? _configuracion.DisplayName, datos.From ?? _configuracion.From);
-
-				// Receiver
-				foreach (string mailAddress in datos.To)
-					mail.To.Add(MailboxAddress.Parse(mailAddress));
-
-				// Set Reply to if specified in mail data
-				if (!string.IsNullOrEmpty(datos.ReplyTo))
-					mail.ReplyTo.Add(new MailboxAddress(datos.ReplyToName, datos.ReplyTo));
-
-				// BCC
-				// Check if a BCC was supplied in the request
-				if (datos.Bcc != null)
+				try
 				{
-					// Get only addresses where value is not null or with whitespace. x = value of address
-					foreach (string mailAddress in datos.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
-						mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+					cliente.Port = 587;
+					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+					cliente.EnableSsl = true;
+					cliente.Send(mensaje);
 				}
-
-				// CC
-				// Check if a CC address was supplied in the request
-				if (datos.Cc != null)
-				{
-					foreach (string mailAddress in datos.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
-						mail.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
-				}
-				#endregion
-
-				#region Content
-
-				// Add Content to Mime Message
-				var body = new BodyBuilder();
-				mail.Subject = datos.Subject;
-				body.HtmlBody = datos.Body;
-				mail.Body = body.ToMessageBody();
-
-				#endregion
-
-				#region Send Mail
-
-				using var smtp = new SmtpClient();
-
-				if (_configuracion.UseSSL)
-				{
-					await smtp.ConnectAsync(_configuracion.Host, _configuracion.Port, SecureSocketOptions.SslOnConnect, ct);
-				}
-				else if (_configuracion.UseStartTls)
-				{
-					await smtp.ConnectAsync(_configuracion.Host, _configuracion.Port, SecureSocketOptions.StartTls, ct);
-				}
-				await smtp.AuthenticateAsync(_configuracion.UserName, _configuracion.Password, ct);
-				await smtp.SendAsync(mail, ct);
-				await smtp.DisconnectAsync(true, ct);
-
-				#endregion
-
-				return true;
-
+				catch { }
 			}
-			catch (Exception)
+			else
 			{
-				return false;
+				try
+				{
+					cliente.Port = 25;
+					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+					cliente.EnableSsl = false;
+					cliente.Send(mensaje);
+				}
+				catch { }
 			}
-		}
-
-	}
-
-	public interface ICorreos
-	{
-		Task<bool> SendAsync(CorreoDatos datos, CancellationToken ct);
-	}
-
-	public class Correo
-	{
-		public string? NombreMostrar { get; set; }
-		public string? Desde { get; set; }
-		public string? Usuario { get; set; }
-		public string? Contraseña { get; set; }
-		public string? Host { get; set; }
-		public int Puerto { get; set; }
-		public bool UsarSSL { get; set; }
-		public bool UsarStartTls { get; set; }
-	}
-
-	public class CorreoDatos
-	{
-		public List<string> Hacia { get; }
-		public List<string> Bcc { get; }
-
-		public List<string> Cc { get; }
-
-		public string? Desde { get; }
-
-		public string? NombreMostrar { get; }
-
-		public string? ResponderA { get; }
-
-		public string? ResponderANombre { get; }
-
-		public string Titulo { get; }
-
-		public string? Contenido { get; }
-
-		public CorreoDatos(List<string> hacia, string titulo, string? contenido = null, string? desde = null, string? nombreMostrar = null, string? responderA = null, string? responderANombre = null, List<string>? bcc = null, List<string>? cc = null)
-		{
-			Hacia = hacia;
-			Bcc = bcc ?? new List<string>();
-			Cc = cc ?? new List<string>();
-
-			Desde = desde;
-			NombreMostrar = nombreMostrar;
-			ResponderA = responderA;
-			ResponderANombre = responderANombre;
-
-			Titulo = titulo;
-			Contenido = contenido;
 		}
 	}
 }

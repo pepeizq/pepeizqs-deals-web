@@ -9,8 +9,6 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using NETCore.MailKit.Extensions;
-using NETCore.MailKit.Infrastructure.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -51,29 +49,6 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddHttpContextAccessor();
-
-#endregion
-
-#region Correos
-
-//builder.Services.AddMailKit(options =>
-//{
-//	options.UseMailKit(new MailKitOptions()
-//	{
-//		Server = "mail5017.site4now.net",
-//		Port = 25,
-//		SenderName = "pepeizq's deals",
-//		SenderEmail = "deals@pepeizqdeals.com",
-
-//		// can be optional with no authentication 
-//		//Account = Configuration["Account"],
-//		//Password = Configuration["Password"],
-//		// enable ssl or tls
-//		Security = true
-//	});
-//});
-
-builder.Services.Configure<Correo>(builder.Configuration.GetSection(nameof(Correo)));
 
 #endregion
 
