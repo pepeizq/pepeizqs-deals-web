@@ -1,4 +1,6 @@
-﻿using System.Net.Mail;
+﻿#nullable disable
+
+using System.Net.Mail;
 
 //https://blog.christian-schou.dk/send-emails-with-asp-net-core-with-mailkit/
 
@@ -6,8 +8,14 @@ namespace Herramientas
 {
 	public static class Correos
 	{
-		public static void Enviar(string correoDesde, string correoHacia, string host, string contraseña)
+		public static void Enviar(string correoHacia)
 		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+			string host = builder.Configuration.GetValue<string>("Correo:Host");
+			string correoDesde = builder.Configuration.GetValue<string>("Correo:CorreoDesde");
+			string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
 			MailMessage mensaje = new MailMessage();
 			mensaje.From = new MailAddress(correoDesde);
 			mensaje.To.Add(correoHacia);
@@ -43,5 +51,10 @@ namespace Herramientas
 				catch { }
 			}
 		}
+	}
+
+	public class Correo
+	{
+		public string Contraseña { get; set; }
 	}
 }

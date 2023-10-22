@@ -52,6 +52,9 @@ builder.Services.AddHttpContextAccessor();
 
 #endregion
 
+
+builder.Services.Configure<Correo>(builder.Configuration.GetSection("Correo"));
+
 //----------------------------------------------------------------------------------
 
 builder.Services.AddResponseCaching();
