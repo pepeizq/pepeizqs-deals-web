@@ -85,4 +85,10 @@
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\web.pubxml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Plantillas\NuevoMinimo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

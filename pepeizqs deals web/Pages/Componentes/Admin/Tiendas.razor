@@ -75,7 +75,8 @@
 
 			if (id == "correos")
 			{
-				Herramientas.Correos.Enviar("pepeizq@msn.com");
+				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego("12462");
+				Herramientas.Correos.EnviarNuevoMinimo(juego, juego.PrecioActualesTiendas[0], "pepeizq@msn.com");
 			}
 		}
 	}
