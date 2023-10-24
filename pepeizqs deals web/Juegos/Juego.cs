@@ -31,6 +31,7 @@ namespace Juegos
 		public List<JuegoSuscripcion> Suscripciones { get; set; }
 		public string NombreCodigo { get; set; }
 		public int IdMaestra { get; set; }
+		public List<JuegoUsuariosInteresados> UsuariosInteresados {  get; set; }
 	}
 
 	public static class JuegoCrear
@@ -40,12 +41,14 @@ namespace Juegos
 			JuegoImagenes imagenes = new JuegoImagenes();
 			List<JuegoPrecio> precioMinimoHistorico = new List<JuegoPrecio>();
 			List<JuegoPrecio> precioActualesTiendas = new List<JuegoPrecio>();
+			List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
 
 			Juego juego = new Juego
 			{
 				Imagenes = imagenes,
 				PrecioMinimosHistoricos = precioMinimoHistorico,
-				PrecioActualesTiendas = precioActualesTiendas
+				PrecioActualesTiendas = precioActualesTiendas,
+				UsuariosInteresados = usuariosInteresados
 			};
 
 			return juego;
@@ -102,6 +105,12 @@ namespace Juegos
 		public string Video { get; set; }
 		public List<string> Capturas { get; set; }
 		public List<string> Miniaturas { get; set; }
+	}
+
+	public class JuegoUsuariosInteresados
+	{
+		public List<string> UsuariosInteresados { get; set; }
+		public JuegoDRM DRM { get; set; }
 	}
 
 	public class JuegoBundle

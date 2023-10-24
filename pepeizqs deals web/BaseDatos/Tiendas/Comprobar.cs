@@ -127,6 +127,8 @@ namespace BaseDatos.Tiendas
 						}
 
 						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+
+						ComprobarMinimo(oferta, juego);
 					}
 				}
 			}
@@ -335,6 +337,20 @@ namespace BaseDatos.Tiendas
 								}
 							}
 						}
+					}
+				}
+			}
+		}
+
+		public static void ComprobarMinimo(JuegoPrecio oferta, Juego juego)
+		{
+			if (Herramientas.JuegoFicha.CalcularAntiguedad(oferta) == true)
+			{
+				foreach (var minimo in juego.PrecioMinimosHistoricos)
+				{
+					if (minimo.DRM == oferta.DRM)
+					{
+
 					}
 				}
 			}
