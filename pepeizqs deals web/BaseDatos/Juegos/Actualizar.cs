@@ -58,15 +58,15 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void UnParametro(Juego juego, SqlConnection conexion)
+		public static void UnParametro(Juego juego, SqlConnection conexion, string parametro, string valorParametro)
 		{
 			string sqlActualizar = "UPDATE juegos " +
-					"SET nombreCodigo=@nombreCodigo WHERE id=@id";
+					"SET " + parametro + "=@" + parametro + " WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+				comando.Parameters.AddWithValue("@" + parametro, valorParametro);
 
 				try
 				{

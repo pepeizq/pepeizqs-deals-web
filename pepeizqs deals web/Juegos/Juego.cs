@@ -41,14 +41,12 @@ namespace Juegos
 			JuegoImagenes imagenes = new JuegoImagenes();
 			List<JuegoPrecio> precioMinimoHistorico = new List<JuegoPrecio>();
 			List<JuegoPrecio> precioActualesTiendas = new List<JuegoPrecio>();
-			List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
 
 			Juego juego = new Juego
 			{
 				Imagenes = imagenes,
 				PrecioMinimosHistoricos = precioMinimoHistorico,
-				PrecioActualesTiendas = precioActualesTiendas,
-				UsuariosInteresados = usuariosInteresados
+				PrecioActualesTiendas = precioActualesTiendas
 			};
 
 			return juego;

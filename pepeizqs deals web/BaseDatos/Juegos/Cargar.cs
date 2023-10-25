@@ -146,6 +146,18 @@ namespace BaseDatos.Juegos
 				catch { }
 			}
 
+			if (lector.IsDBNull(17) == false)
+			{
+				if (lector.GetString(17) != null)
+				{
+					try
+					{
+						juego.UsuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(17));
+					}
+					catch { }
+				}
+			}
+
 			return juego;
 		}
 	}

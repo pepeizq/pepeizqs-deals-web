@@ -79,7 +79,7 @@
 							{
 								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String6");
 							}
-							
+
 							break;
 						}
 					}
@@ -107,7 +107,7 @@
 							{
 								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String8");
 							}
-					
+
 							break;
 						}
 					}			
@@ -165,6 +165,7 @@
 				{
 					if (drm == deseado.DRM)
 					{
+						BaseDatos.Juegos.Actualizar.UnParametro(juego, conexion, "usuariosInteresados", drm.ToString());
 						return true;
 					}
 				}
