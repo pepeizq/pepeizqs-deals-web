@@ -1,6 +1,8 @@
 ﻿#nullable disable
 
+using Juegos;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace BaseDatos.Usuarios
 {
@@ -37,6 +39,70 @@ namespace BaseDatos.Usuarios
 			}
 
 			return false;
+		}
+
+		public static string UnUsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm)
+		{
+			if (string.IsNullOrEmpty(usuarioId) == false)
+			{
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					string busqueda = "SELECT * FROM AspNetUsers WHERE Id=@Id";
+
+					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+					{
+						comando.Parameters.AddWithValue("@Id", usuarioId);
+
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							while (lector.Read())
+							{
+								if (lector.IsDBNull(20) == false)
+								{
+									if (lector.GetString(20) != null)
+									{
+										string deseadosTexto = lector.GetString(20);
+										List<JuegoDeseado> deseados = null;
+
+										try
+										{
+											deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosTexto);
+										}
+										catch { }
+
+										if (deseados != null)
+										{
+											if (deseados.Count > 0)
+											{
+												foreach (var deseado in deseados)
+												{
+													if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
+													{
+														if (lector.IsDBNull(8) == false)
+														{
+															if (lector.GetString(8) != null)
+															{
+																return lector.GetString(8);
+															}
+														}			
+													}
+												}
+											}
+										}
+									}
+								}
+
+							}
+						}
+					}
+				}
+
+				conexion.Dispose();
+			}
+
+			return null;
 		}
 	}
 }

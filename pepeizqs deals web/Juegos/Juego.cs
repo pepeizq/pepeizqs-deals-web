@@ -107,7 +107,7 @@ namespace Juegos
 
 	public class JuegoUsuariosInteresados
 	{
-		public List<string> UsuariosInteresados { get; set; }
+		public string UsuarioId { get; set; }
 		public JuegoDRM DRM { get; set; }
 	}
 

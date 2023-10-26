@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
+using pepeizqs_deals_web.Pages.Componentes.Secciones;
 
 namespace BaseDatos.Tiendas
 {
@@ -126,9 +127,9 @@ namespace BaseDatos.Tiendas
 							juego = await ActualizarDatosAPI(juego);
 						}
 
-						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
-
 						ComprobarMinimo(oferta, juego);
+
+						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
 					}
 				}
 			}
@@ -296,6 +297,8 @@ namespace BaseDatos.Tiendas
 										}
 									}
 
+									ComprobarMinimo(oferta, juego);
+
 									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
 								}
 							}
@@ -346,13 +349,40 @@ namespace BaseDatos.Tiendas
 		{
 			if (Herramientas.JuegoFicha.CalcularAntiguedad(oferta) == true)
 			{
-				foreach (var minimo in juego.PrecioMinimosHistoricos)
+				if (juego.PrecioMinimosHistoricos != null)
 				{
-					if (minimo.DRM == oferta.DRM)
+					if (juego.PrecioMinimosHistoricos.Count > 0)
 					{
+						foreach (var minimo in juego.PrecioMinimosHistoricos)
+						{
+							decimal ofertaPrecio = oferta.Precio;
 
+							if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+							{
+								ofertaPrecio = Herramientas.Divisas.Cambio(oferta.Precio, oferta.Moneda);
+							}
+
+							if (minimo.DRM == oferta.DRM && minimo.Precio > ofertaPrecio)
+							{
+								if (juego.UsuariosInteresados != null)
+								{
+									if (juego.UsuariosInteresados.Count > 0)
+									{
+										foreach (var usuarioInteresado in juego.UsuariosInteresados)
+										{
+											string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), oferta.DRM);
+
+											if (correo != null)
+											{
+												Herramientas.Correos.EnviarNuevoMinimo(juego, oferta, correo);
+											}
+										}
+									}
+								}								
+							}
+						}
 					}
-				}
+				}				
 			}
 		}
 	}

@@ -228,6 +228,8 @@
 						nuevoDeseado.DRM = deseado.DRM;
 						nuevoDeseado.Precio = ordenados[0];
 
+						Herramientas.Deseados.ActualizarJuegoConUsuarios(nuevoDeseado.Juego, nuevoDeseado.DRM, usuario, true);
+
 						deseadosMostrar.Add(nuevoDeseado);
 					}
 				}

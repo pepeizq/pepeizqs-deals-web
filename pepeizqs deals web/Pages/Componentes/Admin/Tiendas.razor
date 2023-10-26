@@ -35,7 +35,7 @@
 	<div class="perfil">
 		<div class="perfil-flexible-centrado">
 			<div style="width: 25%;">
-				<button @onclick="@(e => ClickearTienda(e, "correos"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
+				<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 			</div>
 			<div style="width: 75%; padding-left: 20px;">
 				<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
@@ -75,8 +75,8 @@
 
 			if (id == "correos")
 			{
-				Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego("12462");
-				Herramientas.Correos.EnviarNuevoMinimo(juego, juego.PrecioActualesTiendas[0], "pepeizq@msn.com");
+				// Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego("12462");
+				// Herramientas.Correos.EnviarNuevoMinimo(juego, juego.PrecioActualesTiendas[0], "pepeizq@msn.com");
 			}
 		}
 	}

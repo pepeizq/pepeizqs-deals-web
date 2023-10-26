@@ -150,6 +150,7 @@
 
 	private bool ComprobarSiEstaDeseado()
 	{
+		bool estado = false;
 		List<Juegos.JuegoDeseado> deseados = new List<Juegos.JuegoDeseado>();
 
 		if (usuario.Wishlist != null)
@@ -164,15 +165,15 @@
 				if (juego.Id == int.Parse(deseado.IdBaseDatos))
 				{
 					if (drm == deseado.DRM)
-					{
-						BaseDatos.Juegos.Actualizar.UnParametro(juego, conexion, "usuariosInteresados", drm.ToString());
-						return true;
+					{						
+						estado = true;
+						break;
 					}
 				}
 			}
 		}
 
-		return false;
+		return estado;
 	}
 
 	private async void CambiarEstadoDeseado(MouseEventArgs e, bool estado)
@@ -183,6 +184,8 @@
 		{
 			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
 		}
+
+		Herramientas.Deseados.ActualizarJuegoConUsuarios(juego, drm, usuario, estado);
 
 		if (estado == true)
 		{
