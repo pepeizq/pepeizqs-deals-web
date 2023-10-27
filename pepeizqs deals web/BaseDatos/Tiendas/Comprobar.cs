@@ -127,9 +127,9 @@ namespace BaseDatos.Tiendas
 							juego = await ActualizarDatosAPI(juego);
 						}
 
-						ComprobarMinimo(oferta, juego);
-
 						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+
+						ComprobarMinimo(oferta, juego);
 					}
 				}
 			}
@@ -297,9 +297,9 @@ namespace BaseDatos.Tiendas
 										}
 									}
 
-									ComprobarMinimo(oferta, juego);
-
 									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+
+									ComprobarMinimo(oferta, juego);
 								}
 							}
 						}
@@ -345,24 +345,24 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		public static void ComprobarMinimo(JuegoPrecio oferta, Juego juego)
+		public static void ComprobarMinimo(JuegoPrecio nuevaOferta, Juego juego)
 		{
-			if (Herramientas.JuegoFicha.CalcularAntiguedad(oferta) == true)
+			if (juego.PrecioMinimosHistoricos != null)
 			{
-				if (juego.PrecioMinimosHistoricos != null)
+				if (juego.PrecioMinimosHistoricos.Count > 0)
 				{
-					if (juego.PrecioMinimosHistoricos.Count > 0)
+					foreach (var minimo in juego.PrecioMinimosHistoricos)
 					{
-						foreach (var minimo in juego.PrecioMinimosHistoricos)
+						decimal ofertaPrecio = nuevaOferta.Precio;
+
+						if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
 						{
-							decimal ofertaPrecio = oferta.Precio;
+							ofertaPrecio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
+						}
 
-							if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
-							{
-								ofertaPrecio = Herramientas.Divisas.Cambio(oferta.Precio, oferta.Moneda);
-							}
-
-							if (minimo.DRM == oferta.DRM && minimo.Precio > ofertaPrecio)
+						if (minimo.DRM == nuevaOferta.DRM && minimo.Precio == ofertaPrecio)
+						{
+							if (minimo.FechaDetectado == nuevaOferta.FechaDetectado)
 							{
 								if (juego.UsuariosInteresados != null)
 								{
@@ -370,19 +370,19 @@ namespace BaseDatos.Tiendas
 									{
 										foreach (var usuarioInteresado in juego.UsuariosInteresados)
 										{
-											string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), oferta.DRM);
+											string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), nuevaOferta.DRM);
 
 											if (correo != null)
 											{
-												Herramientas.Correos.EnviarNuevoMinimo(juego, oferta, correo);
+												Herramientas.Correos.EnviarNuevoMinimo(juego, nuevaOferta, correo);
 											}
 										}
 									}
-								}								
+								}
 							}
 						}
 					}
-				}				
+				}
 			}
 		}
 	}

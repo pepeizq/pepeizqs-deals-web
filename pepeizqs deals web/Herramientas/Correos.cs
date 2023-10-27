@@ -39,12 +39,24 @@ namespace Herramientas
 				}
 			}
 
+			string mensajeAbrir = string.Empty;
+
+			if (juego.Tipo == JuegoTipo.Game)
+			{
+				mensajeAbrir = "Open Game";
+			}
+			else if (juego.Tipo == JuegoTipo.DLC)
+			{
+				mensajeAbrir = "Open DLC";
+			}
+
 			html = html.Replace("{{descripcion}}", descripcion);
 			html = html.Replace("{{imagen}}", imagen);
 			html = html.Replace("{{descuento}}", descuento);
 			html = html.Replace("{{precio}}", precio2);
 			html = html.Replace("{{enlace}}", enlace);
 			html = html.Replace("{{imagenTienda}}", imagenTienda);
+			html = html.Replace("{{mensaje}}", mensajeAbrir);
 			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
 			MailMessage mensaje = new MailMessage();
