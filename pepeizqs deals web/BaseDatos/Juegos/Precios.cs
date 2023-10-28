@@ -80,8 +80,7 @@ namespace BaseDatos.Juegos
 										{
 											minimo.Precio = tempPrecio;
 											minimo.Moneda = precio.Moneda;
-											minimo.Descuento = precio.Descuento;
-											minimo.FechaDetectado = precio.FechaDetectado;
+											minimo.Descuento = precio.Descuento;											
 											minimo.FechaActualizacion = precio.FechaActualizacion;
 											minimo.FechaTermina = precio.FechaTermina;
 											minimo.CodigoDescuento = precio.CodigoDescuento;
@@ -90,6 +89,31 @@ namespace BaseDatos.Juegos
 											minimo.Imagen = precio.Imagen;
 											minimo.Enlace = precio.Enlace;
 											minimo.Tienda = precio.Tienda;
+
+											//------------------------------------------
+
+											if (minimo.FechaDetectado == nuevaOferta.FechaDetectado)
+											{
+												if (juego.UsuariosInteresados != null)
+												{
+													if (juego.UsuariosInteresados.Count > 0)
+													{
+														foreach (var usuarioInteresado in juego.UsuariosInteresados)
+														{
+															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), nuevaOferta.DRM);
+
+															if (correo != null)
+															{
+																Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+															}
+														}
+													}
+												}
+											}
+
+											//------------------------------------------
+
+											minimo.FechaDetectado = precio.FechaDetectado;
 										}
 
 										drmEncontrado = true;

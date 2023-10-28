@@ -7,14 +7,22 @@ namespace Herramientas
 {
 	public static class Correos
 	{
+		public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
+		{
+			string html = string.Empty;
+
+			using (StreamReader r = new StreamReader("Plantillas/ConfirmacionCorreo.html"))
+			{
+				html = r.ReadToEnd();
+			}
+
+			html = html.Replace("{{codigo}}", codigo);
+
+			EnviarCorreo(html, "Confirm your email", correoHacia);
+		}
+
 		public static void EnviarNuevoMinimo(Juego juego, JuegoPrecio precio, string correoHacia)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-
-			string host = builder.Configuration.GetValue<string>("Correo:Host");
-			string correoDesde = builder.Configuration.GetValue<string>("Correo:CorreoDesde");
-			string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
 			string html = string.Empty;
 
 			using (StreamReader r = new StreamReader("Plantillas/NuevoMinimo.html"))
@@ -59,10 +67,21 @@ namespace Herramientas
 			html = html.Replace("{{mensaje}}", mensajeAbrir);
 			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
+			EnviarCorreo(html, descripcion + " • " + precio2, correoHacia);
+		}
+
+		private static void EnviarCorreo(string html, string titulo, string correoHacia)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+			string host = builder.Configuration.GetValue<string>("Correo:Host");
+			string correoDesde = builder.Configuration.GetValue<string>("Correo:CorreoDesde");
+			string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
 			MailMessage mensaje = new MailMessage();
 			mensaje.From = new MailAddress(correoDesde, "pepeizq's deals");
 			mensaje.To.Add(correoHacia);
-			mensaje.Subject = descripcion + " • " + precio2;
+			mensaje.Subject = titulo;
 			mensaje.Body = html;
 			mensaje.IsBodyHtml = true;
 

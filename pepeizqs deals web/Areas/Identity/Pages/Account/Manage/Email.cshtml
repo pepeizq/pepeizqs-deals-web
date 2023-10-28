@@ -1,7 +1,7 @@
 ﻿@page
 @model EmailModel
 @{
-    ViewData["Title"] = "Manage Email";
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String2");
     ViewData["ActivePage"] = ManageNavPages.Email;
     Layout = "~/Areas/Identity/Pages/Account/Manage/_PerfilLayout.cshtml";
 }
@@ -16,32 +16,29 @@
 
         @if (Model.IsEmailConfirmed)
         {
-            <div class="mb-3 input-group">
-                <label asp-for="Email" class="texto-info-entrada"></label>
-                <input asp-for="Email" class="entrada-texto" placeholder="Please enter your email." disabled />
-                <div class="input-group-append">
-                    <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
-                </div>               
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String3")</label>
+                <input asp-for="Email" class="entrada-texto" disabled />            
             </div>
         }
         else
         {
-            <div class="mb-3">
-                <label asp-for="Email" class="texto-info-entrada"></label>
-                <input asp-for="Email" class="entrada-texto" placeholder="Please enter your email." disabled />
-                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+            <div style="margin-bottom: 10px;">
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String3")</label>
+                <input asp-for="Email" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String4")" disabled />
+                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String5")</button>
             </div>
         }
 
-        <div class="mb-3">
-            <label asp-for="Input.NewEmail" class="texto-info-entrada"></label>
-            <input asp-for="Input.NewEmail" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+        <div style="margin-bottom: 10px;">
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String6")</label>
+            <input asp-for="Input.NewEmail" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String4")" />
             <span asp-validation-for="Input.NewEmail" class="texto-peligro-entrada"></span>
         </div>
 
         <div class="perfil-flexible">
             <div class="perfil-flexible-izquierda">
-                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="boton">Change email</button>
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="boton">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String7")</button>
             </div>
         </div>
        

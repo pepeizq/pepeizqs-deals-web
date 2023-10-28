@@ -45,7 +45,7 @@
   },
   {
     "Id": "Layout.Email",
-    "Valor": "Cambiar Correo"
+    "Valor": "Correo"
   },
   {
     "Id": "Layout.Password",
@@ -606,5 +606,33 @@
   {
     "Id": "Settings.String1",
     "Valor": "Cambia la configuración de tu cuenta"
+  },
+  {
+    "Id": "Settings.String2",
+    "Valor": "Gestionar Correo"
+  },
+  {
+    "Id": "Settings.String3",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "Settings.String4",
+    "Valor": "Por favor introduce tu correo"
+  },
+  {
+    "Id": "Settings.String5",
+    "Valor": "Enviar correo de confirmación"
+  },
+  {
+    "Id": "Settings.String6",
+    "Valor": "Nuevo Correo"
+  },
+  {
+    "Id": "Settings.String7",
+    "Valor": "Cambiar Correo"
+  },
+  {
+    "Id": "Settings.String8",
+    "Valor": "Correo de confirmación enviado. Por favor comprueba tu correo."
   }
 ]
