@@ -634,5 +634,25 @@
   {
     "Id": "Settings.String8",
     "Valor": "Correo de confirmación enviado. Por favor comprueba tu correo."
+  },
+  {
+    "Id": "Settings.String9",
+    "Valor": "Correo de confirmación para cambiar de correo enviado. Por favor comprueba tu correo."
+  },
+  {
+    "Id": "Settings.String10",
+    "Valor": "Tu cambio de correo no se ha registrado."
+  },
+  {
+    "Id": "Settings.String11",
+    "Valor": "Confirmar Correo"
+  },
+  {
+    "Id": "Settings.String12",
+    "Valor": "Gracias por confirmar tu correo."
+  },
+  {
+    "Id": "Settings.String13",
+    "Valor": "Error confirmando tu correo. Contacta con admin@pepeizqdeals.com."
   }
 ]

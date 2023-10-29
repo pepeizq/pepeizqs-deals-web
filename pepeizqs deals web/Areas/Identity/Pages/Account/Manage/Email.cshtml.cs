@@ -47,12 +47,12 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(Usuario user)
         {
-            var email = await _userManager.GetEmailAsync(user);
-            Email = email;
+            string correo = await _userManager.GetEmailAsync(user);
+            Email = correo;
 
             Input = new InputModel
             {
-                NewEmail = email,
+                NewEmail = correo,
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -78,42 +78,45 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            Usuario usuario = await _userManager.GetUserAsync(User);
 
-            if (user == null)
+            if (usuario == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
+                await LoadAsync(usuario);
                 return Page();
             }
 
-            var email = await _userManager.GetEmailAsync(user);
+            string correo = await _userManager.GetEmailAsync(usuario);
 
-            if (Input.NewEmail != email)
+            if (Input.NewEmail != correo)
             {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
+                string usuarioId = await _userManager.GetUserIdAsync(usuario);
+                string codigo = await _userManager.GenerateChangeEmailTokenAsync(usuario, Input.NewEmail);
+                codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
+                
+                string enlaceFinal = Url.Page(
                     "/Account/ConfirmEmailChange",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
+                    values: new { area = "Identity", userId = usuarioId, email = Input.NewEmail, code = codigo },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                //await _emailSender.SendEmailAsync(
+                //    Input.NewEmail,
+                //    "Confirm your email",
+                //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
+
+                StatusMessage = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String9");
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String10");
             return RedirectToPage();
         }
 

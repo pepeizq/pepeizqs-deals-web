@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="BaseDatos\Tiendas\Comprobar.cs~RF86ded17a.TMP" />
+    <None Remove="Plantillas\CambioCorreo.html" />
     <None Remove="Plantillas\ConfirmacionCorreo.html" />
   </ItemGroup>
 
@@ -91,6 +92,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Plantillas\CambioCorreo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plantillas\ConfirmacionCorreo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

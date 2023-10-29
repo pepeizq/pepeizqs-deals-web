@@ -634,5 +634,25 @@
   {
     "Id": "Settings.String8",
     "Valor": "Verification email sent. Please check your email."
+  },
+  {
+    "Id": "Settings.String9",
+    "Valor": "Confirmation link to change email sent. Please check your email."
+  },
+  {
+    "Id": "Settings.String10",
+    "Valor": "Your email change has not been registered."
+  },
+  {
+    "Id": "Settings.String11",
+    "Valor": "Confirm Email"
+  },
+  {
+    "Id": "Settings.String12",
+    "Valor": "Thank you for confirming your email."
+  },
+  {
+    "Id": "Settings.String13",
+    "Valor": "Error confirming your email. Contact with admin@pepeizqdeals.com."
   }
 ]

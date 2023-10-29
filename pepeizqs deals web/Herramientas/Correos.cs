@@ -7,7 +7,22 @@ namespace Herramientas
 {
 	public static class Correos
 	{
-		public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
+        public static void EnviarCambioCorreo(string codigo, string correoHacia)
+		{
+            string html = string.Empty;
+
+            using (StreamReader r = new StreamReader("Plantillas/CambioCorreo.html"))
+            {
+                html = r.ReadToEnd();
+            }
+
+            html = html.Replace("{{codigo}}", codigo);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+
+            EnviarCorreo(html, "Confirm your email change", "admin@pepeizqdeals.com", correoHacia);
+        }
+
+        public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
 		{
 			string html = string.Empty;
 
@@ -17,8 +32,9 @@ namespace Herramientas
 			}
 
 			html = html.Replace("{{codigo}}", codigo);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-			EnviarCorreo(html, "Confirm your email", correoHacia);
+            EnviarCorreo(html, "Confirm your email", "admin@pepeizqdeals.com", correoHacia);
 		}
 
 		public static void EnviarNuevoMinimo(Juego juego, JuegoPrecio precio, string correoHacia)
@@ -67,15 +83,14 @@ namespace Herramientas
 			html = html.Replace("{{mensaje}}", mensajeAbrir);
 			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-			EnviarCorreo(html, descripcion + " • " + precio2, correoHacia);
+			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
 
-		private static void EnviarCorreo(string html, string titulo, string correoHacia)
+		private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
 			string host = builder.Configuration.GetValue<string>("Correo:Host");
-			string correoDesde = builder.Configuration.GetValue<string>("Correo:CorreoDesde");
 			string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
 
 			MailMessage mensaje = new MailMessage();

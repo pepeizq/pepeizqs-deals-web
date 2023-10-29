@@ -11,6 +11,9 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
+        public string idioma = string.Empty;
+        public string mensaje = string.Empty;
+
         private readonly UserManager<Usuario> _userManager;
 
         public ConfirmEmailModel(UserManager<Usuario> userManager)
@@ -18,25 +21,39 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-        public async Task<IActionResult> OnGetAsync(string userId, string code)
+        public async Task<IActionResult> OnGetAsync(string usuarioId, string codigo)
         {
-            if (userId == null || code == null)
+            try
+            {
+                idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+            }
+            catch { }
+
+            if (usuarioId == null || codigo == null)
             {
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
 
-            if (user == null)
+            if (usuario == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Unable to load user with ID '{usuarioId}'.");
             }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            codigo = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(codigo));
+
+            IdentityResult resultado = await _userManager.ConfirmEmailAsync(usuario, codigo);
+
+            if (resultado.Succeeded == true)
+            {
+                mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String12");
+            }
+            else
+            {
+                mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String13");
+            }
+
             return Page();
         }
     }
