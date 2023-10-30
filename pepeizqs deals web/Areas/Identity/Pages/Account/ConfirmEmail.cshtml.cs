@@ -12,7 +12,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         public string idioma = string.Empty;
-        public string mensaje = string.Empty;
+        public IdentityResult resultado = null;
 
         private readonly UserManager<Usuario> _userManager;
 
@@ -21,13 +21,16 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> OnGetAsync(string usuarioId, string codigo)
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
                 idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
             }
             catch { }
+
+            string usuarioId = Request.Query["userId"];
+            string codigo = Request.Query["code"];
 
             if (usuarioId == null || codigo == null)
             {
@@ -43,17 +46,8 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
             codigo = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(codigo));
 
-            IdentityResult resultado = await _userManager.ConfirmEmailAsync(usuario, codigo);
-
-            if (resultado.Succeeded == true)
-            {
-                mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String12");
-            }
-            else
-            {
-                mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String13");
-            }
-
+            resultado = await _userManager.ConfirmEmailAsync(usuario, codigo);
+            
             return Page();
         }
     }

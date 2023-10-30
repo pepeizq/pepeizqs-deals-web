@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using System.Text;
+@using Microsoft.AspNetCore.WebUtilities;
+@using System.Text.Encodings.Web;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario != null)
+{
+    <div class="row" style="margin-top: 10px;">
+        @if (correoConfirmado == true)
+        {
+            <div class="input-group" style="margin-bottom: 25px;">
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String3")</label>
+                <input value="@correoDefecto" class="entrada-texto" disabled />
+            </div>
+        }
+        else
+        {
+            <div style="margin-bottom: 25px;">
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String3")</label>
+                <input value="@correoDefecto" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String4")" disabled />
+                <button @onclick="ClickearConfirmacionCorreo" class="btn btn-link">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String5")</button>
+
+                @if (correoConfirmadoEnviado == true)
+                {
+                    <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 10px;" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String8")
+                    </div>
+                }
+            </div>
+        }
+
+        <div style="margin-bottom: 20px;">
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String6")</label>
+            <input @onchange="@(e => CambiarNuevoCorreo(e))" value="@correoNuevo" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String4")" />
+        </div>
+
+        <div style="display: flex; flex-direction: column;">
+            <div class="perfil-flexible-izquierda">
+                <button @onclick="ClickearCambioCorreo" class="boton">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String7")</button>  
+            </div>
+
+            @if (correoConfirmadoEnviado == true)
+            {
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String9")
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private string correoDefecto = string.Empty;
+    private string correoNuevo = string.Empty;
+    private bool correoConfirmado = false;
+    private bool correoConfirmadoEnviado = false;
+    private bool correoCambioEnviado = false;
+
+    protected override void OnInitialized()
+    {
+        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+        if (usuario != null)
+        {
+            correoDefecto = UserManager.GetEmailAsync(usuario).Result;
+            correoConfirmado = UserManager.IsEmailConfirmedAsync(usuario).Result;
+        }
+    }
+
+    private async void ClickearConfirmacionCorreo()
+    {
+        if (usuario != null)
+        {
+            correoConfirmadoEnviado = false;
+            string usuarioId = await UserManager.GetUserIdAsync(usuario);
+            string correo = await UserManager.GetEmailAsync(usuario);
+            string codigo = await UserManager.GenerateEmailConfirmationTokenAsync(usuario);
+            codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
+
+            string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmail?userId=" + usuarioId + "&code=" + codigo;
+
+            Herramientas.Correos.EnviarConfirmacionCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
+            correoConfirmadoEnviado = true;
+        }
+    }
+
+    private void CambiarNuevoCorreo(ChangeEventArgs texto)
+    {
+        correoNuevo = texto.Value.ToString();
+    }
+
+    private async void ClickearCambioCorreo()
+    {
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(correoNuevo) == false)
+            {
+                correoConfirmadoEnviado = false;
+
+                string usuarioId = await UserManager.GetUserIdAsync(usuario);
+                string codigo = await UserManager.GenerateChangeEmailTokenAsync(usuario, correoNuevo);
+                codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
+
+                string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?userId=" + usuarioId + "&email" + correoNuevo + "&code=" + codigo;
+
+                Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correoNuevo);
+                correoConfirmadoEnviado = true;
+            }
+        }      
+    }
+}

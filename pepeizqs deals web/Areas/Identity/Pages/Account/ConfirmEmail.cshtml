@@ -7,12 +7,13 @@
 <div class="texto-info">@ViewData["Title"]</div>
 
 <div class="perfil" style="margin-top: 20px;">
-    <partial name="_StatusMessage" model="Model.mensaje" />
-
-@*     var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
-    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @Model.mensaje
-    </div> *@
+    @if (Model.resultado.Succeeded == true)
+    {
+        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String12")
+    }
+    else
+    {
+        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String13")
+    }
 </div>
 

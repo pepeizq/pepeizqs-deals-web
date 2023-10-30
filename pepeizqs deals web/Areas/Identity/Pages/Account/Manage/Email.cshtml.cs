@@ -15,6 +15,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
     public class EmailModel : PageModel
     {
         public string idioma = string.Empty;
+        public bool confirmacionEnviado = false;
 
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
@@ -66,13 +67,14 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
             }
             catch { }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            Usuario usuario = await _userManager.GetUserAsync(User);
+
+            if (usuario == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            await LoadAsync(user);
+            await LoadAsync(usuario);
             return Page();
         }
 
@@ -148,7 +150,8 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
             Herramientas.Correos.EnviarConfirmacionCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
 
-            StatusMessage = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String8");
+            confirmacionEnviado = true;
+            //StatusMessage = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String8");
             return RedirectToPage();
         }
     }
