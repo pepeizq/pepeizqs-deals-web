@@ -654,5 +654,17 @@
   {
     "Id": "Settings.String13",
     "Valor": "Error confirming your email. Contact with admin@pepeizqdeals.com."
+  },
+  {
+    "Id": "Settings.String14",
+    "Valor": "Confirm Email Change"
+  },
+  {
+    "Id": "Settings.String15",
+    "Valor": "Your email change has been done correctly."
+  },
+  {
+    "Id": "Settings.String16",
+    "Valor": "Error changing your email. Contact with admin@pepeizqdeals.com."
   }
 ]

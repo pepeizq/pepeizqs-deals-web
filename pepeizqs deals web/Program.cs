@@ -52,6 +52,9 @@ builder.Services.AddHttpContextAccessor();
 
 #endregion
 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+       options.TokenLifespan = TimeSpan.FromHours(3));
+
 //----------------------------------------------------------------------------------
 
 builder.Services.AddResponseCaching();

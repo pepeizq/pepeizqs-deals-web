@@ -1,0 +1,19 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String14");
+}
+
+<div class="texto-info">@ViewData["Title"]</div>
+
+<div class="perfil" style="margin-top: 20px;">
+    @if (Model.resultado.Succeeded == true)
+    {
+        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String15")
+    }
+    else
+    {
+        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String16")
+    }
+</div>
+

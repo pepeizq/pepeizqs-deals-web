@@ -42,10 +42,10 @@
 
         <div style="display: flex; flex-direction: column;">
             <div class="perfil-flexible-izquierda">
-                <button @onclick="ClickearCambioCorreo" class="boton">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String7")</button>  
+                <button @onclick="ClickearCambioCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String7")</button>  
             </div>
 
-            @if (correoConfirmadoEnviado == true)
+            @if (correoCambioEnviado == true)
             {
                 <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -110,16 +110,16 @@
         {
             if (string.IsNullOrEmpty(correoNuevo) == false)
             {
-                correoConfirmadoEnviado = false;
+                correoCambioEnviado = false;
 
                 string usuarioId = await UserManager.GetUserIdAsync(usuario);
                 string codigo = await UserManager.GenerateChangeEmailTokenAsync(usuario, correoNuevo);
                 codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
 
-                string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?userId=" + usuarioId + "&email" + correoNuevo + "&code=" + codigo;
+                string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?userId=" + usuarioId + "&email=" + correoNuevo + "&code=" + codigo;
 
                 Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correoNuevo);
-                correoConfirmadoEnviado = true;
+                correoCambioEnviado = true;
             }
         }      
     }

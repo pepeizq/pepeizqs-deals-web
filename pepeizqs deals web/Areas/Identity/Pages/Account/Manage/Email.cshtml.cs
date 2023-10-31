@@ -112,7 +112,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
                 //    "Confirm your email",
                 //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
+                //Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
 
                 StatusMessage = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String9");
                 return RedirectToPage();
