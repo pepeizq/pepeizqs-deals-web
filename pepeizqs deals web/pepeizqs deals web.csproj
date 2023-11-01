@@ -12,13 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml.cs~RF408006.TMP" />
-    <None Remove="BaseDatos\Tiendas\Comprobar.cs~RF86ded17a.TMP" />
-    <None Remove="Plantillas\CambioCorreo.html" />
-    <None Remove="Plantillas\ConfirmacionCorreo.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>
@@ -103,6 +96,14 @@
     <Content Include="Plantillas\NuevoMinimo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Identity\Componentes\Contraseña.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Identity\Componentes\Contraseña.razor" />
   </ItemGroup>
 
 </Project>

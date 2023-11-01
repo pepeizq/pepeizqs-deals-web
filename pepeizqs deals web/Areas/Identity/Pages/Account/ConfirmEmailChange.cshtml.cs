@@ -13,6 +13,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
     {
         public string idioma = string.Empty;
         public IdentityResult resultado = null;
+        public bool completado = false;
 
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
@@ -49,22 +50,22 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
             codigo = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(codigo));
 
-            var result = await _userManager.ChangeEmailAsync(usuario, nuevoCorreo, codigo);
+            IdentityResult cambioCorreo = await _userManager.ChangeEmailAsync(usuario, nuevoCorreo, codigo);
 
-            if (!result.Succeeded)
+            if (cambioCorreo.Succeeded == false)
             {
-                //StatusMessage = "Error changing email.";
                 return Page();
             }
 
-            var setUserNameResult = await _userManager.SetUserNameAsync(usuario, nuevoCorreo);
-            if (!setUserNameResult.Succeeded)
+            IdentityResult cambioUsername = await _userManager.SetUserNameAsync(usuario, nuevoCorreo);
+
+            if (cambioUsername.Succeeded == false)
             {
-                //StatusMessage = "Error changing user name.";
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(usuario);
+            completado = true;
 
             return Page();
         }

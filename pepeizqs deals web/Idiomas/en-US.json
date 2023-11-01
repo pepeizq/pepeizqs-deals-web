@@ -49,7 +49,7 @@
   },
   {
     "Id": "Layout.Password",
-    "Valor": "Change Password"
+    "Valor": "Password"
   },
   {
     "Id": "Layout.PersonalData",
@@ -666,5 +666,33 @@
   {
     "Id": "Settings.String16",
     "Valor": "Error changing your email. Contact with admin@pepeizqdeals.com."
+  },
+  {
+    "Id": "Settings.String17",
+    "Valor": "Change Password"
+  },
+  {
+    "Id": "Settings.String18",
+    "Valor": "Actual password"
+  },
+  {
+    "Id": "Settings.String19",
+    "Valor": "New password"
+  },
+  {
+    "Id": "Settings.String20",
+    "Valor": "Confirm new password"
+  },
+  {
+    "Id": "Settings.String21",
+    "Valor": "Enter your actual password"
+  },
+  {
+    "Id": "Settings.String22",
+    "Valor": "Enter your new password"
+  },
+  {
+    "Id": "Settings.String23",
+    "Valor": "Confirm your new password"
   }
 ]

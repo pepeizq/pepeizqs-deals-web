@@ -49,7 +49,7 @@ namespace Herramientas
 			string descripcion = juego.Nombre + " has reached a new minimum registered price:";
 			string imagen = juego.Imagenes.Capsule_231x87;
 			string descuento = precio.Descuento.ToString() + "%";
-			string precio2 = JuegoFicha.PrepararPrecio(precio.Precio, false, precio.Moneda);
+			string precio2 = JuegoFicha.PrepararPrecio(precio.Precio, true, precio.Moneda);
 			string enlace = "https://pepeizqdeals.com" + EnlaceAcortador.Generar(precio.Enlace, precio.Tienda);
 			string imagenTienda = string.Empty;
 

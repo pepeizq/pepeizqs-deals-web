@@ -10,51 +10,6 @@
 
 @(await Html.RenderComponentAsync<pepeizqs_deals_web.Areas.Identity.Componentes.Correo>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
 
-@* <partial name="_StatusMessage" for="StatusMessage" /> *@
-
-@* <div class="row">
-    <form id="email-form" method="post">
-        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-
-        @if (Model.IsEmailConfirmed == true)
-        {
-            <div class="input-group" style="margin-bottom: 25px;">
-                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String3")</label>
-                <input asp-for="Email" class="entrada-texto" disabled />            
-            </div>
-        }
-        else
-        {
-            <div style="margin-bottom: 25px;">
-                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String3")</label>
-                <input asp-for="Email" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String4")" disabled />
-                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String5")</button>
-            </div>
-
-            @if (Model.confirmacionEnviado == true)
-            {
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String8")
-                </div>
-            }          
-        }
-
-        <div style="margin-bottom: 20px;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String6")</label>
-            <input asp-for="Input.NewEmail" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String4")" />
-            <span asp-validation-for="Input.NewEmail" class="texto-peligro-entrada"></span>
-        </div>
-
-        <div class="perfil-flexible">
-            <div class="perfil-flexible-izquierda">
-                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="boton">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String7")</button>
-            </div>
-        </div>
-       
-    </form>
-</div> *@
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
