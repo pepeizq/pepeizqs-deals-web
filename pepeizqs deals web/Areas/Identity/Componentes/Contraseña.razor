@@ -15,12 +15,32 @@
 
         <div style="margin-bottom: 20px;">
             <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String19")</label>
-            <input value="@contraseñaActual" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String22")" />
+            <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String22")" />
+
+            @if (string.IsNullOrEmpty(@mensajeAviso1) == false)
+            {
+                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeAviso1
+                </div>
+            }
         </div>
 
         <div style="margin-bottom: 20px;">
             <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String20")</label>
-            <input value="@contraseñaActual" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String23")" />
+            <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String23")" />
+
+            @if (string.IsNullOrEmpty(@mensajeAviso2) == false)
+            {
+                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeAviso2
+                </div>
+            }
+        </div>
+
+        <div class="perfil-flexible">
+            <div class="perfil-flexible-izquierda">
+                <button @onclick="ClickearCambiarContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String24")</button>
+            </div>
         </div>
     </div>
 }
@@ -38,14 +58,12 @@
     private string contraseñaNueva1 = string.Empty;
     private string contraseñaNueva2 = string.Empty;
 
+    private string mensajeAviso1 = string.Empty;
+    private string mensajeAviso2 = string.Empty;
+
     protected override void OnInitialized()
     {
         usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
-
-        if (usuario != null)
-        {
-           
-        }
     }
 
     private void CambiarActualContraseña(ChangeEventArgs texto)
@@ -56,10 +74,54 @@
     private void CambiarNuevaContraseña1(ChangeEventArgs texto)
     {
         contraseñaNueva1 = texto.Value.ToString();
+
+        if (contraseñaNueva1.Length == 0)
+        {
+            mensajeAviso1 = null;
+        }
+        else if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
+        {
+            mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String25");
+        }
+        else if (contraseñaNueva1.Length > 5)
+        {
+            if (contraseñaNueva1.Any(char.IsDigit) == false)
+            {
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
+            }
+            else
+            {
+                mensajeAviso1 = null;
+            }
+        }
     }
 
     private void CambiarNuevaContraseña2(ChangeEventArgs texto)
     {
         contraseñaNueva2 = texto.Value.ToString();
+
+        if (contraseñaNueva1.Length > 5)
+        {
+            if (contraseñaNueva1 == contraseñaNueva2)
+            {
+                mensajeAviso2 = null;
+            }
+            else
+            {
+                mensajeAviso2 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String27");
+            }
+        }
+        else
+        {
+            mensajeAviso2 = null;
+        }
+    }
+
+    private async void ClickearCambiarContraseña()
+    {
+        if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && mensajeAviso1 == null && mensajeAviso2 == null)
+        {
+            
+        }
     }
 }

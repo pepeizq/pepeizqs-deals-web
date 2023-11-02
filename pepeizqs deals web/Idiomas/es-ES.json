@@ -694,5 +694,21 @@
   {
     "Id": "Settings.String23",
     "Valor": "Confirma tu nueva contraseña"
+  },
+  {
+    "Id": "Settings.String24",
+    "Valor": "Cambiar Contraseña"
+  },
+  {
+    "Id": "Settings.String25",
+    "Valor": "La contraseña debe tener un mínimo de 6 caracteres"
+  },
+  {
+    "Id": "Settings.String26",
+    "Valor": "La contraseña debe tener al menos un número"
+  },
+  {
+    "Id": "Settings.String27",
+    "Valor": "La contraseña de confirmación no coincide con la nueva contraseña"
   }
 ]

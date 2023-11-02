@@ -694,5 +694,21 @@
   {
     "Id": "Settings.String23",
     "Valor": "Confirm your new password"
+  },
+  {
+    "Id": "Settings.String24",
+    "Valor": "Change Password"
+  },
+  {
+    "Id": "Settings.String25",
+    "Valor": "The password must be a minimum of 6 characters"
+  },
+  {
+    "Id": "Settings.String26",
+    "Valor": "The password must have at least one number"
+  },
+  {
+    "Id": "Settings.String27",
+    "Valor": "The confirmation password does not match new password"
   }
 ]
