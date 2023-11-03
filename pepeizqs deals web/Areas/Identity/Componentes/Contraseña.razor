@@ -37,10 +37,24 @@
             }
         </div>
 
-        <div class="perfil-flexible">
+        <div style="display: flex; flex-direction: column;">
             <div class="perfil-flexible-izquierda">
                 <button @onclick="ClickearCambiarContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String24")</button>
             </div>
+
+            @if (string.IsNullOrEmpty(@mensajeExito) == false)
+            {
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeExito
+                </div>
+            }
+
+            @if (string.IsNullOrEmpty(@mensajeError) == false)
+            {
+                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeError
+                </div>
+            }
         </div>
     </div>
 }
@@ -60,6 +74,9 @@
 
     private string mensajeAviso1 = string.Empty;
     private string mensajeAviso2 = string.Empty;
+
+    private string mensajeExito = string.Empty;
+    private string mensajeError = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -119,9 +136,22 @@
 
     private async void ClickearCambiarContraseña()
     {
+        mensajeExito = null;
+        mensajeError = null;
+
         if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && mensajeAviso1 == null && mensajeAviso2 == null)
         {
-            
+            IdentityResult resultado = await UserManager.ChangePasswordAsync(usuario, contraseñaActual, contraseñaNueva1);
+
+            if (resultado.Succeeded == true)
+            {
+                mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String28");
+                Herramientas.Correos.EnviarCambioContraseña(usuario.Email);
+            }
+            else
+            {
+                mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String29");
+            }
         }
     }
 }

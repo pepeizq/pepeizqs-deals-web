@@ -710,5 +710,13 @@
   {
     "Id": "Settings.String27",
     "Valor": "The confirmation password does not match new password"
+  },
+  {
+    "Id": "Settings.String28",
+    "Valor": "The password change was successful"
+  },
+  {
+    "Id": "Settings.String29",
+    "Valor": "An error occurred while changing the password. Contact admin@pepeizqdeals.com"
   }
 ]

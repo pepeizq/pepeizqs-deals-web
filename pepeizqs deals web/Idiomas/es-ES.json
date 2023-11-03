@@ -710,5 +710,13 @@
   {
     "Id": "Settings.String27",
     "Valor": "La contraseña de confirmación no coincide con la nueva contraseña"
+  },
+  {
+    "Id": "Settings.String28",
+    "Valor": "El cambio de contraseña se ha realizado con éxito"
+  },
+  {
+    "Id": "Settings.String29",
+    "Valor": "Se ha producido un error en el cambio de contraseña. Contacta con admin@pepeizqdeals.com"
   }
 ]
