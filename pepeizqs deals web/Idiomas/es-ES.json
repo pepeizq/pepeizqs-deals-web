@@ -718,5 +718,29 @@
   {
     "Id": "Settings.String29",
     "Valor": "Se ha producido un error en el cambio de contraseña. Contacta con admin@pepeizqdeals.com"
+  },
+  {
+    "Id": "Settings.String30",
+    "Valor": "La contraseña debe tener al menos una letra mayúscula"
+  },
+  {
+    "Id": "Settings.String31",
+    "Valor": "La contraseña debe tener al menos un carácter que no sea ni letra ni número"
+  },
+  {
+    "Id": "Settings.String32",
+    "Valor": "La contraseña actual no es la correcta"
+  },
+  {
+    "Id": "Settings.String33",
+    "Valor": "¿Olvidaste tu contraseña?"
+  },
+  {
+    "Id": "Settings.String34",
+    "Valor": "Introduce tu correo:"
+  },
+  {
+    "Id": "Settings.String35",
+    "Valor": "Resetear Contraseña"
   }
 ]

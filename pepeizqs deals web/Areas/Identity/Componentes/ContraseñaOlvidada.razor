@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.WebUtilities;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+@using System.ComponentModel.DataAnnotations
+@using System.Text;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="perfil">
+    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String33")</div>
+
+    <hr>
+
+    <div class="row">
+        <div style="display: flex; flex-direction: column;">
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String34")</label>
+            <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+
+            <div class="perfil-flexible-izquierda" style="margin-top: 20px;">
+                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String35")</button>
+            </div>
+
+            @if (string.IsNullOrEmpty(@mensajeExito) == false)
+            {
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeExito
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private string correo = string.Empty;
+
+    private string mensajeExito = string.Empty;
+
+    private void CambiarCorreo(ChangeEventArgs texto)
+    {
+        correo = texto.Value.ToString();
+    }
+
+    private async void EnviarCorreo()
+    {
+        mensajeExito = null;
+
+        EmailAddressAttribute comprobador = new EmailAddressAttribute();
+
+        if (comprobador.IsValid(correo))
+        {
+            Usuario usuario = await UserManager.FindByEmailAsync(correo);
+
+            if (usuario != null)
+            {
+                if (usuario.EmailConfirmed == true)
+                {
+                    string codigo = await UserManager.GeneratePasswordResetTokenAsync(usuario);
+                    codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
+
+                    string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?code=" + codigo;
+
+                    Herramientas.Correos.EnviarContraseñaOlvidada(enlaceFinal, correo);
+                    mensajeExito = "test";
+                }
+            }
+        }
+    }
+}

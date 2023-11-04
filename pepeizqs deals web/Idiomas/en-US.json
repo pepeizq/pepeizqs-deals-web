@@ -673,7 +673,7 @@
   },
   {
     "Id": "Settings.String18",
-    "Valor": "Actual password"
+    "Valor": "Current password"
   },
   {
     "Id": "Settings.String19",
@@ -685,7 +685,7 @@
   },
   {
     "Id": "Settings.String21",
-    "Valor": "Enter your actual password"
+    "Valor": "Enter your current password"
   },
   {
     "Id": "Settings.String22",
@@ -718,5 +718,29 @@
   {
     "Id": "Settings.String29",
     "Valor": "An error occurred while changing the password. Contact admin@pepeizqdeals.com"
+  },
+  {
+    "Id": "Settings.String30",
+    "Valor": "The password must have at least one uppercase letter"
+  },
+  {
+    "Id": "Settings.String31",
+    "Valor": "The password must have at least one non alphanumeric character"
+  },
+  {
+    "Id": "Settings.String32",
+    "Valor": "The current password is not correct"
+  },
+  {
+    "Id": "Settings.String33",
+    "Valor": "Forgot your password?"
+  },
+  {
+    "Id": "Settings.String34",
+    "Valor": "Enter your email:"
+  },
+  {
+    "Id": "Settings.String35",
+    "Valor": "Reset Password"
   }
 ]

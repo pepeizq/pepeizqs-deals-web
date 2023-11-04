@@ -102,13 +102,48 @@
         }
         else if (contraseñaNueva1.Length > 5)
         {
-            if (contraseñaNueva1.Any(char.IsDigit) == false)
+            if (mensajeAviso1 == null)
             {
-                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
+                if (contraseñaNueva1.Any(char.IsDigit) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
             }
-            else
+
+            if (mensajeAviso1 == null)
             {
-                mensajeAviso1 = null;
+                if (contraseñaNueva1.Any(char.IsUpper) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
+            }
+
+            if (mensajeAviso1 == null)
+            {
+                if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
+            }
+        }
+
+        if (contraseñaNueva2.Length > 0)
+        {
+            if (contraseñaNueva1 == contraseñaNueva2)
+            {
+                mensajeAviso2 = null;
             }
         }
     }
@@ -139,19 +174,28 @@
         mensajeExito = null;
         mensajeError = null;
 
-        if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && mensajeAviso1 == null && mensajeAviso2 == null)
+        if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && string.IsNullOrEmpty(mensajeAviso1) == true && string.IsNullOrEmpty(mensajeAviso2) == true)
         {
-            IdentityResult resultado = await UserManager.ChangePasswordAsync(usuario, contraseñaActual, contraseñaNueva1);
+            bool resultado1 = await UserManager.CheckPasswordAsync(usuario, contraseñaActual);
 
-            if (resultado.Succeeded == true)
+            if (resultado1 == false)
             {
-                mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String28");
-                Herramientas.Correos.EnviarCambioContraseña(usuario.Email);
+                mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String32");
             }
             else
             {
-                mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String29");
-            }
+                IdentityResult resultado2 = await UserManager.ChangePasswordAsync(usuario, contraseñaActual, contraseñaNueva1);
+
+                if (resultado2.Succeeded == true)
+                {
+                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String28");
+                    Herramientas.Correos.EnviarCambioContraseña(usuario.Email);
+                }
+                else
+                {
+                    mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String29");
+                }
+            }           
         }
     }
 }

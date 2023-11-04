@@ -7,6 +7,21 @@ namespace Herramientas
 {
 	public static class Correos
 	{
+        public static void EnviarContraseñaOlvidada(string codigo, string correoHacia)
+        {
+            string html = string.Empty;
+
+            using (StreamReader r = new StreamReader("Plantillas/ContraseñaOlvidada.html"))
+            {
+                html = r.ReadToEnd();
+            }
+
+            html = html.Replace("{{codigo}}", codigo);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+
+            EnviarCorreo(html, "Reset the password", "admin@pepeizqdeals.com", correoHacia);
+        }
+
         public static void EnviarCambioContraseña(string correoHacia)
         {
             string html = string.Empty;
