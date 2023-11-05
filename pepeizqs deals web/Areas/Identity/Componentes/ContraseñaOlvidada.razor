@@ -9,17 +9,17 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <div class="perfil">
-    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String33")</div>
+    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String1")</div>
 
     <hr>
 
     <div class="row">
         <div style="display: flex; flex-direction: column;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String34")</label>
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String2")</label>
             <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
 
             <div class="perfil-flexible-izquierda" style="margin-top: 20px;">
-                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String35")</button>
+                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String3")</button>
             </div>
 
             @if (string.IsNullOrEmpty(@mensajeExito) == false)
@@ -69,7 +69,7 @@
                     string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?code=" + codigo;
 
                     Herramientas.Correos.EnviarContraseñaOlvidada(enlaceFinal, correo);
-                    mensajeExito = "test";
+                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String4");
                 }
             }
         }

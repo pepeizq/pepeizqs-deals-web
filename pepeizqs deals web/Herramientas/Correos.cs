@@ -137,23 +137,25 @@ namespace Herramientas
 
 			if (texto2.Contains(texto1) == true)
 			{
-				try
+                cliente.Port = 587;
+                cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+                cliente.EnableSsl = true;
+                cliente.Send(mensaje);
+                try
 				{
-					cliente.Port = 587;
-					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
-					cliente.EnableSsl = true;
-					cliente.Send(mensaje);
+					
 				}
 				catch { }
 			}
 			else
 			{
-				try
+                cliente.Port = 25;
+                cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+                cliente.EnableSsl = false;
+                cliente.Send(mensaje);
+                try
 				{
-					cliente.Port = 25;
-					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
-					cliente.EnableSsl = false;
-					cliente.Send(mensaje);
+					
 				}
 				catch { }
 			}

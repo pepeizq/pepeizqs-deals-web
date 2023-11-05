@@ -732,15 +732,23 @@
     "Valor": "The current password is not correct"
   },
   {
-    "Id": "Settings.String33",
+    "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },
   {
-    "Id": "Settings.String34",
+    "Id": "ForgotPassword.String2",
     "Valor": "Enter your email:"
   },
   {
-    "Id": "Settings.String35",
+    "Id": "ForgotPassword.String3",
+    "Valor": "Reset Password"
+  },
+  {
+    "Id": "ForgotPassword.String4",
+    "Valor": "Email sent successfully to reset password"
+  },
+  {
+    "Id": "ResetPassword.String1",
     "Valor": "Reset Password"
   }
 ]

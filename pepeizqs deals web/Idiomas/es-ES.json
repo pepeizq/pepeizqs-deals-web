@@ -732,15 +732,23 @@
     "Valor": "La contraseña actual no es la correcta"
   },
   {
-    "Id": "Settings.String33",
+    "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },
   {
-    "Id": "Settings.String34",
+    "Id": "ForgotPassword.String2",
     "Valor": "Introduce tu correo:"
   },
   {
-    "Id": "Settings.String35",
+    "Id": "ForgotPassword.String3",
+    "Valor": "Resetear Contraseña"
+  },
+  {
+    "Id": "ForgotPassword.String4",
+    "Valor": "Correo enviado con éxito para resetear la contraseña"
+  },
+  {
+    "Id": "ResetPassword.String1",
     "Valor": "Resetear Contraseña"
   }
 ]

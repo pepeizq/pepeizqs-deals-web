@@ -4,16 +4,20 @@
     ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String14");
 }
 
-<div class="texto-info">@ViewData["Title"]</div>
+<div class="perfil">
+    <div class="texto-info">@ViewData["Title"]</div>
 
-<div class="perfil" style="margin-top: 20px;">
-    @if (Model.completado == true)
-    {
-        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String15")
-    }
-    else
-    {
-        @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String16")
-    }
+    <hr>
+
+    <div class="row">
+        @if (Model.completado == true)
+        {
+            @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String15")
+        }
+        else
+        {
+            @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String16")
+        }
+     </div>    
 </div>
 

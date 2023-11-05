@@ -1,0 +1,141 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="perfil">
+    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String1")</div>
+
+    <hr>
+
+    <div class="row">
+        <div style="display: flex; flex-direction: column;">
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String2")</label>
+            <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+
+            <div class="perfil-flexible-izquierda" style="margin-top: 20px;">
+                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String3")</button>
+            </div>
+
+            @if (string.IsNullOrEmpty(@mensajeExito) == false)
+            {
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                    @mensajeExito
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private string codigo = string.Empty;
+    private string correo = string.Empty;
+    private string contraseñaNueva1 = string.Empty;
+    private string contraseñaNueva2 = string.Empty;
+
+    private string mensajeAviso1 = string.Empty;
+    private string mensajeAviso2 = string.Empty;
+
+    private string mensajeExito = string.Empty;
+    private string mensajeError = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+    }
+
+    private void CambiarCorreo(ChangeEventArgs texto)
+    {
+        correo = texto.Value.ToString();
+    }
+
+    private void CambiarNuevaContraseña1(ChangeEventArgs texto)
+    {
+        contraseñaNueva1 = texto.Value.ToString();
+
+        if (contraseñaNueva1.Length == 0)
+        {
+            mensajeAviso1 = null;
+        }
+        else if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
+        {
+            mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String25");
+        }
+        else if (contraseñaNueva1.Length > 5)
+        {
+            if (mensajeAviso1 == null)
+            {
+                if (contraseñaNueva1.Any(char.IsDigit) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
+            }
+
+            if (mensajeAviso1 == null)
+            {
+                if (contraseñaNueva1.Any(char.IsUpper) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
+            }
+
+            if (mensajeAviso1 == null)
+            {
+                if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
+                {
+                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
+                }
+                else
+                {
+                    mensajeAviso1 = null;
+                }
+            }
+        }
+
+        if (contraseñaNueva2.Length > 0)
+        {
+            if (contraseñaNueva1 == contraseñaNueva2)
+            {
+                mensajeAviso2 = null;
+            }
+        }
+    }
+
+    private void CambiarNuevaContraseña2(ChangeEventArgs texto)
+    {
+        contraseñaNueva2 = texto.Value.ToString();
+
+        if (contraseñaNueva1.Length > 5)
+        {
+            if (contraseñaNueva1 == contraseñaNueva2)
+            {
+                mensajeAviso2 = null;
+            }
+            else
+            {
+                mensajeAviso2 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String27");
+            }
+        }
+        else
+        {
+            mensajeAviso2 = null;
+        }
+    }
+}

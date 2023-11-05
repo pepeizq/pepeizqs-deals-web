@@ -23,7 +23,9 @@
             <div style="margin-bottom: 25px;">
                 <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String3")</label>
                 <input value="@correoDefecto" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String4")" disabled />
-                <button @onclick="ClickearConfirmacionCorreo" class="btn btn-link">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String5")</button>
+                <button @onclick="ClickearConfirmacionCorreo" class="btn btn-link" style="outline: none; border: 0;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String5")
+                </button>
 
                 @if (correoConfirmadoEnviado == true)
                 {
