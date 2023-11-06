@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
@@ -11,7 +12,7 @@
 
     <div class="row">
         <div style="display: flex; flex-direction: column;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String2")</label>
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String2")</label>
             <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
 
             <div class="perfil-flexible-izquierda" style="margin-top: 20px;">
