@@ -737,7 +737,7 @@
   },
   {
     "Id": "ForgotPassword.String2",
-    "Valor": "Enter your email:"
+    "Valor": "Enter your email"
   },
   {
     "Id": "ForgotPassword.String3",
@@ -745,10 +745,30 @@
   },
   {
     "Id": "ForgotPassword.String4",
-    "Valor": "Email sent successfully to reset password"
+    "Valor": "Email sent to reset password"
   },
   {
     "Id": "ResetPassword.String1",
     "Valor": "Reset Password"
+  },
+  {
+    "Id": "ResetPassword.String2",
+    "Valor": "Enter your email"
+  },
+  {
+    "Id": "ResetPassword.String3",
+    "Valor": "Enter your new password"
+  },
+  {
+    "Id": "ResetPassword.String4",
+    "Valor": "Confirm your new password"
+  },
+  {
+    "Id": "ResetPassword.String5",
+    "Valor": "Reset Password"
+  },
+  {
+    "Id": "ResetPassword.String6",
+    "Valor": "The password has been reset successfully"
   }
 ]

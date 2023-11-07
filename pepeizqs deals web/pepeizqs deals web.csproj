@@ -14,6 +14,7 @@
   <ItemGroup>
     <None Remove="Plantillas\CambioContraseña.html" />
     <None Remove="Plantillas\ContraseñaOlvidada.html" />
+    <None Remove="Plantillas\ContraseñaReseteada.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,6 +103,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\ContraseñaOlvidada.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plantillas\ContraseñaReseteada.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\NuevoMinimo.html">

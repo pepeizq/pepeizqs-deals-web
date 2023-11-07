@@ -737,7 +737,7 @@
   },
   {
     "Id": "ForgotPassword.String2",
-    "Valor": "Introduce tu correo:"
+    "Valor": "Introduce tu correo"
   },
   {
     "Id": "ForgotPassword.String3",
@@ -745,10 +745,30 @@
   },
   {
     "Id": "ForgotPassword.String4",
-    "Valor": "Correo enviado con éxito para resetear la contraseña"
+    "Valor": "Correo enviado para resetear la contraseña"
   },
   {
     "Id": "ResetPassword.String1",
     "Valor": "Resetear Contraseña"
+  },
+  {
+    "Id": "ResetPassword.String2",
+    "Valor": "Introduce tu correo"
+  },
+  {
+    "Id": "ResetPassword.String3",
+    "Valor": "Introduce tu nueva contraseña"
+  },
+  {
+    "Id": "ResetPassword.String4",
+    "Valor": "Confirma tu nueva contraseña"
+  },
+  {
+    "Id": "ResetPassword.String5",
+    "Valor": "Resetear Contraseña"
+  },
+  {
+    "Id": "ResetPassword.String6",
+    "Valor": "La contraseña se ha reseteado con éxito"
   }
 ]

@@ -1,33 +1,64 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.WebUtilities;
 @using pepeizqs_deals_web.Areas.Identity.Data;
+@using System.Text;
 
 @inject UserManager<Usuario> UserManager
-@inject IHttpContextAccessor HttpContextAccessor
 
-<div class="perfil">
-    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String1")</div>
+@if (codigo != null)
+{
+    <div class="perfil">
+        <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String1")</div>
 
-    <hr>
+        <hr>
 
-    <div class="row">
-        <div style="display: flex; flex-direction: column;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String2")</label>
-            <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+        <div class="row">
+            <div style="display: flex; flex-direction: column;">
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String2")</label>
+                <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
 
-            <div class="perfil-flexible-izquierda" style="margin-top: 20px;">
-                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String3")</button>
-            </div>
+                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String3")</label>
+                <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
 
-            @if (string.IsNullOrEmpty(@mensajeExito) == false)
-            {
-                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
-                    @mensajeExito
+                @if (string.IsNullOrEmpty(mensajeAviso1) == false)
+                {
+                    <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                        @mensajeAviso1
+                    </div>
+                }
+
+                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String4")</label>
+                <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+
+                @if (string.IsNullOrEmpty(mensajeAviso2) == false)
+                {
+                    <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                        @mensajeAviso2
+                    </div>
+                }
+
+                <div class="perfil-flexible-izquierda" style="margin-top: 30px;">
+                    <button @onclick="ResetearContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String5")</button>
                 </div>
-            }
+
+                @if (string.IsNullOrEmpty(mensajeExito) == false)
+                {
+                    <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                        @mensajeExito
+                    </div>
+                }
+
+                @if (string.IsNullOrEmpty(mensajeError) == false)
+                {
+                    <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                        @mensajeError
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
 
 @code {
 
@@ -36,9 +67,9 @@
     [Parameter]
     public string idioma { get; set; }
 
-    private Usuario usuario = new Usuario();
+    [Parameter]
+    public string codigo { get; set; }
 
-    private string codigo = string.Empty;
     private string correo = string.Empty;
     private string contraseñaNueva1 = string.Empty;
     private string contraseñaNueva2 = string.Empty;
@@ -49,11 +80,6 @@
     private string mensajeExito = string.Empty;
     private string mensajeError = string.Empty;
 
-    protected override void OnInitialized()
-    {
-        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
-    }
-
     private void CambiarCorreo(ChangeEventArgs texto)
     {
         correo = texto.Value.ToString();
@@ -63,51 +89,32 @@
     {
         contraseñaNueva1 = texto.Value.ToString();
 
-        if (contraseñaNueva1.Length == 0)
-        {
-            mensajeAviso1 = null;
-        }
-        else if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
+        if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
         {
             mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String25");
         }
         else if (contraseñaNueva1.Length > 5)
         {
-            if (mensajeAviso1 == null)
+            if (contraseñaNueva1.Any(char.IsDigit) == false)
             {
-                if (contraseñaNueva1.Any(char.IsDigit) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
             }
-
-            if (mensajeAviso1 == null)
+            else if (contraseñaNueva1.Any(char.IsUpper) == false)
             {
-                if (contraseñaNueva1.Any(char.IsUpper) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
             }
-
-            if (mensajeAviso1 == null)
+            else if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
             {
-                if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
             }
+            else
+            {
+                mensajeAviso1 = null;
+            }
+        }
+        else
+        {
+            mensajeAviso1 = null;
         }
 
         if (contraseñaNueva2.Length > 0)
@@ -138,5 +145,31 @@
         {
             mensajeAviso2 = null;
         }
+    }
+
+    private async void ResetearContraseña()
+    {
+        if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && string.IsNullOrEmpty(mensajeAviso1) == true && string.IsNullOrEmpty(mensajeAviso2) == true)
+        {
+            Usuario usuario = await UserManager.FindByEmailAsync(correo);
+
+            if (usuario != null)
+            {
+                IdentityResult resultado = await UserManager.ResetPasswordAsync(usuario, codigo, contraseñaNueva1);
+
+                if (resultado.Succeeded == true)
+                {
+                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String6");
+                    Herramientas.Correos.EnviarContraseñaReseteada(usuario.Email);
+                }
+                else
+                {
+                    foreach (var error in resultado.Errors)
+                    {
+                        mensajeError = error.Description;
+                    }                  
+                }
+            }
+        }  
     }
 }

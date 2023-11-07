@@ -7,6 +7,20 @@ namespace Herramientas
 {
 	public static class Correos
 	{
+        public static void EnviarContraseñaReseteada(string correoHacia)
+        {
+            string html = string.Empty;
+
+            using (StreamReader r = new StreamReader("Plantillas/ContraseñaReseteada.html"))
+            {
+                html = r.ReadToEnd();
+            }
+
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+
+            EnviarCorreo(html, "Your account password has been reset", "admin@pepeizqdeals.com", correoHacia);
+        }
+
         public static void EnviarContraseñaOlvidada(string codigo, string correoHacia)
         {
             string html = string.Empty;
@@ -140,12 +154,7 @@ namespace Herramientas
                 cliente.Port = 587;
                 cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
                 cliente.EnableSsl = true;
-                cliente.Send(mensaje);
-                try
-				{
-					
-				}
-				catch { }
+                cliente.Send(mensaje);  
 			}
 			else
 			{
@@ -153,11 +162,6 @@ namespace Herramientas
                 cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
                 cliente.EnableSsl = false;
                 cliente.Send(mensaje);
-                try
-				{
-					
-				}
-				catch { }
 			}
 		}
 	}

@@ -92,51 +92,32 @@
     {
         contraseñaNueva1 = texto.Value.ToString();
 
-        if (contraseñaNueva1.Length == 0)
-        {
-            mensajeAviso1 = null;
-        }
-        else if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
+        if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
         {
             mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String25");
         }
         else if (contraseñaNueva1.Length > 5)
         {
-            if (mensajeAviso1 == null)
+            if (contraseñaNueva1.Any(char.IsDigit) == false)
             {
-                if (contraseñaNueva1.Any(char.IsDigit) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String26");
             }
-
-            if (mensajeAviso1 == null)
+            else if (contraseñaNueva1.Any(char.IsUpper) == false)
             {
-                if (contraseñaNueva1.Any(char.IsUpper) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String30");
             }
-
-            if (mensajeAviso1 == null)
+            else if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
             {
-                if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
-                {
-                    mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
-                }
-                else
-                {
-                    mensajeAviso1 = null;
-                }
+                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String31");
             }
+            else
+            {
+                mensajeAviso1 = null;
+            }
+        }
+        else
+        {
+            mensajeAviso1 = null;
         }
 
         if (contraseñaNueva2.Length > 0)
@@ -194,6 +175,11 @@
                 else
                 {
                     mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "Settings.String29");
+
+                    foreach (var error in resultado2.Errors)
+                    {
+                        mensajeError = error.Description;
+                    }
                 }
             }           
         }

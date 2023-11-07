@@ -66,7 +66,7 @@
                     string codigo = await UserManager.GeneratePasswordResetTokenAsync(usuario);
                     codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
 
-                    string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?code=" + codigo;
+                    string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ResetPassword?code=" + codigo;
 
                     Herramientas.Correos.EnviarContraseñaOlvidada(enlaceFinal, correo);
                     mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "ForgotPassword.String4");
