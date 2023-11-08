@@ -10,10 +10,6 @@
 
 <ul class="nav nav-pills flex-column" style="margin-top: 0px;">
     <li class="nav-item">
-        <a class="perfil-lateral @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Steam")</a>
-    </li>
-
-    <li class="nav-item">
         <a class="perfil-lateral @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Email")</a>
     </li>
 
@@ -32,5 +28,13 @@
 
     <li class="nav-item">
         <a class="perfil-lateral @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.PersonalData")</a>
+    </li>
+</ul>
+
+<hr />
+
+<ul class="nav nav-pills flex-column" style="margin-top: 0px;">
+    <li class="nav-item">
+        <a class="perfil-lateral @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Steam")</a>
     </li>
 </ul>

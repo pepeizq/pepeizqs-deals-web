@@ -165,7 +165,7 @@
             }
             else
             {
-                IdentityResult resultado2 = await UserManager.ChangePasswordAsync(usuario, contraseñaActual, contraseñaNueva1);
+                IdentityResult resultado2 = UserManager.ChangePasswordAsync(usuario, contraseñaActual, contraseñaNueva1).Result;
 
                 if (resultado2.Succeeded == true)
                 {

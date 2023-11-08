@@ -1,17 +1,16 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-using System;
-using System.Threading.Tasks;
+﻿#nullable disable
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
+        public string idioma = string.Empty;
+
         private readonly UserManager<Usuario> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
@@ -23,6 +22,12 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
+            try
+            {
+                idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+            }
+            catch { }
+
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)

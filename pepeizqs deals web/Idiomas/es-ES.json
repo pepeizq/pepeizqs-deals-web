@@ -732,6 +732,46 @@
     "Valor": "La contraseña actual no es la correcta"
   },
   {
+    "Id": "Settings.String33",
+    "Valor": "Datos Personales"
+  },
+  {
+    "Id": "Settings.String34",
+    "Valor": "Tu cuenta contiene información personal que me has facilitado. Esta sección te permite descargar o borrar esos datos."
+  },
+  {
+    "Id": "Settings.String35",
+    "Valor": "Borrar los datos implica borrar tu cuenta de forma permanente, y el administrador no podrá recuperar tu cuenta."
+  },
+  {
+    "Id": "Settings.String36",
+    "Valor": "Descargar"
+  },
+  {
+    "Id": "Settings.String37",
+    "Valor": "Borrar"
+  },
+  {
+    "Id": "Settings.String38",
+    "Valor": "Borrar Datos Personales"
+  },
+  {
+    "Id": "Settings.String39",
+    "Valor": "Borrar los datos implica borrar tu cuenta de forma permanente, y el administrador no podrá recuperar tu cuenta."
+  },
+  {
+    "Id": "Settings.String40",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "Settings.String41",
+    "Valor": "Introduce tu contraseña"
+  },
+  {
+    "Id": "Settings.String42",
+    "Valor": "Borrar datos y cerrar mi cuenta"
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },

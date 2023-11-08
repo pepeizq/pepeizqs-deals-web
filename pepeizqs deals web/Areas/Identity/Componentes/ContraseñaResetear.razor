@@ -149,13 +149,16 @@
 
     private async void ResetearContraseña()
     {
+        mensajeExito = null;
+        mensajeError = null;
+
         if (contraseñaNueva1.Length > 5 && contraseñaNueva2.Length > 5 && string.IsNullOrEmpty(mensajeAviso1) == true && string.IsNullOrEmpty(mensajeAviso2) == true)
         {
             Usuario usuario = await UserManager.FindByEmailAsync(correo);
 
             if (usuario != null)
             {
-                IdentityResult resultado = await UserManager.ResetPasswordAsync(usuario, codigo, contraseñaNueva1);
+                IdentityResult resultado = UserManager.ResetPasswordAsync(usuario, codigo, contraseñaNueva1).Result;
 
                 if (resultado.Succeeded == true)
                 {

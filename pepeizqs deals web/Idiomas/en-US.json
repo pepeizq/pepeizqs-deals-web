@@ -732,6 +732,46 @@
     "Valor": "The current password is not correct"
   },
   {
+    "Id": "Settings.String33",
+    "Valor": "Personal Data"
+  },
+  {
+    "Id": "Settings.String34",
+    "Valor": "Your account contains personal data that you have given me. This section allows you to download or delete that data."
+  },
+  {
+    "Id": "Settings.String35",
+    "Valor": "Deleting this data will permanently remove your account, and this cannot be recovered."
+  },
+  {
+    "Id": "Settings.String36",
+    "Valor": "Download"
+  },
+  {
+    "Id": "Settings.String37",
+    "Valor": "Delete"
+  },
+  {
+    "Id": "Settings.String38",
+    "Valor": "Delete Personal Data"
+  },
+  {
+    "Id": "Settings.String39",
+    "Valor": "Deleting this data will permanently remove your account, and this cannot be recovered."
+  },
+  {
+    "Id": "Settings.String40",
+    "Valor": "Password"
+  },
+  {
+    "Id": "Settings.String41",
+    "Valor": "Enter your password"
+  },
+  {
+    "Id": "Settings.String42",
+    "Valor": "Delete data and close my account"
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },

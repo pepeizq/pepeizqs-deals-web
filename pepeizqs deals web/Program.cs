@@ -162,7 +162,7 @@ app.Use(async (contexto, siguiente) =>
     if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
     {
         string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
-        string contenido = "User-agent: *\r\nAllow: /\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
+        string contenido = "User-agent: *\r\nDisallow: /\r\n\r\nUser-agent: Bingbot\r\nDisallow:\r\n\r\nUser-agent: Googlebot\r\nDisallow:\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
 
         if (File.Exists(robotsFichero))
         {
