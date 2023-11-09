@@ -12,11 +12,11 @@
     <div class="row">
         @if (Model.resultado.Succeeded == true)
         {
-            @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String12")
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String12")</label>
         }
         else
         {
-            @Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String13")
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String13")</label>
         }
     </div>
 </div>

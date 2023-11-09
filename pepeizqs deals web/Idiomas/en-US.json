@@ -772,6 +772,26 @@
     "Valor": "Delete data and close my account"
   },
   {
+    "Id": "Settings.String43",
+    "Valor": "Steam Account"
+  },
+  {
+    "Id": "Settings.String44",
+    "Valor": "You must have your email account confirmed to be able to use this section."
+  },
+  {
+    "Id": "Settings.String45",
+    "Valor": "https://steamcommunity.com/id/yourname/"
+  },
+  {
+    "Id": "Settings.String46",
+    "Valor": "This website will only need your Steam account information if you want to save time creating your wishlist or if you want to access the game giveaways."
+  },
+  {
+    "Id": "Settings.String47",
+    "Valor": "In order for it to work correctly, your Steam account permissions must be like this."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },

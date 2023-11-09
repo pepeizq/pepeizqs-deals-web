@@ -1,0 +1,15 @@
+﻿@page
+@model SteamAccountModel
+@{
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String43");
+    ViewData["ActivePage"] = ManageNavPages.SteamAccount;
+    Layout = "~/Areas/Identity/Pages/Account/Manage/_PerfilLayout.cshtml";
+}
+
+<div class="texto-info">@ViewData["Title"]</div>
+
+@(await Html.RenderComponentAsync<pepeizqs_deals_web.Areas.Identity.Componentes.CuentaSteam>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
