@@ -1,0 +1,15 @@
+﻿@page
+@model pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage.NotificationsModel
+@{
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Settings.String53");
+    ViewData["ActivePage"] = ManageNavPages.Notifications;
+    Layout = "~/Areas/Identity/Pages/Account/Manage/_PerfilLayout.cshtml";
+}
+
+<div class="texto-info">@ViewData["Title"]</div>
+
+@(await Html.RenderComponentAsync<pepeizqs_deals_web.Areas.Identity.Componentes.NotificacionesCorreo>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

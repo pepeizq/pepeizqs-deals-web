@@ -48,5 +48,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? Keys { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationLows { get; set; }
 }
 

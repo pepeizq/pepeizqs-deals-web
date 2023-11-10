@@ -40,6 +40,10 @@
     "Valor": "Registrar Cuenta"
   },
   {
+    "Id": "Layout.Notifications",
+    "Valor": "Notificaciones"
+  },
+  {
     "Id": "Layout.Steam",
     "Valor": "Cuenta de Steam"
   },
@@ -790,6 +794,30 @@
   {
     "Id": "Settings.String47",
     "Valor": "Para que funcione correctamente, los permisos de tu cuenta de Steam deben ser así."
+  },
+  {
+    "Id": "Settings.String48",
+    "Valor": "Nombre:"
+  },
+  {
+    "Id": "Settings.String49",
+    "Valor": "Juegos en la cuenta:"
+  },
+  {
+    "Id": "Settings.String50",
+    "Valor": "Juegos en la lista de deseados:"
+  },
+  {
+    "Id": "Settings.String51",
+    "Valor": "Estás dentro del grupo de Steam para los sorteos."
+  },
+  {
+    "Id": "Settings.String52",
+    "Valor": "No estás dentro del grupo de Steam para los sorteos."
+  },
+  {
+    "Id": "Settings.String53",
+    "Valor": "Notificaciones por Correo"
   },
   {
     "Id": "ForgotPassword.String1",

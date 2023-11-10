@@ -12,11 +12,11 @@
 		<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
 
 		<div style="display: flex; margin-top: 15px; margin-left: 10px;">
-			<div style="width: 5%; padding: 10px;">
+			<div style="width: 6%; padding: 10px;">
 				<i class="fa-solid fa-circle-info" style="font-size: 30px;"></i>
 			</div>
 
-			<div style="width: 95%;">
+			<div style="width: 94%;">
 				<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String46")</label>
 
 				<button @onclick="ClickearEnseñarImagen" class="btn btn-link" style="outline: none; border: 0; padding-left: 10px; color: var(--colorTextoOscuro);">
@@ -47,21 +47,21 @@
 				@if (usuario.Nickname != null)
 				{
 					<div>
-						<label class="texto-info-entrada">Nickname: @usuario.Nickname</label>
+						<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String48") @usuario.Nickname</label>
 					</div>
 				}
 
 				@if (usuario.SteamGames != null)
 				{
 					<div>
-						<label class="texto-info-entrada">Games on the account: @MensajeCantidad(usuario.SteamGames)</label>
+						<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String49") @MensajeCantidad(usuario.SteamGames)</label>
 					</div>
 				}
 
 				@if (usuario.SteamWishlist != null)
 				{
 					<div>
-						<label class="texto-info-entrada">Games on the wishlist: @MensajeCantidad(usuario.SteamWishlist)</label>
+						<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String50") @MensajeCantidad(usuario.SteamWishlist)</label>
 					</div>
 				}
 
@@ -70,13 +70,13 @@
 					@if (usuario.OfficialGroup == "True")
 					{
 						<div>
-							<i class="fa-solid fa-check texto-info-entrada"></i> <label class="texto-info-entrada">You are in the Steam Group for the giveaways.</label>
+							<i class="fa-solid fa-check texto-info-entrada"></i> <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String51")</label>
 						</div>
 					}
 					else
 					{
 						<div>
-							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label class="texto-info-entrada">You are not in the Steam Group for the giveaways.</label>
+							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
 						</div>
 					}
 				}

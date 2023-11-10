@@ -666,3 +666,66 @@ select {
         margin-top: 50px;
     }
 }
+
+.checkbox-caja .checkbox-interior {
+    appearance: none;
+    background-color: var(--colorTextoOscuro);
+    border-radius: 72px;
+    border-style: none;
+    flex-shrink: 0;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    width: 30px;
+}
+
+.checkbox-caja .checkbox-interior::before {
+    bottom: -6px;
+    content: "";
+    left: -6px;
+    position: absolute;
+    right: -6px;
+    top: -6px;
+}
+
+.checkbox-caja .checkbox-interior,
+.checkbox-caja .checkbox-interior::after {
+    transition: all 100ms ease-out;
+}
+
+.checkbox-caja .checkbox-interior::after {
+    background-color: var(--colorTexto);
+    border-radius: 50%;
+    content: "";
+    height: 14px;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    width: 14px;
+}
+
+.checkbox-caja input[type=checkbox] {
+    cursor: default;
+}
+
+.checkbox-caja .checkbox-interior:hover {
+    background-color: var(--colorTextoHover);
+    transition-duration: 0s;
+}
+
+.checkbox-caja .checkbox-interior:checked {
+    background-color: var(--fondoBoton);
+}
+
+.checkbox-caja .checkbox-interior:checked::after {
+    background-color: var(--colorTexto);
+    left: 13px;
+}
+
+.checkbox-caja :focus:not(.focus-visible) {
+    outline: 0;
+}
+
+.checkbox-caja .checkbox-interior:checked:hover {
+    background-color: var(--fondoBotonHover);
+}

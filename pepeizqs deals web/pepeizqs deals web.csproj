@@ -119,6 +119,11 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\Identity\Componentes\Contraseña.razor" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
   </ItemGroup>
 
 </Project>

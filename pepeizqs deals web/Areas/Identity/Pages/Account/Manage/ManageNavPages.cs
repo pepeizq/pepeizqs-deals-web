@@ -6,6 +6,8 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {
+        public static string Notifications => "Notifications";
+
         public static string SteamAccount => "SteamAccount";
 
         public static string Index => "Index";
@@ -24,7 +26,9 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string SteamAccountNavClass(ViewContext viewContext) => PageNavClass(viewContext, SteamAccount);
+		public static string NotificationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Notifications);
+
+		public static string SteamAccountNavClass(ViewContext viewContext) => PageNavClass(viewContext, SteamAccount);
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -45,7 +49,7 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
         public static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
-                ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
+                ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
             return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
         }
     }

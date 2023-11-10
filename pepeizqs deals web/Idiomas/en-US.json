@@ -40,6 +40,10 @@
     "Valor": "Register"
   },
   {
+    "Id": "Layout.Notifications",
+    "Valor": "Notifications"
+  },
+  {
     "Id": "Layout.Steam",
     "Valor": "Steam Account"
   },
@@ -790,6 +794,30 @@
   {
     "Id": "Settings.String47",
     "Valor": "In order for it to work correctly, your Steam account permissions must be like this."
+  },
+  {
+    "Id": "Settings.String48",
+    "Valor": "Name:"
+  },
+  {
+    "Id": "Settings.String49",
+    "Valor": "Games on the account:"
+  },
+  {
+    "Id": "Settings.String50",
+    "Valor": "Games on the wishlist:"
+  },
+  {
+    "Id": "Settings.String51",
+    "Valor": "You are in the Steam Group for the giveaways."
+  },
+  {
+    "Id": "Settings.String52",
+    "Valor": "You are not in the Steam Group for the giveaways."
+  },
+  {
+    "Id": "Settings.String53",
+    "Valor": "Email Notifications"
   },
   {
     "Id": "ForgotPassword.String1",

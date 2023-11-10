@@ -35,6 +35,10 @@
 
 <ul class="nav nav-pills flex-column" style="margin-top: 0px;">
     <li class="nav-item">
+        <a class="perfil-lateral @ManageNavPages.NotificationsNavClass(ViewContext)" id="notifications" asp-page="./Notifications">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Notifications")</a>
+    </li>
+
+    <li class="nav-item">
         <a class="perfil-lateral @ManageNavPages.SteamAccountNavClass(ViewContext)" id="steamaccount" asp-page="./SteamAccount">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Steam")</a>
     </li>
 </ul>
