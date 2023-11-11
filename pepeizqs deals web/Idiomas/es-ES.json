@@ -820,6 +820,10 @@
     "Valor": "Notificaciones por Correo"
   },
   {
+    "Id": "Settings.String54",
+    "Valor": "Lista de Deseados. Notificarme por correo cuando un juego alcance un precio mínimo sin importar que ya haya estado en un bundle, promoción gratuita o un servicio de suscripción."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },

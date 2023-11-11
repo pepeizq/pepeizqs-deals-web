@@ -59,46 +59,64 @@ namespace BaseDatos.Usuarios
 						{
 							while (lector.Read())
 							{
-                                if (lector.IsDBNull(10) == false)
+								bool notificaciones = false;
+								bool correo = false;
+
+								//Enseñar Notificaciones Minimos
+								if (lector.IsDBNull(25) == false)
+								{
+									if (lector.GetBoolean(25) == true)
+									{
+										notificaciones = true;
+									}
+								}
+
+								//Correo Confirmado
+								if (lector.IsDBNull(10) == false)
 								{
 									if (lector.GetBoolean(10) == true)
 									{
-                                        if (lector.IsDBNull(20) == false)
-                                        {
-                                            if (lector.GetString(20) != null)
-                                            {
-                                                string deseadosTexto = lector.GetString(20);
-                                                List<JuegoDeseado> deseados = null;
-
-                                                try
-                                                {
-                                                    deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosTexto);
-                                                }
-                                                catch { }
-
-                                                if (deseados != null)
-                                                {
-                                                    if (deseados.Count > 0)
-                                                    {
-                                                        foreach (var deseado in deseados)
-                                                        {
-                                                            if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
-                                                            {
-                                                                if (lector.IsDBNull(8) == false)
-                                                                {
-                                                                    if (lector.GetString(8) != null)
-                                                                    {
-                                                                        return lector.GetString(8);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+										correo = true;
                                     }
                                 }
+
+								if (correo == true && notificaciones == true)
+								{
+									if (lector.IsDBNull(20) == false)
+									{
+										if (lector.GetString(20) != null)
+										{
+											string deseadosTexto = lector.GetString(20);
+											List<JuegoDeseado> deseados = null;
+
+											try
+											{
+												deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosTexto);
+											}
+											catch { }
+
+											if (deseados != null)
+											{
+												if (deseados.Count > 0)
+												{
+													foreach (var deseado in deseados)
+													{
+														if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
+														{
+															if (lector.IsDBNull(8) == false)
+															{
+																if (lector.GetString(8) != null)
+																{
+																	return lector.GetString(8);
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}								
 							}
 						}
 					}

@@ -5,75 +5,19 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div class="checkbox-caja">
-    <input type="checkbox" class="checkbox-interior">
+<div class="row" style="margin-top: 10px;">
+	<div style="display: flex; align-items: center;">
+		<div style="width: 8%; text-align: center;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos">
+			</div>
+		</div>
+
+		<div style="width: 92%; padding: 10px;">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String54")
+		</div>
+	</div>
 </div>
-
-<style>
-    .checkbox-wrapper-2 .ikxBAC {
-        appearance: none;
-        background-color: #dfe1e4;
-        border-radius: 72px;
-        border-style: none;
-        flex-shrink: 0;
-        height: 20px;
-        margin: 0;
-        position: relative;
-        width: 30px;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC::before {
-        bottom: -6px;
-        content: "";
-        left: -6px;
-        position: absolute;
-        right: -6px;
-        top: -6px;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC,
-    .checkbox-wrapper-2 .ikxBAC::after {
-        transition: all 100ms ease-out;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC::after {
-        background-color: #fff;
-        border-radius: 50%;
-        content: "";
-        height: 14px;
-        left: 3px;
-        position: absolute;
-        top: 3px;
-        width: 14px;
-    }
-
-    .checkbox-wrapper-2 input[type=checkbox] {
-        cursor: default;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC:hover {
-        background-color: #c9cbcd;
-        transition-duration: 0s;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC:checked {
-        background-color: #6e79d6;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC:checked::after {
-        background-color: #fff;
-        left: 13px;
-    }
-
-    .checkbox-wrapper-2 :focus:not(.focus-visible) {
-        outline: 0;
-    }
-
-    .checkbox-wrapper-2 .ikxBAC:checked:hover {
-        background-color: #535db3;
-    }
-</style>
-
 
 @code {
 
@@ -84,9 +28,53 @@
 
 	private Usuario usuario = new Usuario();
 
+	private string estadoMinimos = null;
+
 	protected override void OnInitialized()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		if (usuario != null)
+		{
+			if (usuario.NotificationLows == null)
+			{
+				estadoMinimos = null;
+			}
+			else
+			{
+				if (usuario.NotificationLows == true)
+				{
+					estadoMinimos = "checked";
+				}
+				else
+				{
+					estadoMinimos = null;
+				}
+			}
+		}
 	}
 
+	private async void ClickearCambioMinimos()
+	{
+		if (usuario != null)
+		{
+			bool boolMinimos = false;
+
+			if (estadoMinimos == null)
+			{
+				estadoMinimos = "checked";
+				boolMinimos = true;
+			}
+			else
+			{
+				estadoMinimos = null;
+				boolMinimos = false;
+			}
+
+			usuario.NotificationLows = boolMinimos;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+		
+	}
 }

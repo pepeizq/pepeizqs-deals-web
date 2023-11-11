@@ -669,14 +669,14 @@ select {
 
 .checkbox-caja .checkbox-interior {
     appearance: none;
-    background-color: var(--colorTextoOscuro);
+    background-color: var(--bs-gray-800);
     border-radius: 72px;
     border-style: none;
     flex-shrink: 0;
-    height: 20px;
+    height: 24px;
     margin: 0;
     position: relative;
-    width: 30px;
+    width: 40px;
 }
 
 .checkbox-caja .checkbox-interior::before {
@@ -694,14 +694,14 @@ select {
 }
 
 .checkbox-caja .checkbox-interior::after {
-    background-color: var(--colorTexto);
+    background-color: var(--bs-gray-500);
     border-radius: 50%;
     content: "";
-    height: 14px;
+    height: 19px;
     left: 3px;
     position: absolute;
     top: 3px;
-    width: 14px;
+    width: 19px;
 }
 
 .checkbox-caja input[type=checkbox] {
@@ -709,8 +709,9 @@ select {
 }
 
 .checkbox-caja .checkbox-interior:hover {
-    background-color: var(--colorTextoHover);
+    background-color: var(--bs-gray-600);
     transition-duration: 0s;
+    cursor: pointer;
 }
 
 .checkbox-caja .checkbox-interior:checked {
@@ -719,7 +720,7 @@ select {
 
 .checkbox-caja .checkbox-interior:checked::after {
     background-color: var(--colorTexto);
-    left: 13px;
+    left: 18px;
 }
 
 .checkbox-caja :focus:not(.focus-visible) {
@@ -728,4 +729,5 @@ select {
 
 .checkbox-caja .checkbox-interior:checked:hover {
     background-color: var(--fondoBotonHover);
+    cursor: pointer;
 }
