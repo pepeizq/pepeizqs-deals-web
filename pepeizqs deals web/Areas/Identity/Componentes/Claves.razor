@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario.EmailConfirmed == true)
+{
+	<label>Not yet</label>
+}
+else
+{
+	<div style="margin-top: 10px;">
+		<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String44")
+		</div>
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	protected override void OnInitialized()
+	{
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+	}
+}

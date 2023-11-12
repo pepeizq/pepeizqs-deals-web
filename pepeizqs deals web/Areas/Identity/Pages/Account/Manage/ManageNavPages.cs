@@ -6,6 +6,8 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {
+        public static string Keys => "Keys";
+
         public static string Notifications => "Notifications";
 
         public static string SteamAccount => "SteamAccount";
@@ -26,7 +28,9 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-		public static string NotificationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Notifications);
+        public static string KeysNavClass(ViewContext viewContext) => PageNavClass(viewContext, Keys);
+
+        public static string NotificationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Notifications);
 
 		public static string SteamAccountNavClass(ViewContext viewContext) => PageNavClass(viewContext, SteamAccount);
 

@@ -48,6 +48,10 @@
     "Valor": "Steam Account"
   },
   {
+    "Id": "Layout.Keys",
+    "Valor": "Keys"
+  },
+  {
     "Id": "Layout.Email",
     "Valor": "Email"
   },
@@ -822,6 +826,10 @@
   {
     "Id": "Settings.String54",
     "Valor": "Wishlist. Notify me by email when a game reaches a minimum price regardless of whether it has already been in a bundle, free promotion or a subscription service."
+  },
+  {
+    "Id": "Settings.String55",
+    "Valor": "Keys"
   },
   {
     "Id": "ForgotPassword.String1",

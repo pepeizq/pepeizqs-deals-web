@@ -48,6 +48,10 @@
     "Valor": "Cuenta de Steam"
   },
   {
+    "Id": "Layout.Keys",
+    "Valor": "Claves"
+  },
+  {
     "Id": "Layout.Email",
     "Valor": "Correo"
   },
@@ -822,6 +826,10 @@
   {
     "Id": "Settings.String54",
     "Valor": "Lista de Deseados. Notificarme por correo cuando un juego alcance un precio mínimo sin importar que ya haya estado en un bundle, promoción gratuita o un servicio de suscripción."
+  },
+  {
+    "Id": "Settings.String55",
+    "Valor": "Claves"
   },
   {
     "Id": "ForgotPassword.String1",
