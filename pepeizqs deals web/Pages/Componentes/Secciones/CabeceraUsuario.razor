@@ -4,8 +4,8 @@
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
+@inject HttpContext Contexto
 
-@enlaceBase
 <li class="nav-item">
     <div class="menu-dropdown">
         <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">
@@ -52,9 +52,10 @@
             }
 
             <hr>
-            <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Account/Logout">
+            <a @onclick="CerrarSesion" class="texto-cabecera menu-dropdown-item" style="text-align: right;">
                 @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
             </a>
+
             @* <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
                 <button id="logout" type="submit" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
@@ -71,9 +72,6 @@
     [Parameter]
     public string idioma { get; set; }
 
-    [Parameter]
-    public string enlaceBase { get; set; }
-
     private Usuario usuario = new Usuario();
 
     protected override void OnInitialized()
@@ -81,4 +79,8 @@
         usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
     }
 
+    private void CerrarSesion()
+    {
+        Contexto.Session.Clear();
+    }
 }
