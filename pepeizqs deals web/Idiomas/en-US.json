@@ -832,6 +832,10 @@
     "Valor": "Keys"
   },
   {
+    "Id": "Settings.String56",
+    "Valor": "News. Notify me with an email when new news appears."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },

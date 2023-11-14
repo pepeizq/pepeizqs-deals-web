@@ -832,6 +832,10 @@
     "Valor": "Claves"
   },
   {
+    "Id": "Settings.String56",
+    "Valor": "Noticias. Notificarme con un correo cuando una nueva noticia aparezca."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },

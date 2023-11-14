@@ -8,12 +8,68 @@
     #nullable disable
 
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
+    Usuario usuario = await UserManager.GetUserAsync(User);
 }
 
 <ul class="navbar-nav" style="margin-top: 0px;">
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User) && usuario != null)
     {
-        @(await Html.RenderComponentAsync<Componentes.Secciones.CabeceraUsuario>(RenderMode.ServerPrerendered, new { idioma = idioma }))
+        <li class="nav-item">
+            <div class="menu-dropdown">
+                <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">
+                    @if (string.IsNullOrEmpty(usuario.Avatar) == true)
+                    {
+                        @usuario.Nickname
+                    }
+                    else
+                    {
+                        @if (usuario.Avatar.ToLower().Contains(".jpg") == true || usuario.Avatar.ToLower().Contains(".jpeg") == true || usuario.Avatar.ToLower().Contains(".png") == true || usuario.Avatar.ToLower().Contains(".webp") == true)
+                        {
+                            <img src="@usuario.Avatar" style="max-height: 32px; max-width: 32px;" />
+                        }
+                        else
+                        {
+                            @usuario.Nickname
+                        }
+                    }
+                </button>
+
+                <div class="menu-dropdown-contenido" style="right: 0;">
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/Email">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Email")
+                    </a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/ChangePassword">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Password")
+                    </a>
+                    <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/PersonalData">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Layout.PersonalData")
+                    </a>
+
+                    @if (usuario.EmailConfirmed == true)
+                    {
+                        <hr>
+                        <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/Notifications">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Notifications")
+                        </a>
+                        <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/SteamAccount">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Steam")
+                        </a>
+                        <a class="texto-cabecera menu-dropdown-item" style="text-align: right;" href="/Identity/Account/Manage/Keys">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Keys")
+                        </a>
+                    }
+
+                    <hr>
+                    
+                    <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </li>
     }
     else
     {

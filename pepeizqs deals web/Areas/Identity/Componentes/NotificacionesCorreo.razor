@@ -17,6 +17,17 @@
 			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String54")
 		</div>
 	</div>
+	<div style="display: flex; align-items: center;">
+		<div style="width: 8%; text-align: center;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoNoticias" @onchange="ClickearCambioNoticias">
+			</div>
+		</div>
+
+		<div style="width: 92%; padding: 10px;">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String56")
+		</div>
+	</div>
 </div>
 
 @code {
@@ -29,6 +40,7 @@
 	private Usuario usuario = new Usuario();
 
 	private string estadoMinimos = null;
+	private string estadoNoticias = null;
 
 	protected override void OnInitialized()
 	{
@@ -49,6 +61,22 @@
 				else
 				{
 					estadoMinimos = null;
+				}
+			}
+
+			if (usuario.NotificationNews == null)
+			{
+				estadoNoticias = null;
+			}
+			else
+			{
+				if (usuario.NotificationNews == true)
+				{
+					estadoNoticias = "checked";
+				}
+				else
+				{
+					estadoNoticias = null;
 				}
 			}
 		}
@@ -76,5 +104,29 @@
 			await UserManager.UpdateAsync(usuario);
 		}
 		
+	}
+
+	private async void ClickearCambioNoticias()
+	{
+		if (usuario != null)
+		{
+			bool boolNoticias = false;
+
+			if (estadoNoticias == null)
+			{
+				estadoNoticias = "checked";
+				boolNoticias = true;
+			}
+			else
+			{
+				estadoNoticias = null;
+				boolNoticias = false;
+			}
+
+			usuario.NotificationNews = boolNoticias;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+
 	}
 }

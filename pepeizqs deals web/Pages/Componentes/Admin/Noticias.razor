@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
 @using Microsoft.VisualBasic;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
 
 <div class="perfil">
 
@@ -338,6 +342,14 @@
 		}
 
 		BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+		foreach (var usuario in UserManager.Users)
+		{
+			if (usuario.NotificationNews == true)
+			{
+				Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email);
+			}
+		}
 
 		tituloEn = null;
 		tituloEs = null;

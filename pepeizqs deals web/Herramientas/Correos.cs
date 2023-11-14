@@ -1,12 +1,33 @@
 ﻿#nullable disable
 
+using BaseDatos.Juegos;
 using Juegos;
+using Noticias;
 using System.Net.Mail;
 
 namespace Herramientas
 {
 	public static class Correos
 	{
+		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia)
+		{
+			string titulo = noticia.TituloEn;
+
+            string html = string.Empty;
+
+            using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
+            {
+                html = r.ReadToEnd();
+            }
+
+			html = html.Replace("{{titulo}}", titulo);
+			html = html.Replace("{{imagen}}", noticia.Imagen);
+			html = html.Replace("{{contenido}}", noticia.ContenidoEn);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+
+            EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
+        }
+
         public static void EnviarContraseñaReseteada(string correoHacia)
         {
             string html = string.Empty;

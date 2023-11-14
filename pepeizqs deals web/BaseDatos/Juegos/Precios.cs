@@ -92,7 +92,7 @@ namespace BaseDatos.Juegos
 
 											//------------------------------------------
 
-											if (minimo.FechaDetectado == nuevaOferta.FechaDetectado)
+											if (tempPrecio < minimo.Precio && minimo.FechaDetectado < nuevaOferta.FechaDetectado)
 											{
 												if (juego.UsuariosInteresados != null)
 												{
