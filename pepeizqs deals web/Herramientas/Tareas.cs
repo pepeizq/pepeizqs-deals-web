@@ -44,24 +44,14 @@ namespace Herramientas
 						juegosDestacadosMostrar.Clear();
 						juegosMinimosMostrar.Clear();
 
-						int i = 0;
-
 						foreach (var minimo in juegosConMinimos)
 						{
-							if (i < 6)
+							if (minimo.Analisis != null)
 							{
-								if (minimo.Analisis != null)
+								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
-									if (minimo.Analisis.Cantidad.Length >= 6)
-									{
-										juegosDestacadosMostrar.Add(minimo);
-										i += 1;
-									}
+									juegosDestacadosMostrar.Add(minimo);
 								}
-							}
-							else
-							{
-								break;
 							}
 						}
 

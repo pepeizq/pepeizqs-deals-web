@@ -226,17 +226,35 @@
 
 		using (conexion)
 		{
+			#region Destacados
+
 			juegosDestacadosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
 				juegosDestacadosMostrar = juegosDestacadosMostrar.OrderBy(x => x.Id).ToList();
 
-				foreach (var juego in juegosDestacadosMostrar)
+				int i = 0;
+				foreach (Juego juego in juegosDestacadosMostrar)
 				{
-					juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900");
+					try
+					{
+						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900");
+					}
+					catch { }
+
+					i += 1;
+
+					if (i > 6)
+					{
+						break;
+					}
 				}
 			}
+
+			#endregion
+
+			#region Minimos
 
 			juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
 
@@ -244,11 +262,17 @@
 			{
 				juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(x => x.Id).ToList();
 
-				foreach (var juego in juegosMinimosMostrar)
+				foreach (Juego juego in juegosMinimosMostrar)
 				{
-					juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+					try
+					{
+						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+					}
+					catch { }					
 				}
 			}
+
+			#endregion
 
 			juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
 
@@ -256,9 +280,13 @@
 			{
 				juegosAñadidosMostrar = juegosAñadidosMostrar.OrderBy(x => x.IdMaestra).Reverse().ToList();
 
-				foreach (var juego in juegosAñadidosMostrar)
+				foreach (Juego juego in juegosAñadidosMostrar)
 				{
-					juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+					try
+					{
+						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+					}
+					catch { }					
 				}
 			}			
 
@@ -268,11 +296,15 @@
 			{
 				noticiasMostrar = noticiasMostrar.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-				foreach (var noticia in noticiasMostrar)
+				foreach (Noticia noticia in noticiasMostrar)
 				{
 					if (noticia.Imagen != null)
 					{
-						await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header");
+						try
+						{
+							await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header");
+						}
+						catch {}					
 					}
 				}
 			}
