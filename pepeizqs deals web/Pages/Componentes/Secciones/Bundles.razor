@@ -143,6 +143,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 
@@ -159,10 +162,10 @@
 					foreach (var juego in bundle.Juegos)
 					{
 						Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87");
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
 					}
 
-					bundle.ImagenBundle = await Herramientas.Imagenes.DescargarYGuardar(bundle.ImagenBundle, "bundles", bundle.Id.ToString(), "header");
+					bundle.ImagenBundle = await Herramientas.Imagenes.DescargarYGuardar(bundle.ImagenBundle, "bundles", bundle.Id.ToString(), "header", dominio);
 
 					bundlesActuales.Add(bundle);
 				}

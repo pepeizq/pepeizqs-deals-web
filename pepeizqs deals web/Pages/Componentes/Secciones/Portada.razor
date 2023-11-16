@@ -214,6 +214,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	List<Juego> juegosDestacadosMostrar = new List<Juego>();
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 	List<Juego> juegosAñadidosMostrar = new List<Juego>();
@@ -234,21 +237,13 @@
 			{
 				juegosDestacadosMostrar = juegosDestacadosMostrar.OrderBy(x => x.Id).ToList();
 
-				int i = 0;
 				foreach (Juego juego in juegosDestacadosMostrar)
 				{
 					try
 					{
-						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900");
+						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
 					}
 					catch { }
-
-					i += 1;
-
-					if (i > 6)
-					{
-						break;
-					}
 				}
 			}
 
@@ -266,7 +261,7 @@
 				{
 					try
 					{
-						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
 					}
 					catch { }					
 				}
@@ -274,21 +269,30 @@
 
 			#endregion
 
-			juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
+			#region Añadidos
 
-			if (juegosAñadidosMostrar.Count > 0)
+			if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 			{
-				juegosAñadidosMostrar = juegosAñadidosMostrar.OrderBy(x => x.IdMaestra).Reverse().ToList();
+				juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
 
-				foreach (Juego juego in juegosAñadidosMostrar)
+				if (juegosAñadidosMostrar.Count > 0)
 				{
-					try
+					juegosAñadidosMostrar = juegosAñadidosMostrar.OrderBy(x => x.IdMaestra).Reverse().ToList();
+
+					foreach (Juego juego in juegosAñadidosMostrar)
 					{
-						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+						try
+						{
+							juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
+						}
+						catch { }
 					}
-					catch { }					
 				}
-			}			
+			}
+				
+			#endregion
+
+			#region Noticias
 
 			noticiasMostrar = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
 
@@ -302,7 +306,7 @@
 					{
 						try
 						{
-							await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header");
+							await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
 						}
 						catch {}					
 					}
@@ -310,6 +314,8 @@
 			}
 
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
+
+			#endregion
 		}
 
 		conexion.Dispose();

@@ -91,6 +91,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	private List<JuegoDeseadoMostrar> deseadosMostrar = new List<JuegoDeseadoMostrar>();
 	private Usuario usuario = new Usuario();
 
@@ -221,7 +224,7 @@
 					{
 						Juegos.Juego nuevoJuego = juego;
 						nuevoJuego.PrecioActualesTiendas = ordenados;
-						nuevoJuego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87");
+						nuevoJuego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio);
 
 						JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 						nuevoDeseado.Juego = nuevoJuego;

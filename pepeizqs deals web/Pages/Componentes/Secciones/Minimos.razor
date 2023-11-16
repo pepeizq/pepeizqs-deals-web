@@ -111,6 +111,9 @@
     public string idioma { get; set; }
 
 	[Parameter]
+	public string dominio { get; set; }
+
+	[Parameter]
 	public string enlace { get; set; }
 
     [Parameter]
@@ -140,7 +143,7 @@
 		{
 			foreach (var juego in juegosConMinimos)
 			{
-				juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87");
+				juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
 			}
 
 			if (modo == "last")

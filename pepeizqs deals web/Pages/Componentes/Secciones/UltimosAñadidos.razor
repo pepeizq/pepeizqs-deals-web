@@ -71,6 +71,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	private List<Juego> juegos = new List<Juego>();
 	private List<Juego> juegosMostrar = new List<Juego>();
 
@@ -92,7 +95,7 @@
 			{
 				foreach (var juego in juegos)
 				{
-					juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87");
+					juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio);
 				}
 
 				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();

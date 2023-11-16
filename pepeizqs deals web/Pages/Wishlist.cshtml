@@ -13,5 +13,5 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))
+	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
 }

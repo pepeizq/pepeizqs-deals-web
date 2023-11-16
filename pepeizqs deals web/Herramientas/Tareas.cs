@@ -8,13 +8,6 @@ namespace Herramientas
 {
 	public class Tareas
 	{
-		private readonly ILogger<Tareas> _logger;
-
-		public Tareas(ILogger<Tareas> logger)
-		{
-			_logger = logger;
-		}
-
 		public async Task PortadaTarea()
 		{
 			await Task.Delay(1000);
@@ -44,18 +37,24 @@ namespace Herramientas
 						juegosDestacadosMostrar.Clear();
 						juegosMinimosMostrar.Clear();
 
+						int i = 0;
+
 						foreach (var minimo in juegosConMinimos)
 						{
 							if (minimo.Analisis != null)
 							{
 								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
-									juegosDestacadosMostrar.Add(minimo);
+									if (i < 100)
+									{
+										juegosDestacadosMostrar.Add(minimo);
+										i += 1;
+									}									
 								}
 							}
 						}
 
-						for (int j = 0; juegosMinimosMostrar.Count < 10; j += 1)
+						for (int j = 0; juegosMinimosMostrar.Count < 100; j += 1)
 						{
 							bool añadir = true;
 

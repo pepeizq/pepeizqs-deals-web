@@ -81,6 +81,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	List<Gratis2.GratisComponente> gratisActuales = new List<Gratis2.GratisComponente>();
 	List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
 
@@ -101,11 +104,11 @@
 
 					if (juego2.Tipo == Juegos.JuegoTipo.Game)
 					{
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900");
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
 					}
 					else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
 					{
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87");
+						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
 					}
 
 					juegosActuales.Add(juego);

@@ -38,14 +38,14 @@
 <div class="juego-wrap">
 	@if (Model.juego.Tipo == JuegoTipo.Game)
 	{
-		<img class="juego-fondo" src="@await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Library_1920x620, "juegos", @Model.juego.Id.ToString(), "library_1920x620")" onerror="this.parentNode.removeChild(this)" />
+		<img class="juego-fondo" src="@await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Library_1920x620, "juegos", @Model.juego.Id.ToString(), "library_1920x620", HttpContext.Request.Host.Value)" onerror="this.parentNode.removeChild(this)" />
 	}
 	
     <div class="juego-contenido">
         <div class="perfil-espacio-bottom juego-cabecera">      
 			<div class="perfil-flexible-centrado">
 				<div class="juego-flexible-izquierda">
-					<img src="@JuegoFicha.LimpiarImagenJuego(await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Header_460x215, "juegos", @Model.juego.Id.ToString(), "header_460x215"))" class="juego-imagen" />
+					<img src="@JuegoFicha.LimpiarImagenJuego(await Imagenes.DescargarYGuardar(@Model.juego.Imagenes.Header_460x215, "juegos", @Model.juego.Id.ToString(), "header_460x215", HttpContext.Request.Host.Value))" class="juego-imagen" />
 				</div>
 				<div class="juego-titulo">
 					@Model.juego.Nombre <br/>
@@ -211,7 +211,7 @@
 							{
 								<div class="juego-galeria-imagenes">
 									<div class="juego-galeria-numero">@(i + 1) / @Model.juego.Media.Capturas.Count</div>
-									<img src="@await Imagenes.DescargarYGuardar(@Model.juego.Media.Capturas[i], "juegos", @Model.juego.Id.ToString(), "captura" + i.ToString())" style="width:100%;">
+									<img src="@await Imagenes.DescargarYGuardar(@Model.juego.Media.Capturas[i], "juegos", @Model.juego.Id.ToString(), "captura" + i.ToString(), HttpContext.Request.Host.Value)" style="width:100%;">
 								</div>
 							}
 
@@ -228,7 +228,7 @@
 									@for (int i = 0; i < Model.juego.Media.Miniaturas.Count; i++)
 									{
 										<div class="juego-galeria-columna">
-											<img class="juego-galeria-capturas juego-galeria-cursor" src="@await Imagenes.DescargarYGuardar(@Model.juego.Media.Miniaturas[i], "juegos", @Model.juego.Id.ToString(), "miniatura" + i.ToString())" style="width: 100%;" onclick="cambiarImagen(@i + 1)">
+											<img class="juego-galeria-capturas juego-galeria-cursor" src="@await Imagenes.DescargarYGuardar(@Model.juego.Media.Miniaturas[i], "juegos", @Model.juego.Id.ToString(), "miniatura" + i.ToString(), HttpContext.Request.Host.Value)" style="width: 100%;" onclick="cambiarImagen(@i + 1)">
 										</div>
 									}
 								</div>

@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Juegos;
 using Juegos;
 using Noticias;
 using System.Net.Mail;
@@ -20,9 +19,16 @@ namespace Herramientas
                 html = r.ReadToEnd();
             }
 
+			string contenido = noticia.ContenidoEn;
+
+			if (contenido.Contains("https://pepeizqdeals.com") == false)
+			{
+				contenido = contenido.Replace("/link/", "https://pepeizqdeals.com/link/");
+			}
+
 			html = html.Replace("{{titulo}}", titulo);
 			html = html.Replace("{{imagen}}", noticia.Imagen);
-			html = html.Replace("{{contenido}}", noticia.ContenidoEn);
+			html = html.Replace("{{contenido}}", contenido);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
             EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);

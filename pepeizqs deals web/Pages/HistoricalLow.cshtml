@@ -12,7 +12,8 @@
 	string enlaceFinal = $"{enlaceBase}{enlaceArgumentos}";
 
 	enlaceFinal = enlaceFinal.Replace("https://pepeizqdeals.com/", null);
+	enlaceFinal = enlaceFinal.Replace("https://beta.pepeizqdeals.com/", null);
 	enlaceFinal = enlaceFinal.Replace("https://pepeizq-001-site2.ftempurl.com", null);
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, modo = @Model.modo, enlace = @enlaceFinal }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value, modo = @Model.modo, enlace = @enlaceFinal }))

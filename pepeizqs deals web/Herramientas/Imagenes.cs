@@ -7,19 +7,27 @@ namespace Herramientas
 {
     public static class Imagenes
 	{
-		public static async Task<string> DescargarYGuardar(string fichero, string subCarpeta, string nombreCarpeta, string nombreFichero)
+		public static async Task<string> DescargarYGuardar(string fichero, string subCarpeta, string nombreCarpeta, string nombreFichero, string dominio)
 		{
-			if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false) 
+			if (string.IsNullOrEmpty(dominio) == false)
 			{
-				Stream ficheroStream = await CogerStreamFichero(fichero);
-
-				if (ficheroStream != Stream.Null)
+				if (dominio.Contains("beta") == false)
 				{
-					await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+					if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false)
+					{
+						Stream ficheroStream = await CogerStreamFichero(fichero);
+
+						if (ficheroStream != Stream.Null)
+						{
+							await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+						}
+					}
+
+					return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
 				}
 			}
-			
-			return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
+
+			return fichero;
 		}
 
 		public static async Task<Stream> CogerStreamFichero(string ficheroEnlace)
@@ -29,6 +37,7 @@ namespace Herramientas
 			try
 			{
 				Stream fileStream = await cliente.GetStreamAsync(ficheroEnlace);
+
 				return fileStream;
 			}
 			catch
@@ -41,14 +50,14 @@ namespace Herramientas
 		{
 			string nuevaCarpeta = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta;
 
-			if (!Directory.Exists(nuevaCarpeta))
+			if (Directory.Exists(nuevaCarpeta) == false)
 			{
 				Directory.CreateDirectory(nuevaCarpeta);
 			}
 
 			string nuevaCarpeta2 = Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta;
 
-			if (!Directory.Exists(nuevaCarpeta2))
+			if (Directory.Exists(nuevaCarpeta2) == false)
 			{
 				Directory.CreateDirectory(nuevaCarpeta2);
 			}
@@ -72,6 +81,11 @@ namespace Herramientas
 						imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Quality(50).Save(ficheroWebpStream);
 					}
 				}
+			}
+
+			if (File.Exists(ruta + ".jpg") == true)
+			{
+				File.Delete(ruta + ".jpg");
 			}
 		}
 	}
