@@ -12,6 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="imagenes\juegos\ancla - Copia.txt" />
+    <None Remove="imagenes\noticias\ancla - Copia.txt" />
+    <None Remove="imagenes\noticias\ancla.txt" />
     <None Remove="Plantillas\CambioContraseña.html" />
     <None Remove="Plantillas\ContraseñaOlvidada.html" />
     <None Remove="Plantillas\ContraseñaReseteada.html" />
@@ -94,6 +97,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="imagenes\bundles\ancla.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="imagenes\juegos\ancla.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="imagenes\noticias\ancla.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plantillas\CambioContraseña.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

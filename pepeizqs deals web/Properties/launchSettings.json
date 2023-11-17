@@ -30,8 +30,7 @@
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "sqlDebugging": true,
-      "nativeDebugging": true,
-      "ancmHostingModel": "OutOfProcess"
+      "nativeDebugging": true
     }
   },
   "iisSettings": {
