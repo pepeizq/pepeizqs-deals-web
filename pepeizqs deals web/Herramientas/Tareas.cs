@@ -45,7 +45,7 @@ namespace Herramientas
 							{
 								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
-									if (i < 100)
+									if (i < 102)
 									{
 										juegosDestacadosMostrar.Add(minimo);
 										i += 1;

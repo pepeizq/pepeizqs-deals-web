@@ -1,5 +1,6 @@
 ﻿@using BaseDatos.Juegos;
 @using Juegos;
+@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
 @using Microsoft.Extensions.Caching.Distributed;
@@ -26,9 +27,15 @@
 	</div>
 }
 
+<label>@posicionDestacadosMostrar</label>
+<label>/</label>
+<label>@juegosDestacadosGestor.Count</label>
+
 @if (juegosDestacadosMostrar.Count > 0)
-{
-	<div style="margin-bottom: 50px;">
+{		
+	<div style="display: flex; align-items: center; margin-bottom: 50px;">
+		<button @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-right: 20px;"><i class="fa-solid fa-chevron-left"></i></button>
+
 		<div style="display: grid; grid-auto-flow: column; overflow-x: auto; gap: 15px;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
@@ -49,6 +56,8 @@
 				</div>
 			}
 		</div>
+
+		<button @onclick="ClickearAdelante" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-right"></i></button>
 	</div>
 }
 
@@ -218,9 +227,15 @@
 	public string dominio { get; set; }
 
 	List<Juego> juegosDestacadosMostrar = new List<Juego>();
+	List<Juego> juegosDestacadosGestor = new List<Juego>();
+	public int cantidadDestacadosMostrar = 6;
+	public int posicionDestacadosMostrar = 0;
+
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 	List<Juego> juegosAñadidosMostrar = new List<Juego>();
+
 	List<Noticia> noticiasMostrar = new List<Noticia>();
+	List<Noticia> noticiasGestor = new List<Noticia>();
 	List<Noticia> noticiaEvento = new List<Noticia>();
 
 	protected override async Task OnInitializedAsync()
@@ -231,19 +246,30 @@
 		{
 			#region Destacados
 
-			juegosDestacadosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+			juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
 
-			if (juegosDestacadosMostrar.Count > 0)
+			if (juegosDestacadosGestor.Count > 0)
 			{
-				juegosDestacadosMostrar = juegosDestacadosMostrar.OrderBy(x => x.Id).ToList();
+				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
 
-				foreach (Juego juego in juegosDestacadosMostrar)
+				foreach (var juego in juegosDestacadosGestor)
 				{
-					try
+					if (posicionDestacadosMostrar < cantidadDestacadosMostrar)
 					{
-						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+						try
+						{
+							juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+						}
+						catch { }
+
+						juegosDestacadosMostrar.Add(juego);
 					}
-					catch { }
+					else
+					{
+						break;
+					}
+
+					posicionDestacadosMostrar += 1;
 				}
 			}
 
@@ -289,18 +315,18 @@
 					}
 				}
 			}
-				
+
 			#endregion
 
 			#region Noticias
 
-			noticiasMostrar = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
+			noticiasGestor = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
 
-			if (noticiasMostrar.Count > 0)
+			if (noticiasGestor.Count > 0)
 			{
-				noticiasMostrar = noticiasMostrar.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+				noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-				foreach (Noticia noticia in noticiasMostrar)
+				foreach (Noticia noticia in noticiasGestor)
 				{
 					if (noticia.Imagen != null)
 					{
@@ -310,7 +336,17 @@
 						}
 						catch {}					
 					}
+
+					DateTime fechaTemporal = noticia.FechaEmpieza;
+					fechaTemporal = fechaTemporal.AddDays(2);
+
+					if (fechaTemporal > DateTime.Now)
+					{
+						noticiasMostrar.Add(noticia);
+					}
 				}
+
+
 			}
 
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
@@ -319,6 +355,49 @@
 		}
 
 		conexion.Dispose();
+	}
+
+	private async void ClickearAdelante()
+	{
+		juegosDestacadosMostrar.Clear();
+
+		posicionDestacadosMostrar += 6;
+
+		for (int i = posicionDestacadosMostrar; i < (posicionDestacadosMostrar + cantidadDestacadosMostrar); i += 1)
+		{
+			if (i < juegosDestacadosGestor.Count)
+			{
+				// 		try
+				// 		{
+				// 			juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+				// 		}
+				// 		catch { }
+
+				juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+			}	
+		}
+
+		if (posicionDestacadosMostrar + cantidadDestacadosMostrar >= juegosDestacadosGestor.Count)
+		{
+			posicionDestacadosMostrar = -6;
+		}
+	}
+
+	private void ClickearAtras()
+	{
+		juegosDestacadosMostrar.Clear();
+
+		posicionDestacadosMostrar -= cantidadDestacadosMostrar;
+
+		if (posicionDestacadosMostrar < 0)
+		{
+			posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
+		}
+
+		for (int i = posicionDestacadosMostrar; i < posicionDestacadosMostrar + cantidadDestacadosMostrar; i++)
+		{
+			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+		}
 	}
 
 	private string CargarIconoTienda(Juego juego)
