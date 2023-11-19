@@ -39,7 +39,11 @@
 		<div style="display: grid; grid-auto-flow: column; overflow-x: auto; gap: 15px;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
-				<div style="min-width: 150px; max-width: 200px;">
+				<div style="min-width: 150px; max-width: 200px; -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+    -ms-transition: all 500ms ease-in-out;
+    -o-transition: all 500ms ease-in-out;
+    transition: all 500ms ease-in-out;">
 					<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
@@ -361,25 +365,45 @@
 	{
 		juegosDestacadosMostrar.Clear();
 
-		posicionDestacadosMostrar += 6;
+		int posicionAncla = posicionDestacadosMostrar;
 
-		for (int i = posicionDestacadosMostrar; i < (posicionDestacadosMostrar + cantidadDestacadosMostrar); i += 1)
+		for (int i = posicionDestacadosMostrar; i < juegosDestacadosGestor.Count; i += 1)
 		{
-			if (i < juegosDestacadosGestor.Count)
+			if (posicionDestacadosMostrar < posicionAncla + cantidadDestacadosMostrar)
 			{
-				// 		try
-				// 		{
-				// 			juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
-				// 		}
-				// 		catch { }
+				try
+				{
+					juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
+				}
+				catch { }
 
 				juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-			}	
+
+				posicionDestacadosMostrar += 1;
+			}
+
+			
 		}
 
-		if (posicionDestacadosMostrar + cantidadDestacadosMostrar >= juegosDestacadosGestor.Count)
+		// posicionDestacadosMostrar += 6;
+
+		// for (int i = posicionDestacadosMostrar; i < (posicionDestacadosMostrar + cantidadDestacadosMostrar); i += 1)
+		// {
+		// 	if (i < juegosDestacadosGestor.Count)
+		// 	{
+		// 		// 		try
+		// 		// 		{
+		// 		// 			juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+		// 		// 		}
+		// 		// 		catch { }
+
+		// 		juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+		// 	}	
+		// }
+
+		if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count)
 		{
-			posicionDestacadosMostrar = -6;
+			posicionDestacadosMostrar = cantidadDestacadosMostrar;
 		}
 	}
 

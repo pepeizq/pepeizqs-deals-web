@@ -94,6 +94,7 @@
 .boton-pequeño:hover {
     color: var(--colorTextoHover);
     background-color: var(--fondoBotonPequeñoHover);
+    transform: scale(1.01);
 }
 
 .boton-peligro {
