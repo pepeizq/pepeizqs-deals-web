@@ -27,6 +27,8 @@
 	</div>
 }
 
+<label>@cantidadDestacadosMostrar</label>
+<label>/</label>
 <label>@posicionDestacadosMostrar</label>
 <label>/</label>
 <label>@juegosDestacadosGestor.Count</label>
@@ -36,14 +38,10 @@
 	<div style="display: flex; align-items: center; margin-bottom: 50px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-right: 20px;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div style="display: grid; grid-auto-flow: column; overflow-x: auto; gap: 15px;">
+		<div style="display: grid; grid-auto-flow: column; overflow: hidden; gap: 15px;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
-				<div style="min-width: 150px; max-width: 200px; -webkit-transition: all 500ms ease-in-out;
-    -moz-transition: all 500ms ease-in-out;
-    -ms-transition: all 500ms ease-in-out;
-    -o-transition: all 500ms ease-in-out;
-    transition: all 500ms ease-in-out;">
+				<div style="min-width: 150px; max-width: 200px;">
 					<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
@@ -365,63 +363,73 @@
 	{
 		juegosDestacadosMostrar.Clear();
 
-		int posicionAncla = posicionDestacadosMostrar;
-
-		for (int i = posicionDestacadosMostrar; i < juegosDestacadosGestor.Count; i += 1)
-		{
-			if (posicionDestacadosMostrar < posicionAncla + cantidadDestacadosMostrar)
-			{
-				try
-				{
-					juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
-				}
-				catch { }
-
-				juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-
-				posicionDestacadosMostrar += 1;
-			}
-
-			
-		}
-
-		// posicionDestacadosMostrar += 6;
-
-		// for (int i = posicionDestacadosMostrar; i < (posicionDestacadosMostrar + cantidadDestacadosMostrar); i += 1)
-		// {
-		// 	if (i < juegosDestacadosGestor.Count)
-		// 	{
-		// 		// 		try
-		// 		// 		{
-		// 		// 			juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
-		// 		// 		}
-		// 		// 		catch { }
-
-		// 		juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-		// 	}	
-		// }
-
-		if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count)
+		if (posicionDestacadosMostrar > juegosDestacadosGestor.Count)
 		{
 			posicionDestacadosMostrar = cantidadDestacadosMostrar;
 		}
+
+		int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
+		while (posicionDestacadosMostrar < tope)
+		{
+			try
+			{
+				juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
+			}
+			catch { }
+
+			juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
+
+			posicionDestacadosMostrar += 1;
+		}
 	}
 
-	private void ClickearAtras()
+	private async void ClickearAtras()
 	{
 		juegosDestacadosMostrar.Clear();
 
-		posicionDestacadosMostrar -= cantidadDestacadosMostrar;
+		posicionDestacadosMostrar -= (cantidadDestacadosMostrar * 2);
 
 		if (posicionDestacadosMostrar < 0)
 		{
 			posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
 		}
 
-		for (int i = posicionDestacadosMostrar; i < posicionDestacadosMostrar + cantidadDestacadosMostrar; i++)
+		int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
+		while (posicionDestacadosMostrar < tope)
 		{
-			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+			try
+			{
+				juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
+			}
+			catch { }
+
+			juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
+
+			posicionDestacadosMostrar += 1;
 		}
+
+
+
+
+
+
+		// posicionDestacadosMostrar -= cantidadDestacadosMostrar;
+
+		// if (posicionDestacadosMostrar < 0)
+		// {
+		// 	posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
+		// }
+
+		// for (int i = posicionDestacadosMostrar; i < posicionDestacadosMostrar + cantidadDestacadosMostrar; i++)
+		// {
+		// 	try
+		// 	{
+		// 		juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
+		// 	}
+		// 	catch { }
+
+		// 	juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+		// }
 	}
 
 	private string CargarIconoTienda(Juego juego)
