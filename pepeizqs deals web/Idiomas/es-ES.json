@@ -72,6 +72,14 @@
     "Valor": "Código Fuente"
   },
   {
+    "Id": "Index.HighDeals",
+    "Valor": "Ofertas Destacadas"
+  },
+  {
+    "Id": "Index.HighDealsInfo",
+    "Valor": "Estas ofertas son mínimos históricos que no han estado en bundles, gratis o en suscripciones. Y además superan los 10.000 análisis en Steam."
+  },
+  {
     "Id": "Index.LastLows",
     "Valor": "Últimos Mínimos Históricos"
   },

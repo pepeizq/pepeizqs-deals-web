@@ -14,7 +14,6 @@ namespace Herramientas
 
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
 			List<Juego> juegosMinimosMostrar = new List<Juego>();
-			List<Juego> juegosAñadidosMostrar = new List<Juego>();
 
 			SqlConnection conexion = BaseDatos.Conectar();
 
@@ -41,11 +40,22 @@ namespace Herramientas
 
 						foreach (var minimo in juegosConMinimos)
 						{
-							if (minimo.Analisis != null)
+							bool añadir = true;
+
+							if (minimo.Analisis == null)
+							{
+								añadir = false;
+							}
+							else if (minimo.Tipo == JuegoTipo.DLC || minimo.Tipo == JuegoTipo.Bundle)
+							{
+								añadir = false;
+							}
+
+							if (añadir == true)
 							{
 								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
-									if (i < 102)
+									if (i < 61)
 									{
 										juegosDestacadosMostrar.Add(minimo);
 										i += 1;
@@ -125,35 +135,7 @@ namespace Herramientas
 						global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
 					}
 				}
-
-				//----------------------------------------------------------
-
-				if (juegos.Count > 0)
-				{
-					juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
-
-					int i = 0;
-					foreach (Juego juego in juegos)
-					{
-						if (i < 10)
-						{
-							juegosAñadidosMostrar.Add(juego);
-						}
-
-						i += 1;
-					}
-				}
-
-				if (juegosAñadidosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosAnadidos", conexion);
-
-					foreach (var juego in juegosAñadidosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosAnadidos", conexion);
-					}
-				}
-
+				
 				#endregion
 
 				#region Noticias

@@ -27,21 +27,26 @@
 	</div>
 }
 
-<label>@cantidadDestacadosMostrar</label>
-<label>/</label>
-<label>@posicionDestacadosMostrar</label>
-<label>/</label>
-<label>@juegosDestacadosGestor.Count</label>
-
 @if (juegosDestacadosMostrar.Count > 0)
-{		
-	<div style="display: flex; align-items: center; margin-bottom: 50px;">
+{
+	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
+		<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDeals")</a>
+		
+		<div class="tooltip2" style="margin-left: 20px;">
+			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
+			<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDealsInfo")
+			</div>
+		</div>
+	</div>
+
+	<div style="display: flex; align-items: center; margin-bottom: 60px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-right: 20px;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div style="display: grid; grid-auto-flow: column; overflow: hidden; gap: 15px;">
+		<div style="display: grid; grid-auto-flow: column; gap: 15px;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
-				<div style="min-width: 150px; max-width: 200px;">
+				<div class="tooltip2" style="min-width: 150px; max-width: 200px;">
 					<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
@@ -55,6 +60,13 @@
 							</div>							
 						</div>
 					</a>
+
+					<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; min-width: 200px;">
+						<div style="display: flex;">
+							<img src="@CargarIconoTienda(destacado)" style="width: 20px; height: 20px; margin-right: 20px;" />
+							<label>@CargarFechaDetectado(destacado)</label>
+						</div>
+					</div>
 				</div>
 			}
 		</div>
@@ -63,160 +75,86 @@
 	</div>
 }
 
-<div class="portada-columnas">
-	<div class="portada-columna portada-columna-izq">
-		@if (juegosMinimosMostrar.Count > 0)
-		{
-			<div style="font-size: 20px; padding-bottom: 10px; padding-left: 20px;">
-				<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
-			</div>
+@if (noticiasMostrar.Count > 0)
+{
+	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
+		<a href="/LastNews" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNews")</a>
 
-			<div class="perfil" style="padding: 5px 15px;">
-				@foreach (var juego in juegosMinimosMostrar)
-				{
-					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
-							<div class="perfil-flexible-centrado">
-								<div style="width: 22%;">
-									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-								</div>
-
-								<div style="width: 68%; padding: 4px 15px; font-size: 14px;">
-									@juego.Nombre
-								</div>
-
-								<div style="width: 5%; height: 16px; position: relative;">
-									<img src="@CargarIconoTienda(juego)" class="juego-icono-tienda" />
-								</div>
-
-								<div style="width: 15%; padding: 4px 15px 4px 0px; font-size: 14px; text-align: right;">
-									@CargarPrecio(juego)
-								</div>
-							</div>
-						</a>
-					</div>
-				}
-
-				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/HistoricalLow?mode=last">
-						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
-					</a>
-				</div>
-			</div>
-		}
-
-		<div style="margin: 50px;"></div>
-
-		@if (juegosAñadidosMostrar.Count > 0)
-		{
-			<div style="font-size: 20px; padding-bottom: 10px; padding-left: 20px;">
-				<a href="/LastAdded" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAdded")</a>
-			</div>
-
-			<div class="perfil" style="padding: 5px 15px;">
-				@foreach (var juego in juegosAñadidosMostrar)
-				{
-					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
-							<div class="perfil-flexible-centrado">
-								<div style="width: 22%;">
-									<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-								</div>
-
-								<div style="width: 58%; padding: 4px 15px; font-size: 14px;">
-									@juego.Nombre
-
-									@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
-									{
-										<br /> @juego.IdMaestra
-									}
-								</div>
-
-								<div style="width: 20%; padding: 4px 15px 4px 0px; font-size: 14px; text-align: right;">
-									@Herramientas.JuegoFicha.PrecioMinimoActual(juego, false, idioma)
-								</div>
-							</div>
-						</a>
-					</div>
-				}
-
-				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px; margin-bottom: 20px;" href="/LastAdded">
-						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastAddedMore")
-					</a>
-				</div>
-			</div>
-		}		
+		<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank" style="margin-left: 20px;"><i class="fa-solid fa-rss"></i></a>		
 	</div>
 
-	<div class="portada-columna portada-columna-der">
-		@if (noticiasMostrar.Count > 0)
+	<div style="margin-bottom: 25px;">
+		@foreach (var noticia in noticiasMostrar)
 		{
-			<div style="display: flex; align-items: center; width: 100%; margin-bottom: 10px; padding-left: 20px; padding-right: 20px;">
-				<div style="width: 80%; font-size: 20px; text-align: left;">
-					<a href="/lastnews" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNews")</a>
-				</div>
+			<div class="perfil-flexible-centrado" style="margin-top: 20px;">
+				<a class="boton-pequeño" style="padding: 1px;" href="/news/@noticia.IdMaestra">
+					<div class="perfil-flexible-centrado">
+						<div style="width: 25%;">
+							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" />
+						</div>
 
-				<div style="width: 20%; font-size: 19px; text-align: right;">
-					<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank"><i class="fa-solid fa-rss"></i></a>
-				</div>
-			</div>
-
-			<div class="perfil" style="padding: 5px 15px;">
-				@foreach (var noticia in noticiasMostrar)
-				{
-					<div class="perfil-flexible-centrado" style="margin-top: 15px;">
-						<a class="boton-pequeño" style="padding: 1px;" href="/news/@noticia.IdMaestra">
-							<div class="perfil-flexible-centrado">
-								<div style="width: 40%;">
-									<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" />
-								</div>
-
-								<div style="width: 60%; padding: 20px;">
-									<div style="margin-bottom: 10px;">
-										@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
-									</div>
-
-									<div>
-										@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
-									</div>
-								</div>
+						<div style="width: 75%; padding: 20px 30px;">
+							<div style="margin-bottom: 15px;">
+								@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
 							</div>
-						</a>
-					</div>
-				}
 
-				<div style="display: flex; justify-content: center; align-items: center;align-items: center;">
-					<a class="boton-pequeño" style="width: auto; padding: 15px 20px; margin-top: 30px;" href="/lastnews">
-						<i class="fa-solid fa-plus" style="margin-right: 15px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
-					</a>				
-				</div>
-
-				<div style="text-align: center; margin-top: 40px; margin-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsFollow")
-
-					<div style="display: flex; align-items: center; justify-content: center; font-size: 25px; text-align: center; margin-top: 10px;">
-						<div style="margin-left: 6px; margin-right: 6px;">
-							<a href="https://discord.gg/GBT3FXnrm3" target="_blank"><i class="fa-brands fa-discord"></i></a>
-						</div>
-						<div style="margin-left: 6px; margin-right: 6px;">
-							<a href="https://t.me/pepeizqdeals2" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-						</div>
-						<div style="margin-left: 6px; margin-right: 6px;">
-							<a href="https://reddit.com/r/pepeizqdeals/" target="_blank"><i class="fa-brands fa-reddit"></i></a>
-						</div>
-						<div style="margin-left: 6px; margin-right: 6px;">
-							<a href="https://twitter.com/pepeizqdeals" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-						</div>
-						<div style="margin-left: 6px; margin-right: 6px;">
-							<a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank"><i class="fa-brands fa-steam"></i></a>
+							<div style="font-size: 17px;">
+								@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
+							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		}
 	</div>
-</div>
+
+	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto; width: 400px;">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastNews">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
+		</a>
+	</div>
+}
+else
+{
+	
+}
+
+@if (juegosMinimosMostrar.Count > 0)
+{
+	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
+		<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
+	</div>
+
+	@foreach (var juego in juegosMinimosMostrar)
+	{
+		<div class="perfil-flexible-centrado" style="margin-top: 20px;">
+			<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
+				<div class="perfil-flexible-centrado">
+					<div style="width: 20%;">
+						<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+					</div>
+
+					<div style="width: 70%; display: flex; flex-flow: column wrap; padding: 20px;">
+						<label style="font-size: 17px;">@juego.Nombre</label>
+						<div style="margin-top: 5px;">
+							<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
+							<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
+							<label style="font-size: 14px;">@CargarFechaDetectado(juego)</label>
+						</div>
+					</div>
+
+					<div style="width: 5%; height: 16px; position: relative;">
+						
+					</div>
+
+					<div style="width: 15%; padding: 25px; font-size: 17px; text-align: right;">
+						@CargarPrecio(juego)
+					</div>
+				</div>
+			</a>
+		</div>
+	}
+}
 
 @code {
 
@@ -340,7 +278,7 @@
 					}
 
 					DateTime fechaTemporal = noticia.FechaEmpieza;
-					fechaTemporal = fechaTemporal.AddDays(2);
+					fechaTemporal = fechaTemporal.AddDays(3);
 
 					if (fechaTemporal > DateTime.Now)
 					{
@@ -363,9 +301,9 @@
 	{
 		juegosDestacadosMostrar.Clear();
 
-		if (posicionDestacadosMostrar > juegosDestacadosGestor.Count)
+		if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count - cantidadDestacadosMostrar)
 		{
-			posicionDestacadosMostrar = cantidadDestacadosMostrar;
+			posicionDestacadosMostrar = 0;
 		}
 
 		int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
@@ -407,29 +345,31 @@
 
 			posicionDestacadosMostrar += 1;
 		}
+	}
 
+	private string CargarDRM(Juego juego)
+	{
+		string imagen = null;
 
+		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
+		List<Juegos.DRM> drms = Juegos.JuegoDRM2.GenerarListado();
 
+		foreach (var drm in drms)
+		{
+			if (drm.Id == oferta.DRM)
+			{
+				imagen = drm.Imagen;
+			}
+		}
 
-
-
-		// posicionDestacadosMostrar -= cantidadDestacadosMostrar;
-
-		// if (posicionDestacadosMostrar < 0)
-		// {
-		// 	posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
-		// }
-
-		// for (int i = posicionDestacadosMostrar; i < posicionDestacadosMostrar + cantidadDestacadosMostrar; i++)
-		// {
-		// 	try
-		// 	{
-		// 		juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
-		// 	}
-		// 	catch { }
-
-		// 	juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-		// }
+		if (imagen != null)
+		{
+			return imagen;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private string CargarIconoTienda(Juego juego)
@@ -498,6 +438,15 @@
 		{
 			return null;
 		}
+	}
+
+	private string CargarFechaDetectado(Juego juego)
+	{
+		string mensaje = null;
+
+		mensaje = Herramientas.Calculadora.HaceTiempo(juego.PrecioActualesTiendas[0].FechaDetectado, idioma);
+
+		return mensaje;
 	}
 
 	private string CargarEnlaceNoticia(Noticia noticia)

@@ -732,3 +732,43 @@ select {
     background-color: var(--fondoBotonHover);
     cursor: pointer;
 }
+
+.tooltip2 {
+    display: inline-block;
+    position: relative;
+    border-bottom: 1px dotted #666;
+    text-align: left;
+}
+
+    .tooltip2 .tooltip-abrir {
+        top: 50%;
+        left: 100%;
+        padding: 0;
+        color: var(--colorTexto);
+        background-color: var(--fondoBotonPequeño);
+        font-size: 16px;
+        font-weight: normal;
+        border-radius: 0px;
+        position: absolute;
+        z-index: 99999999;
+        box-sizing: border-box;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.5);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.8s;
+    }
+
+    .tooltip2:hover .tooltip-abrir {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.tooltip-derecha {
+    margin-left: 20px;
+    transform: translate(0, -50%);
+}
+
+.tooltip-abajo {
+    margin-top: 20px;
+    transform: translate(-50%, 0);
+}
