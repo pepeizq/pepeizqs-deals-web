@@ -61,11 +61,12 @@
 						</div>
 					</a>
 
-					<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; min-width: 200px;">
-						<div style="display: flex;">
-							<img src="@CargarIconoTienda(destacado)" style="width: 20px; height: 20px; margin-right: 20px;" />
-							<label>@CargarFechaDetectado(destacado)</label>
+					<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; width: 100%;">
+						<div style="display: flex; margin-bottom: 10px;">
+							<img src="@CargarDRM(destacado)" style="width: 20px; height: 20px; margin-right: 20px;" />
+							<img src="@CargarIconoTienda(destacado)" style="width: 20px; height: 20px;" />
 						</div>
+						<labelx>@CargarFechaDetectado(destacado)</labelx>
 					</div>
 				</div>
 			}
@@ -116,44 +117,65 @@
 }
 else
 {
-	
+	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto; width: 700px;">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastNews">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsNo")
+		</a>
+	</div>
 }
 
 @if (juegosMinimosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
 		<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
+
+		<div class="tooltip2" style="margin-left: 20px;">
+			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
+			<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsInfo")
+			</div>
+		</div>
 	</div>
 
-	@foreach (var juego in juegosMinimosMostrar)
-	{
-		<div class="perfil-flexible-centrado" style="margin-top: 20px;">
-			<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.IdMaestra">
-				<div class="perfil-flexible-centrado">
-					<div style="width: 20%;">
-						<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-					</div>
+	<div style="margin-bottom: 25px;">
+		@foreach (var juego in juegosMinimosMostrar)
+		{
+			<div class="perfil-flexible-centrado" style="margin-top: 20px;">
+				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
+					<div class="perfil-flexible-centrado">
+						<div style="width: 20%;">
+							<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+						</div>
 
-					<div style="width: 70%; display: flex; flex-flow: column wrap; padding: 20px;">
-						<label style="font-size: 17px;">@juego.Nombre</label>
-						<div style="margin-top: 5px;">
-							<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
-							<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
-							<label style="font-size: 14px;">@CargarFechaDetectado(juego)</label>
+						<div style="width: 73%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
+							<label style="font-size: 17px;">@juego.Nombre</label>
+							<div style="margin-top: 5px;">
+								<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
+								<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
+								<label style="font-size: 14px;">@CargarFechaDetectado(juego)</label>
+							</div>
+						</div>
+
+						<div style="width: 17%; display: flex; align-items: center; font-size: 17px; text-align: center;">
+							<div style="background-color: darkgreen; padding: 10px 15px; margin-right:	 15px;">
+								@CargarDescuento(juego)
+							</div>
+
+							<div style="padding: 20px; width: 100px; text-align: center;">
+								@CargarPrecio(juego)
+							</div>
 						</div>
 					</div>
+				</a>
+			</div>
+		}
+	</div>
 
-					<div style="width: 5%; height: 16px; position: relative;">
-						
-					</div>
-
-					<div style="width: 15%; padding: 25px; font-size: 17px; text-align: right;">
-						@CargarPrecio(juego)
-					</div>
-				</div>
-			</a>
-		</div>
-	}
+	<div style="margin-bottom: 25px; margin-left: auto; margin-right: auto; width: 400px;">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastLows">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
+		</a>
+	</div>
 }
 
 @code {

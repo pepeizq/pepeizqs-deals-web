@@ -88,6 +88,10 @@
     "Valor": "Load more historical lows"
   },
   {
+    "Id": "Index.LastLowsInfo",
+    "Valor": "These deals are historical lows that have not been in bundles, free or subscriptions. And they also exceed 100 reviews on Steam."
+  },
+  {
     "Id": "Index.LastAdded",
     "Valor": "Last Added"
   },
@@ -102,6 +106,10 @@
   {
     "Id": "Index.LastNewsMore",
     "Valor": "Last all news"
+  },
+  {
+    "Id": "Index.LastNewsNo",
+    "Valor": "There has been no news in the last 72 hours, but you can check all current news here."
   },
   {
     "Id": "Index.LastNewsFollow",

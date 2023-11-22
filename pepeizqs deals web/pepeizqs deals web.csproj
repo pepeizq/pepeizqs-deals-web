@@ -12,16 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="imagenes\juegos\ancla - Copia.txt" />
-    <None Remove="imagenes\noticias\ancla - Copia.txt" />
-    <None Remove="imagenes\noticias\ancla.txt" />
-    <None Remove="Plantillas\CambioContraseña.html" />
-    <None Remove="Plantillas\ContraseñaOlvidada.html" />
-    <None Remove="Plantillas\ContraseñaReseteada.html" />
-    <None Remove="Plantillas\NuevaNoticia.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>
@@ -130,11 +120,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Identity\Componentes\Contraseña.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Identity\Componentes\Contraseña.razor" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
   </ItemGroup>

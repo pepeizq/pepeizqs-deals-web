@@ -88,6 +88,10 @@
     "Valor": "Cargar más mínimos históricos"
   },
   {
+    "Id": "Index.LastLowsInfo",
+    "Valor": "Estas ofertas son mínimos históricos que no han estado en bundles, gratis o en suscripciones. Y además superan los 100 análisis en Steam."
+  },
+  {
     "Id": "Index.LastAdded",
     "Valor": "Últimos Añadidos"
   },
@@ -102,6 +106,10 @@
   {
     "Id": "Index.LastNewsMore",
     "Valor": "Cargar todas las noticias"
+  },
+  {
+    "Id": "Index.LastNewsNo",
+    "Valor": "No han ocurrido noticias en las últimas 72 horas, pero puedes consultar todas las noticias vigentes aquí."
   },
   {
     "Id": "Index.LastNewsFollow",
