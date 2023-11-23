@@ -116,6 +116,14 @@
     "Valor": "También puedes seguir las noticias en estas redes sociales:"
   },
   {
+    "Id": "Index.Message1",
+    "Valor": "Si registras una cuenta en la web puedes recibir correos cada vez que un juego de tus deseados alcanza un precio mínimo."
+  },
+  {
+    "Id": "Index.Message2",
+    "Valor": "Esta web no usa ningún tipo de anuncios o recopilación de datos, así que se depende exclusivamente de los afiliados para pagar los gastos de mantener la web."
+  },
+  {
     "Id": "Index.Title",
     "Valor": "Inicio"
   },

@@ -11,6 +11,119 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<style>
+	.destacados-espacio {
+		gap: 15px;
+	}
+
+	.destacados-botonizq {
+		font-size: 20px;
+		margin-right: 20px;
+	}
+
+	.destacados-botonder {
+		font-size: 20px;
+		margin-left: 20px;
+	}
+
+	.destacado-juego {
+		min-width: 150px;
+		max-width: 200px;
+	}
+
+	.destacado-fuente {
+		font-size: 18px;
+	}
+
+	.noticia-fuente {
+		font-size: 18px;
+	}
+
+	.noticia-fecha {
+		font-size: 15px;
+	}
+
+	.minimo-fuente {
+		font-size: 17px;
+	}
+
+	.minimo-fuentefecha {
+		font-size: 14px;
+	}
+
+	.minimo-espacio1 {
+		width: 100px;
+		padding: 20px;
+	}
+
+	.minimo-espacio2 {
+		padding: 10px 15px;
+		margin-right: 15px;
+	}
+
+	.minimo-espacio3 {
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+
+	@@media (max-width: 800px) {
+		.destacados-espacio {
+			gap: 5px;
+		}
+
+		.destacados-botonizq {
+			font-size: 14px;
+			margin-right: 5px;
+		}
+
+		.destacados-botonder {
+			font-size: 14px;
+			margin-left: 5px;
+		}
+
+		.destacado-juego {
+			min-width: 100px;
+			max-width: 150px;
+		}
+
+		.destacado-fuente {
+			font-size: 11px;
+		}
+
+		.noticia-fuente {
+			font-size: 13px;
+		}
+
+		.noticia-fecha {
+			font-size: 11px;
+		}
+
+		.minimo-fuente {
+			font-size: 12px;
+		}
+
+		.minimo-fuentefecha {
+			font-size: 10px;
+		}
+
+		.minimo-espacio1 {
+			width: 60px;
+			padding: 5px;
+		}
+
+		.minimo-espacio2 {
+			padding: 5px 10px;
+			margin-right: 0px;
+		}
+
+		.minimo-espacio3 {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+	}
+}
+</style>
+
 @if (noticiaEvento.Count == 1)
 {
 	<div style="margin-bottom: 50px;">
@@ -41,18 +154,18 @@
 	</div>
 
 	<div style="display: flex; align-items: center; margin-bottom: 60px;">
-		<button @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-right: 20px;"><i class="fa-solid fa-chevron-left"></i></button>
+		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div style="display: grid; grid-auto-flow: column; gap: 15px;">
+		<div class="destacados-espacio" style="display: grid; grid-auto-flow: column;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
-				<div class="tooltip2" style="min-width: 150px; max-width: 200px;">
-					<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 3px;">
+				<div class="tooltip2 destacado-juego">
+					<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
 						</div>
 						<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
-							<div class="juego-descuento" style="margin: 0px; padding: 5px 10px;">
+							<div style="background-color: darkgreen; margin: 0px; padding: 5px 10px;">
 								@CargarDescuento(destacado)
 							</div>
 							<div style="padding: 5px 10px;">
@@ -72,7 +185,7 @@
 			}
 		</div>
 
-		<button @onclick="ClickearAdelante" class="boton-pequeño" style="width: 50px; height: 50px; font-size: 20px; text-align: center; margin-left: 20px;"><i class="fa-solid fa-chevron-right"></i></button>
+		<button @onclick="ClickearAdelante" class="boton-pequeño destacados-botonder" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-right"></i></button>
 	</div>
 }
 
@@ -95,11 +208,11 @@
 						</div>
 
 						<div style="width: 75%; padding: 20px 30px;">
-							<div style="margin-bottom: 15px;">
+							<div class="noticia-fecha" style="margin-bottom: 15px;">
 								@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
 							</div>
 
-							<div style="font-size: 17px;">
+							<div class="noticia-fuente">
 								@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
 							</div>
 						</div>
@@ -124,6 +237,40 @@ else
 	</div>
 }
 
+@if (mensajeMostrar > 0)
+{
+	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto;">
+		@if (mensajeMostrar == 1)
+		{
+			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;" href="/Identity/Account/Register">
+				<div style="display: flex; align-content: center; align-items: center;">
+					<div style="width: 10%; text-align: right; padding-right: 30px;">
+						<i class="fa-solid fa-circle-info" style="font-size: 32px;"></i>
+					</div>
+					<div style="width: 90%;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message1")
+					</div>
+				</div>
+			</a>
+		}
+
+		@if (mensajeMostrar == 2)
+		{
+			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;">
+				<div style="display: flex; align-content: center; align-items: center;">
+					<div style="width: 10%; text-align: right; padding-right: 30px;">
+						<i class="fa-solid fa-euro-sign" style="font-size: 32px;"></i>
+					</div>
+					<div style="width: 90%;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message2")
+					</div>
+				</div>
+			</a>
+		}
+
+	</div>
+}
+
 @if (juegosMinimosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
@@ -140,7 +287,7 @@ else
 	<div style="margin-bottom: 25px;">
 		@foreach (var juego in juegosMinimosMostrar)
 		{
-			<div class="perfil-flexible-centrado" style="margin-top: 20px;">
+			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;">
 				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
@@ -148,20 +295,20 @@ else
 						</div>
 
 						<div style="width: 73%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
-							<label style="font-size: 17px;">@juego.Nombre</label>
+							<label class="minimo-fuente">@juego.Nombre</label>
 							<div style="margin-top: 5px;">
 								<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
 								<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
-								<label style="font-size: 14px;">@CargarFechaDetectado(juego)</label>
+								<label class="minimo-fuentefecha">@CargarFechaDetectado(juego)</label>
 							</div>
 						</div>
 
-						<div style="width: 17%; display: flex; align-items: center; font-size: 17px; text-align: center;">
-							<div style="background-color: darkgreen; padding: 10px 15px; margin-right:	 15px;">
+						<div style="width: 17%; display: flex; align-items: center; text-align: center;">
+							<div class="minimo-fuente minimo-espacio2" style="background-color: darkgreen;">
 								@CargarDescuento(juego)
 							</div>
 
-							<div style="padding: 20px; width: 100px; text-align: center;">
+							<div class="minimo-fuente minimo-espacio1" style="text-align: center;">
 								@CargarPrecio(juego)
 							</div>
 						</div>
@@ -188,13 +335,16 @@ else
 	[Parameter]
 	public string dominio { get; set; }
 
+	private Usuario usuario = new Usuario();
+
 	List<Juego> juegosDestacadosMostrar = new List<Juego>();
 	List<Juego> juegosDestacadosGestor = new List<Juego>();
 	public int cantidadDestacadosMostrar = 6;
 	public int posicionDestacadosMostrar = 0;
 
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
-	List<Juego> juegosAñadidosMostrar = new List<Juego>();
+
+	private int mensajeMostrar = 0;
 
 	List<Noticia> noticiasMostrar = new List<Noticia>();
 	List<Noticia> noticiasGestor = new List<Noticia>();
@@ -202,6 +352,16 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		if (usuario == null)
+		{
+			Random rnd = new Random();
+			mensajeMostrar = rnd.Next(1, 3);
+		}
+
+		//------------------------------------------------
+
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
@@ -257,29 +417,6 @@ else
 
 			#endregion
 
-			#region Añadidos
-
-			if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
-			{
-				juegosAñadidosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosAnadidos");
-
-				if (juegosAñadidosMostrar.Count > 0)
-				{
-					juegosAñadidosMostrar = juegosAñadidosMostrar.OrderBy(x => x.IdMaestra).Reverse().ToList();
-
-					foreach (Juego juego in juegosAñadidosMostrar)
-					{
-						try
-						{
-							juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
-						}
-						catch { }
-					}
-				}
-			}
-
-			#endregion
-
 			#region Noticias
 
 			noticiasGestor = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
@@ -294,7 +431,7 @@ else
 					{
 						try
 						{
-							await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
+							noticia.Imagen = await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
 						}
 						catch {}					
 					}
@@ -307,8 +444,6 @@ else
 						noticiasMostrar.Add(noticia);
 					}
 				}
-
-
 			}
 
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");

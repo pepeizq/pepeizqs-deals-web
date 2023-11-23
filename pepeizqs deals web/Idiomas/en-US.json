@@ -120,6 +120,14 @@
     "Valor": "Home Page"
   },
   {
+    "Id": "Index.Message1",
+    "Valor": "If you register an account on the website you can receive emails every time a game you want reaches a minimum price."
+  },
+  {
+    "Id": "Index.Message2",
+    "Valor": "This website does not use any type of advertising or data collection, so it depends exclusively on affiliates to pay the costs of maintaining the website."
+  },
+  {
     "Id": "Login.Title",
     "Valor": "Log in"
   },

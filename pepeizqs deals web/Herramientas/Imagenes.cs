@@ -9,25 +9,37 @@ namespace Herramientas
 	{
 		public static async Task<string> DescargarYGuardar(string fichero, string subCarpeta, string nombreCarpeta, string nombreFichero, string dominio)
 		{
-			if (string.IsNullOrEmpty(dominio) == false)
+			//if (string.IsNullOrEmpty(dominio) == false)
+			//{
+			//	if (dominio.Contains("beta") == false)
+			//	{
+			//		if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false)
+			//		{
+			//			Stream ficheroStream = await CogerStreamFichero(fichero);
+
+			//			if (ficheroStream != Stream.Null)
+			//			{
+			//				await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+			//			}
+			//		}
+
+			//		return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
+			//	}
+
+
+			//}
+
+			if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".jpg") == false)
 			{
-				if (dominio.Contains("beta") == false)
+				Stream ficheroStream = await CogerStreamFichero(fichero);
+
+				if (ficheroStream != Stream.Null)
 				{
-					if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false)
-					{
-						Stream ficheroStream = await CogerStreamFichero(fichero);
-
-						if (ficheroStream != Stream.Null)
-						{
-							await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
-						}
-					}
-
-					return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
+					await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
 				}
 			}
 
-			return fichero;
+			return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".jpg";
 		}
 
 		public static async Task<Stream> CogerStreamFichero(string ficheroEnlace)
@@ -79,21 +91,33 @@ namespace Herramientas
 				}
 				catch { }
 
-				using (var ficheroWebpStream = new FileStream(ruta + ".webp", FileMode.Create))
-				{
-					using (ImageFactory imagenFabrica = new ImageFactory(preserveExifData: false))
-					{
-						FormFile ficheroWebp = new FormFile(ficheroSalidaStream, 0, ficheroSalidaStream.Length, null, nombreFichero + ".webp");
+				//using (var ficheroWebpStream = new FileStream(ruta + ".webp", FileMode.Create))
+				//{
+				//	using (ImageFactory imagenFabrica = new ImageFactory(preserveExifData: false))
+				//	{
+				//		FormFile ficheroWebp = new FormFile(ficheroSalidaStream, 0, ficheroSalidaStream.Length, null, nombreFichero + ".webp");
 
-						imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Quality(50).Save(ficheroWebpStream);
-					}
-				}
+				//		imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Quality(50).Save(ficheroWebpStream);
+				//	}
+				//}
+
+				//try
+				//{
+					
+				//}
+				//catch 
+				//{
+				//	//if (File.Exists(ruta + ".webp") == true)
+				//	//{
+				//	//	File.Delete(ruta + ".webp");
+				//	//}
+				//}
 			}
 
-			if (File.Exists(ruta + ".jpg") == true)
-			{
-				File.Delete(ruta + ".jpg");
-			}
+			//if (File.Exists(ruta + ".jpg") == true)
+			//{
+			//	File.Delete(ruta + ".jpg");
+			//}
 		}
 	}
 }
