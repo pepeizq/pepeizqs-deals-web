@@ -20,6 +20,7 @@
     color: var(--colorTexto);
     height: 100%;
     font-family: 'Motiva Sans';
+    position: relative;
 }
 
 .cuerpo-ancho {
@@ -43,8 +44,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    transform: translateY(100%);
 }
 
 .texto-logo {

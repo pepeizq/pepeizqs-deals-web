@@ -141,14 +141,29 @@
     </main>
 
     <footer class="pie">
-        <div class="cuerpo-ancho">
-            <div style="display: flex; align-items: center;">
-                <div style="width: 80%; text-align: left;">
-                    &copy; @DateTime.Now.Year.ToString() • <a href="https://pepeizqapps.com/" class="texto-pie" target="_blank">pepeizq's apps</a> • pepeizq's deals • <a asp-page="/Privacy" class="texto-pie">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Privacy")</a>
+        <div class="cuerpo-ancho" style="padding-top: 30px; padding-bottom: 30px;">
+            <div style="display: flex; align-items: center; font-size: 17px;">
+                <div style="width: 50%; text-align: left;">
+                    &copy; @DateTime.Now.Year.ToString() • <a href="https://pepeizqapps.com/" style="text-decoration: none;" target="_blank">pepeizq's apps</a> • pepeizq's deals
+                </div>
+
+                <div style="width: 30%;">
+                    <div>
+                        <a href="https://github.com/pepeizq/pepeizqs-deals-web/" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Layout.SourceCode")</a>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <a href="/Privacy" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Privacy")</a>
+                    </div>
                 </div>
 
                 <div style="width: 20%; text-align: right;">
-                    <a href="https://github.com/pepeizq/pepeizqs-deals-web/" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Layout.SourceCode")</a>
+                    <div style="display: flex; align-items: center; justify-content: center; font-size: 24px; text-align: center;">
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://discord.gg/GBT3FXnrm3" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://t.me/pepeizqdeals2" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://reddit.com/r/pepeizqdeals/" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://twitter.com/pepeizqdeals" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+                    </div>
                 </div>
             </div>          
         </div>

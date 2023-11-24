@@ -9,37 +9,25 @@ namespace Herramientas
 	{
 		public static async Task<string> DescargarYGuardar(string fichero, string subCarpeta, string nombreCarpeta, string nombreFichero, string dominio)
 		{
-			//if (string.IsNullOrEmpty(dominio) == false)
-			//{
-			//	if (dominio.Contains("beta") == false)
-			//	{
-			//		if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".webp") == false)
-			//		{
-			//			Stream ficheroStream = await CogerStreamFichero(fichero);
-
-			//			if (ficheroStream != Stream.Null)
-			//			{
-			//				await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
-			//			}
-			//		}
-
-			//		return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".webp";
-			//	}
-
-
-			//}
-
-			if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".jpg") == false)
+			if (string.IsNullOrEmpty(dominio) == false)
 			{
-				Stream ficheroStream = await CogerStreamFichero(fichero);
-
-				if (ficheroStream != Stream.Null)
+				if (dominio.Contains("beta") == false)
 				{
-					await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+					if (File.Exists(Directory.GetCurrentDirectory() + "\\imagenes\\" + subCarpeta + "\\" + nombreCarpeta + "\\" + nombreFichero + ".jpg") == false)
+					{
+						Stream ficheroStream = await CogerStreamFichero(fichero);
+
+						if (ficheroStream != Stream.Null)
+						{
+							await GuardarStream(ficheroStream, subCarpeta, nombreCarpeta, nombreFichero);
+						}
+					}
+
+					return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".jpg";
 				}
 			}
 
-			return "/imagenes/" + subCarpeta + "/" + nombreCarpeta + "/" + nombreFichero + ".jpg";
+			return fichero;
 		}
 
 		public static async Task<Stream> CogerStreamFichero(string ficheroEnlace)

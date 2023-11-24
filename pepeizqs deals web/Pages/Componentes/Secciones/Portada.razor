@@ -140,6 +140,18 @@
 	</div>
 }
 
+<label>juegos mostrar: @juegosDestacadosMostrar.Count</label>
+<label>/</label>
+<label>juegos total: @juegosDestacadosGestor.Count</label>
+<label>/</label>
+<label>posicion: @posicionDestacadosMostrar</label>
+<label>/</label>
+<label>cantidad: @cantidadDestacadosMostrar</label>
+<label>/</label>
+<label>tope atras: @topeAtras</label>
+<label>/</label>
+<label>tope adelante: @topeAdelante</label>
+
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
@@ -318,7 +330,7 @@ else
 		}
 	</div>
 
-	<div style="margin-bottom: 25px; margin-left: auto; margin-right: auto; width: 400px;">
+	<div style="margin-bottom: 50px; margin-left: auto; margin-right: auto; width: 400px;">
 		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastLows">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 		</a>
@@ -341,6 +353,8 @@ else
 	List<Juego> juegosDestacadosGestor = new List<Juego>();
 	public int cantidadDestacadosMostrar = 6;
 	public int posicionDestacadosMostrar = 0;
+	public int topeAtras = 0;
+	public int topeAdelante = 0;
 
 	List<Juego> juegosMinimosMostrar = new List<Juego>();
 
@@ -374,24 +388,15 @@ else
 			{
 				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
 
-				foreach (var juego in juegosDestacadosGestor)
+				for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
 				{
-					if (posicionDestacadosMostrar < cantidadDestacadosMostrar)
+					try
 					{
-						try
-						{
-							juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
-						}
-						catch { }
-
-						juegosDestacadosMostrar.Add(juego);
+						juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
 					}
-					else
-					{
-						break;
-					}
+					catch { }
 
-					posicionDestacadosMostrar += 1;
+					juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 				}
 			}
 
@@ -457,50 +462,70 @@ else
 	private async void ClickearAdelante()
 	{
 		juegosDestacadosMostrar.Clear();
+		
+		posicionDestacadosMostrar += cantidadDestacadosMostrar;
+		topeAdelante = posicionDestacadosMostrar + cantidadDestacadosMostrar;
 
-		if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count - cantidadDestacadosMostrar)
+		if (posicionDestacadosMostrar > juegosDestacadosGestor.Count)
 		{
 			posicionDestacadosMostrar = 0;
+			topeAdelante = cantidadDestacadosMostrar;
 		}
 
-		int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
-		while (posicionDestacadosMostrar < tope)
+		for (int i = posicionDestacadosMostrar; i < topeAdelante; i += 1)
 		{
 			try
 			{
-				juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
+				juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
 			}
 			catch { }
 
-			juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
-
-			posicionDestacadosMostrar += 1;
+			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 		}
+
+
+		// if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count - cantidadDestacadosMostrar)
+		// {
+		// 	posicionDestacadosMostrar = 0;
+		// }
+
+		// int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
+		// while (posicionDestacadosMostrar < tope)
+		// {
+		// 	try
+		// 	{
+		// 		juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
+		// 	}
+		// 	catch { }
+
+		// 	juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
+
+		// 	posicionDestacadosMostrar += 1;
+		// }
 	}
 
 	private async void ClickearAtras()
 	{
 		juegosDestacadosMostrar.Clear();
 
-		posicionDestacadosMostrar -= (cantidadDestacadosMostrar * 2);
+		topeAtras = posicionDestacadosMostrar;
+		posicionDestacadosMostrar -= cantidadDestacadosMostrar;
 
 		if (posicionDestacadosMostrar < 0)
 		{
 			posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
+			topeAtras = juegosDestacadosGestor.Count;
 		}
 
-		int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
-		while (posicionDestacadosMostrar < tope)
+		for (int i = posicionDestacadosMostrar; i < topeAtras; i += 1)
 		{
 			try
 			{
-				juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
+				juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
 			}
 			catch { }
 
-			juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
-
-			posicionDestacadosMostrar += 1;
+			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 		}
 	}
 
