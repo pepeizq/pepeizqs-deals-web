@@ -140,7 +140,7 @@
 	</div>
 }
 
-<label>juegos mostrar: @juegosDestacadosMostrar.Count</label>
+@* <label>juegos mostrar: @juegosDestacadosMostrar.Count</label>
 <label>/</label>
 <label>juegos total: @juegosDestacadosGestor.Count</label>
 <label>/</label>
@@ -150,7 +150,7 @@
 <label>/</label>
 <label>tope atras: @topeAtras</label>
 <label>/</label>
-<label>tope adelante: @topeAdelante</label>
+<label>tope adelante: @topeAdelante</label> *@
 
 @if (juegosDestacadosMostrar.Count > 0)
 {
@@ -213,7 +213,7 @@
 		@foreach (var noticia in noticiasMostrar)
 		{
 			<div class="perfil-flexible-centrado" style="margin-top: 20px;">
-				<a class="boton-pequeño" style="padding: 1px;" href="/news/@noticia.IdMaestra">
+				<a class="boton-pequeño" style="padding: 1px;" href="@noticia.Enlace" target="@SacarNoticiaNuevaPestaña(noticia)">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 25%;">
 							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" />
@@ -280,6 +280,20 @@ else
 			</a>
 		}
 
+		@if (mensajeMostrar == 3)
+		{
+			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;" href="https://github.com/pepeizq/pepeizqs-deals-web/">
+				<div style="display: flex; align-content: center; align-items: center;">
+					<div style="width: 10%; text-align: right; padding-right: 30px;">
+						<i class="fa-solid fa-github" style="font-size: 32px;"></i>
+					</div>
+					<div style="width: 90%;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message3")
+					</div>
+				</div>
+			</a>
+		}
+
 	</div>
 }
 
@@ -330,7 +344,7 @@ else
 		}
 	</div>
 
-	<div style="margin-bottom: 50px; margin-left: auto; margin-right: auto; width: 400px;">
+	<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
 		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastLows">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 		</a>
@@ -371,7 +385,7 @@ else
 		if (usuario == null)
 		{
 			Random rnd = new Random();
-			mensajeMostrar = rnd.Next(1, 3);
+			mensajeMostrar = rnd.Next(1, 4);
 		}
 
 		//------------------------------------------------
@@ -441,6 +455,11 @@ else
 						catch {}					
 					}
 
+					if (noticia.Enlace == null)
+					{
+						noticia.Enlace = "/news/" + noticia.IdMaestra.ToString();
+					}
+
 					DateTime fechaTemporal = noticia.FechaEmpieza;
 					fechaTemporal = fechaTemporal.AddDays(3);
 
@@ -459,6 +478,19 @@ else
 		conexion.Dispose();
 	}
 
+	private string SacarNoticiaNuevaPestaña(Noticia noticia)
+	{
+		if (noticia.Enlace != null)
+		{
+			if (noticia.Enlace.Contains("/link/") == true)
+			{
+				return "_blank";
+			}
+		}
+
+		return "_self";
+	}
+
 	private async void ClickearAdelante()
 	{
 		juegosDestacadosMostrar.Clear();
@@ -466,7 +498,7 @@ else
 		posicionDestacadosMostrar += cantidadDestacadosMostrar;
 		topeAdelante = posicionDestacadosMostrar + cantidadDestacadosMostrar;
 
-		if (posicionDestacadosMostrar > juegosDestacadosGestor.Count)
+		if (topeAdelante > juegosDestacadosGestor.Count)
 		{
 			posicionDestacadosMostrar = 0;
 			topeAdelante = cantidadDestacadosMostrar;
@@ -482,26 +514,6 @@ else
 
 			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 		}
-
-
-		// if (posicionDestacadosMostrar >= juegosDestacadosGestor.Count - cantidadDestacadosMostrar)
-		// {
-		// 	posicionDestacadosMostrar = 0;
-		// }
-
-		// int tope = posicionDestacadosMostrar + cantidadDestacadosMostrar;
-		// while (posicionDestacadosMostrar < tope)
-		// {
-		// 	try
-		// 	{
-		// 		juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[posicionDestacadosMostrar].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[posicionDestacadosMostrar].IdMaestra.ToString(), "library_600x900", dominio);
-		// 	}
-		// 	catch { }
-
-		// 	juegosDestacadosMostrar.Add(juegosDestacadosGestor[posicionDestacadosMostrar]);
-
-		// 	posicionDestacadosMostrar += 1;
-		// }
 	}
 
 	private async void ClickearAtras()

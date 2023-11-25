@@ -72,6 +72,14 @@
     "Valor": "Código Fuente"
   },
   {
+    "Id": "Layout.Contact",
+    "Valor": "Contacto"
+  },
+  {
+    "Id": "Layout.Beta",
+    "Valor": "Versión Beta"
+  },
+  {
     "Id": "Index.HighDeals",
     "Valor": "Ofertas Destacadas"
   },
@@ -122,6 +130,10 @@
   {
     "Id": "Index.Message2",
     "Valor": "Esta web no usa ningún tipo de anuncios o recopilación de datos, así que se depende exclusivamente de los afiliados para pagar los gastos de mantener la web."
+  },
+  {
+    "Id": "Index.Message3",
+    "Valor": "Esta web es de código abierto, esto quiere decir que podéis coger el código fuente y montar vuestra propia versión de la web, aunque debo añadir que el código no incluye la base de datos."
   },
   {
     "Id": "Index.Title",
@@ -357,7 +369,7 @@
   },
   {
     "Id": "News.BundleString5",
-    "Valor": "El {0} ha sido lanzado en {1}"
+    "Valor": "{0} ha sido lanzado en {1}"
   },
   {
     "Id": "News.FreeString1",
@@ -898,5 +910,13 @@
   {
     "Id": "ResetPassword.String6",
     "Valor": "La contraseña se ha reseteado con éxito"
+  },
+  {
+    "Id": "Contact.Title",
+    "Valor": "Contacto"
+  },
+  {
+    "Id": "Contact.String1",
+    "Valor": "Solo atenderé a correos con asuntos relacionados directamente con la web, si tenéis problemas con alguna tienda en concreto ir a su respectivo servicio de atención al cliente."
   }
 ]

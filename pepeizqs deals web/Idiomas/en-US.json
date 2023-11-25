@@ -72,6 +72,14 @@
     "Valor": "Source Code"
   },
   {
+    "Id": "Layout.Contact",
+    "Valor": "Contact"
+  },
+  {
+    "Id": "Layout.Beta",
+    "Valor": "Beta Version"
+  },
+  {
     "Id": "Index.HighDeals",
     "Valor": "Highlighted Deals"
   },
@@ -126,6 +134,10 @@
   {
     "Id": "Index.Message2",
     "Valor": "This website does not use any type of advertising or data collection, so it depends exclusively on affiliates to pay the costs of maintaining the website."
+  },
+  {
+    "Id": "Index.Message3",
+    "Valor": "This website is open source, this means that you can take the source code and create your own version of the website, although I must add that the code does not include the database."
   },
   {
     "Id": "Login.Title",
@@ -357,7 +369,7 @@
   },
   {
     "Id": "News.BundleString5",
-    "Valor": "The {0} has been released on {1}"
+    "Valor": "{0} has been released on {1}"
   },
   {
     "Id": "News.FreeString1",
@@ -898,5 +910,13 @@
   {
     "Id": "ResetPassword.String6",
     "Valor": "The password has been reset successfully"
+  },
+  {
+    "Id": "Contact.Title",
+    "Valor": "Contact"
+  },
+  {
+    "Id": "Contact.String1",
+    "Valor": "I will only respond to emails with issues directly related to the website, if you have problems with a specific store, go to their respective customer service."
   }
 ]

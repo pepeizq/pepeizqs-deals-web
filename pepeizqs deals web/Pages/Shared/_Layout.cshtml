@@ -14,7 +14,7 @@
 
     if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
     {
-        titulo = "pepeizq's deals • Now with more bugs than all Bethesda games";
+        titulo = "pepeizq's deals • Now with Email Notifications";
     }
     else
     {
@@ -147,12 +147,18 @@
                     &copy; @DateTime.Now.Year.ToString() • <a href="https://pepeizqapps.com/" style="text-decoration: none;" target="_blank">pepeizq's apps</a> • pepeizq's deals
                 </div>
 
-                <div style="width: 30%;">
+                <div style="width: 30%; font-size: 15px;">
                     <div>
                         <a href="https://github.com/pepeizq/pepeizqs-deals-web/" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Layout.SourceCode")</a>
                     </div>
-                    <div style="margin-top: 10px;">
+                    <div style="margin-top: 5px;">
+                        <a href="/Contact" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Contact")</a>
+                    </div>
+                    <div style="margin-top: 5px;">
                         <a href="/Privacy" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Privacy")</a>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <a href="https://beta.pepeizqdeals.com/" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Beta")</a>
                     </div>
                 </div>
 

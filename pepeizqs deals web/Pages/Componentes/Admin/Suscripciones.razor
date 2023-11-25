@@ -16,7 +16,7 @@
 						@foreach (var juego in juegosBuscador)
 						{
 							<div class="perfil-flexible-centrado perfil-espacio-top">
-								<button @onclick="@(e => SeleccionarJuego(e, @juego.Id.ToString(), juego.Imagenes.Library_600x900, @juego.Nombre))" class="boton-pequeño">
+								<button @onclick="@(e => SeleccionarJuego(e, juego.Id.ToString(), juego.Imagenes.Library_600x900, juego.Nombre, juego.Imagenes.Header_460x215))" class="boton-pequeño">
 									<div class="perfil-flexible-centrado">
 										<div style="width: 12%;">
 											<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
@@ -137,14 +137,15 @@
 		}
 	}
 
-	private void SeleccionarJuego(MouseEventArgs e, string id, string imagen, string nombre)
+	private void SeleccionarJuego(MouseEventArgs e, string id, string imagenVertical, string nombre, string imagenNoticia2)
 	{
 		cadenaBusqueda = null;
 		juegosBuscador = new List<Juegos.Juego>();
 
 		idSeleccionada = id;
-		imagenSeleccionada = imagen;
+		imagenSeleccionada = imagenVertical;
 		nombreSeleccionado = nombre;
+		imagenNoticia = imagenNoticia2;
 
 		// ----------------------------------
 

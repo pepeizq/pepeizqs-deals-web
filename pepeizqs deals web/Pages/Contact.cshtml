@@ -1,0 +1,25 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.ContactModel
+
+@{
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Contact.Title");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div style="font-size: 23px; text-align: left; margin-bottom: 30px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "Contact.Title")
+</div>
+
+<div class="alert alert-danger alert-dismissible" style="display: flex; align-items: center;" role="alert">
+	<div style="width: 6%; text-align: center;">
+		<i class="fa-solid fa-circle-exclamation" style="font-size: 30px;"></i>
+	</div>
+	<div style="width: 94%;">
+		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Contact.String1")
+	</div>	
+</div>
+
+<div class="perfil" style="margin-bottom: 40px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "Contact.String2")
+	admin@pepeizqdeals.com
+</div>

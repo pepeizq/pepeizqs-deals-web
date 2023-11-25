@@ -4,16 +4,16 @@
 	ViewData["Title"] = @Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.Title");
 }
 
-<div style="font-size: 23px; text-align: left;">
+<div style="font-size: 23px; text-align: left; margin-bottom: 30px;">
 	@Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.Title")
 </div>
 
-<hr/>
-
 <div class="perfil" style="margin-bottom: 40px;">
-	<div style="font-size: 20px; margin-bottom: 20px;">
+	<div style="font-size: 20px;">
 		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.String1")
 	</div>
+
+	<hr />
 
 	<div>
 		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.String2")
@@ -32,9 +32,11 @@
 </div>
 
 <div class="perfil">
-	<div style="font-size: 20px; margin-bottom: 20px;">
+	<div style="font-size: 20px;">
 		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.String6")
 	</div>
+
+	<hr/>
 
 	<div style="margin-bottom: 20px;">
 		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Privacy.String7")
