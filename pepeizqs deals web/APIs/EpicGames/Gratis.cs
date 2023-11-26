@@ -8,7 +8,8 @@
 			{
 				Tipo = Gratis2.GratisTipo.EpicGames,
 				Nombre = "Epic Games Store",
-				Imagen = "/imagenes/tiendas/epic_300x80.webp",
+				ImagenLogo = "/imagenes/tiendas/epic_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/epic_300x80.webp",
 				DRMDefecto = Juegos.JuegoDRM.Epic,
 				DRMEnseñar = false
 			};

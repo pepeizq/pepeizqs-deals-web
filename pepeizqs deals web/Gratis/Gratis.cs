@@ -8,7 +8,8 @@ namespace Gratis2
 	{
 		public GratisTipo Tipo;
 		public string Nombre;
-		public string Imagen;
+		public string ImagenLogo;
+		public string ImagenIcono;
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;

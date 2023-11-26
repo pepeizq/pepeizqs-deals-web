@@ -10,7 +10,8 @@ namespace APIs.Humble
 			{
 				Id = Suscripciones2.SuscripcionTipo.HumbleChoice,
 				Nombre = "Humble Choice",
-				Imagen = "/imagenes/suscripciones/humblechoice.webp",
+				ImagenLogo = "/imagenes/suscripciones/humblechoice.webp",
+				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam
 			};

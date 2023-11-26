@@ -63,7 +63,7 @@ namespace pepeizqs_deals_web.Pages
 							mensajeEnlace = Herramientas.Idiomas.CogerCadena(idioma, "News.String8");
 						}
 
-						imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).Imagen;
+						imagenLogo = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
 					}
 					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
@@ -73,7 +73,7 @@ namespace pepeizqs_deals_web.Pages
 							mensajeEnlace = Herramientas.Idiomas.CogerCadena(idioma, "News.String9");
 						}
 
-						imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).Imagen;
+						imagenLogo = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
 					}
 
 					if (noticia.Juegos != null)

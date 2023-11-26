@@ -15,6 +15,7 @@ namespace APIs.Humble
 				Tipo = Bundles2.BundleTipo.HumbleBundle,
 				NombreTienda = "Humble Bundle",
 				ImagenTienda = "/imagenes/bundles/humblebundle_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				EnlaceBase = "humblebundle.com",
 				Pick = false,
 				ImagenesExtra = new List<string> { "/imagenes/bundles/humble_logo1.webp", "/imagenes/bundles/humble_logo2.webp" }

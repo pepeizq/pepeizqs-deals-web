@@ -918,5 +918,9 @@
   {
     "Id": "Contact.String1",
     "Valor": "Solo atenderé a correos con asuntos relacionados directamente con la web, si tenéis problemas con alguna tienda en concreto ir a su respectivo servicio de atención al cliente."
+  },
+  {
+    "Id": "Contact.String2",
+    "Valor": "Escribirme al siguiente correo:"
   }
 ]

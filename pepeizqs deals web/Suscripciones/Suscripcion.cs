@@ -8,7 +8,8 @@ namespace Suscripciones2
 	{
 		public SuscripcionTipo Id;
 		public string Nombre;
-		public string Imagen;
+		public string ImagenLogo;
+		public string ImagenIcono;
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;

@@ -220,8 +220,12 @@
 						</div>
 
 						<div style="width: 75%; padding: 20px 30px;">
-							<div class="noticia-fecha" style="margin-bottom: 15px;">
-								@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
+							<div style="margin-bottom: 15px; display: flex; align-items:center;">
+								<div class="noticia-fecha" style="margin-right: 10px;">
+									@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
+								</div>
+
+								<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px;" />
 							</div>
 
 							<div class="noticia-fuente">
@@ -494,7 +498,7 @@ else
 	private async void ClickearAdelante()
 	{
 		juegosDestacadosMostrar.Clear();
-		
+
 		posicionDestacadosMostrar += cantidadDestacadosMostrar;
 		topeAdelante = posicionDestacadosMostrar + cantidadDestacadosMostrar;
 
@@ -657,6 +661,26 @@ else
 		}
 
 		return enlace;
+	}
+
+	private string CargarIconoNoticia(Noticia noticia)
+	{
+		string icono = string.Empty;
+
+		if (noticia.Tipo == NoticiaTipo.Bundles)
+		{
+			icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+		}
+		else if (noticia.Tipo == NoticiaTipo.Gratis)
+		{
+			icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
+		}
+		else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+		{
+			icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
+		}
+
+		return icono;
 	}
 
 	private string CargarFondoNoticia(Noticia noticia)
