@@ -406,14 +406,17 @@ else
 			{
 				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
 
-				for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
+				foreach (var juego in juegosDestacadosGestor)
 				{
 					try
 					{
-						juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
+						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
 					}
-					catch { }
+					catch { }					
+				}
 
+				for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
+				{
 					juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 				}
 			}
@@ -495,7 +498,7 @@ else
 		return "_self";
 	}
 
-	private async void ClickearAdelante()
+	private void ClickearAdelante()
 	{
 		juegosDestacadosMostrar.Clear();
 
@@ -510,17 +513,11 @@ else
 
 		for (int i = posicionDestacadosMostrar; i < topeAdelante; i += 1)
 		{
-			try
-			{
-				juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
-			}
-			catch { }
-
 			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 		}
 	}
 
-	private async void ClickearAtras()
+	private void ClickearAtras()
 	{
 		juegosDestacadosMostrar.Clear();
 
@@ -535,12 +532,6 @@ else
 
 		for (int i = posicionDestacadosMostrar; i < topeAtras; i += 1)
 		{
-			try
-			{
-				juegosDestacadosGestor[i].Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juegosDestacadosGestor[i].Imagenes.Library_600x900, "juegos", juegosDestacadosGestor[i].IdMaestra.ToString(), "library_600x900", dominio);
-			}
-			catch { }
-
 			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
 		}
 	}
