@@ -1,6 +1,10 @@
 ﻿#nullable disable
 
 using Juegos;
+using MailKit.Net.Imap;
+using MailKit.Search;
+using MailKit.Security;
+using MailKit;
 using Noticias;
 using System.Net.Mail;
 
@@ -191,6 +195,31 @@ namespace Herramientas
                 cliente.Send(mensaje);
 			}
 		}
+
+		public static int ComprobarNuevosCorreos()
+		{
+			int correos = 0;
+
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+            string host = builder.Configuration.GetValue<string>("Correo:Host");
+            string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
+            using (ImapClient cliente = new ImapClient())
+            {
+                cliente.Connect(host, 143, SecureSocketOptions.Auto);
+                cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+                cliente.Inbox.Open(FolderAccess.ReadOnly);
+
+				//correos = cliente.Inbox.Search(SearchQuery.New).Count;
+
+				correos = cliente.Inbox.Search(SearchQuery.NotSeen).Count;
+
+				cliente.Disconnect(true);
+			}
+
+            return correos;
+        }
 	}
 
 	public class Correo

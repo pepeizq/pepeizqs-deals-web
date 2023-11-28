@@ -312,6 +312,38 @@
     "Valor": "Old News"
   },
   {
+    "Id": "News.Type1",
+    "Valor": "Deals"
+  },
+  {
+    "Id": "News.Type2",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "News.Type3",
+    "Valor": "Free"
+  },
+  {
+    "Id": "News.Type4",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "News.Type5",
+    "Valor": "Events"
+  },
+  {
+    "Id": "News.Type6",
+    "Valor": "Giveaways"
+  },
+  {
+    "Id": "News.Type7",
+    "Valor": "Rumors"
+  },
+  {
+    "Id": "News.Type8",
+    "Valor": "Others"
+  },
+  {
     "Id": "News.String1",
     "Valor": "This promotion ends in {0} days"
   },

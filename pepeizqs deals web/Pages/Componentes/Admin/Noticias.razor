@@ -315,8 +315,7 @@
 	private void AñadirNoticia(MouseEventArgs e)
 	{
 		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
-
-		noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
+		
 		noticia.TituloEn = tituloEn;
 		noticia.TituloEs = tituloEs;
 		noticia.Imagen = imagen;
@@ -330,14 +329,17 @@
 
 		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
 		{
+			noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
 			noticia.BundleTipo = Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado).Tipo;
 		}
 		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
 		{
+			noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
 			noticia.GratisTipo = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).Tipo;
 		}
 		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
 		{
+			noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
 			noticia.SuscripcionTipo = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionada).Id;
 		}
 

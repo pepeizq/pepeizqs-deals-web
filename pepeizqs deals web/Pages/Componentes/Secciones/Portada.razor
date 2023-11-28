@@ -220,12 +220,14 @@
 						</div>
 
 						<div style="width: 75%; padding: 20px 30px;">
-							<div style="margin-bottom: 15px; display: flex; align-items:center;">
-								<div class="noticia-fecha" style="margin-right: 10px;">
+							<div style="margin-bottom: 20px; display: flex; align-items: center;">
+								<div class="noticia-fecha" style="margin-right: 20px;">
 									@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
 								</div>
 
-								<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px;" />
+								<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" />
+
+								<label style="font-size: 15px;">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
 							</div>
 
 							<div class="noticia-fuente">
@@ -321,7 +323,7 @@ else
 				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
-							<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+							<img src="@juego.Imagenes.Capsule_231x87" style="height: 100%; width: 100%;" />
 						</div>
 
 						<div style="width: 73%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
