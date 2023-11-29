@@ -9,7 +9,6 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -59,12 +58,6 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
        options.TokenLifespan = TimeSpan.FromHours(3));
 
 #endregion
-
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-    options.HttpsPort = 5001;
-});
 
 //----------------------------------------------------------------------------------
 

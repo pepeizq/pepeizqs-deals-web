@@ -291,7 +291,7 @@ else
 			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;" href="https://github.com/pepeizq/pepeizqs-deals-web/">
 				<div style="display: flex; align-content: center; align-items: center;">
 					<div style="width: 10%; text-align: right; padding-right: 30px;">
-						<i class="fa-solid fa-github" style="font-size: 32px;"></i>
+						<i class="fa-brands fa-github" style="font-size: 32px;"></i>
 					</div>
 					<div style="width: 90%;">
 						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message3")
@@ -402,83 +402,104 @@ else
 		{
 			#region Destacados
 
-			juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
-
-			if (juegosDestacadosGestor.Count > 0)
+			try
 			{
-				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
+				juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+			}
+			catch { }
 
-				foreach (var juego in juegosDestacadosGestor)
+			if (juegosDestacadosGestor != null)
+			{
+				if (juegosDestacadosGestor.Count > 0)
 				{
-					try
+					juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
+
+					foreach (var juego in juegosDestacadosGestor)
 					{
-						juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+						try
+						{
+							juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
+						}
+						catch { }
 					}
-					catch { }					
-				}
 
-				for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
-				{
-					juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+					for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
+					{
+						juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+					}
 				}
 			}
-
+			
 			#endregion
 
 			#region Minimos
 
-			juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
-
-			if (juegosMinimosMostrar.Count > 0)
+			try
 			{
-				juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(x => x.Id).ToList();
-
-				foreach (Juego juego in juegosMinimosMostrar)
-				{
-					try
-					{
-						juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
-					}
-					catch { }					
-				}
+				juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
 			}
+			catch { }
+
+			if (juegosMinimosMostrar != null)
+			{
+				if (juegosMinimosMostrar.Count > 0)
+				{
+					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(x => x.Id).ToList();
+
+					foreach (Juego juego in juegosMinimosMostrar)
+					{
+						try
+						{
+							juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
+						}
+						catch { }
+					}
+				}
+			}			
 
 			#endregion
 
 			#region Noticias
 
-			noticiasGestor = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
-
-			if (noticiasGestor.Count > 0)
+			try
 			{
-				noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+				noticiasGestor = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
+			}
+			catch { }
 
-				foreach (Noticia noticia in noticiasGestor)
+			if (noticiasGestor != null)
+			{
+				if (noticiasGestor.Count > 0)
 				{
-					if (noticia.Imagen != null)
+					noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+					foreach (Noticia noticia in noticiasGestor)
 					{
-						try
+						if (noticia.Imagen != null)
 						{
-							noticia.Imagen = await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
+							try
+							{
+								noticia.Imagen = await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
+							}
+							catch { }
 						}
-						catch {}					
-					}
 
-					if (noticia.Enlace == null)
-					{
-						noticia.Enlace = "/news/" + noticia.IdMaestra.ToString();
-					}
+						if (noticia.Enlace == null)
+						{
+							noticia.Enlace = "/news/" + noticia.IdMaestra.ToString();
+						}
 
-					DateTime fechaTemporal = noticia.FechaEmpieza;
-					fechaTemporal = fechaTemporal.AddDays(3);
+						DateTime fechaTemporal = noticia.FechaEmpieza;
+						fechaTemporal = fechaTemporal.AddDays(3);
 
-					if (fechaTemporal > DateTime.Now)
-					{
-						noticiasMostrar.Add(noticia);
+						if (fechaTemporal > DateTime.Now)
+						{
+							noticiasMostrar.Add(noticia);
+						}
 					}
 				}
 			}
-
+			
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
 
 			#endregion

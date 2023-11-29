@@ -110,7 +110,7 @@
 		</div>
 
 		@if (suscripcionSeleccionada != null)
-		{
+		{		
 			<div style="margin-left: 20px; margin-top: 20px;">
 				@foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionada, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
 				{

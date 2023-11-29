@@ -19,6 +19,8 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{
+		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego}))
+
 		<div style="margin-bottom: 80px; margin-left: -10px; width: 100%; display: flex; align-items: center;">
 			<a class="juego-boton-pequeño" href="/Admin/Juegos/Editar?id=@Model.juego.Id">Editar Juego</a>
 

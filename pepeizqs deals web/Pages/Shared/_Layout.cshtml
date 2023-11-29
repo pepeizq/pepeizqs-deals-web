@@ -19,6 +19,34 @@
     else
     {
         titulo = ViewData["Title"].ToString() + " • pepeizq's deals";
+    }  
+
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+
+    bool adminLogeado = false;
+    int adminNuevosCorreos = 0;
+    string adminNuevosCorreosMensaje = string.Empty;
+
+    if (usuarioLogeado == true)
+    {
+        if (await UsuarioCoger.RolDios(UserManager, User) == true)
+        {
+            adminLogeado = true;
+
+            adminNuevosCorreos = Herramientas.Correos.ComprobarNuevosCorreos();
+
+            if (adminNuevosCorreos > 0)
+            {
+                if (adminNuevosCorreos == 1)
+                {
+                    adminNuevosCorreosMensaje = "• 1 Nuevo Correo";
+                }
+                else if (adminNuevosCorreos > 1)
+                {
+                    adminNuevosCorreosMensaje = "• " + adminNuevosCorreos.ToString() + " Nuevos Correos";
+                }
+            }
+        }
     }
 }
 
@@ -98,29 +126,26 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1" style="align-items: center; margin-top: 0px;">
-                        @if (SignInManager.IsSignedIn(User))
+                        @if (usuarioLogeado == true && adminLogeado == true)
                         {
-                            @if (await UsuarioCoger.RolDios(UserManager, User) == true)
-                            {
-                                <li class="nav-item" style="margin-right: 30px;">
-                                    <div class="menu-dropdown">
-                                        <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin @Herramientas.Correos.ComprobarNuevosCorreos().ToString()</button>
-                                        <div class="menu-dropdown-contenido">
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da">Visitas</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://mail5017.site4now.net/interface/root#/email">Correo</a>
-                                            <hr/>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Juegos/Añadir">Añadir Juego</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Tiendas">Tiendas</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Pendientes">Pendientes</a>
-                                            <hr/>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Noticias">Noticias</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Bundles">Bundles</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Gratis">Gratis</a>
-                                            <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Suscripciones">Suscripciones</a>
-                                        </div>
+                            <li class="nav-item" style="margin-right: 30px;">
+                                <div class="menu-dropdown">
+                                    <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin @adminNuevosCorreosMensaje</button>
+                                    <div class="menu-dropdown-contenido">
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da">Visitas</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://mail5017.site4now.net/interface/root#/email">Correo (@adminNuevosCorreos.ToString())</a>
+                                        <hr />
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Juegos/Añadir">Añadir Juego</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Tiendas">Tiendas</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Pendientes">Pendientes</a>
+                                        <hr />
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Noticias">Noticias</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Bundles">Bundles</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Gratis">Gratis</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Suscripciones">Suscripciones</a>
                                     </div>
-                                </li>
-                            }
+                                </div>
+                            </li>
                         }
 
                         <li class="nav-item">
