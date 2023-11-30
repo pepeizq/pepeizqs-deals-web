@@ -21,7 +21,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego}))
 
-		<div style="margin-bottom: 80px; margin-left: -10px; width: 100%; display: flex; align-items: center;">
+		@* <div style="margin-bottom: 80px; margin-left: -10px; width: 100%; display: flex; align-items: center;">
 			<a class="juego-boton-pequeño" href="/Admin/Juegos/Editar?id=@Model.juego.Id">Editar Juego</a>
 
 			@if (Model.juego.IdSteam > 0)
@@ -33,7 +33,7 @@
 			{
 				<div style="margin-left: 20px; font-size: 14px;">GOG ID: @Model.juego.IdGog</div>
 			}
-		</div>	
+		</div>	 *@
 	}
 }
 
