@@ -1,5 +1,9 @@
 [
   {
+    "Id": "Layout.Account",
+    "Valor": "Account"
+  },
+  {
     "Id": "Layout.Wishlist",
     "Valor": "Wishlist"
   },
@@ -38,26 +42,6 @@
   {
     "Id": "Layout.Register",
     "Valor": "Register"
-  },
-  {
-    "Id": "Layout.Notifications",
-    "Valor": "Notifications"
-  },
-  {
-    "Id": "Layout.Steam",
-    "Valor": "Steam Account"
-  },
-  {
-    "Id": "Layout.Keys",
-    "Valor": "Keys"
-  },
-  {
-    "Id": "Layout.Email",
-    "Valor": "Email"
-  },
-  {
-    "Id": "Layout.Password",
-    "Valor": "Password"
   },
   {
     "Id": "Layout.PersonalData",

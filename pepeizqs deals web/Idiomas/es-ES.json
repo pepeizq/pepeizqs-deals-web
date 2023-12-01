@@ -1,5 +1,9 @@
 [
   {
+    "Id": "Layout.Account",
+    "Valor": "Cuenta"
+  },
+  {
     "Id": "Layout.Wishlist",
     "Valor": "Lista de Deseados"
   },
@@ -38,30 +42,6 @@
   {
     "Id": "Layout.Register",
     "Valor": "Registrar Cuenta"
-  },
-  {
-    "Id": "Layout.Notifications",
-    "Valor": "Notificaciones"
-  },
-  {
-    "Id": "Layout.Steam",
-    "Valor": "Cuenta de Steam"
-  },
-  {
-    "Id": "Layout.Keys",
-    "Valor": "Claves"
-  },
-  {
-    "Id": "Layout.Email",
-    "Valor": "Correo"
-  },
-  {
-    "Id": "Layout.Password",
-    "Valor": "Contraseña"
-  },
-  {
-    "Id": "Layout.PersonalData",
-    "Valor": "Datos Personales"
   },
   {
     "Id": "Layout.Privacy",

@@ -225,7 +225,10 @@
 									@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
 								</div>
 
-								<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" />
+								@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
+								{
+									<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" />
+								}	
 
 								<label style="font-size: 15px;">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
 							</div>

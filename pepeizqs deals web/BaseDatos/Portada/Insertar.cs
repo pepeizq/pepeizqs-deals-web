@@ -57,9 +57,36 @@ namespace BaseDatos.Portada
 				añadirEnlace2 = null;
 			}
 
+			string añadirBundle1 = string.Empty;
+			string añadirBundle2 = string.Empty;
+
+			if (noticia.Tipo == global::Noticias.NoticiaTipo.Bundles)
+			{
+				añadirBundle1 = ", bundleTipo";
+				añadirBundle2 = ", @bundleTipo";
+			}
+
+			string añadirGratis1 = string.Empty;
+			string añadirGratis2 = string.Empty;
+
+			if (noticia.Tipo == global::Noticias.NoticiaTipo.Gratis)
+			{
+				añadirGratis1 = ", gratisTipo";
+				añadirGratis2 = ", @gratisTipo";
+			}
+
+			string añadirSuscripcion1 = string.Empty;
+			string añadirSuscripcion2 = string.Empty;
+
+			if (noticia.Tipo == global::Noticias.NoticiaTipo.Suscripciones)
+			{
+				añadirSuscripcion1 = ", suscripcionTipo";
+				añadirSuscripcion2 = ", @suscripcionTipo";
+			}
+
 			string sqlInsertar = "INSERT INTO " + tabla + " " +
-						"(noticiaTipo" + añadirEnlace1 + ", imagen, juegos, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
-						"(@noticiaTipo" + añadirEnlace2 + ", @imagen, @juegos, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
+						"(noticiaTipo" + añadirEnlace1 + añadirBundle1 + añadirGratis1 + añadirSuscripcion1 + ", imagen, juegos, fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs, idMaestra) VALUES " +
+						"(@noticiaTipo" + añadirEnlace2 + añadirBundle2 + añadirGratis2 + añadirSuscripcion2 + ", @imagen, @juegos, @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs, @idMaestra) ";
 
 			using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 			{
@@ -79,6 +106,21 @@ namespace BaseDatos.Portada
 				comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);
 				comando.Parameters.AddWithValue("@contenidoEs", noticia.ContenidoEs);
 				comando.Parameters.AddWithValue("@idMaestra", noticia.Id);
+
+				if (noticia.Tipo == NoticiaTipo.Bundles)
+				{
+					comando.Parameters.AddWithValue("@bundleTipo", noticia.BundleTipo);
+				}
+
+				if (noticia.Tipo == NoticiaTipo.Gratis)
+				{
+					comando.Parameters.AddWithValue("@gratisTipo", noticia.GratisTipo);
+				}
+
+				if (noticia.Tipo == NoticiaTipo.Suscripciones)
+				{
+					comando.Parameters.AddWithValue("@suscripcionTipo", noticia.SuscripcionTipo);
+				}
 
 				try
 				{

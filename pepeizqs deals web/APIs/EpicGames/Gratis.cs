@@ -9,7 +9,7 @@
 				Tipo = Gratis2.GratisTipo.EpicGames,
 				Nombre = "Epic Games Store",
 				ImagenLogo = "/imagenes/tiendas/epic_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/epic_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/epic_icono.ico",
 				DRMDefecto = Juegos.JuegoDRM.Epic,
 				DRMEnseñar = false
 			};
