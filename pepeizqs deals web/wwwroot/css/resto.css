@@ -279,6 +279,7 @@
     height: auto;
     mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 50%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 50%, transparent 100%);
+    z-index: -9999;
 }
 
 .juego-contenido {
@@ -333,29 +334,6 @@
     }
 }
 
-.juego-sistemas-espacio {
-    margin-top: 10px;
-}
-
-@media(max-width: 800px) {
-    .juego-sistemas-espacio {
-        margin-top: 5px;
-    }
-}
-
-.juego-analisis {
-    font-size: 14px;
-    margin-left: 20px;
-    min-width: 250px;
-}
-
-@media(max-width: 800px) {
-    .juego-analisis {
-        min-width: 60px;
-        margin-left: 10px;
-    }
-}
-
 .juego-analisis-display {
     display: flex;
     justify-content: center;
@@ -365,17 +343,6 @@
 .juego-analisis-imagen {
     height: 32px;
     width: 32px;
-}
-
-.juego-analisis-texto {
-    margin-left: 10px;
-    margin-bottom: 3px;
-}
-
-@media(max-width: 800px) {
-    .juego-analisis-texto {
-        display: none;
-    }
 }
 
 .juego-analisis-texto2 {

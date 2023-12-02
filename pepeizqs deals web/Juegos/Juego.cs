@@ -32,6 +32,7 @@ namespace Juegos
 		public string NombreCodigo { get; set; }
 		public int IdMaestra { get; set; }
 		public List<JuegoUsuariosInteresados> UsuariosInteresados {  get; set; }
+		public string SlugGOG { get; set; }
 	}
 
 	public static class JuegoCrear

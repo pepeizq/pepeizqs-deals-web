@@ -140,18 +140,6 @@
 	</div>
 }
 
-@* <label>juegos mostrar: @juegosDestacadosMostrar.Count</label>
-<label>/</label>
-<label>juegos total: @juegosDestacadosGestor.Count</label>
-<label>/</label>
-<label>posicion: @posicionDestacadosMostrar</label>
-<label>/</label>
-<label>cantidad: @cantidadDestacadosMostrar</label>
-<label>/</label>
-<label>tope atras: @topeAtras</label>
-<label>/</label>
-<label>tope adelante: @topeAdelante</label> *@
-
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
@@ -169,7 +157,7 @@
 		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
 		<div class="destacados-espacio" style="display: grid; grid-auto-flow: column;">
-			@foreach (var destacado in juegosDestacadosMostrar)
+			@foreach (global::Juegos.Juego destacado in juegosDestacadosMostrar)
 			{
 				<div class="tooltip2 destacado-juego">
 					<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 3px;">
@@ -320,7 +308,7 @@ else
 	</div>
 
 	<div style="margin-bottom: 25px;">
-		@foreach (var juego in juegosMinimosMostrar)
+		@foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 		{
 			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;">
 				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
@@ -372,14 +360,14 @@ else
 
 	private Usuario usuario = new Usuario();
 
-	List<Juego> juegosDestacadosMostrar = new List<Juego>();
-	List<Juego> juegosDestacadosGestor = new List<Juego>();
+	List<global::Juegos.Juego> juegosDestacadosMostrar = new List<global::Juegos.Juego>();
+	List<global::Juegos.Juego> juegosDestacadosGestor = new List<global::Juegos.Juego>();
 	public int cantidadDestacadosMostrar = 6;
 	public int posicionDestacadosMostrar = 0;
 	public int topeAtras = 0;
 	public int topeAdelante = 0;
 
-	List<Juego> juegosMinimosMostrar = new List<Juego>();
+	List<global::Juegos.Juego> juegosMinimosMostrar = new List<global::Juegos.Juego>();
 
 	private int mensajeMostrar = 0;
 
@@ -449,7 +437,7 @@ else
 				{
 					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(x => x.Id).ToList();
 
-					foreach (Juego juego in juegosMinimosMostrar)
+					foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 					{
 						try
 						{
@@ -562,7 +550,7 @@ else
 		}
 	}
 
-	private string CargarDRM(Juego juego)
+	private string CargarDRM(global::Juegos.Juego juego)
 	{
 		string imagen = null;
 
@@ -587,7 +575,7 @@ else
 		}
 	}
 
-	private string CargarIconoTienda(Juego juego)
+	private string CargarIconoTienda(global::Juegos.Juego juego)
 	{
 		string imagen = null;
 
@@ -612,7 +600,7 @@ else
 		}
 	}
 
-	private string CargarDescuento(Juego juego)
+	private string CargarDescuento(global::Juegos.Juego juego)
 	{
 		string descuentoMensaje = null;
 
@@ -629,7 +617,7 @@ else
 		}
 	}
 
-	private string CargarPrecio(Juego juego)
+	private string CargarPrecio(global::Juegos.Juego juego)
 	{
 		string precioMensaje = null;
 
@@ -655,7 +643,7 @@ else
 		}
 	}
 
-	private string CargarFechaDetectado(Juego juego)
+	private string CargarFechaDetectado(global::Juegos.Juego juego)
 	{
 		string mensaje = null;
 
@@ -719,7 +707,7 @@ else
 
 					if (juegos != null)
 					{
-						Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
+						global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
 
 						if (juego != null)
 						{

@@ -63,6 +63,9 @@ namespace APIs.GOG
 
 										string enlace = juego.Enlace;
 
+										string slug = enlace;
+										slug = slug.Replace("https://www.gog.com/en/game/", null);
+
 										string imagen = "https:" + juego.ImagenVertical;
 
 										string tempPrecio = juego.Precio;
@@ -88,7 +91,7 @@ namespace APIs.GOG
 												FechaActualizacion = DateTime.Now
 											};
 
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, juego.Id);
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, juego.Id, slug);
 
 											juegos2 += 1;
 											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);

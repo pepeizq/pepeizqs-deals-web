@@ -119,8 +119,8 @@
     [Parameter]
     public string modo { get; set; }
 
-    private List<Juego> juegosConMinimos = new List<Juego>();
-    private List<Juego> juegosMostrar = new List<Juego>();
+	private List<global::Juegos.Juego> juegosConMinimos = new List<global::Juegos.Juego>();
+	private List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
 
     private int minimo = 0;
     private int maximo = 0;
@@ -197,7 +197,7 @@
 		CargarJuegos(minimo, maximo);
 	}
 
-	private string CargarImagenDRM(Juego juego)
+	private string CargarImagenDRM(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -209,7 +209,7 @@
 		return null;
 	}
 
-	private string CargarImagenTienda(Juego juego)
+	private string CargarImagenTienda(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -229,7 +229,7 @@
 		return null;	
 	}
 
-	private string CargarDescuento(Juego juego)
+	private string CargarDescuento(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -243,7 +243,7 @@
 		}
 	}
 
-	private static string CargarPrecio(Juego juego)
+	private static string CargarPrecio(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -269,7 +269,7 @@
 		}
 	}
 
-	private string CargarDetectado(Juego juego)
+	private string CargarDetectado(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -283,7 +283,7 @@
 		}
 	}
 
-	private string CargarEnlace(Juego juego)
+	private string CargarEnlace(global::Juegos.Juego juego)
 	{
 		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
 
@@ -308,7 +308,7 @@
 		{
 			if (juegosConMinimos.Count > 0)
 			{
-				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
 				{
 					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
@@ -395,7 +395,7 @@
 		{
 			if (juegosConMinimos.Count > 0)
 			{
-				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
 				{
 					int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
 					int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
@@ -417,7 +417,7 @@
 		{
 			if (juegosConMinimos.Count > 0)
 			{
-				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
 				{
 					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
@@ -504,7 +504,7 @@
 		{
 			if (juegosConMinimos.Count > 0)
 			{
-				juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
 				{
 					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 

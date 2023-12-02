@@ -34,7 +34,7 @@
 	<hr />
 
 	<div>
-		@foreach (var juego in juegosMostrar)
+		@foreach (global::Juegos.Juego juego in juegosMostrar)
 		{
 			<div class="perfil-flexible-centrado" style="margin-top: 25px; margin-bottom: 25px;">
 				<a class="boton-pequeño" style="padding: 0px;" href="/game/@juego.Id">
@@ -74,8 +74,8 @@
 	[Parameter]
 	public string dominio { get; set; }
 
-	private List<Juego> juegos = new List<Juego>();
-	private List<Juego> juegosMostrar = new List<Juego>();
+	private List<global::Juegos.Juego> juegos = new List<global::Juegos.Juego>();
+	private List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
 
 	private int minimo = 0;
 	private int maximo = 0;

@@ -9,6 +9,8 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -124,14 +126,14 @@ builder.Services.AddRazorPages(options =>
 
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddRateLimiter(_ => _
-//    .AddFixedWindowLimiter(policyName: "fixed", options =>
-//    {
-//        options.PermitLimit = 4;
-//        options.Window = TimeSpan.FromSeconds(12);
-//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-//        options.QueueLimit = 2;
-//    }));
+builder.Services.AddRateLimiter(_ => _
+    .AddFixedWindowLimiter(policyName: "fixed", options =>
+    {
+        options.PermitLimit = 4;
+        options.Window = TimeSpan.FromSeconds(12);
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 2;
+    }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
 //{
@@ -201,6 +203,8 @@ app.MapRazorPages();
 
 app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
+
+app.UseRateLimiter();
 
 app.UseRequestLocalization();
 

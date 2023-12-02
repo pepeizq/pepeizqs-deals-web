@@ -11,7 +11,7 @@ namespace BaseDatos.Tiendas
 	{
 		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto, SqlConnection conexion)
 		{
-			Juego juego = JuegoCrear.Generar();
+			global::Juegos.Juego juego = JuegoCrear.Generar();
 
 			bool insertar = false;
 			bool actualizar = false;
@@ -135,11 +135,11 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static async Task<Juego> ActualizarDatosAPI(Juego juego)
+		private static async Task<global::Juegos.Juego> ActualizarDatosAPI(global::Juegos.Juego juego)
 		{
 			if (juego.IdSteam > 0)
 			{
-				Juego nuevoJuego = null;
+                global::Juegos.Juego nuevoJuego = null;
 				
 				try
 				{
@@ -167,7 +167,7 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null)
+		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null, string slugGOG = null)
 		{
 			bool insertarTienda = false;
 			List<int> listaIds = new List<int>();
@@ -273,7 +273,7 @@ namespace BaseDatos.Tiendas
 							{
 								if (lector.Read() == true)
 								{
-									Juego juego = JuegoCrear.Generar();
+                                    global::Juegos.Juego juego = JuegoCrear.Generar();
 
 									juego = Juegos.Cargar.Ejecutar(juego, lector);
 
@@ -294,6 +294,7 @@ namespace BaseDatos.Tiendas
 										if (idGog != null)
 										{
 											juego.IdGog = int.Parse(idGog);
+											juego.SlugGOG = slugGOG;
 										}
 									}
 

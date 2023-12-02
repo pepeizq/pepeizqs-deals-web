@@ -13,7 +13,7 @@ namespace BaseDatos.Juegos
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, slugGOG=@slugGOG ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -46,7 +46,8 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-				
+				comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
+
 				try
 				{
 					comando.ExecuteNonQuery();
@@ -88,6 +89,48 @@ namespace BaseDatos.Juegos
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
 				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void PreciosActuales(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET precioActualesTiendas=@precioActualesTiendas WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void PreciosHistoricos(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET precioMinimosHistoricos=@precioMinimosHistoricos WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
 
 				try
 				{

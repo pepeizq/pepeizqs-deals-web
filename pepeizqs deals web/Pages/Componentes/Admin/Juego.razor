@@ -1,45 +1,95 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using Juegos
+@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.Data.SqlClient
+@using Newtonsoft.Json
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
-<div style="display: flex; align-items: center;">
-	<div style="width: auto;">
-		<button @onclick="@(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
-			Imagenes
-		</button>
+<div style="padding: 20px; background: var(--fondoCuerpo); margin-bottom: 50px;">
+	<div style="margin-bottom: 20px;">
+		Admin Editar • @juego.Nombre
 	</div>
 
-</div>
-
-@if (pestañaMostrar > 0)
-{
-	<hr/>
-
-	if (pestañaMostrar == 1)
-	{
-		<div style="display: flex; align-items: start;">
-			<div style="width: 20%;">
-				<button @onclick="@(e => MostrarPestañaImagenes(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
-					Capsule_231x87
-				</button>
-
-				<button @onclick="@(e => MostrarPestañaImagenes(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
-					Header_460x215
-				</button>
-			</div>
-
-			<div style="width: 80%; padding: 5px 0px 5px 40px;">
-				<label style="margin-bottom: 10px;">Imagen Origen:</label>
-
-				<input type="text" @oninput="TextoCambiaImagenOrigen" class="entrada-texto" style="margin-bottom: 20px;" value="@imagenOrigen" />
-				<img src="@imagenOrigen" style="max-width: 300px; max-height: 300px;" />
-			</div>
+	<div style="display: flex; align-items: center;">
+		<div style="width: auto;">
+			<button @onclick="@(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+				Imagenes
+			</button>
 		</div>
-	}
-}
 
-<hr style="margin-bottom: 100px;"/>
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="@(e => MostrarPestaña(e, 2))" class="boton-pequeño" style="padding: 10px 15px;">
+				Precios
+			</button>
+		</div>
+	</div>
+
+	@if (pestañaMostrar > 0)
+	{
+		<hr />
+
+		if (pestañaMostrar == 1)
+		{
+			<div style="display: flex; align-items: start;">
+				<div style="width: 20%;">
+					<button @onclick="@(e => MostrarPestañaImagenes(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+						Capsule_231x87
+					</button>
+
+					<button @onclick="@(e => MostrarPestañaImagenes(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+						Header_460x215
+					</button>
+
+					<button @onclick="@(e => MostrarPestañaImagenes(e, 3))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+						Library_600x900
+					</button>
+
+					<button @onclick="@(e => MostrarPestañaImagenes(e, 4))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+						Library_1920x620
+					</button>
+
+					<button @onclick="@(e => MostrarPestañaImagenes(e, 5))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+						Logo
+					</button>
+
+					<div style="margin-top: 20px; margin-left: 10px;">
+						<a target="_blank" href="https://www.steamgriddb.com/search/grids?term=@juego.Nombre">
+							Abrir SteamGridDB
+						</a>
+					</div>
+
+				</div>
+
+				<div style="width: 80%; padding: 5px 0px 5px 40px;">
+					<label style="margin-bottom: 10px;">Imagen Origen:</label>
+
+					<input type="text" @oninput="TextoCambiaImagenOrigen" class="entrada-texto" style="margin-bottom: 20px;" value="@imagenOrigen" />
+					<img src="@imagenOrigen" style="max-width: 300px; max-height: 300px;" />
+				</div>
+			</div>
+		}
+		else if (pestañaMostrar == 2)
+		{
+			<div style="display: flex; align-items: start;">
+				<div style="width: 20%;">
+					<button @onclick="@(e => MostrarPestañaPrecios(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+						Actuales
+					</button>
+
+					<button @onclick="@(e => MostrarPestañaPrecios(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+						Historicos
+					</button>
+				</div>
+
+				<div style="width: 80%; padding: 5px 0px 5px 40px;">
+					<textarea @onchange="@(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoOrigenPrecios</textarea>
+				</div>
+			</div>
+		}
+	}
+
+	<hr/>
+</div>
 
 @code {
 
@@ -49,17 +99,25 @@
 	public string idioma { get; set; }
 
 	[Parameter]
+	public string dominio { get; set; }
+
+	[Parameter]
 	public Juegos.Juego juego { get; set; }
 
 	private int pestañaMostrar = 0;
-	private int pestañaMostrarImagenes = 0;
 
+	private int pestañaMostrarImagenes = 0;
 	private string imagenOrigen = string.Empty;
+
+	private int pestañaMostrarPrecios = 0;
+	private string textoOrigenPrecios = string.Empty;
 
 	private void MostrarPestaña(MouseEventArgs e, int pestaña)
 	{
 		pestañaMostrar = pestaña;
 	}
+
+	#region Imagenes
 
 	private void MostrarPestañaImagenes(MouseEventArgs e, int pestañaImagenes)
 	{
@@ -73,23 +131,110 @@
 		{
 			imagenOrigen = juego.Imagenes.Header_460x215;
 		}
+		else if (pestañaMostrarImagenes == 3)
+		{
+			imagenOrigen = juego.Imagenes.Library_600x900;
+		}
+		else if (pestañaMostrarImagenes == 4)
+		{
+			imagenOrigen = juego.Imagenes.Library_1920x620;
+		}
+		else if (pestañaMostrarImagenes == 5)
+		{
+			imagenOrigen = juego.Imagenes.Logo;
+		}
 	}
 
-	private void TextoCambiaImagenOrigen(ChangeEventArgs texto)
+	private async void TextoCambiaImagenOrigen(ChangeEventArgs texto)
 	{
-		if (pestañaMostrarImagenes == 1)
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
 		{
-			
-			
-		}
+			string nuevoTexto = texto.Value.ToString().Trim();
 
-		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			imagenOrigen = nuevoTexto;
 
-		using (conexion)
-		{
-			BaseDatos.Juegos.Actualizar.Imagenes(juego, conexion);
-		}
+			if (pestañaMostrarImagenes == 1)
+			{			
+				juego.Imagenes.Capsule_231x87 = nuevoTexto;
+				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio);
+			}
+			else if (pestañaMostrarImagenes == 2)
+			{
+				juego.Imagenes.Header_460x215 = nuevoTexto;
+				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, "juegos", juego.Id.ToString(), "header_460x215", dominio);
+			}
+			else if (pestañaMostrarImagenes == 3)
+			{
+				juego.Imagenes.Library_600x900 = nuevoTexto;
+				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", dominio);
+			}
+			else if (pestañaMostrarImagenes == 4)
+			{
+				juego.Imagenes.Library_1920x620 = nuevoTexto;
+				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_1920x620, "juegos", juego.Id.ToString(), "library_1920x620", dominio);
+			}
+			else if (pestañaMostrarImagenes == 5)
+			{
+				juego.Imagenes.Logo = nuevoTexto;
+				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Logo, "juegos", juego.Id.ToString(), "logo", dominio);
+			}
 
-		conexion.Dispose();
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Juegos.Actualizar.Imagenes(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}		
 	}
+
+	#endregion
+
+	#region Precios
+
+	private void MostrarPestañaPrecios(MouseEventArgs e, int pestañaImagenes)
+	{
+		pestañaMostrarPrecios = pestañaImagenes;
+
+		if (pestañaMostrarPrecios == 1)
+		{
+			textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
+		}
+		else if (pestañaMostrarPrecios == 2)
+		{
+			textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
+		}
+	}
+
+	private void TextoCambiaPrecios(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoOrigenPrecios = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				if (pestañaMostrarPrecios == 1)
+				{
+					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoOrigenPrecios);
+					BaseDatos.Juegos.Actualizar.PreciosActuales(juego, conexion);
+				}
+				else if (pestañaMostrarPrecios == 2)
+				{
+					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoOrigenPrecios);
+					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
+				}				
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	#endregion
 }
