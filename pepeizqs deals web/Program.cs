@@ -129,10 +129,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRateLimiter(_ => _
     .AddFixedWindowLimiter(policyName: "fixed", options =>
     {
-        options.PermitLimit = 4;
-        options.Window = TimeSpan.FromSeconds(12);
+        options.PermitLimit = 2;
+        options.Window = TimeSpan.FromSeconds(6);
         options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 2;
+        options.QueueLimit = 5;
     }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
@@ -209,5 +209,7 @@ app.UseRateLimiter();
 app.UseRequestLocalization();
 
 app.UseResponseCaching();
+
+//app.MapShortCircuit(404, "robots.txt", "favicon.ico");
 
 app.Run();

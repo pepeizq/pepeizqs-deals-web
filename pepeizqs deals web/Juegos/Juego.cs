@@ -73,6 +73,7 @@ namespace Juegos
 		public string Enlace { get; set; }
 		public int Descuento { get; set; }
 		public decimal Precio { get; set; }
+		public decimal PrecioCambiado { get; set; }
 		public JuegoMoneda Moneda { get; set; }
 		public string Tienda { get; set; }
 		public DateTime FechaDetectado { get; set; }

@@ -27,6 +27,29 @@
 				<div class="juego-titulo">
 					@juego.Nombre <br />
 
+					<div style="margin-top: 10px;">
+						@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+						{
+							@if (drm != JuegoDRM.NoEspecificado)
+							{
+								@if (VerificarMostrarDRM(idioma, drm, juego) == true)
+								{
+									@if (drm == JuegoDRM.DRMFree)
+									{
+										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 10px;">DRM Free</div></button>
+									}
+									else
+									{
+										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px; margin-right: 10px">					
+											<div style="display: flex; align-items: center;">
+												<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" />
+											</div>
+										</button>
+									}
+								}
+							}
+						}
+					</div>					
 				</div>
 
 				<div style="text-align: center;">
@@ -110,7 +133,7 @@
 							</div>
 
 							<div class="perfil" style="width: 90%;">
-								<div class="juego-minimo">@CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, true)</div>
+								<div class="juego-minimo">@CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas)</div>
 
 								@PrepararBundles(idioma, juego.Bundles, drm)
 
@@ -135,8 +158,13 @@
 														@precio.Descuento.ToString()%
 													</div>
 
-													<div class="juego-precio">
-														@PrepararPrecio(precio.Precio, false, precio.Moneda)
+													<div class="juego-precio" style="text-align: center;">
+														@PrepararPrecio(precio)
+
+														@if (precio.Moneda != JuegoMoneda.Euro)
+														{
+															<br/><label style="font-size: 13px;">@precio.Precio</label>
+														}
 													</div>
 												</div>
 											</div>
@@ -206,10 +234,51 @@
 </div>
 
 <script>
-	window.displayTickerAlert1 = (symbol) => {
-		var scrollDiv = document.getElementById(symbol).offsetTop;
-		window.scrollTo({ top: scrollDiv - 70, behavior: 'smooth'});
-	};
+	let imagenPosicion = 1;
+	cargarImagen(imagenPosicion);
+
+	function siguienteAtras(n) {
+		cargarImagen(imagenPosicion += n);
+	}
+
+	function cambiarImagen(n) {
+		cargarImagen(imagenPosicion = n);
+	}
+
+	function cargarImagen(n) {
+		let i;
+		let imagenes = document.getElementsByClassName("juego-galeria-imagenes");
+		let capturas = document.getElementsByClassName("juego-galeria-capturas");
+		let texto = document.getElementById("juego-galeria-texto");
+
+		if (n > imagenes.length) {
+			imagenPosicion = 1
+		}
+
+		if (n < 1) {
+			imagenPosicion = imagenes.length
+		}
+
+		for (i = 0; i < imagenes.length; i++) {
+			imagenes[i].style.display = "none";
+		}
+
+		for (i = 0; i < capturas.length; i++) {
+			capturas[i].className = capturas[i].className.replace(" juego-galeria-activo", "");
+		}
+
+		imagenes[imagenPosicion - 1].style.display = "block";
+		capturas[imagenPosicion - 1].className += " juego-galeria-activo";
+		texto.innerHTML = capturas[imagenPosicion - 1].alt;
+	}
+
+	function moverScroll(id) {
+		const yOffset = -190;
+		const element = document.getElementById(id);
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+		window.scrollTo({ top: y, behavior: 'smooth' });
+	}
 </script>
 
 @code {
@@ -225,9 +294,10 @@
 	[Parameter]
 	public Juegos.Juego juego { get; set; }
 
-	protected override async void OnInitialized()
+	protected override async void OnAfterRender(bool firstRender)
 	{
-		await JS.InvokeAsync<string>("displayTickerAlert1", "steam");
+		base.OnAfterRender(firstRender);
+		await JS.InvokeAsync<string>("cargarImagen", "1");
 	}
 
 	public static string LimpiarImagenJuego(string enlace)
@@ -247,7 +317,7 @@
 	{
 		bool mostrar = false;
 
-		if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, false) != null)
+		if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
 		{
 			mostrar = true;
 		}
@@ -431,9 +501,11 @@
 		return null;
 	}
 
-	public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales, bool añadirHtml)
+	public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> minimos, List<JuegoPrecio> preciosActuales)
 	{
 		string drmPreparado = null;
+
+
 
 		List<JuegoPrecio> minimosOrdenados = new List<JuegoPrecio>();
 
@@ -478,9 +550,20 @@
 				});
 			}
 
-			JuegoPrecio minimoOrdenado = minimosOrdenados[0];
 
-			drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimoOrdenado.Precio, false, minimoOrdenado.Moneda);
+
+
+
+
+
+
+
+
+
+
+			JuegoPrecio minimoOrdenado = OrdenarPrecios(preciosActuales, drm, false)[0];
+
+			drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimoOrdenado);
 
 			bool incluirTiempo = true;
 
@@ -492,14 +575,7 @@
 				{
 					if (actual.DRM == drm)
 					{
-						decimal precio = actual.Precio;
-
-						if (actual.Moneda != JuegoMoneda.Euro)
-						{
-							precio = Divisas.Cambio(precio, actual.Moneda);
-						}
-
-						if (precio == minimosOrdenados[0].Precio)
+						if (actual.Precio == minimosOrdenados[0].Precio)
 						{
 							incluirTiempo = false;
 						}
@@ -531,32 +607,29 @@
 		return drmPreparado;
 	}
 
-	public static string PrepararPrecio(decimal precio, bool hacerCambioDivisa, JuegoMoneda moneda)
+	public static string PrepararPrecio(JuegoPrecio precio)
 	{
 		string precioTexto = string.Empty;
 
-		if (hacerCambioDivisa == true)
+		if (precio.Moneda != JuegoMoneda.Euro)
 		{
-			if (moneda != JuegoMoneda.Euro)
-			{
-				precio = Divisas.Cambio(precio, moneda);
-			}
+			precioTexto = precio.PrecioCambiado.ToString();
+		}
+		else
+		{
+			precioTexto = precio.Precio.ToString();
 		}
 
-		if (precio >= 0)
+		precioTexto = precioTexto.Replace(".", ",");
+
+		int int1 = precioTexto.IndexOf(",");
+
+		if (int1 == precioTexto.Length - 2)
 		{
-			precioTexto = precio.ToString();
-			precioTexto = precioTexto.Replace(".", ",");
-
-			int int1 = precioTexto.IndexOf(",");
-
-			if (int1 == precioTexto.Length - 2)
-			{
-				precioTexto = precioTexto + "0";
-			}
-
-			precioTexto = precioTexto + "€";
+			precioTexto = precioTexto + "0";
 		}
+
+		precioTexto = precioTexto + "€";
 
 		return precioTexto;
 	}
@@ -585,7 +658,7 @@
 								{
 									if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
 									{
-										nuevoPrecio.Precio = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
+										nuevoPrecio.PrecioCambiado = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
 									}
 								}
 							}
@@ -626,13 +699,27 @@
 		{
 			preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
 			{
-				if (p1.Precio == p2.Precio)
+				decimal precio1 = p1.Precio;
+
+				if (p1.Moneda != JuegoMoneda.Euro)
+				{
+					precio1 = p1.PrecioCambiado;
+				}
+
+				decimal precio2 = p2.Precio;
+
+				if (p2.Moneda != JuegoMoneda.Euro)
+				{
+					precio2 = p2.PrecioCambiado;
+				}
+
+				if (precio1 == precio2)
 				{
 					return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
 				}
 				else
 				{
-					return p1.Precio.CompareTo(p2.Precio);
+					return precio1.CompareTo(precio2);
 				}
 			});
 		}
