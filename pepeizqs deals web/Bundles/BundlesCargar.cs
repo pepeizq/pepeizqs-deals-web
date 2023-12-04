@@ -6,7 +6,8 @@ namespace Bundles2
 	{
 		Desconocido,
 		HumbleBundle,
-		Fanatical
+		Fanatical,
+		JingleJam
 	}
 
 	public class BundlesCargar
@@ -17,7 +18,8 @@ namespace Bundles2
 			{
 				APIs.Desconocido.Bundle.Generar(),
 				APIs.Humble.Bundle.Generar(),
-				APIs.Fanatical.Bundle.Generar()
+				APIs.Fanatical.Bundle.Generar(),
+				APIs.JingleJam.Bundle.Generar()
 			};
 
 			return bundles;

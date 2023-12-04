@@ -83,26 +83,37 @@
 						</div>
 					}
 
-					<div style="margin-top: 15px;">
-						@if (juego.Caracteristicas.Windows == true)
-						{
-							<img src="/imagenes/sistemas/windows.webp" />
-						}
+					<div style="display: flex; align-items: center; justify-content: center; margin-top: 15px;">
+						<div>
+							@if (juego.Caracteristicas.Windows == true)
+							{
+								<img src="/imagenes/sistemas/windows.webp" />
+							}
 
-						@if (juego.Caracteristicas.Mac == true)
-						{
-							<img src="/imagenes/sistemas/mac.webp" />
-						}
+							@if (juego.Caracteristicas.Mac == true)
+							{
+								<img src="/imagenes/sistemas/mac.webp" />
+							}
 
-						@if (juego.Caracteristicas.Linux == true)
-						{
-							<img src="/imagenes/sistemas/linux.webp" />
-						}
+							@if (juego.Caracteristicas.Linux == true)
+							{
+								<img src="/imagenes/sistemas/linux.webp" />
+							}
+						</div>						
 
-						@if (juego.IdSteam > 0)
-						{
-							<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">@Idiomas.CogerCadena(idioma, "Game.String1")</a>
-						}
+						<div style="margin-left: 20px;">
+							<label>@Idiomas.CogerCadena(idioma, "Game.String1")</label>
+
+							@if (juego.IdSteam > 0)
+							{
+								<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+							}
+
+							@if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+							{
+								<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank">GOG</a>
+							}
+						</div>
 					</div>
 				</div>				
 			</div>
@@ -141,34 +152,39 @@
 
 								@PrepararSuscripcion(idioma, juego.Suscripciones, drm)
 
-								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm, false).Count > 0)
+								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm).Count > 0)
 								{
-									@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm, true))
+									@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
 									{
-										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
-											<div class="perfil-flexible-centrado">
-												<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
+										@if (precio.Descuento > 0)
+										{
+											<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
+												<div class="perfil-flexible-centrado">
+													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
 
-												<div class="juego-descuento-precio">
-													<div style="font-size: 14px; margin: 20px;">
-														@Calculadora.HaceTiempo(precio.FechaDetectado, idioma)
-													</div>
+													<div class="juego-descuento-precio">
+														<div style="font-size: 14px; margin: 20px;">
+															@Calculadora.HaceTiempo(precio.FechaDetectado, idioma)
+														</div>
 
-													<div style="width: 75px; text-align: center;" class="juego-descuento">
-														@precio.Descuento.ToString()%
-													</div>
+														<div style="width: 75px; text-align: center;" class="juego-descuento">
+															@precio.Descuento.ToString()%
+														</div>
 
-													<div class="juego-precio" style="text-align: center;">
-														@PrepararPrecio(precio)
+														<div class="juego-precio" style="text-align: center;">
+															@PrepararPrecio(precio)
 
-														@if (precio.Moneda != JuegoMoneda.Euro)
-														{
-															<br/><label style="font-size: 13px;">@precio.Precio</label>
-														}
+															@if (precio.Moneda != JuegoMoneda.Euro)
+															{
+																<br />
+
+																<label style="font-size: 13px;">@Divisas.DevolverSimbolo(precio.Precio, precio.Moneda)</label>
+															}
+														</div>
 													</div>
 												</div>
-											</div>
-										</a>
+											</a>
+										}									
 									}
 								}
 								else
@@ -505,8 +521,6 @@
 	{
 		string drmPreparado = null;
 
-
-
 		List<JuegoPrecio> minimosOrdenados = new List<JuegoPrecio>();
 
 		if (minimos != null)
@@ -525,59 +539,45 @@
 
 		if (minimosOrdenados.Count == 0)
 		{
-			preciosActuales.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
+			if (preciosActuales != null)
 			{
-				return p1.Precio.CompareTo(p2.Precio);
-			});
-
-			foreach (JuegoPrecio actual in preciosActuales)
-			{
-				if (actual.DRM == drm)
+				if (preciosActuales.Count > 0)
 				{
-					minimosOrdenados.Add(actual);
-					break;
+					minimosOrdenados = OrdenarPrecios(preciosActuales, drm);
 				}
-			}
+			}			
 		}
 
 		if (minimosOrdenados.Count > 0)
 		{
 			if (minimosOrdenados.Count > 1)
 			{
-				minimosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
-				{
-					return p1.Precio.CompareTo(p2.Precio);
-				});
-			}
+				minimosOrdenados = OrdenarPrecios(minimosOrdenados, drm);
+			}			
 
-
-
-
-
-
-
-
-
-
-
-
-			JuegoPrecio minimoOrdenado = OrdenarPrecios(preciosActuales, drm, false)[0];
+			JuegoPrecio minimoOrdenado = minimosOrdenados[0];
 
 			drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(minimoOrdenado);
 
 			bool incluirTiempo = true;
 
-			List<JuegoPrecio> preciosActualesOrdenados = OrdenarPrecios(preciosActuales, drm, false);
+			List<JuegoPrecio> preciosActualesOrdenados = OrdenarPrecios(preciosActuales, drm);
 
-			if (preciosActuales.Count > 0)
+			if (preciosActualesOrdenados != null)
 			{
-				foreach (JuegoPrecio actual in preciosActualesOrdenados)
+				if (preciosActualesOrdenados.Count > 0)
 				{
-					if (actual.DRM == drm)
+					if (preciosActuales.Count > 0)
 					{
-						if (actual.Precio == minimosOrdenados[0].Precio)
+						foreach (JuegoPrecio actual in preciosActualesOrdenados)
 						{
-							incluirTiempo = false;
+							if (actual.DRM == drm)
+							{
+								if (actual.Precio == minimosOrdenados[0].Precio)
+								{
+									incluirTiempo = false;
+								}
+							}
 						}
 					}
 				}
@@ -634,7 +634,7 @@
 		return precioTexto;
 	}
 
-	public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm, bool cambioMoneda)
+	public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm)
 	{
 		List<JuegoPrecio> preciosOrdenados = new List<JuegoPrecio>();
 
@@ -652,42 +652,36 @@
 						{
 							JuegoPrecio nuevoPrecio = precio;
 
-							if (cambioMoneda == true)
+							if (nuevoPrecio != null)
 							{
-								if (nuevoPrecio != null)
+								if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
 								{
-									if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
+									nuevoPrecio.PrecioCambiado = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
+								}
+							}
+
+							bool verificacionFinal = true;
+
+							if (preciosOrdenados.Count > 0)
+							{
+								foreach (var ordenado in preciosOrdenados)
+								{
+									if (ordenado.Enlace == nuevoPrecio.Enlace && ordenado.Tienda == nuevoPrecio.Tienda && ordenado.DRM == nuevoPrecio.DRM)
 									{
-										nuevoPrecio.PrecioCambiado = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
+										verificacionFinal = false;
+										break;
 									}
 								}
 							}
 
-							if (nuevoPrecio.Descuento > 0)
+							if (drm == JuegoDRM.NoEspecificado)
 							{
-								bool verificacionFinal = true;
+								verificacionFinal = false;
+							}
 
-								if (preciosOrdenados.Count > 0)
-								{
-									foreach (var ordenado in preciosOrdenados)
-									{
-										if (ordenado.Enlace == nuevoPrecio.Enlace && ordenado.Tienda == nuevoPrecio.Tienda && ordenado.DRM == nuevoPrecio.DRM)
-										{
-											verificacionFinal = false;
-											break;
-										}
-									}
-								}
-
-								if (drm == JuegoDRM.NoEspecificado)
-								{
-									verificacionFinal = false;
-								}
-
-								if (verificacionFinal == true)
-								{
-									preciosOrdenados.Add(nuevoPrecio);
-								}
+							if (verificacionFinal == true)
+							{
+								preciosOrdenados.Add(nuevoPrecio);
 							}
 						}
 					}

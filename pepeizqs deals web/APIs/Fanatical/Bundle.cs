@@ -30,7 +30,6 @@ namespace APIs.Fanatical
 			return bundle;
 		}
 
-
 		public static string Referido(string enlace)
 		{
 			return enlace + "?ref=pepeizq";

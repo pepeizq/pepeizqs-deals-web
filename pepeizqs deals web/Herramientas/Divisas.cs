@@ -123,6 +123,22 @@ namespace Herramientas
 
 			return 0;
 		}
+
+		public static string DevolverSimbolo(decimal cantidad, JuegoMoneda moneda)
+		{
+			string precioTexto = string.Empty;
+
+			if (moneda == JuegoMoneda.Dolar)
+			{
+				precioTexto = "$" + cantidad.ToString();
+			}
+			else if (moneda == JuegoMoneda.Libra)
+			{
+				precioTexto = "£" + cantidad.ToString();
+			}
+
+			return precioTexto;
+		}
 	}
 
 	public class Divisa
