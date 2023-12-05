@@ -277,11 +277,35 @@
   },
   {
     "Id": "Game.String20",
-    "Valor": "Disponible en los bundles:"
+    "Valor": "Disponible en bundles"
   },
   {
     "Id": "Game.String21",
-    "Valor": "Estuvo en estos bundles:"
+    "Valor": "Estuvo en estos bundles"
+  },
+  {
+    "Id": "Game.String22",
+    "Valor": "Bundles Disponibles"
+  },
+  {
+    "Id": "Game.String23",
+    "Valor": "Bundles Antiguos"
+  },
+  {
+    "Id": "Game.String24",
+    "Valor": "Disponible en suscripciones"
+  },
+  {
+    "Id": "Game.String25",
+    "Valor": "Estuvo en estas suscripciones"
+  },
+  {
+    "Id": "Game.String26",
+    "Valor": "Suscripciones Disponibles"
+  },
+  {
+    "Id": "Game.String27",
+    "Valor": "Suscripciones Antiguas"
   },
   {
     "Id": "LastNews.Title",

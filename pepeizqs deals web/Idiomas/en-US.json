@@ -281,11 +281,35 @@
   },
   {
     "Id": "Game.String20",
-    "Valor": "Available in bundles:"
+    "Valor": "Available in bundles"
   },
   {
     "Id": "Game.String21",
-    "Valor": "It was in these bundles:"
+    "Valor": "It was in these bundles"
+  },
+  {
+    "Id": "Game.String22",
+    "Valor": "Available Bundles"
+  },
+  {
+    "Id": "Game.String23",
+    "Valor": "Old Bundles"
+  },
+  {
+    "Id": "Game.String24",
+    "Valor": "Available in subscriptions"
+  },
+  {
+    "Id": "Game.String25",
+    "Valor": "It was in these subscriptions"
+  },
+  {
+    "Id": "Game.String26",
+    "Valor": "Available Subscriptions"
+  },
+  {
+    "Id": "Game.String27",
+    "Valor": "Old Subscriptions"
   },
   {
     "Id": "LastNews.Title",

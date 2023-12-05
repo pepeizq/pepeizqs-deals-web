@@ -137,6 +137,16 @@ namespace Herramientas
 				precioTexto = "£" + cantidad.ToString();
 			}
 
+			if (precioTexto.Contains(".") == true)
+			{
+				int int1 = precioTexto.IndexOf(".");
+
+				if (int1 == precioTexto.Length - 2)
+				{
+					precioTexto = precioTexto + "0";
+				}
+			}
+
 			return precioTexto;
 		}
 	}

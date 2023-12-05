@@ -126,14 +126,14 @@ builder.Services.AddRazorPages(options =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddRateLimiter(_ => _
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
-    {
-        options.PermitLimit = 2;
-        options.Window = TimeSpan.FromSeconds(6);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 5;
-    }));
+//builder.Services.AddRateLimiter(_ => _
+//    .AddFixedWindowLimiter(policyName: "fixed", options =>
+//    {
+//        options.PermitLimit = 2;
+//        options.Window = TimeSpan.FromSeconds(6);
+//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        options.QueueLimit = 5;
+//    }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
 //{
@@ -204,7 +204,7 @@ app.MapRazorPages();
 app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
 app.UseRequestLocalization();
 
