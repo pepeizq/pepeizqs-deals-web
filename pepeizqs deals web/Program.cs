@@ -9,8 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Threading.RateLimiting;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -207,8 +206,6 @@ app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1,
 //app.UseRateLimiter();
 
 app.UseRequestLocalization();
-
-app.UseResponseCaching();
 
 //app.MapShortCircuit(404, "robots.txt", "favicon.ico");
 

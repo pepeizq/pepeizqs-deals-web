@@ -308,6 +308,22 @@
     "Valor": "Suscripciones Antiguas"
   },
   {
+    "Id": "Game.String28",
+    "Valor": "Disponible gratis"
+  },
+  {
+    "Id": "Game.String29",
+    "Valor": "Estuvo gratis para reclamar"
+  },
+  {
+    "Id": "Game.String30",
+    "Valor": "Gratis Disponibles"
+  },
+  {
+    "Id": "Game.String31",
+    "Valor": "Gratis Antiguos"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },

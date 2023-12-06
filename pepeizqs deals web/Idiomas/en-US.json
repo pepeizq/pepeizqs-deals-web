@@ -312,6 +312,22 @@
     "Valor": "Old Subscriptions"
   },
   {
+    "Id": "Game.String28",
+    "Valor": "Available free"
+  },
+  {
+    "Id": "Game.String29",
+    "Valor": "It was free to claim"
+  },
+  {
+    "Id": "Game.String30",
+    "Valor": "Available Free"
+  },
+  {
+    "Id": "Game.String31",
+    "Valor": "Old Free Promotions"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },

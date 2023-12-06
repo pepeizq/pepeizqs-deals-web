@@ -49,6 +49,13 @@ namespace Bundles2
 
 							return nuevoBundle;
 						}
+						else if (bundle.Tipo == BundleTipo.JingleJam)
+						{
+							Bundle nuevoBundle = bundle;
+							nuevoBundle.Enlace = LimpiarEnlace(enlace);
+
+							return nuevoBundle;
+						}
 					}
 				}			
 			}
