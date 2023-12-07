@@ -9,7 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using System.Security.Claims;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -72,14 +72,14 @@ builder.Services.Configure<IdentityOptions>(opciones =>
     opciones.User.RequireUniqueEmail = true;
 });
 
-builder.Services.ConfigureApplicationCookie(opciones =>
-{
-    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    opciones.Cookie.Name = "cookiePepeizq";
-    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
-    opciones.LoginPath = "/Identity/Account/Login";
-    opciones.SlidingExpiration = true;
-});
+//builder.Services.ConfigureApplicationCookie(opciones =>
+//{
+//    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//    opciones.Cookie.Name = "cookiePepeizq";
+//    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
+//    opciones.LoginPath = "/Identity/Account/Login";
+//    opciones.SlidingExpiration = true;
+//});
 
 builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 {
@@ -148,7 +148,7 @@ var app = builder.Build();
     //app.UseExceptionHandler("/Error");
     app.UseDeveloperExceptionPage();
 
-	app.UseHsts();
+    app.UseHsts();
 //}
 
 app.Use(async (contexto, siguiente) =>
@@ -189,14 +189,14 @@ app.UseStaticFiles(new StaticFileOptions
 	RequestPath = "/imagenes"
 });
 
-app.UseRouting();
+//app.UseRouting();
 
 //app.UseResponseCaching();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapControllerRoute(name: "game",
-				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
+//app.MapControllerRoute(name: "game",
+//				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
 
 app.MapRazorPages();
 
