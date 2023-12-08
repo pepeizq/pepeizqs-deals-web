@@ -10,10 +10,17 @@ namespace BaseDatos.Juegos
 	{
 		public static void Ejecutar(Juego juego, SqlConnection conexion)
 		{
+			string añadirSlugGog = null;
+
+			if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+			{
+				añadirSlugGog = ", slugGOG=@slugGOG";
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, slugGOG=@slugGOG ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + " ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -46,11 +53,16 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-				comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
 
+				if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+				{
+					comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
+				}				
+
+				comando.ExecuteNonQuery();
 				try
 				{
-					comando.ExecuteNonQuery();
+					
 				}
 				catch
 				{
@@ -131,6 +143,27 @@ namespace BaseDatos.Juegos
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
 				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void Suscripciones(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET suscripciones=@suscripciones WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(juego.Suscripciones));
 
 				try
 				{

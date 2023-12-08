@@ -24,6 +24,12 @@
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="@(e => MostrarPestaña(e, 3))" class="boton-pequeño" style="padding: 10px 15px;">
+				Suscripciones
+			</button>
+		</div>
+
+		<div style="width: auto; margin-left: 20px;">
 			<a href="/api/@juego.Id" target="_blank" class="boton-pequeño" style="padding: 10px 15px;">
 				Api
 			</a>
@@ -92,9 +98,11 @@
 				</div>
 			</div>
 		}
+		else if (pestañaMostrar == 3)
+		{
+			<textarea @onchange="@(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
+		}
 	}
-
-	<hr/>
 </div>
 
 @code {
@@ -112,18 +120,20 @@
 
 	private int pestañaMostrar = 0;
 
-	private int pestañaMostrarImagenes = 0;
-	private string imagenOrigen = string.Empty;
-
-	private int pestañaMostrarPrecios = 0;
-	private string textoOrigenPrecios = string.Empty;
-
 	private void MostrarPestaña(MouseEventArgs e, int pestaña)
 	{
 		pestañaMostrar = pestaña;
+
+		if (pestañaMostrar == 3)
+		{
+			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
+		}
 	}
 
 	#region Imagenes
+
+	private int pestañaMostrarImagenes = 0;
+	private string imagenOrigen = string.Empty;
 
 	private void MostrarPestañaImagenes(MouseEventArgs e, int pestañaImagenes)
 	{
@@ -200,6 +210,9 @@
 
 	#region Precios
 
+	private int pestañaMostrarPrecios = 0;
+	private string textoOrigenPrecios = string.Empty;
+
 	private void MostrarPestañaPrecios(MouseEventArgs e, int pestañaImagenes)
 	{
 		pestañaMostrarPrecios = pestañaImagenes;
@@ -236,6 +249,32 @@
 					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoOrigenPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
 				}				
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	#endregion
+
+	#region Suscripciones
+
+	private string textoOrigenSuscripciones = string.Empty;
+
+	private void TextoCambiaSuscripciones(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoOrigenSuscripciones = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoOrigenSuscripciones);
+				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
 
 			conexion.Dispose();

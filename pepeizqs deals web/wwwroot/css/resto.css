@@ -321,10 +321,8 @@
 }
 
 .juego-titulo {
-    font-size: 22px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 30px;
+    font-size: 20px;
+    margin: 12px 20px;
     width: 100%;
 }
 

@@ -158,17 +158,17 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			if (lector.IsDBNull(18) == false)
+			try
 			{
-				if (lector.GetString(18) != null)
+				if (lector.IsDBNull(18) == false)
 				{
-					try
+					if (lector.GetString(18) != null)
 					{
 						juego.SlugGOG = lector.GetString(18);
 					}
-					catch { }
-				}					
+				}
 			}
+			catch { }
 
 			return juego;
 		}

@@ -17,6 +17,8 @@ var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseD
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
 
 builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseSqlServer(conexionTexto));
+builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opt =>
+    opt.UseSqlite(Herramientas.BaseDatos.cadenaConexion));
 
 builder.Services.AddDefaultIdentity<Usuario>(options =>
 {
@@ -189,11 +191,11 @@ app.UseStaticFiles(new StaticFileOptions
 	RequestPath = "/imagenes"
 });
 
-//app.UseRouting();
+app.UseRouting();
 
 //app.UseResponseCaching();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.MapControllerRoute(name: "game",
 //				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");

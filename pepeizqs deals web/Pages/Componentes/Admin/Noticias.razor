@@ -315,7 +315,7 @@
 	private void AñadirNoticia(MouseEventArgs e)
 	{
 		global::Noticias.Noticia noticia = new global::Noticias.Noticia();
-		
+
 		noticia.TituloEn = tituloEn;
 		noticia.TituloEs = tituloEs;
 		noticia.Imagen = imagen;
@@ -626,6 +626,10 @@
 					if (lista.Count == 1)
 					{
 						enlace = Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo);
+					}
+					else
+					{
+						enlace = null;
 					}
 
 					if (Gratis2.GratisCargar.DevolverGratis(gratisSeleccionado).DRMEnseñar == true)

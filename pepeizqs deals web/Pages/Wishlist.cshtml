@@ -1,17 +1,9 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.WishlistModel
 
-@using Microsoft.AspNetCore.Identity
-@using pepeizqs_deals_web.Areas.Identity.Data
-
-@inject SignInManager<Usuario> SignInManager
-
 @{
 	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Wishlist.Title");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@if (SignInManager.IsSignedIn(User))
-{
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
-}
+@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))

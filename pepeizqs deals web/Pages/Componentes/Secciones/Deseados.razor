@@ -99,9 +99,9 @@
 
 	private int cantidad = 0;
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 
 		if (usuario != null)
 		{
@@ -121,7 +121,7 @@
 
 			if (tiempo == true)
 			{
-				SteamUsuario datos = Cuenta.CargarDatos(usuario.SteamAccount).Result;
+				SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
 
 				usuario.SteamGames = datos.Juegos;
 				usuario.SteamWishlist = datos.Deseados;
@@ -130,7 +130,7 @@
 				usuario.SteamAccountLastCheck = DateTime.Now.ToString();
 				usuario.OfficialGroup = datos.GrupoOficial;
 
-				var terminado = UserManager.UpdateAsync(usuario).IsCompleted;
+				await UserManager.UpdateAsync(usuario);
 			}
 
 			#endregion
@@ -224,7 +224,7 @@
 					{
 						Juegos.Juego nuevoJuego = juego;
 						nuevoJuego.PrecioActualesTiendas = ordenados;
-						nuevoJuego.Imagenes.Capsule_231x87 = Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio).Result;
+						nuevoJuego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio);
 
 						JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 						nuevoDeseado.Juego = nuevoJuego;

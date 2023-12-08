@@ -10,6 +10,7 @@ namespace pepeizqs_deals_web.Data
 		public pepeizqs_deals_webContext(DbContextOptions<pepeizqs_deals_webContext> options)
 			: base(options)
 		{
+
 		}
 
 		public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
