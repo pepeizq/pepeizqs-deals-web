@@ -120,7 +120,7 @@ namespace BaseDatos.Tiendas
 					if (actualizar == true && insertar == false)
 					{
 						DateTime fechaComprobacion = Convert.ToDateTime(juego.FechaSteamAPIComprobacion);
-						fechaComprobacion = fechaComprobacion.AddDays(7);
+						fechaComprobacion = fechaComprobacion.AddDays(28);
 
 						if (fechaComprobacion < DateTime.Now)
 						{

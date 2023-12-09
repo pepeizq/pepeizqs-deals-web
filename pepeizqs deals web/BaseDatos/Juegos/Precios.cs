@@ -92,7 +92,7 @@ namespace BaseDatos.Juegos
 
 											//------------------------------------------
 
-											if (tempPrecio < minimo.Precio && minimo.FechaDetectado < nuevaOferta.FechaDetectado)
+											if (tempPrecio < minimo.Precio)
 											{
 												if (juego.UsuariosInteresados != null)
 												{
@@ -100,7 +100,7 @@ namespace BaseDatos.Juegos
 													{
 														foreach (var usuarioInteresado in juego.UsuariosInteresados)
 														{
-															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), nuevaOferta.DRM);
+															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
 
 															if (correo != null)
 															{
@@ -148,20 +148,20 @@ namespace BaseDatos.Juegos
 				{
 					bool descartar = false;
 
-					if (juego.Bundles != null)
-					{
-						descartar = true;
-					}
+					//if (juego.Bundles != null)
+					//{
+					//	descartar = true;
+					//}
 
-					if (juego.Gratis != null)
-					{
-						descartar = true;
-					}
+					//if (juego.Gratis != null)
+					//{
+					//	descartar = true;
+					//}
 
-					if (juego.Suscripciones != null)
-					{
-						descartar = true;
-					}
+					//if (juego.Suscripciones != null)
+					//{
+					//	descartar = true;
+					//}
 
 					if (descartar == false)
 					{

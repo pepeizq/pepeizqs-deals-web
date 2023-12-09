@@ -207,15 +207,15 @@ namespace Herramientas
 
             using (ImapClient cliente = new ImapClient())
             {
-                cliente.Connect(host, 143, SecureSocketOptions.Auto);
-                cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
-                cliente.Inbox.Open(FolderAccess.ReadOnly);
+    //            cliente.Connect(host, 143, SecureSocketOptions.Auto);
+    //            cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+    //            cliente.Inbox.Open(FolderAccess.ReadOnly);
 
-				//correos = cliente.Inbox.Search(SearchQuery.New).Count;
+				////correos = cliente.Inbox.Search(SearchQuery.New).Count;
 
-				correos = cliente.Inbox.Search(SearchQuery.NotSeen).Count;
+				//correos = cliente.Inbox.Search(SearchQuery.NotSeen).Count;
 
-				cliente.Disconnect(true);
+				//cliente.Disconnect(true);
 			}
 
             return correos;

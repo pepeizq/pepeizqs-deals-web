@@ -17,9 +17,10 @@ namespace APIs.Steam
 
 			string html = await Decompiladores.Estandar("https://store.steampowered.com/api/appdetails/?appids=" + id + "&l=english");
 
-			if (html != null) 
+			if (string.IsNullOrEmpty(html) == false) 
 			{
 				int int1 = html.IndexOf(":");
+
 				html = html.Remove(0, int1 + 1);
 				html = html.Remove(html.Length - 1, 1);
 
@@ -113,48 +114,52 @@ namespace APIs.Steam
 						juego.Tipo = Juegos.JuegoTipo.Game;
 					}
 
-					if (datos.Datos.Precio != null)
+					try
 					{
-						string descuento = datos.Datos.Precio.Descuento;
-
-						if (descuento != null)
+						if (datos.Datos.Precio != null)
 						{
-							descuento = descuento.Replace("%", null);
-							descuento = descuento.Replace("-", null);
-						}
+							string descuento = datos.Datos.Precio.Descuento;
 
-						string precioFormateado = datos.Datos.Precio.Formateado;
-
-						if (precioFormateado != null)
-						{
-							if (precioFormateado == "Free")
+							if (descuento != null)
 							{
-								precioFormateado = "0.00";
+								descuento = descuento.Replace("%", null);
+								descuento = descuento.Replace("-", null);
 							}
 
-							precioFormateado = precioFormateado.Replace("€", null);
-							precioFormateado = precioFormateado.Replace(",", ".");
-							precioFormateado = precioFormateado.Replace(".--", ".00");
+							string precioFormateado = datos.Datos.Precio.Formateado;
+
+							if (precioFormateado != null)
+							{
+								if (precioFormateado == "Free")
+								{
+									precioFormateado = "0.00";
+								}
+
+								precioFormateado = precioFormateado.Replace("€", null);
+								precioFormateado = precioFormateado.Replace(",", ".");
+								precioFormateado = precioFormateado.Replace(".--", ".00");
+							}
+
+							string enlacePrecio = "https://store.steampowered.com/app/" + datos.Datos.Id;
+
+							Juegos.JuegoPrecio precio = new Juegos.JuegoPrecio
+							{
+								Descuento = int.Parse(descuento),
+								DRM = Juegos.JuegoDRM.Steam,
+								Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
+								Moneda = JuegoMoneda.Euro,
+								FechaDetectado = DateTime.Now,
+								FechaActualizacion = DateTime.Now,
+								Enlace = enlacePrecio,
+								Tienda = "steam"
+							};
+
+							juego.PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio };
+							juego.PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio };
 						}
-
-						string enlacePrecio = "https://store.steampowered.com/app/" + datos.Datos.Id;
-
-						Juegos.JuegoPrecio precio = new Juegos.JuegoPrecio
-						{
-							Descuento = int.Parse(descuento),
-							DRM = Juegos.JuegoDRM.Steam,
-							Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
-							Moneda = JuegoMoneda.Euro,
-							FechaDetectado = DateTime.Now,
-							FechaActualizacion = DateTime.Now,
-							Enlace = enlacePrecio,
-							Tienda = "steam"
-						};
-
-						juego.PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio };
-						juego.PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio };
 					}
-
+					catch { }
+					
 					return juego;
 				}
 			}
