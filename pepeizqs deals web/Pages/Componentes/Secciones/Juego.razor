@@ -460,7 +460,7 @@
 
 					@foreach (var suscripcion2 in SuscripcionesAntiguos(juego.Suscripciones))
 					{
-						<div style="display: flex; align-items: center; font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
+						<div style="display: flex; align-items: center; font-size: 16px; padding: 5px 15px; margin-top: 10px; margin-bottom: 10px;">
 							<div style="margin-right: 15px;">
 								<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
 							</div>
@@ -570,7 +570,7 @@
 	}
 
 	function moverScroll(id) {
-		const yOffset = -190;
+		const yOffset = -175;
 		const element = document.getElementById(id);
 		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 

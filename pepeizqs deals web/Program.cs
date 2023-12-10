@@ -74,14 +74,14 @@ builder.Services.Configure<IdentityOptions>(opciones =>
     opciones.User.RequireUniqueEmail = true;
 });
 
-//builder.Services.ConfigureApplicationCookie(opciones =>
-//{
-//    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
-//    opciones.Cookie.Name = "cookiePepeizq";
-//    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
-//    opciones.LoginPath = "/Identity/Account/Login";
-//    opciones.SlidingExpiration = true;
-//});
+builder.Services.ConfigureApplicationCookie(opciones =>
+{
+    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    opciones.Cookie.Name = "cookiePepeizq";
+    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
+    opciones.LoginPath = "/Identity/Account/Login";
+    opciones.SlidingExpiration = true;
+});
 
 builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 {

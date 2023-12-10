@@ -50,8 +50,20 @@ namespace Herramientas
 							{
 								añadir = false;
 							}
+                            else if (minimo.Bundles != null)
+                            {
+                                añadir = false;
+                            }
+                            else if(minimo.Gratis != null)
+                            {
+                                añadir = false;
+                            }
+                            else if(minimo.Suscripciones != null)
+                            {
+                                añadir = false;
+                            }
 
-							if (añadir == true)
+                            if (añadir == true)
 							{
 								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
