@@ -54,11 +54,11 @@ namespace Herramientas
                             {
                                 añadir = false;
                             }
-                            else if(minimo.Gratis != null)
+                            else if (minimo.Gratis != null)
                             {
                                 añadir = false;
                             }
-                            else if(minimo.Suscripciones != null)
+                            else if (minimo.Suscripciones != null)
                             {
                                 añadir = false;
                             }
