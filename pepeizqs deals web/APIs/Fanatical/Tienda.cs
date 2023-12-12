@@ -169,7 +169,9 @@ namespace APIs.Fanatical
 		}
 	}
 
-	public class FanaticalJuego
+    #region Clases
+
+    public class FanaticalJuego
 	{
 		[JsonProperty("title")]
 		public string Nombre { get; set; }
@@ -266,4 +268,6 @@ namespace APIs.Fanatical
 		[JsonProperty("available_valid_until")]
 		public string FechaTermina { get; set; }
 	}
+
+    #endregion
 }

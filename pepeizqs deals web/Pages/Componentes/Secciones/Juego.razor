@@ -231,8 +231,11 @@
 									{
 										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 											<div class="perfil-flexible-centrado">
-												<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
-
+												<div>
+													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
+													<span style="margin-left: 15px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
+												</div>
+												
 												<div class="juego-descuento-precio">
 													<div style="font-size: 14px; margin: 20px;">
 														@Calculadora.HaceTiempo(precio.FechaDetectado, idioma)
@@ -882,6 +885,18 @@
 		}
 
 		return imagen;
+	}
+
+	private static string ComprobarEdicion(string juego, string oferta)
+	{
+		if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(oferta))
+		{
+			string nuevoTexto = oferta.Replace(juego, null);
+			nuevoTexto = nuevoTexto.Trim();
+			return nuevoTexto;
+		}
+
+		return null;
 	}
 
 	#region Deseados

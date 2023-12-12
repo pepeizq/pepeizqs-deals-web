@@ -159,6 +159,7 @@ namespace Juegos
 	{
 		Game,
 		DLC,
-		Bundle
+		Bundle,
+		Music
 	}
 }

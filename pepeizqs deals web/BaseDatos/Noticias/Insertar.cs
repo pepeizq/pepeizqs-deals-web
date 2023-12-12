@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using System.Net;
 
 namespace BaseDatos.Noticias
 {
@@ -121,8 +122,8 @@ namespace BaseDatos.Noticias
 
 					comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 					comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
-					comando.Parameters.AddWithValue("@tituloEn", noticia.TituloEn);
-					comando.Parameters.AddWithValue("@tituloEs", noticia.TituloEs);
+					comando.Parameters.AddWithValue("@tituloEn", WebUtility.HtmlDecode(noticia.TituloEn));
+					comando.Parameters.AddWithValue("@tituloEs", WebUtility.HtmlDecode(noticia.TituloEs));
 					comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);
 					comando.Parameters.AddWithValue("@contenidoEs", noticia.ContenidoEs);
 

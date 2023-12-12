@@ -1,0 +1,210 @@
+﻿#nullable disable
+
+using Herramientas;
+using Juegos;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
+using System.Net;
+using System.Xml.Serialization;
+
+namespace APIs.EA
+{
+    public class Tienda
+    {
+        public static Tiendas2.Tienda Generar()
+        {
+            Tiendas2.Tienda tienda = new Tiendas2.Tienda
+            {
+                Id = "ea",
+                Nombre = "EA",
+                ImagenLogo = "/imagenes/tiendas/ea_logo.webp",
+                Imagen300x80 = "/imagenes/tiendas/ea_300x80.webp",
+                ImagenIcono = "/imagenes/tiendas/ea_icono.png",
+                Color = "#ff4747",
+                AdminEnseñar = true,
+                AdminInteractuar = true
+            };
+
+            return tienda;
+        }
+
+        public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+        {
+            int juegos2 = 0;
+
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
+            
+                if (html != null)
+                {
+                    EABD basedatos = JsonConvert.DeserializeObject<EABD>(html);
+
+                    if (basedatos != null) 
+                    {
+                        string superIds = string.Empty;
+                        int i = 0;
+                        int total = 0;
+
+                        foreach (var juegoEA in basedatos.Juegos)
+                        {
+                            superIds = superIds + juegoEA.Id + ",";
+                            i += 1;
+
+                            if (i == 100)
+                            {
+                                total += i;
+                                i = 0;
+
+                                superIds = superIds.Remove(superIds.Length - 1, 1);
+
+                                string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+                                AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
+                                superIds = string.Empty;
+                            }
+
+                            if ((total + 1) == basedatos.Juegos.Count)
+                            {
+                                if (superIds.Length > 0) 
+                                {
+                                    superIds = superIds.Remove(superIds.Length - 1, 1);
+
+                                    string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+                                    AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            conexion.Dispose();
+        }
+
+        private static void AñadirPrecios(string html2, List<EABDJuego> basedatos, int juegos2, SqlConnection conexion, ViewDataDictionary objeto = null)
+        {
+            if (html2 != null)
+            {
+                StringReader stream = new StringReader(html2);
+                XmlSerializer xml = new XmlSerializer(typeof(EAPrecio1));
+                EAPrecio1 precio1 = (EAPrecio1)xml.Deserialize(stream);
+
+                foreach (var precioEA in precio1.Precio2)
+                {
+                    if (precioEA.Precio3 != null) 
+                    {
+                        decimal precioRebajado = decimal.Parse(precioEA.Precio3.PrecioRebajado);
+                        decimal precioBase = decimal.Parse(precioEA.Precio3.PrecioBase);
+
+                        int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+                        if (descuento > 0)
+                        {
+                            foreach (var juegobd in basedatos)
+                            {
+                                if (precioEA.Id == juegobd.Id)
+                                {
+                                    string nombre = WebUtility.HtmlDecode(juegobd.i18n.Titulo);
+
+                                    string enlace = "https://www.origin.com/store" + juegobd.Enlace;
+
+                                    string imagen = juegobd.ImagenServidor + juegobd.i18n.ImagenGrande;
+
+                                    JuegoDRM drm = JuegoDRM.EA;
+
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Euro,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = Generar().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now,
+                                        FechaActualizacion = DateTime.Now
+                                    };
+
+                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+                                    juegos2 += 1;
+                                    BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #region Clases
+
+    public class EABD
+    {
+        [JsonProperty("offers")]
+        public List<EABDJuego> Juegos { get; set; }
+    }
+
+    public class EABDJuego 
+    {
+        [JsonProperty("offerId")]
+        public string Id { get; set; }
+
+        [JsonProperty("itemName")]
+        public string Titulo { get; set; }
+
+        [JsonProperty("offerPath")]
+        public string Enlace { get; set; }
+
+        [JsonProperty("i18n")]
+        public EABDJuegoi18n i18n { get; set; }
+
+        [JsonProperty("imageServer")]
+        public string ImagenServidor { get; set; }
+    }
+
+    public class EABDJuegoi18n
+    {
+        [JsonProperty("displayName")]
+        public string Titulo { get; set; }
+
+        [JsonProperty("packArtMedium")]
+        public string ImagenPequeña { get; set; }
+
+        [JsonProperty("packArtLarge")]
+        public string ImagenGrande { get; set; }
+    }
+
+
+    [XmlRoot("offerRatingResults")]
+    public class EAPrecio1
+    {
+        [XmlElement("offer")]
+        public List<EAPrecio2> Precio2 { get; set; }
+    }
+
+    public class EAPrecio2
+    {
+        [XmlElement("offerId")]
+        public string Id { get; set; }
+
+        [XmlElement("rating")]
+        public EAPrecio3 Precio3 { get; set; }
+    }
+
+    public class EAPrecio3
+    {
+        [XmlElement("finalTotalAmount")]
+        public string PrecioRebajado { get; set; }
+
+        [XmlElement("originalTotalPrice")]
+        public string PrecioBase { get; set; }
+    }
+
+    #endregion
+}

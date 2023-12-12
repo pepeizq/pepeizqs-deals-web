@@ -109,6 +109,10 @@ namespace APIs.Steam
 					{
 						juego.Tipo = Juegos.JuegoTipo.DLC;
 					}
+					else if (datos.Datos.Tipo == "music")
+					{
+						juego.Tipo = Juegos.JuegoTipo.Music;
+					}
 					else
 					{
 						juego.Tipo = Juegos.JuegoTipo.Game;

@@ -95,6 +95,13 @@ namespace Herramientas
 							{
 								añadir = false;
 							}
+							else
+							{
+								if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
+								{
+									añadir = false;
+								}
+							}
 
 							if (juegosConMinimos[j].Gratis != null)
 							{

@@ -1,8 +1,5 @@
 ﻿#nullable disable
 
-using Juegos;
-using Microsoft.Data.SqlClient;
-
 namespace Herramientas
 {
 	public static class Buscador

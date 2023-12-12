@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 
 <div class="perfil">
-	<div class="perfil-flexible-centrado">
+	<div style="display: flex; justify-content: space-between;">
 		<div style="width: 30%;">
 			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
 			{
@@ -13,13 +13,13 @@
 		</div>
 
 		<div style="width: 65%;">
-			<div class="perfil-flexible-centrado">
-				<div style="width: 30%; padding: 10px;">
+			<div style="display: flex; justify-content: space-between;">
+				<div style="width: 30%;">
 					<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
 				</div>
 				
-				<div style="width: 70%; padding: 10px;">
-					<div style="margin-bottom: 10px;">
+				<div style="width: 70%; margin-left: 20px;">
+					<div style="margin-bottom: 20px;">
 						<a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
 					</div>
 
@@ -27,57 +27,59 @@
 						<input @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px;" value="@idsPendiente" />
 					</div>
 
-					<div>
-						<button @onclick="@(e => ClickearDescartar(e, @enlacePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Descartar</button>
-					</div>
+					<div style="display: flex; align-items: center; margin: 20px 0px;">
+						<div>
+							<button @onclick="@(e => ClickearDescartar(e, @enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+						</div>
 
-					<div>
-						<button @onclick="@(e => ClickearBuscar(e, @nombrePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Buscar</button>
-					</div>
+						<div>
+							<button @onclick="@(e => ClickearBuscar(e, @nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
+						</div>
 
-					<div>
-						<button @onclick="@(e => ClickearActualizar(e, @enlacePendiente))" class="boton-pequeño" style="margin: 10px 0px; width: 100px; text-align: center;">Actualizar</button>
+						<div>
+							<button @onclick="@(e => ClickearActualizar(e, @enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div style="margin-top: 40px; padding: 10px;">
-		<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+			<div style="margin-top: 40px;">
+				<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
 
-		@if (juegosBuscador != null)
-		{
-			@if (juegosBuscador.Count > 0)
-			{
-				<div>
-					@foreach (var juego in juegosBuscador)
+				@if (juegosBuscador != null)
+				{
+					@if (juegosBuscador.Count > 0)
 					{
-						<div class="perfil-flexible-centrado perfil-espacio-top">
-							<a class="boton-pequeño">
-								<div class="perfil-flexible-centrado">
-									<div style="width: 12%;">
-										<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-									</div>
+						<div>
+							@foreach (var juego in juegosBuscador)
+							{
+								<div class="perfil-flexible-centrado perfil-espacio-top">
+									<a class="boton-pequeño">
+										<div class="perfil-flexible-centrado">
+											<div style="width: 12%;">
+												<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+											</div>
 
-									<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
-										@juego.Id - @juego.Nombre
-									</div>
+											<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
+												@juego.Id - @juego.Nombre
+											</div>
 
-									<div class="admin-busqueda-juego-derecha">
-										<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
-									</div>
+											<div class="admin-busqueda-juego-derecha">
+												<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
+											</div>
 
-									<div class="admin-busqueda-juego-derecha">
-										<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-									</div>
+											<div class="admin-busqueda-juego-derecha">
+												<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+											</div>
+										</div>
+									</a>
 								</div>
-							</a>
+							}
 						</div>
 					}
-				</div>
-			}
-		}		
+				}
+			</div>
+		</div>
 	</div>
 </div>
 

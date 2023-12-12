@@ -126,7 +126,7 @@ namespace Juegos
 				Id = JuegoDRM.Epic,
 				Nombre = "Epic Games Store",
 				Imagen = "/imagenes/drm/epic.webp",
-				Acepciones = new List<string> { "epic game store", "epic games store", "epic games", "epic" }
+				Acepciones = new List<string> { "epic game store", "epic games store", "epic games", "epic", "epic_keyless" }
 			};
 
 			drms.Add(epic);
