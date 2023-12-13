@@ -81,7 +81,7 @@
   },
   {
     "Id": "Index.LastLowsInfo",
-    "Valor": "These deals are historical lows that have not been in bundles, free or subscriptions. And they also exceed 100 reviews on Steam."
+    "Valor": "These deals are historical lows that have exceed 1000 reviews on Steam."
   },
   {
     "Id": "Index.LastAdded",
@@ -702,6 +702,30 @@
   {
     "Id": "LastAdded.String1",
     "Valor": "Latest Games and DLCs Added to the Database"
+  },
+  {
+    "Id": "SettingsLayout.String1",
+    "Valor": "Email"
+  },
+  {
+    "Id": "SettingsLayout.String2",
+    "Valor": "Password"
+  },
+  {
+    "Id": "SettingsLayout.String3",
+    "Valor": "Personal Data"
+  },
+  {
+    "Id": "SettingsLayout.String4",
+    "Valor": "Notifications"
+  },
+  {
+    "Id": "SettingsLayout.String5",
+    "Valor": "Steam Account"
+  },
+  {
+    "Id": "SettingsLayout.String6",
+    "Valor": "Keys"
   },
   {
     "Id": "Settings.String1",

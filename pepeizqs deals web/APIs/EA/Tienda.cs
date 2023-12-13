@@ -20,7 +20,7 @@ namespace APIs.EA
                 Nombre = "EA",
                 ImagenLogo = "/imagenes/tiendas/ea_logo.webp",
                 Imagen300x80 = "/imagenes/tiendas/ea_300x80.webp",
-                ImagenIcono = "/imagenes/tiendas/ea_icono.png",
+                ImagenIcono = "/imagenes/tiendas/ea_icono.webp",
                 Color = "#ff4747",
                 AdminEnseñar = true,
                 AdminInteractuar = true

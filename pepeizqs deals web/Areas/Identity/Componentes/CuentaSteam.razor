@@ -104,9 +104,9 @@ else
 
 	private bool enseñarImagen = false;
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 	}
 
 	private async void TextoCambiaSteamCuenta(ChangeEventArgs texto)

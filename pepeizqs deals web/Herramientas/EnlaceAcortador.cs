@@ -48,6 +48,10 @@ namespace Herramientas
 				{
 					enlace = APIs.WinGameStore.Tienda.Referido(enlace);
 				}
+				else if (tienda == APIs.DLGamer.Tienda.Generar().Id)
+				{
+					enlace = APIs.DLGamer.Tienda.Referido(enlace);
+				}
 			}
 
 			//----------------------------------------

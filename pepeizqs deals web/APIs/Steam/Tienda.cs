@@ -215,7 +215,7 @@ namespace APIs.Steam
 										}
 									}
 
-									if (analisis.Cantidad.Length > 2)
+									if (analisis.Cantidad.Length > 1)
 									{
 										int int11 = temp4.IndexOf("data-discount=" + Strings.ChrW(34));
 

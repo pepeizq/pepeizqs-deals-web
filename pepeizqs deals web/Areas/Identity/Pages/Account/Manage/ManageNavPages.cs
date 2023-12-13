@@ -50,11 +50,19 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
-        public static string PageNavClass(ViewContext viewContext, string page)
+        public static string PageNavClass(ViewContext viewContext, string pagina)
         {
-            var activePage = viewContext.ViewData["ActivePage"] as string
+            string paginaActiva = viewContext.ViewData["ActivePage"] as string
                 ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
-            return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
+
+            if (string.Equals(paginaActiva, pagina, StringComparison.OrdinalIgnoreCase) == true)
+            {
+                return "active";
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

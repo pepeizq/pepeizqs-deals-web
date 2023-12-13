@@ -219,9 +219,9 @@ namespace Herramientas
 
 		public async Task TiendasTarea()
 		{
-			await Task.Delay(TimeSpan.FromMinutes(15));
+			await Task.Delay(TimeSpan.FromMinutes(10));
 
-			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(20));
+			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(15));
 		}
 	}
 }

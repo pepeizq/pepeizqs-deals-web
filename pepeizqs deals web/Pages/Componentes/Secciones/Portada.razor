@@ -318,15 +318,15 @@ else
 						</div>
 
 						<div style="width: 73%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
-							<label class="minimo-fuente">@juego.Nombre</label>
+							<span class="minimo-fuente">@juego.Nombre</span>
 							<div style="margin-top: 5px;">
 								<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
 								<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
-								<label class="minimo-fuentefecha">@CargarFechaDetectado(juego)</label>
+								<span class="minimo-fuentefecha">@CargarFechaDetectado(juego)</span>
 							</div>
 						</div>
 
-						<div style="width: 17%; display: flex; align-items: center; text-align: center;">
+						<div style="width: 17%; display: flex; align-items: center; justify-content: center; text-align: center;">
 							<div class="minimo-fuente minimo-espacio2" style="background-color: darkgreen;">
 								@CargarDescuento(juego)
 							</div>

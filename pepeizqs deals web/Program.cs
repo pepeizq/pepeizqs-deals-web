@@ -9,7 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -62,9 +62,17 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 #endregion
 
-//----------------------------------------------------------------------------------
-
 builder.Services.AddResponseCaching();
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default30",
+        new CacheProfile()
+        {
+            Duration = 30
+        });
+});
+
+//----------------------------------------------------------------------------------
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -89,25 +97,25 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(new Authenticate
     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 });
 
-builder.Services.AddServerSideBlazor(options =>
-{
-    options.DetailedErrors = true;
-    options.DisconnectedCircuitMaxRetained = 100;
-    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
-    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
-    options.MaxBufferedUnacknowledgedRenderBatches = 10;
-}).AddHubOptions(options =>
-{
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-	options.EnableDetailedErrors = true;
-    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
-    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
-}).AddCircuitOptions(options =>
-{
-    options.DetailedErrors = true;
-    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
-    options.DisconnectedCircuitMaxRetained = 0;
-}); ;
+//builder.Services.AddServerSideBlazor(options =>
+//{
+//    options.DetailedErrors = true;
+//    options.DisconnectedCircuitMaxRetained = 100;
+//    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+//    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+//    options.MaxBufferedUnacknowledgedRenderBatches = 10;
+//}).AddHubOptions(options =>
+//{
+//    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//	options.EnableDetailedErrors = true;
+//    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+//    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//}).AddCircuitOptions(options =>
+//{
+//    options.DetailedErrors = true;
+//    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+//    options.DisconnectedCircuitMaxRetained = 0;
+//}); ;
 
 builder.Services.Configure<HubOptions>(options =>
 {
@@ -153,6 +161,8 @@ var app = builder.Build();
     app.UseHsts();
 //}
 
+app.UseResponseCaching();
+
 app.Use(async (contexto, siguiente) =>
 {
     if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
@@ -193,22 +203,13 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseRouting();
 
-//app.UseResponseCaching();
-
 app.UseAuthorization();
-
-//app.MapControllerRoute(name: "game",
-//				pattern: "{controller=Game}/{action=CogerJuegoId}/{id?}");
 
 app.MapRazorPages();
 
 app.MapControllers();
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
-//app.UseRateLimiter();
-
 app.UseRequestLocalization();
-
-//app.MapShortCircuit(404, "robots.txt", "favicon.ico");
 
 app.Run();

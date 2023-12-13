@@ -77,7 +77,7 @@
   },
   {
     "Id": "Index.LastLowsInfo",
-    "Valor": "Estas ofertas son mínimos históricos que no han estado en bundles, gratis o en suscripciones. Y además superan los 100 análisis en Steam."
+    "Valor": "Estas ofertas son mínimos históricos que superan los 1000 análisis en Steam."
   },
   {
     "Id": "Index.LastAdded",
@@ -698,6 +698,30 @@
   {
     "Id": "LastAdded.String1",
     "Valor": "Últimos Juegos y DLCs Añadidos a la Base de Datos"
+  },
+  {
+    "Id": "SettingsLayout.String1",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "SettingsLayout.String2",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "SettingsLayout.String3",
+    "Valor": "Datos Personales"
+  },
+  {
+    "Id": "SettingsLayout.String4",
+    "Valor": "Notificaciones"
+  },
+  {
+    "Id": "SettingsLayout.String5",
+    "Valor": "Cuenta de Steam"
+  },
+  {
+    "Id": "SettingsLayout.String6",
+    "Valor": "Claves"
   },
   {
     "Id": "Settings.String1",

@@ -1,13 +1,4 @@
-﻿User-agent: *
-Disallow: /
-
-User-agent: Bingbot
-Disallow:
-
-User-agent: Googlebot
-Disallow:
-
-User-agent: Googlebot-Image
+﻿User-agent: Googlebot-Image
 Disallow: /
 
 Sitemap: https://pepeizqdeals.com/sitemap.xml

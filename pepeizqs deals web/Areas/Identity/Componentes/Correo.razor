@@ -74,14 +74,14 @@
     private bool correoConfirmadoEnviado = false;
     private bool correoCambioEnviado = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 
         if (usuario != null)
         {
-            correoDefecto = UserManager.GetEmailAsync(usuario).Result;
-            correoConfirmado = UserManager.IsEmailConfirmedAsync(usuario).Result;
+            correoDefecto = await UserManager.GetEmailAsync(usuario);
+            correoConfirmado = await UserManager.IsEmailConfirmedAsync(usuario);
         }
     }
 

@@ -12,7 +12,7 @@ namespace Herramientas
 
 	public static class Idiomas
 	{
-		public static string CogerCadena(string idiomaUsuario, string cadena)
+        public static string CogerCadena(string idiomaUsuario, string cadena)
 		{
 			if (idiomaUsuario != null)
 			{
@@ -20,9 +20,14 @@ namespace Herramientas
 				{
 					idiomaUsuario = "es-ES";
 				}
-			}		
+            }		
 
-			if (idiomaUsuario == null || File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
+			if (string.IsNullOrEmpty(idiomaUsuario) == true)
+			{
+                idiomaUsuario = "en-US";
+            }
+				
+			if (File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
 			{
 				idiomaUsuario = "en-US";
 			}
@@ -61,7 +66,14 @@ namespace Herramientas
 			}
 			else
 			{
-				return CogerCadena("en-US", cadena);
+				if (cadena != null)
+				{
+                    return CogerCadena("en-US", cadena);
+                }
+				else
+				{
+					return null;
+				}
 			}
 		}
 
