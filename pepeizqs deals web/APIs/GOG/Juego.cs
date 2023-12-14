@@ -100,7 +100,7 @@ namespace APIs.GOG
 													Moneda = JuegoMoneda.Euro,
 													FechaDetectado = DateTime.Now,
 													Enlace = enlacePrecio,
-													Tienda = "gog"
+													Tienda = Tienda.Generar().Id
 												};
 
 												//------------------------------------------------------
@@ -234,9 +234,9 @@ namespace APIs.GOG
 		}
 	}
 
-	//----------------------------------------------
+    #region Clases
 
-	public class GOGJuegoAPI
+    public class GOGJuegoAPI
 	{
 		[JsonProperty("id")]
 		public string Id { get; set; }
@@ -330,4 +330,6 @@ namespace APIs.GOG
 		[JsonProperty("final")]
 		public string Cantidad { get; set; }
 	}
+
+    #endregion
 }

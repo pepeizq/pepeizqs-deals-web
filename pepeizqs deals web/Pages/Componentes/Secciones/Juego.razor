@@ -42,7 +42,7 @@
 								{
 									@if (drm == JuegoDRM.DRMFree)
 									{
-										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 10px;">DRM Free</div></button>
+										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
 									}
 									else
 									{
@@ -111,36 +111,42 @@
 					}
 
 					<div style="display: flex; align-items: center; justify-content: right; margin-top: 15px;">
-						<div>
-							@if (juego.Caracteristicas.Windows == true)
-							{
-								<img src="/imagenes/sistemas/windows.webp" />
-							}
+						@if (juego.Caracteristicas != null)
+						{
+							<div>
+								@if (juego.Caracteristicas.Windows == true)
+								{
+									<img src="/imagenes/sistemas/windows.webp" />
+								}
 
-							@if (juego.Caracteristicas.Mac == true)
-							{
-								<img src="/imagenes/sistemas/mac.webp" />
-							}
+								@if (juego.Caracteristicas.Mac == true)
+								{
+									<img src="/imagenes/sistemas/mac.webp" />
+								}
 
-							@if (juego.Caracteristicas.Linux == true)
-							{
-								<img src="/imagenes/sistemas/linux.webp" />
-							}
-						</div>						
+								@if (juego.Caracteristicas.Linux == true)
+								{
+									<img src="/imagenes/sistemas/linux.webp" />
+								}
+							</div>
+						}												
 
-						<div style="margin-left: 20px;">
-							<label>@Idiomas.CogerCadena(idioma, "Game.String1")</label>
+						@if (juego.IdSteam > 0 || string.IsNullOrEmpty(juego.SlugGOG) == false)
+						{
+							<div style="margin-left: 20px;">
+								<label>@Idiomas.CogerCadena(idioma, "Game.String1")</label>
 
-							@if (juego.IdSteam > 0)
-							{
-								<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
-							}
+								@if (juego.IdSteam > 0)
+								{
+									<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+								}
 
-							@if (string.IsNullOrEmpty(juego.SlugGOG) == false)
-							{
-								<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank">GOG</a>
-							}
-						</div>
+								@if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+								{
+									<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank">GOG</a>
+								}
+							</div>
+						}						
 					</div>
 				</div>				
 			</div>
@@ -482,13 +488,16 @@
 			</div>
 		}
 
-		@if (juego.Caracteristicas.Descripcion != null)
+		@if (juego.Caracteristicas != null)
 		{
-			<div class="perfil perfil-flexible-centrado" style="margin-bottom: 50px;">
-				<div style="width: 100%; padding: 10px;">
-					@WebUtility.HtmlDecode(juego.Caracteristicas.Descripcion)
+			@if (juego.Caracteristicas.Descripcion != null)
+			{
+				<div class="perfil perfil-flexible-centrado" style="margin-bottom: 50px;">
+					<div style="width: 100%; padding: 10px;">
+						@WebUtility.HtmlDecode(juego.Caracteristicas.Descripcion)
+					</div>
 				</div>
-			</div>
+			}
 		}
 
 		@if (juego.Media != null)

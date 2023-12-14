@@ -528,6 +528,22 @@
     "Valor": "Free Not Available"
   },
   {
+    "Id": "Free.String3",
+    "Valor": "You already have this game"
+  },
+  {
+    "Id": "Free.String4",
+    "Valor": "You don't have this game"
+  },
+  {
+    "Id": "Free.String5",
+    "Valor": "You already have this game on Steam"
+  },
+  {
+    "Id": "Free.String6",
+    "Valor": "You don't have this game on Steam"
+  },
+  {
     "Id": "Subscriptions.Title",
     "Valor": "Subscriptions"
   },

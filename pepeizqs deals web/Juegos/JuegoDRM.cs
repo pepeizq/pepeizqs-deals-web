@@ -15,7 +15,8 @@ namespace Juegos
 		NoEspecificado,
 		GOG,
 		Amazon,
-		ElderScrolls
+		ElderScrolls,
+		BattleNet
 	}
 
 	public static class JuegoDRM2
@@ -143,9 +144,21 @@ namespace Juegos
 
 			drms.Add(elderscrolls);
 
-			//----------------------------
+            //----------------------------
 
-			return drms;
+            DRM battlenet = new DRM
+            {
+                Id = JuegoDRM.BattleNet,
+                Nombre = "Battle.net",
+                Imagen = "/imagenes/drm/battlenet.webp",
+                Acepciones = new List<string> { "battlenet" }
+            };
+
+            drms.Add(battlenet);
+
+            //----------------------------
+
+            return drms;
 		}
 
 		public static string DevolverDRM(JuegoDRM drmBuscar)

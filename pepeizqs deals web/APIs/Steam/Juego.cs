@@ -3,6 +3,7 @@
 using Herramientas;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Security.Policy;
 using System.Text;
 
 namespace APIs.Steam
@@ -34,60 +35,67 @@ namespace APIs.Steam
 
 				if (datos != null)
 				{
-					Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes
+					Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
+
+					if (datos.Datos != null) 
 					{
-						Header_460x215 = datos.Datos.ImagenHeader_460x215,
-						Capsule_231x87 = datos.Datos.ImagenCapsule_231x87,
-						Logo = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/logo.png",
-						Library_1920x620 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_hero.jpg",
-						Library_600x900 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_600x900.jpg"
-					};
+						imagenes.Header_460x215 = datos.Datos.ImagenHeader_460x215;
+						imagenes.Capsule_231x87 = datos.Datos.ImagenCapsule_231x87;
+						imagenes.Logo = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/logo.png";
+						imagenes.Library_1920x620 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_hero.jpg";
+						imagenes.Library_600x900 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_600x900.jpg";
+					}
 
 					//------------------------------------------------------
 
-					Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas
-					{
-						Windows = datos.Datos.Sistemas.Windows,
-						Mac = datos.Datos.Sistemas.Mac,
-						Linux = datos.Datos.Sistemas.Linux,
-						Desarrolladores = datos.Datos.Desarrolladores,
-						Publishers = datos.Datos.Publishers
-					};
+					Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas();
 
-					if (string.IsNullOrEmpty(datos.Datos.DescripcionCorta) == false)
+					if (datos.Datos != null)
 					{
-						caracteristicas.Descripcion = datos.Datos.DescripcionCorta;
+						caracteristicas.Windows = datos.Datos.Sistemas.Windows;
+						caracteristicas.Mac = datos.Datos.Sistemas.Mac;
+						caracteristicas.Linux = datos.Datos.Sistemas.Linux;
+						caracteristicas.Desarrolladores = datos.Datos.Desarrolladores;
+						caracteristicas.Publishers = datos.Datos.Publishers;
+
+						if (string.IsNullOrEmpty(datos.Datos.DescripcionCorta) == false)
+						{
+							caracteristicas.Descripcion = datos.Datos.DescripcionCorta;
+						}
 					}
 
 					//------------------------------------------------------
 
 					Juegos.JuegoMedia media = new Juegos.JuegoMedia();
 
-					if (datos.Datos.Capturas != null)
+					if (datos.Datos != null)
 					{
-						if (datos.Datos.Capturas.Count > 0)
+						if (datos.Datos.Capturas != null)
 						{
-							List<string> capturas = new List<string>();
-							List<string> miniaturas = new List<string>();
-
-							foreach (SteamJuegoAPICaptura captura in datos.Datos.Capturas)
+							if (datos.Datos.Capturas.Count > 0)
 							{
-								capturas.Add(captura.Enlace);
-								miniaturas.Add(captura.Miniatura);
+								List<string> capturas = new List<string>();
+								List<string> miniaturas = new List<string>();
+
+								foreach (SteamJuegoAPICaptura captura in datos.Datos.Capturas)
+								{
+									capturas.Add(captura.Enlace);
+									miniaturas.Add(captura.Miniatura);
+								}
+
+								media.Capturas = capturas;
+								media.Miniaturas = miniaturas;
 							}
-
-							media.Capturas = capturas;
-							media.Miniaturas = miniaturas;
 						}
-					}
 
-					if (datos.Datos.Videos != null)
-					{
-						if (datos.Datos.Videos.Count > 0)
+						if (datos.Datos.Videos != null)
 						{
-							media.Video = datos.Datos.Videos[0].Mp4.Enlace;
+							if (datos.Datos.Videos.Count > 0)
+							{
+								media.Video = datos.Datos.Videos[0].Mp4.Enlace;
+							}
 						}
-					}
+					}						
 
 					//------------------------------------------------------
 

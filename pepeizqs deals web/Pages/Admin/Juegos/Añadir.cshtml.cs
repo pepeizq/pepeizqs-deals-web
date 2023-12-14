@@ -5,6 +5,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 namespace pepeizqs_deals_web.Pages.Admin.Juegos
 {
@@ -34,7 +35,11 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						{
 							juegoAñadir = APIs.GOG.Juego.CargarDatos(id).Result;
 						}
-					}					
+                        else if (plataforma == "epic")
+                        {
+                            juegoAñadir = APIs.EpicGames.Juego.CargarDatos(id).Result;
+                        }
+                    }					
 				}
             }	
 		}
@@ -55,7 +60,13 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 					return RedirectToPage("./Añadir", new { id = idPrecarga, plataforma = "gog" });
 				}
-			}
+                else if (APIs.EpicGames.Juego.Detectar(Request.Form["precarga"]) == true)
+                {
+                    string idPrecarga = APIs.EpicGames.Juego.LimpiarSlug(Request.Form["precarga"]);
+
+                    return RedirectToPage("./Añadir", new { id = idPrecarga, plataforma = "epic" });
+                }
+            }
             else 
             {
 				if (Request.Form["nombre"] != string.Empty)
@@ -90,7 +101,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						int l = 0;
 						while (l < 20)
 						{
-							if (Request.Form["precio_" + l.ToString()] != string.Empty)
+							if (string.IsNullOrEmpty(Request.Form["precio_" + l.ToString()]) == false)
 							{
 								string precioMirar = Request.Form["precio_" + l.ToString()];
 
@@ -142,81 +153,84 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
 						juegoAñadir.Imagenes = imagenes;
 
-						//----------------------------
+                        //----------------------------
 
-						JuegoCaracteristicas caracteristicas = new JuegoCaracteristicas
+                        if (string.IsNullOrEmpty(Request.Form["windows"]) == false)
 						{
-							Windows = bool.Parse(Request.Form["windows"]),
-							Mac = bool.Parse(Request.Form["mac"]),
-							Linux = bool.Parse(Request.Form["linux"]),
-							Descripcion = Request.Form["descripcion"]
-						};
+                            JuegoCaracteristicas caracteristicas = new JuegoCaracteristicas
+                            {
+                                Windows = bool.Parse(Request.Form["windows"]),
+                                Mac = bool.Parse(Request.Form["mac"]),
+                                Linux = bool.Parse(Request.Form["linux"]),
+                                Descripcion = Request.Form["descripcion"]
+                            };
 
-						int j = 0;
-						while (j < 20)
-						{
-							if (Request.Form["desarrollador_" + j.ToString()] != string.Empty)
-							{
-								string desarrollador = Request.Form["desarrollador_" + j.ToString()];
+                            int j = 0;
+                            while (j < 20)
+                            {
+                                if (string.IsNullOrEmpty(Request.Form["desarrollador_" + j.ToString()]) == false)
+                                {
+                                    string desarrollador = Request.Form["desarrollador_" + j.ToString()];
 
-								if (caracteristicas.Desarrolladores == null)
-								{
-									caracteristicas.Desarrolladores = new List<string>();
-								}
+                                    if (caracteristicas.Desarrolladores == null)
+                                    {
+                                        caracteristicas.Desarrolladores = new List<string>();
+                                    }
 
-								if (desarrollador != null)
-								{
-									caracteristicas.Desarrolladores.Add(desarrollador);
-								}
-								else
-								{
-									break;
-								}
-							}
-							else
-							{
-								break;
-							}
+                                    if (desarrollador != null)
+                                    {
+                                        caracteristicas.Desarrolladores.Add(desarrollador);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
 
-							j += 1;
-						}
+                                j += 1;
+                            }
 
-						int k = 0;
-						while (k < 20)
-						{
-							if (Request.Form["publisher_" + k.ToString()] != string.Empty)
-							{
-								string publisher = Request.Form["publisher_" + k.ToString()];
+                            int k = 0;
+                            while (k < 20)
+                            {
+                                if (string.IsNullOrEmpty(Request.Form["publisher_" + k.ToString()]) == false)
+                                {
+                                    string publisher = Request.Form["publisher_" + k.ToString()];
 
-								if (caracteristicas.Publishers == null)
-								{
-									caracteristicas.Publishers = new List<string>();
-								}
+                                    if (caracteristicas.Publishers == null)
+                                    {
+                                        caracteristicas.Publishers = new List<string>();
+                                    }
 
-								if (publisher != null)
-								{
-									caracteristicas.Publishers.Add(publisher);
-								}
-								else
-								{
-									break;
-								}
-							}
-							else
-							{
-								break;
-							}
+                                    if (publisher != null)
+                                    {
+                                        caracteristicas.Publishers.Add(publisher);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
 
-							k += 1;
-						}
+                                k += 1;
+                            }
 
-						juegoAñadir.Caracteristicas = caracteristicas;
-
+                            juegoAñadir.Caracteristicas = caracteristicas;
+                        }
+                            
 						//----------------------------
 
 						JuegoMedia media = new JuegoMedia();
 
-						if (Request.Form["video"] != string.Empty)
+						if (string.IsNullOrEmpty(Request.Form["video"]) == false)
 						{
 							media.Video = Request.Form["video"];
 						}
@@ -224,7 +238,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						int i = 0;
 						while (i < 20)
 						{
-							if (Request.Form["captura_" + i.ToString()] != string.Empty) 
+							if (string.IsNullOrEmpty(Request.Form["captura_" + i.ToString()]) == false) 
 							{
 								string captura = Request.Form["captura_" + i.ToString()];
 
@@ -253,7 +267,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						i = 0;
 						while (i < 20)
 						{
-							if (Request.Form["miniatura_" + i.ToString()] != string.Empty)
+							if (string.IsNullOrEmpty(Request.Form["miniatura_" + i.ToString()]) == false)
 							{
 								string miniatura = Request.Form["miniatura_" + i.ToString()];
 
