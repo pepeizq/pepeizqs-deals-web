@@ -124,6 +124,8 @@
     private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();
 
+    private Juegos.Juego juegoUsuario = new Juegos.Juego();
+
     protected override async Task OnInitializedAsync()
     {
         usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
@@ -173,14 +175,7 @@
                 {
                     Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
 
-                    if (juego2.Tipo == Juegos.JuegoTipo.Game)
-                    {
-                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
-                    }
-                    else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
-                    {
-                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
-                    }
+                    juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Header_460x215, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
 
                     juegosActuales.Add(juego);
                 }
@@ -257,8 +252,9 @@
         {
             if (juegosUsuario.Count > 0)
             {
-                Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(id.ToString());
+                juegoUsuario = BaseDatos.Juegos.Buscar.UnJuego(id.ToString());
 
+                if (juego)
                 if (juego.Tipo == Juegos.JuegoTipo.Game)
                 {
                     string steamID = juego.IdSteam.ToString();
