@@ -1,4 +1,11 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using APIs.Steam
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <div style="font-size: 23px;">
 	@Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions.String1")
@@ -15,21 +22,67 @@
 				<img src="@suscripcion.ImagenLogo" />
 			</div>
 
-			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+			<div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
 				@foreach (var juego in juegosActuales)
 				{
 					@if (juego.Tipo == suscripcion.Id)
 					{
 						<div>
-							<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 10px;" target="_blank">
+                            <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño tooltip2" style="padding: 0px;" target="_blank">
 								<div>
 									<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
 								</div>
 
-								<div style="text-align: right; margin-top: 10px; height: 30px;">
-									<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 30px; max-height: 30px;" />
-								</div>
-							</a>
+                                <div style="display: flex; align-items: center; justify-content: right; height: 40px;">
+									<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 24px; max-height: 24px; margin: 10px;" />
+
+                                    @if (juego.Juego.Tipo == Juegos.JuegoTipo.Game)
+                                    {
+                                        @if (usuario != null)
+                                        {
+                                            @if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+                                            {
+                                                @if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+                                                {
+                                                    <div style="padding: 8px 11px; background-color: var(--fondoBien); color: var(--colorTextoBien); margin-left: 5px;">
+                                                        <i class="fa-solid fa-check" style="font-size: 20px;"></i>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div style="padding: 8px 11px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); margin-left: 5px;">
+                                                        <i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+
+                                @if (juego.Juego.Tipo == Juegos.JuegoTipo.Game)
+                                {
+                                    <div class="tooltip-abrir tooltip-abajo2" style="top: 50%; left: 50%; white-space: pre;">
+                                        @if (usuario != null)
+                                        {
+                                            @if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+                                            {
+                                                @if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+                                                {
+                                                    <div style="padding: 20px; font-size: 14px; background-color: var(--fondoBien); color: var(--colorTextoBien);">
+                                                        <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.Juego, juego.DRM))</span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div style="padding: 20px; font-size: 14px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta);">
+                                                        <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.Juego, juego.DRM))</span>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </a>
 						</div>
 					}					
 				}
@@ -70,65 +123,140 @@
 
 @code {
 
-	#nullable disable
+    #nullable disable
 
-	[Parameter]
-	public string idioma { get; set; }
+    [Parameter]
+    public string idioma { get; set; }
 
-	[Parameter]
-	public string dominio { get; set; }
+    [Parameter]
+    public string dominio { get; set; }
 
-	List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
+    List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
 
-	List<Juegos.JuegoSuscripcion> juegosActuales = new List<Juegos.JuegoSuscripcion>();
-	List<Juegos.JuegoSuscripcion> juegosPasados = new List<Juegos.JuegoSuscripcion>();
+    List<Juegos.JuegoSuscripcion> juegosActuales = new List<Juegos.JuegoSuscripcion>();
+    List<Juegos.JuegoSuscripcion> juegosPasados = new List<Juegos.JuegoSuscripcion>();
 
-	protected override async Task OnInitializedAsync()
-	{
-		juegos = BaseDatos.Suscripciones.Buscar.Todos();
+    private Usuario usuario = new Usuario();
+    private List<string> juegosUsuario = new List<string>();
 
-		if (juegos.Count > 0)
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+        if (usuario != null)
+        {
+            if (usuario.SteamGames != null)
+            {
+                bool tiempo = true;
+
+                if (usuario.SteamAccountLastCheck != null)
+                {
+                    if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+                    {
+                        tiempo = false;
+                    }
+                }
+
+                if (tiempo == true)
+                {
+                    SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+
+                    usuario.SteamGames = datos.Juegos;
+                    usuario.SteamWishlist = datos.Deseados;
+                    usuario.Avatar = datos.Avatar;
+                    usuario.Nickname = datos.Nombre;
+                    usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+                    usuario.OfficialGroup = datos.GrupoOficial;
+
+                    await UserManager.UpdateAsync(usuario);
+                }
+            }
+
+            juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+        }
+
+        //--------------------------------------------------------------------
+
+        juegos = BaseDatos.Suscripciones.Buscar.Todos();
+
+        if (juegos.Count > 0)
+        {
+            foreach (var juego in juegos)
+            {
+                if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
+                {
+                    Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+
+                    if (juego2.Tipo == Juegos.JuegoTipo.Game)
+                    {
+                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
+                    }
+                    else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
+                    {
+                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
+                    }
+
+                    juego.Juego = juego2;
+                    juegosActuales.Add(juego);
+                }
+                else
+                {
+                    juegosPasados.Add(juego);
+                }
+            }
+        }
+
+        if (juegosActuales.Count > 0)
+        {
+            juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
+        }
+
+        if (juegosPasados.Count > 0)
+        {
+            juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
+        }
+    }
+
+    private string LimpiarNombre(string nombre)
+    {
+        nombre = nombre.Replace("???", null);
+        nombre = nombre.Trim();
+
+        return nombre;
+    }
+
+    private string ComprobarUsuarioJuego(Juegos.Juego juego, Juegos.JuegoDRM drm)
+    {
+		if (usuario != null && juego.Tipo == Juegos.JuegoTipo.Game)
 		{
-			foreach (var juego in juegos)
+			if (juegosUsuario.Count > 0)
 			{
-				if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
+				foreach (var juegoUsuario in juegosUsuario)
 				{
-					Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-
-					if (juego2.Tipo == Juegos.JuegoTipo.Game)
+					if (juegoUsuario == juego.IdSteam.ToString())
 					{
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
+						if (drm == Juegos.JuegoDRM.Steam)
+						{
+							return "3";
+						}
+						else
+						{
+							return "5";
+						}
 					}
-					else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
-					{
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
-					}
+				}
 
-					juegosActuales.Add(juego);
+                if (drm == Juegos.JuegoDRM.Steam)
+				{
+					return "4";
 				}
 				else
 				{
-					juegosPasados.Add(juego);
+					return "6";
 				}
 			}
 		}
 
-		if (juegosActuales.Count > 0)
-		{
-			juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
-		}
-
-		if (juegosPasados.Count > 0)
-		{
-			juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
-		}
-	}
-
-	private string LimpiarNombre(string nombre)
-	{
-		nombre = nombre.Replace("???", null);
-		nombre = nombre.Trim();
-
-		return nombre;
+		return null;
 	}
 }

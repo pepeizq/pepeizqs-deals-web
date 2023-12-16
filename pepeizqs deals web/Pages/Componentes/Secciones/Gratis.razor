@@ -26,45 +26,87 @@
 				@foreach (var juego in gratisActual.Juegos)
 				{
 					<a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 0px; margin-top: 10px; margin-bottom: 10px;" target="_blank">
-                        <div style="display: flex; align-items: center; position: relative;">
+                        <div class="tooltip2" style="display: flex; align-items: center; position: relative;">
 							<div style="width: 25%;">
-								<img src="@SacarImagen(juego.JuegoId)" style="max-width: 100%; max-height: 100%;" />
+								<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
 							</div>
 
 							<div style="width: 75%; margin-left: 20px;">
-								<span>@juego.Nombre</span>
+								<div>@juego.Nombre</div>
 
 								<div style="display: flex; align-items: center; margin-top: 10px;">
 									@if (gratisActual.Tipo.DRMEnseñar == true)
 									{
 										<div style="height: 20px; margin-right: 15px;">
-											<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
+											<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 25px; height: 25px;" />
 										</div>
 									}
 
+                                    @if (juego.Juego.Analisis != null)
+                                    {
+                                        <div style="display: flex; align-items: center; margin-right: 15px;">
+                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 74)
+                                            {
+                                                <img src="/imagenes/analisis/positive2.webp" style="width: 25px; height: 25px;" />
+                                            }
+
+                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Juego.Analisis.Porcentaje) < 75)
+                                            {
+                                                <img src="/imagenes/analisis/mixed2.webp" style="width: 25px; height: 25px;" />
+                                            }
+
+                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) < 50)
+                                            {
+                                                <img src="/imagenes/analisis/negative2.webp" style="width: 25px; height: 25px;" />
+                                            }
+                                        </div>
+                                    }
+
 									@if (usuario != null)
 									{
-                                        @if (ComprobarUsuarioJuego(juego.JuegoId.ToString(), gratisActual.Tipo.Tipo) != null)
+                                        @if (ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) != null)
                                         {
-                                            @if (ComprobarUsuarioJuego(juego.JuegoId.ToString(), gratisActual.Tipo.Tipo) == "3" || ComprobarUsuarioJuego(juego.JuegoId.ToString(), gratisActual.Tipo.Tipo) == "5")
+                                            @if (ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) == "3" || ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) == "5")
                                             {
-                                                <div style="padding: 8px 10px; font-size: 14px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: 0px; right: 0px;">
-                                                    <i class="fa-solid fa-check" style="margin-right: 10px;"></i>
-                                                    <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.JuegoId.ToString(), gratisActual.Tipo.Tipo))</span>
+                                                <div style="padding: 8px 11px; font-size: 14px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: 0px; right: 0px;">
+                                                    <i class="fa-solid fa-check" style="font-size: 20px;"></i>
                                                 </div>
                                             }
                                             else
                                             {
-                                                <div style="padding: 8px 10px; font-size: 14px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: 0px; right: 0px;">
-                                                    <i class="fa-solid fa-exclamation" style="margin-right: 10px;"></i>
-                                                    <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.JuegoId.ToString(), gratisActual.Tipo.Tipo))</span>
+                                                <div style="padding: 8px 11px; font-size: 14px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: 0px; right: 0px;">
+                                                    <i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
                                                 </div>
                                             }
                                         }
 									}
 								</div>
 							</div>
-						</div>					
+
+                            @if (juego.Juego.Tipo == Juegos.JuegoTipo.Game)
+                            {
+                                <div class="tooltip-abrir tooltip-abajo2" style="top: 50%; left: 50%; white-space: pre;">
+                                    @if (usuario != null)
+								    {
+                                        @if (ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) != null)
+                                        {
+                                            @if (ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) == "3" || ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo) == "5")
+                                            {
+                                                <div style="padding: 20px; font-size: 14px; background-color: var(--fondoBien); color: var(--colorTextoBien);">
+                                                    <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo))</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div style="padding: 20px; font-size: 14px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta);">
+                                                    <span>@Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego.Juego, gratisActual.Tipo.Tipo))</span>
+                                                </div>
+                                            }
+                                        }
+								    }
+                                </div>
+                            }                           
+                        </div>
 					</a>
 				}
 			</div>
@@ -124,8 +166,6 @@
     private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();
 
-    private Juegos.Juego juegoUsuario = new Juegos.Juego();
-
     protected override async Task OnInitializedAsync()
     {
         usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
@@ -162,6 +202,8 @@
             juegosUsuario =	Herramientas.Listados.Generar(usuario.SteamGames);
         }
 
+        //--------------------------------------------------------------------
+
         List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
 
         if (juegosTodos.Count > 0)
@@ -176,6 +218,7 @@
                     Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
 
                     juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Header_460x215, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
+                    juego.Juego = juego2;
 
                     juegosActuales.Add(juego);
                 }
@@ -241,48 +284,35 @@
         }
     }
 
-    private string SacarImagen(int id)
+    private string ComprobarUsuarioJuego(Juegos.Juego juego, Gratis2.GratisTipo tipo)
     {
-        return BaseDatos.Juegos.Buscar.UnJuego(id.ToString()).Imagenes.Header_460x215;
-    }
-
-    private string ComprobarUsuarioJuego(string id, Gratis2.GratisTipo tipo)
-    {
-        if (usuario != null)
+        if (usuario != null && juego.Tipo == Juegos.JuegoTipo.Game)
         {
             if (juegosUsuario.Count > 0)
             {
-                juegoUsuario = BaseDatos.Juegos.Buscar.UnJuego(id.ToString());
-
-                if (juego)
-                if (juego.Tipo == Juegos.JuegoTipo.Game)
+                foreach (var juegoUsuario in juegosUsuario)
                 {
-                    string steamID = juego.IdSteam.ToString();
-
-                    foreach (var juegoUsuario in juegosUsuario)
+                    if (juegoUsuario == juego.IdSteam.ToString())
                     {
-                        if (juegoUsuario == steamID)
+                        if (tipo == Gratis2.GratisTipo.Steam)
                         {
-                            if (tipo == Gratis2.GratisTipo.Steam)
-                            {
-                                return "3";
-                            }
-                            else
-                            {
-                                return "5";
-                            } 
-						}
-					}
+                            return "3";
+                        }
+                        else
+                        {
+                            return "5";
+                        }
+                    }
+                }
 
-                    if (tipo == Gratis2.GratisTipo.Steam)
-                    {
-                        return "4";
-                    }
-                    else
-                    {
-                        return "6";
-                    }
-				}				
+                if (tipo == Gratis2.GratisTipo.Steam)
+                {
+                    return "4";
+                }
+                else
+                {
+                    return "6";
+                }
 			}
 		}
 

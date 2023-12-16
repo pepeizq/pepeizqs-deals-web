@@ -25,7 +25,8 @@ namespace Tiendas2
                 APIs.IndieGala.Tienda.Generar(),
                 APIs.WinGameStore.Tienda.Generar(),
 				APIs.EA.Tienda.Generar(),
-				APIs.DLGamer.Tienda.Generar()
+				APIs.DLGamer.Tienda.Generar(),
+				APIs.Battlenet.Tienda.Generar()
 			};
 
 			return tiendas;
@@ -85,7 +86,11 @@ namespace Tiendas2
 			{
 				await APIs.DLGamer.Tienda.BuscarOfertas();
 			}
-		}
+            else if (id == APIs.Battlenet.Tienda.Generar().Id)
+            {
+                await APIs.Battlenet.Tienda.BuscarOfertas();
+            }
+        }
 
 		public static async void TareasGestionador(TimeSpan tiempoEntreTareas)
 		{
@@ -223,16 +228,26 @@ namespace Tiendas2
 			}
 			else if (orden == 13)
 			{
+				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Battlenet.Tienda.Generar().Id);
+
+				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await APIs.Battlenet.Tienda.BuscarOfertas();
+				}
+			}
+			else if (orden == 14)
+			{
 				Admin.TareaCambiarOrden(orden += 1);																	 
 				Divisas.CogerDatos();
 			}
-			else if (orden == 14)
+			else if (orden == 15)
 			{
 				Admin.TareaCambiarOrden(orden += 1);
 				await APIs.Steam.Tienda.BuscarOfertas(false);
 			}
 
-			if (orden > 14)
+			if (orden > 15)
 			{
 				Admin.TareaCambiarOrden(0);
 			}

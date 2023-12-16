@@ -902,6 +902,23 @@
 		{
 			string nuevoTexto = oferta.Replace(juego, null);
 			nuevoTexto = nuevoTexto.Trim();
+
+			int i = 0;
+			while (i < 10)
+			{
+				if (nuevoTexto.Contains("-") == true)
+				{
+					int int1 = nuevoTexto.IndexOf("-");
+
+					if (int1 == 0)
+					{
+						nuevoTexto = nuevoTexto.Remove(0, 1);
+						nuevoTexto = nuevoTexto.Trim();
+					}
+				}
+				i += 1;
+			}
+
 			return nuevoTexto;
 		}
 

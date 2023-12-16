@@ -737,3 +737,8 @@ select {
     margin-top: 20px;
     transform: translate(-50%, 0);
 }
+
+.tooltip-abajo2 {
+    margin-top: 50px;
+    transform: translateX(-50%);
+}

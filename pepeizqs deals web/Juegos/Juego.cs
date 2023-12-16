@@ -138,6 +138,7 @@ namespace Juegos
 		public JuegoDRM DRM { get; set; }
 		public string Enlace { get; set; }
 		public string ImagenNoticia { get; set; }
+		public Juego Juego { get; set; }
 	}
 
 	public class JuegoSuscripcion
@@ -151,7 +152,8 @@ namespace Juegos
 		public JuegoDRM DRM { get; set; }
 		public string Enlace { get; set; }
 		public string ImagenNoticia { get; set; }
-	}
+        public Juego Juego { get; set; }
+    }
 
 	//-------------------------------------------------------
 
