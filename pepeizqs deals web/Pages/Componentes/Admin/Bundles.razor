@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 <div class="perfil">
 	<div>
@@ -179,6 +180,9 @@
 	private string juegosIds = null;
 	private string cadenaBusqueda = null;
 	private List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+	private Usuario usuario = new Usuario();
+	private List<string> juegosUsuario = new List<string>();
 
 	private void TextoCambiaEnlace(ChangeEventArgs texto)
 	{

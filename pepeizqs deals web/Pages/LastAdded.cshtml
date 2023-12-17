@@ -6,4 +6,4 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosAñadidos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosAñadidos>(RenderMode.Static, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))

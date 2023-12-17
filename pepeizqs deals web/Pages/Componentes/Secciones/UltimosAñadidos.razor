@@ -75,7 +75,7 @@
 	public string dominio { get; set; }
 
 	private List<global::Juegos.Juego> juegos = new List<global::Juegos.Juego>();
-	private List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
+	private static List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
 
 	private int minimo = 0;
 	private int maximo = 0;
@@ -101,6 +101,8 @@
 				juegos = juegos.OrderBy(x => x.Id).Reverse().ToList();
 			}
 		}
+
+		conexion.Dispose();
 
 		CargarJuegos(minimo, maximo);
 	}
