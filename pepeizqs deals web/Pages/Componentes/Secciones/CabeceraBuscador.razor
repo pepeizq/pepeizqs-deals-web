@@ -20,23 +20,25 @@
         <div class="buscador-panel">
             @foreach (var juego in juegosMostrar)
             {
-                <div class="perfil-flexible-centrado perfil-espacio-top">
-                    <a class="boton-pequeño" href="/game/@juego.Id">
+                <div class="perfil-flexible-centrado" style="margin-top: 10px;">
+                    <a class="boton-pequeño" href="/game/@juego.Id" style="padding: 0px;">
                         <div class="perfil-flexible-centrado">
-                            <div style="width: 12%;">
-                                <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                            <div>
+                                <img src="@juego.Imagenes.Capsule_231x87" style="width: 231px; height: 87px;" />
                             </div>
 
-                            <div style="width: 76%; padding-left: 15px; padding-right: 15px;">
+                            <div style="width: 100%; padding-left: 15px; padding-right: 15px;">
                                 @juego.Nombre
 
                                 @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
                                 {
-                                    <br /> @juego.Id
+                                    <div style="font-size: 13px; margin-top: 5px;">
+                                        @juego.Id
+                                    </div>
                                 }
                             </div>
 
-                            <div style="width: 12%; text-align: center;">
+                            <div style="width: 250px; text-align: center;">
                                 @GenerarMensaje(juego)
                             </div>
                         </div>

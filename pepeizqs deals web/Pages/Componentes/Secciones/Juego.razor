@@ -898,28 +898,31 @@
 
 	private static string ComprobarEdicion(string juego, string oferta)
 	{
-		if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(oferta))
+		if (string.IsNullOrEmpty(oferta) == false)
 		{
-			string nuevoTexto = oferta.Replace(juego, null);
-			nuevoTexto = nuevoTexto.Trim();
-
-			int i = 0;
-			while (i < 10)
+			if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(oferta))
 			{
-				if (nuevoTexto.Contains("-") == true)
+				string nuevoTexto = oferta.Replace(juego, null);
+				nuevoTexto = nuevoTexto.Trim();
+
+				int i = 0;
+				while (i < 10)
 				{
-					int int1 = nuevoTexto.IndexOf("-");
-
-					if (int1 == 0)
+					if (nuevoTexto.Contains("-") == true)
 					{
-						nuevoTexto = nuevoTexto.Remove(0, 1);
-						nuevoTexto = nuevoTexto.Trim();
-					}
-				}
-				i += 1;
-			}
+						int int1 = nuevoTexto.IndexOf("-");
 
-			return nuevoTexto;
+						if (int1 == 0)
+						{
+							nuevoTexto = nuevoTexto.Remove(0, 1);
+							nuevoTexto = nuevoTexto.Trim();
+						}
+					}
+					i += 1;
+				}
+
+				return nuevoTexto;
+			}
 		}
 
 		return null;

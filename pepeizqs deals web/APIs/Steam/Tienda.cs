@@ -207,7 +207,7 @@ namespace APIs.Steam
 
 											string cantidad = temp14.Trim();
 
-											if (cantidad.Length > 2)
+											if (cantidad.Length > 1)
 											{
 												analisis.Cantidad = cantidad;
 												analisis.Porcentaje = porcentaje;

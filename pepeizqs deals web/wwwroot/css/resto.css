@@ -701,7 +701,6 @@ select {
 .tooltip2 {
     display: inline-block;
     position: relative;
-    border-bottom: 1px dotted #666;
     text-align: left;
 }
 

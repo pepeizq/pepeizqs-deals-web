@@ -53,26 +53,30 @@
 						<div>
 							@foreach (var juego in juegosBuscador)
 							{
-								<div class="perfil-flexible-centrado perfil-espacio-top">
-									<a class="boton-pequeño">
-										<div class="perfil-flexible-centrado">
-											<div style="width: 12%;">
-												<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-											</div>
+								<hr/>
 
-											<div style="width: 76%; padding-left: 15px; padding-right: 15px;">
-												@juego.Id - @juego.Nombre
-											</div>
+								<div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+									<div style="width: 150px; min-width: 150px;">
+										<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align: center; height: 65px;">
+											Añadir ID
 
-											<div class="admin-busqueda-juego-derecha">
-												<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align:center;">Añadir ID</button>
+											<div style="font-size: 13px; margin-top: 5px;">
+												@juego.Id
 											</div>
+										</button>
+									</div>
 
-											<div class="admin-busqueda-juego-derecha">
-												<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-											</div>
-										</div>
-									</a>
+									<div style="padding-left: 15px;">
+										<img src="@juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+									</div>
+
+									<div style="width: 100%; padding: 5px 10px; flex: 1;">
+										@juego.Nombre
+									</div>
+
+									<div class="admin-busqueda-juego-derecha">
+										<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+									</div>
 								</div>
 							}
 						</div>
@@ -151,7 +155,7 @@
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
-		if (texto.Value.ToString().Trim().Length > 1)
+		if (texto.Value.ToString().Trim().Length > 0)
 		{
 			cadenaBusqueda = texto.Value.ToString().Trim();
 			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
@@ -164,7 +168,7 @@
 
 	private void ClickearID(MouseEventArgs e, string id)
 	{
-		if (idsPendiente == null)
+		if (string.IsNullOrEmpty(idsPendiente) == true)
 		{
 			idsPendiente = id;
 		}
@@ -172,7 +176,20 @@
 		{
 			if (idsPendiente != "0")
 			{
-				idsPendiente = idsPendiente + "," + id;
+				if (idsPendiente.Contains(",") == false)
+				{
+					if (idsPendiente.Contains(id) == false)
+					{
+						idsPendiente = idsPendiente + "," + id;
+					}
+				}
+				else
+				{
+					if (idsPendiente.Contains(id + ",") == false)
+					{
+						idsPendiente = idsPendiente + "," + id;
+					}
+				}		
 			}
 			else
 			{

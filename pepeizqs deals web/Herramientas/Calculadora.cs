@@ -35,7 +35,11 @@
 			{
 				int divisor = 0;
 
-				if (numCantidad > 99 && numCantidad < 1000)
+				if (numCantidad > 0 && numCantidad < 100)
+				{
+					divisor = 10;
+				}
+				else if (numCantidad > 99 && numCantidad < 1000)
 				{
 					divisor = 100;
 				}
