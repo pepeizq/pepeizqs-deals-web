@@ -13,6 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BaseDatos\Juegos\Actualizar.cs~RF265fa95c.TMP" />
+    <None Remove="Pages\Componentes\Admin\Pendientes.razor~RF25ab83bf.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>

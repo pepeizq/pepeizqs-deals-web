@@ -4,6 +4,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using pepeizqs_deals_web.Pages.Componentes.Secciones;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BaseDatos.Tiendas
 {
@@ -152,7 +153,12 @@ namespace BaseDatos.Tiendas
                     juego.Nombre = nuevoJuego.Nombre;
                     juego.Media = nuevoJuego.Media;
 
-                    juego.FechaSteamAPIComprobacion = DateTime.Now;
+					if (juego.Tipo == JuegoTipo.DLC)
+					{
+						juego.Maestro = nuevoJuego.Maestro;
+					}
+					
+					juego.FechaSteamAPIComprobacion = DateTime.Now;
                 }
 			}
 

@@ -3,7 +3,6 @@
 using Herramientas;
 using Newtonsoft.Json;
 using System.Globalization;
-using System.Security.Policy;
 using System.Text;
 
 namespace APIs.Steam
@@ -116,6 +115,16 @@ namespace APIs.Steam
 					if (datos.Datos.Tipo == "dlc")
 					{
 						juego.Tipo = Juegos.JuegoTipo.DLC;
+
+						Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id);
+
+						if (maestro != null)
+						{
+							if (string.IsNullOrEmpty(maestro.Maestro) == false) 
+							{
+								juego.Maestro = maestro.Maestro;
+							}
+						}
 					}
 					else if (datos.Datos.Tipo == "music")
 					{
@@ -225,7 +234,7 @@ namespace APIs.Steam
 		}
 	}
 
-	//----------------------------------------------
+	#region Clases
 
 	public class SteamJuegoAPI
 	{
@@ -276,6 +285,9 @@ namespace APIs.Steam
 
 		[JsonProperty("movies")]
 		public List<SteamJuegoAPIVideo> Videos { get; set; }
+
+		[JsonProperty("fullgame")]
+		public SteamJuegoAPIMaestro Maestro { get; set; }
 	}
 
 	public class SteamJuegoAPIPrecio
@@ -327,4 +339,15 @@ namespace APIs.Steam
 		[JsonProperty("max")]
 		public string Enlace { get; set; }
 	}
+
+	public class SteamJuegoAPIMaestro
+	{
+		[JsonProperty("appid")]
+		public string Id { get; set; }
+
+		[JsonProperty("name")]
+		public string Nombre { get; set; }
+	}
+
+	#endregion
 }

@@ -69,13 +69,13 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
             }
             else 
             {
-				if (Request.Form["nombre"] != string.Empty)
+				if (string.IsNullOrEmpty(Request.Form["nombre"]) == false)
 				{
 					string nombre = Request.Form["nombre"];
 
 					if (nombre.Length > 0)
 					{
-						if (Request.Form["idSteam"] != string.Empty)
+						if (string.IsNullOrEmpty(Request.Form["idSteam"]) == false)
 						{
 							if (int.Parse(Request.Form["idSteam"]) > 0)
 							{
@@ -83,7 +83,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 							}
 						}
 
-						if (Request.Form["idGog"] != string.Empty)
+						if (string.IsNullOrEmpty(Request.Form["idGog"]) == false)
 						{
 							if (int.Parse(Request.Form["idGog"]) > 0)
 							{
@@ -91,11 +91,15 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 							}
 						}
 
-
 						juegoAñadir.Nombre = Request.Form["nombre"];
 						juegoAñadir.Tipo = Enum.Parse<JuegoTipo>(Request.Form["tipo"]);
 						juegoAñadir.FechaSteamAPIComprobacion = DateTime.Parse(Request.Form["fechacomprobacion"]);
 
+						if (juegoAñadir.Tipo == JuegoTipo.DLC)
+						{
+							juegoAñadir.Maestro = Request.Form["maestro"];
+						}
+						
 						//----------------------------
 
 						int l = 0;

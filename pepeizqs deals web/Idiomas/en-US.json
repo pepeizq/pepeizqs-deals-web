@@ -328,6 +328,10 @@
     "Valor": "Old Free Promotions"
   },
   {
+    "Id": "Game.String32",
+    "Valor": "Warning, this is a DLC and requires the base game to work (click to open the game)."
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },

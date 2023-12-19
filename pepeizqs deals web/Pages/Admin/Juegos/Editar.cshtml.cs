@@ -83,13 +83,13 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 
         public IActionResult OnPost() 
         {
-			if (Request.Form["nombre"] != string.Empty)
+			if (string.IsNullOrEmpty(Request.Form["nombre"]) == false)
 			{
 				string nombre = Request.Form["nombre"];
 
 				if (nombre.Length > 0)
 				{
-					if (Request.Form["idSteam"] != string.Empty)
+					if (string.IsNullOrEmpty(Request.Form["idSteam"]) == false)
 					{
 						if (int.Parse(Request.Form["idSteam"]) > 0)
 						{
@@ -97,7 +97,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 						}
 					}
 
-					if (Request.Form["idGog"] != string.Empty)
+					if (string.IsNullOrEmpty(Request.Form["idGog"]) == false)
 					{
 						if (int.Parse(Request.Form["idGog"]) > 0)
 						{
@@ -112,6 +112,11 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 					juegoEditar.Nombre = nombreJuego;
 					juegoEditar.Tipo = Enum.Parse<JuegoTipo>(Request.Form["tipo"]);
 					juegoEditar.FechaSteamAPIComprobacion = DateTime.Parse(Request.Form["fechacomprobacion"]);
+
+					if (juegoEditar.Tipo == JuegoTipo.DLC)
+					{
+						juegoEditar.Maestro = Request.Form["maestro"];
+					}
 
 					//----------------------------
 

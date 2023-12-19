@@ -324,6 +324,10 @@
     "Valor": "Gratis Antiguos"
   },
   {
+    "Id": "Game.String32",
+    "Valor": "Aviso, esto es un DLC y requiere del juego base para hacerlo funcionar (clickea para abrir el juego)."
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },

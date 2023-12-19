@@ -10,9 +10,18 @@ namespace BaseDatos.Juegos
 	{
 		public static void Ejecutar(Juego juego, SqlConnection conexion)
 		{
+			string añadirMaestro1 = null;
+			string añadirMaestro2 = null;
+
+			if (string.IsNullOrEmpty(juego.Maestro) == false)
+			{
+				añadirMaestro1 = ", maestro";
+				añadirMaestro2 = ", @maestro";
+			}
+
 			string sqlAñadir = "INSERT INTO juegos " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo) VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo) ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + ") ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -28,6 +37,11 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+
+				if (string.IsNullOrEmpty(juego.Maestro) == false)
+				{
+					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+				}					
 
 				try
 				{

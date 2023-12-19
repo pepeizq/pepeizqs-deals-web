@@ -17,10 +17,17 @@ namespace BaseDatos.Juegos
 				añadirSlugGog = ", slugGOG=@slugGOG";
 			}
 
+			string añadirMaestro = null;
+
+			if (string.IsNullOrEmpty(juego.Maestro) == false)
+			{
+				añadirMaestro = ", maestro=@maestro";
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + " ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + añadirMaestro + " ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -57,7 +64,11 @@ namespace BaseDatos.Juegos
 				if (string.IsNullOrEmpty(juego.SlugGOG) == false)
 				{
 					comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
-				}				
+				}
+				else if (string.IsNullOrEmpty(juego.Maestro) == false)
+				{
+					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+				}
 
 				comando.ExecuteNonQuery();
 				try

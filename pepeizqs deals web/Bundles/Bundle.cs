@@ -40,5 +40,6 @@ namespace Bundles2
 		public string Imagen;
 		public BundleTier Tier;
 		public JuegoDRM DRM;
+		public Juego Juego;
 	}
 }

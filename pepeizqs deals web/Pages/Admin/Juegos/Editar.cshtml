@@ -30,11 +30,17 @@
 				<label class="texto-info-entrada admin-añadir-espacio-top">Titulo</label>
 				<input class="entrada-texto" name="nombre" value="@Model.juegoEditar.Nombre" />
 
-				<label class="texto-info-entrada admin-añadir-espacio-top">Tipo (Game/DLC/Bundle)</label>
+				<label class="texto-info-entrada admin-añadir-espacio-top">Tipo (Game/DLC/Bundle/Music)</label>
 				<input class="entrada-texto" name="tipo" value="@Model.juegoEditar.Tipo" />
 
 				<label class="texto-info-entrada admin-añadir-espacio-top">Fecha Comprobación API Steam</label>
 				<input class="entrada-texto" name="fechacomprobacion" value="@Model.juegoEditar.FechaSteamAPIComprobacion" />
+
+				@if (Model.juegoEditar.Tipo.ToString().ToLower() == "dlc")
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-top">Maestro</label>
+					<input class="entrada-texto" name="maestro" value="@Model.juegoEditar.Maestro" />
+				}
 
 				@if (Model.juegoEditar.PrecioActualesTiendas != null)
 				{

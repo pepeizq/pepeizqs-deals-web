@@ -2,17 +2,19 @@
 
 <div class="perfil">
 	<div style="display: flex; justify-content: space-between;">
-		<div style="width: 30%;">
+		<div style="min-width: 300px; margin: -10px 0px;">
 			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
 			{
 				@if (tienda.Id != "steam")
 				{
-					<button @onclick="@(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="margin: 10px;"><img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))</button>
+					<button @onclick="@(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="margin: 10px; display: block;">
+						<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
+					</button>
 				}
 			}
 		</div>
 
-		<div style="width: 65%;">
+		<div style="width: 100%; padding-left: 50px;">
 			<div style="display: flex; justify-content: space-between;">
 				<div style="width: 30%;">
 					<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
@@ -67,7 +69,7 @@
 									</div>
 
 									<div style="padding-left: 15px;">
-										<img src="@juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+										<img src="@juego.Imagenes.Capsule_231x87" style="width: 231px; height: 87px;" />
 									</div>
 
 									<div style="width: 100%; padding: 5px 10px; flex: 1;">

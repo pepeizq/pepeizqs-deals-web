@@ -47,6 +47,12 @@
 				<label class="texto-info-entrada admin-añadir-espacio-top">Fecha Comprobación API Steam</label>
 				<input class="entrada-texto" name="fechacomprobacion" value="@Model.juegoAñadir.FechaSteamAPIComprobacion" />
 
+				@if (Model.juegoAñadir.Tipo.ToString().ToLower() == "dlc")
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-top">Maestro</label>
+					<input class="entrada-texto" name="maestro" value="@Model.juegoAñadir.Maestro" />
+				}
+
 				@if (Model.juegoAñadir.PrecioActualesTiendas != null)
 				{
 					@if (Model.juegoAñadir.PrecioActualesTiendas.Count > 0)

@@ -170,6 +170,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(19) == false)
+				{
+					if (lector.GetString(19) != null)
+					{
+						juego.Maestro = lector.GetString(19);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 	}
