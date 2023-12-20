@@ -62,8 +62,12 @@ namespace Herramientas
                             {
                                 añadir = false;
                             }
+							else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+							{
+								añadir = false;
+							}
 
-                            if (añadir == true)
+							if (añadir == true)
 							{
 								if (minimo.Analisis.Cantidad.Length >= 6)
 								{
@@ -115,6 +119,11 @@ namespace Herramientas
 										}
 									}
 								}
+							}
+
+							if (string.IsNullOrEmpty(juegosConMinimos[j].FreeToPlay) == false)
+							{
+								añadir = false;
 							}
 
 							if (añadir == true)

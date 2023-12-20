@@ -24,10 +24,17 @@ namespace BaseDatos.Juegos
 				añadirMaestro = ", maestro=@maestro";
 			}
 
+			string añadirF2P = null;
+
+			if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+			{
+				añadirF2P = ", freeToPlay=@freeToPlay";
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + añadirMaestro + " ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + añadirMaestro + añadirF2P + " ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -68,6 +75,10 @@ namespace BaseDatos.Juegos
 				else if (string.IsNullOrEmpty(juego.Maestro) == false)
 				{
 					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+				}
+				else if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+				{
+					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 				}
 
 				comando.ExecuteNonQuery();
@@ -175,6 +186,48 @@ namespace BaseDatos.Juegos
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
 				comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(juego.Suscripciones));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void DlcMaestro(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET maestro=@maestro WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void FreeToPlay(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET freeToPlay=@freeToPlay WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 
 				try
 				{

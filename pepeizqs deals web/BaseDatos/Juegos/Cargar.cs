@@ -182,6 +182,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(20) == false)
+				{
+					if (lector.GetString(20) != null)
+					{
+						juego.FreeToPlay = lector.GetString(20);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 	}

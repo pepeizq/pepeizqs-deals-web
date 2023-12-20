@@ -157,7 +157,7 @@
 			@if (string.IsNullOrEmpty(juego.Maestro) == false)
 			{
 				<a href="/game/@juego.Maestro" style="text-decoration: none;">
-					<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; background-color: var(--fondoDlc); color: var(--colorTextoDlc);">
+					<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; align-items: center; background-color: var(--fondoDlc); color: var(--colorTextoDlc);">
 						<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
 
 						<div style="width: 100%;">
@@ -165,6 +165,22 @@
 						</div>
 					</div>
 				</a>
+			}
+		}
+		else if (juego.Tipo == JuegoTipo.Game)
+		{
+			@if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+			{
+				@if (juego.FreeToPlay == "true")
+				{
+					<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; align-items: center;">
+						<i class="fa-solid fa-circle-info" style="font-size: 22px; margin-right: 30px;"></i>
+
+						<div style="width: 100%;">
+							@Idiomas.CogerCadena(idioma, "Game.String33")
+						</div>
+					</div>
+				}
 			}
 		}
 
@@ -927,6 +943,22 @@
 					if (nuevoTexto.Contains("-") == true)
 					{
 						int int1 = nuevoTexto.IndexOf("-");
+
+						if (int1 == 0)
+						{
+							nuevoTexto = nuevoTexto.Remove(0, 1);
+							nuevoTexto = nuevoTexto.Trim();
+						}
+					}
+					i += 1;
+				}
+
+				i = 0;
+				while (i < 10)
+				{
+					if (nuevoTexto.Contains(":") == true)
+					{
+						int int1 = nuevoTexto.IndexOf(":");
 
 						if (int1 == 0)
 						{

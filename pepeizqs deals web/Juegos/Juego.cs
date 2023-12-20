@@ -34,6 +34,7 @@ namespace Juegos
 		public List<JuegoUsuariosInteresados> UsuariosInteresados {  get; set; }
 		public string SlugGOG { get; set; }
 		public string Maestro { get; set; }
+		public string FreeToPlay { get; set; }
 	}
 
 	public static class JuegoCrear

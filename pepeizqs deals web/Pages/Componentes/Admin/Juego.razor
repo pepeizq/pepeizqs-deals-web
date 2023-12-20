@@ -12,19 +12,19 @@
 
 	<div style="display: flex; align-items: center;">
 		<div style="width: auto;">
-			<button @onclick="@(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+			<button @onclick="(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 				Imagenes
 			</button>
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
-			<button @onclick="@(e => MostrarPestaña(e, 2))" class="boton-pequeño" style="padding: 10px 15px;">
+			<button @onclick="(e => MostrarPestaña(e, 2))" class="boton-pequeño" style="padding: 10px 15px;">
 				Precios
 			</button>
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
-			<button @onclick="@(e => MostrarPestaña(e, 3))" class="boton-pequeño" style="padding: 10px 15px;">
+			<button @onclick="(e => MostrarPestaña(e, 3))" class="boton-pequeño" style="padding: 10px 15px;">
 				Suscripciones
 			</button>
 		</div>
@@ -33,6 +33,21 @@
 			<a href="/api/@juego.Id" target="_blank" class="boton-pequeño" style="padding: 10px 15px;">
 				Api
 			</a>
+		</div>
+
+		@if (juego.Tipo == JuegoTipo.DLC)
+		{
+			<div style="width: auto; margin-left: 20px;">
+				<button @onclick="(e => MostrarPestaña(e, 4))" class="boton-pequeño" style="padding: 10px 15px;">
+					Dlc
+				</button>
+			</div>
+		}
+
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="(e => MostrarPestaña(e, 5))" class="boton-pequeño" style="padding: 10px 15px;">
+				Datos
+			</button>
 		</div>
 	</div>
 
@@ -44,23 +59,23 @@
 		{
 			<div style="display: flex; align-items: start;">
 				<div style="width: 20%;">
-					<button @onclick="@(e => MostrarPestañaImagenes(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+					<button @onclick="(e => MostrarPestañaImagenes(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 						Capsule_231x87
 					</button>
 
-					<button @onclick="@(e => MostrarPestañaImagenes(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+					<button @onclick="(e => MostrarPestañaImagenes(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
 						Header_460x215
 					</button>
 
-					<button @onclick="@(e => MostrarPestañaImagenes(e, 3))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+					<button @onclick="(e => MostrarPestañaImagenes(e, 3))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
 						Library_600x900
 					</button>
 
-					<button @onclick="@(e => MostrarPestañaImagenes(e, 4))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+					<button @onclick="(e => MostrarPestañaImagenes(e, 4))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
 						Library_1920x620
 					</button>
 
-					<button @onclick="@(e => MostrarPestañaImagenes(e, 5))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+					<button @onclick="(e => MostrarPestañaImagenes(e, 5))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
 						Logo
 					</button>
 
@@ -84,23 +99,44 @@
 		{
 			<div style="display: flex; align-items: start;">
 				<div style="width: 20%;">
-					<button @onclick="@(e => MostrarPestañaPrecios(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+					<button @onclick="(e => MostrarPestañaPrecios(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 						Actuales
 					</button>
 
-					<button @onclick="@(e => MostrarPestañaPrecios(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
+					<button @onclick="(e => MostrarPestañaPrecios(e, 2))" class="boton-pequeño" style="padding: 10px 15px; margin-top: 10px;">
 						Historicos
 					</button>
 				</div>
 
 				<div style="width: 80%; padding: 5px 0px 5px 40px;">
-					<textarea @onchange="@(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoOrigenPrecios</textarea>
+					<textarea @onchange="(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoOrigenPrecios</textarea>
 				</div>
 			</div>
 		}
 		else if (pestañaMostrar == 3)
 		{
-			<textarea @onchange="@(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
+			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
+		}
+		else if (pestañaMostrar == 4)
+		{
+			<label>Maestro</label>
+			<div style="display: flex; align-items: center; margin-top: 15px;">
+				<button @onclick="(async () => await BuscarDlcMaestro())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+					Buscar
+				</button>
+
+				<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" style="margin-left: 20px; width: auto; min-width: auto;" value="@textoDlcMaestro" />
+			</div>
+		}
+		else if (pestañaMostrar == 5)
+		{
+			<div style="display: flex; align-items: center; margin-top: 15px;">
+				<label>FreeToPlay:</label>
+
+				<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" style="margin-left: 20px; margin-right: 20px; width: auto; min-width: auto;" value="@textoF2P" />
+
+				<label>(poner true si es F2P)</label>
+			</div>
 		}
 	}
 </div>
@@ -127,6 +163,14 @@
 		if (pestañaMostrar == 3)
 		{
 			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
+		}
+		else if (pestañaMostrar == 4)
+		{
+			textoDlcMaestro = juego.Maestro;
+		}
+		else if (pestañaMostrar == 5)
+		{
+			textoF2P = juego.FreeToPlay;
 		}
 	}
 
@@ -275,6 +319,81 @@
 			{
 				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoOrigenSuscripciones);
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	#endregion
+
+	#region Dlc
+
+	private string textoDlcMaestro = string.Empty;
+
+	private async Task BuscarDlcMaestro()
+	{
+		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+		if (nuevoJuego != null)
+		{
+			textoDlcMaestro = nuevoJuego.Maestro;
+
+			if (string.IsNullOrEmpty(textoDlcMaestro) == false)
+			{
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					juego.Maestro = textoDlcMaestro;
+					BaseDatos.Juegos.Actualizar.DlcMaestro(juego, conexion);
+				}
+
+				conexion.Dispose();
+			}
+		}
+	}
+
+	private void TextoCambiaDlcMaestro(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoDlcMaestro = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Maestro = textoDlcMaestro;
+				BaseDatos.Juegos.Actualizar.DlcMaestro(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	#endregion
+
+	#region Datos
+
+	private string textoF2P = string.Empty;
+
+	private void TextoCambiaF2P(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoF2P = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.FreeToPlay = textoF2P;
+				BaseDatos.Juegos.Actualizar.FreeToPlay(juego, conexion);
 			}
 
 			conexion.Dispose();

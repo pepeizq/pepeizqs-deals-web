@@ -120,9 +120,9 @@ namespace APIs.Steam
 
 						if (maestro != null)
 						{
-							if (string.IsNullOrEmpty(maestro.Maestro) == false) 
+							if (maestro.IdSteam > 0) 
 							{
-								juego.Maestro = maestro.Maestro;
+								juego.Maestro = maestro.Id.ToString();
 							}
 						}
 					}
@@ -133,6 +133,11 @@ namespace APIs.Steam
 					else
 					{
 						juego.Tipo = Juegos.JuegoTipo.Game;
+					}
+
+					if (string.IsNullOrEmpty(datos.Datos.Free2Play) == false)
+					{
+						juego.FreeToPlay = datos.Datos.Free2Play;
 					}
 
 					try

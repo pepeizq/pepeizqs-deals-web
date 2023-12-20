@@ -3,8 +3,6 @@
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using pepeizqs_deals_web.Pages.Componentes.Secciones;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BaseDatos.Tiendas
 {
@@ -12,7 +10,7 @@ namespace BaseDatos.Tiendas
 	{
 		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto, SqlConnection conexion)
 		{
-			global::Juegos.Juego juego = JuegoCrear.Generar();
+			Juego juego = JuegoCrear.Generar();
 
 			bool insertar = false;
 			bool actualizar = false;
@@ -136,11 +134,11 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static async Task<global::Juegos.Juego> ActualizarDatosAPI(global::Juegos.Juego juego)
+		private static async Task<Juego> ActualizarDatosAPI(Juego juego)
 		{
 			if (juego.IdSteam > 0)
 			{
-                global::Juegos.Juego nuevoJuego = null;
+                Juego nuevoJuego = null;
 				
 				try
 				{

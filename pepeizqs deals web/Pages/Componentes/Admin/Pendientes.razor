@@ -7,14 +7,21 @@
 			{
 				@if (tienda.Id != "steam")
 				{
-					<button @onclick="@(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="margin: 10px; display: block;">
-						<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
-					</button>
+					@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id)) > 0)
+					{
+						<button @onclick="@(e => ClickearTienda(e, tienda.Id, tienda.Nombre))" class="boton-pequeño" style="margin: 10px; display: block;">
+							<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
+						</button>
+					}
 				}
 			}
 		</div>
 
 		<div style="width: 100%; padding-left: 50px;">
+			<div style="margin-bottom: 20px;">
+				Tienda: @tiendaElegida
+			</div>
+
 			<div style="display: flex; justify-content: space-between;">
 				<div style="width: 30%;">
 					<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
@@ -26,7 +33,7 @@
 					</div>
 
 					<div>
-						<textarea @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px;" value="@idsPendiente" rows="1" />
+						<textarea @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
 					</div>
 
 					<div style="display: flex; align-items: center; margin: 20px 0px;">
@@ -99,10 +106,12 @@
 	private string enlacePendiente = null;
 	private string idsPendiente = "0";
 	private string cadenaBusqueda = null;
+	private string tiendaElegida = null;
 
-	private void ClickearTienda(MouseEventArgs e, string id)
+	private void ClickearTienda(MouseEventArgs e, string id, string nombre)
 	{
 		idTienda = id;
+		tiendaElegida = nombre;
 
 		ClickearTienda(idTienda);
 	}

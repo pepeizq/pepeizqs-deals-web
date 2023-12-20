@@ -328,6 +328,10 @@
     "Valor": "Aviso, esto es un DLC y requiere del juego base para hacerlo funcionar (clickea para abrir el juego)."
   },
   {
+    "Id": "Game.String33",
+    "Valor": "Este juego es Free To Play, esto quiere decir que se puede jugar gratuitamente pero para disfrutarlo completamente será necesario la adquisición de uno o varios descargas de contenido (o DLCs para abreviar)."
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },

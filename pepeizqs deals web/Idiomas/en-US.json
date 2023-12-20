@@ -332,6 +332,10 @@
     "Valor": "Warning, this is a DLC and requires the base game to work (click to open the game)."
   },
   {
+    "Id": "Game.String33",
+    "Valor": "This game is Free To Play, this means that it can be played for free but to fully enjoy it it will be necessary to purchase one or more content downloads (or DLCs for short)."
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },
