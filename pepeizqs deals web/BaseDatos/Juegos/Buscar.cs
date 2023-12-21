@@ -184,5 +184,35 @@ namespace BaseDatos.Juegos
 
             return juegos;
         }
-    }
+
+		public static List<Juego> DLCs(string idMaestro)
+		{
+			List<Juego> dlcs = new List<Juego>();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM juegos WHERE maestro=" + idMaestro;
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							Juego dlc = new Juego();
+							dlc = Cargar.Ejecutar(dlc, lector);
+
+							dlcs.Add(dlc);
+						}
+					}
+				}
+			}
+
+			conexion.Dispose();
+
+			return dlcs.OrderBy(x => x.Nombre).ToList();
+		}
+	}
 }

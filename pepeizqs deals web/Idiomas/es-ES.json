@@ -332,6 +332,10 @@
     "Valor": "Este juego es Free To Play, esto quiere decir que se puede jugar gratuitamente pero para disfrutarlo completamente será necesario la adquisición de uno o varios descargas de contenido (o DLCs para abreviar)."
   },
   {
+    "Id": "Game.String34",
+    "Valor": "DLCs"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },

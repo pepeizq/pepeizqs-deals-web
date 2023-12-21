@@ -92,6 +92,11 @@ namespace APIs.IndieGala
 										{
 											JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
+											if (nombre.Contains("(Epic)") == true)
+											{
+												drm = JuegoDRM.Epic;
+											}
+
 											JuegoPrecio oferta = new JuegoPrecio
 											{
 												Nombre = nombre,

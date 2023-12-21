@@ -336,6 +336,10 @@
     "Valor": "This game is Free To Play, this means that it can be played for free but to fully enjoy it it will be necessary to purchase one or more content downloads (or DLCs for short)."
   },
   {
+    "Id": "Game.String34",
+    "Valor": "DLCs"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },

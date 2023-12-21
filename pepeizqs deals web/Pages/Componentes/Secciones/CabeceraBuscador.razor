@@ -32,9 +32,21 @@
 
                                 @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
                                 {
-                                    <div style="font-size: 13px; margin-top: 5px;">
-                                        @juego.Id
-                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 5px;">
+                                        <div style="font-size: 13px; margin-right: 10px;">
+                                            @juego.Id
+                                        </div>
+
+                                        @if (juego.Tipo == Juegos.JuegoTipo.DLC)
+                                        {
+                                            @if (string.IsNullOrEmpty(juego.Maestro) == true)
+                                            {
+                                                <div style="font-size: 13px; margin-right: 10px;">
+                                                    NO TIENE MAESTRO
+                                                </div>
+                                            }
+                                        }
+                                    </div>                                   
                                 }
                             </div>
 

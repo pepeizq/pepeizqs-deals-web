@@ -34,46 +34,55 @@
 					<div>@juego.Nombre</div>
 
 					<div style="margin-right: 10px; margin-top: 10px; display: flex; align-items: center;">
-						@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
-						{
-							@if (drm != JuegoDRM.NoEspecificado)
+						<div style="margin-right: 5px; display: flex; align-items: center;">
+							@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 							{
-								@if (VerificarMostrarDRM(idioma, drm, juego) == true)
+								@if (drm != JuegoDRM.NoEspecificado)
 								{
-									@if (drm == JuegoDRM.DRMFree)
+									@if (VerificarMostrarDRM(idioma, drm, juego) == true)
 									{
-										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
-									}
-									else
-									{
-										<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px; margin-right: 10px">
-											<div style="display: flex; align-items: center;">
-												<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" />
-											</div>
-										</button>
+										@if (drm == JuegoDRM.DRMFree)
+										{
+											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
+										}
+										else
+										{
+											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px; margin-right: 10px">
+												<div style="display: flex; align-items: center;">
+													<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" />
+												</div>
+											</button>
+										}
 									}
 								}
 							}
-						}
-
+						</div>
+						
 						@if (BundlesDisponibles(juego.Bundles).Count > 0)
 						{
-							<div style="margin-left: 15px; font-size: 16px;">
+							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Bundles")</a>
 							</div>
 						}
 
 						@if (GratisDisponibles(juego.Gratis).Count > 0)
 						{
-							<div style="margin-left: 15px; font-size: 16px;">
+							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Free")</a>
 							</div>
 						}
 
 						@if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 						{
-							<div style="margin-left: 15px; font-size: 16px;">
+							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Subscriptions")</a>
+							</div>
+						}
+
+						@if (DLCs.Count > 0)
+						{
+							<div style="margin-right: 15px; font-size: 16px; background: var(--fondoDlc); height: 40px;">
+								<a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.CogerCadena(idioma, "Game.String34") (@DLCs.Count.ToString())</a>
 							</div>
 						}
 					</div>
@@ -571,48 +580,84 @@
 				}
 			}
 		}
+
+		@if (DLCs.Count > 0)
+		{
+			<div id="dlcs" class="perfil" style="margin-top: 50px;">
+				<div style="margin-bottom: 10px;">
+					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String34") (@DLCs.Count.ToString())</label>
+				</div>
+
+				@foreach (var dlc in DLCs)
+				{
+					<a class="juego-boton-pequeño" href="/game/@dlc.Id" target="_blank" style="font-size: 16px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; padding: 0px;">
+						<div style="display: flex; align-items: center;">
+							<div style="margin-right: 20px;">
+								<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" />
+							</div>
+
+							<div style="margin-right: 20px; width: 100%;">
+								<div>@dlc.Nombre</div>
+								<div style="margin-top: 10px; font-size: 14px;">@Herramientas.JuegoFicha.PrecioMinimoActual(dlc, true, idioma)</div>
+							</div>
+						</div>
+					</a>
+				}
+			</div>
+		}
 	</div>
 </div>
 
+@if (juego.Media != null)
+{
+	@if (juego.Media.Capturas != null)
+	{
+		@if (juego.Media.Capturas.Count > 0)
+		{
+			<script>
+				let imagenPosicion = 1;
+				cargarImagen(imagenPosicion);
+
+				function siguienteAtras(n) {
+					cargarImagen(imagenPosicion += n);
+				}
+
+				function cambiarImagen(n) {
+					cargarImagen(imagenPosicion = n);
+				}
+
+				function cargarImagen(n) {
+					let i;
+					let imagenes = document.getElementsByClassName("juego-galeria-imagenes");
+					let capturas = document.getElementsByClassName("juego-galeria-capturas");
+					let texto = document.getElementById("juego-galeria-texto");
+
+					if (n > imagenes.length) {
+						imagenPosicion = 1
+					}
+
+					if (n < 1) {
+						imagenPosicion = imagenes.length
+					}
+
+					for (i = 0; i < imagenes.length; i++) {
+						imagenes[i].style.display = "none";
+					}
+
+					for (i = 0; i < capturas.length; i++) {
+						capturas[i].className = capturas[i].className.replace(" juego-galeria-activo", "");
+					}
+
+					imagenes[imagenPosicion - 1].style.display = "block";
+					capturas[imagenPosicion - 1].className += " juego-galeria-activo";
+					texto.innerHTML = capturas[imagenPosicion - 1].alt;
+				}
+			</script>
+		}
+	}
+}
+
 <script>
-	let imagenPosicion = 1;
-	cargarImagen(imagenPosicion);
-
-	function siguienteAtras(n) {
-		cargarImagen(imagenPosicion += n);
-	}
-
-	function cambiarImagen(n) {
-		cargarImagen(imagenPosicion = n);
-	}
-
-	function cargarImagen(n) {
-		let i;
-		let imagenes = document.getElementsByClassName("juego-galeria-imagenes");
-		let capturas = document.getElementsByClassName("juego-galeria-capturas");
-		let texto = document.getElementById("juego-galeria-texto");
-
-		if (n > imagenes.length) {
-			imagenPosicion = 1
-		}
-
-		if (n < 1) {
-			imagenPosicion = imagenes.length
-		}
-
-		for (i = 0; i < imagenes.length; i++) {
-			imagenes[i].style.display = "none";
-		}
-
-		for (i = 0; i < capturas.length; i++) {
-			capturas[i].className = capturas[i].className.replace(" juego-galeria-activo", "");
-		}
-
-		imagenes[imagenPosicion - 1].style.display = "block";
-		capturas[imagenPosicion - 1].className += " juego-galeria-activo";
-		texto.innerHTML = capturas[imagenPosicion - 1].alt;
-	}
-
 	function moverScroll(id) {
 		const yOffset = -175;
 		const element = document.getElementById(id);
@@ -638,6 +683,8 @@
 	private Usuario usuario = new Usuario();
 	private bool usuarioLogeado = false;
 
+	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
+
 	protected override void OnInitialized()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
@@ -646,12 +693,29 @@
 		{
 			usuarioLogeado = true;
 		}
+
+		//-------------------------------------------
+
+		if (juego != null)
+		{
+			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+		}
 	}
 
 	protected override async void OnAfterRender(bool firstRender)
 	{
 		base.OnAfterRender(firstRender);
-		await JS.InvokeAsync<string>("cargarImagen", "1");
+
+		if (juego.Media != null)
+		{
+			if (juego.Media.Capturas != null)
+			{
+				if (juego.Media.Capturas.Count > 0)
+				{
+					await JS.InvokeAsync<string>("cargarImagen", "1");
+				}
+			}			
+		}		
 	}
 
 	public static string LimpiarImagenJuego(string enlace)
@@ -811,6 +875,11 @@
 			precioTexto = precioTexto + "0";
 		}
 
+		if (precioTexto.Length > int1 + 3)
+		{
+			precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
+		}
+
 		precioTexto = precioTexto + "€";
 
 		return precioTexto;
@@ -968,6 +1037,9 @@
 					}
 					i += 1;
 				}
+
+				nuevoTexto = nuevoTexto.Replace("(Steam)", null);
+				nuevoTexto = nuevoTexto.Replace("(Epic)", null);
 
 				return nuevoTexto;
 			}
