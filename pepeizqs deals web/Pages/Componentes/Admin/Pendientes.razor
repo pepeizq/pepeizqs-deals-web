@@ -1,104 +1,154 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
 
 <div class="perfil">
-	<div style="display: flex; justify-content: space-between;">
-		<div style="min-width: 300px; margin: -10px 0px;">
-			@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
-			{
-				@if (tienda.Id != "steam")
-				{
-					@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id)) > 0)
-					{
-						<button @onclick="@(e => ClickearTienda(e, tienda.Id, tienda.Nombre))" class="boton-pequeño" style="margin: 10px; display: block;">
-							<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
-						</button>
-					}
-				}
-			}
+	<div style="display: flex; align-items: center;">
+		<div style="width: auto;">
+			<button @onclick="(e => MostrarPestaña(e, 0))" class="boton-pequeño" style="padding: 10px 15px;">
+				Tiendas
+			</button>
 		</div>
 
-		<div style="width: 100%; padding-left: 50px;">
-			<div style="margin-bottom: 20px;">
-				Tienda: @tiendaElegida
-			</div>
-
-			<div style="display: flex; justify-content: space-between;">
-				<div style="width: 30%;">
-					<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
-				</div>
-				
-				<div style="width: 70%; margin-left: 20px;">
-					<div style="margin-bottom: 20px;">
-						<a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
-					</div>
-
-					<div>
-						<textarea @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
-					</div>
-
-					<div style="display: flex; align-items: center; margin: 20px 0px;">
-						<div>
-							<button @onclick="@(e => ClickearDescartar(e, @enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
-						</div>
-
-						<div>
-							<button @onclick="@(e => ClickearBuscar(e, @nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
-						</div>
-
-						<div>
-							<button @onclick="@(e => ClickearActualizar(e, @enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div style="margin-top: 40px;">
-				<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
-
-				@if (juegosBuscador != null)
-				{
-					@if (juegosBuscador.Count > 0)
-					{
-						<div>
-							@foreach (var juego in juegosBuscador)
-							{
-								<hr/>
-
-								<div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
-									<div style="width: 150px; min-width: 150px;">
-										<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align: center; height: 65px;">
-											Añadir ID
-
-											<div style="font-size: 13px; margin-top: 5px;">
-												@juego.Id
-											</div>
-										</button>
-									</div>
-
-									<div style="padding-left: 15px;">
-										<img src="@juego.Imagenes.Capsule_231x87" style="width: 231px; height: 87px;" />
-									</div>
-
-									<div style="width: 100%; padding: 5px 10px; flex: 1;">
-										@juego.Nombre
-									</div>
-
-									<div class="admin-busqueda-juego-derecha">
-										<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-									</div>
-								</div>
-							}
-						</div>
-					}
-				}
-			</div>
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
+				DLCs (@DLCs.Count.ToString())
+			</button>
 		</div>
 	</div>
+
+	<hr style="margin-top: 30px; margin-bottom: 30px;" />
+
+	@if (pestañaMostrar == 0)
+	{
+		<div style="display: flex; justify-content: space-between;">
+			<div style="min-width: 300px; margin: -10px 0px;">
+				@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+				{
+					@if (tienda.Id != "steam")
+					{
+						@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id)) > 0)
+						{
+							<button @onclick="@(e => ClickearTienda(e, tienda.Id, tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
+								<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
+							</button>
+						}
+					}
+				}
+			</div>
+
+			<div style="width: 100%; padding-left: 50px;">
+				<div style="margin-bottom: 20px;">
+					Tienda: @tiendaElegida
+				</div>
+
+				<div style="display: flex; justify-content: space-between;">
+					<div style="width: 30%;">
+						<a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
+					</div>
+
+					<div style="width: 70%; margin-left: 20px;">
+						<div style="margin-bottom: 20px;">
+							<a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+						</div>
+
+						<div>
+							<textarea @oninput="TextoCambia" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
+						</div>
+
+						<div style="display: flex; align-items: center; margin: 20px 0px;">
+							<div>
+								<button @onclick="@(e => ClickearDescartar(e, @enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+							</div>
+
+							<div>
+								<button @onclick="@(e => ClickearBuscar(e, @nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
+							</div>
+
+							<div>
+								<button @onclick="@(e => ClickearActualizar(e, @enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div style="margin-top: 40px;">
+					<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+					@if (juegosBuscador != null)
+					{
+						@if (juegosBuscador.Count > 0)
+						{
+							<div>
+								@foreach (var juego in juegosBuscador)
+								{
+									<hr />
+
+									<div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+										<div style="width: 150px; min-width: 150px;">
+											<button @onclick="@(e => ClickearID(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align: center; height: 65px;">
+												Añadir ID
+
+												<div style="font-size: 13px; margin-top: 5px;">
+													@juego.Id
+												</div>
+											</button>
+										</div>
+
+										<div style="padding-left: 15px;">
+											<a href="/game/@juego.Id.ToString()" target="_blank">
+												<img src="@juego.Imagenes.Capsule_231x87" style="width: 231px; height: 87px;" />
+											</a>
+										</div>
+
+										<div style="width: 100%; padding: 5px 10px; flex: 1;">
+											@juego.Nombre
+										</div>
+
+										<div class="admin-busqueda-juego-derecha">
+											<button @onclick="@(e => ClickearBorrar(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+										</div>
+									</div>
+								}
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+	}
+	else if (pestañaMostrar == 1)
+	{
+		<button @onclick="(async () => await BuscarDlcMaestro())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+			Buscar Pendientes
+		</button>
+
+		<div style="margin-top: 30px;">
+			<a href="/game/@DLCs[posicionDLC].Id.ToString()" target="_blank">
+				<img src="@DLCs[posicionDLC].Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+			</a>
+			
+			<label style="margin-left: 20px;">@DLCs[posicionDLC].Nombre</label>
+		</div>
+	}
 </div>
 
 @code {
 
 	#nullable disable
+
+	protected override void OnInitialized()
+	{
+		DLCs = global::BaseDatos.Juegos.Buscar.DLCs();
+	}
+
+	private int pestañaMostrar = 0;
+
+	private void MostrarPestaña(MouseEventArgs e, int pestaña)
+	{
+		pestañaMostrar = pestaña;
+	}
+
+	#region Tiendas
 
 	private string idTienda = null;
 	private string imagenPendiente = null;
@@ -215,4 +265,40 @@
 
 		juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
 	}
+
+	#endregion
+
+	#region DLCs
+
+	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
+	private int posicionDLC = 0;
+
+	private string textoDlcMaestro = string.Empty;
+
+	private async Task BuscarDlcMaestro()
+	{
+		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
+
+		if (nuevoJuego != null)
+		{
+			textoDlcMaestro = nuevoJuego.Maestro;
+
+			if (string.IsNullOrEmpty(textoDlcMaestro) == false)
+			{
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					DLCs[posicionDLC].Maestro = textoDlcMaestro;
+					BaseDatos.Juegos.Actualizar.DlcMaestro(DLCs[posicionDLC], conexion);
+				}
+
+				conexion.Dispose();
+
+				posicionDLC += 1;
+			}
+		}
+	}
+
+	#endregion
 }

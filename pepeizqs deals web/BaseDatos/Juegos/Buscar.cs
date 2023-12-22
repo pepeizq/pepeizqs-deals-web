@@ -185,7 +185,7 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-		public static List<Juego> DLCs(string idMaestro)
+		public static List<Juego> DLCs(string idMaestro = null)
 		{
 			List<Juego> dlcs = new List<Juego>();
 
@@ -193,7 +193,16 @@ namespace BaseDatos.Juegos
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM juegos WHERE maestro=" + idMaestro;
+				string busqueda = null;
+
+				if (string.IsNullOrEmpty(idMaestro) == false)
+				{
+					busqueda = "SELECT * FROM juegos WHERE maestro=" + idMaestro;
+				}
+				else
+				{
+					busqueda = "SELECT * FROM juegos WHERE maestro IS NULL AND tipo=1";
+				}
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

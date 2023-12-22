@@ -708,9 +708,9 @@
 
 		if (juego.Media != null)
 		{
-			if (juego.Media.Capturas != null)
+			if (juego.Media.Capturas != null && juego.Media.Miniaturas != null)
 			{
-				if (juego.Media.Capturas.Count > 0)
+				if (juego.Media.Capturas.Count > 0 && juego.Media.Miniaturas.Count > 0)
 				{
 					await JS.InvokeAsync<string>("cargarImagen", "1");
 				}

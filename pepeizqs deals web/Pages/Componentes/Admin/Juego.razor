@@ -137,6 +137,30 @@
 
 				<label>(poner true si es F2P)</label>
 			</div>
+
+			<div style="display: flex; align-items: center; margin-top: 25px;">
+				<label>Nombre:</label>
+
+				<button @onclick="(async () => await ActualizarNombre())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
+					Actualizar
+				</button>
+			</div>
+
+			<div style="display: flex; align-items: center; margin-top: 25px;">
+				<label>Media:</label>
+
+				<button @onclick="(async () => await ActualizarMedia())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
+					Actualizar
+				</button>
+			</div>
+
+			<div style="display: flex; align-items: center; margin-top: 25px;">
+				<label>Tipo:</label>
+
+				<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" style="margin-left: 20px; margin-right: 20px; width: auto; min-width: auto;" />
+
+				<label>(0 juego, 1 dlc, 2 bundle, 3 musica)</label>
+			</div>
 		}
 	}
 </div>
@@ -394,6 +418,76 @@
 			{
 				juego.FreeToPlay = textoF2P;
 				BaseDatos.Juegos.Actualizar.FreeToPlay(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	private async Task ActualizarNombre()
+	{
+		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+		if (nuevoJuego != null)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Nombre = nuevoJuego.Nombre;
+				BaseDatos.Juegos.Actualizar.Nombre(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	private async Task ActualizarMedia()
+	{
+		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+		if (nuevoJuego != null)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Media = nuevoJuego.Media;
+				BaseDatos.Juegos.Actualizar.Media(juego, conexion);
+			}
+
+			conexion.Dispose();
+		}
+	}
+
+	private void TextoCambiaTipo(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				if (nuevoTexto == "0")
+				{
+					juego.Tipo = JuegoTipo.Game;
+				}
+				else if (nuevoTexto == "1")
+				{
+					juego.Tipo = JuegoTipo.DLC;
+				}
+				else if (nuevoTexto == "2")
+				{
+					juego.Tipo = JuegoTipo.Bundle;
+				}
+				else if (nuevoTexto == "3")
+				{
+					juego.Tipo = JuegoTipo.Music;
+				}
+
+				BaseDatos.Juegos.Actualizar.Tipo(juego, conexion);
 			}
 
 			conexion.Dispose();

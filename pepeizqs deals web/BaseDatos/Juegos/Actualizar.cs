@@ -239,5 +239,68 @@ namespace BaseDatos.Juegos
 				}
 			}
 		}
+
+		public static void Nombre(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET nombre=@nombre WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void Media(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET media=@media WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void Tipo(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET tipo=@tipo WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@tipo", juego.Tipo);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }
