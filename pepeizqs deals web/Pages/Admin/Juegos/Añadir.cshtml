@@ -52,6 +52,11 @@
 					<label class="texto-info-entrada admin-añadir-espacio-top">Maestro</label>
 					<input class="entrada-texto" name="maestro" value="@Model.juegoAñadir.Maestro" />
 				}
+				else if (Model.juegoAñadir.Tipo.ToString().ToLower() == "game")
+				{
+					<label class="texto-info-entrada admin-añadir-espacio-top">FreeToPlay</label>
+					<input class="entrada-texto" name="f2p" value="@Model.juegoAñadir.FreeToPlay" />
+				}
 
 				@if (Model.juegoAñadir.PrecioActualesTiendas != null)
 				{

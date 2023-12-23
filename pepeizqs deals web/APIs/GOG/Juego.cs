@@ -162,6 +162,7 @@ namespace APIs.GOG
 
 												Juegos.Juego juego = new Juegos.Juego
 												{
+													IdSteam = 0,
 													IdGog = int.Parse(datos.Id),
 													Nombre = datos.Nombre,
 													Media = media,

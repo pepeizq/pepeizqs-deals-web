@@ -144,6 +144,14 @@
     {
         string mensaje = string.Empty;
 
+        if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+        {
+            if (juego.FreeToPlay.ToLower() == "true")
+            {
+                return Herramientas.Idiomas.CogerCadena(idioma, "Search.String6");
+            }
+        }
+
         if (juego.Gratis != null)
         {
             if (juego.Gratis.Count > 0)

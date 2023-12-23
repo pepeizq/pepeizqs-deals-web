@@ -668,6 +668,10 @@
     "Valor": "Free to Claim"
   },
   {
+    "Id": "Search.String6",
+    "Valor": "Free to Play"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Historical Lows"
   },

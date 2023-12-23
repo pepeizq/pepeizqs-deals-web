@@ -159,7 +159,7 @@
 
 				<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" style="margin-left: 20px; margin-right: 20px; width: auto; min-width: auto;" />
 
-				<label>(0 juego, 1 dlc, 2 bundle, 3 musica)</label>
+				<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
 			</div>
 		}
 	}
@@ -485,6 +485,10 @@
 				else if (nuevoTexto == "3")
 				{
 					juego.Tipo = JuegoTipo.Music;
+				}
+				else if (nuevoTexto == "4")
+				{
+					juego.Tipo = JuegoTipo.Software;
 				}
 
 				BaseDatos.Juegos.Actualizar.Tipo(juego, conexion);

@@ -277,7 +277,7 @@ namespace BaseDatos.Tiendas
 							{
 								if (lector.Read() == true)
 								{
-                                    global::Juegos.Juego juego = JuegoCrear.Generar();
+                                    Juego juego = JuegoCrear.Generar();
 
 									juego = Juegos.Cargar.Ejecutar(juego, lector);
 

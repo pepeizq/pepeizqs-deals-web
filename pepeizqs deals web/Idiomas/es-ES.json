@@ -664,6 +664,10 @@
     "Valor": "Gratis para Reclamar"
   },
   {
+    "Id": "Search.String6",
+    "Valor": "Gratis para Jugar"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Mínimos Históricos"
   },

@@ -137,14 +137,18 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			if (lector.IsDBNull(16) == false)
+			try
 			{
-				try
+				if (lector.IsDBNull(16) == false)
 				{
-					juego.IdMaestra = lector.GetInt32(16);
+					try
+					{
+						juego.IdMaestra = lector.GetInt32(16);
+					}
+					catch { }
 				}
-				catch { }
 			}
+			catch { }
 
 			if (lector.IsDBNull(17) == false)
 			{

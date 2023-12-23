@@ -195,13 +195,13 @@ namespace BaseDatos.Juegos
 			{
 				string busqueda = null;
 
-				if (string.IsNullOrEmpty(idMaestro) == false)
+                if (string.IsNullOrEmpty(idMaestro) == false)
 				{
-					busqueda = "SELECT * FROM juegos WHERE maestro=" + idMaestro;
+					busqueda = "SELECT * FROM juegos WHERE maestro='" + idMaestro + "'";
 				}
 				else
 				{
-					busqueda = "SELECT * FROM juegos WHERE maestro IS NULL AND tipo=1";
+					busqueda = "SELECT * FROM juegos WHERE (maestro IS NULL AND tipo='1') or (maestro='no' AND tipo='1')";
 				}
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

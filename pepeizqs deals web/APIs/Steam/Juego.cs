@@ -130,6 +130,10 @@ namespace APIs.Steam
 					{
 						juego.Tipo = Juegos.JuegoTipo.Music;
 					}
+					else if (datos.Datos.Tipo == "software" || datos.Datos.Tipo == "application")
+					{
+						juego.Tipo = Juegos.JuegoTipo.Software;
+					}
 					else
 					{
 						juego.Tipo = Juegos.JuegoTipo.Game;

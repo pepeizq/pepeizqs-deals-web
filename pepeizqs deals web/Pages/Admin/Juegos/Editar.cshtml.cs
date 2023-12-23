@@ -117,6 +117,10 @@ namespace pepeizqs_deals_web.Pages.Admin.Juegos
 					{
 						juegoEditar.Maestro = Request.Form["maestro"];
 					}
+					else if (juegoEditar.Tipo == JuegoTipo.Game)
+					{
+						juegoEditar.FreeToPlay = Request.Form["f2p"];
+					}
 
 					//----------------------------
 

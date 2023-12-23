@@ -164,6 +164,7 @@ namespace Juegos
 		Game,
 		DLC,
 		Bundle,
-		Music
+		Music,
+		Software
 	}
 }

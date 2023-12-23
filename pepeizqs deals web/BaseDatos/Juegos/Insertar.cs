@@ -15,8 +15,11 @@ namespace BaseDatos.Juegos
 
 			if (string.IsNullOrEmpty(juego.Maestro) == false)
 			{
-				añadirMaestro1 = ", maestro";
-				añadirMaestro2 = ", @maestro";
+				if (juego.Maestro.Length > 1) 
+				{
+                    añadirMaestro1 = ", maestro";
+                    añadirMaestro2 = ", @maestro";
+                }
 			}
 
 			string añadirF2P1 = null;
@@ -49,7 +52,10 @@ namespace BaseDatos.Juegos
 
 				if (string.IsNullOrEmpty(juego.Maestro) == false)
 				{
-					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+                    if (juego.Maestro.Length > 1)
+					{
+                        comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+                    }                       
 				}
 				else if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 				{
