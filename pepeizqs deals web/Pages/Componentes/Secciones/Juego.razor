@@ -58,21 +58,21 @@
 							}
 						</div>
 						
-						@if (BundlesDisponibles(juego.Bundles).Count > 0)
+						@if (juego.Bundles != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Bundles")</a>
 							</div>
 						}
 
-						@if (GratisDisponibles(juego.Gratis).Count > 0)
+						@if (juego.Gratis != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Free")</a>
 							</div>
 						}
 
-						@if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
+						@if (juego.Suscripciones != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
 								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Subscriptions")</a>

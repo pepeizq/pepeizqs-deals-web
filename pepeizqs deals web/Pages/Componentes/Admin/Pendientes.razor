@@ -216,7 +216,7 @@
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
-		if (texto.Value.ToString().Trim().Length > 0)
+		if (texto.Value.ToString().Trim().Length > 3)
 		{
 			cadenaBusqueda = texto.Value.ToString().Trim();
 			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);

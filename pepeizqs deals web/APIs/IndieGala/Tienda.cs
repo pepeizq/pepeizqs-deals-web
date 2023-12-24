@@ -96,6 +96,14 @@ namespace APIs.IndieGala
 											{
 												drm = JuegoDRM.Epic;
 											}
+											else if (ComprobarEpicFalsos(enlace) == true)
+											{
+												drm = JuegoDRM.Epic;
+											}
+											else if (enlace.Contains("_epic") == true)
+											{
+												drm = JuegoDRM.Epic;
+											}
 
 											JuegoPrecio oferta = new JuegoPrecio
 											{
@@ -134,7 +142,34 @@ namespace APIs.IndieGala
 
 			conexion.Dispose();
 		}
+
+		private static bool ComprobarEpicFalsos(string enlaceJuego)
+		{
+			List<string> enlaces = [
+				"1286680_pass",
+				"1286680_pre",
+				"1286680_deluxe_pre",
+				"1496590",
+				"1496590_deluxe",
+				"578650",
+				"629820",
+				"9b06280a",
+				"f69bbded"
+			];
+
+			foreach (var enlace in enlaces)
+			{
+				if (enlaceJuego.Contains("/" + enlace) == true)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
+
+	#region Clases
 
 	[XmlRoot("rss")]
 	public class IndieGalaRSS
@@ -187,4 +222,6 @@ namespace APIs.IndieGala
 		[XmlElement("discountEnd")]
 		public string Fecha { get; set; }
 	}
+
+	#endregion
 }

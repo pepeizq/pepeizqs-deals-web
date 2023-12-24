@@ -139,17 +139,9 @@
 			</div>
 
 			<div style="display: flex; align-items: center; margin-top: 25px;">
-				<label>Nombre:</label>
+				<label>Datos Steam API:</label>
 
-				<button @onclick="(async () => await ActualizarNombre())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
-					Actualizar
-				</button>
-			</div>
-
-			<div style="display: flex; align-items: center; margin-top: 25px;">
-				<label>Media:</label>
-
-				<button @onclick="(async () => await ActualizarMedia())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
+				<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
 					Actualizar
 				</button>
 			</div>
@@ -424,7 +416,7 @@
 		}
 	}
 
-	private async Task ActualizarNombre()
+	private async Task ActualizarDatosSteamApi()
 	{
 		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
@@ -435,24 +427,10 @@
 			using (conexion)
 			{
 				juego.Nombre = nuevoJuego.Nombre;
-				BaseDatos.Juegos.Actualizar.Nombre(juego, conexion);
-			}
-
-			conexion.Dispose();
-		}
-	}
-
-	private async Task ActualizarMedia()
-	{
-		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-		if (nuevoJuego != null)
-		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
+				juego.Imagenes = nuevoJuego.Imagenes;
+				juego.Caracteristicas = nuevoJuego.Caracteristicas;
 				juego.Media = nuevoJuego.Media;
+
 				BaseDatos.Juegos.Actualizar.Media(juego, conexion);
 			}
 

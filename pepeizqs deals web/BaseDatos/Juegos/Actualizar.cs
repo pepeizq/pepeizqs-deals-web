@@ -259,11 +259,14 @@ namespace BaseDatos.Juegos
 		public static void Media(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +
-					"SET media=@media WHERE id=@id";
+					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 
 				try
