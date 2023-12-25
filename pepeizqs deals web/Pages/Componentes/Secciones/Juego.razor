@@ -4,7 +4,6 @@
 @using Juegos
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.JSInterop
 @using Microsoft.VisualBasic
 @using Newtonsoft.Json
 @using Suscripciones2
@@ -15,7 +14,6 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
-@inject IJSRuntime JS
 
 <div>
 	@if (juego.Tipo == JuegoTipo.Game)
@@ -549,29 +547,29 @@
 				{
 					<div class="perfil">
 						<div class="juego-galeria-contenedor">
-							@for (int i = 0; i < juego.Media.Capturas.Count; i++)
-							{
-								<div class="juego-galeria-imagenes">
-									<div class="juego-galeria-numero">@(i + 1) / @juego.Media.Capturas.Count</div>
-									<img src="@Imagenes.DescargarYGuardar(juego.Media.Capturas[i], "juegos", juego.Id.ToString(), "captura" + i.ToString(), dominio).Result" style="width: 100%;">
-								</div>
-							}
-
-							<a class="juego-galeria-atras" onclick="siguienteAtras(-1)">&#10094;</a>
-							<a class="juego-galeria-siguiente" onclick="siguienteAtras(1)">&#10095;</a>
-
-							<div class="juego-galeria-contenedor-texto">
-								<p id="juego-galeria-texto"></p>
+							<div>
+								<div class="juego-galeria-numero">@(capturaMostrarPosicion + 1) / @juego.Media.Capturas.Count</div>
+								<img src="@Imagenes.DescargarYGuardar(capturaMostrar, "juegos", juego.Id.ToString(), "captura" + capturaMostrarPosicion.ToString(), dominio).Result" style="width: 100%;">
 							</div>
+
+							<a class="juego-galeria-atras" @onclick="@(e => CambiarCapturaMostrar(e, capturaMostrarPosicion - 1))">&#10094;</a>
+							<a class="juego-galeria-siguiente" @onclick="@(e => CambiarCapturaMostrar(e, capturaMostrarPosicion + 1))">&#10095;</a>
 
 							@if (juego.Media.Miniaturas != null)
 							{
 								<div class="juego-galeria-fila">
-									@for (int i = 0; i < juego.Media.Miniaturas.Count; i++)
-									{
-										<div class="juego-galeria-columna">
-											<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Media.Miniaturas[i], "juegos", juego.Id.ToString(), "miniatura" + i.ToString(), dominio).Result" style="width: 100%;" onclick="cambiarImagen(@i + 1)">
-										</div>
+									@{
+										int i = 0;
+										while (i < juego.Media.Miniaturas.Count)
+										{
+											int nuevaPosicion = i;
+
+											<div class="juego-galeria-columna" @onclick="@(e => CambiarCapturaMostrar(e, nuevaPosicion))">
+												<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Media.Miniaturas[i], "juegos", juego.Id.ToString(), "miniatura" + i.ToString(), dominio).Result" style="width: 100%;">
+											</div>
+
+											i += 1;
+										}
 									}
 								</div>
 							}
@@ -608,7 +606,7 @@
 	</div>
 </div>
 
-@if (juego.Media != null)
+@* @if (juego.Media != null)
 {
 	@if (juego.Media.Capturas != null)
 	{
@@ -655,7 +653,7 @@
 			</script>
 		}
 	}
-}
+} *@
 
 <script>
 	function moverScroll(id) {
@@ -699,23 +697,15 @@
 		if (juego != null)
 		{
 			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-		}
-	}
 
-	protected override async void OnAfterRender(bool firstRender)
-	{
-		base.OnAfterRender(firstRender);
-
-		if (juego.Media != null)
-		{
-			if (juego.Media.Capturas != null && juego.Media.Miniaturas != null)
+			if (juego.Media != null)
 			{
-				if (juego.Media.Capturas.Count > 0 && juego.Media.Miniaturas.Count > 0)
+				if (juego.Media.Capturas != null)
 				{
-					await JS.InvokeAsync<string>("cargarImagen", "1");
+					capturaMostrar = juego.Media.Capturas[0];
 				}
 			}			
-		}		
+		}
 	}
 
 	public static string LimpiarImagenJuego(string enlace)
@@ -1593,6 +1583,23 @@
 		}
 
 		return suscripcionesAntiguas;
+	}
+
+	#endregion
+
+	#region Caracteristicas
+
+	private int capturaMostrarPosicion = 0;
+	private string capturaMostrar = string.Empty;
+
+	private void CambiarCapturaMostrar(MouseEventArgs e, int nuevaCaptura)
+	{
+		capturaMostrarPosicion = nuevaCaptura;
+
+		if (nuevaCaptura >= 0 && nuevaCaptura < juego.Media.Capturas.Count)
+		{
+			capturaMostrar = juego.Media.Capturas[capturaMostrarPosicion];
+		}
 	}
 
 	#endregion

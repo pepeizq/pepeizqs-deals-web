@@ -22,17 +22,15 @@ namespace BaseDatos.Juegos
 				juego.Maestro = "no";
             }
 
-			string añadirF2P = null;
-
-			if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+			if (string.IsNullOrEmpty(juego.FreeToPlay) == true)
 			{
-				añadirF2P = ", freeToPlay=@freeToPlay";
+				juego.FreeToPlay = "false";
 			}
 
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
 						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + añadirF2P + ", maestro=@maestro ";
+						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + ", maestro=@maestro, freeToPlay=@freeToPlay ";
 
 			if (juego.IdSteam > 0)
 			{
@@ -66,14 +64,11 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
                 comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+				comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 
-                if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+				if (string.IsNullOrEmpty(juego.SlugGOG) == false)
 				{
 					comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
-				}
-				else if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
-				{
-					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 				}
 
 				comando.ExecuteNonQuery();

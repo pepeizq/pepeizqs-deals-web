@@ -9,7 +9,6 @@ using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -62,17 +61,12 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 #endregion
 
-builder.Services.AddResponseCaching();
-builder.Services.AddControllers(options =>
-{
-    options.CacheProfiles.Add("Default30",
-        new CacheProfile()
-        {
-            Duration = 30
-        });
-});
-
 //----------------------------------------------------------------------------------
+
+builder.Services.AddSignalR(opciones =>
+{
+    opciones.EnableDetailedErrors = true;
+});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {

@@ -258,12 +258,16 @@
         //     }
         // });
 
-         Blazor.start({
-            reconnectionHandler: {
-              onConnectionDown: (options, error) => console.error(error),
-              onConnectionUp: () => console.log("Up, up, and away!")
+        Blazor.start({
+            configureSignalR: function (builder) {
+                let c = builder.build();
+                c.serverTimeoutInMilliseconds = 3000000;
+                c.keepAliveIntervalInMilliseconds = 1500000;
+                builder.build = () => {
+                return c;
+                };
             }
-      });
+        });
     </script>
 
     <div id="components-reconnect-modal" style="display: none"/>
