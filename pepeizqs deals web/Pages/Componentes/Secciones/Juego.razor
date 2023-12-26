@@ -606,55 +606,6 @@
 	</div>
 </div>
 
-@* @if (juego.Media != null)
-{
-	@if (juego.Media.Capturas != null)
-	{
-		@if (juego.Media.Capturas.Count > 0)
-		{
-			<script>
-				let imagenPosicion = 1;
-				cargarImagen(imagenPosicion);
-
-				function siguienteAtras(n) {
-					cargarImagen(imagenPosicion += n);
-				}
-
-				function cambiarImagen(n) {
-					cargarImagen(imagenPosicion = n);
-				}
-
-				function cargarImagen(n) {
-					let i;
-					let imagenes = document.getElementsByClassName("juego-galeria-imagenes");
-					let capturas = document.getElementsByClassName("juego-galeria-capturas");
-					let texto = document.getElementById("juego-galeria-texto");
-
-					if (n > imagenes.length) {
-						imagenPosicion = 1
-					}
-
-					if (n < 1) {
-						imagenPosicion = imagenes.length
-					}
-
-					for (i = 0; i < imagenes.length; i++) {
-						imagenes[i].style.display = "none";
-					}
-
-					for (i = 0; i < capturas.length; i++) {
-						capturas[i].className = capturas[i].className.replace(" juego-galeria-activo", "");
-					}
-
-					imagenes[imagenPosicion - 1].style.display = "block";
-					capturas[imagenPosicion - 1].className += " juego-galeria-activo";
-					texto.innerHTML = capturas[imagenPosicion - 1].alt;
-				}
-			</script>
-		}
-	}
-} *@
-
 <script>
 	function moverScroll(id) {
 		const yOffset = -175;

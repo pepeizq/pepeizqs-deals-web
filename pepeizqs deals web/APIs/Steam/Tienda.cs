@@ -43,7 +43,7 @@ namespace APIs.Steam
 			using (conexion)
             {
 				int juegos = 0;
-				int tope = 10000;
+				int tope = 100000;
 
 				for (int i = 0; i < tope; i += 50)
 				{
@@ -52,6 +52,7 @@ namespace APIs.Steam
 					if (mirarOfertas == true)
 					{
 						string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&l=english");
+						
 						try
 						{
 							SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
@@ -70,7 +71,7 @@ namespace APIs.Steam
 							html = html2;
 						}
 
-						if (tope == 10000)
+						if (tope == 100000)
 						{
 							int int1 = html2.IndexOf("total_count");
 

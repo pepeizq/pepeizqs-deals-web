@@ -66,6 +66,8 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 builder.Services.AddSignalR(opciones =>
 {
     opciones.EnableDetailedErrors = true;
+    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
 });
 
 builder.Services.Configure<IdentityOptions>(opciones =>

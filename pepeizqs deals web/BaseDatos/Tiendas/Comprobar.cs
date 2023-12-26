@@ -87,9 +87,16 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
-					if (analisis != null)
+					if (analisis != null && juego != null)
 					{
-						juego.Analisis = analisis;
+						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)
+						{
+							JuegoAnalisis nuevoAnalisis = new JuegoAnalisis();
+							nuevoAnalisis.Cantidad = analisis.Cantidad;
+							nuevoAnalisis.Porcentaje = analisis.Porcentaje;
+
+							juego.Analisis = nuevoAnalisis;
+						}						
 					}
 
 					if (insertar == true && actualizar == false)

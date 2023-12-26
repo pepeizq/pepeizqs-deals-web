@@ -94,149 +94,99 @@ namespace Tiendas2
 
 		public static async void TareasGestionador(TimeSpan tiempoEntreTareas)
 		{
-			int orden = Admin.TareaLeerOrden();
+			List<string> ids = new List<string>();
 
-			if (orden == 0)
+			foreach (var tienda in GenerarListado())
 			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Steam.Tienda.Generar().Id);
+				ids.Add(tienda.Id);
+			}
 
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+			int orden = Admin.TareaLeerOrden();
+			int ordenTiendaAnterior = orden - 1;
+
+			if (ordenTiendaAnterior < 0)
+			{
+				ordenTiendaAnterior = ids.Count - 1;
+			}
+
+			DateTime tiendaAnterior = Admin.TareaLeerTienda(ids[ordenTiendaAnterior]);
+			DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
+
+			if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas && (DateTime.Now - tiendaAnterior) > (tiempoEntreTareas * 2))
+			{
+				if (orden == 0)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Steam.Tienda.BuscarOfertas(true);
 				}
-			}
-			else if (orden == 1)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GamersGate.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 1)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.GamersGate.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 2)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUk().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 2)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
 				}
-			}
-			else if (orden == 3)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarFr().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 3)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
 				}
-			}
-			else if (orden == 4)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarDe().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 4)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
 				}
-			}
-			else if (orden == 5)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Gamesplanet.Tienda.GenerarUs().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 5)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
 				}
-			}
-			else if (orden == 6)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Fanatical.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 6)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Fanatical.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 7)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GreenManGaming.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 7)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.GreenManGaming.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 8)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.GOG.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 8)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.GOG.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 9)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.IndieGala.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 9)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.IndieGala.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 10)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.WinGameStore.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 10)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.WinGameStore.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 11)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.EA.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 11)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.EA.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 12)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.DLGamer.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 12)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.DLGamer.Tienda.BuscarOfertas();
 				}
-			}
-			else if (orden == 13)
-			{
-				DateTime ultimaComprobacion = Admin.TareaLeerTienda(APIs.Battlenet.Tienda.Generar().Id);
-
-				if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas)
+				else if (orden == 13)
 				{
 					Admin.TareaCambiarOrden(orden += 1);
 					await APIs.Battlenet.Tienda.BuscarOfertas();
 				}
 			}
-			else if (orden == 14)
+
+			if (orden == 14)
 			{
 				Admin.TareaCambiarOrden(orden += 1);																	 
 				Divisas.CogerDatos();

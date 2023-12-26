@@ -10,6 +10,11 @@ namespace Herramientas
 	{
 		public async Task PortadaTarea()
 		{
+			await PortadaTarea2();
+		}
+
+		public static async Task PortadaTarea2()
+		{
 			await Task.Delay(1000);
 
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
@@ -19,13 +24,9 @@ namespace Herramientas
 
 			using (conexion)
 			{
-				#region Juegos
-
 				List<Juego> juegos = new List<Juego>();
 
 				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
-
-				//----------------------------------------------------------
 
 				List<Juego> juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
 
@@ -33,8 +34,9 @@ namespace Herramientas
 				{
 					if (juegosConMinimos.Count > 0)
 					{
+						#region Destacados
+
 						juegosDestacadosMostrar.Clear();
-						juegosMinimosMostrar.Clear();
 
 						int i = 0;
 
@@ -46,25 +48,28 @@ namespace Herramientas
 							{
 								añadir = false;
 							}
-							else if (minimo.Tipo == JuegoTipo.DLC || minimo.Tipo == JuegoTipo.Bundle)
+							else if (minimo.Tipo == JuegoTipo.DLC || minimo.Tipo == JuegoTipo.Bundle || minimo.Tipo == JuegoTipo.Software || minimo.Tipo == JuegoTipo.Music)
 							{
 								añadir = false;
 							}
-                            else if (minimo.Bundles != null)
-                            {
-                                añadir = false;
-                            }
-                            else if (minimo.Gratis != null)
-                            {
-                                añadir = false;
-                            }
-                            else if (minimo.Suscripciones != null)
-                            {
-                                añadir = false;
-                            }
-							else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+							else if (minimo.Bundles != null)
 							{
 								añadir = false;
+							}
+							else if (minimo.Gratis != null)
+							{
+								añadir = false;
+							}
+							else if (minimo.Suscripciones != null)
+							{
+								añadir = false;
+							}
+							else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+							{
+								if (minimo.FreeToPlay.ToLower() == "true")
+								{
+									añadir = false;
+								}								
 							}
 
 							if (añadir == true)
@@ -75,12 +80,29 @@ namespace Herramientas
 									{
 										juegosDestacadosMostrar.Add(minimo);
 										i += 1;
-									}									
+									}
 								}
 							}
 						}
 
-						for (int j = 0; juegosMinimosMostrar.Count < 100; j += 1)
+						if (juegosDestacadosMostrar.Count > 0)
+						{
+							global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
+
+							foreach (var juego in juegosDestacadosMostrar)
+							{
+								global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
+							}
+						}
+
+						#endregion
+
+						#region Minimos
+
+						juegosMinimosMostrar.Clear();
+
+						int j = 0;
+						while (j < 1000)
 						{
 							bool añadir = true;
 
@@ -95,76 +117,81 @@ namespace Herramientas
 								}
 							}
 
-							if (juegosConMinimos[j].Analisis == null)
+							if (juegosConMinimos[j] != null)
 							{
-								añadir = false;
-							}
-							else
-							{
-								if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
+								if (juegosConMinimos[j].Analisis == null)
 								{
 									añadir = false;
 								}
-							}
-
-							if (juegosConMinimos[j].Gratis != null)
-							{
-								if (juegosConMinimos[j].Gratis.Count > 0)
+								else
 								{
-									foreach (var gratis in juegosConMinimos[j].Gratis)
+									if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
 									{
-										if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+										añadir = false;
+									}
+								}
+
+								if (juegosConMinimos[j].Gratis != null)
+								{
+									if (juegosConMinimos[j].Gratis.Count > 0)
+									{
+										foreach (var gratis in juegosConMinimos[j].Gratis)
 										{
-											añadir = false;
+											if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+											{
+												añadir = false;
+											}
 										}
 									}
 								}
+
+								if (string.IsNullOrEmpty(juegosConMinimos[j].FreeToPlay) == false)
+								{
+									if (juegosConMinimos[j].FreeToPlay.ToLower() == "true")
+									{
+										añadir = false;
+									}
+								}
+
+								if (añadir == true)
+								{
+									juegosMinimosMostrar.Add(juegosConMinimos[j]);
+								}
 							}
 
-							if (string.IsNullOrEmpty(juegosConMinimos[j].FreeToPlay) == false)
+							if (juegosMinimosMostrar.Count > 100)
 							{
-								añadir = false;
+								break;
 							}
 
-							if (añadir == true)
+							j += 1;
+						}
+
+						if (juegosMinimosMostrar.Count > 0)
+						{
+							global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
+
+							foreach (var juego in juegosMinimosMostrar)
 							{
-								juegosMinimosMostrar.Add(juegosConMinimos[j]);
+								global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
 							}
 						}
+
+						if (juegosConMinimos.Count > 0)
+						{
+							global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
+
+							foreach (var juego in juegosConMinimos)
+							{
+								global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
+							}
+						}
+
+						#endregion
 					}
 				}
 
-				if (juegosDestacadosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
-
-					foreach (var juego in juegosDestacadosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
-					}
-				}
-
-				if (juegosMinimosMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
-
-					foreach (var juego in juegosMinimosMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
-					}
-				}
-
-				if (juegosConMinimos.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
-
-					foreach (var juego in juegosConMinimos)
-					{
-						global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
-					}
-				}
-				
-				#endregion
+				//----------------------------------------------------------
 
 				#region Noticias
 

@@ -11,8 +11,8 @@ namespace BaseDatos.Portada
 		public static void Juego(global::Juegos.Juego juego, string tabla, SqlConnection conexion)
 		{
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-							"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, idMaestra) VALUES " +
-							"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @idMaestra) ";
+							"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, idMaestra, maestro, freeToPlay) VALUES " +
+							"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @idMaestra, @maestro, @freeToPlay) ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -29,6 +29,8 @@ namespace BaseDatos.Portada
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 				comando.Parameters.AddWithValue("@idMaestra", juego.Id);
+				comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+				comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 
 				try
 				{
@@ -60,7 +62,7 @@ namespace BaseDatos.Portada
 			string añadirBundle1 = string.Empty;
 			string añadirBundle2 = string.Empty;
 
-			if (noticia.Tipo == global::Noticias.NoticiaTipo.Bundles)
+			if (noticia.Tipo == NoticiaTipo.Bundles)
 			{
 				añadirBundle1 = ", bundleTipo";
 				añadirBundle2 = ", @bundleTipo";
@@ -69,7 +71,7 @@ namespace BaseDatos.Portada
 			string añadirGratis1 = string.Empty;
 			string añadirGratis2 = string.Empty;
 
-			if (noticia.Tipo == global::Noticias.NoticiaTipo.Gratis)
+			if (noticia.Tipo == NoticiaTipo.Gratis)
 			{
 				añadirGratis1 = ", gratisTipo";
 				añadirGratis2 = ", @gratisTipo";
@@ -78,7 +80,7 @@ namespace BaseDatos.Portada
 			string añadirSuscripcion1 = string.Empty;
 			string añadirSuscripcion2 = string.Empty;
 
-			if (noticia.Tipo == global::Noticias.NoticiaTipo.Suscripciones)
+			if (noticia.Tipo == NoticiaTipo.Suscripciones)
 			{
 				añadirSuscripcion1 = ", suscripcionTipo";
 				añadirSuscripcion2 = ", @suscripcionTipo";
