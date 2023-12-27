@@ -340,6 +340,14 @@
     "Valor": "DLCs"
   },
   {
+    "Id": "Game.String35",
+    "Valor": "Developed by:"
+  },
+  {
+    "Id": "Game.String36",
+    "Valor": "Published by:"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },

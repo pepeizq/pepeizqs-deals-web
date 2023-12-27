@@ -11,7 +11,7 @@ namespace Herramientas
 				List<string> caracteres = new List<string>
 				{
 					":", ",", ".", "®", "™", "_", "-", ">", "<", ";", "(", ")", "[", "]", "=", "?", "¿", "'", "¡", "!", "&", "|",
-					"/", "\\", "{", "}", "#", "´", "~", " "
+					"/", "\\", "{", "}", "#", "´", "’", "~", " "
 				};
 
 				foreach (string caracter in caracteres)

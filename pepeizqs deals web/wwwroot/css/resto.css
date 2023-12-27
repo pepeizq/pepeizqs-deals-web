@@ -475,6 +475,12 @@
     color: white;
 }
 
+.juego-galeria-fila {
+    display: flex;
+    overflow: auto;
+    padding-bottom: 15px;
+}
+
 .juego-galeria-fila:after {
     content: "";
     display: table;
@@ -484,6 +490,7 @@
 .juego-galeria-columna {
     float: left;
     width: 16.66%;
+    flex: 0 0 auto;
 }
 
 .juego-galeria-capturas {

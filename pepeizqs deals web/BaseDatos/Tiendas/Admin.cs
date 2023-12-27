@@ -7,7 +7,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Admin
 	{
-		public static void Actualizar(string tienda, DateTime fecha, string mensaje, SqlConnection conexion)
+		public static void Actualizar(string tienda, DateTime fecha, string mensaje, SqlConnection conexion, string valorAdicional = "0", string valorAdicional2 = "0")
 		{
 			bool insertar = false;
 			bool actualizar = false;
@@ -36,8 +36,8 @@ namespace BaseDatos.Tiendas
 			if (insertar == true)
 			{
 				string sqlAñadir = "INSERT INTO adminTiendas " +
-					"(id, fecha, mensaje) VALUES " +
-					"(@id, @fecha, @mensaje)";
+					"(id, fecha, mensaje, valorAdicional) VALUES " +
+					"(@id, @fecha, @mensaje, @valorAdicional)";
 
 				SqlCommand comando = new SqlCommand(sqlAñadir, conexion);
 
@@ -46,6 +46,7 @@ namespace BaseDatos.Tiendas
 					comando.Parameters.AddWithValue("@id", tienda);
 					comando.Parameters.AddWithValue("@fecha", fecha.ToString());
 					comando.Parameters.AddWithValue("@mensaje", mensaje);
+					comando.Parameters.AddWithValue("@valorAdicional", valorAdicional);
 
 					try
 					{
@@ -61,7 +62,7 @@ namespace BaseDatos.Tiendas
 			if (actualizar == true)
 			{
 				string sqlActualizar = "UPDATE adminTiendas " +
-						"SET fecha=@fecha, mensaje=@mensaje WHERE id=@id";
+						"SET fecha=@fecha, mensaje=@mensaje, valorAdicional=@valorAdicional, valorAdicional2=@valorAdicional2 WHERE id=@id";
 
 				SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
 
@@ -70,6 +71,8 @@ namespace BaseDatos.Tiendas
 					comando.Parameters.AddWithValue("@id", tienda);
 					comando.Parameters.AddWithValue("@fecha", fecha.ToString());
 					comando.Parameters.AddWithValue("@mensaje", mensaje);
+					comando.Parameters.AddWithValue("@valorAdicional", valorAdicional);
+					comando.Parameters.AddWithValue("@valorAdicional2", valorAdicional2);
 
 					SqlDataReader lector = comando.ExecuteReader();
 
@@ -219,5 +222,69 @@ namespace BaseDatos.Tiendas
 
 			conexion.Dispose();
         }
-    }
+
+		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
+		{
+			string valor = string.Empty;
+
+			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
+			SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
+
+			using (comando)
+			{
+				comando.Parameters.AddWithValue("@id", tienda);
+
+				SqlDataReader lector = comando.ExecuteReader();
+
+				using (lector)
+				{
+					if (lector.Read() == true)
+					{
+						try
+						{
+							valor = lector.GetString(3);
+						}
+						catch
+						{
+
+						}
+					}
+				}
+			}
+
+			return valor;
+		}
+
+		public static string CargarValorAdicional2(string tienda, SqlConnection conexion)
+		{
+			string valor = string.Empty;
+
+			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
+			SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
+
+			using (comando)
+			{
+				comando.Parameters.AddWithValue("@id", tienda);
+
+				SqlDataReader lector = comando.ExecuteReader();
+
+				using (lector)
+				{
+					if (lector.Read() == true)
+					{
+						try
+						{
+							valor = lector.GetString(4);
+						}
+						catch
+						{
+
+						}
+					}
+				}
+			}
+
+			return valor;
+		}
+	}
 }

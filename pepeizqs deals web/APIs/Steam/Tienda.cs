@@ -43,9 +43,23 @@ namespace APIs.Steam
 			using (conexion)
             {
 				int juegos = 0;
+
+				int arranque = 0;
 				int tope = 100000;
 
-				for (int i = 0; i < tope; i += 50)
+				if (mirarOfertas == true)
+				{
+					arranque = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, conexion));
+
+					if (arranque >= tope)
+					{
+						arranque = 0;
+					}
+
+					tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
+				}
+
+				for (int i = arranque; i < tope; i += 50)
 				{
 					string html = null;
 
@@ -290,7 +304,7 @@ namespace APIs.Steam
 													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
 
 													juegos += 1;
-													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion);
+													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion, i.ToString(), tope.ToString());
 												}
 											}
 										}

@@ -631,6 +631,11 @@ else
 			precioMensaje = precioMensaje + "0";
 		}
 
+		if (precioMensaje.Length > int1 + 3)
+		{
+			precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
+		}
+
 		precioMensaje = precioMensaje + "€";
 
 		if (precioMensaje != null)

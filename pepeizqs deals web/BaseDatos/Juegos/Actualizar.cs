@@ -48,39 +48,42 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			if (sqlActualizar.Contains("WHERE id") == true)
 			{
-				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
-				comando.Parameters.AddWithValue("@idGog", juego.IdGog);
-				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-				comando.Parameters.AddWithValue("@tipo", juego.Tipo);
-				comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
-				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
-				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
-				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
-				comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
-				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
-				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-                comando.Parameters.AddWithValue("@maestro", juego.Maestro);
-				comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
-
-				if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
-					comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
-				}
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
+					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
+					comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+					comando.Parameters.AddWithValue("@tipo", juego.Tipo);
+					comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+					comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
+					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
+					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
+					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
+					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 
-				comando.ExecuteNonQuery();
-				try
-				{
-					
-				}
-				catch
-				{
+					if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+					{
+						comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
+					}
 
+					comando.ExecuteNonQuery();
+					try
+					{
+						
+					}
+					catch
+					{
+
+					}
 				}
-			}
+			}		
 		}
 
 		public static void UsuariosInteresados(Juego juego, SqlConnection conexion, List<JuegoUsuariosInteresados> usuariosInteresados)

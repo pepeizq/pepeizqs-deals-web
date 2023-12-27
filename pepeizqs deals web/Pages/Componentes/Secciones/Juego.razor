@@ -527,57 +527,111 @@
 			</div>
 		}
 
-		@if (juego.Caracteristicas != null)
-		{
-			@if (juego.Caracteristicas.Descripcion != null)
-			{
-				<div class="perfil perfil-flexible-centrado" style="margin-bottom: 50px;">
-					<div style="width: 100%; padding: 10px;">
-						@WebUtility.HtmlDecode(juego.Caracteristicas.Descripcion)
-					</div>
-				</div>
-			}
-		}
-
-		@if (juego.Media != null)
-		{
-			@if (juego.Media.Capturas != null)
-			{
-				@if (juego.Media.Capturas.Count > 0)
+		<div class="perfil" style="display: flex; flex-direction: row; margin-top: 50px;">
+			<div style="width: 70%;">
+				@if (juego.Media != null)
 				{
-					<div class="perfil">
-						<div class="juego-galeria-contenedor">
-							<div>
-								<div class="juego-galeria-numero">@(capturaMostrarPosicion + 1) / @juego.Media.Capturas.Count</div>
-								<img src="@Imagenes.DescargarYGuardar(capturaMostrar, "juegos", juego.Id.ToString(), "captura" + capturaMostrarPosicion.ToString(), dominio).Result" style="width: 100%;">
-							</div>
+					@if (juego.Media.Capturas != null)
+					{
+						@if (juego.Media.Capturas.Count > 0)
+						{
+							<div class="juego-galeria-contenedor">
+								@if (mediaMostrarPosicion == 99999)
+								{
+									<video src="@mediaMostrar" controls autoplay="autoplay" loop muted="yes" poster="@juego.Imagenes.Header_460x215" preload="none" style="width: 854px; height: 480px; object-fit: cover;" />
+								}
+								else
+								{
+									<div>
+										<div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @juego.Media.Capturas.Count</div>
+										<img src="@Imagenes.DescargarYGuardar(mediaMostrar, "juegos", juego.Id.ToString(), "captura" + mediaMostrarPosicion.ToString(), dominio).Result" style="width: 100%;">
+									</div>
 
-							<a class="juego-galeria-atras" @onclick="@(e => CambiarCapturaMostrar(e, capturaMostrarPosicion - 1))">&#10094;</a>
-							<a class="juego-galeria-siguiente" @onclick="@(e => CambiarCapturaMostrar(e, capturaMostrarPosicion + 1))">&#10095;</a>
+									<a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
+									<a class="juego-galeria-siguiente" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion + 1))">&#10095;</a>
+								}
 
-							@if (juego.Media.Miniaturas != null)
-							{
-								<div class="juego-galeria-fila">
-									@{
-										int i = 0;
-										while (i < juego.Media.Miniaturas.Count)
-										{
-											int nuevaPosicion = i;
+								@if (juego.Media.Miniaturas != null)
+								{
+									<div class="juego-galeria-fila">
+										@{
+											if (juego.Media.Video != null)
+											{
+												<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
+													<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, "juegos", juego.Id.ToString(), "miniaturaVideo", dominio).Result" style="width: 100%;">
+													<i class="fa-solid fa-circle-play" style="position: absolute; font-size: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+												</div>
+											}
 
-											<div class="juego-galeria-columna" @onclick="@(e => CambiarCapturaMostrar(e, nuevaPosicion))">
-												<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Media.Miniaturas[i], "juegos", juego.Id.ToString(), "miniatura" + i.ToString(), dominio).Result" style="width: 100%;">
-											</div>
+											int i = 0;
+											while (i < juego.Media.Miniaturas.Count)
+											{
+												int nuevaPosicion = i;
 
-											i += 1;
+												<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
+													<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Media.Miniaturas[i], "juegos", juego.Id.ToString(), "miniatura" + i.ToString(), dominio).Result" style="width: 100%;">
+												</div>
+
+												i += 1;
+											}
 										}
-									}
-								</div>
-							}
-						</div>
-					</div>
+									</div>
+								}
+							</div>
+						}
+					}
 				}
-			}
-		}
+			</div>
+
+			<div style="width: 30%; padding-left: 30px;">
+				@if (juego.Caracteristicas != null)
+				{
+					@if (juego.Caracteristicas.Descripcion != null)
+					{
+						<div style="width: 100%;">
+							@WebUtility.HtmlDecode(juego.Caracteristicas.Descripcion)
+						</div>
+					}
+
+					@if (juego.Caracteristicas.Desarrolladores != null || juego.Caracteristicas.Publishers != null)
+					{
+						@if (juego.Caracteristicas.Descripcion != null)
+						{
+							<hr/>
+						}
+
+						@if (juego.Caracteristicas.Desarrolladores != null)
+						{
+							@if (juego.Caracteristicas.Desarrolladores.Count > 0)
+							{
+								<div>@Idiomas.CogerCadena(idioma, "Game.String35")</div>
+								<ul>
+									@foreach (var desarrollador in juego.Caracteristicas.Desarrolladores)
+									{
+										<li>@desarrollador</li>
+									}
+								</ul>
+
+							}
+						}
+
+						@if (juego.Caracteristicas.Publishers != null)
+						{
+							@if (juego.Caracteristicas.Publishers.Count > 0)
+							{
+								<div>@Idiomas.CogerCadena(idioma, "Game.String36")</div>
+								<ul>
+									@foreach (var publisher in juego.Caracteristicas.Publishers)
+									{
+										<li>@publisher</li>
+									}
+								</ul>
+							}
+						}
+					}
+				}
+			</div>
+		</div>
 
 		@if (DLCs.Count > 0)
 		{
@@ -651,9 +705,17 @@
 
 			if (juego.Media != null)
 			{
-				if (juego.Media.Capturas != null)
+				if (string.IsNullOrEmpty(juego.Media.Video) == false)
 				{
-					capturaMostrar = juego.Media.Capturas[0];
+					mediaMostrar = juego.Media.Video;
+					mediaMostrarPosicion = 99999;
+				}
+				else
+				{
+					if (juego.Media.Capturas != null)
+					{
+						mediaMostrar = juego.Media.Capturas[0];
+					}
 				}
 			}			
 		}
@@ -1540,16 +1602,23 @@
 
 	#region Caracteristicas
 
-	private int capturaMostrarPosicion = 0;
-	private string capturaMostrar = string.Empty;
+	private int mediaMostrarPosicion = 0;
+	private string mediaMostrar = string.Empty;
 
-	private void CambiarCapturaMostrar(MouseEventArgs e, int nuevaCaptura)
+	private void CambiarMediaMostrar(MouseEventArgs e, int nuevaCaptura)
 	{
-		capturaMostrarPosicion = nuevaCaptura;
+		mediaMostrarPosicion = nuevaCaptura;
 
-		if (nuevaCaptura >= 0 && nuevaCaptura < juego.Media.Capturas.Count)
+		if (nuevaCaptura == 99999)
 		{
-			capturaMostrar = juego.Media.Capturas[capturaMostrarPosicion];
+			mediaMostrar = juego.Media.Video;
+		}
+		else
+		{
+			if (nuevaCaptura >= 0 && nuevaCaptura < juego.Media.Capturas.Count)
+			{
+				mediaMostrar = juego.Media.Capturas[mediaMostrarPosicion];
+			}
 		}
 	}
 
