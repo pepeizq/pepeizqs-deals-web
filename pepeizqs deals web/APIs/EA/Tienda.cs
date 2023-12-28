@@ -29,60 +29,53 @@ namespace APIs.EA
             return tienda;
         }
 
-        public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
         {
             int juegos2 = 0;
 
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
 
-            using (conexion)
-            {
-                string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
-            
-                if (html != null)
-                {
-                    EABD basedatos = JsonConvert.DeserializeObject<EABD>(html);
+			if (html != null)
+			{
+				EABD basedatos = JsonConvert.DeserializeObject<EABD>(html);
 
-                    if (basedatos != null) 
-                    {
-                        string superIds = string.Empty;
-                        int i = 0;
-                        int total = 0;
+				if (basedatos != null)
+				{
+					string superIds = string.Empty;
+					int i = 0;
+					int total = 0;
 
-                        foreach (var juegoEA in basedatos.Juegos)
-                        {
-                            superIds = superIds + juegoEA.Id + ",";
-                            i += 1;
+					foreach (var juegoEA in basedatos.Juegos)
+					{
+						superIds = superIds + juegoEA.Id + ",";
+						i += 1;
 
-                            if (i == 100)
-                            {
-                                total += i;
-                                i = 0;
+						if (i == 100)
+						{
+							total += i;
+							i = 0;
 
-                                superIds = superIds.Remove(superIds.Length - 1, 1);
+							superIds = superIds.Remove(superIds.Length - 1, 1);
 
-                                string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
-                                AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
-                                superIds = string.Empty;
-                            }
+							string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+							AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
+							superIds = string.Empty;
+						}
 
-                            if ((total + 1) == basedatos.Juegos.Count)
-                            {
-                                if (superIds.Length > 0) 
-                                {
-                                    superIds = superIds.Remove(superIds.Length - 1, 1);
+						if ((total + 1) == basedatos.Juegos.Count)
+						{
+							if (superIds.Length > 0)
+							{
+								superIds = superIds.Remove(superIds.Length - 1, 1);
 
-                                    string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
-                                    AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            conexion.Dispose();
-        }
+								string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+								AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
+							}
+						}
+					}
+				}
+			}
+		}
 
         private static void AñadirPrecios(string html2, List<EABDJuego> basedatos, int juegos2, SqlConnection conexion, ViewDataDictionary objeto = null)
         {

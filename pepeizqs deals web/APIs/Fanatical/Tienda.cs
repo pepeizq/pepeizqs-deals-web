@@ -39,122 +39,117 @@ namespace APIs.Fanatical
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
 
-			using (conexion)
+			if (html != null)
 			{
-				string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
+				html = html.Replace("{" + Strings.ChrW(34) + "title" + Strings.ChrW(34), ",{" + Strings.ChrW(34) + "title" + Strings.ChrW(34));
 
-				if (html != null)
+				html = html.Remove(0, 1);
+				html = "[" + html + "]";
+
+				List<FanaticalJuego> juegos = JsonConvert.DeserializeObject<List<FanaticalJuego>>(html);
+
+				if (juegos != null)
 				{
-					html = html.Replace("{" + Strings.ChrW(34) + "title" + Strings.ChrW(34), ",{" + Strings.ChrW(34) + "title" + Strings.ChrW(34));
-
-					html = html.Remove(0, 1);
-					html = "[" + html + "]";
-
-					List<FanaticalJuego> juegos = JsonConvert.DeserializeObject<List<FanaticalJuego>>(html);
-
-					if (juegos != null)
+					if (juegos.Count > 0)
 					{
-						if (juegos.Count > 0)
+						int juegos2 = 0;
+
+						foreach (FanaticalJuego juego in juegos)
 						{
-							int juegos2 = 0;
+							bool autorizar = true;
 
-							foreach (FanaticalJuego juego in juegos)
+							if (juego.Regiones != null)
 							{
-								bool autorizar = true;
-
-								if (juego.Regiones != null)
+								if (juego.Regiones.Count > 0)
 								{
-									if (juego.Regiones.Count > 0)
-									{
-										autorizar = false;
+									autorizar = false;
 
-										foreach (string region in juego.Regiones)
+									foreach (string region in juego.Regiones)
+									{
+										if (region == "ES")
 										{
-											if (region == "ES")
-											{
-												autorizar = true;
-											}
+											autorizar = true;
 										}
 									}
 								}
+							}
 
-								//if (juego.Tipo == "bundle")
-								//{
-								//	autorizar = false;
-								//}
+							//if (juego.Tipo == "bundle")
+							//{
+							//	autorizar = false;
+							//}
 
-								if (autorizar == true)
+							if (autorizar == true)
+							{
+								string descuentoTexto = juego.Descuento;
+
+								if (descuentoTexto != null)
 								{
-									string descuentoTexto = juego.Descuento;
-
-									if (descuentoTexto != null)
+									if (descuentoTexto.Contains(".") == true)
 									{
-										if (descuentoTexto.Contains(".") == true)
+										int int1 = descuentoTexto.IndexOf(".");
+										descuentoTexto = descuentoTexto.Remove(int1, descuentoTexto.Length - int1);
+									}
+
+									int descuento = 0;
+
+									try
+									{
+										descuento = int.Parse(descuentoTexto);
+									}
+									catch { }
+
+									if (descuento > 0)
+									{
+										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+										string imagen = juego.Imagen;
+
+										string enlace = juego.Enlace;
+
+										decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.EUR);
+
+										if (juego.DRMs != null)
 										{
-											int int1 = descuentoTexto.IndexOf(".");
-											descuentoTexto = descuentoTexto.Remove(int1, descuentoTexto.Length - int1);
-										}
-
-										int descuento = 0;
-
-										try
-										{
-											descuento = int.Parse(descuentoTexto);
-										}
-										catch { }
-
-										if (descuento > 0)
-										{
-											string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-											string imagen = juego.Imagen;
-
-											string enlace = juego.Enlace;
-
-											decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.EUR);
-
-											if (juego.DRMs != null)
+											if (juego.DRMs.Count > 0)
 											{
-												if (juego.DRMs.Count > 0)
+												string drmTexto = juego.DRMs[0];
+												JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
+
+												JuegoPrecio oferta = new JuegoPrecio
 												{
-													string drmTexto = juego.DRMs[0];
-													JuegoDRM drm = JuegoDRM2.Traducir(drmTexto, Generar().Id);
+													Nombre = nombre,
+													Enlace = enlace,
+													Imagen = imagen,
+													Moneda = JuegoMoneda.Euro,
+													Precio = precioRebajado,
+													Descuento = descuento,
+													Tienda = Generar().Id,
+													DRM = drm,
+													FechaDetectado = DateTime.Now,
+													FechaActualizacion = DateTime.Now
+												};
 
-													JuegoPrecio oferta = new JuegoPrecio
+												if (juego.FechaTermina != null)
+												{
+													if (Convert.ToDouble(juego.FechaTermina) > 0)
 													{
-														Nombre = nombre,
-														Enlace = enlace,
-														Imagen = imagen,
-														Moneda = JuegoMoneda.Euro,
-														Precio = precioRebajado,
-														Descuento = descuento,
-														Tienda = Generar().Id,
-														DRM = drm,
-														FechaDetectado = DateTime.Now,
-														FechaActualizacion = DateTime.Now
-													};
+														DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+														fechaTermina = fechaTermina.AddSeconds(Convert.ToDouble(juego.FechaTermina));
+														fechaTermina = fechaTermina.ToLocalTime();
 
-													if (juego.FechaTermina != null)
-													{
-														if (Convert.ToDouble(juego.FechaTermina) > 0)
-														{
-															DateTime fechaTermina = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-															fechaTermina = fechaTermina.AddSeconds(Convert.ToDouble(juego.FechaTermina));
-															fechaTermina = fechaTermina.ToLocalTime();
-
-															oferta.FechaTermina = fechaTermina;
-														}
+														oferta.FechaTermina = fechaTermina;
 													}
-
-													BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-
-													juegos2 += 1;
-													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 												}
+
+												BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+												juegos2 += 1;
+												BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 											}
 										}
 									}
@@ -164,8 +159,6 @@ namespace APIs.Fanatical
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 

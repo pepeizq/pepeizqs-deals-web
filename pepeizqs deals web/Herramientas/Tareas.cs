@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Tiendas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Noticias;
@@ -72,16 +73,22 @@ namespace Herramientas
 								}								
 							}
 
-							if (añadir == true)
+							if (añadir == true && minimo != null)
 							{
-								if (minimo.Analisis.Cantidad.Length >= 6)
+								if (minimo.Analisis != null)
 								{
-									if (i < 60)
+									if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
 									{
-										juegosDestacadosMostrar.Add(minimo);
-										i += 1;
-									}
-								}
+										if (minimo.Analisis.Cantidad.Length >= 6)
+										{
+											if (i < 60)
+											{
+												juegosDestacadosMostrar.Add(minimo);
+												i += 1;
+											}
+										}
+									}								
+								}							
 							}
 						}
 
@@ -102,7 +109,7 @@ namespace Herramientas
 						juegosMinimosMostrar.Clear();
 
 						int j = 0;
-						while (j < 1000)
+						while (juegosMinimosMostrar.Count < 100)
 						{
 							bool añadir = true;
 
@@ -125,7 +132,14 @@ namespace Herramientas
 								}
 								else
 								{
-									if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
+									if (string.IsNullOrEmpty(juegosConMinimos[j].Analisis.Cantidad) == false)
+									{
+										if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
+										{
+											añadir = false;
+										}
+									}
+									else
 									{
 										añadir = false;
 									}
@@ -157,11 +171,6 @@ namespace Herramientas
 								{
 									juegosMinimosMostrar.Add(juegosConMinimos[j]);
 								}
-							}
-
-							if (juegosMinimosMostrar.Count > 100)
-							{
-								break;
 							}
 
 							j += 1;
@@ -253,11 +262,55 @@ namespace Herramientas
 			conexion.Dispose();
 		}
 
-		public async Task TiendasTarea()
+		public async Task TiendasTarea(TimeSpan tiempo)
 		{
-			await Task.Delay(TimeSpan.FromMinutes(10));
+			List<string> ids = new List<string>();
 
-			Tiendas2.TiendasCargar.TareasGestionador(TimeSpan.FromMinutes(15));
+			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+			{
+				if (tienda.AdminInteractuar == true)
+				{
+					ids.Add(tienda.Id);
+				}				
+			}
+
+			int orden = Admin.TareaLeerOrden();
+			int ordenTiendaAnterior = orden - 1;
+
+			if (ordenTiendaAnterior < 0)
+			{
+				ordenTiendaAnterior = ids.Count - 1;
+			}
+
+			DateTime tiendaAnterior = Admin.TareaLeerTienda(ids[ordenTiendaAnterior]);
+			DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
+
+			SqlConnection conexion = BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				if ((DateTime.Now - ultimaComprobacion) > (tiempo * 5)/* && (DateTime.Now - tiendaAnterior) > (tiempo * 2)*/)
+				{
+					Admin.TareaCambiarOrden(orden += 1);
+					await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
+				}
+				else
+				{
+					if (orden >= ids.Count)
+					{
+						Admin.TareaCambiarOrden(-1);
+					}
+
+					if (orden == -1)
+					{
+						Admin.TareaCambiarOrden(orden += 1);
+						Divisas.CogerDatos();
+					}
+				}				
+			}
+
+			conexion.Close();
+			conexion.Dispose();			
 		}
 	}
 }

@@ -36,115 +36,108 @@ namespace APIs.Battlenet
             return slugs;
         }
 
-        public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
         {
             int juegos2 = 0;
 
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			List<string> listaSlugs = ListaSlugs();
 
-            using (conexion)
-            {
-                List<string> listaSlugs = ListaSlugs();
+			foreach (var slug in listaSlugs)
+			{
+				string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
 
-                foreach (var slug in listaSlugs) 
-                {
-                    string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
+				if (html != null)
+				{
+					BattlenetJuego juegobattle = JsonConvert.DeserializeObject<BattlenetJuego>(html);
 
-                    if (html != null)
-                    {
-                        BattlenetJuego juegobattle = JsonConvert.DeserializeObject<BattlenetJuego>(html);
+					if (juegobattle != null)
+					{
+						string nombreFamilia = juegobattle.Nombre;
 
-                        if (juegobattle != null)
-                        {
-                            string nombreFamilia = juegobattle.Nombre;
+						if (juegobattle.Productos != null)
+						{
+							foreach (var producto in juegobattle.Productos)
+							{
+								if (producto.Precio.Precio != null)
+								{
+									string textoPrecioRebajado = producto.Precio.Precio.PrecioRebajado;
 
-                            if (juegobattle.Productos != null)
-                            {
-                                foreach (var producto in juegobattle.Productos)
-                                {
-                                    if (producto.Precio.Precio != null)
-                                    {
-                                        string textoPrecioRebajado = producto.Precio.Precio.PrecioRebajado;
+									if (string.IsNullOrEmpty(textoPrecioRebajado) == false)
+									{
+										textoPrecioRebajado = textoPrecioRebajado.Replace("EUR", null);
+										textoPrecioRebajado = textoPrecioRebajado.Trim();
+									}
 
-                                        if (string.IsNullOrEmpty(textoPrecioRebajado) == false)
-                                        {
-                                            textoPrecioRebajado = textoPrecioRebajado.Replace("EUR", null);
-                                            textoPrecioRebajado = textoPrecioRebajado.Trim();
-                                        }
+									string textoPrecioBase = producto.Precio.Precio.PrecioBase;
 
-                                        string textoPrecioBase = producto.Precio.Precio.PrecioBase;
+									if (string.IsNullOrEmpty(textoPrecioBase) == false)
+									{
+										textoPrecioBase = textoPrecioBase.Replace("EUR", null);
+										textoPrecioBase = textoPrecioBase.Trim();
+									}
 
-                                        if (string.IsNullOrEmpty(textoPrecioBase) == false)
-                                        {
-                                            textoPrecioBase = textoPrecioBase.Replace("EUR", null);
-                                            textoPrecioBase = textoPrecioBase.Trim();
-                                        }
+									if (string.IsNullOrEmpty(textoPrecioRebajado) == false && string.IsNullOrEmpty(textoPrecioBase) == false)
+									{
+										decimal precioRebajado = decimal.Parse(textoPrecioRebajado);
+										decimal precioBase = decimal.Parse(textoPrecioBase);
 
-                                        if (string.IsNullOrEmpty(textoPrecioRebajado) == false && string.IsNullOrEmpty(textoPrecioBase) == false)
-                                        {
-                                            decimal precioRebajado = decimal.Parse(textoPrecioRebajado);
-                                            decimal precioBase = decimal.Parse(textoPrecioBase);
+										int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-                                            int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+										if (descuento > 0)
+										{
+											string nombre = nombreFamilia;
 
-                                            if (descuento > 0)
-                                            {
-                                                string nombre = nombreFamilia;
+											if (string.IsNullOrEmpty(producto.Subnombre) == false)
+											{
+												if (producto.Subnombre != nombre)
+												{
+													nombre = nombre + " - " + producto.Subnombre;
+												}
+											}
 
-                                                if (string.IsNullOrEmpty(producto.Subnombre) == false)
-                                                {
-                                                    if (producto.Subnombre != nombre)
-                                                    {
-                                                        nombre = nombre + " - " + producto.Subnombre;
-                                                    }
-                                                }
+											nombre = WebUtility.HtmlDecode(nombre);
 
-                                                nombre = WebUtility.HtmlDecode(nombre);
+											string enlace = "https://eu.shop.battle.net/en-us/product/" + slug + "?p=" + producto.Id;
 
-                                                string enlace = "https://eu.shop.battle.net/en-us/product/" + slug + "?p=" + producto.Id;
+											string imagen = producto.Imagen;
 
-                                                string imagen = producto.Imagen;
+											if (string.IsNullOrEmpty(imagen) == false)
+											{
+												if (imagen.Contains("https:") == false)
+												{
+													imagen = "https:" + imagen;
+												}
+											}
 
-                                                if (string.IsNullOrEmpty(imagen) == false)
-                                                {
-                                                    if (imagen.Contains("https:") == false)
-                                                    {
-                                                        imagen = "https:" + imagen;
-                                                    }
-                                                }
+											JuegoDRM drm = JuegoDRM.BattleNet;
 
-                                                JuegoDRM drm = JuegoDRM.BattleNet;
+											JuegoPrecio oferta = new JuegoPrecio
+											{
+												Nombre = nombre,
+												Enlace = enlace,
+												Imagen = imagen,
+												Moneda = JuegoMoneda.Euro,
+												Precio = precioRebajado,
+												Descuento = descuento,
+												Tienda = Generar().Id,
+												DRM = drm,
+												FechaDetectado = DateTime.Now,
+												FechaActualizacion = DateTime.Now
+											};
 
-                                                JuegoPrecio oferta = new JuegoPrecio
-                                                {
-                                                    Nombre = nombre,
-                                                    Enlace = enlace,
-                                                    Imagen = imagen,
-                                                    Moneda = JuegoMoneda.Euro,
-                                                    Precio = precioRebajado,
-                                                    Descuento = descuento,
-                                                    Tienda = Generar().Id,
-                                                    DRM = drm,
-                                                    FechaDetectado = DateTime.Now,
-                                                    FechaActualizacion = DateTime.Now
-                                                };
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
-                                                BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-
-                                                juegos2 += 1;
-                                                BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-                                            }
-                                        }   
-                                    }
-                                }
-                            }                           
-                        }
-                    }
-                }
-            }
-
-            conexion.Dispose();
-        }
+											juegos2 += 1;
+											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
     }
 
     #region Clases

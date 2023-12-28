@@ -37,110 +37,104 @@ namespace APIs.IndieGala
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+			int i = 1;
+			while (i < 10)
 			{
-				int i = 1;
-				while (i < 10)
+				await Task.Delay(1000);
+				string html = Decompiladores.GZipFormato("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
+
+				if (html != null)
 				{
-					string html = Decompiladores.GZipFormato("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
-
-					if (html != null)
+					if (html == "None")
 					{
-						if (html == "None")
-						{
-							break;
-						}
+						break;
+					}
 
-						XmlSerializer xml = new XmlSerializer(typeof(IndieGalaRSS));
-						IndieGalaRSS listaJuegos = null;
+					XmlSerializer xml = new XmlSerializer(typeof(IndieGalaRSS));
+					IndieGalaRSS listaJuegos = null;
 
-						using (TextReader lector = new StringReader(html))
-						{
-							listaJuegos = (IndieGalaRSS)xml.Deserialize(lector);
-						}
+					using (TextReader lector = new StringReader(html))
+					{
+						listaJuegos = (IndieGalaRSS)xml.Deserialize(lector);
+					}
 
-						if (listaJuegos != null)
+					if (listaJuegos != null)
+					{
+						if (listaJuegos.Canal.Buscador.Juegos != null)
 						{
-							if (listaJuegos.Canal.Buscador.Juegos != null)
+							if (listaJuegos.Canal.Buscador.Juegos.Count > 0)
 							{
-								if (listaJuegos.Canal.Buscador.Juegos.Count > 0)
+								int juegos2 = 0;
+
+								foreach (IndieGalaJuego juego in listaJuegos.Canal.Buscador.Juegos)
 								{
-									int juegos2 = 0;
+									string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-									foreach (IndieGalaJuego juego in listaJuegos.Canal.Buscador.Juegos)
+									string enlace = juego.Enlace;
+
+									string imagen = juego.Imagen;
+
+									if (imagen.Contains("https://www.indiegalacdn.com/") == false)
 									{
-										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+										imagen = "https://www.indiegalacdn.com/" + imagen;
+									}
 
-										string enlace = juego.Enlace;
+									decimal precioBase = decimal.Parse(juego.PrecioBase);
+									decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+									int descuento = Convert.ToInt32(Math.Round(decimal.Parse(juego.Descuento), MidpointRounding.AwayFromZero));
 
-										string imagen = juego.Imagen;
+									if (descuento > 0)
+									{
+										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
-										if (imagen.Contains("https://www.indiegalacdn.com/") == false)
+										if (nombre.Contains("(Epic)") == true)
 										{
-											imagen = "https://www.indiegalacdn.com/" + imagen;
+											drm = JuegoDRM.Epic;
+										}
+										else if (ComprobarEpicFalsos(enlace) == true)
+										{
+											drm = JuegoDRM.Epic;
+										}
+										else if (enlace.Contains("_epic") == true)
+										{
+											drm = JuegoDRM.Epic;
 										}
 
-										decimal precioBase = decimal.Parse(juego.PrecioBase);
-										decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
-										int descuento = Convert.ToInt32(Math.Round(decimal.Parse(juego.Descuento), MidpointRounding.AwayFromZero));
-
-										if (descuento > 0)
+										JuegoPrecio oferta = new JuegoPrecio
 										{
-											JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+											Nombre = nombre,
+											Enlace = enlace,
+											Imagen = imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
+											DRM = drm,
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
+										};
 
-											if (nombre.Contains("(Epic)") == true)
-											{
-												drm = JuegoDRM.Epic;
-											}
-											else if (ComprobarEpicFalsos(enlace) == true)
-											{
-												drm = JuegoDRM.Epic;
-											}
-											else if (enlace.Contains("_epic") == true)
-											{
-												drm = JuegoDRM.Epic;
-											}
-
-											JuegoPrecio oferta = new JuegoPrecio
-											{
-												Nombre = nombre,
-												Enlace = enlace,
-												Imagen = imagen,
-												Moneda = JuegoMoneda.Euro,
-												Precio = precioRebajado,
-												Descuento = descuento,
-												Tienda = Generar().Id,
-												DRM = drm,
-												FechaDetectado = DateTime.Now,
-												FechaActualizacion = DateTime.Now
-											};
-
-											if (juego.Fecha != null)
-											{
-												DateTime fechaTermina = DateTime.Parse(juego.Fecha);
-												oferta.FechaTermina = fechaTermina;
-											}
-
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-
-											juegos2 += 1;
-											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										if (juego.Fecha != null)
+										{
+											DateTime fechaTermina = DateTime.Parse(juego.Fecha);
+											oferta.FechaTermina = fechaTermina;
 										}
+
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
 							}
 						}
 					}
-
-					i += 1;
 				}
-			}
 
-			conexion.Dispose();
+				i += 1;
+			}
 		}
 
 		private static bool ComprobarEpicFalsos(string enlaceJuego)

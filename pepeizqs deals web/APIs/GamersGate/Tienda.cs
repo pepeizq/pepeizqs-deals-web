@@ -33,82 +33,75 @@ namespace APIs.GamersGate
 			return enlace + "?aff=6704538";
 		}
 
-		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 
-			using (conexion)
+			if (html != null)
 			{
-				string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
+				XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
+				GamersGateJuegos listaJuegos = null;
 
-				if (html != null)
+				using (TextReader lector = new StringReader(html))
 				{
-					XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
-					GamersGateJuegos listaJuegos = null;
+					listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
+				}
 
-					using (TextReader lector = new StringReader(html))
+				if (listaJuegos != null)
+				{
+					if (listaJuegos.Juegos != null)
 					{
-						listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
-					}
-
-					if (listaJuegos != null)
-					{
-						if (listaJuegos.Juegos != null)
+						if (listaJuegos.Juegos.Count > 0)
 						{
-							if (listaJuegos.Juegos.Count > 0)
+							int juegos2 = 0;
+
+							foreach (GamersGateJuego juego in listaJuegos.Juegos)
 							{
-								int juegos2 = 0;
+								string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								foreach (GamersGateJuego juego in listaJuegos.Juegos)
+								string enlace = juego.Enlace;
+
+								string imagen = juego.ImagenGrande;
+
+								decimal precioBase = decimal.Parse(juego.PrecioBase);
+								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+
+								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+								if (descuento > 0)
 								{
-									string nombre = WebUtility.HtmlDecode(juego.Nombre);
+									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
-									string enlace = juego.Enlace;
-
-									string imagen = juego.ImagenGrande;
-
-									decimal precioBase = decimal.Parse(juego.PrecioBase);
-									decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
-
-									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-									if (descuento > 0)
+									JuegoPrecio oferta = new JuegoPrecio
 									{
-										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+										Nombre = nombre,
+										Enlace = enlace,
+										Imagen = imagen,
+										Moneda = JuegoMoneda.Euro,
+										Precio = precioRebajado,
+										Descuento = descuento,
+										Tienda = Generar().Id,
+										DRM = drm,
+										FechaDetectado = DateTime.Now,
+										FechaActualizacion = DateTime.Now
+									};
 
-										JuegoPrecio oferta = new JuegoPrecio
-										{
-											Nombre = nombre,
-											Enlace = enlace,
-											Imagen = imagen,
-											Moneda = JuegoMoneda.Euro,
-											Precio = precioRebajado,
-											Descuento = descuento,
-											Tienda = Generar().Id,
-											DRM = drm,
-											FechaDetectado = DateTime.Now,
-											FechaActualizacion = DateTime.Now
-										};
-
-										if (juego.Fecha != null)
-										{
-											DateTime fechaTermina = DateTime.Parse(juego.Fecha);
-											oferta.FechaTermina = fechaTermina;
-										}
-
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-
-										juegos2 += 1;
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+									if (juego.Fecha != null)
+									{
+										DateTime fechaTermina = DateTime.Parse(juego.Fecha);
+										oferta.FechaTermina = fechaTermina;
 									}
+
+									BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+									juegos2 += 1;
+									BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 								}
 							}
 						}
 					}
 				}
 			}
-
-			conexion.Dispose();		
 		}
     }
 

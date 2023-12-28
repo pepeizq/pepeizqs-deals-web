@@ -2,6 +2,8 @@
 
 using BaseDatos.Tiendas;
 using Herramientas;
+using Microsoft.Data.SqlClient;
+using Org.BouncyCastle.Asn1.X500;
 
 namespace Tiendas2
 {
@@ -34,172 +36,129 @@ namespace Tiendas2
 
         public static async void AdminTiendas(string id)
         {
-			if (id == APIs.Steam.Tienda.Generar().Id)
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
 			{
-				await APIs.Steam.Tienda.BuscarOfertas(true);
+				if (id == APIs.Steam.Tienda.Generar().Id)
+				{
+					await APIs.Steam.Tienda.BuscarOfertas(conexion, true);
+				}
+				else if (id == APIs.GamersGate.Tienda.Generar().Id)
+				{
+					await APIs.GamersGate.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
+				{
+					await APIs.Gamesplanet.Tienda.BuscarOfertasUk(conexion);
+				}
+				else if (id == APIs.Gamesplanet.Tienda.GenerarFr().Id)
+				{
+					await APIs.Gamesplanet.Tienda.BuscarOfertasFr(conexion);
+				}
+				else if (id == APIs.Gamesplanet.Tienda.GenerarDe().Id)
+				{
+					await APIs.Gamesplanet.Tienda.BuscarOfertasDe(conexion);
+				}
+				else if (id == APIs.Gamesplanet.Tienda.GenerarUs().Id)
+				{
+					await APIs.Gamesplanet.Tienda.BuscarOfertasUs(conexion);
+				}
+				else if (id == APIs.Fanatical.Tienda.Generar().Id)
+				{
+					await APIs.Fanatical.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
+				{
+					await APIs.GreenManGaming.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.GOG.Tienda.Generar().Id)
+				{
+					await APIs.GOG.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.IndieGala.Tienda.Generar().Id)
+				{
+					await APIs.IndieGala.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.WinGameStore.Tienda.Generar().Id)
+				{
+					await APIs.WinGameStore.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.EA.Tienda.Generar().Id)
+				{
+					await APIs.EA.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.DLGamer.Tienda.Generar().Id)
+				{
+					await APIs.DLGamer.Tienda.BuscarOfertas(conexion);
+				}
+				else if (id == APIs.Battlenet.Tienda.Generar().Id)
+				{
+					await APIs.Battlenet.Tienda.BuscarOfertas(conexion);
+				}
 			}
-			else if (id == APIs.GamersGate.Tienda.Generar().Id)
-			{
-				await APIs.GamersGate.Tienda.BuscarOfertas();
-			}
-			else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
-			{
-				await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-			}
-			else if (id == APIs.Gamesplanet.Tienda.GenerarFr().Id)
-			{
-				await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-			}
-			else if (id == APIs.Gamesplanet.Tienda.GenerarDe().Id)
-			{
-				await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-			}
-			else if (id == APIs.Gamesplanet.Tienda.GenerarUs().Id)
-			{
-				await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-			}
-			else if (id == APIs.Fanatical.Tienda.Generar().Id)
-			{
-				await APIs.Fanatical.Tienda.BuscarOfertas();
-			}
-			else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
-			{
-				await APIs.GreenManGaming.Tienda.BuscarOfertas();
-			}
-			else if (id == APIs.GOG.Tienda.Generar().Id)
-			{
-				await APIs.GOG.Tienda.BuscarOfertas();
-			}
-			else if (id == APIs.IndieGala.Tienda.Generar().Id)
-			{
-				await APIs.IndieGala.Tienda.BuscarOfertas();
-			}
-			else if (id == APIs.WinGameStore.Tienda.Generar().Id)
-			{
-				await APIs.WinGameStore.Tienda.BuscarOfertas();
-			}
-            else if (id == APIs.EA.Tienda.Generar().Id)
-            {
-                await APIs.EA.Tienda.BuscarOfertas();
-            }
-			else if (id == APIs.DLGamer.Tienda.Generar().Id)
-			{
-				await APIs.DLGamer.Tienda.BuscarOfertas();
-			}
-            else if (id == APIs.Battlenet.Tienda.Generar().Id)
-            {
-                await APIs.Battlenet.Tienda.BuscarOfertas();
-            }
+
+			conexion.Close();
+			conexion.Dispose();
         }
 
-		public static async void TareasGestionador(TimeSpan tiempoEntreTareas)
+		public static async Task TareasGestionador(SqlConnection conexion, int orden)
 		{
-			List<string> ids = new List<string>();
-
-			foreach (var tienda in GenerarListado())
-			{
-				ids.Add(tienda.Id);
+			if (orden == 0)
+			{				
+				await APIs.Steam.Tienda.BuscarOfertas(conexion, true);
 			}
-
-			int orden = Admin.TareaLeerOrden();
-			int ordenTiendaAnterior = orden - 1;
-
-			if (ordenTiendaAnterior < 0)
+			else if (orden == 1)
 			{
-				ordenTiendaAnterior = ids.Count - 1;
+				await APIs.GamersGate.Tienda.BuscarOfertas(conexion);
 			}
-
-			DateTime tiendaAnterior = Admin.TareaLeerTienda(ids[ordenTiendaAnterior]);
-			DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
-
-			if ((DateTime.Now - ultimaComprobacion) > tiempoEntreTareas && (DateTime.Now - tiendaAnterior) > (tiempoEntreTareas * 2))
+			else if (orden == 2)
 			{
-				if (orden == 0)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Steam.Tienda.BuscarOfertas(true);
-				}
-				else if (orden == 1)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.GamersGate.Tienda.BuscarOfertas();
-				}
-				else if (orden == 2)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Gamesplanet.Tienda.BuscarOfertasUk();
-				}
-				else if (orden == 3)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Gamesplanet.Tienda.BuscarOfertasFr();
-				}
-				else if (orden == 4)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Gamesplanet.Tienda.BuscarOfertasDe();
-				}
-				else if (orden == 5)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Gamesplanet.Tienda.BuscarOfertasUs();
-				}
-				else if (orden == 6)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Fanatical.Tienda.BuscarOfertas();
-				}
-				else if (orden == 7)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.GreenManGaming.Tienda.BuscarOfertas();
-				}
-				else if (orden == 8)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.GOG.Tienda.BuscarOfertas();
-				}
-				else if (orden == 9)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.IndieGala.Tienda.BuscarOfertas();
-				}
-				else if (orden == 10)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.WinGameStore.Tienda.BuscarOfertas();
-				}
-				else if (orden == 11)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.EA.Tienda.BuscarOfertas();
-				}
-				else if (orden == 12)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.DLGamer.Tienda.BuscarOfertas();
-				}
-				else if (orden == 13)
-				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await APIs.Battlenet.Tienda.BuscarOfertas();
-				}
+				await APIs.Gamesplanet.Tienda.BuscarOfertasUk(conexion);
 			}
-
-			if (orden == 14)
+			else if (orden == 3)
 			{
-				Admin.TareaCambiarOrden(orden += 1);																	 
-				Divisas.CogerDatos();
+				await APIs.Gamesplanet.Tienda.BuscarOfertasFr(conexion);
 			}
-			//else if (orden == 15)
-			//{
-			//	Admin.TareaCambiarOrden(orden += 1);
-			//	await APIs.Steam.Tienda.BuscarOfertas(false);
-			//}
-
-			if (orden > 14)
+			else if (orden == 4)
 			{
-				Admin.TareaCambiarOrden(0);
+				await APIs.Gamesplanet.Tienda.BuscarOfertasDe(conexion);
+			}
+			else if (orden == 5)
+			{
+				await APIs.Gamesplanet.Tienda.BuscarOfertasUs(conexion);
+			}
+			else if (orden == 6)
+			{
+				await APIs.Fanatical.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 7)
+			{
+				await APIs.GreenManGaming.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 8)
+			{
+				await APIs.GOG.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 9)
+			{
+				await APIs.IndieGala.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 10)
+			{
+				await APIs.WinGameStore.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 11)
+			{
+				await APIs.EA.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 12)
+			{
+				await APIs.DLGamer.Tienda.BuscarOfertas(conexion);
+			}
+			else if (orden == 13)
+			{
+				await APIs.Battlenet.Tienda.BuscarOfertas(conexion);
 			}
 		}
     }

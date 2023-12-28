@@ -61,6 +61,12 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 #endregion
 
+#region Estado Middlewares
+
+builder.Services.AddHealthChecks();
+
+#endregion
+
 //----------------------------------------------------------------------------------
 
 builder.Services.AddSignalR(opciones =>
@@ -196,6 +202,8 @@ app.UseStaticFiles(new StaticFileOptions
 	FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "imagenes")),
 	RequestPath = "/imagenes"
 });
+
+app.MapHealthChecks("/estado");
 
 app.UseRouting();
 

@@ -28,81 +28,72 @@ namespace APIs.GOG
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			int juegos2 = 0;
 
-			using (conexion)
+			int i = 1;
+			while (i < 300)
 			{
-				int juegos2 = 0;
+				string html = await Decompiladores.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
 
-				int i = 1;
-				while (i < 200)
+				if (html != null)
 				{
-					string html = await Decompiladores.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
+					XmlSerializer xml = new XmlSerializer(typeof(GOGJuegos));
+					GOGJuegos listaJuegos = null;
 
-					if (html != null)
+					using (TextReader lector = new StringReader(html))
 					{
-						XmlSerializer xml = new XmlSerializer(typeof(GOGJuegos));
-						GOGJuegos listaJuegos = null;
+						listaJuegos = (GOGJuegos)xml.Deserialize(lector);
+					}
 
-						using (TextReader lector = new StringReader(html))
+					if (listaJuegos != null)
+					{
+						if (listaJuegos.Catalogo != null)
 						{
-							listaJuegos = (GOGJuegos)xml.Deserialize(lector);
-						}
-
-						if (listaJuegos != null)
-						{
-							if (listaJuegos.Catalogo != null)
+							if (listaJuegos.Catalogo.Juegos.Count > 0)
 							{
-								if (listaJuegos.Catalogo.Juegos.Count > 0)
+								foreach (GOGJuego juego in listaJuegos.Catalogo.Juegos)
 								{
-									foreach (GOGJuego juego in listaJuegos.Catalogo.Juegos)
+									string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+									string enlace = juego.Enlace;
+
+									string slug = enlace;
+									slug = slug.Replace("https://www.gog.com/en/game/", null);
+
+									string imagen = "https:" + juego.ImagenVertical;
+
+									string tempPrecio = juego.Precio;
+									tempPrecio = tempPrecio.Replace("€", null);
+
+									decimal precioRebajado = decimal.Parse(tempPrecio);
+
+									int descuento = int.Parse(juego.Descuento);
+
+									if (descuento > 0)
 									{
-										string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-										string enlace = juego.Enlace;
-
-										string slug = enlace;
-										slug = slug.Replace("https://www.gog.com/en/game/", null);
-
-										string imagen = "https:" + juego.ImagenVertical;
-
-										string tempPrecio = juego.Precio;
-										tempPrecio = tempPrecio.Replace("€", null);
-
-										decimal precioRebajado = decimal.Parse(tempPrecio);
-
-										int descuento = int.Parse(juego.Descuento);
-
-										if (descuento > 0)
+										JuegoPrecio oferta = new JuegoPrecio
 										{
-											JuegoPrecio oferta = new JuegoPrecio
-											{
-												Nombre = nombre,
-												Enlace = enlace,
-												Imagen = imagen,
-												Moneda = JuegoMoneda.Euro,
-												Precio = precioRebajado,
-												Descuento = descuento,
-												Tienda = Generar().Id,
-												DRM = JuegoDRM.GOG,
-												FechaDetectado = DateTime.Now,
-												FechaActualizacion = DateTime.Now
-											};
+											Nombre = nombre,
+											Enlace = enlace,
+											Imagen = imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
+											DRM = JuegoDRM.GOG,
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
+										};
 
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, juego.Id, slug);
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, juego.Id, slug);
 
-											juegos2 += 1;
-											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-										}
+										juegos2 += 1;
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 									}
 								}
-								else
-								{
-									break;
-								}
-							}	
+							}
 							else
 							{
 								break;
@@ -113,12 +104,14 @@ namespace APIs.GOG
 							break;
 						}
 					}
-
-					i += 1;
+					else
+					{
+						break;
+					}
 				}
-			}
 
-			conexion.Dispose();
+				i += 1;
+			}
 		}
 	}
 

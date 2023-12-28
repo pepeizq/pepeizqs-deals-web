@@ -39,64 +39,57 @@ namespace APIs.DLGamer
 			return enlace + "?affil=pepeizqdeals";
 		}
 
-		public static async Task BuscarOfertas(ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
 			int juegos2 = 0;
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			string html = await Decompiladores.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");
 
-			using (conexion)
+			if (html != null)
 			{
-				string html = await Decompiladores.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");
+				DLGamerJuegos basedatos = JsonConvert.DeserializeObject<DLGamerJuegos>(html);
 
-				if (html != null)
+				if (basedatos != null)
 				{
-					DLGamerJuegos basedatos = JsonConvert.DeserializeObject<DLGamerJuegos>(html);
+					foreach (var juegoDL in basedatos.Datos)
+					{
+						decimal precioRebajado = decimal.Parse(juegoDL.Value.PrecioRebajado);
+						decimal precioBase = decimal.Parse(juegoDL.Value.PrecioBase);
 
-					if (basedatos != null) 
-					{ 
-						foreach (var juegoDL in basedatos.Datos)
+						int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+						if (descuento > 0)
 						{
-							decimal precioRebajado = decimal.Parse(juegoDL.Value.PrecioRebajado);
-							decimal precioBase = decimal.Parse(juegoDL.Value.PrecioBase);
+							string nombre = WebUtility.HtmlDecode(juegoDL.Value.Nombre);
 
-							int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+							string enlace = juegoDL.Value.Enlace;
 
-							if (descuento > 0)
+							string imagen = juegoDL.Value.Imagen;
+
+							JuegoDRM drm = JuegoDRM2.Traducir(juegoDL.Value.DRM, Generar().Id);
+
+							JuegoPrecio oferta = new JuegoPrecio
 							{
-								string nombre = WebUtility.HtmlDecode(juegoDL.Value.Nombre);
+								Nombre = nombre,
+								Enlace = enlace,
+								Imagen = imagen,
+								Moneda = JuegoMoneda.Euro,
+								Precio = precioRebajado,
+								Descuento = descuento,
+								Tienda = Generar().Id,
+								DRM = drm,
+								FechaDetectado = DateTime.Now,
+								FechaActualizacion = DateTime.Now
+							};
 
-								string enlace = juegoDL.Value.Enlace;
+							BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
-								string imagen = juegoDL.Value.Imagen;
-
-								JuegoDRM drm = JuegoDRM2.Traducir(juegoDL.Value.DRM, Generar().Id);
-
-								JuegoPrecio oferta = new JuegoPrecio
-								{
-									Nombre = nombre,
-									Enlace = enlace,
-									Imagen = imagen,
-									Moneda = JuegoMoneda.Euro,
-									Precio = precioRebajado,
-									Descuento = descuento,
-									Tienda = Generar().Id,
-									DRM = drm,
-									FechaDetectado = DateTime.Now,
-									FechaActualizacion = DateTime.Now
-								};
-
-								BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-
-								juegos2 += 1;
-								BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-							}							
+							juegos2 += 1;
+							BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 						}
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 

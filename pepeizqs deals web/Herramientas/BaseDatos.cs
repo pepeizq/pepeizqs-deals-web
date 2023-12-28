@@ -9,7 +9,7 @@ namespace Herramientas
 	{
 		public static string cadenaConexion = "pepeizqs_deals_webContextConnection";
 
-		public static SqlConnection Conectar()
+		public static SqlConnection Conectar(bool usarEstado = true)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string conexionTexto = builder.Configuration.GetConnectionString(cadenaConexion);
@@ -17,16 +17,19 @@ namespace Herramientas
 
             ConnectionState estado = conexion.State;
             
-            if (estado != ConnectionState.Open)
-            {
-				try
+			if (usarEstado == true)
+			{
+				if (estado != ConnectionState.Open)
 				{
-					conexion.Close();
-				}
-				catch { }
+					try
+					{
+						conexion.Close();
+					}
+					catch { }
 
-                conexion.Open();
-            }
+					conexion.Open();
+				}
+			}
 
 			return conexion;	
         }

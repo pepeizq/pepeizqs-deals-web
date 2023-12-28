@@ -466,6 +466,8 @@
     padding: 8px 12px;
     position: absolute;
     top: 0;
+    background-color: var(--fondoOscuro);
+    opacity: 0.4;
 }
 
 .juego-galeria-contenedor-texto {

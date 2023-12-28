@@ -56,33 +56,35 @@
 
 @code {
 
-    #nullable disable
+	#nullable disable
 
-    private string tiendaElegida = null;
+	private string tiendaElegida = null;
 
-    private void ClickearTienda(MouseEventArgs e, string id)
-    {
-        tiendaElegida = id;
+	private void ClickearTienda(MouseEventArgs e, string id)
+	{
+		tiendaElegida = id;
 
-        if (id != null)
-        {
-            TiendasCargar.AdminTiendas(id);
+		if (id != null)
+		{
+			TiendasCargar.AdminTiendas(id);
 
-            if (id == "divisas")
-            {
-                Herramientas.Divisas.CogerDatos();
-            }
+			if (id == "divisas")
+			{
+				Herramientas.Divisas.CogerDatos();
+			}
 
-            if (id == "limpiar")
-            {
-                //BaseDatos.Juegos.Precios.Limpiar(tienda);
-            }
+			if (id == "limpiar")
+			{
+				//BaseDatos.Juegos.Precios.Limpiar(tienda);
+			}
 
-            if (id == "codigos")
-            {
-                // Herramientas.Buscador.ActualizarCodigos();
-            }
-        }
+			if (id == "codigos")
+			{
+				// Herramientas.Buscador.ActualizarCodigos();
+			}
+
+
+		}
     }
 
     private string LeerOrden()
