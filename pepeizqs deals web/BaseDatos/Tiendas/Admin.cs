@@ -164,6 +164,35 @@ namespace BaseDatos.Tiendas
 			return orden;
         }
 
+		public static string TareaLeerUltimaComprobacion()
+		{
+			string comprobacion = null;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string seleccionarTarea = "SELECT * FROM cronGestionador WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", "1");
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read() == true)
+						{
+							comprobacion = lector.GetString(2);
+						}
+					}
+				}
+			}
+
+			conexion.Dispose();
+
+			return comprobacion;
+		}
+
 		public static DateTime TareaLeerTienda(string tienda)
 		{
             DateTime fecha = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -222,6 +251,36 @@ namespace BaseDatos.Tiendas
 
 			conexion.Dispose();
         }
+
+		public static void TareaCambiarUltimaComprobacion(string comprobacion)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE cronGestionador " +
+							"SET id=@id, valor1=@valor1 WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", "1");
+					comando.Parameters.AddWithValue("@valor1", comprobacion);
+
+					SqlDataReader lector = comando.ExecuteReader();
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}
+
+			conexion.Dispose();
+		}
 
 		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
 		{

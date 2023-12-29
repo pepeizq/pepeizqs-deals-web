@@ -559,7 +559,7 @@
 											{
 												<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
 													<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, "juegos", juego.Id.ToString(), "miniaturaVideo", dominio).Result" style="width: 100%;">
-													<i class="fa-solid fa-circle-play" style="position: absolute; font-size: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+													<i class="fa-solid fa-circle-play" style="position: absolute; font-size: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: pointer;"></i>
 												</div>
 											}
 
@@ -1644,7 +1644,7 @@
 		{
 			nuevaCaptura = juego.Media.Capturas.Count - 1;
 		}
-		else if (nuevaCaptura >= juego.Media.Capturas.Count)
+		else if (nuevaCaptura >= juego.Media.Capturas.Count && nuevaCaptura != 99999)
 		{
 			nuevaCaptura = 0;
 		}

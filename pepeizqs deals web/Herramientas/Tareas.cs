@@ -9,12 +9,7 @@ namespace Herramientas
 {
 	public class Tareas
 	{
-		public async Task PortadaTarea()
-		{
-			await PortadaTarea2();
-		}
-
-		public static async Task PortadaTarea2()
+		public static async Task Portada()
 		{
 			await Task.Delay(1000);
 
@@ -262,8 +257,9 @@ namespace Herramientas
 			conexion.Dispose();
 		}
 
-		public async Task TiendasTarea(TimeSpan tiempo)
+		public async static Task Tiendas()
 		{
+			TimeSpan tiempo = TimeSpan.FromMinutes(5);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -275,38 +271,26 @@ namespace Herramientas
 			}
 
 			int orden = Admin.TareaLeerOrden();
-			int ordenTiendaAnterior = orden - 1;
-
-			if (ordenTiendaAnterior < 0)
-			{
-				ordenTiendaAnterior = ids.Count - 1;
-			}
-
-			DateTime tiendaAnterior = Admin.TareaLeerTienda(ids[ordenTiendaAnterior]);
-			DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
-
+			
 			SqlConnection conexion = BaseDatos.Conectar();
 
 			using (conexion)
-			{
-				if ((DateTime.Now - ultimaComprobacion) > (tiempo * 5)/* && (DateTime.Now - tiendaAnterior) > (tiempo * 2)*/)
+			{			
+				if (orden >= 0 && orden < ids.Count)
 				{
-					Admin.TareaCambiarOrden(orden += 1);
-					await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
+					DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
+
+					if ((DateTime.Now - ultimaComprobacion) > tiempo)
+					{						
+						await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
+						Admin.TareaCambiarOrden(orden += 1);
+					}
 				}
 				else
 				{
-					if (orden >= ids.Count)
-					{
-						Admin.TareaCambiarOrden(-1);
-					}
-
-					if (orden == -1)
-					{
-						Admin.TareaCambiarOrden(orden += 1);
-						Divisas.CogerDatos();
-					}
-				}				
+					Divisas.CogerDatos();
+					Admin.TareaCambiarOrden(0);
+				}			
 			}
 
 			conexion.Close();

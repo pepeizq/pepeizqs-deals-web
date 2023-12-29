@@ -43,7 +43,7 @@
 		</div>
 
 		<div style="margin-top: 20px;">
-			Turno: @LeerOrden()
+			Turno: @LeerOrden() - Tareador: @Herramientas.Calculadora.HaceTiempo(DateTime.Parse(BaseDatos.Tiendas.Admin.TareaLeerUltimaComprobacion()), "es-ES")
 		</div>
 
 		<div class="perfil-flexible-centrado" style="margin-top: 20px;">
@@ -94,6 +94,6 @@
 
     private async Task ClickearPortada(MouseEventArgs e)
     {
-		await Herramientas.Tareas.PortadaTarea2();
+		await Herramientas.Tareas.Portada();
 	}
 }

@@ -13,7 +13,7 @@ namespace Herramientas
 			_factoria = factory;
 		}
 
-		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(120);
+		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(1);
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
@@ -21,12 +21,21 @@ namespace Herramientas
 			{
 				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
 				{
-					await using AsyncServiceScope scope = _factoria.CreateAsyncScope();
+					if (DateTime.UtcNow.Second == 0)
 					{
-						Tareas tareas = scope.ServiceProvider.GetRequiredService<Tareas>();
+						global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
+						
+						try
+						{
+							await Tareas.Portada();
+						}
+						catch { }
 
-						await tareas.PortadaTarea();
-						await tareas.TiendasTarea(tiempo);
+						try
+						{
+							await Tareas.Tiendas();
+						}
+						catch { }					
 					}
 				}
 			}

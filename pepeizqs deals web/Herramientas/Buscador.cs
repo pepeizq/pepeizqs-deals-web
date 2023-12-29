@@ -1,5 +1,7 @@
 ﻿#nullable disable
 
+using Microsoft.VisualBasic;
+
 namespace Herramientas
 {
 	public static class Buscador
@@ -10,8 +12,11 @@ namespace Herramientas
 			{
 				List<string> caracteres = new List<string>
 				{
-					":", ",", ".", "®", "™", "_", "-", ">", "<", ";", "(", ")", "[", "]", "=", "?", "¿", "'", "¡", "!", "&", "|",
-					"/", "\\", "{", "}", "#", "´", "’", "~", "∀", " "
+					//":", ",", ".", "®", "™", "_", "-", ">", "<", ";", "(", ")", "[", "]", "=", "?", "¿", "'", "¡", "!", "&", "|",
+					//"/", "\\", "{", "}", "#", "´", "’", "~", "∀", " ",
+					//https://yorktown.cbe.wwu.edu/sandvig/shared/asciicodes.aspx
+					" ", "!", Strings.ChrW(34).ToString(), "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
+					":", ";", "<"
 				};
 
 				foreach (string caracter in caracteres)
