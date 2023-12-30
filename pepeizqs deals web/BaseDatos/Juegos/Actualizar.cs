@@ -257,7 +257,7 @@ namespace BaseDatos.Juegos
 		public static void Media(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +
-					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media WHERE id=@id";
+					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
@@ -266,6 +266,7 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 
 				try
 				{

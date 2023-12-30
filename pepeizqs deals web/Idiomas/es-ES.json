@@ -32,6 +32,10 @@
     "Valor": "Últimos Añadidos"
   },
   {
+    "Id": "Layout.Giveaways",
+    "Valor": "Sorteos"
+  },
+  {
     "Id": "Layout.Login",
     "Valor": "Iniciar Sesión"
   },

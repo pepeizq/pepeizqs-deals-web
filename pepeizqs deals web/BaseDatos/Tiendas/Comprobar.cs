@@ -104,6 +104,11 @@ namespace BaseDatos.Tiendas
 						bool insertar2 = true;
 						string buscarJuego2 = "SELECT * FROM juegos WHERE idSteam=@idSteam";
 
+						if (conexion.State == System.Data.ConnectionState.Closed)
+						{
+							conexion = Herramientas.BaseDatos.Conectar();
+						}
+
 						using (SqlCommand comando = new SqlCommand(buscarJuego2, conexion))
 						{
 							comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);

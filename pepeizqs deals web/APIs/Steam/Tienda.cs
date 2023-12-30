@@ -47,12 +47,12 @@ namespace APIs.Steam
 			{
 				arranque = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, conexion));
 
-				if (arranque >= tope)
+				tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
+
+				if (arranque >= (tope - 50))
 				{
 					arranque = 0;
 				}
-
-				tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
 			}
 
 			for (int i = arranque; i < tope; i += 50)

@@ -293,7 +293,6 @@ namespace Herramientas
 				}			
 			}
 
-			conexion.Close();
 			conexion.Dispose();			
 		}
 	}

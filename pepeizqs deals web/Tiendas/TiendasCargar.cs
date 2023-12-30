@@ -95,7 +95,6 @@ namespace Tiendas2
 				}
 			}
 
-			conexion.Close();
 			conexion.Dispose();
         }
 

@@ -32,6 +32,10 @@
     "Valor": "Last Added"
   },
   {
+    "Id": "Layout.Giveaways",
+    "Valor": "Giveaways"
+  },
+  {
     "Id": "Layout.Login",
     "Valor": "Login"
   },
