@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Componentes\Admin\Sorteos.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="BaseDatos\Juegos\Actualizar.cs~RF265fa95c.TMP" />
     <None Remove="Pages\Componentes\Admin\Pendientes.razor~RF25ab83bf.TMP" />
     <None Remove="Pages\Componentes\Secciones\Juego.razor~RFb3c9edb.TMP" />
@@ -127,6 +131,7 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Sorteos.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -139,6 +144,14 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Juego.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Admin\Sorteos.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Componentes\Admin\Sorteos.razor" />
   </ItemGroup>
 
 </Project>
