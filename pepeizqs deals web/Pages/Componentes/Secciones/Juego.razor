@@ -89,32 +89,35 @@
 				<div style="text-align: right; min-width: 350px; margin: 10px 20px;">
 					@if (juego.Analisis != null)
 					{
-						<div style="font-size: 14px; margin-bottom: 15px;">
-							<div class="tooltip2 juego-analisis-display">
-								<div style="display: flex; align-items: center;">
-									@if (int.Parse(juego.Analisis.Porcentaje) > 74)
-									{
-										<img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" />
-									}
+						@if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+						{
+							<div style="font-size: 14px; margin-bottom: 15px;">
+								<div class="tooltip2 juego-analisis-display">
+									<div style="display: flex; align-items: center;">
+										@if (int.Parse(juego.Analisis.Porcentaje) > 74)
+										{
+											<img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" />
+										}
 
-									@if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-									{
-										<img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" />
-									}
+										@if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
+										{
+											<img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" />
+										}
 
-									@if (int.Parse(juego.Analisis.Porcentaje) < 50)
-									{
-										<img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" />
-									}
+										@if (int.Parse(juego.Analisis.Porcentaje) < 50)
+										{
+											<img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" />
+										}
 
-									<div style="margin-left: 10px;">@juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)</div>
-								</div>
+										<div style="margin-left: 10px;">@juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)</div>
+									</div>
 
-								<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; width: 100%;">
-									<div class="juego-analisis-texto2">@Idiomas.CogerCadena(idioma, "Game.String2")</div>
+									<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; width: 100%;">
+										<div class="juego-analisis-texto2">@Idiomas.CogerCadena(idioma, "Game.String2")</div>
+									</div>
 								</div>
 							</div>
-						</div>
+						}						
 					}
 
 					<div style="display: flex; align-items: center; justify-content: right;">

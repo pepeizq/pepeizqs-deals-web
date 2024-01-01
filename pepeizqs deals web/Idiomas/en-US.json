@@ -1046,5 +1046,9 @@
   {
     "Id": "Contact.String2",
     "Valor": "Write to me at the following email:"
+  },
+  {
+    "Id": "Giveaways.Title",
+    "Valor": "Giveaways"
   }
 ]

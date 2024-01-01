@@ -1042,5 +1042,9 @@
   {
     "Id": "Contact.String2",
     "Valor": "Escribirme al siguiente correo:"
+  },
+  {
+    "Id": "Giveaways.Title",
+    "Valor": "Sorteos"
   }
 ]
