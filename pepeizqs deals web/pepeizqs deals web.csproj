@@ -13,10 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Componentes\Secciones\Sorteos.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="BaseDatos\Juegos\Actualizar.cs~RF265fa95c.TMP" />
     <None Remove="Pages\Componentes\Admin\Pendientes.razor~RF25ab83bf.TMP" />
     <None Remove="Pages\Componentes\Secciones\Juego.razor~RFb3c9edb.TMP" />
@@ -153,10 +149,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Sorteos.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\Componentes\Secciones\Sorteos.razor" />
   </ItemGroup>
 
 </Project>
