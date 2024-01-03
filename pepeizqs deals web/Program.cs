@@ -25,6 +25,16 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
+builder.Services.AddRazorPages(opciones =>
+{
+    opciones.Conventions.AddPageRoute("/Sitemap", "Sitemap.xml");
+});
+
+builder.Services.AddServerSideBlazor(opciones =>
+{
+    opciones.DetailedErrors = true;
+});
+
 //----------------------------------------------------------------------------------
 
 #region Detallado en Componentes Razor
@@ -74,6 +84,7 @@ builder.Services.AddSignalR(opciones =>
     opciones.EnableDetailedErrors = true;
     opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
     opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+    opciones.MaximumReceiveMessageSize = 1000;
 });
 
 builder.Services.Configure<IdentityOptions>(opciones =>
@@ -99,26 +110,6 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(new Authenticate
     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 });
 
-//builder.Services.AddServerSideBlazor(options =>
-//{
-//    options.DetailedErrors = true;
-//    options.DisconnectedCircuitMaxRetained = 100;
-//    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
-//    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
-//    options.MaxBufferedUnacknowledgedRenderBatches = 10;
-//}).AddHubOptions(options =>
-//{
-//    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-//	options.EnableDetailedErrors = true;
-//    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
-//    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
-//}).AddCircuitOptions(options =>
-//{
-//    options.DetailedErrors = true;
-//    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
-//    options.DisconnectedCircuitMaxRetained = 0;
-//}); ;
-
 builder.Services.Configure<HubOptions>(options =>
 {
 	options.MaximumReceiveMessageSize = null;
@@ -128,11 +119,6 @@ builder.Services.AddreCAPTCHAV3(x =>
 {
     x.SiteKey = "6Lfxf4AUAAAAAKK-pxZOeWCZOeyx9OVrEvn1Fu2-";
     x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
-});
-
-builder.Services.AddRazorPages(options =>
-{
-	options.Conventions.AddPageRoute("/Sitemap", "Sitemap.xml");
 });
 
 builder.Services.AddControllersWithViews();
@@ -162,6 +148,10 @@ var app = builder.Build();
 
     app.UseHsts();
 //}
+
+app.MapRazorPages();
+
+app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.UseResponseCaching();
 
@@ -209,10 +199,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
-
 app.MapControllers();
-app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.UseRequestLocalization();
 

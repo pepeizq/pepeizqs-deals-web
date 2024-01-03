@@ -1,8 +1,73 @@
-﻿<h3>Sorteos</h3>
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+	@if (idSeleccionada == null)
+	{
+		<div>
+			<label style="margin-bottom: 10px;">Juego:</label>
+			<input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+			@if (juegosBuscador != null)
+			{
+				@if (juegosBuscador.Count > 0)
+				{
+					<div>
+						@foreach (var juego in juegosBuscador)
+						{
+							<div class="perfil-flexible-centrado perfil-espacio-top">
+								<button @onclick="@(e => ClickearJuego(e, juego.Id.ToString(), juego.Nombre, juego.Imagenes.Library_600x900, juego.Imagenes.Header_460x215))" class="boton-pequeño" style="text-align:center;">
+									<div class="perfil-flexible-centrado">
+										<div style="width: 12%;">
+											<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+										</div>
+
+										<div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+											@juego.Nombre<br/>
+											<span style="font-size: 13px;">@juego.Id.ToString()</span>
+										</div>
+									</div>
+								</button>
+							</div>
+						}
+					</div>
+				}
+			}
+		</div>
+	}
+	else
+	{
+		
+	}
+</div>
 
 @code {
 
 	#nullable disable
 
+	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
+	private string idSeleccionada = null;
+	private string nombreSeleccionado = null;
+	private string imagenSeleccionada = null;
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+		}
+		else
+		{
+			juegosBuscador = new List<Juegos.Juego>();
+		}
+	}
+
+	private void ClickearJuego(MouseEventArgs e, string id, string nombre, string imagenVertical, string imagenNoticia2)
+	{
+		juegosBuscador = new List<Juegos.Juego>();
+
+		idSeleccionada = id;
+		nombreSeleccionado = nombre;
+		imagenSeleccionada = imagenVertical;
+	}
 }
