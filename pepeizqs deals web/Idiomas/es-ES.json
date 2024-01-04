@@ -509,7 +509,7 @@
   },
   {
     "Id": "Bundles.String2",
-    "Valor": "Bundles Antiguos"
+    "Valor": "Bundles Archivo"
   },
   {
     "Id": "Bundles.String3",
@@ -573,7 +573,7 @@
   },
   {
     "Id": "Subscriptions.String2",
-    "Valor": "Suscripciones Antiguas"
+    "Valor": "Suscripciones Archivo"
   },
   {
     "Id": "Privacy.Title",

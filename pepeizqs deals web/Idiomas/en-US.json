@@ -513,7 +513,7 @@
   },
   {
     "Id": "Bundles.String2",
-    "Valor": "Bundles Not Available"
+    "Valor": "Bundles Archive"
   },
   {
     "Id": "Bundles.String3",
@@ -577,7 +577,7 @@
   },
   {
     "Id": "Subscriptions.String2",
-    "Valor": "Subscriptions Not Available"
+    "Valor": "Subscriptions Archive"
   },
   {
     "Id": "Privacy.Title",

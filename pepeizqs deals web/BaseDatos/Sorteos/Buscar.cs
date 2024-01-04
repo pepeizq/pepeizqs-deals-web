@@ -27,6 +27,7 @@ namespace BaseDatos.Sorteos
 							sorteo.GrupoId = lector.GetString(2);
 							sorteo.Clave = lector.GetString(3);
 							sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+							sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
 
 							sorteos.Add(sorteo);
 						}

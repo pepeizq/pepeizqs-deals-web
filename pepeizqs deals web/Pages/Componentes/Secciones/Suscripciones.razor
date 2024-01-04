@@ -95,31 +95,76 @@
 	@Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions.String2")
 </div>
 
-@foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
-{
-	@if (juegosPasados.Count > 0)
-	{
-		<hr>
+<div style="display: flex; align-items: center; margin-top: 10px;">
+    @foreach (var año in años)
+    {
+        <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="margin-right: 15px; padding: 6px 10px; width: auto;">
+            @año
+        </button>
+    }
+</div>
 
-		<div style="display: flex; align-items: start;">
-			<div class="perfil" style="width: 20%;">
-				<img src="@suscripcion.ImagenLogo" />
-			</div>
+<div>
+    @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+    {
+        List<Juegos.JuegoSuscripcion> suscripcionesAño = new List<Juegos.JuegoSuscripcion>();
 
-			<div class="perfil" style="width: 80%;">				
-				@foreach (var juego in juegosPasados)
-				{
-					@if (juego.Tipo == suscripcion.Id)
-					{
-						<div>
-							<a href="/game/@juego.JuegoId">@LimpiarNombre(juego.Nombre)</a> (@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)) @juego.FechaTermina.Month.ToString()/@juego.FechaTermina.Year.ToString()
-						</div>
-					}					
-				}
-			</div>
-		</div>
-	}
-}
+        foreach (var juego in juegosPasados)
+        {
+            if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado && suscripcion.Id == juego.Tipo)
+            {
+                suscripcionesAño.Add(juego);
+            }
+        }
+
+        if (suscripcionesAño.Count > 0)
+        {
+            <hr>
+
+            <div style="display: flex; align-items: start;">
+                <div class="perfil" style="width: 20%;">
+                    <img src="@suscripcion.ImagenLogo" />
+                </div>
+
+                <div class="perfil" style="width: 80%;">
+                    @{
+                        int i = 1;
+                        while (i < 13)
+                        {
+                            List<Juegos.JuegoSuscripcion> suscripcionesMensual = new List<Juegos.JuegoSuscripcion>();
+
+                            foreach (var juego in suscripcionesAño)
+                            {
+                                if (juego.FechaEmpieza.Month == i)
+                                {
+                                    suscripcionesMensual.Add(juego);
+                                }
+                            }
+
+                            if (suscripcionesMensual.Count > 0)
+                            {
+                                <label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
+
+                                <ul>
+                                    @foreach (var juegoMensual in suscripcionesMensual)
+                                    {
+                                        <li>
+                                            <div>
+                                                <a href="/game/@juegoMensual.JuegoId">@LimpiarNombre(juegoMensual.Nombre)</a> (@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                            i += 1;
+                        }
+                    }
+                </div>
+            </div>
+        }
+    } 
+</div>
 
 @code {
 
@@ -138,6 +183,9 @@
 
     private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();
+
+    private List<string> años = new List<string>();
+    private string añoSeleccionado = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -174,6 +222,26 @@
 
             juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
         }
+
+        //--------------------------------------------------------------------
+
+        DateTime arranque = new DateTime(2023, 9, 1);
+
+        int i = 0;
+        while (i < 100)
+        {
+            if (arranque.Year != DateTime.Now.Year)
+            {
+                años.Add(arranque.Year.ToString());
+                arranque = arranque.AddYears(1);
+            }
+            i += 1;
+        }
+
+        años.Add(DateTime.Now.Year.ToString());
+        años.Reverse();
+
+        añoSeleccionado = DateTime.Now.Year.ToString();
 
         //--------------------------------------------------------------------
 
@@ -215,6 +283,11 @@
         {
             juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
         }
+    }
+
+    private void CambiarAño(MouseEventArgs e, string nuevoAño)
+    {
+        añoSeleccionado = nuevoAño;
     }
 
     private string LimpiarNombre(string nombre)

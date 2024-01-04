@@ -9,5 +9,6 @@ namespace Sorteos2
         public string GrupoId;
         public string Clave;
         public List<string> Participantes;
+        public DateTime FechaTermina;
     }
 }

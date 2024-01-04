@@ -36,7 +36,32 @@
 	}
 	else
 	{
-		
+		<div style="display: flex;">
+			<div style="width: 15%;">
+				<img src="@imagenSeleccionada" style="max-height: 100%; max-width: 100%;" />
+			</div>
+
+			<div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+				<div>
+					@nombreSeleccionado
+				</div>
+
+				<div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
+					<select @onchange="@(e => CambiarGrupo(e))">
+						@foreach (var grupo in grupos)
+						{
+							<option value="@grupo.Id">@grupo.Nombre</option>
+						}
+					</select>
+				</div>
+
+				<div style="width: 33%; margin-top: 20px;">
+					<div style="margin-bottom: 10px;">Clave:</div>
+
+					<input type="text" @oninput="TextoCambiaClave" class="entrada-texto" />
+				</div>
+			</div>
+		</div>
 	}
 </div>
 
@@ -46,9 +71,28 @@
 
 	List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
 
+	List<GrupoSorteo> grupos = new List<GrupoSorteo>();	
+
 	private string idSeleccionada = null;
 	private string nombreSeleccionado = null;
 	private string imagenSeleccionada = null;
+	private string grupoSeleccionado = null;
+	private string clave = null;
+
+	protected override void OnInitialized()
+	{
+		GrupoSorteo grupoPremium = new GrupoSorteo();
+		grupoPremium.Nombre = "Premium";
+		grupoPremium.Id = "40604285";
+		grupos.Add(grupoPremium);
+
+		GrupoSorteo grupoNormal = new GrupoSorteo();
+		grupoNormal.Nombre = "Normal";
+		grupoNormal.Id = "33500256";
+		grupos.Add(grupoNormal);
+
+
+	}
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
@@ -69,5 +113,21 @@
 		idSeleccionada = id;
 		nombreSeleccionado = nombre;
 		imagenSeleccionada = imagenVertical;
+	}
+
+	private void CambiarGrupo(ChangeEventArgs texto)
+	{
+		grupoSeleccionado = texto.Value.ToString();
+	}
+
+	private void TextoCambiaClave(ChangeEventArgs texto)
+	{
+		clave = texto.Value.ToString();
+	}
+
+	public class GrupoSorteo
+	{
+		public string Nombre;
+		public string Id;
 	}
 }

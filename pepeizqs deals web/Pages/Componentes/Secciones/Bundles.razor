@@ -144,13 +144,84 @@
 	}
 }
 
+<div style="font-size: 23px;">
+	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
+</div>
+
+<div style="display: flex; align-items: center; margin-top: 10px;">
+	@foreach (var año in años)
+	{
+		<button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="margin-right: 15px; padding: 6px 10px; width: auto;">
+			@año
+		</button>
+	}
+</div>
+
 @if (bundlesPasados.Count > 0)
 {
-	<div style="font-size: 23px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
-	</div>
-
 	@foreach (var tipo in Bundles2.BundlesCargar.CargarBundles())
+	{
+		List<Bundles2.Bundle> bundlesAño = new List<Bundles2.Bundle>();
+
+		foreach (var bundlePasado in bundlesPasados)
+		{
+			if (bundlePasado.FechaEmpieza.Year.ToString() == añoSeleccionado && bundlePasado.Tipo == tipo)
+			{
+				bundlesAño.Add(bundlePasado);
+			}
+		}
+
+		if (bundlesAño.Count > 0)
+		{
+			<hr>
+
+			<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
+				<div style="width: 25%;">
+					<div class="perfil">
+						<img src="@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda" style="max-width: 100%;" />
+					</div>
+				</div>
+
+				<div class="perfil" style="width: 75%;">
+					@{
+						int i = 1;
+						while (i < 13)
+						{
+							List<Bundles2.Bundle> bundlesMensual = new List<Bundles2.Bundle>();
+
+							foreach (var bundle in bundlesAño)
+							{
+								if (bundle.FechaEmpieza.Month == i)
+								{
+									bundlesMensual.Add(bundle);
+								}
+							}
+
+							if (bundlesMensual.Count > 0)
+							{
+								<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
+
+								<ul>
+									@foreach (var bundleMensual in bundlesMensual)
+									{
+										<li>
+											<div>
+												<a href="/bundle/@bundleMensual.Id">@bundleMensual.NombreBundle</a> 
+											</div>
+										</li>
+									}
+								</ul>
+							}
+
+							i += 1;
+						}
+					}
+				</div>
+			</div>
+		}
+	}
+
+	@* @foreach (var tipo in Bundles2.BundlesCargar.CargarBundles())
 	{
 		@if (@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda != null)
 		{
@@ -178,7 +249,7 @@
 				</div>
 			</div>
 		}	
-	}
+	} *@
 }
 
 @code {
@@ -196,6 +267,9 @@
 
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
+
+	private List<string> años = new List<string>();
+	private string añoSeleccionado = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -235,6 +309,26 @@
 
 		//--------------------------------------------------------------------
 
+		DateTime arranque = new DateTime(2023, 9, 1);
+
+		int i = 0;
+		while (i < 100)
+		{
+			if (arranque.Year != DateTime.Now.Year)
+			{
+				años.Add(arranque.Year.ToString());
+				arranque = arranque.AddYears(1);
+			}
+			i += 1;
+		}
+
+		años.Add(DateTime.Now.Year.ToString());
+		años.Reverse();
+
+		añoSeleccionado = DateTime.Now.Year.ToString();
+
+		//--------------------------------------------------------------------
+
 		List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
 
 		if (bundles.Count > 0)
@@ -265,6 +359,11 @@
 				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
 			}
 		}
+	}
+
+	private void CambiarAño(MouseEventArgs e, string nuevoAño)
+	{
+		añoSeleccionado = nuevoAño;
 	}
 
 	private string MostrarFechaTermina(DateTime fecha)

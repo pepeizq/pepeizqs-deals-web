@@ -140,9 +140,7 @@
             }
         }
 
-        gratisPasado.Juegos = gratisAño;
-
-        if (gratisPasado.Juegos.Count > 0)
+        if (gratisAño.Count > 0)
         {
             <hr>
 
@@ -158,7 +156,7 @@
                         {
                             List<Juegos.JuegoGratis> gratisMensual = new List<Juegos.JuegoGratis>();
 
-                            foreach (var juego in gratisPasado.Juegos)
+                            foreach (var juego in gratisAño)
                             {
                                 if (juego.FechaEmpieza.Month == i)
                                 {
@@ -277,8 +275,6 @@
 
         añoSeleccionado = DateTime.Now.Year.ToString();
 
-        GenerarArchivo();
-
         //--------------------------------------------------------------------
 
         List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
@@ -286,6 +282,7 @@
         if (juegosTodos.Count > 0)
         {
             List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
+            List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
 
             foreach (var juego in juegosTodos)
             {
@@ -297,6 +294,10 @@
                     juego.Juego = juego2;
 
                     juegosActuales.Add(juego);
+                }
+                else
+                {
+                    juegosPasados.Add(juego);
                 }
             }
 
@@ -326,34 +327,6 @@
                     }
                 }			
             }
-        }
-    }
-
-    private void CambiarAño(MouseEventArgs e, string nuevoAño)
-    {
-        añoSeleccionado = nuevoAño;
-
-        GenerarArchivo();
-    }
-
-    private void GenerarArchivo()
-    {
-        List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
-
-        if (juegosTodos.Count > 0)
-        {
-            List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
-
-            foreach (var juego in juegosTodos)
-            {
-                if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
-                {
-                }
-                else
-                {
-                    juegosPasados.Add(juego);
-                }
-            }
 
             if (juegosPasados.Count > 0)
             {
@@ -382,6 +355,11 @@
                 }
             }
         }
+    }
+
+    private void CambiarAño(MouseEventArgs e, string nuevoAño)
+    {
+        añoSeleccionado = nuevoAño;
     }
 
     private string ComprobarUsuarioJuego(Juegos.Juego juego, Gratis2.GratisTipo tipo)
