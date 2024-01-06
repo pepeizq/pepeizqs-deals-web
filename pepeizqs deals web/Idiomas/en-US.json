@@ -973,11 +973,11 @@
   },
   {
     "Id": "Settings.String51",
-    "Valor": "You are in the Steam Group for the giveaways."
+    "Valor": "You are in the Steam Premium Group for the giveaways."
   },
   {
     "Id": "Settings.String52",
-    "Valor": "You are not in the Steam Group for the giveaways."
+    "Valor": "You are not in the Steam Premium Group for the giveaways."
   },
   {
     "Id": "Settings.String53",
@@ -994,6 +994,18 @@
   {
     "Id": "Settings.String56",
     "Valor": "News. Notify me with an email when new news appears."
+  },
+  {
+    "Id": "Settings.String57",
+    "Valor": "You are in the Steam Group for the giveaways."
+  },
+  {
+    "Id": "Settings.String58",
+    "Valor": "You are not in the Steam Group for the giveaways."
+  },
+  {
+    "Id": "Settings.String59",
+    "Valor": "You haven't won any giveaway, sorry."
   },
   {
     "Id": "ForgotPassword.String1",

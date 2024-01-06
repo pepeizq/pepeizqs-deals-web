@@ -187,7 +187,8 @@ namespace APIs.Steam
 
                         //----------------------------------------------
 
-                        bool grupoOficial = false;
+                        bool grupoPremium = false;
+                        bool grupoNormal = false;
                         string htmlGrupos = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetUserGroupList/v0001/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador[0].ID64);
 
                         if (htmlGrupos != null)
@@ -200,9 +201,14 @@ namespace APIs.Steam
                                 { 
                                     if (grupo.Id == "40604285")
                                     {
-                                        grupoOficial = true;
+                                        grupoPremium = true;
                                     }
-                                }
+
+									if (grupo.Id == "33500256")
+									{
+										grupoNormal = true;
+									}
+								}
                             }
 						}
 
@@ -214,7 +220,8 @@ namespace APIs.Steam
                             Deseados = deseados,
                             Avatar = cuenta.Datos.Jugador[0].Avatar,
                             Nombre = cuenta.Datos.Jugador[0].Nombre,
-                            GrupoOficial = grupoOficial.ToString()
+                            GrupoPremium = grupoPremium.ToString(),
+                            GrupoNormal = grupoNormal.ToString()
                         };
 
                         return datos;
@@ -234,7 +241,8 @@ namespace APIs.Steam
         public string Deseados { get; set; }
 		public string Avatar { get; set; }
 		public string Nombre { get; set; }
-        public string GrupoOficial { get; set; }
+        public string GrupoPremium { get; set; }
+		public string GrupoNormal { get; set; }
 	}
 
     //----------------------------------------------

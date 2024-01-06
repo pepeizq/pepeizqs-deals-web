@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Juegos;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
 namespace BaseDatos.Sorteos
@@ -26,7 +27,19 @@ namespace BaseDatos.Sorteos
 							sorteo.JuegoId = lector.GetInt32(1);
 							sorteo.GrupoId = lector.GetString(2);
 							sorteo.Clave = lector.GetString(3);
-							sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+
+                            if (lector.IsDBNull(4) == false)
+                            {
+                                if (lector.GetString(4) != null)
+                                {
+                                    try
+                                    {
+                                        sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                    }
+                                    catch { }
+                                }
+                            }
+
 							sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
 
 							sorteos.Add(sorteo);

@@ -969,11 +969,11 @@
   },
   {
     "Id": "Settings.String51",
-    "Valor": "Estás dentro del grupo de Steam para los sorteos."
+    "Valor": "Estás dentro del grupo Premium de Steam para los sorteos."
   },
   {
     "Id": "Settings.String52",
-    "Valor": "No estás dentro del grupo de Steam para los sorteos."
+    "Valor": "No estás dentro del grupo Premium de Steam para los sorteos."
   },
   {
     "Id": "Settings.String53",
@@ -990,6 +990,18 @@
   {
     "Id": "Settings.String56",
     "Valor": "Noticias. Notificarme con un correo cuando una nueva noticia aparezca."
+  },
+  {
+    "Id": "Settings.String57",
+    "Valor": "Estás dentro del grupo de Steam para los sorteos."
+  },
+  {
+    "Id": "Settings.String58",
+    "Valor": "No estás dentro del grupo de Steam para los sorteos."
+  },
+  {
+    "Id": "Settings.String59",
+    "Valor": "No has ganado ningún sorteo, lo siento."
   },
   {
     "Id": "ForgotPassword.String1",

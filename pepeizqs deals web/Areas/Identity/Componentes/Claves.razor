@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
+@using Newtonsoft.Json
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
@@ -7,7 +8,34 @@
 
 @if (usuario.EmailConfirmed == true)
 {
-	<label>Not yet</label>
+	bool enseñarMensaje = true;
+
+	if (string.IsNullOrEmpty(usuario.Keys) == false)
+	{
+		List<ClaveJuego>? claves = JsonConvert.DeserializeObject<List<ClaveJuego>>(usuario.Keys);
+
+		if (claves != null)
+		{
+			if (claves.Count > 0)
+			{
+				enseñarMensaje = false;
+
+				foreach (var clave in claves)
+				{
+					<div>
+						<label>@clave.Nombre: @clave.Clave</label>
+					</div>
+				}
+			}
+		}
+	}
+
+	if (enseñarMensaje == true)
+	{
+		<div>
+			<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String59")</label>
+		</div>
+	}
 }
 else
 {
@@ -30,5 +58,11 @@ else
 	protected override void OnInitialized()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+	}
+
+	public class ClaveJuego
+	{
+		public string Nombre;
+		public string Clave;
 	}
 }

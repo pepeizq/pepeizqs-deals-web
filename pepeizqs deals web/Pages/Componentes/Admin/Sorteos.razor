@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Sorteos2
 
 <div class="perfil">
 	@if (idSeleccionada == null)
@@ -57,12 +58,18 @@
 
 				<div style="width: 33%; margin-top: 20px;">
 					<div style="margin-bottom: 10px; margin-left: 5px;">Clave:</div>
-
 					<input type="text" @oninput="TextoCambiaClave" class="entrada-texto" />
 				</div>
 
 				<div style="width: 33%; margin-top: 20px;">
+					<div style="margin-bottom: 10px; margin-left: 5px;">Fecha Termina:</div>
+					<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" value="@fechaSeleccionada">
+				</div>
 
+				<hr />
+
+				<div style="display: flex; margin-top: 20px; width: 20%;">
+					<button @onclick="@(e => AñadirSorteo(e))" class="boton-pequeño" style="text-align: center;">Añadir Sorteo</button>
 				</div>
 			</div>
 		</div>
@@ -82,6 +89,7 @@
 	private string imagenSeleccionada = null;
 	private string grupoSeleccionado = null;
 	private string clave = null;
+	private string fechaSeleccionada = null;
 
 	protected override void OnInitialized()
 	{
@@ -95,7 +103,31 @@
 		grupoNormal.Id = "33500256";
 		grupos.Add(grupoNormal);
 
+		grupoSeleccionado = grupos[0].Id;
 
+		//---------------------------------------------
+
+		DateTime fechaSabado = DateTime.Now;
+		fechaSabado = fechaSabado.AddDays(1);
+
+		int i = 1;
+		while (i <= 7)
+		{
+			if (fechaSabado.DayOfWeek == DayOfWeek.Saturday)
+			{
+				break;
+			}
+			else
+			{
+				fechaSabado = fechaSabado.AddDays(1);
+			}
+
+			i += 1;
+		}
+
+		fechaSabado = new DateTime(fechaSabado.Year, fechaSabado.Month, fechaSabado.Day, 10, 0, 0);
+
+		fechaSeleccionada = fechaSabado.ToString("yyyy-MM-ddTHH:mm:ss");
 	}
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
@@ -127,6 +159,28 @@
 	private void TextoCambiaClave(ChangeEventArgs texto)
 	{
 		clave = texto.Value.ToString();
+	}
+
+	private void CambiarFecha(ChangeEventArgs texto)
+	{
+		fechaSeleccionada = texto.Value.ToString();
+	}
+
+	private void AñadirSorteo(MouseEventArgs e)
+	{
+		if (string.IsNullOrEmpty(clave) == false)
+		{
+			Sorteo nuevoSorteo = new Sorteo();
+			nuevoSorteo.GrupoId = grupoSeleccionado;
+			nuevoSorteo.JuegoId = int.Parse(idSeleccionada);
+			nuevoSorteo.Clave = clave;
+			nuevoSorteo.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+			nuevoSorteo.Participantes = new List<string>();
+
+			BaseDatos.Sorteos.Insertar.Ejecutar(nuevoSorteo);
+		}
+
+		idSeleccionada = null;
 	}
 
 	public class GrupoSorteo

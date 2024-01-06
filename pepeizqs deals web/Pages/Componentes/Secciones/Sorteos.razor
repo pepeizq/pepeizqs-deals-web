@@ -1,4 +1,17 @@
-﻿
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<div class="perfil">
+    @if (sorteos != null)
+    {
+        if (sorteos.Count > 0)
+        {
+            foreach (var sorteo in sorteos)
+            {
+                @sorteo.JuegoId.ToString()
+            }
+        }
+    }
+</div>
 
 @code {
 
@@ -9,5 +22,12 @@
 
     [Parameter]
     public string dominio { get; set; }
+
+    List<Sorteos2.Sorteo> sorteos = new List<Sorteos2.Sorteo>();
+
+    protected override void OnInitialized()
+    {
+        sorteos = BaseDatos.Sorteos.Buscar.Todos();
+    }
 
 }

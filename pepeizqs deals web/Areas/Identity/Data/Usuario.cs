@@ -56,5 +56,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "bit(1)")]
 	public bool? NotificationNews { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? OfficialGroup2 { get; set; }
 }
 

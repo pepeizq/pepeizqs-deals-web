@@ -214,7 +214,7 @@
                     usuario.Avatar = datos.Avatar;
                     usuario.Nickname = datos.Nombre;
                     usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-                    usuario.OfficialGroup = datos.GrupoOficial;
+                    usuario.OfficialGroup = datos.GrupoPremium;
 
                     await UserManager.UpdateAsync(usuario);
                 }

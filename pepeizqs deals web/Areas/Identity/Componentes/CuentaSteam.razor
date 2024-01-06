@@ -79,6 +79,19 @@
 							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
 						</div>
 					}
+
+					@if (usuario.OfficialGroup2 == "True")
+					{
+						<div>
+							<i class="fa-solid fa-check texto-info-entrada"></i> <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String57")</label>
+						</div>
+					}
+					else
+					{
+						<div>
+							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String58")</label>
+						</div>
+					}
 				}
 			</div>
 		</div>
@@ -136,7 +149,8 @@ else
 					usuario.Avatar = datos.Avatar;
 					usuario.Nickname = datos.Nombre;
 					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-					usuario.OfficialGroup = datos.GrupoOficial;
+					usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.OfficialGroup2 = datos.GrupoNormal;
 
 					await UserManager.UpdateAsync(usuario);
 				}

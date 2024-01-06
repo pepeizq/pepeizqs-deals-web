@@ -96,7 +96,7 @@ namespace BaseDatos.Juegos
 		{
             List<Juego> juegos = new List<Juego>();
 
-            string busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%';";
+            string busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '" + Herramientas.Buscador.LimpiarNombre(nombre) + "%';";
 
             try
             {

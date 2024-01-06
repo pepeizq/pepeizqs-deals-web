@@ -16,7 +16,8 @@ namespace Juegos
 		GOG,
 		Amazon,
 		ElderScrolls,
-		BattleNet
+		BattleNet,
+		Giants
 	}
 
 	public static class JuegoDRM2
@@ -155,6 +156,18 @@ namespace Juegos
             };
 
             drms.Add(battlenet);
+
+            //----------------------------
+
+            DRM giants = new DRM
+            {
+                Id = JuegoDRM.Giants,
+                Nombre = "Giants",
+                Imagen = "/imagenes/drm/giants.webp",
+                Acepciones = new List<string> { "giants", "giants software" }
+            };
+
+            drms.Add(giants);
 
             //----------------------------
 
