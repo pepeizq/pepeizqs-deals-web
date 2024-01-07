@@ -49,7 +49,7 @@ namespace APIs.Steam
 
 				tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
 
-				if (arranque >= (tope - 100))
+				if (arranque >= (tope - 200))
 				{
 					arranque = 0;
 				}

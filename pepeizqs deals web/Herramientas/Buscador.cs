@@ -6,13 +6,18 @@ namespace Herramientas
 {
 	public static class Buscador
 	{
-		public static string LimpiarNombre(string nombre)
+		public static string LimpiarNombre(string nombre, bool quitarEspacio = false)
 		{
 			if (nombre != null)
 			{
+				if (quitarEspacio == true)
+				{
+					nombre = nombre.Replace(" ", null);
+				}
+
 				List<string> caracteres = new List<string>
 				{
-					" ", "!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
+					"!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
 					":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "€", "‚", "ƒ", "„",
 					"…", "†", "‡", "ˆ", "‰", "Š", "‹", "Œ", "Ž", "‘", "’", "“", "”", "•", "˜", "™", "š", "›", "œ", "ž", "Ÿ", "¡",
 					"¢", "£", "¤", "¥", "¦", "§", "¨", "©", "ª", "«", "¬", "®", "¯", "°", "±", "²", "³", "´", "µ", "¶", "·", "¸",

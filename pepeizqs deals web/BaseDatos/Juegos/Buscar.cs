@@ -93,12 +93,54 @@ namespace BaseDatos.Juegos
         }
 
         public static List<Juego> Nombre(string nombre, SqlConnection conexion)
-		{
+		{	
             List<Juego> juegos = new List<Juego>();
 
-            string busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '" + Herramientas.Buscador.LimpiarNombre(nombre) + "%';";
+			string busqueda = string.Empty;
 
-            try
+			if (nombre.Contains(" ") == true)
+			{
+				string[] palabras = nombre.Split(" ");
+
+				int i = 0;
+				foreach (var palabra in palabras) 
+				{
+					if (i == 0)
+					{
+						busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + Herramientas.Buscador.LimpiarNombre(palabra, false) + "', nombreCodigo) > 0 ";
+					}
+                    else
+                    {
+						bool buscar = true;
+
+						if (palabra.ToLower() == "and")
+						{
+							buscar = false;
+						}
+						else if (palabra.ToLower() == "dlc")
+						{
+							buscar = false;
+						}
+						if (palabra.ToLower() == "expansion")
+						{
+							buscar = false;
+						}
+
+						if (buscar == true)
+						{
+							busqueda = busqueda + " AND CHARINDEX('" + Herramientas.Buscador.LimpiarNombre(palabra, false) + "', nombreCodigo) > 0 ";
+						}						
+					}
+
+                    i += 1;
+				}
+			}
+			else
+			{
+				busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX(" + Herramientas.Buscador.LimpiarNombre(nombre) + "', nombreCodigo) > 0 ";
+			}
+
+			try
             {
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
