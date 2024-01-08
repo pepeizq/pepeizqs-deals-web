@@ -1004,6 +1004,10 @@
     "Valor": "No has ganado ningún sorteo, lo siento."
   },
   {
+    "Id": "Settings.String60",
+    "Valor": "Última comprobación"
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },
@@ -1058,6 +1062,30 @@
   {
     "Id": "Giveaways.Title",
     "Valor": "Sorteos"
+  },
+  {
+    "Id": "Giveaways.String1",
+    "Valor": "Sorteos Premium"
+  },
+  {
+    "Id": "Giveaways.String2",
+    "Valor": "Sorteos"
+  },
+  {
+    "Id": "Giveaways.String3",
+    "Valor": "participante"
+  },
+  {
+    "Id": "Giveaways.String4",
+    "Valor": "participantes"
+  },
+  {
+    "Id": "Giveaways.String5",
+    "Valor": "puedes participar en estos sorteos"
+  },
+  {
+    "Id": "Giveaways.String6",
+    "Valor": "no puedes participar en estos sorteos, mira como se entra"
   },
   {
     "Id": "Month.1",

@@ -111,7 +111,7 @@
 
 			bool tiempo = true;
 
-			if (usuario.SteamAccountLastCheck != null)
+			if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
 			{
 				if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(2) > DateTime.Now)
 				{
@@ -121,16 +121,20 @@
 
 			if (tiempo == true)
 			{
-				SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+				if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+				{
+					SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
 
-				usuario.SteamGames = datos.Juegos;
-				usuario.SteamWishlist = datos.Deseados;
-				usuario.Avatar = datos.Avatar;
-				usuario.Nickname = datos.Nombre;
-				usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-				usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.SteamGames = datos.Juegos;
+					usuario.SteamWishlist = datos.Deseados;
+					usuario.Avatar = datos.Avatar;
+					usuario.Nickname = datos.Nombre;
+					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+					usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.OfficialGroup2 = datos.GrupoNormal;
 
-				await UserManager.UpdateAsync(usuario);
+					await UserManager.UpdateAsync(usuario);
+				}				
 			}
 
 			#endregion

@@ -1,17 +1,64 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using APIs.Steam
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
 
-<div class="perfil">
-    @if (sorteos != null)
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (sorteosGrupoNormal != null)
+{
+    if (sorteosGrupoNormal.Count > 0)
     {
-        if (sorteos.Count > 0)
-        {
-            foreach (var sorteo in sorteos)
+        <div style="font-size: 23px; display: flex; align-items: center;">
+            <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String2")</label>
+
+            @if (usuario != null)
             {
-                @sorteo.JuegoId.ToString()
+                if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
+                {
+                    if (usuario.OfficialGroup2.ToLower() == "true")
+                    {
+                        <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String5"))</label>
+                    }
+                    else
+                    {
+                        <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6"))</label>
+                    }
+                }
+                else
+                {
+                    <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6"))</label>
+                }
             }
-        }
+        </div>
+
+        <hr/>
+
+        <div class="perfil">
+            @foreach (var sorteo in sorteosGrupoNormal)
+            {
+                if (sorteo.Sorteo.FechaTermina >= DateTime.Now)
+                {
+                    <button class="boton-pequeño" style="padding: 0px;">
+                        <div class="perfil-flexible-centrado">
+                            <div style="width: 20%;">
+                                <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+                            </div>
+
+                            <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
+                                <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
+
+                                <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+                            </div>
+                        </div>
+                    </button>
+                }
+            }
+        </div>
     }
-</div>
+}
 
 @code {
 
@@ -23,11 +70,118 @@
     [Parameter]
     public string dominio { get; set; }
 
-    List<Sorteos2.Sorteo> sorteos = new List<Sorteos2.Sorteo>();
+    List<JuegoSorteo> sorteosGrupoPremium = new List<JuegoSorteo>();
+    List<JuegoSorteo> sorteosGrupoNormal = new List<JuegoSorteo>();
 
-    protected override void OnInitialized()
+    private Usuario usuario = new Usuario();
+    private List<string> juegosUsuario = new List<string>();
+
+    protected override async Task OnInitializedAsync()
     {
-        sorteos = BaseDatos.Sorteos.Buscar.Todos();
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+            {
+                bool tiempo = true;
+
+                if (usuario.SteamAccountLastCheck != null)
+                {
+                    if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+                    {
+                        tiempo = false;
+                    }
+                }
+
+                if (tiempo == true)
+                {
+                    SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+
+                    usuario.SteamGames = datos.Juegos;
+                    usuario.SteamWishlist = datos.Deseados;
+                    usuario.Avatar = datos.Avatar;
+                    usuario.Nickname = datos.Nombre;
+                    usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+                    usuario.OfficialGroup = datos.GrupoPremium;
+                    usuario.OfficialGroup2 = datos.GrupoNormal;
+
+                    await UserManager.UpdateAsync(usuario);
+                }
+            }
+
+            juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+        }
+
+        //--------------------------------------------------------------------
+
+        List<Sorteos2.Sorteo> listaSorteos = BaseDatos.Sorteos.Buscar.Todos();
+
+        if (listaSorteos != null)
+        {
+            if (listaSorteos.Count > 0)
+            {
+                foreach (var sorteo in listaSorteos)
+                {
+                    if (sorteo.FechaTermina >= DateTime.Now)
+                    {
+                        if (string.IsNullOrEmpty(sorteo.JuegoId.ToString()) == false)
+                        {
+                            Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
+
+                            if (juego != null)
+                            {
+                                JuegoSorteo nuevoSorteo = new JuegoSorteo();
+                                nuevoSorteo.Sorteo = sorteo;
+                                nuevoSorteo.Juego = juego;
+
+                                if (sorteo.GrupoId == "40604285")
+                                {
+                                    sorteosGrupoPremium.Add(nuevoSorteo);
+                                }
+                                else if (sorteo.GrupoId == "33500256")
+                                {
+                                    sorteosGrupoNormal.Add(nuevoSorteo);
+                                }                             
+                            }
+                        }                      
+                    }
+                }
+            }
+        }
+
     }
 
+    private string CalcularParticipantes(Sorteos2.Sorteo sorteo)
+    {
+        string mensaje = string.Empty;
+
+        if (sorteo != null)
+        {
+            if (sorteo.Participantes != null)
+            {
+                if (sorteo.Participantes.Count == 1)
+                {
+                    mensaje = sorteo.Participantes.Count.ToString() + " " + Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String3");
+                }
+                else
+                {
+                    mensaje = sorteo.Participantes.Count.ToString() + " " + Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String4");
+                }
+            }
+        }
+
+        if (mensaje == string.Empty)
+        {
+            mensaje = "0 " + Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String4");
+        }
+
+        return mensaje;
+    }
+
+    public class JuegoSorteo
+    {
+        public Sorteos2.Sorteo Sorteo;
+        public Juegos.Juego Juego;
+    }
 }

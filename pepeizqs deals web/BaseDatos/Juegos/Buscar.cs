@@ -100,6 +100,11 @@ namespace BaseDatos.Juegos
 
 			if (nombre.Contains(" ") == true)
 			{
+				if (nombre.Contains("  ") == true)
+				{
+					nombre = nombre.Replace("  ", " ");
+				}
+
 				string[] palabras = nombre.Split(" ");
 
 				int i = 0;
@@ -137,7 +142,7 @@ namespace BaseDatos.Juegos
 			}
 			else
 			{
-				busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX(" + Herramientas.Buscador.LimpiarNombre(nombre) + "', nombreCodigo) > 0 ";
+				busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 			}
 
 			try

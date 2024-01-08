@@ -1008,6 +1008,10 @@
     "Valor": "You haven't won any giveaway, sorry."
   },
   {
+    "Id": "Settings.String60",
+    "Valor": "Last check"
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },
@@ -1062,6 +1066,30 @@
   {
     "Id": "Giveaways.Title",
     "Valor": "Giveaways"
+  },
+  {
+    "Id": "Giveaways.String1",
+    "Valor": "Premium Giveaways"
+  },
+  {
+    "Id": "Giveaways.String2",
+    "Valor": "Giveaways"
+  },
+  {
+    "Id": "Giveaways.String3",
+    "Valor": "entry"
+  },
+  {
+    "Id": "Giveaways.String4",
+    "Valor": "entries"
+  },
+  {
+    "Id": "Giveaways.String5",
+    "Valor": "you can enter these giveaways"
+  },
+  {
+    "Id": "Giveaways.String6",
+    "Valor": "you can't enter these giveaways, see how to enter"
   },
   {
     "Id": "Month.1",

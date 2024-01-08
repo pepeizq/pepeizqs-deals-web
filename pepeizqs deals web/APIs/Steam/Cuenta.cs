@@ -203,8 +203,7 @@ namespace APIs.Steam
                                     {
                                         grupoPremium = true;
                                     }
-
-									if (grupo.Id == "33500256")
+                                    else if (grupo.Id == "33500256")
 									{
 										grupoNormal = true;
 									}
