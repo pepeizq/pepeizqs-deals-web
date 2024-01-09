@@ -110,9 +110,20 @@ namespace BaseDatos.Juegos
 				int i = 0;
 				foreach (var palabra in palabras) 
 				{
-					if (i == 0)
+					string palabraLimpia = string.Empty;
+					
+					if (palabra.Length == 1)
 					{
-						busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + Herramientas.Buscador.LimpiarNombre(palabra, false) + "', nombreCodigo) > 0 ";
+						palabraLimpia = palabra;
+					}
+					else
+					{
+						palabraLimpia = Herramientas.Buscador.LimpiarNombre(palabra, false);
+                    }
+
+                    if (i == 0)
+					{
+						busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
 					}
                     else
                     {
@@ -133,8 +144,8 @@ namespace BaseDatos.Juegos
 
 						if (buscar == true)
 						{
-							busqueda = busqueda + " AND CHARINDEX('" + Herramientas.Buscador.LimpiarNombre(palabra, false) + "', nombreCodigo) > 0 ";
-						}						
+                            busqueda = busqueda + " AND CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
+                        }						
 					}
 
                     i += 1;

@@ -225,11 +225,11 @@
 
         if (usuario != null)
         {
-            if (usuario.SteamGames != null)
+            if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
             {
                 bool tiempo = true;
 
-                if (usuario.SteamAccountLastCheck != null)
+                if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
                 {
                     if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
                     {

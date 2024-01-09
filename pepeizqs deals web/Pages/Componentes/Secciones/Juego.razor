@@ -1080,11 +1080,19 @@
 					i += 1;
 				}
 
+				if (nuevoTexto.Contains("??") == true)
+				{
+					nuevoTexto = nuevoTexto.Replace("/", null);
+					nuevoTexto = nuevoTexto.Replace("?", null);
+				}
+
 				nuevoTexto = nuevoTexto.Replace("(Steam)", null);
 				nuevoTexto = nuevoTexto.Replace("(Epic)", null);
 				nuevoTexto = nuevoTexto.Replace("(GOG)", null);
 				nuevoTexto = nuevoTexto.Replace("(Giants)", null);
 				nuevoTexto = nuevoTexto.Replace("(Microsoft Store)", null);
+
+				nuevoTexto = nuevoTexto.Trim();
 
 				return nuevoTexto;
 			}

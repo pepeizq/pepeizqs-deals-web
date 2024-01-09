@@ -133,7 +133,7 @@ else
 	{
 		bool tiempo = true;
 
-		if (usuario.SteamAccountLastCheck != null)
+		if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
 		{
 			if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
 			{

@@ -41,19 +41,38 @@
             {
                 if (sorteo.Sorteo.FechaTermina >= DateTime.Now)
                 {
-                    <button class="boton-pequeño" style="padding: 0px;">
-                        <div class="perfil-flexible-centrado">
-                            <div style="width: 20%;">
-                                <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
-                            </div>
+                    if (sorteo.PuedeParticipar == true)
+                    {
+                        <button class="boton-pequeño" style="padding: 0px;">
+                            <div class="perfil-flexible-centrado">
+                                <div style="width: 20%;">
+                                    <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+                                </div>
 
-                            <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
-                                <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
+                                <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
+                                    <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
 
-                                <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+                                    <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+                                </div>
                             </div>
-                        </div>
-                    </button>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="boton-pequeño" style="padding: 0px; cursor: not-allowed; pointer-events: none;">
+                            <div class="perfil-flexible-centrado">
+                                <div style="width: 20%;">
+                                    <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
+                                </div>
+
+                                <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
+                                    <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
+
+                                    <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+                                </div>
+                            </div>
+                        </button>
+                    }                    
                 }
             }
         </div>
@@ -82,11 +101,11 @@
 
         if (usuario != null)
         {
-            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false && string.IsNullOrEmpty(usuario.SteamAccount) == false)
             {
                 bool tiempo = true;
 
-                if (usuario.SteamAccountLastCheck != null)
+                if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
                 {
                     if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
                     {
@@ -131,16 +150,71 @@
 
                             if (juego != null)
                             {
+                                bool puedeParticipar = true;
+
+                                if (usuario != null)
+                                {
+                                    if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                    {
+                                        List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+
+                                        foreach (var juegoUsuario in juegosUsuario)
+                                        {
+                                            if (juegoUsuario == juego.IdSteam.ToString())
+                                            {
+                                                puedeParticipar = false;
+                                            }
+                                        }
+                                    }
+                                }
+
                                 JuegoSorteo nuevoSorteo = new JuegoSorteo();
                                 nuevoSorteo.Sorteo = sorteo;
                                 nuevoSorteo.Juego = juego;
+                                nuevoSorteo.PuedeParticipar = puedeParticipar;
 
                                 if (sorteo.GrupoId == "40604285")
                                 {
+                                    if (nuevoSorteo.PuedeParticipar == true)
+                                    {
+                                        puedeParticipar = false;
+
+                                        if (usuario != null)
+                                        {
+                                            if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
+                                            {
+                                                if (usuario.OfficialGroup2.ToLower() == "true")
+                                                {
+                                                    puedeParticipar = true;
+                                                }
+                                            }
+                                        }
+
+                                        nuevoSorteo.PuedeParticipar = puedeParticipar;
+                                    }
+
                                     sorteosGrupoPremium.Add(nuevoSorteo);
                                 }
                                 else if (sorteo.GrupoId == "33500256")
                                 {
+                                    if (nuevoSorteo.PuedeParticipar == true)
+                                    {
+                                        puedeParticipar = false;
+
+                                        if (usuario != null)
+                                        {
+                                            if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
+                                            {
+                                                if (usuario.OfficialGroup2.ToLower() == "true")
+                                                {
+                                                    puedeParticipar = true;
+                                                }
+                                            }
+                                        }
+
+                                        nuevoSorteo.PuedeParticipar = puedeParticipar;
+                                    }                                  
+
                                     sorteosGrupoNormal.Add(nuevoSorteo);
                                 }                             
                             }
@@ -183,5 +257,6 @@
     {
         public Sorteos2.Sorteo Sorteo;
         public Juegos.Juego Juego;
+        public bool PuedeParticipar;
     }
 }
