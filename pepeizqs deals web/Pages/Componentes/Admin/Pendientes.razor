@@ -176,22 +176,28 @@
 
 	private void ClickearTienda(string id)
 	{
-		BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id);
-
-		nombrePendiente = pendiente.nombre;
-
-		string imagen = pendiente.imagen;
-
-		if (imagen != null)
+		if (string.IsNullOrEmpty(id) == false)
 		{
-			imagen = imagen.Replace("&amp;", "&");
-		}
+			BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id);
 
-		imagenPendiente = imagen;
+			if (pendiente != null)
+			{
+				nombrePendiente = pendiente.nombre;
 
-		enlacePendiente = pendiente.enlace;
+				string imagen = pendiente.imagen;
 
-		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente);
+				if (imagen != null)
+				{
+					imagen = imagen.Replace("&amp;", "&");
+				}
+
+				imagenPendiente = imagen;
+
+				enlacePendiente = pendiente.enlace;
+
+				idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente);
+			}
+		}		
 	}
 
 	private void ClickearDescartar(MouseEventArgs e, string enlace)
