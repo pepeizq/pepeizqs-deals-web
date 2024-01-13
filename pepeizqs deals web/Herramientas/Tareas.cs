@@ -259,7 +259,7 @@ namespace Herramientas
 
 		public async static Task Tiendas()
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(5);
+			TimeSpan tiempo = TimeSpan.FromMinutes(10);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())

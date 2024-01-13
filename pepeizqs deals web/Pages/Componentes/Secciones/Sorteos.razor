@@ -43,7 +43,7 @@
                 {
                     if (sorteo.PuedeParticipar == true)
                     {
-                        <button class="boton-pequeño" style="padding: 0px;">
+                        <button class="boton-pequeño" style="padding: 0px;" @onclick="@(e => Entrar(e, sorteo))">
                             <div class="perfil-flexible-centrado">
                                 <div style="width: 20%;">
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
@@ -68,7 +68,14 @@
                                 <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
                                     <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
 
-                                    <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div>@CalcularParticipantes(sorteo.Sorteo)</div>
+
+                                        @if (sorteo.TieneJuego == true)
+                                        {
+                                            <div style="margin-left: 20px;">test</div>
+                                        }
+                                    </div>                                    
                                 </div>
                             </div>
                         </button>
@@ -149,8 +156,9 @@
                             Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
 
                             if (juego != null)
-                            {
+                            {                               
                                 bool puedeParticipar = true;
+                                bool tieneJuego = false;
 
                                 if (usuario != null)
                                 {
@@ -163,6 +171,7 @@
                                             if (juegoUsuario == juego.IdSteam.ToString())
                                             {
                                                 puedeParticipar = false;
+                                                tieneJuego = true;
                                             }
                                         }
                                     }
@@ -172,6 +181,7 @@
                                 nuevoSorteo.Sorteo = sorteo;
                                 nuevoSorteo.Juego = juego;
                                 nuevoSorteo.PuedeParticipar = puedeParticipar;
+                                nuevoSorteo.TieneJuego = tieneJuego;
 
                                 if (sorteo.GrupoId == "40604285")
                                 {
@@ -253,10 +263,19 @@
         return mensaje;
     }
 
+    private void Entrar(MouseEventArgs e, JuegoSorteo sorteo)
+    {
+        if (sorteo != null)
+        {
+
+        }
+    }
+
     public class JuegoSorteo
     {
         public Sorteos2.Sorteo Sorteo;
         public Juegos.Juego Juego;
         public bool PuedeParticipar;
+        public bool TieneJuego;
     }
 }

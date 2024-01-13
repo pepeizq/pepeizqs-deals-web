@@ -110,45 +110,39 @@ namespace BaseDatos.Juegos
 				int i = 0;
 				foreach (var palabra in palabras) 
 				{
-					string palabraLimpia = string.Empty;
+					string palabraLimpia = Herramientas.Buscador.LimpiarNombre(palabra, false);
 					
-					if (palabra.Length == 1)
+					if (palabraLimpia.Length > 0)
 					{
-						palabraLimpia = palabra;
-					}
-					else
-					{
-						palabraLimpia = Herramientas.Buscador.LimpiarNombre(palabra, false);
-                    }
+                        if (i == 0)
+                        {
+                            busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
+                        }
+                        else
+                        {
+                            bool buscar = true;
 
-                    if (i == 0)
-					{
-						busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
-					}
-                    else
-                    {
-						bool buscar = true;
+                            if (palabra.ToLower() == "and")
+                            {
+                                buscar = false;
+                            }
+                            else if (palabra.ToLower() == "dlc")
+                            {
+                                buscar = false;
+                            }
+                            if (palabra.ToLower() == "expansion")
+                            {
+                                buscar = false;
+                            }
 
-						if (palabra.ToLower() == "and")
-						{
-							buscar = false;
-						}
-						else if (palabra.ToLower() == "dlc")
-						{
-							buscar = false;
-						}
-						if (palabra.ToLower() == "expansion")
-						{
-							buscar = false;
-						}
+                            if (buscar == true)
+                            {
+                                busqueda = busqueda + " AND CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
+                            }
+                        }
 
-						if (buscar == true)
-						{
-                            busqueda = busqueda + " AND CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
-                        }						
-					}
-
-                    i += 1;
+                        i += 1;
+                    }                   
 				}
 			}
 			else
