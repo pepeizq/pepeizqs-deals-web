@@ -253,16 +253,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="boot.js"></script>
 
-    <script>
-        // Blazor.start().then(() => {
-        //     Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-        //         if (window.location.href.indexOf("/Admin/") == -1) {
-        //             document.location.reload();
-        //         }
-        //     }
-        // });
-
+@*     <script>
         Blazor.start({
             configureSignalR: function (builder) {
                 let c = builder.build();
@@ -274,6 +267,14 @@
             }
         });
     </script>
+
+    <script>
+        Blazor.start().then(() => {
+            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                document.location.reload();
+            }
+        });
+    </script> *@
 
     <div id="components-reconnect-modal" style="display: none"/>
 

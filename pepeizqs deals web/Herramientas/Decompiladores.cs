@@ -7,27 +7,39 @@ namespace Herramientas
 {
     public static class Decompiladores
     {
+        private static readonly HttpClient cliente = new HttpClient(new HttpClientHandler
+        {
+            AutomaticDecompression = DecompressionMethods.GZip
+        }, false);
+
         public static async Task<string> Estandar(string enlace)
         {
-			string contenido = string.Empty;
-
-			HttpClient cliente = new HttpClient(new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip
-            });
+            string contenido = string.Empty;
 
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
-			cliente.Timeout = TimeSpan.FromMinutes(5);
 
-			try
+            int i = 0;
+			while (i < 100)
 			{
-				HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
-				contenido = await respuesta.Content.ReadAsStringAsync();
-				respuesta.Dispose();
-			}
-			catch { }
+                try
+                {
+                    HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+                    contenido = await respuesta.Content.ReadAsStringAsync();
+                    respuesta.Dispose();
+                }
+                catch { }
 
-            cliente.Dispose();
+				if (string.IsNullOrEmpty(contenido) == false) 
+				{
+					break;
+				}
+				else
+				{
+					await Task.Delay(1000);
+				}
+
+                i += 1;
+			}
 
             return contenido;
         }
