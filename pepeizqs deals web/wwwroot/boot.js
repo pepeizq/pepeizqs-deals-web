@@ -63,6 +63,14 @@
                     currentReconnectionProcess = null;
                 }
             }
+        },
+        configureSignalR: function (builder) {
+          let c = builder.build();
+          c.serverTimeoutInMilliseconds = 3000000;
+          c.keepAliveIntervalInMilliseconds = 1500000;
+          builder.build = () => {
+            return c;
+          };
         }
     });
 })();

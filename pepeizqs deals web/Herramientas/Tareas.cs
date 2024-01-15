@@ -276,20 +276,20 @@ namespace Herramientas
 
 			using (conexion)
 			{			
-				if (orden >= 0 && orden < ids.Count)
+				if (orden >= -1 && orden < ids.Count)
 				{
 					DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
-					{						
-						await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
-						Admin.TareaCambiarOrden(orden += 1);
+					{
+                        Admin.TareaCambiarOrden(orden += 1);
+                        await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);						
 					}
 				}
 				else
 				{
 					Divisas.CogerDatos();
-					Admin.TareaCambiarOrden(0);
+					Admin.TareaCambiarOrden(-1);
 				}			
 			}
 
