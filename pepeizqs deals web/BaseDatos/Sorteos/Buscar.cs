@@ -1,4 +1,5 @@
-﻿using Juegos;
+﻿#nullable disable
+
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
@@ -52,5 +53,52 @@ namespace BaseDatos.Sorteos
 
 			return sorteos;
 		}
-	}
+
+        public static Sorteos2.Sorteo Uno(string id)
+        {
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                string busqueda = "SELECT * FROM sorteos WHERE id=@id";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    comando.Parameters.AddWithValue("@id", id);
+
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Sorteos2.Sorteo sorteo = new Sorteos2.Sorteo();
+                            sorteo.Id = lector.GetInt32(0);
+                            sorteo.JuegoId = lector.GetInt32(1);
+                            sorteo.GrupoId = lector.GetString(2);
+                            sorteo.Clave = lector.GetString(3);
+
+                            if (lector.IsDBNull(4) == false)
+                            {
+                                if (lector.GetString(4) != null)
+                                {
+                                    try
+                                    {
+                                        sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                    }
+                                    catch { }
+                                }
+                            }
+
+                            sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
+
+                            return sorteo;
+                        }
+                    }
+                }
+            }
+
+            conexion.Dispose();
+
+            return null;
+        }
+    }
 }

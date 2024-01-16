@@ -1,29 +1,15 @@
 (() => {
-    const reintentosCantidad = 3;
-    const reintentoMilisegundos = 5000;
-    const reconnectModal = document.getElementById('reconnect-modal');
-
-    const configureSignalR = () => {
-        let c = builder.build();
-        c.serverTimeoutInMilliseconds = 3000000;
-        c.keepAliveIntervalInMilliseconds = 1500000;
-        builder.build = () => {
-            return c;
-        };
-    }
+    const reintentos = 5;
+    const reintentoMilisegundos = 3000;
 
     const startReconnectionProcess = () => {
-        reconnectModal.style.display = 'block';
-
-        let isCanceled = false;
+        let cancelado = false;
 
         (async () => {
-            for (let i = 0; i < reintentosCantidad; i++) {
-                reconnectModal.innerText = `Attempting to reconnect: ${i + 1} of ${reintentosCantidad}`;
-
+            for (let i = 0; i < reintentos; i++) {
                 await new Promise(resolve => setTimeout(resolve, reintentoMilisegundos));
 
-                if (isCanceled) {
+                if (cancelado) {
                     return;
                 }
 
@@ -46,8 +32,7 @@
 
         return {
             cancel: () => {
-                isCanceled = true;
-                reconnectModal.style.display = 'none';
+                cancelado = true;
             },
         };
     };

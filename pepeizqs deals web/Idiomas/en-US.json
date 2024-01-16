@@ -1092,6 +1092,14 @@
     "Valor": "you can't enter these giveaways, see how to enter"
   },
   {
+    "Id": "Giveaways.String7",
+    "Valor": "You already have this game"
+  },
+  {
+    "Id": "Giveaways.String8",
+    "Valor": "There are no giveaways available for this group."
+  },
+  {
     "Id": "Month.1",
     "Valor": "January"
   },

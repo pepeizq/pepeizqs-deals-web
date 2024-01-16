@@ -1088,6 +1088,14 @@
     "Valor": "no puedes participar en estos sorteos, mira como se entra"
   },
   {
+    "Id": "Giveaways.String7",
+    "Valor": "Ya tienes este juego"
+  },
+  {
+    "Id": "Giveaways.String8",
+    "Valor": "No hay sorteos disponibles para este grupo."
+  },
+  {
     "Id": "Month.1",
     "Valor": "Enero"
   },

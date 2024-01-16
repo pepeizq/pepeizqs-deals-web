@@ -1,5 +1,7 @@
 ﻿#nullable disable
 
+using Microsoft.Data.SqlClient;
+
 namespace Herramientas
 {
 	public class TareasGestionador : BackgroundService
@@ -17,6 +19,8 @@ namespace Herramientas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
+			SqlConnection conexion = BaseDatos.Conectar();
+
 			using PeriodicTimer contador = new PeriodicTimer(tiempo);
 			{
 				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
@@ -33,7 +37,7 @@ namespace Herramientas
 
 						try
 						{
-							await Tareas.Tiendas();
+							await Tareas.Tiendas(conexion);
 						}
 						catch { }					
 					}

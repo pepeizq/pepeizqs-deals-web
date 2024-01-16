@@ -257,7 +257,7 @@ namespace Herramientas
 			conexion.Dispose();
 		}
 
-		public async static Task Tiendas()
+		public async static Task Tiendas(SqlConnection conexion)
 		{
 			TimeSpan tiempo = TimeSpan.FromMinutes(5);
 			List<string> ids = new List<string>();
@@ -271,29 +271,30 @@ namespace Herramientas
 			}
 
 			int orden = Admin.TareaLeerOrden();
-			
-			SqlConnection conexion = BaseDatos.Conectar();
 
 			using (conexion)
 			{			
-				if (orden >= -1 && orden < ids.Count)
+				if (orden >= 0 && orden < ids.Count)
 				{
 					DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
 
 					if ((DateTime.Now - ultimaComprobacion) > tiempo)
-					{
+					{                       
+						try
+						{
+                            await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
+                        }
+						catch { }
+                        
                         Admin.TareaCambiarOrden(orden += 1);
-                        await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);						
-					}
+                    }
 				}
 				else
 				{
 					Divisas.CogerDatos();
-					Admin.TareaCambiarOrden(-1);
+					Admin.TareaCambiarOrden(0);
 				}			
-			}
-
-			conexion.Dispose();			
+			}		
 		}
 	}
 }

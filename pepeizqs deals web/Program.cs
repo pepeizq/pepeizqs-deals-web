@@ -11,6 +11,7 @@ using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -55,6 +56,8 @@ builder.Services.Configure<HostOptions>(hostOptions =>
 builder.Services.AddScoped<Tareas>();
 builder.Services.AddSingleton<TareasGestionador>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<TareasGestionador>());
+
+builder.Services.AddSingleton<CircuitHandler, Circuitos>();
 
 #endregion
 
