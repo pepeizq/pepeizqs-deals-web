@@ -4,11 +4,14 @@ namespace BaseDatos.Pendientes
 {
     public static class LeerCantidad
     {
-        public static string Ejecutar(string tienda)
+        public static string Ejecutar(string tienda, SqlConnection conexion)
         {
 			int cantidad = 0;
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion.State == System.Data.ConnectionState.Closed)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
 
 			using (conexion)
 			{
@@ -28,8 +31,6 @@ namespace BaseDatos.Pendientes
 					}
 				}
 			}
-
-			conexion.Dispose();
 
 			return cantidad.ToString();
 		}

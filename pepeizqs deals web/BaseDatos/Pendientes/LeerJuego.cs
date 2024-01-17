@@ -6,11 +6,14 @@ namespace BaseDatos.Pendientes
 {
     public static class LeerJuego
     {
-        public static Pendiente Ejecutar(string tienda)
+        public static Pendiente Ejecutar(string tienda, SqlConnection conexion)
         {
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion.State == System.Data.ConnectionState.Closed)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
 
-            using (conexion)
+			using (conexion)
             {
                 string busqueda = "SELECT * FROM tienda" + tienda + " WHERE (idJuegos='0' AND descartado='no')";
 
@@ -32,8 +35,6 @@ namespace BaseDatos.Pendientes
                     }
                 }
             }
-
-            conexion.Dispose();
 
             return null;
         }

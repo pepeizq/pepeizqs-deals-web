@@ -93,8 +93,16 @@ namespace BaseDatos.Juegos
         }
 
         public static List<Juego> Nombre(string nombre, SqlConnection conexion)
-		{	
-            List<Juego> juegos = new List<Juego>();
+		{
+			if (conexion != null)
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<Juego> juegos = new List<Juego>();
 
 			string busqueda = string.Empty;
 
@@ -150,20 +158,22 @@ namespace BaseDatos.Juegos
 				busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 			}
 
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						Juego juego = new Juego();
+						juego = Cargar.Ejecutar(juego, lector);
+						juegos.Add(juego);
+					}
+				}
+			}
+
 			try
             {
-                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-                {
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-                        while (lector.Read())
-                        {
-                            Juego juego = new Juego();
-                            juego = Cargar.Ejecutar(juego, lector);
-                            juegos.Add(juego);
-                        }
-                    }
-                }
+              
             }
             catch
             {
@@ -237,11 +247,21 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-		public static List<Juego> DLCs(string idMaestro = null)
+		public static List<Juego> DLCs(string idMaestro = null, SqlConnection conexion = null, bool limpiarConexion = true)
 		{
 			List<Juego> dlcs = new List<Juego>();
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
@@ -271,8 +291,11 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			conexion.Dispose();
-
+			if (limpiarConexion == true)
+			{
+				conexion.Dispose();
+			}
+			
 			return dlcs.OrderBy(x => x.Nombre).ToList();
 		}
 	}

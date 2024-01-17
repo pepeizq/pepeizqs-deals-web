@@ -5,18 +5,21 @@ using System.Net;
 
 namespace Herramientas
 {
-    public static class Decompiladores
+	public static class Decompiladores
     {
-        private static readonly HttpClient cliente = new HttpClient(new HttpClientHandler
-        {
-            AutomaticDecompression = DecompressionMethods.GZip
-        }, false);
+		private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
+		{
+            AutomaticDecompression = DecompressionMethods.GZip,
+			PooledConnectionLifetime = TimeSpan.FromMinutes(20),
+			PooledConnectionIdleTimeout = TimeSpan.FromMinutes(10),
+			MaxConnectionsPerServer = 20
+		}, false);
 
         public static async Task<string> Estandar(string enlace)
         {
             string contenido = string.Empty;
 
-            cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
             int i = 0;
 			while (i < 100)

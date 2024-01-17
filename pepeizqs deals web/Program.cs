@@ -57,8 +57,6 @@ builder.Services.AddScoped<Tareas>();
 builder.Services.AddSingleton<TareasGestionador>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<TareasGestionador>());
 
-builder.Services.AddSingleton<CircuitHandler, Circuitos>();
-
 #endregion
 
 #region Acceder Usuario en Codigo

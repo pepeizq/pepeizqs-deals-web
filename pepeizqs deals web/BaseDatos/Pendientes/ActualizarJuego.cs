@@ -4,9 +4,12 @@ namespace BaseDatos.Pendientes
 {
 	public static class ActualizarJuego
 	{
-		public static void Ejecutar(string idTienda, string enlace, string idJuegos)
+		public static void Ejecutar(string idTienda, string enlace, string idJuegos, SqlConnection conexion)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion.State != System.Data.ConnectionState.Open)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
 
 			using (conexion)
 			{
@@ -28,8 +31,6 @@ namespace BaseDatos.Pendientes
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

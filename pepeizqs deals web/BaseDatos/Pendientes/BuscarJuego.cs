@@ -6,9 +6,12 @@ namespace BaseDatos.Pendientes
 {
 	public static class BuscarJuego
 	{
-		public static string Ejecutar(string nombre)
+		public static string Ejecutar(string nombre, SqlConnection conexion)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion.State == System.Data.ConnectionState.Closed)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
 
 			using (conexion)
 			{
@@ -27,8 +30,6 @@ namespace BaseDatos.Pendientes
 					}
 				}
 			}
-
-			conexion.Dispose();
 
 			return "0";
 		}

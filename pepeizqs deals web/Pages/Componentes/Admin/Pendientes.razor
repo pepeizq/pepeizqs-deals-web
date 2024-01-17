@@ -26,10 +26,10 @@
 				{
 					@if (tienda.Id != "steam")
 					{
-						@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id)) > 0)
+						@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id, conexion)) > 0)
 						{
 							<button @onclick="@(e => ClickearTienda(e, tienda.Id, tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
-								<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id))
+								<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id, conexion))
 							</button>
 						}
 					}
@@ -144,9 +144,11 @@
 
 	#nullable disable
 
+	SqlConnection conexion = new SqlConnection();
+
 	protected override void OnInitialized()
 	{
-		DLCs = global::BaseDatos.Juegos.Buscar.DLCs();
+		DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
 	}
 
 	private int pestañaMostrar = 0;
@@ -178,7 +180,7 @@
 	{
 		if (string.IsNullOrEmpty(id) == false)
 		{
-			BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id);
+			BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id, conexion);
 
 			if (pendiente != null)
 			{
@@ -195,7 +197,7 @@
 
 				enlacePendiente = pendiente.enlace;
 
-				idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente);
+				idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente, conexion);
 			}
 		}		
 	}
@@ -209,12 +211,12 @@
 
 	private void ClickearBuscar(MouseEventArgs e, string nombre)
 	{
-		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombre);
+		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombre, conexion);
 	}
 
 	private void ClickearActualizar(MouseEventArgs e, string enlace)
 	{
-		BaseDatos.Pendientes.ActualizarJuego.Ejecutar(idTienda, enlace, idsPendiente);
+		BaseDatos.Pendientes.ActualizarJuego.Ejecutar(idTienda, enlace, idsPendiente, conexion);
 
 		ClickearTienda(idTienda);
 	}
@@ -230,10 +232,10 @@
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
-		if (texto.Value.ToString().Trim().Length > 3)
+		if (texto.Value.ToString().Trim().Length > 2)
 		{
 			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion);
 		}
 		else
 		{
@@ -299,15 +301,11 @@
 
 			if (string.IsNullOrEmpty(textoDlcMaestro) == false)
 			{
-				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
 				using (conexion)
 				{
 					DLCs[posicionDLC].Maestro = textoDlcMaestro;
 					BaseDatos.Juegos.Actualizar.DlcMaestro(DLCs[posicionDLC], conexion);
 				}
-
-				conexion.Dispose();
 
 				posicionDLC += 1;
 			}
