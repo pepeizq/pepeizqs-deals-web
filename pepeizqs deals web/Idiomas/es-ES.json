@@ -1096,6 +1096,22 @@
     "Valor": "No hay sorteos disponibles para este grupo."
   },
   {
+    "Id": "Giveaways.String9",
+    "Valor": "Normas para entrar a los sorteos del grupo de Steam"
+  },
+  {
+    "Id": "Giveaways.String10",
+    "Valor": "Tener una cuenta de Steam con al menos 50 juegos."
+  },
+  {
+    "Id": "Giveaways.String11",
+    "Valor": "Unirte al grupo de Steam."
+  },
+  {
+    "Id": "Giveaways.String12",
+    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación de tu cuenta cada 7 dias)."
+  },
+  {
     "Id": "Month.1",
     "Valor": "Enero"
   },

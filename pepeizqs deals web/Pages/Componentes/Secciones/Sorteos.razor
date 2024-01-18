@@ -15,20 +15,33 @@
 
         @if (usuario != null)
         {
+            bool apto = false;
+
             if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
             {
                 if (usuario.OfficialGroup2.ToLower() == "true")
                 {
-                    <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String5"))</label>
+                    apto = true;
                 }
-                else
+            }
+
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+            {
+                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+
+                if (juegosUsuario.Count < 50)
                 {
-                    <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6"))</label>
+                    apto = false;
                 }
+            }
+
+            if (apto == true)
+            {
+                <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String5")</a>
             }
             else
             {
-                <label style="font-size: 15px; margin-left: 20px;">(@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6"))</label>
+                <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6")</a>
             }
         }
     </div>
@@ -91,7 +104,31 @@
             @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String8")
         </div>
     }
+
+    <div style="font-size: 23px; display: flex; align-items: center; margin-top: 50px;">
+        <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String9")</label>
+    </div>
+
+    <hr />
+
+    <div id="normas2" class="perfil" style="padding: 20px;">
+        <ul>
+            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String10")</li>
+            <li><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String11")</a></li>
+            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String12")</li>
+        </ul>
+    </div>
 }
+
+<script>
+    function moverScroll(id) {
+        const yOffset = -175;
+        const element = document.getElementById(id);
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+</script>
 
 @code {
 
@@ -205,6 +242,16 @@
                                                     puedeParticipar = true;
                                                 }
                                             }
+
+                                            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                            {
+                                                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+
+                                                if (juegosUsuario.Count < 100)
+                                                {
+                                                    puedeParticipar = false;
+                                                }
+                                            }
                                         }
 
                                         nuevoSorteo.PuedeParticipar = puedeParticipar;
@@ -225,6 +272,16 @@
                                                 if (usuario.OfficialGroup2.ToLower() == "true")
                                                 {
                                                     puedeParticipar = true;
+                                                }
+                                            }
+
+                                            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                            {
+                                                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+
+                                                if (juegosUsuario.Count < 50)
+                                                {
+                                                    puedeParticipar = false;
                                                 }
                                             }
                                         }

@@ -1100,6 +1100,22 @@
     "Valor": "There are no giveaways available for this group."
   },
   {
+    "Id": "Giveaways.String9",
+    "Valor": "Rules for entering Steam group giveaways"
+  },
+  {
+    "Id": "Giveaways.String10",
+    "Valor": "Have a Steam account with at least 50 games."
+  },
+  {
+    "Id": "Giveaways.String11",
+    "Valor": "Join the Steam group."
+  },
+  {
+    "Id": "Giveaways.String12",
+    "Valor": "In your Steam account, have the profile and game details set to Public (the website will check your account every 7 days)."
+  },
+  {
     "Id": "Month.1",
     "Valor": "January"
   },

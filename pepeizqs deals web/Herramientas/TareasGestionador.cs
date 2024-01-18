@@ -18,16 +18,16 @@ namespace Herramientas
 		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(1);
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
-		{
-			SqlConnection conexion = BaseDatos.Conectar();
-
+		{			
 			using PeriodicTimer contador = new PeriodicTimer(tiempo);
 			{
 				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
 				{
 					if (DateTime.UtcNow.Second == 0)
 					{
-						global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
+                        SqlConnection conexion = BaseDatos.Conectar();
+
+                        global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
 						
 						try
 						{
@@ -44,5 +44,10 @@ namespace Herramientas
 				}
 			}
 		}
-	}
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
 }

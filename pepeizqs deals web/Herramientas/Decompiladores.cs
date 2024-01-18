@@ -10,9 +10,9 @@ namespace Herramientas
 		private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
 		{
             AutomaticDecompression = DecompressionMethods.GZip,
-			PooledConnectionLifetime = TimeSpan.FromMinutes(20),
-			PooledConnectionIdleTimeout = TimeSpan.FromMinutes(10),
-			MaxConnectionsPerServer = 20
+			PooledConnectionLifetime = TimeSpan.FromMinutes(30),
+			PooledConnectionIdleTimeout = TimeSpan.FromMinutes(15),
+			MaxConnectionsPerServer = 50
 		}, false);
 
         public static async Task<string> Estandar(string enlace)
