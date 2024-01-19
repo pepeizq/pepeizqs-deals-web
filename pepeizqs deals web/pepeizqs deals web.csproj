@@ -153,4 +153,8 @@
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Sorteos.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\robots.txt" />
+  </ItemGroup>
+
 </Project>

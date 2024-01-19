@@ -82,13 +82,13 @@ builder.Services.AddHealthChecks();
 
 //----------------------------------------------------------------------------------
 
-builder.Services.AddSignalR(opciones =>
-{
-    opciones.EnableDetailedErrors = true;
-    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-    opciones.MaximumReceiveMessageSize = 1000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//    opciones.EnableDetailedErrors = true;
+//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+//    opciones.MaximumReceiveMessageSize = 1000;
+//});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -126,14 +126,14 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddRateLimiter(_ => _
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
-    {
-        options.PermitLimit = 2;
-        options.Window = TimeSpan.FromSeconds(6);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 5;
-    }));
+//builder.Services.AddRateLimiter(_ => _
+//    .AddFixedWindowLimiter(policyName: "fixed", options =>
+//    {
+//        options.PermitLimit = 2;
+//        options.Window = TimeSpan.FromSeconds(6);
+//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        options.QueueLimit = 5;
+//    }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
 //{
@@ -160,23 +160,23 @@ app.UseRateLimiter();
 
 app.UseResponseCaching();
 
-app.Use(async (contexto, siguiente) =>
-{
-    if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
-    {
-        string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
-        string contenido = "User-agent: *\r\nDisallow: /\r\n\r\nUser-agent: Bingbot\r\nDisallow:\r\n\r\nUser-agent: Googlebot\r\nDisallow:\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
+//app.Use(async (contexto, siguiente) =>
+//{
+//    if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
+//    {
+//        string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
+//        string contenido = "User-agent: *\r\nDisallow: /\r\n\r\nUser-agent: Bingbot\r\nDisallow:\r\n\r\nUser-agent: Googlebot\r\nDisallow:\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
 
-        if (File.Exists(robotsFichero))
-        {
-            contenido = await File.ReadAllTextAsync(robotsFichero);
-        }
+//        if (File.Exists(robotsFichero))
+//        {
+//            contenido = await File.ReadAllTextAsync(robotsFichero);
+//        }
 
-        contexto.Response.ContentType = "text/plain";
-        await contexto.Response.WriteAsync(contenido);
-    }
-    else await siguiente();
-});
+//        contexto.Response.ContentType = "text/plain";
+//        await contexto.Response.WriteAsync(contenido);
+//    }
+//    else await siguiente();
+//});
 
 app.Use(async (context, next) =>
 {

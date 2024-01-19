@@ -69,7 +69,7 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-		public static List<Juego> Nombre(string nombre)
+		public static List<Juego> Nombre(string nombre, int cantidad = 30)
         {
             List<Juego> juegos = new List<Juego>();
 
@@ -77,7 +77,7 @@ namespace BaseDatos.Juegos
 
 			using (conexion)
 			{
-				juegos = Nombre(nombre, conexion);
+				juegos = Nombre(nombre, conexion, cantidad);
             }		
 
             conexion.Dispose();
@@ -92,7 +92,7 @@ namespace BaseDatos.Juegos
             return null;
         }
 
-        public static List<Juego> Nombre(string nombre, SqlConnection conexion)
+        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30)
 		{
 			if (conexion != null)
 			{
@@ -124,7 +124,7 @@ namespace BaseDatos.Juegos
 					{
                         if (i == 0)
                         {
-                            busqueda = "SELECT TOP 30 * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
+                            busqueda = "SELECT TOP " + cantidad + " * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
                         }
                         else
                         {
@@ -155,7 +155,7 @@ namespace BaseDatos.Juegos
 			}
 			else
 			{
-				busqueda = "SELECT TOP 30 * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
+				busqueda = "SELECT TOP " + cantidad + " * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 			}
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))

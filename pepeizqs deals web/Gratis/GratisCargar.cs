@@ -9,8 +9,9 @@ namespace Gratis2
 		GOG,
 		Fanatical,
 		Ubisoft,
-		EpicGames
-	}
+		EpicGames,
+        Amplifiers
+    }
 
 	public class GratisCargar
 	{
@@ -23,7 +24,8 @@ namespace Gratis2
 				APIs.EpicGames.Gratis.Generar(),
 				APIs.GOG.Gratis.Generar(),
 				APIs.Fanatical.Gratis.Generar(),
-				APIs.Ubisoft.Gratis.Generar()
+				APIs.Ubisoft.Gratis.Generar(),
+				APIs.Amplifiers.Gratis.Generar()
 			};
 
 			return gratis;
