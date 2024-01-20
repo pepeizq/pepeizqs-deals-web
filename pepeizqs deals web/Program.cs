@@ -82,13 +82,22 @@ builder.Services.AddHealthChecks();
 
 //----------------------------------------------------------------------------------
 
-//builder.Services.AddSignalR(opciones =>
-//{
-//    opciones.EnableDetailedErrors = true;
-//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-//    opciones.MaximumReceiveMessageSize = 1000;
-//});
+//builder.Services.AddHttpClient("ConfiguredHttpMessageHandler")
+//    .ConfigurePrimaryHttpMessageHandler(() =>
+//        new HttpClientHandler
+//        {
+//            AllowAutoRedirect = true,
+//            UseDefaultCredentials = true,
+//            AutomaticDecompression = System.Net.DecompressionMethods.GZip
+//        });
+
+builder.Services.AddSignalR(opciones =>
+{
+    opciones.EnableDetailedErrors = true;
+    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+    opciones.MaximumReceiveMessageSize = 1000;
+});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -156,9 +165,9 @@ app.MapRazorPages();
 
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
-app.UseResponseCaching();
+//app.UseResponseCaching();
 
 //app.Use(async (contexto, siguiente) =>
 //{
@@ -178,15 +187,15 @@ app.UseResponseCaching();
 //    else await siguiente();
 //});
 
-app.Use(async (context, next) =>
-{
-	await next();
-	if (context.Response.StatusCode == 404)
-	{
-		context.Request.Path = "/Index";
-		await next();
-	}
-});
+//app.Use(async (context, next) =>
+//{
+//	await next();
+//	if (context.Response.StatusCode == 404)
+//	{
+//		context.Request.Path = "/Index";
+//		await next();
+//	}
+//});
 
 app.UseHttpsRedirection();
 

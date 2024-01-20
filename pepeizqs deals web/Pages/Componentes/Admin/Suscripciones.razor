@@ -22,8 +22,9 @@
 											<img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
 										</div>
 
-										<div style="width: 88%; padding-left: 15px; padding-right: 15px;">
-											@juego.Id - @juego.Nombre
+										<div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+											@juego.Nombre<br />
+											<span style="font-size: 13px;">@juego.Id.ToString()</span>
 										</div>
 									</div>
 								</button>
@@ -89,8 +90,8 @@
 
 					<hr/>
 
-					<div style="display: flex; margin-top: 20px; width: 20%;">
-						<button @onclick="@(e => AñadirJuego(e))" class="boton-pequeño" style="text-align: center;">Añadir Suscripcion</button>
+					<div style="display: flex; margin-top: 40px; width: 33%;">
+						<button @onclick="@(e => AñadirJuego(e))" class="boton" style="text-align: center;">Añadir Suscripción</button>
 					</div>					
 				</div>
 			</div>
@@ -124,7 +125,7 @@
 			try
 			{
 				cadenaBusqueda = texto.Value.ToString().Trim();
-				juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+				juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, 250);
 			}
 			catch
 			{
@@ -192,6 +193,12 @@
 	private void CambiarEnlace(ChangeEventArgs texto)
 	{
 		enlaceSeleccionado = texto.Value.ToString();
+
+		if (enlaceSeleccionado.Contains("?") == true)
+		{
+			int int1 = enlaceSeleccionado.IndexOf("?");
+			enlaceSeleccionado = enlaceSeleccionado.Remove(int1, enlaceSeleccionado.Length - int1);
+		}
 	}
 
 	private void CambiarImagenNoticia(ChangeEventArgs texto)

@@ -255,27 +255,6 @@
     <script src="_framework/blazor.server.js" autostart="false"></script>
     <script src="boot.js"></script>
 
-@*     <script>
-        Blazor.start({
-            configureSignalR: function (builder) {
-                let c = builder.build();
-                c.serverTimeoutInMilliseconds = 3000000;
-                c.keepAliveIntervalInMilliseconds = 1500000;
-                builder.build = () => {
-                return c;
-                };
-            }
-        });
-    </script>
-
-    <script>
-        Blazor.start().then(() => {
-            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                document.location.reload();
-            }
-        });
-    </script> *@
-
     <div id="components-reconnect-modal" style="display: none"/>
 
     @await RenderSectionAsync("Scripts", required: false)

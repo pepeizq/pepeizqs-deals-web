@@ -106,7 +106,7 @@ namespace Herramientas
 			{
 				if (precio.FechaActualizacion.Year > 2022)
 				{
-					if (precio.FechaActualizacion.DayOfYear + 2 <= DateTime.Now.DayOfYear)
+					if (precio.FechaActualizacion.Year != DateTime.Now.Year || precio.FechaActualizacion.DayOfYear + 2 <= DateTime.Now.DayOfYear)
 					{
 						fechaEncaja = false;
 					}
@@ -115,7 +115,7 @@ namespace Herramientas
 				{
 					if (precio.FechaDetectado.Year > 2022)
 					{
-						if (precio.FechaDetectado.DayOfYear + 7 <= DateTime.Now.DayOfYear)
+						if (precio.FechaDetectado.Year != DateTime.Now.Year || precio.FechaDetectado.DayOfYear + 7 <= DateTime.Now.DayOfYear)
 						{
 							fechaEncaja = false;
 						}
