@@ -18,28 +18,35 @@ namespace Herramientas
 		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(1);
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
-		{			
+		{
 			using PeriodicTimer contador = new PeriodicTimer(tiempo);
 			{
 				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
 				{
 					if (DateTime.UtcNow.Second == 0)
 					{
-                        SqlConnection conexion = BaseDatos.Conectar();
-
-                        global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
+						using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+						{
+							Tareas tareas = scope.ServiceProvider.GetService<Tareas>();
 						
-						try
-						{
-							await Tareas.Portada();
-						}
-						catch { }
+							SqlConnection conexion = BaseDatos.Conectar();
 
-						try
-						{
-							await Tareas.Tiendas(conexion);
-						}
-						catch { }					
+							global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
+
+							try
+							{
+								await Tareas.Portada();
+							}
+							catch { }
+
+							try
+							{
+								await Tareas.Tiendas(conexion);
+							}
+							catch { }
+
+							conexion.Dispose();
+						}		
 					}
 				}
 			}

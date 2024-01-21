@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+<div class="perfil">
+	<div class="perfil-flexible-centrado">
+		<div class="perfil-flexible-izquierda">
+			<button class="boton" @onclick="@(e => ClickPrecarga(e, enlacePrecarga))">Precargar</button>
+		</div>
+
+		<div class="admin-busqueda">
+			<input @onchange="@(e => CambiarEnlacePrecarga(e))" class="entrada-texto" />
+		</div>
+	</div>
+</div>
+
+@if (juegoAñadir == null)
+{
+	<div class="perfil" style="margin-top: 40px;">
+		<label class="texto-info-entrada">Datos</label>
+		<hr />
+
+		<label class="texto-info-entrada admin-añadir-espacio-top">Titulo</label>
+		<input @onchange="@(e => CambiarVacioNombre(e))" class="entrada-texto" />
+	</div>
+}
+else
+{
+	<div class="perfil" style="margin-top: 40px;">
+		<label class="texto-info-entrada">Datos</label>
+		<hr />
+
+		<label class="texto-info-entrada admin-añadir-espacio-top">Titulo</label>
+		<input class="entrada-texto" value="@juegoAñadir.Nombre" />
+	</div>
+}
+
+
+
+
+@code {
+
+	#nullable disable
+
+	#region Precarga
+
+	private string enlacePrecarga = null;
+
+	private Juegos.Juego juegoAñadir = Juegos.JuegoCrear.Generar();
+
+	private void CambiarEnlacePrecarga(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			enlacePrecarga = texto.Value.ToString();
+		}
+	}
+
+	private async Task ClickPrecarga(MouseEventArgs e, string enlace)
+	{
+		if (APIs.Steam.Juego.Detectar(enlacePrecarga) == true)
+		{
+			juegoAñadir = await APIs.Steam.Juego.CargarDatos(APIs.Steam.Juego.LimpiarID(enlacePrecarga));
+		}
+		else if (APIs.GOG.Juego.Detectar(enlacePrecarga) == true)
+		{
+			juegoAñadir = await APIs.GOG.Juego.CargarDatos(APIs.GOG.Juego.LimpiarSlug(enlacePrecarga));
+		}
+		else if (APIs.EpicGames.Juego.Detectar(enlacePrecarga) == true)
+		{
+			juegoAñadir = await APIs.EpicGames.Juego.CargarDatos(APIs.EpicGames.Juego.LimpiarSlug(enlacePrecarga));
+		}
+
+		if (juegoAñadir != null)
+		{
+			enlacePrecarga = null;
+		}
+	}
+
+	#endregion
+
+	#region Vacio
+
+	private string vacioNombre = null;
+
+	private void CambiarVacioNombre(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioNombre = texto.Value.ToString();
+		}
+	}
+
+	#endregion
+}
