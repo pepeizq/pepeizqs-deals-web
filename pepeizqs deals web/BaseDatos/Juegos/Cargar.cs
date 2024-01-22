@@ -198,6 +198,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(21) == false)
+				{
+					if (lector.GetString(21) != null)
+					{
+						juego.MayorEdad = lector.GetString(21);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 	}

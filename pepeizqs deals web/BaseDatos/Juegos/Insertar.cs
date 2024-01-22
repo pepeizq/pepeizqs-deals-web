@@ -31,9 +31,18 @@ namespace BaseDatos.Juegos
 				añadirF2P2 = ", @freeToPlay";
 			}
 
+			string añadirMayorEdad1 = null;
+			string añadirMayorEdad2 = null;
+
+			if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+			{
+				añadirMayorEdad1 = ", mayorEdad";
+				añadirMayorEdad2 = ", @mayorEdad";
+			}
+
 			string sqlAñadir = "INSERT INTO juegos " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + añadirF2P1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + añadirF2P2 + ") ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + ") ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -60,6 +69,10 @@ namespace BaseDatos.Juegos
 				else if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 				{
 					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+				}
+				else if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+				{
+					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
 				}
 
 				try

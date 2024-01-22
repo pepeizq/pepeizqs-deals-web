@@ -144,6 +144,22 @@ namespace APIs.Steam
 						juego.FreeToPlay = datos.Datos.Free2Play;
 					}
 
+					if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
+					{
+						try
+						{
+							if (int.Parse(datos.Datos.MayorEdad) < 18)
+							{
+								juego.MayorEdad = "false";
+							}
+							else
+							{
+								juego.MayorEdad = "true";
+							}
+						}
+						catch { }
+					}
+
 					try
 					{
 						if (datos.Datos.Precio != null)
@@ -264,6 +280,9 @@ namespace APIs.Steam
 
 		[JsonProperty("is_free")]
 		public string Free2Play { get; set; }
+
+		[JsonProperty("required_age")]
+		public string MayorEdad {  get; set; }
 
 		[JsonProperty("short_description")]
 		public string DescripcionCorta { get; set; }

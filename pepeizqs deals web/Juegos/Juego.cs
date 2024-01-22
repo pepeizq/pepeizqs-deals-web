@@ -35,6 +35,7 @@ namespace Juegos
 		public string SlugGOG { get; set; }
 		public string Maestro { get; set; }
 		public string FreeToPlay { get; set; }
+		public string MayorEdad { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -168,5 +169,15 @@ namespace Juegos
 		Bundle,
 		Music,
 		Software
+	}
+
+	public static class JuegoTipos
+	{
+		public static List<JuegoTipo> CargarListado()
+		{
+			List<JuegoTipo> tipos = Enum.GetValues(typeof(JuegoTipo)).Cast<JuegoTipo>().ToList();
+
+			return tipos;
+		}
 	}
 }
