@@ -135,33 +135,39 @@ namespace BaseDatos.Tiendas
 			return mensaje;
 		}
 
-		public static int TareaLeerOrden()
+		public static AdminTiendas TiendaComprobar()
 		{
-			int orden = 0;
+			List<AdminTiendas> tiendas = new List<AdminTiendas>();
 
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
             {
-                string seleccionarTarea = "SELECT * FROM cronGestionador WHERE id=@id";
+                string seleccionarTarea = "SELECT * FROM adminTiendas";
 
                 using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
                 {
-                    comando.Parameters.AddWithValue("@id", "0");
-
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
-                        if (lector.Read() == true)
-                        {
-							orden = lector.GetInt32(1);
-                        }
+						while (lector.Read())
+						{
+							AdminTiendas tienda = new AdminTiendas
+							{
+								tienda = lector.GetString(0),
+								fecha = DateTime.Parse(lector.GetString(1))
+							};
+
+							tiendas.Add(tienda);
+						}
                     }
                 }
             }
 
 			conexion.Dispose();
 
-			return orden;
+			tiendas.OrderBy(x => x.fecha).ToList();
+
+			return tiendas[0];
         }
 
 		public static string TareaLeerUltimaComprobacion()
@@ -345,5 +351,11 @@ namespace BaseDatos.Tiendas
 
 			return valor;
 		}
+	}
+
+	public class AdminTiendas
+	{
+		public string tienda;
+		public DateTime fecha;
 	}
 }

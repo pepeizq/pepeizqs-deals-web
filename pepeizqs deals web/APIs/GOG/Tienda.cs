@@ -30,6 +30,8 @@ namespace APIs.GOG
 
 		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 			int juegos2 = 0;
 
 			int i = 1;

@@ -38,7 +38,9 @@ namespace APIs.Battlenet
 
         public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
         {
-            int juegos2 = 0;
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+			int juegos2 = 0;
 
 			List<string> listaSlugs = ListaSlugs();
 

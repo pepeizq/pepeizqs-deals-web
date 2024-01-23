@@ -12,6 +12,7 @@ using pepeizqs_deals_web.Data;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Components.Server.Circuits;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -36,6 +37,10 @@ builder.Services.AddRazorPages(opciones =>
 builder.Services.AddServerSideBlazor(opciones =>
 {
     opciones.DetailedErrors = true;
+	opciones.DisconnectedCircuitMaxRetained = 100;
+	opciones.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
+	opciones.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+	opciones.MaxBufferedUnacknowledgedRenderBatches = 10;
 });
 
 //----------------------------------------------------------------------------------

@@ -270,30 +270,30 @@ namespace Herramientas
 				}				
 			}
 
-			int orden = Admin.TareaLeerOrden();
+			AdminTiendas adminTienda = Admin.TiendaComprobar();
 
 			using (conexion)
-			{			
-				if (orden >= 0 && orden < ids.Count)
-				{
-					DateTime ultimaComprobacion = Admin.TareaLeerTienda(ids[orden]);
+			{
+				DateTime ultimaComprobacion = adminTienda.fecha;
 
-					if ((DateTime.Now - ultimaComprobacion) > tiempo)
-					{                       
-						try
-						{
-                            await Tiendas2.TiendasCargar.TareasGestionador(conexion, orden);
-                        }
-						catch { }
-                        
-                        Admin.TareaCambiarOrden(orden += 1);
-                    }
-				}
-				else
+				if ((DateTime.Now - ultimaComprobacion) > tiempo)
 				{
-					Divisas.CogerDatos();
-					Admin.TareaCambiarOrden(0);
-				}			
+					try
+					{
+						await Tiendas2.TiendasCargar.TareasGestionador(conexion, adminTienda.tienda);
+					}
+					catch { }
+				}
+
+				//if (orden >= 0 && orden < ids.Count)
+				//{
+					
+				//}
+				//else
+				//{
+				//	Divisas.CogerDatos();
+				//	//Admin.TareaCambiarOrden(0);
+				//}			
 			}		
 		}
 	}

@@ -35,7 +35,9 @@ namespace APIs.WinGameStore
 
 		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null) 
 		{
-            string html = await Decompiladores.Estandar("https://www.macgamestore.com/affiliate/feeds/p_C1B2A3.json");
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+			string html = await Decompiladores.Estandar("https://www.macgamestore.com/affiliate/feeds/p_C1B2A3.json");
 
 			if (html != null)
 			{

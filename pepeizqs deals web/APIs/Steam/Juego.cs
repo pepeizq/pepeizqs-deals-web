@@ -144,20 +144,18 @@ namespace APIs.Steam
 						juego.FreeToPlay = datos.Datos.Free2Play;
 					}
 
+					juego.MayorEdad = "false";
+
 					if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
 					{
 						try
 						{
-							if (int.Parse(datos.Datos.MayorEdad) < 18)
-							{
-								juego.MayorEdad = "false";
-							}
-							else
+							if (int.Parse(datos.Datos.MayorEdad) >= 18)
 							{
 								juego.MayorEdad = "true";
 							}
 						}
-						catch { }
+						catch {}
 					}
 
 					try

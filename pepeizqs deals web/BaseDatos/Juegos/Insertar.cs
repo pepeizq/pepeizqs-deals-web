@@ -66,18 +66,21 @@ namespace BaseDatos.Juegos
                         comando.Parameters.AddWithValue("@maestro", juego.Maestro);
                     }                       
 				}
-				else if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+				
+				if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 				{
 					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 				}
-				else if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+				
+				if (string.IsNullOrEmpty(juego.MayorEdad) == false)
 				{
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
 				}
 
+				comando.ExecuteNonQuery();
 				try
 				{
-					comando.ExecuteNonQuery();
+					
 				}
 				catch
 				{

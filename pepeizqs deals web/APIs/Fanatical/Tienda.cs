@@ -41,6 +41,8 @@ namespace APIs.Fanatical
 
 		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 			string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
 
 			if (html != null)

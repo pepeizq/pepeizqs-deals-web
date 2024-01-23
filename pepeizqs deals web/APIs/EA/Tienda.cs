@@ -31,7 +31,9 @@ namespace APIs.EA
 
         public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
         {
-            int juegos2 = 0;
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+			int juegos2 = 0;
 
 			string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
 

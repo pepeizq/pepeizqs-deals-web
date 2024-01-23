@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 <div class="perfil">
@@ -23,6 +24,61 @@
 			</div>
 			<div style="width: 80%;">
 				<input class="entrada-texto" @onchange="@(e => CambiarVacioNombre(e))"/>
+			</div>
+		</div>
+	</div>
+
+	<div class="perfil" style="margin-top: 40px;">
+		<label class="texto-info-entrada">Imágenes</label>
+		<hr />
+
+		<div style="display: flex; align-items: start; margin-top: 20px;">
+			<div style="width: 20%; padding: 5px 30px; text-align: right;">
+				<label>Header (460x215)</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" value="@vacioHeader_460x215" @onchange="@(e => CambiarVacioHeader_460x215(e))" />
+				<img src="@vacioHeader_460x215" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-top: 20px;">
+			<div style="width: 20%; padding: 5px 30px; text-align: right;">
+				<label>Capsule (231x87)</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" value="@vacioCapsule_231x87" @onchange="@(e => CambiarVacioCapsule_231x87(e))" />
+				<img src="@vacioCapsule_231x87" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-top: 20px;">
+			<div style="width: 20%; padding: 5px 30px; text-align: right;">
+				<label>Logo</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" value="@vacioLogo" @onchange="@(e => CambiarVacioLogo(e))" />
+				<img src="@vacioLogo" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-top: 20px;">
+			<div style="width: 20%; padding: 5px 30px; text-align: right;">
+				<label>Library (600x900)</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" value="@vacioLibrary_600x900" @onchange="@(e => CambiarVacioLibrary_600x900(e))" />
+				<img src="@vacioLibrary_600x900" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-top: 20px;">
+			<div style="width: 20%; padding: 5px 30px; text-align: right;">
+				<label>Library (1920x620)</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" value="@vacioLibrary_1920x620" @onchange="@(e => CambiarVacioLibrary_1920x620(e))" />
+				<img src="@vacioLibrary_1920x620" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
 			</div>
 		</div>
 	</div>
@@ -458,6 +514,12 @@ else
 	}
 }
 
+<div class="perfil" style="margin-top: 40px;">
+	<div style="width: 25%;">
+		<button class="boton" @onclick="@(e => ClickearAñadir(e))">Añadir</button>
+	</div>	
+</div>
+
 @code {
 
 	#nullable disable
@@ -499,12 +561,57 @@ else
 	#region Vacio
 
 	private string vacioNombre = null;
+	private string vacioHeader_460x215 = null;
+	private string vacioCapsule_231x87 = null;
+	private string vacioLogo = null;
+	private string vacioLibrary_600x900 = null;
+	private string vacioLibrary_1920x620 = null;
 
 	private void CambiarVacioNombre(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
 		{
 			vacioNombre = texto.Value.ToString();
+		}
+	}
+
+	private void CambiarVacioHeader_460x215(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioHeader_460x215 = texto.Value.ToString();
+		}
+	}
+
+	private void CambiarVacioCapsule_231x87(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioCapsule_231x87 = texto.Value.ToString();
+		}
+	}
+
+	private void CambiarVacioLogo(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioLogo = texto.Value.ToString();
+		}
+	}
+
+	private void CambiarVacioLibrary_600x900(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioLibrary_600x900 = texto.Value.ToString();
+		}
+	}
+
+	private void CambiarVacioLibrary_1920x620(ChangeEventArgs texto)
+	{
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			vacioLibrary_1920x620 = texto.Value.ToString();
 		}
 	}
 
@@ -745,4 +852,31 @@ else
 	}
 
 	#endregion
+
+	private void ClickearAñadir(MouseEventArgs e)
+	{
+		if (juegoAñadir == null)
+		{
+			juegoAñadir = Juegos.JuegoCrear.Generar();
+
+			juegoAñadir.Nombre = vacioNombre;
+
+			juegoAñadir.Imagenes.Header_460x215 = vacioHeader_460x215;
+			juegoAñadir.Imagenes.Capsule_231x87 = vacioCapsule_231x87;
+			juegoAñadir.Imagenes.Logo = vacioLogo;
+			juegoAñadir.Imagenes.Library_600x900 = vacioLibrary_600x900;
+			juegoAñadir.Imagenes.Library_1920x620 = vacioLibrary_1920x620;
+		}
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir, conexion);
+		}
+
+		conexion.Dispose();
+
+		juegoAñadir = null;
+	}
 }

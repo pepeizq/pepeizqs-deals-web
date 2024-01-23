@@ -8,49 +8,62 @@
 
 @if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 {
-	<div class="perfil perfil-espacio-bottom" style="padding: 25px 40px;">
-		@foreach (Tienda tienda in TiendasCargar.GenerarListado())
-		{
-			@if (tienda.AdminEnseñar == true)
+	<div style="display: flex; align-items: start;">
+		<div class="perfil" style="padding: 25px 40px; width: 66%;">
+			@foreach (Tienda tienda in TiendasCargar.GenerarListado())
 			{
-				<div class="perfil-flexible-centrado" style="margin-top: 15px; margin-bottom: 15px;">
-					<div style="width: 50%;">
+				@if (tienda.AdminEnseñar == true)
+				{
+					<div style="margin-top: 15px; margin-bottom: 15px;">
 						@if (tienda.AdminInteractuar == true)
 						{
-							<button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80);"></button>
+							<button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 40px;">
+								<div style="display: flex; align-items: center;">
+									<div style="width: 40%;">
+										<img src="@tienda.Imagen300x80" style="height: 40px;" />
+									</div>
+
+									<div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+								</div>
+							</button>
 						}
 						else
 						{
-							<div class="boton-pequeño admin-boton-imagen-300x80" style="background-image: url(@tienda.Imagen300x80); background-color: transparent;"></div>
+							<div style="display: flex; align-items: center; height: fit-content; padding: 20px 40px;">
+								<div style="width: 40%;">
+									<img src="@tienda.Imagen300x80" style="height: 40px;" />
+								</div>
+
+								<div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+							</div>
 						}
 					</div>
-					<div style="width: 50%; padding-left: 30px;">
-						<div class="admin-tiempohace">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+				}
+			}
+		</div>
+
+		<div style="width: 33%; padding-left: 40px;">
+			<div class="perfil">
+				<div class="perfil-flexible-centrado">
+					<div style="width: 25%;">
+						<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
+					</div>
+					<div style="width: 75%; padding-left: 20px;">
+						<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
 					</div>
 				</div>
-			}
-		}
-	</div>
 
-	<div class="perfil">
-		<div class="perfil-flexible-centrado">
-			<div style="width: 25%;">
-				<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
-			</div>
-			<div style="width: 75%; padding-left: 20px;">
-				<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
-			</div>
-		</div>
+				<div style="margin-top: 20px;">
+					Turno: @LeerUltimaTienda()
+				</div>
 
-		<div style="margin-top: 20px;">
-			Turno: @LeerOrden() - Tareador: @Herramientas.Calculadora.HaceTiempo(DateTime.Parse(BaseDatos.Tiendas.Admin.TareaLeerUltimaComprobacion()), "es-ES")
-		</div>
-
-		<div class="perfil-flexible-centrado" style="margin-top: 20px;">
-			<div style="width: 25%;">
-				<button @onclick="@(e => ClickearPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar Portada</button>
+				<div class="perfil-flexible-centrado" style="margin-top: 20px;">
+					<div style="width: 25%;">
+						<button @onclick="@(e => ClickearPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar Portada</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</div>		
 	</div>
 }
 
@@ -72,24 +85,14 @@
 			{
 				Herramientas.Divisas.CogerDatos();
 			}
-
-			if (id == "limpiar")
-			{
-				//BaseDatos.Juegos.Precios.Limpiar(tienda);
-			}
-
-			if (id == "codigos")
-			{
-				// Herramientas.Buscador.ActualizarCodigos();
-			}
-
-
 		}
     }
 
-    private string LeerOrden()
+    private string LeerUltimaTienda()
     {
-        return BaseDatos.Tiendas.Admin.TareaLeerOrden().ToString();
+		BaseDatos.Tiendas.AdminTiendas tienda = BaseDatos.Tiendas.Admin.TiendaComprobar();
+
+        return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
     }
 
     private async Task ClickearPortada(MouseEventArgs e)

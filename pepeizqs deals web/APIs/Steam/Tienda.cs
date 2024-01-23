@@ -38,6 +38,8 @@ namespace APIs.Steam
 
 		public static async Task BuscarOfertas(SqlConnection conexion, bool mirarOfertas, ViewDataDictionary objeto = null)
 		{
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 			int juegos = 0;
 
 			int arranque = 0;

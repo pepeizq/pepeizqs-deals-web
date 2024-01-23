@@ -73,6 +73,8 @@ namespace APIs.Humble
 				{
 					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
+					BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 					using (conexion)
 					{
 						HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);

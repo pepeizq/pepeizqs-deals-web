@@ -39,6 +39,8 @@ namespace APIs.IndieGala
 
 		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 			int i = 1;
 			while (i < 10)
 			{

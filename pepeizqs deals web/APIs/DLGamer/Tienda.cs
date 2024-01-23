@@ -41,6 +41,8 @@ namespace APIs.DLGamer
 
 		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
 		{
+			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
 			int juegos2 = 0;
 
 			string html = await Decompiladores.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");

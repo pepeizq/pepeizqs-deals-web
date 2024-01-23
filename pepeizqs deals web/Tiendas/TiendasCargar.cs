@@ -98,61 +98,61 @@ namespace Tiendas2
 			conexion.Dispose();
         }
 
-		public static async Task TareasGestionador(SqlConnection conexion, int orden)
+		public static async Task TareasGestionador(SqlConnection conexion, string id)
 		{
-			if (orden == 0)
-			{				
+			if (id == APIs.Steam.Tienda.Generar().Id)
+			{
 				await APIs.Steam.Tienda.BuscarOfertas(conexion, true);
 			}
-			else if (orden == 1)
+			else if (id == APIs.GamersGate.Tienda.Generar().Id)
 			{
 				await APIs.GamersGate.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 2)
+			else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
 			{
 				await APIs.Gamesplanet.Tienda.BuscarOfertasUk(conexion);
 			}
-			else if (orden == 3)
+			else if (id == APIs.Gamesplanet.Tienda.GenerarFr().Id)
 			{
 				await APIs.Gamesplanet.Tienda.BuscarOfertasFr(conexion);
 			}
-			else if (orden == 4)
+			else if (id == APIs.Gamesplanet.Tienda.GenerarDe().Id)
 			{
 				await APIs.Gamesplanet.Tienda.BuscarOfertasDe(conexion);
 			}
-			else if (orden == 5)
+			else if (id == APIs.Gamesplanet.Tienda.GenerarUs().Id)
 			{
 				await APIs.Gamesplanet.Tienda.BuscarOfertasUs(conexion);
 			}
-			else if (orden == 6)
+			else if (id == APIs.Fanatical.Tienda.Generar().Id)
 			{
 				await APIs.Fanatical.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 7)
+			else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
 			{
 				await APIs.GreenManGaming.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 8)
+			else if (id == APIs.GOG.Tienda.Generar().Id)
 			{
 				await APIs.GOG.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 9)
+			else if (id == APIs.IndieGala.Tienda.Generar().Id)
 			{
 				await APIs.IndieGala.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 10)
+			else if (id == APIs.WinGameStore.Tienda.Generar().Id)
 			{
 				await APIs.WinGameStore.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 11)
+			else if (id == APIs.EA.Tienda.Generar().Id)
 			{
 				await APIs.EA.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 12)
+			else if (id == APIs.DLGamer.Tienda.Generar().Id)
 			{
 				await APIs.DLGamer.Tienda.BuscarOfertas(conexion);
 			}
-			else if (orden == 13)
+			else if (id == APIs.Battlenet.Tienda.Generar().Id)
 			{
 				await APIs.Battlenet.Tienda.BuscarOfertas(conexion);
 			}

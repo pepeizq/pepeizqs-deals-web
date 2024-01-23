@@ -170,7 +170,8 @@ namespace APIs.GOG
 													Imagenes = imagenes,
 													PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio },
 													PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio },
-													FechaSteamAPIComprobacion = new DateTime(2000, 1, 1)
+													FechaSteamAPIComprobacion = new DateTime(2000, 1, 1),
+													MayorEdad = "false"
 												};
 
 												if (datos.Tipo == "dlc")
