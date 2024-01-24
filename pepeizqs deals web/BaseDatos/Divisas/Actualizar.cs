@@ -7,10 +7,8 @@ namespace BaseDatos.Divisas
 {
 	public static class Actualizar
 	{
-		public static void Ejecutar(Divisa divisa)
+		public static void Ejecutar(Divisa divisa, SqlConnection conexion)
 		{
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
             using (conexion)
 			{
 				string sqlActualizar = "UPDATE divisas " +
@@ -32,8 +30,6 @@ namespace BaseDatos.Divisas
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

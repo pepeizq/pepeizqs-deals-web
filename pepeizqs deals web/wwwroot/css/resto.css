@@ -240,17 +240,6 @@
     margin-top: 30px;
 }
 
-.admin-boton-imagen-300x80 {
-    background-position: center;
-    background-size: 30%;
-    background-color: var(--fondoBotonPequeño);
-    background-origin: content-box;
-    background-repeat: no-repeat;
-    padding: 40px;
-    height: 60px;
-    width: 100%;
-}
-
 .admin-grid {
     display: grid;
     grid-template-columns: 300px 300px 300px;

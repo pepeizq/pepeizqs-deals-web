@@ -10,9 +10,39 @@ namespace BaseDatos.Portada
 	{
 		public static void Juego(global::Juegos.Juego juego, string tabla, SqlConnection conexion)
 		{
+			string añadirMaestro1 = null;
+			string añadirMaestro2 = null;
+
+			if (string.IsNullOrEmpty(juego.Maestro) == false)
+			{
+				if (juego.Maestro.Length > 1)
+				{
+					añadirMaestro1 = ", maestro";
+					añadirMaestro2 = ", @maestro";
+				}
+			}
+
+			string añadirF2P1 = null;
+			string añadirF2P2 = null;
+
+			if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+			{
+				añadirF2P1 = ", freeToPlay";
+				añadirF2P2 = ", @freeToPlay";
+			}
+
+			string añadirMayorEdad1 = null;
+			string añadirMayorEdad2 = null;
+
+			if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+			{
+				añadirMayorEdad1 = ", mayorEdad";
+				añadirMayorEdad2 = ", @mayorEdad";
+			}
+
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-							"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, idMaestra, maestro, freeToPlay) VALUES " +
-							"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @idMaestra, @maestro, @freeToPlay) ";
+							"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, idMaestra" + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + ") VALUES " +
+							"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @idMaestra" + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + ") ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -29,12 +59,29 @@ namespace BaseDatos.Portada
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 				comando.Parameters.AddWithValue("@idMaestra", juego.Id);
-				comando.Parameters.AddWithValue("@maestro", juego.Maestro);
-				comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+				
+				if (string.IsNullOrEmpty(juego.Maestro) == false)
+				{
+					if (juego.Maestro.Length > 1)
+					{
+						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+					}
+				}
 
+				if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+				{
+					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+				}
+
+				if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+				{
+					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
+				}
+
+				comando.ExecuteNonQuery();
 				try
 				{
-					comando.ExecuteNonQuery();
+					
 				}
 				catch
 				{

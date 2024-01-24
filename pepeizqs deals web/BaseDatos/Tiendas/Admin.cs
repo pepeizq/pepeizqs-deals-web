@@ -2,6 +2,7 @@
 
 using Herramientas;
 using Microsoft.Data.SqlClient;
+using Tiendas2;
 
 namespace BaseDatos.Tiendas
 {
@@ -157,7 +158,25 @@ namespace BaseDatos.Tiendas
 								fecha = DateTime.Parse(lector.GetString(1))
 							};
 
-							tiendas.Add(tienda);
+							bool añadir = true;
+
+							foreach (var tienda2 in TiendasCargar.GenerarListado())
+							{
+								if (tienda2.Id == tienda.tienda)
+								{
+									if (tienda2.AdminInteractuar == false)
+									{
+										añadir = false;
+									}
+
+									break;
+								}
+							}
+
+							if (añadir == true)
+							{
+								tiendas.Add(tienda);
+							}							
 						}
                     }
                 }
@@ -165,128 +184,10 @@ namespace BaseDatos.Tiendas
 
 			conexion.Dispose();
 
-			tiendas.OrderBy(x => x.fecha).ToList();
+			tiendas = tiendas.OrderBy(x => x.fecha).ToList();
 
 			return tiendas[0];
         }
-
-		public static string TareaLeerUltimaComprobacion()
-		{
-			string comprobacion = null;
-
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				string seleccionarTarea = "SELECT * FROM cronGestionador WHERE id=@id";
-
-				using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
-				{
-					comando.Parameters.AddWithValue("@id", "1");
-
-					using (SqlDataReader lector = comando.ExecuteReader())
-					{
-						if (lector.Read() == true)
-						{
-							comprobacion = lector.GetString(2);
-						}
-					}
-				}
-			}
-
-			conexion.Dispose();
-
-			return comprobacion;
-		}
-
-		public static DateTime TareaLeerTienda(string tienda)
-		{
-            DateTime fecha = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-            using (conexion)
-            {
-                string seleccionarTienda = "SELECT * FROM adminTiendas WHERE id=@id";
-
-                using (SqlCommand comando = new SqlCommand(seleccionarTienda, conexion))
-                {
-                    comando.Parameters.AddWithValue("@id", tienda);
-
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-                        if (lector.Read() == true)
-                        {
-                            fecha = Convert.ToDateTime(lector.GetString(1));
-                        }
-                    }
-                }
-            }
-
-            conexion.Dispose();
-
-			return fecha;
-        }
-
-		public static void TareaCambiarOrden(int orden)
-		{
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-            using (conexion)
-            {
-                string sqlActualizar = "UPDATE cronGestionador " +
-                            "SET id=@id, posicion=@posicion WHERE id=@id";
-
-                using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-                {
-                    comando.Parameters.AddWithValue("@id", "0");
-                    comando.Parameters.AddWithValue("@posicion", orden);
-
-                    SqlDataReader lector = comando.ExecuteReader();
-
-                    try
-                    {
-                        comando.ExecuteNonQuery();
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            }
-
-			conexion.Dispose();
-        }
-
-		public static void TareaCambiarUltimaComprobacion(string comprobacion)
-		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				string sqlActualizar = "UPDATE cronGestionador " +
-							"SET id=@id, valor1=@valor1 WHERE id=@id";
-
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-				{
-					comando.Parameters.AddWithValue("@id", "1");
-					comando.Parameters.AddWithValue("@valor1", comprobacion);
-
-					SqlDataReader lector = comando.ExecuteReader();
-
-					try
-					{
-						comando.ExecuteNonQuery();
-					}
-					catch
-					{
-
-					}
-				}
-			}
-
-			conexion.Dispose();
-		}
 
 		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
 		{

@@ -30,12 +30,10 @@ namespace Herramientas
 							Tareas tareas = scope.ServiceProvider.GetService<Tareas>();
 						
 							SqlConnection conexion = BaseDatos.Conectar();
-
-							global::BaseDatos.Tiendas.Admin.TareaCambiarUltimaComprobacion(DateTime.Now.ToString());
-
+					
 							try
 							{
-								await Tareas.Portada();
+								await Tareas.Portada(conexion);
 							}
 							catch { }
 
@@ -44,6 +42,11 @@ namespace Herramientas
 								await Tareas.Tiendas(conexion);
 							}
 							catch { }
+
+							if (DateTime.UtcNow.Hour == 14 && DateTime.UtcNow.Minute == 0)
+							{
+								Tareas.Divisas(conexion);
+							}
 
 							conexion.Dispose();
 						}		

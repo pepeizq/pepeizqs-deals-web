@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using BaseDatos.Divisas;
+using Microsoft.Data.SqlClient;
 using System.Xml;
 
 namespace Herramientas
@@ -14,64 +15,58 @@ namespace Herramientas
 
 	public static class Divisas
 	{
-		public static void CogerDatos()
+		public static void ActualizarDatos(SqlConnection conexion)
 		{
 			XmlDocument documento = new XmlDocument();
 
-			try
+			documento.Load("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
+
+			foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
 			{
-				documento.Load("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
-
-				foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
+				if (nodo.Attributes["rate"].Value != null)
 				{
-					if (nodo.Attributes["rate"].Value != null)
+					if (nodo.Attributes["currency"].Value == "USD")
 					{
-						if (nodo.Attributes["currency"].Value == "USD")
+						Divisa dolar = new Divisa
 						{
-							Divisa dolar = new Divisa
-							{
-								Id = "USD",
-								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-								FechaActualizacion = DateTime.Now
-							};
+							Id = "USD",
+							Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+							FechaActualizacion = DateTime.Now
+						};
 
-							if (Buscar.Ejecutar(dolar.Id) == null)
-							{
-								Insertar.Ejecutar(dolar);
-							}
-							else
-							{
-								Actualizar.Ejecutar(dolar);
-							}							
+						if (Buscar.Ejecutar(dolar.Id) == null)
+						{
+							Insertar.Ejecutar(dolar, conexion);
 						}
-						else if (nodo.Attributes["currency"].Value == "GBP")
+						else
 						{
-							Divisa libra = new Divisa
-							{
-								Id = "GBP",
-								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-								FechaActualizacion = DateTime.Now
-							};
+							Actualizar.Ejecutar(dolar, conexion);
+						}
+					}
 
-							if (Buscar.Ejecutar(libra.Id) == null)
-							{
-								Insertar.Ejecutar(libra);
-							}
-							else
-							{
-								Actualizar.Ejecutar(libra);
-							}
+					if (nodo.Attributes["currency"].Value == "GBP")
+					{
+						Divisa libra = new Divisa
+						{
+							Id = "GBP",
+							Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+							FechaActualizacion = DateTime.Now
+						};
+
+						if (Buscar.Ejecutar(libra.Id) == null)
+						{
+							Insertar.Ejecutar(libra, conexion);
+						}
+						else
+						{
+							Actualizar.Ejecutar(libra, conexion);
 						}
 					}
 				}
 			}
-			catch 
-			{ 
-			
-			}
 		}
 
-		public static string Mensaje()
+		public static string MensajeDolar()
 		{
 			string mensaje = string.Empty;
 
@@ -79,19 +74,21 @@ namespace Herramientas
 
 			if (dolar != null)
 			{
-				mensaje = mensaje + "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
+				mensaje = "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
 			}
+
+			return mensaje;
+		}
+
+		public static string MensajeLibra()
+		{
+			string mensaje = string.Empty;
 
 			Divisa libra = Buscar.Ejecutar("GBP");
 
 			if (libra != null)
 			{
-				if (mensaje.Length > 0)
-				{
-					mensaje = mensaje + Environment.NewLine;
-				}
-
-				mensaje = mensaje + "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
+				mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
 			}
 
 			return mensaje;

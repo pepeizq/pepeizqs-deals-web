@@ -9,21 +9,19 @@ namespace Herramientas
 {
 	public class Tareas
 	{
-		public static async Task Portada()
+		public static async Task Portada(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 
 			List<Juego> juegosDestacadosMostrar = new List<Juego>();
 			List<Juego> juegosMinimosMostrar = new List<Juego>();
 
-			SqlConnection conexion = BaseDatos.Conectar();
+			List<Juego> juegos = new List<Juego>();
 
-			using (conexion)
+			juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
+
+			if (juegos != null)
 			{
-				List<Juego> juegos = new List<Juego>();
-
-				juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
-
 				List<Juego> juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
 
 				if (juegosConMinimos != null)
@@ -65,7 +63,7 @@ namespace Herramientas
 								if (minimo.FreeToPlay.ToLower() == "true")
 								{
 									añadir = false;
-								}								
+								}
 							}
 
 							if (añadir == true && minimo != null)
@@ -74,7 +72,11 @@ namespace Herramientas
 								{
 									if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
 									{
-										if (minimo.Analisis.Cantidad.Length >= 6)
+										string tempCantidad = minimo.Analisis.Cantidad;
+										tempCantidad = tempCantidad.Replace(".", null);
+										tempCantidad = tempCantidad.Replace(",", null);
+
+										if (int.Parse(tempCantidad) >= 5000)
 										{
 											if (i < 60)
 											{
@@ -82,8 +84,8 @@ namespace Herramientas
 												i += 1;
 											}
 										}
-									}								
-								}							
+									}
+								}
 							}
 						}
 
@@ -129,7 +131,11 @@ namespace Herramientas
 								{
 									if (string.IsNullOrEmpty(juegosConMinimos[j].Analisis.Cantidad) == false)
 									{
-										if (juegosConMinimos[j].Analisis.Cantidad.Length < 4)
+										string tempCantidad = juegosConMinimos[j].Analisis.Cantidad;
+										tempCantidad = tempCantidad.Replace(".", null);
+										tempCantidad = tempCantidad.Replace(",", null);
+
+										if (int.Parse(tempCantidad) < 500)
 										{
 											añadir = false;
 										}
@@ -194,72 +200,70 @@ namespace Herramientas
 						#endregion
 					}
 				}
+			}
 
-				//----------------------------------------------------------
+			//----------------------------------------------------------
 
-				#region Noticias
+			#region Noticias
 
-				List<Noticia> noticiasMostrar = new List<Noticia>();
-				List<Noticia> noticiaEvento = new List<Noticia>();
+			List<Noticia> noticiasMostrar = new List<Noticia>();
+			List<Noticia> noticiaEvento = new List<Noticia>();
 
-				List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-				if (noticias.Count > 0)
+			if (noticias.Count > 0)
+			{
+				int i = 0;
+				foreach (var noticia in noticias)
 				{
-					int i = 0;
-					foreach (var noticia in noticias)
+					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
 					{
-						if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+						if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
 						{
-							if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-							{
-								DateTime fechaEncabezado = noticia.FechaEmpieza;
-								fechaEncabezado = fechaEncabezado.AddDays(3);
+							DateTime fechaEncabezado = noticia.FechaEmpieza;
+							fechaEncabezado = fechaEncabezado.AddDays(3);
 
-								if (DateTime.Now < fechaEncabezado)
-								{
-									noticiaEvento.Add(noticia);
-								}
-							}
-
-							if (i < 6)
+							if (DateTime.Now < fechaEncabezado)
 							{
-								noticiasMostrar.Add(noticia);
-								i += 1;
+								noticiaEvento.Add(noticia);
 							}
+						}
+
+						if (i < 6)
+						{
+							noticiasMostrar.Add(noticia);
+							i += 1;
 						}
 					}
 				}
-
-				if (noticiasMostrar.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
-
-					foreach (var noticia in noticiasMostrar)
-					{
-						global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
-					}
-				}
-
-				if (noticiaEvento.Count > 0)
-				{
-					global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
-
-					foreach (var noticia in noticiaEvento)
-					{
-						global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
-					}
-				}
-
-				#endregion
 			}
 
-			conexion.Dispose();
+			if (noticiasMostrar.Count > 0)
+			{
+				global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
+
+				foreach (var noticia in noticiasMostrar)
+				{
+					global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
+				}
+			}
+
+			if (noticiaEvento.Count > 0)
+			{
+				global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
+
+				foreach (var noticia in noticiaEvento)
+				{
+					global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
+				}
+			}
+
+			#endregion
 		}
 
 		public async static Task Tiendas(SqlConnection conexion)
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(2);
+			TimeSpan tiempo = TimeSpan.FromMinutes(10);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -283,18 +287,13 @@ namespace Herramientas
 						await Tiendas2.TiendasCargar.TareasGestionador(conexion, adminTienda.tienda);
 					}
 					catch { }
-				}
-
-				//if (orden >= 0 && orden < ids.Count)
-				//{
-					
-				//}
-				//else
-				//{
-				//	Divisas.CogerDatos();
-				//	//Admin.TareaCambiarOrden(0);
-				//}			
+				}	
 			}		
+		}
+
+		public static void Divisas(SqlConnection conexion)
+		{
+			Herramientas.Divisas.ActualizarDatos(conexion);
 		}
 	}
 }

@@ -73,7 +73,7 @@
   },
   {
     "Id": "Index.HighDealsInfo",
-    "Valor": "These deals are historical lows that have not been in bundles, free or subscriptions. And they also exceed 10,000 reviews on Steam."
+    "Valor": "These deals are historical lows that have not been in bundles, free or subscriptions. And they also exceed 5,000 reviews on Steam."
   },
   {
     "Id": "Index.LastLows",
@@ -85,7 +85,7 @@
   },
   {
     "Id": "Index.LastLowsInfo",
-    "Valor": "These deals are historical lows that have exceed 1000 reviews on Steam."
+    "Valor": "These deals are historical lows that have exceed 500 reviews on Steam."
   },
   {
     "Id": "Index.LastAdded",

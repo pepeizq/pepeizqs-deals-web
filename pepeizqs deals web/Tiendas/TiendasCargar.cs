@@ -31,7 +31,7 @@ namespace Tiendas2
 			return tiendas;
 		}
 
-        public static async void AdminTiendas(string id)
+        public static async Task AdminTiendas(string id)
         {
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 

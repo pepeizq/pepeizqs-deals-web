@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.Data.SqlClient
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using Tiendas2
 
@@ -44,23 +45,35 @@
 
 		<div style="width: 33%; padding-left: 40px;">
 			<div class="perfil">
-				<div class="perfil-flexible-centrado">
-					<div style="width: 25%;">
-						<button @onclick="@(e => ClickearTienda(e, "divisas"))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
+				<label>Siguiente Comprobación</label>
+				<hr />
+
+				<div>
+					@LeerSiguienteTienda()
+				</div>
+			</div>
+
+			<div class="perfil" style="margin-top: 30px;">
+				<label>Divisas</label>
+				<hr/>
+
+				<div>
+					<div>
+						<button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 					</div>
-					<div style="width: 75%; padding-left: 20px;">
-						<div class="admin-tiempohace">@Herramientas.Divisas.Mensaje()</div>
+					<div style="padding-top: 20px;">
+						<div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
+						<div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
 					</div>
 				</div>
+			</div>
 
-				<div style="margin-top: 20px;">
-					Turno: @LeerUltimaTienda()
-				</div>
+			<div class="perfil" style="margin-top: 30px;">
+				<label>Portada</label>
+				<hr />
 
-				<div class="perfil-flexible-centrado" style="margin-top: 20px;">
-					<div style="width: 25%;">
-						<button @onclick="@(e => ClickearPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar Portada</button>
-					</div>
+				<div>
+					<button @onclick="@(e => ActualizarPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 				</div>
 			</div>
 		</div>		
@@ -73,30 +86,44 @@
 
 	private string tiendaElegida = null;
 
-	private void ClickearTienda(MouseEventArgs e, string id)
+	private async Task ClickearTienda(MouseEventArgs e, string id)
 	{
 		tiendaElegida = id;
 
 		if (id != null)
 		{
-			TiendasCargar.AdminTiendas(id);
-
-			if (id == "divisas")
-			{
-				Herramientas.Divisas.CogerDatos();
-			}
+			await TiendasCargar.AdminTiendas(id);
 		}
-    }
+	}
 
-    private string LeerUltimaTienda()
-    {
+	private string LeerSiguienteTienda()
+	{
 		BaseDatos.Tiendas.AdminTiendas tienda = BaseDatos.Tiendas.Admin.TiendaComprobar();
 
-        return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
-    }
+		return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
+	}
 
-    private async Task ClickearPortada(MouseEventArgs e)
-    {
-		await Herramientas.Tareas.Portada();
+	private async Task ActualizarPortada(MouseEventArgs e)
+	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			await Herramientas.Tareas.Portada(conexion);
+		}
+
+		conexion.Dispose();
+	}
+
+	private void ActualizarDivisas(MouseEventArgs e)
+	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			Herramientas.Divisas.ActualizarDatos(conexion);
+		}
+
+		conexion.Dispose();		
 	}
 }
