@@ -36,11 +36,11 @@ namespace Herramientas
 
 			using (StreamReader r = new StreamReader("Idiomas/" + idiomaUsuario + ".json"))
 			{
-				string json = r.ReadToEnd();
 				List<Idioma> items = new List<Idioma>();
 				
 				try
 				{
+					string json = r.ReadToEnd();
 					items = JsonConvert.DeserializeObject<List<Idioma>>(json);
 				}
 				catch { }

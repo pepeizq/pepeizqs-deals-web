@@ -19,6 +19,7 @@
     <None Remove="Herramientas\Divisas.cs~RF3a149905.TMP" />
     <None Remove="Pages\Componentes\Admin\Pendientes.razor~RF25ab83bf.TMP" />
     <None Remove="Pages\Componentes\Secciones\Juego.razor~RFb3c9edb.TMP" />
+    <None Remove="Plantillas\GanadorSorteo.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -116,6 +117,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\ContraseñaReseteada.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plantillas\GanadorSorteo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\NuevaNoticia.html">

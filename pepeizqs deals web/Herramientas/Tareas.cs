@@ -263,7 +263,7 @@ namespace Herramientas
 
 		public async static Task Tiendas(SqlConnection conexion)
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(10);
+			TimeSpan tiempo = TimeSpan.FromMinutes(60);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())

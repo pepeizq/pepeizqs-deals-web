@@ -15,7 +15,7 @@ namespace Herramientas
 			_factoria = factory;
 		}
 
-		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(1);
+		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(600);
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
@@ -23,33 +23,30 @@ namespace Herramientas
 			{
 				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
 				{
-					if (DateTime.UtcNow.Second == 0)
+					using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
 					{
-						using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+						Tareas tareas = scope.ServiceProvider.GetService<Tareas>();
+
+						SqlConnection conexion = BaseDatos.Conectar();
+
+						try
 						{
-							Tareas tareas = scope.ServiceProvider.GetService<Tareas>();
-						
-							SqlConnection conexion = BaseDatos.Conectar();
-					
-							try
-							{
-								await Tareas.Portada(conexion);
-							}
-							catch { }
+							await Tareas.Portada(conexion);
+						}
+						catch { }
 
-							try
-							{
-								await Tareas.Tiendas(conexion);
-							}
-							catch { }
+						try
+						{
+							await Tareas.Tiendas(conexion);
+						}
+						catch { }
 
-							if (DateTime.UtcNow.Hour == 14 && DateTime.UtcNow.Minute == 0)
-							{
-								Tareas.Divisas(conexion);
-							}
+						if (DateTime.UtcNow.Hour == 14 && DateTime.UtcNow.Minute == 0)
+						{
+							Tareas.Divisas(conexion);
+						}
 
-							conexion.Dispose();
-						}		
+						conexion.Dispose();
 					}
 				}
 			}

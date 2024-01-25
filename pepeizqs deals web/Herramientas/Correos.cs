@@ -7,11 +7,37 @@ using MailKit.Security;
 using MailKit;
 using Noticias;
 using System.Net.Mail;
+using Sorteos2;
 
 namespace Herramientas
 {
 	public static class Correos
 	{
+		public static void EnviarGanadorSorteo(Sorteo sorteo, string correoHacia)
+		{
+			Juegos.Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
+
+			if (juego != null)
+			{
+				string titulo = "You have won the giveaway with the game " + juego.Nombre;
+
+				string html = string.Empty;
+
+				using (StreamReader r = new StreamReader("Plantillas/GanadorSorteo.html"))
+				{
+					html = r.ReadToEnd();
+				}
+
+
+
+				html = html.Replace("{{titulo}}", titulo);
+				html = html.Replace("{{imagen}}", juego.Imagenes.Header_460x215);
+				//html = html.Replace("{{contenido}}", contenido);
+				html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			}
+
+		}
+
 		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia)
 		{
 			string titulo = noticia.TituloEn;
