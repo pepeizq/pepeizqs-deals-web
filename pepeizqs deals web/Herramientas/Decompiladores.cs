@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Net;
 
@@ -8,50 +7,33 @@ namespace Herramientas
 {
     public static class Decompiladores
     {
-		private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
-		{
-            AutomaticDecompression = DecompressionMethods.GZip,
-			PooledConnectionLifetime = TimeSpan.FromMinutes(30),
-			PooledConnectionIdleTimeout = TimeSpan.FromMinutes(15),
-			MaxConnectionsPerServer = 50
-		}, false);
+		//private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
+		//{
+		//	AutomaticDecompression = DecompressionMethods.GZip,
+		//	PooledConnectionLifetime = TimeSpan.FromMinutes(15),
+		//	PooledConnectionIdleTimeout = TimeSpan.FromMinutes(10),
+		//	MaxConnectionsPerServer = 2
+		//}, false);
 
-        [HttpGet]
-        public static async Task<string> Estandar(string enlace)
+		public static async Task<string> Estandar(string enlace)
         {
-            //ServiceProvider serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+			IHttpClientFactory clientFactory = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+			HttpClient cliente = clientFactory.CreateClient("Decompilador");
 
-            //var clientFactory = serviceProvider.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-            //HttpClient cliente = clientFactory.CreateClient();
-
-            string contenido = string.Empty;
+			string contenido = string.Empty;
 
 			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
-            int i = 0;
-			while (i < 100)
+			try
 			{
-                try
-                {
-                    HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
-                    contenido = await respuesta.Content.ReadAsStringAsync();
-                    respuesta.Dispose();
-                }
-                catch { }
-
-				if (string.IsNullOrEmpty(contenido) == false) 
-				{
-					break;
-				}
-				else
-				{
-					await Task.Delay(1000);
-				}
-
-                i += 1;
+				HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+				contenido = await respuesta.Content.ReadAsStringAsync();
+				respuesta.Dispose();
 			}
+			catch { }
 
-            return contenido;
+			return contenido;
         }
 
 		public static string GZipFormato(string enlace) 

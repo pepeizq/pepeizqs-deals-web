@@ -15,13 +15,13 @@ namespace Herramientas
 			_factoria = factory;
 		}
 
-		private readonly TimeSpan tiempo = TimeSpan.FromSeconds(600);
-
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer contador = new PeriodicTimer(tiempo);
+			using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+			
+			try
 			{
-				while (!tokenParar.IsCancellationRequested && await contador.WaitForNextTickAsync(tokenParar))
+				while (await timer.WaitForNextTickAsync(tokenParar))
 				{
 					using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
 					{
@@ -50,9 +50,13 @@ namespace Herramientas
 					}
 				}
 			}
+			catch (OperationCanceledException)
+			{
+				
+			}
 		}
 
-        public override async Task StopAsync(CancellationToken stoppingToken)
+		public override async Task StopAsync(CancellationToken stoppingToken)
         {
             await base.StopAsync(stoppingToken);
         }

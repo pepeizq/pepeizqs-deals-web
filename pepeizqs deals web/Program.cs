@@ -79,14 +79,13 @@ builder.Services.AddHealthChecks();
 
 //----------------------------------------------------------------------------------
 
-//builder.Services.AddHttpClient("ConfiguredHttpMessageHandler")
-//    .ConfigurePrimaryHttpMessageHandler(() =>
-//        new HttpClientHandler
-//        {
-//            AllowAutoRedirect = true,
-//            UseDefaultCredentials = true,
-//            AutomaticDecompression = System.Net.DecompressionMethods.GZip
-//        });
+builder.Services.AddHttpClient("Decompilador")
+    .ConfigurePrimaryHttpMessageHandler(() =>
+        new HttpClientHandler
+        {
+            AutomaticDecompression = System.Net.DecompressionMethods.GZip,
+			MaxConnectionsPerServer = 2
+		});
 
 builder.Services.AddSignalR(opciones =>
 {

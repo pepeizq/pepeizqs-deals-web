@@ -8,19 +8,8 @@
     <UserSecretsId>0e01717b-b8fb-4a4e-8d56-378f1a9f3771</UserSecretsId>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
-    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Areas\Identity\Data\Usuario.cs~RF12b6df03.TMP" />
-    <None Remove="BaseDatos\Juegos\Actualizar.cs~RF265fa95c.TMP" />
-    <None Remove="BaseDatos\Sorteos\Insertar.cs~RF12f75f67.TMP" />
-    <None Remove="Herramientas\Divisas.cs~RF3a149905.TMP" />
-    <None Remove="Pages\Componentes\Admin\Pendientes.razor~RF25ab83bf.TMP" />
-    <None Remove="Pages\Componentes\Secciones\Juego.razor~RFb3c9edb.TMP" />
-    <None Remove="Plantillas\GanadorSorteo.html" />
-  </ItemGroup>
 
   <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />

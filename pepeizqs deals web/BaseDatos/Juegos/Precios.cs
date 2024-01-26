@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using ImageProcessor.Imaging.Formats;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
