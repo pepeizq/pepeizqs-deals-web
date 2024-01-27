@@ -8,6 +8,7 @@ namespace Herramientas
 	{
 		private readonly ILogger<TareasGestionador> _logger;
 		private readonly IServiceScopeFactory _factoria;
+		public bool funcionando { get; set; }
 
 		public TareasGestionador(ILogger<TareasGestionador> logger, IServiceScopeFactory factory)	
 		{
@@ -25,6 +26,8 @@ namespace Herramientas
 				{
 					using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
 					{
+						funcionando = true;
+
 						Tareas tareas = scope.ServiceProvider.GetService<Tareas>();
 
 						SqlConnection conexion = BaseDatos.Conectar();
@@ -58,6 +61,8 @@ namespace Herramientas
 
 		public override async Task StopAsync(CancellationToken stoppingToken)
         {
+			funcionando = false;
+
             await base.StopAsync(stoppingToken);
         }
     }

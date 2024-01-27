@@ -76,6 +76,16 @@
 					<button @onclick="@(e => ActualizarPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 				</div>
 			</div>
+
+			<div class="perfil" style="margin-top: 30px;">
+				<label>Tareas</label>
+				<hr />
+				
+				<div>
+					<button @onclick="@(e => PararTareas(e))" class="boton-pequeño" style="text-align: center;">Parar</button>
+				</div>
+				@Tareas.funcionando
+			</div>
 		</div>		
 	</div>
 }
@@ -125,5 +135,16 @@
 		}
 
 		conexion.Dispose();		
+	}
+
+	[Inject]
+	Herramientas.TareasGestionador Tareas { set; get; }
+
+	private async void PararTareas(MouseEventArgs e)
+	{
+		if (Tareas.funcionando == true)
+		{
+			await Tareas.StopAsync(new System.Threading.CancellationToken());
+		}
 	}
 }

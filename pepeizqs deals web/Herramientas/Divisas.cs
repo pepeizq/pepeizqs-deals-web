@@ -19,51 +19,55 @@ namespace Herramientas
 		{
 			XmlDocument documento = new XmlDocument();
 
-			documento.Load("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
-
-			foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
+			try 
 			{
-				if (nodo.Attributes["rate"].Value != null)
+				documento.Load("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
+
+				foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
 				{
-					if (nodo.Attributes["currency"].Value == "USD")
+					if (nodo.Attributes["rate"].Value != null)
 					{
-						Divisa dolar = new Divisa
+						if (nodo.Attributes["currency"].Value == "USD")
 						{
-							Id = "USD",
-							Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-							FechaActualizacion = DateTime.Now
-						};
+							Divisa dolar = new Divisa
+							{
+								Id = "USD",
+								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+								FechaActualizacion = DateTime.Now
+							};
 
-						if (Buscar.Ejecutar(dolar.Id) == null)
-						{
-							Insertar.Ejecutar(dolar, conexion);
+							if (Buscar.Ejecutar(dolar.Id) == null)
+							{
+								Insertar.Ejecutar(dolar, conexion);
+							}
+							else
+							{
+								Actualizar.Ejecutar(dolar, conexion);
+							}
 						}
-						else
-						{
-							Actualizar.Ejecutar(dolar, conexion);
-						}
-					}
 
-					if (nodo.Attributes["currency"].Value == "GBP")
-					{
-						Divisa libra = new Divisa
+						if (nodo.Attributes["currency"].Value == "GBP")
 						{
-							Id = "GBP",
-							Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-							FechaActualizacion = DateTime.Now
-						};
+							Divisa libra = new Divisa
+							{
+								Id = "GBP",
+								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+								FechaActualizacion = DateTime.Now
+							};
 
-						if (Buscar.Ejecutar(libra.Id) == null)
-						{
-							Insertar.Ejecutar(libra, conexion);
-						}
-						else
-						{
-							Actualizar.Ejecutar(libra, conexion);
+							if (Buscar.Ejecutar(libra.Id) == null)
+							{
+								Insertar.Ejecutar(libra, conexion);
+							}
+							else
+							{
+								Actualizar.Ejecutar(libra, conexion);
+							}
 						}
 					}
 				}
 			}
+			catch { }
 		}
 
 		public static string MensajeDolar()
