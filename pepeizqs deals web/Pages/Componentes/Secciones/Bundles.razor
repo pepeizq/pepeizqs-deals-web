@@ -220,36 +220,6 @@
 			</div>
 		}
 	}
-
-	@* @foreach (var tipo in Bundles2.BundlesCargar.CargarBundles())
-	{
-		@if (@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda != null)
-		{
-			<hr>
-
-			<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
-				<div style="width: 25%;">
-					<div class="perfil">
-						<img src="@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda" style="max-width: 100%;" />
-					</div>
-				</div>
-
-				<div style="width: 75%; padding-left: 20px;">
-					<div class="perfil">
-						@foreach (var bundle in bundlesPasados)
-						{
-							if (tipo == bundle.Tipo)
-							{
-								<div>
-									<a href="/bundle/@bundle.Id">@bundle.NombreBundle</a> @bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
-								</div>
-							}
-						}
-					</div>
-				</div>
-			</div>
-		}	
-	} *@
 }
 
 @code {

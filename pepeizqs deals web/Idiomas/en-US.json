@@ -684,6 +684,22 @@
     "Valor": "Free to Play"
   },
   {
+    "Id": "Search.String7",
+    "Valor": "Games"
+  },
+  {
+    "Id": "Search.String8",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "Search.String9",
+    "Valor": "Soundtracks"
+  },
+  {
+    "Id": "Search.String10",
+    "Valor": "Software"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Historical Lows"
   },

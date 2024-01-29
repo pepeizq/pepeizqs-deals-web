@@ -739,3 +739,7 @@ select {
     margin-top: 50px;
     transform: translateX(-50%);
 }
+
+.subir-arriba:hover {
+    transform: scale(1.1);
+}

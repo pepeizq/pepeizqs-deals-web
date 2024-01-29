@@ -680,6 +680,22 @@
     "Valor": "Gratis para Jugar"
   },
   {
+    "Id": "Search.String7",
+    "Valor": "Juegos"
+  },
+  {
+    "Id": "Search.String8",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "Search.String9",
+    "Valor": "Bandas Sonoras"
+  },
+  {
+    "Id": "Search.String10",
+    "Valor": "Software"
+  },
+  {
     "Id": "HistoricalLow.Title",
     "Valor": "Mínimos Históricos"
   },
