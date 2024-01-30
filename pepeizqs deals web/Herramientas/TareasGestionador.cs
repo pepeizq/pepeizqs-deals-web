@@ -32,21 +32,25 @@ namespace Herramientas
 
 						SqlConnection conexion = BaseDatos.Conectar();
 
-						try
+						if (conexion.State == System.Data.ConnectionState.Open)
 						{
-							await Tareas.Portada(conexion);
-						}
-						catch { }
+							try
+							{
+								await Tareas.Portada(conexion);
+							}
+							catch { }
 
-						try
-						{
-							await Tareas.Tiendas(conexion);
-						}
-						catch { }
+							try
+							{
+								await Tareas.Tiendas(conexion);
+							}
+							catch { }
 
-						if (DateTime.UtcNow.Hour == 14 && DateTime.UtcNow.Minute == 0)
-						{
-							Tareas.Divisas(conexion);
+							try
+							{
+								await Tareas.Divisas(conexion);
+							}
+							catch { }
 						}
 
 						conexion.Dispose();

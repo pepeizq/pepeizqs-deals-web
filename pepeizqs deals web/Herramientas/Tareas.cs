@@ -291,9 +291,18 @@ namespace Herramientas
 			}		
 		}
 
-		public static void Divisas(SqlConnection conexion)
+		public async static Task Divisas(SqlConnection conexion)
 		{
-			Herramientas.Divisas.ActualizarDatos(conexion);
+			TimeSpan tiempo = TimeSpan.FromHours(24);
+
+			Divisa dolar = global::BaseDatos.Divisas.Buscar.Ejecutar("USD");
+
+			DateTime ultimaComprobacion = dolar.FechaActualizacion;
+
+			if ((DateTime.Now - ultimaComprobacion) > tiempo)
+			{
+				await Herramientas.Divisas.ActualizarDatos(conexion);
+			}			
 		}
 	}
 }

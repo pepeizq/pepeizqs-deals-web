@@ -15,7 +15,7 @@ namespace Herramientas
 
 	public static class Divisas
 	{
-		public static void ActualizarDatos(SqlConnection conexion)
+		public static async Task ActualizarDatos(SqlConnection conexion)
 		{
 			XmlDocument documento = new XmlDocument();
 

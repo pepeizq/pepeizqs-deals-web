@@ -84,7 +84,10 @@
 				<div>
 					<button @onclick="@(e => PararTareas(e))" class="boton-pequeño" style="text-align: center;">Parar</button>
 				</div>
-				@Tareas.funcionando
+
+				<div style="margin-top: 10px;">
+					@Tareas.funcionando
+				</div>				
 			</div>
 		</div>		
 	</div>
@@ -125,13 +128,13 @@
 		conexion.Dispose();
 	}
 
-	private void ActualizarDivisas(MouseEventArgs e)
+	private async Task ActualizarDivisas(MouseEventArgs e)
 	{
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 		using (conexion)
 		{
-			Herramientas.Divisas.ActualizarDatos(conexion);
+			await Herramientas.Divisas.ActualizarDatos(conexion);
 		}
 
 		conexion.Dispose();		
@@ -145,6 +148,10 @@
 		if (Tareas.funcionando == true)
 		{
 			await Tareas.StopAsync(new System.Threading.CancellationToken());
+		}
+		else
+		{
+			await Tareas.StartAsync(new System.Threading.CancellationToken());
 		}
 	}
 }

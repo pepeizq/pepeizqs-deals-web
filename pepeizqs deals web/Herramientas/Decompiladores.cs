@@ -1,11 +1,12 @@
 ﻿#nullable disable
 
+using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Net;
 
 namespace Herramientas
 {
-    public static class Decompiladores
+	public static class Decompiladores
     {
 		//private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
 		//{
@@ -17,12 +18,15 @@ namespace Herramientas
 
 		public static async Task<string> Estandar(string enlace)
         {
+			Thread.Sleep(5000);
+
 			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-			IHttpClientFactory clientFactory = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-			HttpClient cliente = clientFactory.CreateClient("Decompilador");
+			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+			HttpClient cliente = factoria.CreateClient("Decompilador");
 
 			string contenido = string.Empty;
 
+			cliente.DefaultRequestHeaders.Clear();
 			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
 			try
