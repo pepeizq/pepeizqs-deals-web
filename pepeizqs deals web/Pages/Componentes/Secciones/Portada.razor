@@ -140,6 +140,17 @@
 	</div>
 }
 
+@if (tooltipMostrar == true && tooltipJuego != null)
+{
+	<div style="padding: 20px; position: fixed; left: @x; top: @y; margin: auto;">
+		<div style="display: flex; margin-bottom: 10px;">
+			<img src="@CargarDRM(tooltipJuego)" style="max-width: 20px; max-height: 20px; margin-right: 20px;" />
+			<img src="@CargarIconoTienda(tooltipJuego)" style="width: 20px; height: 20px;" />
+		</div>
+		<labelx>@CargarFechaDetectado(tooltipJuego)</labelx>
+	</div>
+}
+
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
@@ -153,13 +164,15 @@
 		</div>
 	</div>
 
+	@x
+
 	<div style="display: flex; align-items: center; margin-bottom: 60px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
 		<div class="destacados-espacio" style="display: grid; grid-auto-flow: column;">
 			@foreach (global::Juegos.Juego destacado in juegosDestacadosMostrar)
 			{
-				<div class="tooltip2 destacado-juego">
+				<div class="tooltip2 destacado-juego" @onmousemove="@(e => EnseñarTooltip(e, destacado))" @onmouseleave="@(e => OcultarTooltip(e))">
 					<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 3px;">
 						<div>
 							<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
@@ -174,7 +187,7 @@
 						</div>
 					</a>
 
-					<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; width: 100%;">
+					<div class="tooltip4" style="padding: 20px; width: 100%;">
 						<div style="display: flex; margin-bottom: 10px;">
 							<img src="@CargarDRM(destacado)" style="max-width: 20px; max-height: 20px; margin-right: 20px;" />
 							<img src="@CargarIconoTienda(destacado)" style="width: 20px; height: 20px;" />
@@ -290,7 +303,6 @@ else
 				</div>
 			</a>
 		}
-
 	</div>
 }
 
@@ -420,7 +432,7 @@ else
 					}
 				}
 			}
-			
+
 			#endregion
 
 			#region Minimos
@@ -490,7 +502,7 @@ else
 					}
 				}
 			}
-			
+
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
 
 			#endregion
@@ -760,5 +772,27 @@ else
 		}
 
 		return imagen;
+	}
+
+	private bool tooltipMostrar = false;
+	private Juegos.Juego tooltipJuego = null;
+	private string x = string.Empty;
+	private string y = string.Empty;
+
+	private void EnseñarTooltip(MouseEventArgs args, Juegos.Juego juegoSeleccionado)
+	{
+		tooltipMostrar = true;
+
+		tooltipJuego = juegoSeleccionado;
+
+		x = args.ScreenX.ToString();
+		y = args.ScreenY.ToString();
+	}
+
+	private void OcultarTooltip(MouseEventArgs args)
+	{
+		tooltipMostrar = false;
+
+		tooltipJuego = null;
 	}
 }

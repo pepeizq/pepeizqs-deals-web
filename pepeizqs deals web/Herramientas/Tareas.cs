@@ -263,7 +263,7 @@ namespace Herramientas
 
 		public async static Task Tiendas(SqlConnection conexion)
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(180);
+			TimeSpan tiempo = TimeSpan.FromMinutes(150);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -293,7 +293,7 @@ namespace Herramientas
 
 		public async static Task Divisas(SqlConnection conexion)
 		{
-			TimeSpan tiempo = TimeSpan.FromHours(24);
+			TimeSpan tiempo = TimeSpan.FromMinutes(60);
 
 			Divisa dolar = global::BaseDatos.Divisas.Buscar.Ejecutar("USD");
 

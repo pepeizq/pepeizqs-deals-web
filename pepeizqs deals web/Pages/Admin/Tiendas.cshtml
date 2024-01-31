@@ -16,6 +16,6 @@
 {
 	@if (await UsuarioCoger.RolDios(UserManager, User) == true)
 	{	
-		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.ServerPrerendered))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Tiendas>(RenderMode.ServerPrerendered, new { dominio = HttpContext.Request.Host.Value }))
 	}
 }

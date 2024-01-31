@@ -80,13 +80,16 @@
 			<div class="perfil" style="margin-top: 30px;">
 				<label>Tareas</label>
 				<hr />
-				
-				<div>
-					<button @onclick="@(e => PararTareas(e))" class="boton-pequeño" style="text-align: center;">Parar</button>
-				</div>
 
+				@if (dominio == "beta.pepeizqdeals.com")
+				{
+					<div>
+						<button @onclick="@(e => PararTareas(e))" class="boton-pequeño" style="text-align: center;">Parar</button>
+					</div>
+				}
+				
 				<div style="margin-top: 10px;">
-					@Tareas.funcionando
+					@Tareas.Funcionando
 				</div>				
 			</div>
 		</div>		
@@ -97,7 +100,22 @@
 
 	#nullable disable
 
+	[Parameter]
+	public string dominio { get; set; }
+
 	private string tiendaElegida = null;
+
+	protected async override Task OnInitializedAsync()
+	{
+		@if (dominio != "beta.pepeizqdeals.com")
+		{
+			await Tareas.StopAsync(new CancellationToken());			
+		}
+		else
+		{
+			await Tareas.StartAsync(new CancellationToken());
+		}
+	}
 
 	private async Task ClickearTienda(MouseEventArgs e, string id)
 	{
@@ -145,13 +163,13 @@
 
 	private async void PararTareas(MouseEventArgs e)
 	{
-		if (Tareas.funcionando == true)
+		if (Tareas.Funcionando == true)
 		{
-			await Tareas.StopAsync(new System.Threading.CancellationToken());
+			await Tareas.StopAsync(new CancellationToken());
 		}
 		else
 		{
-			await Tareas.StartAsync(new System.Threading.CancellationToken());
+			await Tareas.StartAsync(new CancellationToken());
 		}
 	}
 }
