@@ -17,8 +17,6 @@ namespace Herramientas
 
 		public static async Task<string> Estandar(string enlace)
         {
-			Thread.Sleep(30000);
-
 			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
 			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
 			HttpClient cliente = factoria.CreateClient("Decompilador");
