@@ -84,11 +84,11 @@ namespace APIs.Gamesplanet
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static async Task BuscarOfertasUk(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasUk(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
+			string htmluk = await decompilador.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmluk != null)
 			{
@@ -154,11 +154,11 @@ namespace APIs.Gamesplanet
 			}
 		}
 
-        public static async Task BuscarOfertasFr(SqlConnection conexion, ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertasFr(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
         {
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlfr = await decompilador.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlfr != null)
 			{
@@ -224,11 +224,11 @@ namespace APIs.Gamesplanet
 			}
 		}
 
-		public static async Task BuscarOfertasDe(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasDe(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlde = await decompilador.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlde != null)
 			{
@@ -289,18 +289,16 @@ namespace APIs.Gamesplanet
 								}
 							}
 						}
-
-
 					}
 				}
 			}
 		}
 
-		public static async Task BuscarOfertasUs(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasUs(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlus = await decompilador.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlus != null)
 			{

@@ -8,12 +8,14 @@ namespace Herramientas
 	{
 		private readonly ILogger<TareasGestionador> _logger;
 		private readonly IServiceScopeFactory _factoria;
-		public bool Funcionando { get; set; }
+		private readonly IDecompiladores _decompilador;
+        public bool Funcionando { get; set; }
 
-		public TareasGestionador(ILogger<TareasGestionador> logger, IServiceScopeFactory factory)	
+		public TareasGestionador(ILogger<TareasGestionador> logger, IServiceScopeFactory factory, IDecompiladores decompilador)	
 		{
 			_logger = logger;
 			_factoria = factory;
+			_decompilador = decompilador;
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
@@ -40,7 +42,7 @@ namespace Herramientas
 
 						try
 						{
-							await Tareas.Tiendas(conexion);
+							await Tareas.Tiendas(conexion, _decompilador);
 						}
 						catch { }
 

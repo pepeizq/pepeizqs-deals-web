@@ -37,7 +37,7 @@ namespace APIs.IndieGala
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 

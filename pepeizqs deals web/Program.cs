@@ -79,13 +79,15 @@ builder.Services.AddHealthChecks();
 
 //----------------------------------------------------------------------------------
 
-builder.Services.AddHttpClient("Decompilador")
+builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
     .ConfigurePrimaryHttpMessageHandler(() =>
         new HttpClientHandler
         {
             AutomaticDecompression = System.Net.DecompressionMethods.GZip,
 			MaxConnectionsPerServer = 2
 		});
+
+builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
 builder.Services.AddSignalR(opciones =>
 {

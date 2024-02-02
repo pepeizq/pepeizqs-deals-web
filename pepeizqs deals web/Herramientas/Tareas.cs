@@ -261,7 +261,7 @@ namespace Herramientas
 			#endregion
 		}
 
-		public async static Task Tiendas(SqlConnection conexion)
+		public async static Task Tiendas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			TimeSpan tiempo = TimeSpan.FromMinutes(150);
 			List<string> ids = new List<string>();
@@ -284,7 +284,7 @@ namespace Herramientas
 				{
 					try
 					{
-						await Tiendas2.TiendasCargar.TareasGestionador(conexion, adminTienda.tienda);
+						await Tiendas2.TiendasCargar.TareasGestionador(conexion, adminTienda.tienda, decompilador);
 					}
 					catch { }
 				}	

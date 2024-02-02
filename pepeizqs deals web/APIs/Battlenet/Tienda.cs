@@ -36,7 +36,7 @@ namespace APIs.Battlenet
             return slugs;
         }
 
-        public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
         {
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -46,7 +46,7 @@ namespace APIs.Battlenet
 
 			foreach (var slug in listaSlugs)
 			{
-				string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
+				string html = await decompilador.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
 
 				if (html != null)
 				{

@@ -5,7 +5,43 @@ using System.Net;
 
 namespace Herramientas
 {
-	public static class Decompiladores
+
+	public interface IDecompiladores
+    {
+        Task<string> Estandar(string enlace);
+    }
+
+	public class Decompiladores2 : IDecompiladores
+	{
+        private readonly IHttpClientFactory _clientFactory;
+
+        public Decompiladores2(IHttpClientFactory clientFactory)
+		{
+			_clientFactory = clientFactory;
+		}
+
+		public async Task<string> Estandar(string enlace)
+		{
+            HttpClient cliente = _clientFactory.CreateClient("Decompilador");
+
+            string contenido = string.Empty;
+
+            cliente.DefaultRequestHeaders.Clear();
+            cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+
+            try
+            {
+                HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+                contenido = await respuesta.Content.ReadAsStringAsync();
+                respuesta.Dispose();
+            }
+            catch { }
+
+            return contenido;
+        }
+	}
+
+    public static class Decompiladores
     {
 		//private static readonly HttpClient cliente = new HttpClient(new SocketsHttpHandler
 		//{

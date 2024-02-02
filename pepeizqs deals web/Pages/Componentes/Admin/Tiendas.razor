@@ -98,15 +98,15 @@
 
 @code {
 
-	#nullable disable
+    #nullable disable
 
-	[Parameter]
-	public string dominio { get; set; }
+    [Parameter]
+    public string dominio { get; set; }
 
-	private string tiendaElegida = null;
+    private string tiendaElegida = null;
 
-	protected async override Task OnInitializedAsync()
-	{
+    protected async override Task OnInitializedAsync()
+    {
 		@if (dominio != "beta.pepeizqdeals.com")
 		{
 			await Tareas.StopAsync(new CancellationToken());			
@@ -117,13 +117,16 @@
 		}
 	}
 
+	[Inject]
+	protected Herramientas.IDecompiladores decompilador { get; set; }
+
 	private async Task ClickearTienda(MouseEventArgs e, string id)
 	{
 		tiendaElegida = id;
 
 		if (id != null)
 		{
-			await TiendasCargar.AdminTiendas(id);
+			await TiendasCargar.AdminTiendas(id, decompilador);
 		}
 	}
 

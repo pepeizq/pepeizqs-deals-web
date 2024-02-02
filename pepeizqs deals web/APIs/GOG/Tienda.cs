@@ -28,7 +28,7 @@ namespace APIs.GOG
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -37,7 +37,7 @@ namespace APIs.GOG
 			int i = 1;
 			while (i < 300)
 			{
-				string html = await Decompiladores.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
+				string html = await decompilador.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
 
 				if (html != null)
 				{

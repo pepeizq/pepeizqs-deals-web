@@ -14,7 +14,7 @@ namespace APIs.Steam
 {
 	public static class Tienda
 	{
-		public static Tiendas2.Tienda Generar()
+        public static Tiendas2.Tienda Generar()
 		{
 			Tiendas2.Tienda tienda = new Tiendas2.Tienda
 			{
@@ -36,7 +36,7 @@ namespace APIs.Steam
             return enlace + "?curator_clanid=33500256";
         }
 
-		public static async Task BuscarOfertas(SqlConnection conexion, bool mirarOfertas, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -62,8 +62,8 @@ namespace APIs.Steam
 				string html = null;
 
 				if (mirarOfertas == true)
-				{
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english");
+				{				
+					string html2 = await decompilador.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english");
 
 					try
 					{
@@ -103,7 +103,7 @@ namespace APIs.Steam
 				}
 				else
 				{
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&hidef2p=1&ndl=1&infinite=1&l=english");
+					string html2 = await decompilador.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&hidef2p=1&ndl=1&infinite=1&l=english");
 
 					try
 					{
