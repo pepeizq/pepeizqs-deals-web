@@ -136,11 +136,9 @@ namespace BaseDatos.Tiendas
 			return mensaje;
 		}
 
-		public static AdminTiendas TiendaComprobar()
+		public static AdminTiendas TiendaSiguiente(SqlConnection conexion)
 		{
 			List<AdminTiendas> tiendas = new List<AdminTiendas>();
-
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
             {
@@ -182,14 +180,76 @@ namespace BaseDatos.Tiendas
                 }
             }
 
-			conexion.Dispose();
-
 			tiendas = tiendas.OrderBy(x => x.fecha).ToList();
 
 			return tiendas[0];
         }
 
-		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
+        public static bool TiendasComprobarUso(SqlConnection conexion, TimeSpan tiempo)
+        {
+            List<AdminTiendas> tiendas = new List<AdminTiendas>();
+
+            using (conexion)
+            {
+                string seleccionarTarea = "SELECT * FROM adminTiendas";
+
+                using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            AdminTiendas tienda = new AdminTiendas
+                            {
+                                tienda = lector.GetString(0),
+                                fecha = DateTime.Parse(lector.GetString(1))
+                            };
+
+                            bool añadir = true;
+
+                            foreach (var tienda2 in TiendasCargar.GenerarListado())
+                            {
+                                if (tienda2.Id == tienda.tienda)
+                                {
+                                    if (tienda2.AdminInteractuar == false)
+                                    {
+                                        añadir = false;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (añadir == true)
+                            {
+                                tiendas.Add(tienda);
+                            }
+                        }
+                    }
+                }
+            }
+
+			bool enUso = false;
+
+			if (tiendas.Count > 0)
+			{
+                tiendas = tiendas.OrderBy(x => x.fecha).ToList();
+
+				foreach (var tienda in tiendas) 
+				{
+                    DateTime ultimaComprobacion = tienda.fecha;
+
+                    if ((DateTime.Now - ultimaComprobacion) < tiempo)
+                    {
+                       enUso = true;
+                    }
+                }
+            }
+
+            return enUso;
+        }
+
+        public static string CargarValorAdicional(string tienda, SqlConnection conexion)
 		{
 			string valor = string.Empty;
 

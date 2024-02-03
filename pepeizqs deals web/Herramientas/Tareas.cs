@@ -263,7 +263,7 @@ namespace Herramientas
 
 		public async static Task Tiendas(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(150);
+			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(150);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -274,21 +274,24 @@ namespace Herramientas
 				}				
 			}
 
-			AdminTiendas adminTienda = Admin.TiendaComprobar();
-
-			using (conexion)
+			if (Admin.TiendasComprobarUso(conexion, TimeSpan.FromSeconds(30)) == false)
 			{
-				DateTime ultimaComprobacion = adminTienda.fecha;
+                AdminTiendas tiendaComprobar = Admin.TiendaSiguiente(conexion);
 
-				if ((DateTime.Now - ultimaComprobacion) > tiempo)
-				{
-					try
-					{
-						await Tiendas2.TiendasCargar.TareasGestionador(conexion, adminTienda.tienda, decompilador);
-					}
-					catch { }
-				}	
-			}		
+                using (conexion)
+                {
+                    DateTime ultimaComprobacion = tiendaComprobar.fecha;
+
+                    if ((DateTime.Now - ultimaComprobacion) > tiempoSiguiente)
+                    {
+                        try
+                        {
+                            await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
+                        }
+                        catch { }
+                    }
+                }
+            }			
 		}
 
 		public async static Task Divisas(SqlConnection conexion)

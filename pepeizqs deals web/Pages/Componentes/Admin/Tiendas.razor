@@ -132,8 +132,17 @@
 
 	private string LeerSiguienteTienda()
 	{
-		BaseDatos.Tiendas.AdminTiendas tienda = BaseDatos.Tiendas.Admin.TiendaComprobar();
+		BaseDatos.Tiendas.AdminTiendas tienda = new BaseDatos.Tiendas.AdminTiendas();
 
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
+		}
+
+		conexion.Dispose();
+		
 		return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
 	}
 
