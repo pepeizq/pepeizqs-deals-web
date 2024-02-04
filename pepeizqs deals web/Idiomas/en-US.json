@@ -433,7 +433,7 @@
   },
   {
     "Id": "News.BundleString1",
-    "Valor": "The {0} bundle has been released on {1}"
+    "Valor": "{0} bundle has been released on {1}"
   },
   {
     "Id": "News.BundleString2",
