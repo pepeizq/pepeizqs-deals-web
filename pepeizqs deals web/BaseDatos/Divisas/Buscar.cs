@@ -7,13 +7,16 @@ namespace BaseDatos.Divisas
 {
 	public static class Buscar
 	{
-		public static Divisa Ejecutar(string id)
+		public static Divisa Ejecutar(SqlConnection conexion, string id)
 		{
 			if (id != null) 
 			{
-                SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+				if (conexion.State == System.Data.ConnectionState.Closed)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
 
-                using (conexion)
+				using (conexion)
 				{
 					string sqlBuscar = "SELECT * FROM divisas WHERE id=@id";
 
@@ -37,8 +40,6 @@ namespace BaseDatos.Divisas
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}
 
 			return null;

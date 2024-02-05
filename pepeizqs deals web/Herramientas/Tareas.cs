@@ -298,7 +298,7 @@ namespace Herramientas
 		{
 			TimeSpan tiempo = TimeSpan.FromMinutes(60);
 
-			Divisa dolar = global::BaseDatos.Divisas.Buscar.Ejecutar("USD");
+			Divisa dolar = global::BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
 
 			DateTime ultimaComprobacion = dolar.FechaActualizacion;
 

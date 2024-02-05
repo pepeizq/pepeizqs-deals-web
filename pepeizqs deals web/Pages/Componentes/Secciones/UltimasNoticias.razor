@@ -45,20 +45,69 @@
 	}
 }
 
+<div style="font-size: 23px; margin-top: 40px;">
+	@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.String1")
+</div>
+
+<div style="display: flex; align-items: center; margin-top: 10px;">
+	@foreach (var año in años)
+	{
+		<button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="margin-right: 15px; padding: 6px 10px; width: auto;">
+			@año
+		</button>
+	}
+</div>
+
 @if (noticiasAntiguas.Count > 0)
 {
-	<div style="font-size: 23px; margin-top: 80px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "LastNews.String1")
-	</div>
+	List<Noticias.Noticia> noticiasAño = new List<Noticias.Noticia>();
 
-	<hr/>
-
-	<ul>
-		@foreach (var antigua in noticiasAntiguas)
+	foreach (var noticiaAntigua in noticiasAntiguas)
+	{
+		if (noticiaAntigua.FechaEmpieza.Year.ToString() == añoSeleccionado)
 		{
-			<li><a href="/news/@antigua.Id">@Herramientas.Idiomas.MirarTexto(idioma, antigua.TituloEn, antigua.TituloEs)</a> (@antigua.FechaEmpieza.Day/@antigua.FechaEmpieza.Month/@antigua.FechaEmpieza.Year)</li>
+			noticiasAño.Add(noticiaAntigua);
 		}
-	</ul>
+	}
+
+	if (noticiasAño.Count > 0)
+	{
+		<hr>
+
+		<div class="perfil">
+			@{
+				int i = 1;
+				while (i < 13)
+				{
+					List<Noticias.Noticia> noticiasMensual = new List<Noticias.Noticia>();
+
+					foreach (var noticia in noticiasAño)
+					{
+						if (noticia.FechaEmpieza.Month == i)
+						{
+							noticiasMensual.Add(noticia);
+						}
+					}
+
+					if (noticiasMensual.Count > 0)
+					{
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
+
+						<ul>
+							@foreach (var noticiaMensual in noticiasMensual)
+							{
+								<li>
+									<a href="/news/@noticiaMensual.Id">@Herramientas.Idiomas.MirarTexto(idioma, noticiaMensual.TituloEn, noticiaMensual.TituloEs)</a> (@noticiaMensual.FechaEmpieza.Day/@noticiaMensual.FechaEmpieza.Month/@noticiaMensual.FechaEmpieza.Year)
+								</li>
+							}
+						</ul>
+					}
+
+					i += 1;
+				}
+			}
+		</div>
+	}
 }
 
 @code {
@@ -71,6 +120,9 @@
 	private List<string> fechas = new List<string>();
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasAntiguas = new List<Noticias.Noticia>();
+
+	private List<string> años = new List<string>();
+	private string añoSeleccionado = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -87,6 +139,26 @@
 				noticiasAntiguas.Add(noticia);
 			}
 		}
+
+		//--------------------------------------------------------------------
+
+		DateTime arranque = new DateTime(2023, 9, 1);
+
+		int i = 0;
+		while (i < 100)
+		{
+			if (arranque.Year != DateTime.Now.Year)
+			{
+				años.Add(arranque.Year.ToString());
+				arranque = arranque.AddYears(1);
+			}
+			i += 1;
+		}
+
+		años.Add(DateTime.Now.Year.ToString());
+		años.Reverse();
+
+		añoSeleccionado = DateTime.Now.Year.ToString();
 	}
 
 	private bool FechaIncluir(Noticias.Noticia noticiaAnterior, Noticias.Noticia noticia)
@@ -120,5 +192,10 @@
 		}
 
 		return contenido;
+	}
+
+	private void CambiarAño(MouseEventArgs e, string nuevoAño)
+	{
+		añoSeleccionado = nuevoAño;
 	}
 }

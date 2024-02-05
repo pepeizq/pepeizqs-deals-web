@@ -17,69 +17,78 @@ namespace Herramientas
 	{
 		public static async Task ActualizarDatos(SqlConnection conexion)
 		{
-			XmlDocument documento = new XmlDocument();
+			string html = await Decompiladores.Estandar("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
 
-			try 
+			if (string.IsNullOrEmpty(html) == false)
 			{
-				documento.Load("http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
-
-				foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
+				using (TextReader lector = new StringReader(html))
 				{
-					if (nodo.Attributes["rate"].Value != null)
+					XmlDocument documento = new XmlDocument();
+					documento.Load(lector);
+
+					foreach (XmlNode nodo in documento.DocumentElement.ChildNodes[2].ChildNodes[0].ChildNodes)
 					{
-						if (nodo.Attributes["currency"].Value == "USD")
+						if (nodo.Attributes["rate"].Value != null)
 						{
-							Divisa dolar = new Divisa
+							if (nodo.Attributes["currency"].Value == "USD")
 							{
-								Id = "USD",
-								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-								FechaActualizacion = DateTime.Now
-							};
+								Divisa dolar = new Divisa
+								{
+									Id = "USD",
+									Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+									FechaActualizacion = DateTime.Now
+								};
 
-							if (Buscar.Ejecutar(dolar.Id) == null)
-							{
-								Insertar.Ejecutar(dolar, conexion);
+								if (Buscar.Ejecutar(conexion, dolar.Id) == null)
+								{
+									Insertar.Ejecutar(dolar, conexion);
+								}
+								else
+								{
+									Actualizar.Ejecutar(dolar, conexion);
+								}
 							}
-							else
+							else if (nodo.Attributes["currency"].Value == "GBP")
 							{
-								Actualizar.Ejecutar(dolar, conexion);
-							}
-						}
+								Divisa libra = new Divisa
+								{
+									Id = "GBP",
+									Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
+									FechaActualizacion = DateTime.Now
+								};
 
-						if (nodo.Attributes["currency"].Value == "GBP")
-						{
-							Divisa libra = new Divisa
-							{
-								Id = "GBP",
-								Cantidad = Convert.ToDecimal(nodo.Attributes["rate"].Value),
-								FechaActualizacion = DateTime.Now
-							};
-
-							if (Buscar.Ejecutar(libra.Id) == null)
-							{
-								Insertar.Ejecutar(libra, conexion);
-							}
-							else
-							{
-								Actualizar.Ejecutar(libra, conexion);
+								if (Buscar.Ejecutar(conexion, libra.Id) == null)
+								{
+									Insertar.Ejecutar(libra, conexion);
+								}
+								else
+								{
+									Actualizar.Ejecutar(libra, conexion);
+								}
 							}
 						}
 					}
 				}
 			}
-			catch { }
 		}
 
 		public static string MensajeDolar()
 		{
 			string mensaje = string.Empty;
 
-			Divisa dolar = Buscar.Ejecutar("USD");
+			SqlConnection conexion = BaseDatos.Conectar();
 
-			if (dolar != null)
+			using (conexion)
 			{
-				mensaje = "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
+				Divisa dolar = Buscar.Ejecutar(conexion, "USD");
+
+				if (dolar != null)
+				{
+					mensaje = "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
+				}
 			}
+
+			conexion.Dispose();
 
 			return mensaje;
 		}
@@ -88,12 +97,19 @@ namespace Herramientas
 		{
 			string mensaje = string.Empty;
 
-			Divisa libra = Buscar.Ejecutar("GBP");
+			SqlConnection conexion = BaseDatos.Conectar();
 
-			if (libra != null)
+			using (conexion)
 			{
-				mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
+				Divisa libra = Buscar.Ejecutar(conexion, "GBP");
+
+				if (libra != null)
+				{
+					mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
+				}
 			}
+
+			conexion.Dispose();
 
 			return mensaje;
 		}
@@ -113,13 +129,18 @@ namespace Herramientas
 
 			if (buscar != string.Empty)
 			{
-				Divisa divisa = Buscar.Ejecutar(buscar);
+				SqlConnection conexion = BaseDatos.Conectar();
 
-				decimal temp = cantidad / divisa.Cantidad;
+				using (conexion)
+				{
+					Divisa divisa = Buscar.Ejecutar(conexion, buscar);
 
-				temp = Math.Round(temp, 2);
+					decimal temp = cantidad / divisa.Cantidad;
 
-				return temp;
+					temp = Math.Round(temp, 2);
+
+					return temp;
+				}	
 			}
 
 			return 0;
