@@ -8,8 +8,6 @@
     <UserSecretsId>0e01717b-b8fb-4a4e-8d56-378f1a9f3771</UserSecretsId>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <ServerGarbageCollection>false</ServerGarbageCollection>
-    <RetainVMGarbageCollection>false</RetainVMGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>

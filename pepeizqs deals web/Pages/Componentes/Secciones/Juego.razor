@@ -747,6 +747,7 @@
 				if (string.IsNullOrEmpty(juego.Media.Video) == false)
 				{
 					mediaMostrar = juego.Media.Video;
+					mediaMostrar = mediaMostrar.Replace("http://", "https://");
 					mediaMostrarPosicion = 99999;
 				}
 				else

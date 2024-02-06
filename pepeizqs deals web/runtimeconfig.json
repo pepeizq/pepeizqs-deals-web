@@ -1,9 +1,11 @@
 {
   "runtimeOptions": {
     "configProperties": {
-      "System.GC.HeapHardLimit": 80,
-      "System.GC.HighMemoryPercent": 85,
-      "System.GC.RetainVM": false
+      "System.GC.Server": true,
+      "System.GC.HeapCount": 12,
+      "System.GC.Concurrent": false,
+      "System.GC.DynamicAdaptationMode": 0,
+      "System.GC.HeapHardLimitPercent": 90
     }
   }
 }

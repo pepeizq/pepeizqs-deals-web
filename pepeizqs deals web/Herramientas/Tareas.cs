@@ -296,7 +296,7 @@ namespace Herramientas
 
 		public async static Task Divisas(SqlConnection conexion)
 		{
-			TimeSpan tiempo = TimeSpan.FromMinutes(60);
+			TimeSpan tiempo = TimeSpan.FromDays(1);
 
 			Divisa dolar = global::BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
 

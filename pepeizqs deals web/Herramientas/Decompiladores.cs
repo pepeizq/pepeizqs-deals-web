@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Net;
 
@@ -13,16 +14,17 @@ namespace Herramientas
 
 	public class Decompiladores2 : IDecompiladores
 	{
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IHttpClientFactory fabrica;
 
-        public Decompiladores2(IHttpClientFactory clientFactory)
+        public Decompiladores2(IHttpClientFactory _fabrica)
 		{
-			_clientFactory = clientFactory;
+			fabrica = _fabrica;
 		}
 
+		[HttpGet("Decompilador")]
 		public async Task<string> Estandar(string enlace)
 		{
-            HttpClient cliente = _clientFactory.CreateClient("Decompilador");
+            HttpClient cliente = fabrica.CreateClient("Decompilador");
 
             string contenido = string.Empty;
 
