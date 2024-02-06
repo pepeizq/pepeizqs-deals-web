@@ -286,8 +286,8 @@ namespace Herramientas
                     {
                         try
                         {
-                            await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
-                        }
+							await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
+						}
                         catch { }
                     }
                 }
