@@ -202,8 +202,6 @@ namespace APIs.Humble
 							objeto["Mensaje"] = objeto["Mensaje"] + "Humble Store: " + juegos.Resultados.Count();
 						}
 					}
-
-					conexion.Dispose();	
 				}
 			}	         
         }

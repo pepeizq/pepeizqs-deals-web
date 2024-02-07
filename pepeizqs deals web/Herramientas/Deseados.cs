@@ -70,8 +70,6 @@ namespace Herramientas
 
 				global::BaseDatos.Juegos.Actualizar.UsuariosInteresados(juego, conexion, usuariosInteresados);
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

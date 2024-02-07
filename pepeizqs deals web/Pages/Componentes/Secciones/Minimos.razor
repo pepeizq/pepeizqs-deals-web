@@ -136,8 +136,6 @@
 			juegosConMinimos = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
 		}
 
-		conexion.Dispose();
-
 		if (juegosConMinimos.Count > 0)
 		{
 			foreach (var juego in juegosConMinimos)

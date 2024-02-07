@@ -76,46 +76,18 @@
 					<button @onclick="@(e => ActualizarPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
 				</div>
 			</div>
-
-			<div class="perfil" style="margin-top: 30px;">
-				<label>Tareas</label>
-				<hr />
-
-				@if (dominio == "beta.pepeizqdeals.com")
-				{
-					<div>
-						<button @onclick="@(e => PararTareas(e))" class="boton-pequeño" style="text-align: center;">Parar</button>
-					</div>
-				}
-				
-				<div style="margin-top: 10px;">
-					@Tareas.Funcionando
-				</div>				
-			</div>
 		</div>		
 	</div>
 }
 
 @code {
 
-    #nullable disable
+	#nullable disable
 
-    [Parameter]
-    public string dominio { get; set; }
+	[Parameter]
+	public string dominio { get; set; }
 
-    private string tiendaElegida = null;
-
-    protected async override Task OnInitializedAsync()
-    {
-		@if (dominio != "beta.pepeizqdeals.com")
-		{
-			await Tareas.StopAsync(new CancellationToken());			
-		}
-		else
-		{
-			await Tareas.StartAsync(new CancellationToken());
-		}
-	}
+	private string tiendaElegida = null;
 
 	[Inject]
 	protected Herramientas.IDecompiladores decompilador { get; set; }
@@ -140,8 +112,6 @@
 		{
 			tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
 		}
-
-		conexion.Dispose();
 		
 		return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
 	}
@@ -154,8 +124,6 @@
 		{
 			await Herramientas.Tareas.Portada(conexion);
 		}
-
-		conexion.Dispose();
 	}
 
 	private async Task ActualizarDivisas(MouseEventArgs e)
@@ -165,23 +133,6 @@
 		using (conexion)
 		{
 			await Herramientas.Divisas.ActualizarDatos(conexion);
-		}
-
-		conexion.Dispose();		
-	}
-
-	[Inject]
-	Herramientas.TareasGestionador Tareas { set; get; }
-
-	private async void PararTareas(MouseEventArgs e)
-	{
-		if (Tareas.Funcionando == true)
-		{
-			await Tareas.StopAsync(new CancellationToken());
-		}
-		else
-		{
-			await Tareas.StartAsync(new CancellationToken());
 		}
 	}
 }

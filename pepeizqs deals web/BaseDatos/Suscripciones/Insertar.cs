@@ -56,8 +56,6 @@ namespace BaseDatos.Suscripciones
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

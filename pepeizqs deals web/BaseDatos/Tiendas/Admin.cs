@@ -131,8 +131,6 @@ namespace BaseDatos.Tiendas
 				}
 			}
 
-			conexion.Dispose();
-
 			return mensaje;
 		}
 
@@ -140,45 +138,42 @@ namespace BaseDatos.Tiendas
 		{
 			List<AdminTiendas> tiendas = new List<AdminTiendas>();
 
-            using (conexion)
-            {
-                string seleccionarTarea = "SELECT * FROM adminTiendas";
+			string seleccionarTarea = "SELECT * FROM adminTiendas";
 
-                using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
-                {
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-						while (lector.Read())
+			using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						AdminTiendas tienda = new AdminTiendas
 						{
-							AdminTiendas tienda = new AdminTiendas
-							{
-								tienda = lector.GetString(0),
-								fecha = DateTime.Parse(lector.GetString(1))
-							};
+							tienda = lector.GetString(0),
+							fecha = DateTime.Parse(lector.GetString(1))
+						};
 
-							bool añadir = true;
+						bool añadir = true;
 
-							foreach (var tienda2 in TiendasCargar.GenerarListado())
+						foreach (var tienda2 in TiendasCargar.GenerarListado())
+						{
+							if (tienda2.Id == tienda.tienda)
 							{
-								if (tienda2.Id == tienda.tienda)
+								if (tienda2.AdminInteractuar == false)
 								{
-									if (tienda2.AdminInteractuar == false)
-									{
-										añadir = false;
-									}
-
-									break;
+									añadir = false;
 								}
-							}
 
-							if (añadir == true)
-							{
-								tiendas.Add(tienda);
-							}							
+								break;
+							}
 						}
-                    }
-                }
-            }
+
+						if (añadir == true)
+						{
+							tiendas.Add(tienda);
+						}
+					}
+				}
+			}
 
 			tiendas = tiendas.OrderBy(x => x.fecha).ToList();
 
@@ -189,45 +184,42 @@ namespace BaseDatos.Tiendas
         {
             List<AdminTiendas> tiendas = new List<AdminTiendas>();
 
-            using (conexion)
-            {
-                string seleccionarTarea = "SELECT * FROM adminTiendas";
+			string seleccionarTarea = "SELECT * FROM adminTiendas";
 
-                using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
-                {
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-                        while (lector.Read())
-                        {
-                            AdminTiendas tienda = new AdminTiendas
-                            {
-                                tienda = lector.GetString(0),
-                                fecha = DateTime.Parse(lector.GetString(1))
-                            };
+			using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						AdminTiendas tienda = new AdminTiendas
+						{
+							tienda = lector.GetString(0),
+							fecha = DateTime.Parse(lector.GetString(1))
+						};
 
-                            bool añadir = true;
+						bool añadir = true;
 
-                            foreach (var tienda2 in TiendasCargar.GenerarListado())
-                            {
-                                if (tienda2.Id == tienda.tienda)
-                                {
-                                    if (tienda2.AdminInteractuar == false)
-                                    {
-                                        añadir = false;
-                                    }
+						foreach (var tienda2 in TiendasCargar.GenerarListado())
+						{
+							if (tienda2.Id == tienda.tienda)
+							{
+								if (tienda2.AdminInteractuar == false)
+								{
+									añadir = false;
+								}
 
-                                    break;
-                                }
-                            }
+								break;
+							}
+						}
 
-                            if (añadir == true)
-                            {
-                                tiendas.Add(tienda);
-                            }
-                        }
-                    }
-                }
-            }
+						if (añadir == true)
+						{
+							tiendas.Add(tienda);
+						}
+					}
+				}
+			}
 
 			bool enUso = false;
 

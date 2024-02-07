@@ -88,8 +88,6 @@ namespace Herramientas
 				}
 			}
 
-			conexion.Dispose();
-
 			return mensaje;
 		}
 
@@ -108,8 +106,6 @@ namespace Herramientas
 					mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
 				}
 			}
-
-			conexion.Dispose();
 
 			return mensaje;
 		}

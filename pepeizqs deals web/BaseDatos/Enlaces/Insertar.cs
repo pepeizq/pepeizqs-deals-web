@@ -32,8 +32,6 @@ namespace BaseDatos.Enlaces
 				}
 			}
 
-            conexion.Dispose();
-
             return Buscar.Base(enlace);
 		}
 	}

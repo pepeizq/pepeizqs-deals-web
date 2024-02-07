@@ -49,8 +49,6 @@ namespace BaseDatos.Sorteos
 				}
 			}
 
-			conexion.Dispose();
-
 			return sorteos;
 		}
 
@@ -95,8 +93,6 @@ namespace BaseDatos.Sorteos
                     }
                 }
             }
-
-            conexion.Dispose();
 
             return null;
         }

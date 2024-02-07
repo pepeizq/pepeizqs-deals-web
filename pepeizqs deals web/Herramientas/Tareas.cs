@@ -276,22 +276,15 @@ namespace Herramientas
 
 			if (Admin.TiendasComprobarUso(conexion, TimeSpan.FromSeconds(30)) == false)
 			{
-                AdminTiendas tiendaComprobar = Admin.TiendaSiguiente(conexion);
+				AdminTiendas tiendaComprobar = Admin.TiendaSiguiente(conexion);
 
-                using (conexion)
-                {
-                    DateTime ultimaComprobacion = tiendaComprobar.fecha;
+				DateTime ultimaComprobacion = tiendaComprobar.fecha;
 
-                    if ((DateTime.Now - ultimaComprobacion) > tiempoSiguiente)
-                    {
-                        try
-                        {
-							await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
-						}
-                        catch { }
-                    }
-                }
-            }			
+				if ((DateTime.Now - ultimaComprobacion) > tiempoSiguiente)
+				{					
+					await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
+				}
+			}
 		}
 
 		public async static Task Divisas(SqlConnection conexion)

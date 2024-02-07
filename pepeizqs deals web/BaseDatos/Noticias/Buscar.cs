@@ -96,8 +96,6 @@ namespace BaseDatos.Noticias
 				}
 			}
 
-			conexion.Dispose();
-
 			return null;
 		}
 
@@ -111,8 +109,6 @@ namespace BaseDatos.Noticias
             {
 				noticias = Todas(conexion, "noticias");
             }
-
-            conexion.Dispose();
 
             return noticias;
         }

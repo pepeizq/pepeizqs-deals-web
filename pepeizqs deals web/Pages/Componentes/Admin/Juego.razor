@@ -261,8 +261,6 @@
 			{
 				BaseDatos.Juegos.Actualizar.Imagenes(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}		
 	}
 
@@ -310,8 +308,6 @@
 					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
 				}				
 			}
-
-			conexion.Dispose();
 		}
 	}
 
@@ -336,8 +332,6 @@
 				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoOrigenSuscripciones);
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}
 	}
 
@@ -364,8 +358,6 @@
 					juego.Maestro = textoDlcMaestro;
 					BaseDatos.Juegos.Actualizar.DlcMaestro(juego, conexion);
 				}
-
-				conexion.Dispose();
 			}
 		}
 	}
@@ -385,8 +377,6 @@
 				juego.Maestro = textoDlcMaestro;
 				BaseDatos.Juegos.Actualizar.DlcMaestro(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}
 	}
 
@@ -411,8 +401,6 @@
 				juego.FreeToPlay = textoF2P;
 				BaseDatos.Juegos.Actualizar.FreeToPlay(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}
 	}
 
@@ -433,8 +421,6 @@
 
 				BaseDatos.Juegos.Actualizar.Media(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}
 	}
 
@@ -471,8 +457,6 @@
 
 				BaseDatos.Juegos.Actualizar.Tipo(juego, conexion);
 			}
-
-			conexion.Dispose();
 		}
 	}
 

@@ -35,10 +35,7 @@ namespace BaseDatos.Sorteos
 
 					}
 				}
-
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

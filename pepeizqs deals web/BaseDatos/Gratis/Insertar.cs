@@ -58,8 +58,6 @@ namespace BaseDatos.Gratis
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

@@ -138,8 +138,6 @@ namespace BaseDatos.Noticias
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

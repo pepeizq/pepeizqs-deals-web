@@ -45,9 +45,7 @@ namespace BaseDatos.Suscripciones
                         }
                     }
                 }
-            }
-
-            conexion.Dispose();       
+            } 
 
             return suscripciones;
         }
@@ -110,8 +108,6 @@ namespace BaseDatos.Suscripciones
 				}
 			}
 
-			conexion.Dispose();
-
 			if (suscripciones.Count > 0) 
 			{
 				suscripciones = suscripciones.OrderBy(x => x.Nombre).ToList();
@@ -164,8 +160,6 @@ namespace BaseDatos.Suscripciones
 			{
 				return resultados[resultados.Count - 1];
 			}
-
-			conexion.Dispose();
 
 			return null;
 		}

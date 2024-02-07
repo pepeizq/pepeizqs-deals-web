@@ -62,8 +62,6 @@ namespace BaseDatos.Juegos
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}	
 
 			return null;
@@ -79,8 +77,6 @@ namespace BaseDatos.Juegos
 			{
 				juegos = Nombre(nombre, conexion, cantidad);
             }		
-
-            conexion.Dispose();
 
 			if (juegos.Count > 0)
 			{
@@ -289,11 +285,6 @@ namespace BaseDatos.Juegos
 						}
 					}
 				}
-			}
-
-			if (limpiarConexion == true)
-			{
-				conexion.Dispose();
 			}
 			
 			return dlcs.OrderBy(x => x.Nombre).ToList();

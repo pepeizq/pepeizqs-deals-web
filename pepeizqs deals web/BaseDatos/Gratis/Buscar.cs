@@ -47,8 +47,6 @@ namespace BaseDatos.Gratis
 				}
 			}
 
-			conexion.Dispose();
-
 			return listaGratis;
 		}
 
@@ -110,8 +108,6 @@ namespace BaseDatos.Gratis
 				}
 			}
 
-			conexion.Dispose();
-
 			return listaGratis;
 		}
 
@@ -153,8 +149,6 @@ namespace BaseDatos.Gratis
 					}
 				}
 			}
-
-			conexion.Dispose();
 
 			return null;
 		}

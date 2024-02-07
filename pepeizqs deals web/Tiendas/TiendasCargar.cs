@@ -95,8 +95,6 @@ namespace Tiendas2
 					await APIs.Battlenet.Tienda.BuscarOfertas(conexion, decompilador);
 				}
 			}
-
-			conexion.Dispose();
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador)

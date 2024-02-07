@@ -109,8 +109,6 @@ namespace BaseDatos.Bundles
 					}					
 				}		
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

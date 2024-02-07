@@ -26,8 +26,6 @@ namespace BaseDatos.Juegos
 					}		
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

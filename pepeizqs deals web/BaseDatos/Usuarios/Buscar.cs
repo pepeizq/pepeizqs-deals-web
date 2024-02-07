@@ -34,8 +34,6 @@ namespace BaseDatos.Usuarios
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}
 
 			return false;
@@ -121,8 +119,6 @@ namespace BaseDatos.Usuarios
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}
 
 			return null;

@@ -49,8 +49,6 @@ namespace BaseDatos.Bundles
 				}
 			}
 
-			conexion.Dispose();
-
 			return bundles;
 		}
 
@@ -119,8 +117,6 @@ namespace BaseDatos.Bundles
 				}
 			}
 
-			conexion.Dispose();
-
 			return bundles;
 		}
 
@@ -165,8 +161,6 @@ namespace BaseDatos.Bundles
 					}
 				}
 			}
-
-			conexion.Dispose();
 
 			return null;
 		}

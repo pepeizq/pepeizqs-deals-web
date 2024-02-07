@@ -36,8 +36,6 @@ namespace BaseDatos.Enlaces
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}
 
 			return null;
@@ -72,8 +70,6 @@ namespace BaseDatos.Enlaces
 						}
 					}
 				}
-
-				conexion.Dispose();
 			}
 
 			return null;

@@ -28,8 +28,6 @@ namespace BaseDatos.Pendientes
 					}
 				}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }

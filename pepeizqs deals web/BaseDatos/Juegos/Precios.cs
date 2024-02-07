@@ -353,8 +353,6 @@ namespace BaseDatos.Juegos
 				//	comando.ExecuteNonQuery();
 				//}
 			}
-
-			conexion.Dispose();
 		}
 	}
 }
