@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace BaseDatos.Error
+namespace BaseDatos.Errores
 {
 	public static class Insertar
 	{

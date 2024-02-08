@@ -8,26 +8,22 @@ namespace BaseDatos.Pendientes
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			using (conexion)
+			if (conexion.State == System.Data.ConnectionState.Open)
 			{
-				string sqlActualizar = "UPDATE tienda" + idTienda + " " +
-					"SET descartado=@descartado WHERE enlace=@enlace";
-
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				using (conexion)
 				{
-					comando.Parameters.AddWithValue("@descartado", "si");
-					comando.Parameters.AddWithValue("@enlace", enlace);
+					string sqlActualizar = "UPDATE tienda" + idTienda + " " +
+						"SET descartado=@descartado WHERE enlace=@enlace";
 
-					try
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
+						comando.Parameters.AddWithValue("@descartado", "si");
+						comando.Parameters.AddWithValue("@enlace", enlace);
+
 						comando.ExecuteNonQuery();
 					}
-					catch
-					{
-
-					}
 				}
-			}
+			}		
 		}
 	}
 }

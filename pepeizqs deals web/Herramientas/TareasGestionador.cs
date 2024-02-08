@@ -41,7 +41,7 @@ namespace Herramientas
 					}
 					catch (Exception ex) 
 					{
-						//global::BaseDatos.Error.Insertar.Ejecutar(ex.Message);
+						global::BaseDatos.Errores.Insertar.Ejecutar(ex.Message);
 					}
 
 					try
