@@ -263,7 +263,7 @@ namespace Herramientas
 
 		public async static Task Tiendas(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(150);
+			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(120);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -281,8 +281,15 @@ namespace Herramientas
 				DateTime ultimaComprobacion = tiendaComprobar.fecha;
 
 				if ((DateTime.Now - ultimaComprobacion) > tiempoSiguiente)
-				{					
-					await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
+				{
+					try
+					{
+						await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.tienda, decompilador);
+					}
+					catch (Exception ex) 
+					{
+						global::BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.tienda + " - " + ex.Message + " - " + DateTime.Now.ToString());
+					}	
 				}
 			}
 		}

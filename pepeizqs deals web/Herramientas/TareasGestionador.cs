@@ -39,10 +39,7 @@ namespace Herramientas
 					{
 						await Tareas.Tiendas(conexion, _decompilador);
 					}
-					catch (Exception ex) 
-					{
-						global::BaseDatos.Errores.Insertar.Ejecutar(ex.Message);
-					}
+					catch { }
 
 					try
 					{

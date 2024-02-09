@@ -59,19 +59,25 @@
 							<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
 								<img src="@CargarImagenDRM(juego)" style="width: 20px; height: 20px;" />
 
-								@if (int.Parse(@juego.Analisis.Porcentaje) > 74)
+								@if (juego.Analisis != null)
 								{
-									<img src="/imagenes/analisis/positive.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
-								}
+									if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+									{
+										if (int.Parse(@juego.Analisis.Porcentaje) > 74)
+										{
+											<img src="/imagenes/analisis/positive.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
+										}
 
-								@if (int.Parse(@juego.Analisis.Porcentaje) > 49 && int.Parse(@juego.Analisis.Porcentaje) < 75)
-								{
-									<img src="/imagenes/analisis/mixed.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
-								}
+										if (int.Parse(@juego.Analisis.Porcentaje) > 49 && int.Parse(@juego.Analisis.Porcentaje) < 75)
+										{
+											<img src="/imagenes/analisis/mixed.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
+										}
 
-								@if (int.Parse(@juego.Analisis.Porcentaje) < 50)
-								{
-									<img src="/imagenes/analisis/negative.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
+										if (int.Parse(@juego.Analisis.Porcentaje) < 50)
+										{
+											<img src="/imagenes/analisis/negative.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
+										}
+									}
 								}
 
 								<div style="margin-left: 20px; font-size: 13px;">@CargarDetectado(juego)</div>
@@ -79,7 +85,14 @@
 								@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 								{
 									<div style="margin-left: 20px; font-size: 13px;">@juego.IdMaestra</div>
-									<div style="margin-left: 20px; font-size: 13px;">@int.Parse(juego.Analisis.Cantidad.Replace(",", null))</div>
+
+									@if (juego.Analisis != null)
+									{
+										if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+										{
+											<div style="margin-left: 20px; font-size: 13px;">@int.Parse(juego.Analisis.Cantidad.Replace(",", null))</div>
+										}
+									}									
 								}
 							</div>						
 						</div>
@@ -104,10 +117,10 @@
 
 @code {
 
-    #nullable disable
+	#nullable disable
 
-    [Parameter]
-    public string idioma { get; set; }
+	[Parameter]
+	public string idioma { get; set; }
 
 	[Parameter]
 	public string dominio { get; set; }
@@ -115,17 +128,17 @@
 	[Parameter]
 	public string enlace { get; set; }
 
-    [Parameter]
-    public string modo { get; set; }
+	[Parameter]
+	public string modo { get; set; }
 
 	private List<global::Juegos.Juego> juegosConMinimos = new List<global::Juegos.Juego>();
 	private List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
 
-    private int minimo = 0;
-    private int maximo = 0;
+	private int minimo = 0;
+	private int maximo = 0;
 
 	protected override async Task OnInitializedAsync()
-    {
+	{
 		minimo = 0;
 		maximo = 50;
 
@@ -394,10 +407,28 @@
 			{
 				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
 				{
-					int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
-					int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
+					if (j1.Analisis != null && j2.Analisis != null)
+					{
+						if (string.IsNullOrEmpty(j1.Analisis.Cantidad) == false && string.IsNullOrEmpty(j2.Analisis.Cantidad) == false)
+						{
+							int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
+							int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
 
-					return j2Analisis.CompareTo(j1Analisis);
+							return j2Analisis.CompareTo(j1Analisis);
+						}
+					}
+
+					if (j1.Analisis != null)
+					{
+						return 0;
+					}
+
+					if (j2.Analisis != null)
+					{
+						return 1;
+					}
+
+					return 0;
 				});
 			}
 		}

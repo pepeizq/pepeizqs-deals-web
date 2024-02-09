@@ -44,22 +44,25 @@
 
                                     @if (juego.Juego.Analisis != null)
                                     {
-                                        <div style="display: flex; align-items: center; margin-right: 15px;">
-                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 74)
-                                            {
-                                                <img src="/imagenes/analisis/positive2.webp" style="width: 25px; height: 25px;" />
-                                            }
+                                        @if (string.IsNullOrEmpty(juego.Juego.Analisis.Porcentaje) == false)
+                                        {
+                                            <div style="display: flex; align-items: center; margin-right: 15px;">
+                                                @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 74)
+                                                {
+                                                    <img src="/imagenes/analisis/positive2.webp" style="width: 25px; height: 25px;" />
+                                                }
 
-                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Juego.Analisis.Porcentaje) < 75)
-                                            {
-                                                <img src="/imagenes/analisis/mixed2.webp" style="width: 25px; height: 25px;" />
-                                            }
+                                                @if (int.Parse(juego.Juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Juego.Analisis.Porcentaje) < 75)
+                                                {
+                                                    <img src="/imagenes/analisis/mixed2.webp" style="width: 25px; height: 25px;" />
+                                                }
 
-                                            @if (int.Parse(juego.Juego.Analisis.Porcentaje) < 50)
-                                            {
-                                                <img src="/imagenes/analisis/negative2.webp" style="width: 25px; height: 25px;" />
-                                            }
-                                        </div>
+                                                @if (int.Parse(juego.Juego.Analisis.Porcentaje) < 50)
+                                                {
+                                                    <img src="/imagenes/analisis/negative2.webp" style="width: 25px; height: 25px;" />
+                                                }
+                                            </div>
+                                        }                                      
                                     }
 
 									@if (usuario != null)

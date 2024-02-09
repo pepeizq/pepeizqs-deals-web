@@ -122,7 +122,6 @@
 			margin-right: 0px;
 		}
 	}
-}
 </style>
 
 @if (noticiaEvento.Count == 1)
@@ -196,15 +195,15 @@
 
 						<Tooltip izquierda="@izquierda" drm="@CargarDRM(destacado)" tienda="@CargarIconoTienda(destacado)" tiempo="@CargarFechaDetectado(destacado)" video="@miniVideo" nombre="@destacado.Nombre">
 							<div class="tooltip2 destacado-juego">
-								<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 3px;">
+								<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 2px;">
 									<div>
 										<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
 									</div>
 									<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
-										<div style="background-color: darkgreen; margin: 0px; padding: 5px 10px;">
+										<div style="background-color: darkgreen; margin: 0px; padding: 8px 10px;">
 											@CargarDescuento(destacado)
 										</div>
-										<div style="padding: 5px 10px;">
+										<div style="padding: 8px 10px;">
 											@CargarPrecio(destacado)
 										</div>
 									</div>
