@@ -44,10 +44,14 @@ namespace APIs.GOG
 					XmlSerializer xml = new XmlSerializer(typeof(GOGJuegos));
 					GOGJuegos listaJuegos = null;
 
-					using (TextReader lector = new StringReader(html))
+					try
 					{
-						listaJuegos = (GOGJuegos)xml.Deserialize(lector);
+						using (TextReader lector = new StringReader(html))
+						{
+							listaJuegos = (GOGJuegos)xml.Deserialize(lector);
+						}
 					}
+					catch { }
 
 					if (listaJuegos != null)
 					{
