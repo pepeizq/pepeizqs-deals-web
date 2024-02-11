@@ -689,7 +689,7 @@
 
 							<div style="margin-right: 20px; width: 100%;">
 								<div>@dlc.Nombre</div>
-								<div style="margin-top: 10px; font-size: 14px;">@Herramientas.JuegoFicha.PrecioMinimoActual(dlc, true, idioma)</div>
+								<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
 							</div>
 						</div>
 					</a>
@@ -1682,6 +1682,65 @@
 				mediaMostrar = juego.Media.Capturas[mediaMostrarPosicion];
 			}
 		}
+	}
+
+	#endregion
+
+	#region Minimo
+
+	public static string PrecioMinimoActual(global::Juegos.Juego minimo, string idioma)
+	{
+		decimal minimoCantidad = 10000000;
+		JuegoPrecio minimoFinal = new JuegoPrecio();
+
+		foreach (var precio in minimo.PrecioActualesTiendas)
+		{
+			bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
+
+			if (fechaEncaja == true)
+			{
+				decimal tempPrecio = precio.Precio;
+
+				if (precio.Moneda != JuegoMoneda.Euro)
+				{
+					tempPrecio = Divisas.Cambio(tempPrecio, precio.Moneda);
+				}
+
+				if (tempPrecio < minimoCantidad)
+				{
+					minimoCantidad = tempPrecio;
+					minimoFinal = precio;
+				}
+			}
+		}
+
+		if (minimoFinal != null)
+		{
+			if (minimoFinal.Precio > 0)
+			{
+				string precioTexto = string.Empty;
+
+				precioTexto = minimoFinal.Precio.ToString();
+				precioTexto = precioTexto.Replace(".", ",");
+
+				int int1 = precioTexto.IndexOf(",");
+
+				if (int1 == precioTexto.Length - 2)
+				{
+					precioTexto = precioTexto + "0";
+				}
+
+				precioTexto = precioTexto + "€";
+
+				return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+			}
+			else
+			{
+				return Idiomas.CogerCadena(idioma, "Search.String2");
+			}
+		}
+
+		return Idiomas.CogerCadena(idioma, "Search.String2");
 	}
 
 	#endregion

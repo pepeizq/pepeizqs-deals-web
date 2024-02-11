@@ -33,7 +33,10 @@ namespace Herramientas
 					{
 						await Tareas.Portada(conexion);
 					}
-					catch { }
+					catch (Exception ex) 
+					{
+						global::BaseDatos.Errores.Insertar.Ejecutar("Noticias - " + ex.Message + " - " + DateTime.Now.ToString());
+					}
 
 					try
 					{

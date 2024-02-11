@@ -195,7 +195,7 @@
                     {
                         pestañaSeleccionada = Juegos.JuegoTipo.DLC;
                     }
-                   
+
                     resultadosDLCs = resultadosDLCs.OrderBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).ToList();
                 }
 
@@ -276,7 +276,57 @@
             }
         }
 
-        return Herramientas.JuegoFicha.PrecioMinimoActual(juego, true, idioma);
+        decimal minimoCantidad = 10000000;
+        Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+        foreach (var precio in juego.PrecioActualesTiendas)
+        {
+            bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(precio);
+
+            if (fechaEncaja == true)
+            {
+                decimal tempPrecio = precio.Precio;
+
+                if (precio.Moneda != Herramientas.JuegoMoneda.Euro)
+                {
+                    tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, precio.Moneda);
+                }
+
+                if (tempPrecio < minimoCantidad)
+                {
+                    minimoCantidad = tempPrecio;
+                    minimoFinal = precio;
+                }
+            }
+        }
+
+        if (minimoFinal != null)
+        {
+            if (minimoFinal.Precio > 0)
+            {
+                string precioTexto = string.Empty;
+
+                precioTexto = minimoFinal.Precio.ToString();
+                precioTexto = precioTexto.Replace(".", ",");
+
+                int int1 = precioTexto.IndexOf(",");
+
+                if (int1 == precioTexto.Length - 2)
+                {
+                    precioTexto = precioTexto + "0";
+                }
+
+                precioTexto = precioTexto + "€";
+
+                return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+            }
+            else
+            {
+                return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
+            }
+        }
+
+        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
     }
 
     Juegos.JuegoTipo pestañaSeleccionada = Juegos.JuegoTipo.Game;
