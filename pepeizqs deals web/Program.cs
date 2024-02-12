@@ -91,13 +91,13 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
-builder.Services.AddSignalR(opciones =>
-{
-    opciones.EnableDetailedErrors = true;
-    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-    opciones.MaximumReceiveMessageSize = 1000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//    opciones.EnableDetailedErrors = true;
+//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+//    opciones.MaximumReceiveMessageSize = 1000;
+//});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -168,24 +168,6 @@ app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1,
 app.UseRateLimiter();
 
 //app.UseResponseCaching();
-
-//app.Use(async (contexto, siguiente) =>
-//{
-//    if (contexto.Request.Path.StartsWithSegments("/robots.txt"))
-//    {
-//        string robotsFichero = Path.Combine(app.Environment.ContentRootPath, $"robots.{app.Environment.EnvironmentName}.txt");
-//        string contenido = "User-agent: *\r\nDisallow: /\r\n\r\nUser-agent: Bingbot\r\nDisallow:\r\n\r\nUser-agent: Googlebot\r\nDisallow:\r\n\r\nSitemap: https://pepeizqdeals.com/sitemap.xml";
-
-//        if (File.Exists(robotsFichero))
-//        {
-//            contenido = await File.ReadAllTextAsync(robotsFichero);
-//        }
-
-//        contexto.Response.ContentType = "text/plain";
-//        await contexto.Response.WriteAsync(contenido);
-//    }
-//    else await siguiente();
-//});
 
 //app.Use(async (context, next) =>
 //{

@@ -126,54 +126,6 @@ namespace Herramientas
 			return fechaEncaja;
 		}
 
-		private static JuegoPrecio CargarMinimoActualEntreTodosDRMs(Juego juego)
-		{
-			decimal minimoCantidad = 10000000;
-			JuegoPrecio minimoFinal = new JuegoPrecio();
-
-			foreach (var precio in juego.PrecioActualesTiendas)
-			{
-				bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
-
-				if (fechaEncaja == true)
-				{
-					if (precio.Precio < minimoCantidad)
-					{
-						minimoCantidad = precio.Precio;
-						minimoFinal = precio;
-					}
-				}					
-			}
-
-			return minimoFinal;
-		}
-
-		public static string PrecioMinimoActual(Juego juego, bool incluirDesde, string idioma)
-		{
-			JuegoPrecio oferta = CargarMinimoActualEntreTodosDRMs(juego);
-
-			if (oferta != null)
-			{
-				if (oferta.Precio > 0)
-				{
-					if (incluirDesde == true)
-					{
-						return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), PrepararPrecio(oferta.Precio, false, JuegoMoneda.Euro));
-					}
-					else
-					{
-						return PrepararPrecio(oferta.Precio, false, JuegoMoneda.Euro);
-                    }
-				}
-				else
-				{
-					return Idiomas.CogerCadena(idioma, "Search.String2");
-				}
-			}
-
-			return Idiomas.CogerCadena(idioma, "Search.String2");
-		}
-
 		public static string IconoTiendaMinimoActualUnDRM(JuegoPrecio oferta)
 		{
 			if (oferta != null)
