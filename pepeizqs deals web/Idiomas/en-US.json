@@ -116,6 +116,10 @@
     "Valor": "Home Page"
   },
   {
+    "Id": "Index.Subtitle",
+    "Valor": "Website of PC video game deals from official stores"
+  },
+  {
     "Id": "Index.Message1",
     "Valor": "If you register an account on the website you can receive emails every time a game you want reaches a minimum price."
   },

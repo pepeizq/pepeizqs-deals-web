@@ -76,11 +76,12 @@ namespace BaseDatos.Juegos
 											tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, precio.Moneda);
 										}
 
-										if (tempPrecio <= minimo.Precio)
+										if (tempPrecio < minimo.Precio)
 										{
 											minimo.Precio = tempPrecio;
 											minimo.Moneda = precio.Moneda;
-											minimo.Descuento = precio.Descuento;											
+											minimo.Descuento = precio.Descuento;
+											minimo.FechaDetectado = precio.FechaDetectado;
 											minimo.FechaActualizacion = precio.FechaActualizacion;
 											minimo.FechaTermina = precio.FechaTermina;
 											minimo.CodigoDescuento = precio.CodigoDescuento;
@@ -92,28 +93,25 @@ namespace BaseDatos.Juegos
 
 											//------------------------------------------
 
-											if (tempPrecio < minimo.Precio)
+											if (juego.UsuariosInteresados != null)
 											{
-												if (juego.UsuariosInteresados != null)
+												if (juego.UsuariosInteresados.Count > 0)
 												{
-													if (juego.UsuariosInteresados.Count > 0)
+													foreach (var usuarioInteresado in juego.UsuariosInteresados)
 													{
-														foreach (var usuarioInteresado in juego.UsuariosInteresados)
-														{
-															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
+														string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
 
-															if (correo != null)
-															{
-																Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
-															}
+														if (correo != null)
+														{
+															Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
 														}
 													}
 												}
 											}
-
-											//------------------------------------------
-
-											minimo.FechaDetectado = precio.FechaDetectado;
+										}
+										else if (tempPrecio == minimo.Precio)
+										{
+											minimo.FechaActualizacion = precio.FechaActualizacion;
 										}
 
 										drmEncontrado = true;

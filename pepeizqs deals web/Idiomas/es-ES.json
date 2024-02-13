@@ -64,6 +64,10 @@
     "Valor": "Versión Beta"
   },
   {
+    "Id": "Index.Subtitle",
+    "Valor": "Web de ofertas de videojuegos para PC procedentes de tiendas oficiales"
+  },
+  {
     "Id": "Index.HighDeals",
     "Valor": "Ofertas Destacadas"
   },

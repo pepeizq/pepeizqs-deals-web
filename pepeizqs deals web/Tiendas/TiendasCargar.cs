@@ -26,7 +26,8 @@ namespace Tiendas2
                 APIs.WinGameStore.Tienda.Generar(),
 				APIs.EA.Tienda.Generar(),
 				APIs.DLGamer.Tienda.Generar(),
-				APIs.Battlenet.Tienda.Generar()
+				APIs.Battlenet.Tienda.Generar(),
+				APIs.JoyBuggy.Tienda.Generar()
 			};
 
 			return tiendas;
@@ -94,7 +95,11 @@ namespace Tiendas2
 				{
 					await APIs.Battlenet.Tienda.BuscarOfertas(conexion, decompilador);
 				}
-			}
+                else if (id == APIs.JoyBuggy.Tienda.Generar().Id)
+                {
+                    await APIs.JoyBuggy.Tienda.BuscarOfertas(conexion, decompilador);
+                }
+            }
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador)

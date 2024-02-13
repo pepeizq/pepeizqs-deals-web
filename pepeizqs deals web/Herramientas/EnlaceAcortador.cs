@@ -52,7 +52,11 @@ namespace Herramientas
 				{
 					enlace = APIs.DLGamer.Tienda.Referido(enlace);
 				}
-			}
+                else if (tienda == APIs.JoyBuggy.Tienda.Generar().Id)
+                {
+                    enlace = APIs.JoyBuggy.Tienda.Referido(enlace);
+                }
+            }
 
 			//----------------------------------------
 
