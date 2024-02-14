@@ -119,39 +119,63 @@
 		}
 		else if (pestañaMostrar == 4)
 		{
-			<label>Maestro</label>
-			<div style="display: flex; align-items: center; margin-top: 15px;">
-				<button @onclick="(async () => await BuscarDlcMaestro())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-					Buscar
-				</button>
 
-				<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" style="margin-left: 20px; width: auto; min-width: auto;" value="@textoDlcMaestro" />
-			</div>
 		}
 		else if (pestañaMostrar == 5)
 		{
-			<div style="display: flex; align-items: center; margin-top: 15px;">
-				<label>FreeToPlay:</label>
+			@if (juego.Tipo == JuegoTipo.DLC)
+			{
+				<div style="display: flex; align-items: center; margin-top: 20px;">
+					<div style="width: 20%; padding: 0px 30px; text-align: right;">
+						<label>Maestro</label>
+					</div>
+					<div style="width: 10%;">
+						<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" value="@textoDlcMaestro" />
+					</div>
+					<div style="width: 70%; padding: 0px 30px;">
+						<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+							Buscar
+						</button>
+					</div>
+				</div>
+			}
 
-				<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" style="margin-left: 20px; margin-right: 20px; width: auto; min-width: auto;" value="@textoF2P" />
-
-				<label>(poner true si es F2P)</label>
+			<div style="display: flex; align-items: center; margin-top: 20px;">
+				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+					<label>FreeToPlay</label>
+				</div>
+				<div style="width: 10%;">
+					<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" value="@textoF2P" />
+				</div>
+				<div style="width: 70%; padding: 0px 30px;">
+					<label>(true si es F2P)</label>
+				</div>
 			</div>
 
-			<div style="display: flex; align-items: center; margin-top: 25px;">
-				<label>Datos Steam API:</label>
-
-				<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="margin-left: 20px; padding: 10px 15px; width: auto;">
-					Actualizar
-				</button>
+			<div style="display: flex; align-items: center; margin-top: 20px;">
+				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+					<label>Datos Steam API</label>
+				</div>
+				<div style="width: 10%;">
+					<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
+				</div>
+				<div style="width: 70%; padding: 0px 30px;">
+					<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+						Actualizar
+					</button>
+				</div>
 			</div>
 
-			<div style="display: flex; align-items: center; margin-top: 25px;">
-				<label>Tipo:</label>
-
-				<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" style="margin-left: 20px; margin-right: 20px; width: auto; min-width: auto;" />
-
-				<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
+			<div style="display: flex; align-items: center; margin-top: 20px;">
+				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+					<label>Tipo</label>
+				</div>
+				<div style="width: 10%;">
+					<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
+				</div>
+				<div style="width: 70%; padding: 0px 30px;">
+					<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
+				</div>
 			</div>
 		}
 	}
@@ -170,24 +194,51 @@
 	[Parameter]
 	public Juegos.Juego juego { get; set; }
 
+	private string idSteam = string.Empty;
+
+	protected override void OnInitialized()
+	{
+		if (juego.Suscripciones != null)
+		{
+			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
+		}
+
+		if (juego.Tipo == JuegoTipo.DLC)
+		{
+			textoDlcMaestro = juego.Maestro;
+		}
+
+		if (juego.IdSteam > 0)
+		{
+			idSteam = juego.IdSteam.ToString();
+		}	
+
+		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+		{
+			textoF2P = juego.FreeToPlay;
+		}
+
+		tipo = juego.Tipo.ToString();
+
+		var tipos = JuegoTipos.CargarListado();
+
+		int i = 0;
+		foreach (var tipo2 in tipos)
+		{
+			if (tipo2.ToString() == tipo)
+			{
+				tipo = i.ToString();
+				break;
+			}
+			i += 1;
+		}
+	}
+
 	private int pestañaMostrar = 0;
 
 	private void MostrarPestaña(MouseEventArgs e, int pestaña)
 	{
 		pestañaMostrar = pestaña;
-
-		if (pestañaMostrar == 3)
-		{
-			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
-		}
-		else if (pestañaMostrar == 4)
-		{
-			textoDlcMaestro = juego.Maestro;
-		}
-		else if (pestañaMostrar == 5)
-		{
-			textoF2P = juego.FreeToPlay;
-		}
 	}
 
 	#region Imagenes
@@ -404,6 +455,25 @@
 		}
 	}
 
+	private async void TextoCambiaIdSteam(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				idSteam = APIs.Steam.Juego.LimpiarID(texto.Value.ToString());
+
+				juego.IdSteam = int.Parse(idSteam);
+
+				BaseDatos.Juegos.Actualizar.IdSteam(juego, conexion);
+
+				await ActualizarDatosSteamApi();
+			}
+		}
+	}
+
 	private async Task ActualizarDatosSteamApi()
 	{
 		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
@@ -424,11 +494,15 @@
 		}
 	}
 
+	private string tipo = string.Empty;
+
 	private void TextoCambiaTipo(ChangeEventArgs texto)
 	{
 		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
 		{
 			string nuevoTexto = texto.Value.ToString().Trim();
+
+			tipo = nuevoTexto;
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 

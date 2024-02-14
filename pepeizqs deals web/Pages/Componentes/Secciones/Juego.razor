@@ -245,6 +245,8 @@
 								{
 									<img src="@JuegoDRM2.SacarImagen(drm)" />
 								}
+
+
 							</div>
 
 							<div class="perfil" style="width: 90%;">
@@ -278,7 +280,7 @@
 
 								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm).Count > 0)
 								{
-									@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
+									foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
 									{
 										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 											<div class="perfil-flexible-centrado">
@@ -831,11 +833,6 @@
 
 		if (historicosOrdenados.Count > 0)
 		{
-			// if (historicosOrdenados.Count > 1)
-			// {
-			// 	historicosOrdenados = OrdenarPrecios(historicosOrdenados, drm);
-			// }		
-
 			if (historicosOrdenados[0] != null)
 			{
 				drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(historicosOrdenados[0], true);
@@ -938,6 +935,7 @@
 			{
 				foreach (JuegoPrecio precio in precios)
 				{
+					// global::BaseDatos.Errores.Insertar.Ejecutar(precio.DRM.ToString());
 					if (precio.DRM == drm && precio.Descuento > 0)
 					{
 						bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);

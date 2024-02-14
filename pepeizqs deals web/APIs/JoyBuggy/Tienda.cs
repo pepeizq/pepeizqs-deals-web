@@ -19,7 +19,7 @@ namespace APIs.JoyBuggy
                 Nombre = "JoyBuggy",
                 ImagenLogo = "/imagenes/tiendas/joybuggy_logo.webp",
                 Imagen300x80 = "/imagenes/tiendas/joybuggy_300x80.webp",
-                ImagenIcono = "/imagenes/tiendas/joybuggy_icono.icon",
+                ImagenIcono = "/imagenes/tiendas/joybuggy_icono.ico",
                 Color = "#39f2d3",
                 AdminEnseñar = true,
                 AdminInteractuar = true
@@ -41,6 +41,13 @@ namespace APIs.JoyBuggy
 
             if (string.IsNullOrEmpty(html) == false)
             {
+                html = html.Replace("g:title", "title");
+                html = html.Replace("g:link", "link");
+                html = html.Replace("g:image_link", "image_link");
+                html = html.Replace("g:id", "id");
+                html = html.Replace("g:sale_price", "sale_price");
+                html = html.Replace("g:price", "price");
+
                 XmlSerializer xml = new XmlSerializer(typeof(JoyBuggyCanal));
                 JoyBuggyCanal listaJuegos = null;
 
@@ -59,12 +66,6 @@ namespace APIs.JoyBuggy
 
                             foreach (JoyBuggyJuego juego in listaJuegos.Datos.Juegos)
                             {
-                                string nombre = WebUtility.HtmlDecode(juego.Nombre);
-                                BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-                                string enlace = juego.Enlace;
-
-                                string imagen = juego.Imagen;
-
                                 if (string.IsNullOrEmpty(juego.PrecioBase) == false && string.IsNullOrEmpty(juego.PrecioRebajado) == false)
                                 {
                                     decimal precioBase = decimal.Parse(juego.PrecioBase);
@@ -74,6 +75,12 @@ namespace APIs.JoyBuggy
 
                                     if (descuento > 0)
                                     {
+                                        string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+                                        string enlace = juego.Enlace;
+
+                                        string imagen = juego.Imagen;
+
                                         JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
                                         JuegoPrecio oferta = new JuegoPrecio
@@ -90,7 +97,7 @@ namespace APIs.JoyBuggy
                                             FechaActualizacion = DateTime.Now
                                         };
 
-                                        //BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
 
                                         juegos2 += 1;
                                         BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
@@ -115,26 +122,29 @@ namespace APIs.JoyBuggy
     {
         [XmlElement("item")]
         public List<JoyBuggyJuego> Juegos { get; set; }
+
+        [XmlElement("created_at")]
+        public string Creado { get; set; }
     }
 
     public class JoyBuggyJuego
     {
-        [XmlElement("g:title")]
+        [XmlElement("title")]
         public string Nombre { get; set; }
 
-        [XmlElement("g:link")]
+        [XmlElement("link")]
         public string Enlace { get; set; }
 
-        [XmlElement("g:sale_price")]
+        [XmlElement("sale_price")]
         public string PrecioRebajado { get; set; }
 
-        [XmlElement("g:price")]
+        [XmlElement("price")]
         public string PrecioBase { get; set; }
 
-        [XmlElement("g:id")]
+        [XmlElement("id")]
         public string ID { get; set; }
 
-        [XmlElement("g:image_link")]
+        [XmlElement("image_link")]
         public string Imagen { get; set; }
 
         [XmlElement("Platform")]

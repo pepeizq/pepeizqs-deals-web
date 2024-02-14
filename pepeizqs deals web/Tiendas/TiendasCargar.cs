@@ -160,6 +160,10 @@ namespace Tiendas2
 			{
 				await APIs.Battlenet.Tienda.BuscarOfertas(conexion, decompilador);
 			}
-		}
+            else if (id == APIs.JoyBuggy.Tienda.Generar().Id)
+            {
+                await APIs.JoyBuggy.Tienda.BuscarOfertas(conexion, decompilador);
+            }
+        }
     }
 }
