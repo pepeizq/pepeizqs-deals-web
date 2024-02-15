@@ -165,6 +165,10 @@ app.MapRazorPages();
 
 app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
+app.MapControllers();
+
+app.UseAuthorization();
+
 app.UseRateLimiter();
 
 //app.UseResponseCaching();
@@ -192,10 +196,6 @@ app.UseStaticFiles(new StaticFileOptions
 app.MapHealthChecks("/estado");
 
 app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.UseRequestLocalization();
 

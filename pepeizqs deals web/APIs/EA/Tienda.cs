@@ -124,11 +124,26 @@ namespace APIs.EA
                                         FechaActualizacion = DateTime.Now
                                     };
 
-                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+									try
+									{
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+									}
+									catch (Exception ex)
+									{
+										BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
+									}
 
-                                    juegos2 += 1;
-                                    BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-                                }
+									juegos2 += 1;
+
+									try
+									{
+										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+									}
+									catch (Exception ex)
+									{
+										BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
+									}
+								}
                             }
                         }
                     }

@@ -335,28 +335,34 @@
 
 					@foreach (var bundle2 in BundlesDisponibles(juego.Bundles))
 					{
-						@foreach (var bundle3 in BundleCargar(bundle2.BundleId))
+						if (bundle2.BundleId > 0)
 						{
-							<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
-								<div style="display: flex; align-items: center;">
-									<div style="margin-right: 15px;">
-										<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
-									</div>
+							foreach (var bundle3 in BundleCargar(bundle2.BundleId))
+							{
+								if (bundle3 != null)
+								{
+									<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
+										<div style="display: flex; align-items: center;">
+											<div style="margin-right: 15px;">
+												<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+											</div>
 
-									<div style="margin-right: 30px;">
-										<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
-									</div>
+											<div style="margin-right: 30px;">
+												<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
+											</div>
 
-									<div style="margin-right: 20px; width: 100%;">
-										<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label>
-									</div>
+											<div style="margin-right: 20px; width: 100%;">
+												<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label>
+											</div>
 
-									<div>
-										<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
-									</div>
-								</div>
-							</a>
-						}
+											<div>
+												<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
+											</div>
+										</div>
+									</a>
+								}
+							}
+						}						
 					}
 				}
 
@@ -935,7 +941,6 @@
 			{
 				foreach (JuegoPrecio precio in precios)
 				{
-					// global::BaseDatos.Errores.Insertar.Ejecutar(precio.DRM.ToString());
 					if (precio.DRM == drm && precio.Descuento > 0)
 					{
 						bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
@@ -1356,7 +1361,7 @@
 				{
 					if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != 0 && bundle.BundleId > 0)
 						{
 							if (bundle.DRM == drm)
 							{

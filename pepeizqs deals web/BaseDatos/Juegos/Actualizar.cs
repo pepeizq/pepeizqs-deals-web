@@ -170,6 +170,35 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void Bundles(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET bundles=@bundles WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+
+				if (juego.Bundles != null)
+				{
+					comando.Parameters.AddWithValue("@bundles", JsonConvert.SerializeObject(juego.Bundles));
+				}
+				else
+				{
+					comando.Parameters.AddWithValue("@bundles", "null");
+				}
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Suscripciones(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +

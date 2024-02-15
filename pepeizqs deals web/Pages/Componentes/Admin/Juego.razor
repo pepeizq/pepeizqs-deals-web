@@ -6,8 +6,14 @@
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 <div style="padding: 20px; background: var(--fondoCuerpo); margin-bottom: 50px;">
-	<div style="margin-bottom: 20px;">
-		Admin Editar • @juego.Nombre
+	<div style="display: flex; align-items: center; margin-bottom: 20px;">
+		<div style="width: 100%;">
+			Admin Editar • @juego.Nombre
+		</div>
+		
+		<a href="/api/@juego.Id" target="_blank" style="padding: 10px 15px; text-decoration: none;">
+			Api
+		</a>
 	</div>
 
 	<div style="display: flex; align-items: center;">
@@ -25,24 +31,15 @@
 
 		<div style="width: auto; margin-left: 20px;">
 			<button @onclick="(e => MostrarPestaña(e, 3))" class="boton-pequeño" style="padding: 10px 15px;">
-				Suscripciones
+				Bundles
 			</button>
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
-			<a href="/api/@juego.Id" target="_blank" class="boton-pequeño" style="padding: 10px 15px;">
-				Api
-			</a>
+			<button @onclick="(e => MostrarPestaña(e, 4))" class="boton-pequeño" style="padding: 10px 15px;">
+				Suscripciones
+			</button>
 		</div>
-
-		@if (juego.Tipo == JuegoTipo.DLC)
-		{
-			<div style="width: auto; margin-left: 20px;">
-				<button @onclick="(e => MostrarPestaña(e, 4))" class="boton-pequeño" style="padding: 10px 15px;">
-					Dlc
-				</button>
-			</div>
-		}
 
 		<div style="width: auto; margin-left: 20px;">
 			<button @onclick="(e => MostrarPestaña(e, 5))" class="boton-pequeño" style="padding: 10px 15px;">
@@ -115,11 +112,11 @@
 		}
 		else if (pestañaMostrar == 3)
 		{
-			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
+			<textarea @onchange="(e => TextoCambiaBundles(e))" class="entrada-texto" rows="16">@textoOrigenBundles</textarea>
 		}
 		else if (pestañaMostrar == 4)
 		{
-
+			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
 		}
 		else if (pestañaMostrar == 5)
 		{
@@ -154,7 +151,7 @@
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
 				<div style="width: 20%; padding: 0px 30px; text-align: right;">
-					<label>Datos Steam API</label>
+					<label>Id Steam</label>
 				</div>
 				<div style="width: 10%;">
 					<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
@@ -198,6 +195,11 @@
 
 	protected override void OnInitialized()
 	{
+		if (juego.Bundles != null)
+		{
+			textoOrigenBundles = JsonConvert.SerializeObject(juego.Bundles);
+		}
+
 		if (juego.Suscripciones != null)
 		{
 			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
@@ -328,11 +330,17 @@
 
 		if (pestañaMostrarPrecios == 1)
 		{
-			textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
+			if (juego.PrecioActualesTiendas != null)
+			{
+				textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
+			}			
 		}
 		else if (pestañaMostrarPrecios == 2)
 		{
-			textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
+			if (juego.PrecioMinimosHistoricos != null)
+			{
+				textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
+			}			
 		}
 	}
 
@@ -364,6 +372,40 @@
 
 	#endregion
 
+	#region Bundles
+
+	private string textoOrigenBundles = string.Empty;
+
+	private void TextoCambiaBundles(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoOrigenBundles = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(textoOrigenBundles);
+				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
+			}
+		}
+		else
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Bundles = null;
+				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
+			}
+		}
+	}
+
+	#endregion
+
 	#region Suscripciones
 
 	private string textoOrigenSuscripciones = string.Empty;
@@ -381,6 +423,16 @@
 			using (conexion)
 			{
 				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoOrigenSuscripciones);
+				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
+			}
+		}
+		else
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Suscripciones = null;
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
 		}

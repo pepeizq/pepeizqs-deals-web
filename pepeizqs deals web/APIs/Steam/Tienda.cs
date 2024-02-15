@@ -299,10 +299,25 @@ namespace APIs.Steam
 													FechaActualizacion = DateTime.Now
 												};
 
-												BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
+												try
+												{
+													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
+												}
 
 												juegos += 1;
-												BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion, i.ToString(), tope.ToString());
+
+												try
+												{
+													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion, i.ToString(), tope.ToString());
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
+												}											
 											}
 										}
 									}

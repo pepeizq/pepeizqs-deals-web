@@ -92,19 +92,22 @@ namespace BaseDatos.Juegos
 											minimo.Tienda = precio.Tienda;
 
 											//------------------------------------------
-
+											
 											if (juego.UsuariosInteresados != null)
 											{
 												if (juego.UsuariosInteresados.Count > 0)
 												{
 													foreach (var usuarioInteresado in juego.UsuariosInteresados)
 													{
-														string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
-
-														if (correo != null)
+														if (usuarioInteresado.DRM == minimo.DRM)
 														{
-															Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
-														}
+															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
+
+															if (correo != null)
+															{
+																Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+															}
+														}														
 													}
 												}
 											}

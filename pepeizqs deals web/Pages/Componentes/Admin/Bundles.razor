@@ -269,13 +269,9 @@
 	{
 		if (texto.Value.ToString().Trim().Length > 0)
 		{
-			for (int i = 0; i < bundle.Tiers.Count; i += 1)
-			{
-				if (bundle.Tiers[i].Precio == tier.Precio)
-				{
-					bundle.Tiers[i].Posicion = int.Parse(texto.Value.ToString());
-				}
-			}		
+			int posicion = int.Parse(texto.Value.ToString());
+
+			tier.Posicion = posicion;	
 		}
 	}
 
@@ -314,9 +310,31 @@
 			bundle.Tiers = new List<Bundles2.BundleTier>();
 		}
 
+		int i = 1;
+
+		if (bundle.Tiers.Count > 0)
+		{
+			foreach (var tier2 in bundle.Tiers)
+			{
+				if (tier2.Posicion != i)
+				{
+					break;
+				}
+				else
+				{
+					i += 1;
+				}
+			}
+
+			if (i == 1)
+			{
+				i = bundle.Tiers.Count;
+			}
+		}
+
 		Bundles2.BundleTier tier = new Bundles2.BundleTier
 		{
-			Posicion = bundle.Tiers.Count + 1,
+			Posicion = i,
 			Precio = "0.00",
 			CantidadJuegos = 0
 		};
@@ -369,9 +387,8 @@
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 1)
-		{
-			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda);
+		{			
+			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
 		}
 		else
 		{
