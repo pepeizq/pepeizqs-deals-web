@@ -23,7 +23,22 @@ namespace BaseDatos.Juegos
 							nuevaOferta.Tienda == precio.Tienda &&
 							nuevaOferta.Moneda == precio.Moneda)
 						{
-							if (nuevaOferta.Precio < precio.Precio) 
+							bool cambiarFechaDetectado = false;
+
+							if (nuevaOferta.Precio < precio.Precio || nuevaOferta.Precio > precio.Precio)
+							{
+								cambiarFechaDetectado = true;
+							}
+
+							DateTime tempFecha = precio.FechaDetectado;
+							tempFecha = tempFecha.AddDays(21);
+
+							if (tempFecha < nuevaOferta.FechaDetectado)
+							{
+								cambiarFechaDetectado = true;
+							}
+
+							if (cambiarFechaDetectado == true)
 							{
 								precio.FechaDetectado = nuevaOferta.FechaDetectado;
 							}

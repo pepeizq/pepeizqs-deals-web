@@ -187,25 +187,28 @@ namespace APIs.Humble
 
 										if (ofertas.Count > 0)
 										{
-											try
+											foreach (var oferta in ofertas)
 											{
-												BaseDatos.Tiendas.Comprobar.Resto(ofertas, objeto, conexion);
-											}
-											catch (Exception ex)
-											{
-												BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-											}
+												try
+												{
+													BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
+												}
 
-											juegos2 += 1;
+												juegos2 += 1;
 
-											try
-											{
-												BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-											}
-											catch (Exception ex)
-											{
-												BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-											}
+												try
+												{
+													BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
+												}
+											}											
 										}
 									}
 								}

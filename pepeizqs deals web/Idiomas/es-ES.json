@@ -297,7 +297,7 @@
   },
   {
     "Id": "Game.String23",
-    "Valor": "Bundles Antiguos"
+    "Valor": "Bundles Historial"
   },
   {
     "Id": "Game.String24",
@@ -313,7 +313,7 @@
   },
   {
     "Id": "Game.String27",
-    "Valor": "Suscripciones Antiguas"
+    "Valor": "Suscripciones Historial"
   },
   {
     "Id": "Game.String28",
@@ -329,7 +329,7 @@
   },
   {
     "Id": "Game.String31",
-    "Valor": "Gratis Antiguos"
+    "Valor": "Gratis Historial"
   },
   {
     "Id": "Game.String32",
@@ -609,7 +609,7 @@
   },
   {
     "Id": "Privacy.String7",
-    "Valor": "Si decidís registraros una cuenta en la web quiero que ser lo mas transparente posible y prometo que solo usaré vuestros datos 'dentro de la web, no fuera'. Pero si tienes dudas de que me pueda volver malvado puedes borrar tu cuenta en cualquier momento desde 'Personal Data' o descargar todos los datos que tengo sobre ti."
+    "Valor": "Si decidís registraros una cuenta en la web quiero que ser lo más transparente posible y prometo que solo usaré vuestros datos 'dentro de la web, no fuera'. Pero si tienes dudas de que me pueda volver malvado puedes borrar tu cuenta en cualquier momento desde 'Personal Data' o descargar todos los datos que tengo sobre ti."
   },
   {
     "Id": "Privacy.String8",
