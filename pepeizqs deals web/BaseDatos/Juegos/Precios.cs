@@ -52,6 +52,11 @@ namespace BaseDatos.Juegos
 							precio.Nombre = nuevaOferta.Nombre;
 							precio.Imagen = nuevaOferta.Imagen;
 
+							if (precio.FechaUltimoMinimo.Year == 0001)
+							{
+								precio.FechaUltimoMinimo = precio.FechaDetectado;
+							}
+
 							añadir = false;
 							break;
 						}
@@ -97,6 +102,7 @@ namespace BaseDatos.Juegos
 											minimo.Moneda = precio.Moneda;
 											minimo.Descuento = precio.Descuento;
 											minimo.FechaDetectado = precio.FechaDetectado;
+											minimo.FechaUltimoMinimo = precio.FechaDetectado;
 											minimo.FechaActualizacion = precio.FechaActualizacion;
 											minimo.FechaTermina = precio.FechaTermina;
 											minimo.CodigoDescuento = precio.CodigoDescuento;
@@ -196,7 +202,44 @@ namespace BaseDatos.Juegos
 
 								if (juego.PrecioActualesTiendas[0] != null)
 								{
-									bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(juego.PrecioActualesTiendas[0]);
+									bool fechaEncaja = true;
+
+									if (juego.PrecioActualesTiendas[0].FechaTermina.Year < 2023 && juego.PrecioActualesTiendas[0].FechaActualizacion.Year < 2023)
+									{
+										fechaEncaja = false;
+									}
+
+									if (juego.PrecioActualesTiendas[0].FechaTermina.Year > 2022)
+									{
+										if (DateTime.Now >= juego.PrecioActualesTiendas[0].FechaTermina)
+										{
+											fechaEncaja = false;
+										}
+									}
+									else
+									{
+										if (juego.PrecioActualesTiendas[0].FechaActualizacion.Year > 2022)
+										{
+											if (juego.PrecioActualesTiendas[0].FechaActualizacion.Year != DateTime.Now.Year || juego.PrecioActualesTiendas[0].FechaActualizacion.DayOfYear + 2 <= DateTime.Now.DayOfYear)
+											{
+												fechaEncaja = false;
+											}
+										}
+										else
+										{
+											if (juego.PrecioActualesTiendas[0].FechaUltimoMinimo.Year > 2022)
+											{
+												if (juego.PrecioActualesTiendas[0].FechaUltimoMinimo.Year != DateTime.Now.Year || juego.PrecioActualesTiendas[0].FechaUltimoMinimo.DayOfYear + 7 <= DateTime.Now.DayOfYear)
+												{
+													fechaEncaja = false;
+												}
+											}
+											else
+											{
+												fechaEncaja = false;
+											}
+										}
+									}
 
 									if (fechaEncaja == true && juego.PrecioActualesTiendas[0].Descuento > 0 && juego.PrecioActualesTiendas[0].Precio < 1000 && juego.Analisis != null)
 									{
@@ -278,7 +321,7 @@ namespace BaseDatos.Juegos
 
 					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
 					{
-						return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
+						return j2Ofertas[0].FechaUltimoMinimo.CompareTo(j1Ofertas[0].FechaUltimoMinimo);
 					}
 					else
 					{
