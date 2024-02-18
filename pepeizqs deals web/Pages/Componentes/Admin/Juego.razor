@@ -46,6 +46,12 @@
 				Datos
 			</button>
 		</div>
+
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="(e => MostrarPestaña(e, 6))" class="boton-pequeño" style="padding: 10px 15px;">
+				Deseados
+			</button>
+		</div>
 	</div>
 
 	@if (pestañaMostrar > 0)
@@ -175,6 +181,10 @@
 				</div>
 			</div>
 		}
+		else if (pestañaMostrar == 6)
+		{
+			@* <textarea @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" rows="16">@textoOrigenDeseados</textarea> *@
+		}	
 	}
 </div>
 
@@ -585,6 +595,12 @@
 			}
 		}
 	}
+
+	#endregion
+
+	#region Deseados
+
+
 
 	#endregion
 }
