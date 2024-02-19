@@ -158,10 +158,10 @@ namespace BaseDatos.Tiendas
 						{
 							if (tienda2.Id == tienda.tienda)
 							{
-								if (tienda2.AdminInteractuar == false)
-								{
-									añadir = false;
-								}
+								//if (tienda2.AdminInteractuar == false)
+								//{
+								//	añadir = false;
+								//}
 
 								break;
 							}

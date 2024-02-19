@@ -30,8 +30,19 @@ namespace APIs.Battlenet
 
         private static List<string> ListaSlugs()
         {
-            List<string> slugs = ["call-of-duty-modern-warfare-iii",
-                "diablo_ii_resurrected"];
+            List<string> slugs = ["call-of-duty-black-ops-4", 
+				"call-of-duty-black-ops-cold-war",
+				"call-of-duty-modern-warfare",
+				"call-of-duty-modern-warfare-2-campaign-remastered",
+				"call-of-duty-modern-warfare-ii", 
+				"call-of-duty-modern-warfare-iii",
+				"call-of-duty-vanguard",
+				"crash-bandicoot-4",
+				"diablo",
+                "diablo_ii_resurrected",
+				"diablo-iv",
+				"warcraft-orcs-and-humans",
+				"warcraft-ii-battle-net-edition"];
 
             return slugs;
         }

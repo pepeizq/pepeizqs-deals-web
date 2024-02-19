@@ -35,7 +35,7 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
             {
 				if (Input.Texto != null)
 				{
-					APIs.Humble.Tienda.BuscarOfertas(ViewData, Input.Texto);
+					APIs.Humble.Tienda.RecopilarOfertas(Input.Texto);
 				}
 			}			
         }
