@@ -274,9 +274,14 @@ namespace APIs.Humble
 				}
 			}
 
-			if (DateTime.Now.DayOfYear > fechaRecopilado.DayOfYear + 2)
+			if (DateTime.Now.DayOfYear != fechaRecopilado.DayOfYear)
 			{
+				string limpieza = "DROP TABLE temporalhumble";
 
+				using (SqlCommand comando = new SqlCommand(limpieza, conexion))
+				{
+					comando.ExecuteNonQuery();
+				}
 			}
 		}
 

@@ -112,17 +112,17 @@
 				</div>
 
 				<div style="width: 80%; padding: 5px 0px 5px 40px;">
-					<textarea @onchange="(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoOrigenPrecios</textarea>
+					<textarea @onchange="(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoPrecios</textarea>
 				</div>
 			</div>
 		}
 		else if (pestañaMostrar == 3)
 		{
-			<textarea @onchange="(e => TextoCambiaBundles(e))" class="entrada-texto" rows="16">@textoOrigenBundles</textarea>
+			<textarea @onchange="(e => TextoCambiaBundles(e))" class="entrada-texto" rows="16">@textoBundles</textarea>
 		}
 		else if (pestañaMostrar == 4)
 		{
-			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoOrigenSuscripciones</textarea>
+			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoSuscripciones</textarea>
 		}
 		else if (pestañaMostrar == 5)
 		{
@@ -183,7 +183,7 @@
 		}
 		else if (pestañaMostrar == 6)
 		{
-			@* <textarea @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" rows="16">@textoOrigenDeseados</textarea> *@
+			<textarea @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" rows="16">@textoDeseados</textarea>
 		}	
 	}
 </div>
@@ -207,12 +207,12 @@
 	{
 		if (juego.Bundles != null)
 		{
-			textoOrigenBundles = JsonConvert.SerializeObject(juego.Bundles);
+			textoBundles = JsonConvert.SerializeObject(juego.Bundles);
 		}
 
 		if (juego.Suscripciones != null)
 		{
-			textoOrigenSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
+			textoSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
 		}
 
 		if (juego.Tipo == JuegoTipo.DLC)
@@ -243,6 +243,11 @@
 				break;
 			}
 			i += 1;
+		}
+
+		if (juego.UsuariosInteresados != null)
+		{
+			textoDeseados = JsonConvert.SerializeObject(juego.UsuariosInteresados);
 		}
 	}
 
@@ -332,7 +337,7 @@
 	#region Precios
 
 	private int pestañaMostrarPrecios = 0;
-	private string textoOrigenPrecios = string.Empty;
+	private string textoPrecios = string.Empty;
 
 	private void MostrarPestañaPrecios(MouseEventArgs e, int pestañaImagenes)
 	{
@@ -342,14 +347,14 @@
 		{
 			if (juego.PrecioActualesTiendas != null)
 			{
-				textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
+				textoPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
 			}			
 		}
 		else if (pestañaMostrarPrecios == 2)
 		{
 			if (juego.PrecioMinimosHistoricos != null)
 			{
-				textoOrigenPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
+				textoPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
 			}			
 		}
 	}
@@ -360,7 +365,7 @@
 		{
 			string nuevoTexto = texto.Value.ToString().Trim();
 
-			textoOrigenPrecios = nuevoTexto;
+			textoPrecios = nuevoTexto;
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -368,12 +373,12 @@
 			{
 				if (pestañaMostrarPrecios == 1)
 				{
-					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoOrigenPrecios);
+					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosActuales(juego, conexion);
 				}
 				else if (pestañaMostrarPrecios == 2)
 				{
-					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoOrigenPrecios);
+					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
 				}				
 			}
@@ -384,7 +389,7 @@
 
 	#region Bundles
 
-	private string textoOrigenBundles = string.Empty;
+	private string textoBundles = string.Empty;
 
 	private void TextoCambiaBundles(ChangeEventArgs texto)
 	{
@@ -392,13 +397,13 @@
 		{
 			string nuevoTexto = texto.Value.ToString().Trim();
 
-			textoOrigenBundles = nuevoTexto;
+			textoBundles = nuevoTexto;
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(textoOrigenBundles);
+				juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(textoBundles);
 				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
 			}
 		}
@@ -418,7 +423,7 @@
 
 	#region Suscripciones
 
-	private string textoOrigenSuscripciones = string.Empty;
+	private string textoSuscripciones = string.Empty;
 
 	private void TextoCambiaSuscripciones(ChangeEventArgs texto)
 	{
@@ -426,13 +431,13 @@
 		{
 			string nuevoTexto = texto.Value.ToString().Trim();
 
-			textoOrigenSuscripciones = nuevoTexto;
+			textoSuscripciones = nuevoTexto;
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoOrigenSuscripciones);
+				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoSuscripciones);
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
 		}
@@ -450,7 +455,7 @@
 
 	#endregion
 
-	#region Dlc
+	#region Datos
 
 	private string textoDlcMaestro = string.Empty;
 
@@ -492,10 +497,6 @@
 			}
 		}
 	}
-
-	#endregion
-
-	#region Datos
 
 	private string textoF2P = string.Empty;
 
@@ -600,7 +601,24 @@
 
 	#region Deseados
 
+	private string textoDeseados = string.Empty;
 
+	private void TextoCambiaDeseados(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoDeseados = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Juegos.Actualizar.Deseados(juego, conexion);
+			}
+		}
+	}
 
 	#endregion
 }

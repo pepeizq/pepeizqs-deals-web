@@ -349,5 +349,26 @@ namespace BaseDatos.Juegos
 				}
 			}
 		}
+
+		public static void Deseados(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET usuariosInteresados=@usuariosInteresados WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@usuariosInteresados", JsonConvert.SerializeObject(juego.UsuariosInteresados));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }
