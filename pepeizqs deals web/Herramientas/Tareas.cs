@@ -42,7 +42,7 @@ namespace Herramientas
 							{
 								añadir = false;
 							}
-							else if (minimo.Tipo == JuegoTipo.DLC || minimo.Tipo == JuegoTipo.Bundle || minimo.Tipo == JuegoTipo.Software || minimo.Tipo == JuegoTipo.Music)
+							else if (minimo.Tipo != JuegoTipo.Game)
 							{
 								añadir = false;
 							}
