@@ -27,7 +27,8 @@ namespace Tiendas2
 				APIs.EA.Tienda.Generar(),
 				APIs.DLGamer.Tienda.Generar(),
 				APIs.Battlenet.Tienda.Generar(),
-				APIs.JoyBuggy.Tienda.Generar()
+				APIs.JoyBuggy.Tienda.Generar(),
+				APIs.Voidu.Tienda.Generar()
 			};
 
 			return tiendas;
@@ -99,7 +100,11 @@ namespace Tiendas2
                 {
                     await APIs.JoyBuggy.Tienda.BuscarOfertas(conexion, decompilador);
                 }
-            }
+				else if (id == APIs.Voidu.Tienda.Generar().Id)
+				{
+					await APIs.Voidu.Tienda.BuscarOfertas(conexion, decompilador);
+				}
+			}
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador)
@@ -168,6 +173,10 @@ namespace Tiendas2
             {
                 await APIs.JoyBuggy.Tienda.BuscarOfertas(conexion, decompilador);
             }
-        }
+			else if (id == APIs.Voidu.Tienda.Generar().Id)
+			{
+				await APIs.Voidu.Tienda.BuscarOfertas(conexion, decompilador);
+			}
+		}
     }
 }

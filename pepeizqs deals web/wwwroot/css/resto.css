@@ -70,6 +70,7 @@
     border: 0px;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    filter: saturate(0.85);
 }
 
 .boton:hover {
@@ -89,6 +90,7 @@
     border: 0px;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    filter: saturate(0.85);
 }
 
 .boton-pequeño:hover {
@@ -108,6 +110,7 @@
     font-size: 20px;
     border: 0px;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    filter: saturate(0.85);
     text-decoration: none;
 }
 
@@ -127,6 +130,7 @@
     font-size: 16px;
     border: 0px;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    filter: saturate(0.85);
     text-decoration: none;
 }
 
@@ -163,6 +167,7 @@
     color: var(--colorTextoOscuro);
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    filter: saturate(0.85);
 }
 
 .perfil-lateral.active {
@@ -347,6 +352,7 @@
     border: 0px;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    filter: saturate(0.85);
 }
 
 .juego-boton-pequeño:hover {
