@@ -148,8 +148,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex);
+                                    }
 
 									juegos2 += 1;
 
@@ -159,8 +159,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex);
+                                    }
 								}
 							}
 						}
@@ -233,8 +233,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex);
+                                    }
 
 									juegos2 += 1;
 
@@ -244,8 +244,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex);
+                                    }
 								}
 							}
 						}
@@ -318,8 +318,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex);
+                                    }
 
 									juegos2 += 1;
 
@@ -329,8 +329,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex);
+                                    }
 								}
 							}
 						}
@@ -403,8 +403,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex);
+                                    }
 
 									juegos2 += 1;
 
@@ -414,8 +414,8 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex);
+                                    }
 								}
 							}
 						}

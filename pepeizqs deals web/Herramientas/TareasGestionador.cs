@@ -35,10 +35,19 @@ namespace Herramientas
 					}
 					catch (Exception ex) 
 					{
-						global::BaseDatos.Errores.Insertar.Ejecutar("Noticias - " + ex.Message + " - " + DateTime.Now.ToString());
+						global::BaseDatos.Errores.Insertar.Ejecutar("Portada - Minimos", ex);
 					}
 
-					try
+                    try
+                    {
+                        await Tareas.Noticias(conexion);
+                    }
+                    catch (Exception ex)
+                    {
+                        global::BaseDatos.Errores.Insertar.Ejecutar("Portada - Noticias", ex);
+                    }
+
+                    try
 					{
 						await Tareas.Tiendas(conexion, _decompilador);
 					}
@@ -47,6 +56,12 @@ namespace Herramientas
 					try
 					{
 						await Tareas.Divisas(conexion);
+					}
+					catch { }
+
+					try
+					{
+						await Tareas.Sorteos(conexion);
 					}
 					catch { }
 				}

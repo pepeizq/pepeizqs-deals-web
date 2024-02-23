@@ -445,7 +445,17 @@ else
 
 					for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
 					{
-						juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+						if (i < juegosDestacadosGestor.Count)
+						{
+							if (juegosDestacadosGestor[i] != null)
+							{
+								juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+							}
+						}		
+						else
+						{
+							break;
+						}
 					}
 				}
 			}

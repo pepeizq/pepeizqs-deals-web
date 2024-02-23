@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using Sorteos2;
 
 namespace BaseDatos.Sorteos
@@ -26,5 +27,25 @@ namespace BaseDatos.Sorteos
             }
         }
 
+        public static void Ganador(Sorteo sorteo, SqlConnection conexion)
+        {
+            string sqlActualizar = "UPDATE sorteos " +
+                    "SET ganadorId=@ganadorId WHERE id=@id";
+
+            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", sorteo.Id);
+                comando.Parameters.AddWithValue("@ganadorId", sorteo.GanadorId);
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch
+                {
+
+                }
+            }
+        }
     }
 }

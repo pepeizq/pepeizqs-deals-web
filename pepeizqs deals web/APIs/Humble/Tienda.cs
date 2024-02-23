@@ -90,7 +90,14 @@ namespace APIs.Humble
 									comando.Parameters.AddWithValue("@contenido", JsonConvert.SerializeObject(juego));
 									comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 
-									comando.ExecuteNonQuery();
+									try
+									{
+                                        comando.ExecuteNonQuery();
+                                    }
+									catch (Exception ex) 
+									{
+                                        global::BaseDatos.Errores.Insertar.Ejecutar("Humble Recopilación", ex);
+                                    }								
 								}
 							}		
 						}
@@ -254,8 +261,8 @@ namespace APIs.Humble
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                    }
 
 									juegos2 += 1;
 
@@ -265,8 +272,8 @@ namespace APIs.Humble
 									}
 									catch (Exception ex)
 									{
-										BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-									}
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                    }
 								}
 							}
 						}
@@ -276,7 +283,7 @@ namespace APIs.Humble
 
 			if (DateTime.Now.DayOfYear != fechaRecopilado.DayOfYear)
 			{
-				string limpieza = "DROP TABLE temporalhumble";
+				string limpieza = "TRUNCATE TABLE temporalhumble";
 
 				using (SqlCommand comando = new SqlCommand(limpieza, conexion))
 				{

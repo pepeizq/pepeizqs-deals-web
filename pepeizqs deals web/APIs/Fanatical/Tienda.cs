@@ -154,8 +154,8 @@ namespace APIs.Fanatical
 												}
 												catch (Exception ex)
 												{
-													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Actualizando - " + ex.Message + " - " + DateTime.Now.ToString());
-												}
+                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                                }
 
 												juegos2 += 1;
 
@@ -165,8 +165,8 @@ namespace APIs.Fanatical
 												}
 												catch (Exception ex)
 												{
-													BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id + " Detectando - " + ex.Message + " - " + DateTime.Now.ToString());
-												}
+                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                                }
 											}
 										}
 									}

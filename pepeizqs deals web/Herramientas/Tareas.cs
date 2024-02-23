@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Juegos;
 using BaseDatos.Tiendas;
 using Juegos;
 using Microsoft.Data.SqlClient;
@@ -17,20 +18,92 @@ namespace Herramientas
 			List<Juego> juegosMinimosMostrar = new List<Juego>();
 
 			List<Juego> juegos = new List<Juego>();
+            List<Juego> juegosConMinimos = new List<Juego>();
 
-			juegos = global::BaseDatos.Juegos.Buscar.Todos(conexion);
+            juegos = Buscar.Todos(conexion, "seccionMinimos");
 
 			if (juegos != null)
 			{
-				List<Juego> juegosConMinimos = global::BaseDatos.Juegos.Precios.DevolverMinimos(juegos);
+                if (juegos.Count > 0)
+                {
+                    foreach (var juego in juegos)
+                    {
+                        if (juego != null)
+                        {
+                            if (juego.PrecioActualesTiendas != null)
+                            {
+								bool borrar = true;
+								
+                                foreach (var oferta in juego.PrecioActualesTiendas)
+								{
+                                    bool fechaEncaja = JuegoFicha.CalcularAntiguedad(oferta);
+
+                                    if (fechaEncaja == true)
+									{
+										borrar = false;
+									}
+								}
+
+								if (borrar == true)
+								{
+									string sqlBorrar = "DELETE FROM seccionMinimos WHERE idMaestra='" + juego.IdMaestra + "'";
+
+                                    using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+									{
+                                        comando.ExecuteNonQuery();
+                                    }
+                                }
+								else
+								{
+									juegosConMinimos.Add(juego);
+								}
+                            }
+                        }
+                    }
+                }
 
 				if (juegosConMinimos != null)
 				{
 					if (juegosConMinimos.Count > 0)
 					{
-						#region Destacados
+                        juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+                        {
+                            JuegoPrecio j1Oferta = null;
 
-						juegosDestacadosMostrar.Clear();
+                            if (j1.PrecioActualesTiendas.Count > 0)
+                            {
+                                j1Oferta = j1.PrecioActualesTiendas[0];
+                            }
+
+                            JuegoPrecio j2Oferta = null;
+
+                            if (j2.PrecioActualesTiendas.Count > 0)
+                            {
+                                j2Oferta = j2.PrecioActualesTiendas[0];
+                            }
+
+                            if (j1Oferta != null && j2Oferta != null)
+                            {
+                                return j2Oferta.FechaUltimoMinimo.CompareTo(j1Oferta.FechaUltimoMinimo);
+                            }
+                            else
+                            {
+                                if (j1Oferta == null && j2Oferta != null)
+                                {
+                                    return 1;
+                                }
+                                else if (j1Oferta != null && j2Oferta == null)
+                                {
+                                    return -1;
+                                }
+                            }
+
+                            return 0;
+                        });
+
+                        #region Destacados
+
+                        juegosDestacadosMostrar.Clear();
 
 						int i = 0;
 
@@ -76,7 +149,7 @@ namespace Herramientas
 										tempCantidad = tempCantidad.Replace(".", null);
 										tempCantidad = tempCantidad.Replace(",", null);
 
-										if (int.Parse(tempCantidad) >= 5000)
+										if (Convert.ToInt32(tempCantidad) >= 5000)
 										{
 											if (i < 60)
 											{
@@ -110,18 +183,18 @@ namespace Herramientas
 						{
 							bool añadir = true;
 
-							if (juegosDestacadosMostrar.Count > 0)
-							{
-								foreach (var destacado in juegosDestacadosMostrar)
-								{
-									if (destacado.Id == juegosConMinimos[j].Id)
-									{
-										añadir = false;
-									}
-								}
-							}
+                            if (juegosDestacadosMostrar.Count > 0)
+                            {
+                                foreach (var destacado in juegosDestacadosMostrar)
+                                {
+                                    if (destacado.Id == juegosConMinimos[j].Id)
+                                    {
+                                        añadir = false;
+                                    }
+                                }
+                            }
 
-							if (juegosConMinimos[j] != null)
+                            if (juegosConMinimos[j] != null)
 							{
 								if (juegosConMinimos[j].Analisis == null)
 								{
@@ -135,7 +208,7 @@ namespace Herramientas
 										tempCantidad = tempCantidad.Replace(".", null);
 										tempCantidad = tempCantidad.Replace(",", null);
 
-										if (int.Parse(tempCantidad) < 500)
+										if (Convert.ToInt32(tempCantidad) < 500)
 										{
 											añadir = false;
 										}
@@ -201,67 +274,66 @@ namespace Herramientas
 					}
 				}
 			}
-
-			//----------------------------------------------------------
-
-			#region Noticias
-
-			List<Noticia> noticiasMostrar = new List<Noticia>();
-			List<Noticia> noticiaEvento = new List<Noticia>();
-
-			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-			if (noticias.Count > 0)
-			{
-				int i = 0;
-				foreach (var noticia in noticias)
-				{
-					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
-					{
-						if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-						{
-							DateTime fechaEncabezado = noticia.FechaEmpieza;
-							fechaEncabezado = fechaEncabezado.AddDays(3);
-
-							if (DateTime.Now < fechaEncabezado)
-							{
-								noticiaEvento.Add(noticia);
-							}
-						}
-
-						if (i < 6)
-						{
-							noticiasMostrar.Add(noticia);
-							i += 1;
-						}
-					}
-				}
-			}
-
-			if (noticiasMostrar.Count > 0)
-			{
-				global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
-
-				foreach (var noticia in noticiasMostrar)
-				{
-					global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
-				}
-			}
-
-			if (noticiaEvento.Count > 0)
-			{
-				global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
-
-				foreach (var noticia in noticiaEvento)
-				{
-					global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
-				}
-			}
-
-			#endregion
 		}
 
-		public async static Task Tiendas(SqlConnection conexion, IDecompiladores decompilador)
+        public static async Task Noticias(SqlConnection conexion)
+		{
+            await Task.Delay(1000);
+
+            List<Noticia> noticiasMostrar = new List<Noticia>();
+            List<Noticia> noticiaEvento = new List<Noticia>();
+
+            List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+            if (noticias.Count > 0)
+            {
+                int i = 0;
+                foreach (var noticia in noticias)
+                {
+                    if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+                    {
+                        if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
+                        {
+                            DateTime fechaEncabezado = noticia.FechaEmpieza;
+                            fechaEncabezado = fechaEncabezado.AddDays(3);
+
+                            if (DateTime.Now < fechaEncabezado)
+                            {
+                                noticiaEvento.Add(noticia);
+                            }
+                        }
+
+                        if (i < 6)
+                        {
+                            noticiasMostrar.Add(noticia);
+                            i += 1;
+                        }
+                    }
+                }
+            }
+
+            if (noticiasMostrar.Count > 0)
+            {
+                global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
+
+                foreach (var noticia in noticiasMostrar)
+                {
+                    global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
+                }
+            }
+
+            if (noticiaEvento.Count > 0)
+            {
+                global::BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
+
+                foreach (var noticia in noticiaEvento)
+                {
+                    global::BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
+                }
+            }
+        }
+
+        public async static Task Tiendas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(120);
 			List<string> ids = new List<string>();
@@ -288,7 +360,7 @@ namespace Herramientas
 					}
 					catch (Exception ex) 
 					{
-						global::BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.tienda + " - " + ex.Message + " - " + DateTime.Now.ToString());
+						global::BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.tienda, ex);
 					}	
 				}
 			}
@@ -307,5 +379,30 @@ namespace Herramientas
 				await Herramientas.Divisas.ActualizarDatos(conexion);
 			}			
 		}
-	}
+
+        public async static Task Sorteos(SqlConnection conexion)
+		{
+            List<Sorteos2.Sorteo> listaSorteos = global::BaseDatos.Sorteos.Buscar.Todos();
+
+			if (listaSorteos != null)
+			{
+				if (listaSorteos.Count > 0)
+				{
+					foreach (var sorteo in listaSorteos)
+					{
+						if (DateTime.Now > sorteo.FechaTermina && string.IsNullOrEmpty(sorteo.GanadorId) == true)
+						{
+							if (sorteo.Participantes != null)
+							{
+								if (sorteo.Participantes.Count > 0)
+								{
+
+								}
+							}
+						}
+					}
+				}
+			}
+        }
+    }
 }

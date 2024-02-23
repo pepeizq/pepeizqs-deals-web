@@ -8,7 +8,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(Juego juego, SqlConnection conexion)
+		public static void Ejecutar(Juego juego, SqlConnection conexion, string tabla = "juegos")
 		{
 			string añadirMaestro1 = null;
 			string añadirMaestro2 = null;
@@ -40,9 +40,18 @@ namespace BaseDatos.Juegos
 				añadirMayorEdad2 = ", @mayorEdad";
 			}
 
-			string sqlAñadir = "INSERT INTO juegos " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + ") ";
+			string añadirIdMaestra1 = null;
+			string añadirIdMaestra2 = null;
+
+			if (tabla == "seccionMinimos")
+			{
+				añadirIdMaestra1 = ", idMaestra";
+				añadirIdMaestra2 = ", @idMaestra";
+			}
+
+			string sqlAñadir = "INSERT INTO " + tabla + " " +
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirIdMaestra1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirIdMaestra2 + ") ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -75,6 +84,11 @@ namespace BaseDatos.Juegos
 				if (string.IsNullOrEmpty(juego.MayorEdad) == false)
 				{
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
+				}
+
+				if (tabla == "seccionMinimos")
+				{
+					comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				}
 
 				comando.ExecuteNonQuery();

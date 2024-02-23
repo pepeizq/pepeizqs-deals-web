@@ -42,6 +42,7 @@ namespace BaseDatos.Sorteos
                             }
 
 							sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
+                            sorteo.GanadorId = lector.GetString(6);
 
 							sorteos.Add(sorteo);
 						}
@@ -87,6 +88,7 @@ namespace BaseDatos.Sorteos
                             }
 
                             sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
+                            sorteo.GanadorId = lector.GetString(6);
 
                             return sorteo;
                         }

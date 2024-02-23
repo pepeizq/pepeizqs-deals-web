@@ -279,54 +279,48 @@
         decimal minimoCantidad = 10000000;
         Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
 
-        foreach (var precio in juego.PrecioActualesTiendas)
+        foreach (var oferta in juego.PrecioActualesTiendas)
         {
-            bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(precio);
+            bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
 
             if (fechaEncaja == true)
-            {
-                decimal tempPrecio = precio.Precio;
+            {              
+                decimal tempPrecio = oferta.Precio;
 
-                if (precio.Moneda != Herramientas.JuegoMoneda.Euro)
+                if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
                 {
-                    tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, precio.Moneda);
+                    tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
                 }
 
                 if (tempPrecio < minimoCantidad)
                 {
                     minimoCantidad = tempPrecio;
-                    minimoFinal = precio;
                 }
             }
         }
 
-        if (minimoFinal != null)
+        if (minimoCantidad > 0 && minimoCantidad < 10000000)
         {
-            if (minimoFinal.Precio > 0)
+            string precioTexto = string.Empty;
+
+            precioTexto = minimoCantidad.ToString();
+            precioTexto = precioTexto.Replace(".", ",");
+
+            int int1 = precioTexto.IndexOf(",");
+
+            if (int1 == precioTexto.Length - 2)
             {
-                string precioTexto = string.Empty;
-
-                precioTexto = minimoFinal.Precio.ToString();
-                precioTexto = precioTexto.Replace(".", ",");
-
-                int int1 = precioTexto.IndexOf(",");
-
-                if (int1 == precioTexto.Length - 2)
-                {
-                    precioTexto = precioTexto + "0";
-                }
-
-                precioTexto = precioTexto + "€";
-
-                return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+                precioTexto = precioTexto + "0";
             }
-            else
-            {
-                return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
-            }
+
+            precioTexto = precioTexto + "€";
+
+            return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
         }
-
-        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
+        else
+        {
+            return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
+        }
     }
 
     Juegos.JuegoTipo pestañaSeleccionada = Juegos.JuegoTipo.Game;

@@ -126,16 +126,15 @@ namespace BaseDatos.Noticias
 					comando.Parameters.AddWithValue("@tituloEs", WebUtility.HtmlDecode(noticia.TituloEs));
 					comando.Parameters.AddWithValue("@contenidoEn", noticia.ContenidoEn);
 					comando.Parameters.AddWithValue("@contenidoEs", noticia.ContenidoEs);
-
-					comando.ExecuteNonQuery();
+					
 					try
 					{
-						
-					}
-					catch
-					{
-
-					}
+                        comando.ExecuteNonQuery();
+                    }
+					catch (Exception ex)
+                    {
+                        Errores.Insertar.Ejecutar("Portada Noticias", ex);
+                    }
 				}
 			}
 		}

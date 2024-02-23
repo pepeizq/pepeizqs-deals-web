@@ -10,5 +10,6 @@ namespace Sorteos2
         public string Clave;
         public List<string> Participantes;
         public DateTime FechaTermina;
+        public string GanadorId;
     }
 }
