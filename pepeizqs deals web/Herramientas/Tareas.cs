@@ -14,19 +14,15 @@ namespace Herramientas
 		{
 			await Task.Delay(1000);
 
-			List<Juego> juegosDestacadosMostrar = new List<Juego>();
-			List<Juego> juegosMinimosMostrar = new List<Juego>();
-
-			List<Juego> juegos = new List<Juego>();
-            List<Juego> juegosConMinimos = new List<Juego>();
-
-            juegos = Buscar.Todos(conexion, "seccionMinimos");
+			List<Juego> juegos = Buscar.Todos(conexion, "seccionMinimos");
 
 			if (juegos != null)
 			{
                 if (juegos.Count > 0)
                 {
-                    foreach (var juego in juegos)
+					List<Juego> juegosConMinimos = new List<Juego>();
+
+					foreach (var juego in juegos)
                     {
                         if (juego != null)
                         {
@@ -60,217 +56,231 @@ namespace Herramientas
                             }
                         }
                     }
-                }
 
-				if (juegosConMinimos != null)
-				{
-					if (juegosConMinimos.Count > 0)
+					if (juegosConMinimos != null)
 					{
-                        juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
-                        {
-                            JuegoPrecio j1Oferta = null;
-
-                            if (j1.PrecioActualesTiendas.Count > 0)
-                            {
-                                j1Oferta = j1.PrecioActualesTiendas[0];
-                            }
-
-                            JuegoPrecio j2Oferta = null;
-
-                            if (j2.PrecioActualesTiendas.Count > 0)
-                            {
-                                j2Oferta = j2.PrecioActualesTiendas[0];
-                            }
-
-                            if (j1Oferta != null && j2Oferta != null)
-                            {
-                                return j2Oferta.FechaUltimoMinimo.CompareTo(j1Oferta.FechaUltimoMinimo);
-                            }
-                            else
-                            {
-                                if (j1Oferta == null && j2Oferta != null)
-                                {
-                                    return 1;
-                                }
-                                else if (j1Oferta != null && j2Oferta == null)
-                                {
-                                    return -1;
-                                }
-                            }
-
-                            return 0;
-                        });
-
-                        #region Destacados
-
-                        juegosDestacadosMostrar.Clear();
-
-						int i = 0;
-
-						foreach (var minimo in juegosConMinimos)
+						if (juegosConMinimos.Count > 0)
 						{
-							bool añadir = true;
+							juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
+							{
+								JuegoPrecio j1Oferta = null;
 
-							if (minimo.Analisis == null)
-							{
-								añadir = false;
-							}
-							else if (minimo.Tipo != JuegoTipo.Game)
-							{
-								añadir = false;
-							}
-							else if (minimo.Bundles != null)
-							{
-								añadir = false;
-							}
-							else if (minimo.Gratis != null)
-							{
-								añadir = false;
-							}
-							else if (minimo.Suscripciones != null)
-							{
-								añadir = false;
-							}
-							else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
-							{
-								if (minimo.FreeToPlay.ToLower() == "true")
+								if (j1.PrecioActualesTiendas.Count > 0)
 								{
-									añadir = false;
+									j1Oferta = j1.PrecioActualesTiendas[0];
 								}
-							}
 
-							if (añadir == true && minimo != null)
-							{
-								if (minimo.Analisis != null)
+								JuegoPrecio j2Oferta = null;
+
+								if (j2.PrecioActualesTiendas.Count > 0)
 								{
-									if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
-									{
-										string tempCantidad = minimo.Analisis.Cantidad;
-										tempCantidad = tempCantidad.Replace(".", null);
-										tempCantidad = tempCantidad.Replace(",", null);
-
-										if (Convert.ToInt32(tempCantidad) >= 5000)
-										{
-											if (i < 60)
-											{
-												juegosDestacadosMostrar.Add(minimo);
-												i += 1;
-											}
-										}
-									}
+									j2Oferta = j2.PrecioActualesTiendas[0];
 								}
-							}
-						}
 
-						if (juegosDestacadosMostrar.Count > 0)
-						{
-							global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
-
-							foreach (var juego in juegosDestacadosMostrar)
-							{
-								global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
-							}
-						}
-
-						#endregion
-
-						#region Minimos
-
-						juegosMinimosMostrar.Clear();
-
-						int j = 0;
-						while (juegosMinimosMostrar.Count < 100)
-						{
-							bool añadir = true;
-
-                            if (juegosDestacadosMostrar.Count > 0)
-                            {
-                                foreach (var destacado in juegosDestacadosMostrar)
-                                {
-                                    if (destacado.Id == juegosConMinimos[j].Id)
-                                    {
-                                        añadir = false;
-                                    }
-                                }
-                            }
-
-                            if (juegosConMinimos[j] != null)
-							{
-								if (juegosConMinimos[j].Analisis == null)
+								if (j1Oferta != null && j2Oferta != null)
 								{
-									añadir = false;
+									return j2Oferta.FechaUltimoMinimo.CompareTo(j1Oferta.FechaUltimoMinimo);
 								}
 								else
 								{
-									if (string.IsNullOrEmpty(juegosConMinimos[j].Analisis.Cantidad) == false)
+									if (j1Oferta == null && j2Oferta != null)
 									{
-										string tempCantidad = juegosConMinimos[j].Analisis.Cantidad;
-										tempCantidad = tempCantidad.Replace(".", null);
-										tempCantidad = tempCantidad.Replace(",", null);
-
-										if (Convert.ToInt32(tempCantidad) < 500)
-										{
-											añadir = false;
-										}
+										return 1;
 									}
-									else
+									else if (j1Oferta != null && j2Oferta == null)
+									{
+										return -1;
+									}
+								}
+
+								return 0;
+							});
+
+							#region Destacados
+
+							List<Juego> juegosDestacadosMostrar = new List<Juego>();
+
+							int i = 0;
+
+							foreach (var minimo in juegosConMinimos)
+							{
+								bool añadir = true;
+
+								if (minimo.Analisis == null)
+								{
+									añadir = false;
+								}
+								else if (minimo.Tipo != JuegoTipo.Game)
+								{
+									añadir = false;
+								}
+								else if (minimo.Bundles != null)
+								{
+									añadir = false;
+								}
+								else if (minimo.Gratis != null)
+								{
+									añadir = false;
+								}
+								else if (minimo.Suscripciones != null)
+								{
+									añadir = false;
+								}
+								else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+								{
+									if (minimo.FreeToPlay.ToLower() == "true")
 									{
 										añadir = false;
 									}
 								}
 
-								if (juegosConMinimos[j].Gratis != null)
+								if (añadir == true && minimo != null)
 								{
-									if (juegosConMinimos[j].Gratis.Count > 0)
+									if (minimo.Analisis != null)
 									{
-										foreach (var gratis in juegosConMinimos[j].Gratis)
+										if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
 										{
-											if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+											string tempCantidad = minimo.Analisis.Cantidad;
+											tempCantidad = tempCantidad.Replace(".", null);
+											tempCantidad = tempCantidad.Replace(",", null);
+
+											if (Convert.ToInt32(tempCantidad) >= 5000)
 											{
-												añadir = false;
+												if (i < 60)
+												{
+													juegosDestacadosMostrar.Add(minimo);
+													i += 1;
+												}
 											}
 										}
 									}
 								}
+							}
 
-								if (string.IsNullOrEmpty(juegosConMinimos[j].FreeToPlay) == false)
+							if (juegosDestacadosMostrar.Count > 0)
+							{
+								global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
+
+								foreach (var juego in juegosDestacadosMostrar)
 								{
-									if (juegosConMinimos[j].FreeToPlay.ToLower() == "true")
+									global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
+								}
+							}
+
+							#endregion
+
+							#region Minimos
+
+							List<Juego> juegosMinimosMostrar = new List<Juego>();
+
+							foreach (var minimo in juegosConMinimos)
+							{
+								bool descarte1 = false;
+
+								if (juegosDestacadosMostrar.Count > 0)
+								{
+									foreach (var destacado in juegosDestacadosMostrar)
 									{
-										añadir = false;
+										if (destacado.IdMaestra == minimo.IdMaestra)
+										{
+											descarte1 = true;
+										}
 									}
 								}
 
-								if (añadir == true)
+								if (descarte1 == false)
 								{
-									juegosMinimosMostrar.Add(juegosConMinimos[j]);
+									bool descarte2 = false;
+
+									if (minimo.Analisis == null)
+									{
+										descarte2 = true;
+									}
+									else
+									{
+										if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
+										{
+											string tempCantidad = minimo.Analisis.Cantidad;
+											tempCantidad = tempCantidad.Replace(".", null);
+											tempCantidad = tempCantidad.Replace(",", null);
+
+											if (Convert.ToInt32(tempCantidad) < 500)
+											{
+												descarte2 = true;
+											}
+										}
+										else
+										{
+											descarte2 = true;
+										}
+									}
+
+									if (descarte2 == false)
+									{
+										bool descarte3 = false;
+
+										if (minimo.Gratis != null)
+										{
+											if (minimo.Gratis.Count > 0)
+											{
+												foreach (var gratis in minimo.Gratis)
+												{
+													if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+													{
+														descarte3 = true;
+													}
+												}
+											}
+										}
+
+										if (descarte3 == false) 
+										{
+											bool descarte4 = false;
+
+											if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+											{
+												if (minimo.FreeToPlay.ToLower() == "true")
+												{
+													descarte4 = true;
+												}
+											}
+
+											if (descarte4 == false)
+											{
+												juegosMinimosMostrar.Add(minimo);
+
+												if (juegosMinimosMostrar.Count == 100)
+												{
+													break;
+												}
+											}
+										}
+									}
 								}
 							}
 
-							j += 1;
-						}
-
-						if (juegosMinimosMostrar.Count > 0)
-						{
-							global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
-
-							foreach (var juego in juegosMinimosMostrar)
+							if (juegosMinimosMostrar.Count > 0)
 							{
-								global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
+								global::BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
+
+								foreach (var juego in juegosMinimosMostrar)
+								{
+									global::BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
+								}
 							}
-						}
 
-						if (juegosConMinimos.Count > 0)
-						{
-							global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
-
-							foreach (var juego in juegosConMinimos)
+							if (juegosConMinimos.Count > 0)
 							{
-								global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
-							}
-						}
+								global::BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
 
-						#endregion
+								foreach (var juego in juegosConMinimos)
+								{
+									global::BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
+								}
+							}
+
+							#endregion
+						}
 					}
 				}
 			}

@@ -58,7 +58,7 @@ namespace BaseDatos.Portada
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-				comando.Parameters.AddWithValue("@idMaestra", juego.Id);
+				comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				
 				if (string.IsNullOrEmpty(juego.Maestro) == false)
 				{

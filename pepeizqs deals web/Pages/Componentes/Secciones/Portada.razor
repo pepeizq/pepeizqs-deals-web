@@ -432,7 +432,47 @@ else
 			{
 				if (juegosDestacadosGestor.Count > 0)
 				{
-					juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => x.Id).ToList();
+					juegosDestacadosGestor.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+					{
+						global::Juegos.JuegoPrecio p1 = null;
+
+						if (j1.PrecioMinimosHistoricos != null)
+						{
+							if (j1.PrecioMinimosHistoricos.Count > 0)
+							{
+								p1 = j1.PrecioMinimosHistoricos[0];
+							}
+						}
+
+						global::Juegos.JuegoPrecio p2 = null;
+
+						if (j2.PrecioMinimosHistoricos != null)
+						{
+							if (j2.PrecioMinimosHistoricos.Count > 0)
+							{
+								p2 = j2.PrecioMinimosHistoricos[0];
+							}
+						}
+
+						if (p1 != null && p2 != null)
+						{
+							return p2.FechaUltimoMinimo.CompareTo(p1.FechaUltimoMinimo);
+						}
+						else
+						{
+							if (p1 != null)
+							{
+								return 0;
+							}
+
+							if (p2 != null)
+							{
+								return 1;
+							}
+
+							return 0;
+						}
+					});
 
 					foreach (var juego in juegosDestacadosGestor)
 					{
@@ -474,7 +514,47 @@ else
 			{
 				if (juegosMinimosMostrar.Count > 0)
 				{
-					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(x => x.Id).ToList();
+					juegosMinimosMostrar.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+					{
+						global::Juegos.JuegoPrecio p1 = null;
+
+						if (j1.PrecioMinimosHistoricos != null)
+						{
+							if (j1.PrecioMinimosHistoricos.Count > 0)
+							{
+								p1 = j1.PrecioMinimosHistoricos[0];
+							}
+						}
+
+						global::Juegos.JuegoPrecio p2 = null;
+
+						if (j2.PrecioMinimosHistoricos != null)
+						{
+							if (j2.PrecioMinimosHistoricos.Count > 0)
+							{
+								p2 = j2.PrecioMinimosHistoricos[0];
+							}
+						}
+
+						if (p1 != null && p2 != null)
+						{
+							return p2.FechaUltimoMinimo.CompareTo(p1.FechaUltimoMinimo);
+						}
+						else
+						{
+							if (p1 != null)
+							{
+								return 0;
+							}
+
+							if (p2 != null)
+							{
+								return 1;
+							}
+
+							return 0;
+						}
+					});
 
 					foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 					{
@@ -591,7 +671,7 @@ else
 	{
 		string imagen = null;
 
-		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
+		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
 		List<Juegos.DRM> drms = Juegos.JuegoDRM2.GenerarListado();
 
 		foreach (var drm in drms)
@@ -616,7 +696,7 @@ else
 	{
 		string imagen = null;
 
-		JuegoPrecio oferta = juego.PrecioActualesTiendas[0];
+		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
 		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
 
 		foreach (var tienda in tiendas)
@@ -641,7 +721,7 @@ else
 	{
 		string descuentoMensaje = null;
 
-		descuentoMensaje = juego.PrecioActualesTiendas[0].Descuento.ToString();
+		descuentoMensaje = juego.PrecioMinimosHistoricos[0].Descuento.ToString();
 		descuentoMensaje = descuentoMensaje + "%";
 
 		if (descuentoMensaje != null)
@@ -658,7 +738,7 @@ else
 	{
 		string precioMensaje = null;
 
-		precioMensaje = juego.PrecioActualesTiendas[0].Precio.ToString();
+		precioMensaje = juego.PrecioMinimosHistoricos[0].Precio.ToString();
 		precioMensaje = precioMensaje.Replace(".", ",");
 
 		int int1 = precioMensaje.IndexOf(",");
@@ -689,8 +769,11 @@ else
 	{
 		string mensaje = null;
 
-		mensaje = Herramientas.Calculadora.HaceTiempo(juego.PrecioActualesTiendas[0].FechaUltimoMinimo, idioma);
-
+		if (juego.PrecioMinimosHistoricos[0].FechaUltimoMinimo.Year > 2023)
+		{
+			mensaje = Herramientas.Calculadora.HaceTiempo(juego.PrecioMinimosHistoricos[0].FechaUltimoMinimo, idioma);
+		}
+		
 		return mensaje;
 	}
 
