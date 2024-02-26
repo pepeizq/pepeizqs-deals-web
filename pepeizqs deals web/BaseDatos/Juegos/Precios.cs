@@ -132,12 +132,6 @@ namespace BaseDatos.Juegos
 													}
 												}
 											}
-
-											//------------------------------------------
-
-											Juego minimo2 = juego;
-											minimo2.IdMaestra = juego.Id;
-											Insertar.Ejecutar(minimo2, conexion, "seccionMinimos");
                                         }
                                         else if (tempPrecio == minimo.Precio)
 										{

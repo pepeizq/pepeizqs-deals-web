@@ -124,7 +124,6 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Sorteos.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tooltip.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Sorteos.razor" />
   </ItemGroup>
 
@@ -150,10 +149,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\robots.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Componentes\Admin\Tooltip.razor" />
   </ItemGroup>
 
 </Project>

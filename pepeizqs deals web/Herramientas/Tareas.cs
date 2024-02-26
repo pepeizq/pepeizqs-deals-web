@@ -10,11 +10,11 @@ namespace Herramientas
 {
 	public class Tareas
 	{
-		public static async Task Portada(SqlConnection conexion)
+		public static async Task Minimos(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 
-			List<Juego> juegos = Buscar.Todos(conexion, "seccionMinimos");
+			List<Juego> juegos = Buscar.Todos(conexion, "juegos");
 
 			if (juegos != null)
 			{
@@ -26,34 +26,43 @@ namespace Herramientas
                     {
                         if (juego != null)
                         {
-                            if (juego.PrecioActualesTiendas != null)
-                            {
-								bool borrar = true;
-								
-                                foreach (var oferta in juego.PrecioActualesTiendas)
+							if (juego.Analisis != null)
+							{
+								if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
 								{
-                                    bool fechaEncaja = JuegoFicha.CalcularAntiguedad(oferta);
-
-                                    if (fechaEncaja == true)
+									if (juego.PrecioMinimosHistoricos != null)
 									{
-										borrar = false;
+										for (int i = 0; i < juego.PrecioMinimosHistoricos.Count; i += 1)
+										{
+											bool añadir = false;
+
+											if (JuegoFicha.CalcularAntiguedad(juego.PrecioMinimosHistoricos[i]) == true)
+											{
+												añadir = true;
+											}
+
+											//if (juegosConMinimos.Count > 0)
+											//{
+											//	foreach (var minimo in juegosConMinimos)
+											//	{
+											//		if (juego.Id == minimo.Id && historico.DRM == minimo.PrecioMinimosHistoricos[0].DRM)
+											//		{
+											//			añadir = false;
+											//		}
+											//	}
+											//}
+
+											if (añadir == true)
+											{
+												Juego nuevoHistorico = juego;
+												nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
+
+												juegosConMinimos.Add(nuevoHistorico);
+											}
+										}
 									}
 								}
-
-								if (borrar == true)
-								{
-									string sqlBorrar = "DELETE FROM seccionMinimos WHERE idMaestra='" + juego.IdMaestra + "'";
-
-                                    using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
-									{
-                                        comando.ExecuteNonQuery();
-                                    }
-                                }
-								else
-								{
-									juegosConMinimos.Add(juego);
-								}
-                            }
+							}
                         }
                     }
 
@@ -65,21 +74,21 @@ namespace Herramientas
 							{
 								JuegoPrecio j1Oferta = null;
 
-								if (j1.PrecioActualesTiendas.Count > 0)
+								if (j1.PrecioMinimosHistoricos.Count > 0)
 								{
-									j1Oferta = j1.PrecioActualesTiendas[0];
+									j1Oferta = j1.PrecioMinimosHistoricos[0];
 								}
 
 								JuegoPrecio j2Oferta = null;
 
-								if (j2.PrecioActualesTiendas.Count > 0)
+								if (j2.PrecioMinimosHistoricos.Count > 0)
 								{
-									j2Oferta = j2.PrecioActualesTiendas[0];
+									j2Oferta = j2.PrecioMinimosHistoricos[0];
 								}
 
 								if (j1Oferta != null && j2Oferta != null)
 								{
-									return j2Oferta.FechaUltimoMinimo.CompareTo(j1Oferta.FechaUltimoMinimo);
+									return j2Oferta.FechaDetectado.CompareTo(j1Oferta.FechaDetectado);
 								}
 								else
 								{
@@ -392,6 +401,8 @@ namespace Herramientas
 
         public async static Task Sorteos(SqlConnection conexion)
 		{
+			await Task.Delay(1000);
+
             List<Sorteos2.Sorteo> listaSorteos = global::BaseDatos.Sorteos.Buscar.Todos();
 
 			if (listaSorteos != null)

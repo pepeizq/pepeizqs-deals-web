@@ -31,7 +31,7 @@ namespace Herramientas
 
 					try
 					{
-						await Tareas.Portada(conexion);
+						await Tareas.Minimos(conexion);
 					}
 					catch (Exception ex) 
 					{

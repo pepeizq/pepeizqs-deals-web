@@ -124,6 +124,33 @@
 	}
 </style>
 
+<style>
+	.tooltip4 {
+		text-decoration: none;
+		position: relative;
+	}
+
+		.tooltip4 span {
+			display: none;
+		}
+
+		.tooltip4:hover span {
+			display: block;
+			position: fixed;
+			overflow: hidden;
+			z-index: 1;
+		}
+
+	.tooltip-relleno {
+		background-color: var(--fondoBotonPequeño);
+		color: var(--colorTexto);
+		text-align: center;
+		border: 1px solid var(--fondoBoton);
+		border-radius: 2px;
+		z-index: 1;
+	}
+</style>
+
 @if (noticiaEvento.Count == 1)
 {
 	<div style="margin-bottom: 50px;">
@@ -156,63 +183,50 @@
 	<div style="display: flex; align-items: center; margin-bottom: 60px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div class="destacados-espacio" style="display: grid; grid-auto-flow: column;">
-			@{			
-				int j = 0;
-
-				@foreach (var destacado in juegosDestacadosMostrar)
+		<div class="destacados-espacio tooltip4" style="display: grid; grid-auto-flow: column; width: 100%;">
+			@foreach (var destacado in juegosDestacadosMostrar)
+			{
+				if (destacado != null)
 				{
-					string izquierda = "105%";
-
-					if (j < 3)
-					{
-						izquierda = "105%";
-					}
-					else
-					{
-						izquierda = "-365%";
-					}
-
-					j += 1;
-
-					string miniVideo = string.Empty;
-
-					if (destacado != null)
-					{
-						if (destacado.Media != null)
-						{
-							if (string.IsNullOrEmpty(destacado.Media.Video) == false)
-							{
-								int int1 = destacado.Media.Video.LastIndexOf("/");
-								string temp1 = destacado.Media.Video.Remove(int1, destacado.Media.Video.Length - int1);
-
-								miniVideo = temp1 + "/microtrailer.webm";
-
-								miniVideo = miniVideo.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-								miniVideo = miniVideo.Replace("http://", "https://");
-							}
-						}
-
-						<Tooltip izquierda="@izquierda" drm="@CargarDRM(destacado)" tienda="@CargarIconoTienda(destacado)" tiempo="@CargarFechaDetectado(destacado)" video="@miniVideo" nombre="@destacado.Nombre">
-							<div class="tooltip2 destacado-juego">
-								<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 2px;">
-									<div>
-										<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
-									</div>
-									<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
-										<div style="background-color: darkgreen; margin: 0px; padding: 8px 10px;">
-											@CargarDescuento(destacado)
-										</div>
-										<div style="padding: 8px 10px;">
-											@CargarPrecio(destacado)
-										</div>
-									</div>
-								</a>
+					<div class="destacado-juego" @onmouseover="@(e => CargarTooltip(e, destacado))">
+						<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 2px;">
+							<div>
+								<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
 							</div>
-						</Tooltip>
-					}		
+							<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
+								<div style="background-color: darkgreen; margin: 0px; padding: 8px 10px;">
+									@CargarDescuento(destacado)
+								</div>
+								<div style="padding: 8px 10px;">
+									@CargarPrecio(destacado)
+								</div>
+							</div>
+						</a>
+					</div>
 				}
-			}			
+			}
+
+			<span id="tooltip-span" class="tooltip-relleno">
+				@if (string.IsNullOrEmpty(tooltipVideo) == false)
+				{
+					<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+				}
+
+				<div style="padding: 15px;">
+					<label>@tooltipNombre</label>
+					<div style="display: flex; align-items: center; margin-top: 10px; padding: 5px; text-align: center; justify-content: center;">
+						<div style="margin-right: 20px;">
+							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" />
+						</div>
+						<div style="margin-right: 20px;">
+							<img src="@tooltipTienda" style="width: 20px; height: 20px;" />
+						</div>
+						<div>
+							@tooltipTiempo
+						</div>
+					</div>
+				</div>
+			</span>
 		</div>
 
 		<button @onclick="ClickearAdelante" class="boton-pequeño destacados-botonder" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-right"></i></button>
@@ -376,6 +390,24 @@ else
 		</a>
 	</div>
 }
+
+<script>
+	window.onmousemove = function (e) {
+		var x = e.clientX,
+			y = e.clientY;
+
+		var tooltipSpan = document.getElementById('tooltip-span');
+
+		if (screen.width / 2 > x) {
+			tooltipSpan.style.top = (y + 10) + 'px';
+			tooltipSpan.style.left = (x + 20) + 'px';
+		}
+		else {
+			tooltipSpan.style.top = (y - 10) + 'px';
+			tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
+		}
+	};
+</script>
 
 @code {
 
@@ -667,6 +699,35 @@ else
 		}
 	}
 
+	private string tooltipNombre = string.Empty;
+	private string tooltipDRM = string.Empty;
+	private string tooltipTienda = string.Empty;
+	private string tooltipTiempo = string.Empty;
+	private string tooltipVideo = string.Empty;
+
+	private void CargarTooltip(MouseEventArgs args, global::Juegos.Juego juego)
+	{
+		tooltipNombre = juego.Nombre;
+		tooltipDRM = CargarDRM(juego);
+		tooltipTienda = CargarIconoTienda(juego);
+		tooltipTiempo = CargarFechaDetectado(juego);
+		tooltipVideo = null;
+
+		if (juego.Media != null)
+		{
+			if (string.IsNullOrEmpty(juego.Media.Video) == false)
+			{
+				int int1 = juego.Media.Video.LastIndexOf("/");
+				string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
+
+				tooltipVideo = temp1 + "/microtrailer.webm";
+
+				tooltipVideo = tooltipVideo.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
+				tooltipVideo = tooltipVideo.Replace("http://", "https://");
+			}
+		}
+	}
+
 	private string CargarDRM(global::Juegos.Juego juego)
 	{
 		string imagen = null;
@@ -769,9 +830,9 @@ else
 	{
 		string mensaje = null;
 
-		if (juego.PrecioMinimosHistoricos[0].FechaUltimoMinimo.Year > 2023)
+		if (juego.PrecioMinimosHistoricos[0].FechaDetectado.Year > 2023)
 		{
-			mensaje = Herramientas.Calculadora.HaceTiempo(juego.PrecioMinimosHistoricos[0].FechaUltimoMinimo, idioma);
+			mensaje = Herramientas.Calculadora.HaceTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma);
 		}
 		
 		return mensaje;

@@ -10,6 +10,11 @@ namespace BaseDatos.Portada
 	{
 		public static void Juego(global::Juegos.Juego juego, string tabla, SqlConnection conexion)
 		{
+			if (juego.IdMaestra == 0)
+			{
+				juego.IdMaestra = juego.Id;
+			}
+
 			string añadirMaestro1 = null;
 			string añadirMaestro2 = null;
 
