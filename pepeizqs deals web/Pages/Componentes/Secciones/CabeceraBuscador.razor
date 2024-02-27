@@ -281,22 +281,36 @@
 
         foreach (var oferta in juego.PrecioActualesTiendas)
         {
-            bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
+            bool drmAdecuado = true;
 
-            if (fechaEncaja == true)
-            {              
-                decimal tempPrecio = oferta.Precio;
-
-                if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
-                {
-                    tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
-                }
-
-                if (tempPrecio < minimoCantidad)
-                {
-                    minimoCantidad = tempPrecio;
-                }
+            if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+            {
+                drmAdecuado = false;
             }
+            else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+            {
+                drmAdecuado = false;
+            }
+
+            if (drmAdecuado == true)
+            {
+                bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
+
+                if (fechaEncaja == true)
+                {
+                    decimal tempPrecio = oferta.Precio;
+
+                    if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+                    {
+                        tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+                    }
+
+                    if (tempPrecio < minimoCantidad)
+                    {
+                        minimoCantidad = tempPrecio;
+                    }
+                }
+            }        
         }
 
         if (minimoCantidad > 0 && minimoCantidad < 10000000)

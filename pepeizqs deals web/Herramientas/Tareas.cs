@@ -5,6 +5,7 @@ using BaseDatos.Tiendas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Noticias;
+using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace Herramientas
 {
@@ -40,17 +41,6 @@ namespace Herramientas
 											{
 												añadir = true;
 											}
-
-											//if (juegosConMinimos.Count > 0)
-											//{
-											//	foreach (var minimo in juegosConMinimos)
-											//	{
-											//		if (juego.Id == minimo.Id && historico.DRM == minimo.PrecioMinimosHistoricos[0].DRM)
-											//		{
-											//			añadir = false;
-											//		}
-											//	}
-											//}
 
 											if (añadir == true)
 											{
@@ -417,7 +407,10 @@ namespace Herramientas
 							{
 								if (sorteo.Participantes.Count > 0)
 								{
+									Random rnd = new Random();
+									int ganador = rnd.Next(0, sorteo.Participantes.Count);
 
+									//string correo = global::BaseDatos.Usuarios.Buscar.
 								}
 							}
 						}
