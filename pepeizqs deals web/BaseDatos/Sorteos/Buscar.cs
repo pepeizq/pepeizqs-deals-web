@@ -42,8 +42,15 @@ namespace BaseDatos.Sorteos
                             }
 
 							sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
-                            sorteo.GanadorId = lector.GetString(6);
 
+                            if (lector.IsDBNull(6) == false)
+                            {
+                                if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+                                {
+                                    sorteo.GanadorId = lector.GetString(6);
+                                }
+                            }
+                            
 							sorteos.Add(sorteo);
 						}
 					}

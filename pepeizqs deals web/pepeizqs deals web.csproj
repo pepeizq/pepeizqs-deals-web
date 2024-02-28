@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BaseDatos\Tiendas\Admin.cs~RF1cf1629c.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>

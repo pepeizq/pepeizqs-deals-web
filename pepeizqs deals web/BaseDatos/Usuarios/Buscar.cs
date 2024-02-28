@@ -39,6 +39,35 @@ namespace BaseDatos.Usuarios
 			return false;
 		}
 
+		public static string UnUsuarioCorreo(SqlConnection conexion, string usuarioId)
+		{
+			if (string.IsNullOrEmpty(usuarioId) == false)
+			{
+                string busqueda = "SELECT * FROM AspNetUsers WHERE Id=@Id";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+                    comando.Parameters.AddWithValue("@Id", usuarioId);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read()) 
+						{
+                            if (lector.IsDBNull(8) == false)
+                            {
+                                if (string.IsNullOrEmpty(lector.GetString(8)) == false)
+                                {
+                                    return lector.GetString(8);
+                                }
+                            }
+                        }
+					}
+                }
+            }
+
+			return null;
+		}
+
 		public static string UnUsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm)
 		{
 			if (string.IsNullOrEmpty(usuarioId) == false)

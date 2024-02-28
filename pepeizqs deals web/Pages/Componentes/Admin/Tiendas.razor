@@ -104,7 +104,7 @@
 
 	private string LeerSiguienteTienda()
 	{
-		BaseDatos.Tiendas.AdminTiendas tienda = new BaseDatos.Tiendas.AdminTiendas();
+		BaseDatos.Tiendas.AdminTarea tienda = new BaseDatos.Tiendas.AdminTarea();
 
 		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -113,7 +113,7 @@
 			tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
 		}
 		
-		return tienda.tienda + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
+		return tienda.id + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
 	}
 
 	private async Task ActualizarPortada(MouseEventArgs e)

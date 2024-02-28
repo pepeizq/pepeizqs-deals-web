@@ -2,6 +2,7 @@
 
 using Herramientas;
 using Microsoft.Data.SqlClient;
+using System.Drawing;
 using Tiendas2;
 
 namespace BaseDatos.Tiendas
@@ -134,9 +135,9 @@ namespace BaseDatos.Tiendas
 			return mensaje;
 		}
 
-		public static AdminTiendas TiendaSiguiente(SqlConnection conexion)
+		public static AdminTarea TiendaSiguiente(SqlConnection conexion)
 		{
-			List<AdminTiendas> tiendas = new List<AdminTiendas>();
+			List<AdminTarea> tiendas = new List<AdminTarea>();
 
 			string seleccionarTarea = "SELECT * FROM adminTiendas";
 
@@ -146,9 +147,9 @@ namespace BaseDatos.Tiendas
 				{
 					while (lector.Read())
 					{
-						AdminTiendas tienda = new AdminTiendas
+						AdminTarea tienda = new AdminTarea
 						{
-							tienda = lector.GetString(0),
+							id = lector.GetString(0),
 							fecha = DateTime.Parse(lector.GetString(1))
 						};
 
@@ -156,7 +157,7 @@ namespace BaseDatos.Tiendas
 
 						foreach (var tienda2 in TiendasCargar.GenerarListado())
 						{
-							if (tienda2.Id == tienda.tienda)
+							if (tienda2.Id == tienda.id)
 							{
 								//if (tienda2.AdminInteractuar == false)
 								//{
@@ -180,9 +181,9 @@ namespace BaseDatos.Tiendas
 			return tiendas[0];
         }
 
-        public static bool TiendasComprobarUso(SqlConnection conexion, TimeSpan tiempo)
+        public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo)
         {
-            List<AdminTiendas> tiendas = new List<AdminTiendas>();
+            List<AdminTarea> tiendas = new List<AdminTarea>();
 
 			string seleccionarTarea = "SELECT * FROM adminTiendas";
 
@@ -192,9 +193,9 @@ namespace BaseDatos.Tiendas
 				{
 					while (lector.Read())
 					{
-						AdminTiendas tienda = new AdminTiendas
+						AdminTarea tienda = new AdminTarea
 						{
-							tienda = lector.GetString(0),
+							id = lector.GetString(0),
 							fecha = DateTime.Parse(lector.GetString(1))
 						};
 
@@ -202,7 +203,7 @@ namespace BaseDatos.Tiendas
 
 						foreach (var tienda2 in TiendasCargar.GenerarListado())
 						{
-							if (tienda2.Id == tienda.tienda)
+							if (tienda2.Id == tienda.id)
 							{
 								if (tienda2.AdminInteractuar == false)
 								{
@@ -239,6 +240,56 @@ namespace BaseDatos.Tiendas
             }
 
             return enUso;
+        }
+
+        public static bool ComprobarTareaUso(SqlConnection conexion, string id, TimeSpan tiempo)
+		{
+            string seleccionarTarea = "SELECT * FROM adminTareas WHERE id=@id";
+
+            using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    if (lector.Read() == true)
+                    {
+						DateTime ultimaComprobacion = DateTime.Parse(lector.GetString(1));
+
+                        if ((DateTime.Now - ultimaComprobacion) < tiempo)
+						{
+							return false;
+						}
+                    }
+                }
+            }
+
+			return true;
+        }
+
+        public static void ActualizarTareaUso(SqlConnection conexion, string id, DateTime fecha)
+		{
+            string sqlActualizar = "UPDATE adminTareas " +
+                        "SET fecha=@fecha WHERE id=@id";
+
+            SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
+
+            using (comando)
+            {
+                comando.Parameters.AddWithValue("@id", id);
+                comando.Parameters.AddWithValue("@fecha", fecha.ToString());
+
+                SqlDataReader lector = comando.ExecuteReader();
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         public static string CargarValorAdicional(string tienda, SqlConnection conexion)
@@ -306,9 +357,9 @@ namespace BaseDatos.Tiendas
 		}
 	}
 
-	public class AdminTiendas
+	public class AdminTarea
 	{
-		public string tienda;
+		public string id;
 		public DateTime fecha;
 	}
 }
