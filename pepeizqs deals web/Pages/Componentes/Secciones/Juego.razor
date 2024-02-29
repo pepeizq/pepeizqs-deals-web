@@ -199,9 +199,9 @@
 
 		@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 		{
-			@if (drm != JuegoDRM.NoEspecificado)
+			if (drm != JuegoDRM.NoEspecificado)
 			{
-				@if (VerificarMostrarDRM(idioma, drm, juego) == true)
+				if (VerificarMostrarDRM(idioma, drm, juego) == true)
 				{
 					<div id="@drm">
 						@if (usuarioLogeado == true)

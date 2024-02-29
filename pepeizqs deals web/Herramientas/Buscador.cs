@@ -8,7 +8,7 @@ namespace Herramientas
 	{
 		public static string LimpiarNombre(string nombre, bool quitarEspacio = false)
 		{
-			if (nombre != null)
+			if (string.IsNullOrEmpty(nombre) == false)
 			{
 				if (quitarEspacio == true)
 				{

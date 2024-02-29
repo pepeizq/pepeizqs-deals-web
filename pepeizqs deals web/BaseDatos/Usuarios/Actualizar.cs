@@ -16,7 +16,7 @@ namespace BaseDatos.Usuarios
             using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
             {
                 comando.Parameters.AddWithValue("@Id", usuarioId);
-                comando.Parameters.AddWithValue("@Keys", JsonConvert.SerializeObject(juego.UsuariosInteresados));
+                //comando.Parameters.AddWithValue("@Keys", JsonConvert.SerializeObject(juego.UsuariosInteresados));
 
                 try
                 {
