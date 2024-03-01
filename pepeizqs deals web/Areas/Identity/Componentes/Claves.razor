@@ -12,7 +12,7 @@
 
 	if (string.IsNullOrEmpty(usuario.Keys) == false)
 	{
-		List<ClaveJuego>? claves = JsonConvert.DeserializeObject<List<ClaveJuego>>(usuario.Keys);
+		List<BaseDatos.Usuarios.Clave>? claves = JsonConvert.DeserializeObject<List<BaseDatos.Usuarios.Clave>>(usuario.Keys);
 
 		if (claves != null)
 		{
@@ -22,8 +22,8 @@
 
 				foreach (var clave in claves)
 				{
-					<div>
-						<label>@clave.Nombre: @clave.Clave</label>
+					<div style="margin-bottom: 5px;">
+						<label>@clave.Nombre: @clave.Codigo</label>
 					</div>
 				}
 			}
@@ -58,11 +58,5 @@ else
 	protected override void OnInitialized()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
-	}
-
-	public class ClaveJuego
-	{
-		public string Nombre;
-		public string Clave;
 	}
 }

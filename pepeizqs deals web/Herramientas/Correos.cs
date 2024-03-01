@@ -13,13 +13,11 @@ namespace Herramientas
 {
 	public static class Correos
 	{
-		public static void EnviarGanadorSorteo(Sorteo sorteo, string correoHacia)
+		public static void EnviarGanadorSorteo(Juego juego, Sorteo sorteo, string correoHacia)
 		{
-			Juegos.Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
-
 			if (juego != null)
 			{
-				string titulo = "You have won the giveaway with the game " + juego.Nombre;
+				string titulo = "You have won the giveaway with the " + juego.Tipo.ToString().ToLower() + " " + juego.Nombre;
 
 				string html = string.Empty;
 
@@ -28,14 +26,12 @@ namespace Herramientas
 					html = r.ReadToEnd();
 				}
 
-
-
 				html = html.Replace("{{titulo}}", titulo);
-				html = html.Replace("{{imagen}}", juego.Imagenes.Header_460x215);
-				//html = html.Replace("{{contenido}}", contenido);
+				html = html.Replace("{{clave}}", sorteo.Clave);
 				html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-			}
 
+                EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
+            }
 		}
 
 		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia)

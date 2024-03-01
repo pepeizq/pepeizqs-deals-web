@@ -9,28 +9,25 @@ namespace BaseDatos.Divisas
 	{
 		public static void Ejecutar(Divisa divisa, SqlConnection conexion)
 		{
-            using (conexion)
-			{
-				string sqlAñadir = "INSERT INTO divisas " +
-					"(id, cantidad, fecha) VALUES " +
-					"(@id, @cantidad, @fecha) ";
+            string sqlAñadir = "INSERT INTO divisas " +
+                     "(id, cantidad, fecha) VALUES " +
+                     "(@id, @cantidad, @fecha) ";
 
-				using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
-				{
-					comando.Parameters.AddWithValue("@id", divisa.Id);
-					comando.Parameters.AddWithValue("@cantidad", divisa.Cantidad);
-					comando.Parameters.AddWithValue("@fecha", divisa.FechaActualizacion);
+            using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", divisa.Id);
+                comando.Parameters.AddWithValue("@cantidad", divisa.Cantidad);
+                comando.Parameters.AddWithValue("@fecha", divisa.FechaActualizacion);
 
-					try
-					{
-						comando.ExecuteNonQuery();
-					}
-					catch
-					{
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch
+                {
 
-					}
-				}
-			}
-		}
+                }
+            }
+        }
 	}
 }

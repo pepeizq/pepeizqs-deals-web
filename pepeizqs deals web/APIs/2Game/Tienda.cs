@@ -106,7 +106,7 @@ namespace APIs._2Game
                                         }
                                         catch (Exception ex)
                                         {
-                                            BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                            BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
                                         }
                                     }
                                 }

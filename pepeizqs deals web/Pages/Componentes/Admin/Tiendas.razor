@@ -67,15 +67,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="perfil" style="margin-top: 30px;">
-				<label>Portada</label>
-				<hr />
-
-				<div>
-					<button @onclick="@(e => ActualizarPortada(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
-				</div>
-			</div>
 		</div>		
 	</div>
 }
@@ -114,16 +105,6 @@
 		}
 		
 		return tienda.id + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
-	}
-
-	private async Task ActualizarPortada(MouseEventArgs e)
-	{
-		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-		using (conexion)
-		{
-			await Herramientas.Tareas.Minimos(conexion);
-		}
 	}
 
 	private async Task ActualizarDivisas(MouseEventArgs e)

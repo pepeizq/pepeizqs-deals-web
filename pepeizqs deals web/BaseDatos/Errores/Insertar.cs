@@ -4,34 +4,64 @@ namespace BaseDatos.Errores
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(string seccion, Exception ex)
+        public static void Ejecutar(string seccion, Exception ex)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				string sqlInsertar = "INSERT INTO errores " +
-                    "(seccion, mensaje, stacktrace, fecha) VALUES " +
-                    "(@seccion, @mensaje, @stacktrace, @fecha) ";
+                Ejecutar(seccion, ex, conexion);
+            }
+        }
 
-				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
-				{
-                    comando.Parameters.AddWithValue("@seccion", seccion);
-                    comando.Parameters.AddWithValue("@mensaje", ex.Message);
-                    comando.Parameters.AddWithValue("@stacktrace", ex.StackTrace);
-                    comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
+        public static void Ejecutar(string seccion, Exception ex, SqlConnection conexion)
+		{
+            string sqlInsertar = "INSERT INTO errores " +
+                                "(seccion, mensaje, stacktrace, fecha) VALUES " +
+                                "(@seccion, @mensaje, @stacktrace, @fecha) ";
 
-                    comando.ExecuteNonQuery();
-					try
-					{
+            using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+            {
+                comando.Parameters.AddWithValue("@seccion", seccion);
+                comando.Parameters.AddWithValue("@mensaje", ex.Message);
+                comando.Parameters.AddWithValue("@stacktrace", ex.StackTrace);
+                comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 
-					}
-					catch
-					{
+                comando.ExecuteNonQuery();
+                try
+                {
 
-					}
-				}
-			}
-		}
-	}
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)
+        {
+            string sqlInsertar = "INSERT INTO errores " +
+                               "(seccion, mensaje, stacktrace, fecha) VALUES " +
+                               "(@seccion, @mensaje, @stacktrace, @fecha) ";
+
+            using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+            {
+                comando.Parameters.AddWithValue("@seccion", seccion);
+                comando.Parameters.AddWithValue("@mensaje", mensaje);
+                comando.Parameters.AddWithValue("@stacktrace", "nada");
+                comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
+
+                comando.ExecuteNonQuery();
+                try
+                {
+
+                }
+                catch
+                {
+
+                }
+            }
+        }
+    }
 }

@@ -27,11 +27,13 @@
     bool adminLogeado = false;
     int adminNuevosCorreos = 0;
     string adminNuevosCorreosMensaje = string.Empty;
+    int adminNuevosErrores = 0;
+    string adminNuevosErroresMensaje = string.Empty;
 
     if (usuarioLogeado == true)
     {
         usuario = await UserManager.GetUserAsync(User);
-        
+
         if (await UsuarioCoger.RolDios(UserManager, User) == true)
         {
             adminLogeado = true;
@@ -48,6 +50,13 @@
                 {
                     adminNuevosCorreosMensaje = "• " + adminNuevosCorreos.ToString() + " Nuevos Correos";
                 }
+            }
+
+            adminNuevosErrores = BaseDatos.Errores.Buscar.Todos().Count;
+
+            if (adminNuevosErrores > 0)
+            {
+                adminNuevosErroresMensaje = "(" + adminNuevosErrores.ToString() + ")";
             }
         }
     }
@@ -174,6 +183,7 @@
                                         <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Anadir">Añadir</a>
                                         <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Tiendas">Tiendas</a>
                                         <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Pendientes">Pendientes</a>
+                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Errores">Errores @adminNuevosErroresMensaje</a>
                                         <hr />
                                         <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Noticias">Noticias</a>
                                         <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Bundles">Bundles</a>
@@ -247,8 +257,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js" @* autostart="false" *@></script>
-    @* <script src="boot.js"></script> *@
+    <script src="_framework/blazor.server.js"></script>
 
     <script>
         function moverScroll(id) {

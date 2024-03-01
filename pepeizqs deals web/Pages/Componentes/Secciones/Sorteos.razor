@@ -63,7 +63,7 @@
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
                                 </div>
 
-                                <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
+                                <div style="width: 80%; padding-left: 10px; padding-right: 10px;">
                                     <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
 
                                     <div>@CalcularParticipantes(sorteo.Sorteo)</div>
@@ -79,7 +79,7 @@
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
                                 </div>
 
-                                <div style="width: 80%; padding-left: 15px; padding-right: 15px;">
+                                <div style="width: 80%; padding-left: 10px; padding-right: 10px;">
                                     <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
 
                                     <div style="display: flex; align-items: center;">
@@ -275,18 +275,18 @@
                                                 }
                                             }
 
-                                            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-                                            {
-                                                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+                                            // if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                            // {
+                                            //     List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 
-                                                if (juegosUsuario.Count < 50)
-                                                {
-                                                    puedeParticipar = false;
-                                                }
-                                            }
+                                            //     if (juegosUsuario.Count < 50)
+                                            //     {
+                                            //         puedeParticipar = false;
+                                            //     }
+                                            // }
                                         }
 
-                                        nuevoSorteo.PuedeParticipar = puedeParticipar;
+                                        // nuevoSorteo.PuedeParticipar = puedeParticipar;
                                     }                                  
 
                                     sorteosGrupoNormal.Add(nuevoSorteo);

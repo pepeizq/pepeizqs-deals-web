@@ -9,33 +9,25 @@ namespace BaseDatos.Divisas
 	{
 		public static void Ejecutar(Divisa divisa, SqlConnection conexion)
 		{
-			if (conexion.State == System.Data.ConnectionState.Closed)
-			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
+            string sqlActualizar = "UPDATE divisas " +
+                    "SET id=@id, cantidad=@cantidad, fecha=@fecha WHERE id=@id";
 
-			using (conexion)
-			{
-				string sqlActualizar = "UPDATE divisas " +
-					"SET id=@id, cantidad=@cantidad, fecha=@fecha WHERE id=@id";
+            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", divisa.Id);
+                comando.Parameters.AddWithValue("@cantidad", divisa.Cantidad);
+                comando.Parameters.AddWithValue("@fecha", divisa.FechaActualizacion);
 
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-				{
-					comando.Parameters.AddWithValue("@id", divisa.Id);
-					comando.Parameters.AddWithValue("@cantidad", divisa.Cantidad);
-					comando.Parameters.AddWithValue("@fecha", divisa.FechaActualizacion);
+                comando.ExecuteNonQuery();
+                try
+                {
 
-					comando.ExecuteNonQuery();
-					try
-					{
-						
-					}
-					catch
-					{
+                }
+                catch
+                {
 
-					}
-				}
-			}
-		}
+                }
+            }
+        }
 	}
 }

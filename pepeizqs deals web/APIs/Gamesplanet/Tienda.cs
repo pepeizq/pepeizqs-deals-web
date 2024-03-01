@@ -148,7 +148,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
@@ -159,7 +159,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
                                     }
 								}
 							}
@@ -233,7 +233,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
@@ -244,7 +244,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
                                     }
 								}
 							}
@@ -318,7 +318,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
@@ -329,7 +329,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
                                     }
 								}
 							}
@@ -403,7 +403,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
@@ -414,7 +414,7 @@ namespace APIs.Gamesplanet
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex);
+                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
                                     }
 								}
 							}

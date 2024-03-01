@@ -1100,7 +1100,10 @@
 
 				nuevoTexto = nuevoTexto.Trim();
 
-				return nuevoTexto;
+				if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(nuevoTexto))
+				{
+					return nuevoTexto;
+				}				
 			}
 		}
 

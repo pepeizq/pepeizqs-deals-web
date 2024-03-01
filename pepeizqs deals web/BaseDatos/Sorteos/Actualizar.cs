@@ -14,7 +14,7 @@ namespace BaseDatos.Sorteos
             using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
             {
                 comando.Parameters.AddWithValue("@id", sorteo.Id);
-                comando.Parameters.AddWithValue("@participantes", sorteo.Participantes.ToString());
+                comando.Parameters.AddWithValue("@participantes", JsonConvert.SerializeObject(sorteo.Participantes));
 
                 try
                 {
@@ -27,7 +27,7 @@ namespace BaseDatos.Sorteos
             }
         }
 
-        public static void Ganador(Sorteo sorteo, SqlConnection conexion)
+        public static void Ganador(Sorteo sorteo, SqlConnection conexion, string usuarioId)
         {
             string sqlActualizar = "UPDATE sorteos " +
                     "SET ganadorId=@ganadorId WHERE id=@id";
@@ -35,7 +35,7 @@ namespace BaseDatos.Sorteos
             using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
             {
                 comando.Parameters.AddWithValue("@id", sorteo.Id);
-                comando.Parameters.AddWithValue("@ganadorId", sorteo.GanadorId);
+                comando.Parameters.AddWithValue("@ganadorId", usuarioId);
 
                 try
                 {

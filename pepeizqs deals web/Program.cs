@@ -52,9 +52,13 @@ builder.Services.Configure<HostOptions>(hostOptions =>
 	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
-builder.Services.AddScoped<Tareas>();
-builder.Services.AddSingleton<TareasGestionador>();
-builder.Services.AddHostedService(provider => provider.GetRequiredService<TareasGestionador>());
+builder.Services.AddScoped<Tareas.Divisas>();
+builder.Services.AddScoped<Tareas.Minimos>();
+builder.Services.AddScoped<Tareas.Noticias>();
+builder.Services.AddScoped<Tareas.Sorteos>();
+builder.Services.AddScoped<Tareas.Tiendas>();
+builder.Services.AddSingleton<Tareas.Gestionador>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Gestionador>());
 
 #endregion
 
@@ -167,6 +171,8 @@ app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1,
 
 app.MapControllers();
 
+app.UseRouting();
+
 app.UseAuthorization();
 
 app.UseRateLimiter();
@@ -194,8 +200,6 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.MapHealthChecks("/estado");
-
-app.UseRouting();
 
 app.UseRequestLocalization();
 

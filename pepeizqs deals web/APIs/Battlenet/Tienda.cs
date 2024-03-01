@@ -144,7 +144,7 @@ namespace APIs.Battlenet
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+												BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
 											}
 											
 											juegos2 += 1;
@@ -155,7 +155,7 @@ namespace APIs.Battlenet
 											}
 											catch (Exception ex)
 											{
-                                                BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                                BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
                                             }
 										}
 									}

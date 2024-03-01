@@ -1,0 +1,67 @@
+﻿@using BaseDatos.Errores
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
+
+<div class="perfil" style="margin-bottom: 40px;">
+    <div style="display: flex; align-items: center;">
+        <button @onclick="@(e => Limpiar(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
+
+        <label style="margin-left: 30px;">@listaErrores.Count.ToString() errores registrados</label>
+    </div>
+</div>
+
+@if (listaErrores.Count > 0)
+{
+    <div class="perfil" style="padding: 30px;">
+        <hr />
+
+        @foreach (var error in listaErrores)
+        {
+            <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                <div style="padding-left: 10px; padding-right: 10px;">
+                    <div>
+                        @error.Seccion
+                    </div>
+                    <div style="margin-top: 15px;">
+                        @error.Fecha
+                    </div>
+                </div>
+                <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                    @error.Mensaje
+                </div>
+                <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                    @error.Stacktrace
+                </div>
+            </div>
+
+            <hr />
+        }
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    List<Error> listaErrores = new List<Error>();
+
+    protected override void OnInitialized()
+    {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
+        }
+    }
+
+    private void Limpiar(MouseEventArgs e)
+    {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            BaseDatos.Errores.Limpiar.Ejecutar(conexion);
+        }
+    }
+}
