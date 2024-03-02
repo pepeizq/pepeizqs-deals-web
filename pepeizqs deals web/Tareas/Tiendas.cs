@@ -8,7 +8,7 @@ namespace Tareas
 {
 	public class Tiendas
 	{
-		public async Task Ejecutar(SqlConnection conexion, IDecompiladores decompilador)
+		public static async Task Ejecutar(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(120);
 			List<string> ids = new List<string>();

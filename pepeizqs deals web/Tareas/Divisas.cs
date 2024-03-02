@@ -5,7 +5,7 @@ namespace Tareas
 {
 	public class Divisas
 	{
-		public async Task Ejecutar(SqlConnection conexion)
+		public static async Task Ejecutar(SqlConnection conexion)
 		{
 			TimeSpan tiempo = TimeSpan.FromDays(1);
 

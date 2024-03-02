@@ -7,7 +7,7 @@ namespace Tareas
 {
 	public class Noticias
 	{
-		public async Task Ejecutar(SqlConnection conexion)
+		public async static Task Ejecutar(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 

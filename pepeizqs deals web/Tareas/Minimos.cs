@@ -10,7 +10,7 @@ namespace Tareas
 {
 	public class Minimos
 	{
-		public async Task Ejecutar(SqlConnection conexion)
+		public static async Task Ejecutar(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 
