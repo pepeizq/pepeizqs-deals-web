@@ -52,17 +52,17 @@ builder.Services.Configure<HostOptions>(hostOptions =>
 	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
-//builder.Services.AddScoped<Tareas.Divisas>();
-//builder.Services.AddScoped<Tareas.Minimos>();
-//builder.Services.AddScoped<Tareas.Noticias>();
-//builder.Services.AddScoped<Tareas.Sorteos>();
-//builder.Services.AddScoped<Tareas.Tiendas>();
 builder.Services.AddSingleton<Tareas.GestionadorNoticias>();
 builder.Services.AddSingleton<Tareas.GestionadorTiendas>();
 builder.Services.AddSingleton<Tareas.GestionadorMinimos>();
+builder.Services.AddSingleton<Tareas.GestionadorDivisas>();
+builder.Services.AddSingleton<Tareas.GestionadorSorteos>();
+
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorMinimos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorDivisas>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorSorteos>());
 
 #endregion
 

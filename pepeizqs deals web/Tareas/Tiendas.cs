@@ -21,7 +21,7 @@ namespace Tareas
 				}
 			}
 
-			if (Admin.ComprobarTiendaUso(conexion, TimeSpan.FromSeconds(30)) == false)
+			if (Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(30)) == false)
 			{
 				AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
 

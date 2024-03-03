@@ -181,7 +181,7 @@ namespace BaseDatos.Tiendas
 			return tiendas[0];
         }
 
-        public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo)
+        public static bool ComprobarTiendasUso(SqlConnection conexion, TimeSpan tiempo)
         {
             List<AdminTarea> tiendas = new List<AdminTarea>();
 
@@ -242,7 +242,35 @@ namespace BaseDatos.Tiendas
             return enUso;
         }
 
-        public static bool ComprobarTareaUso(SqlConnection conexion, string id, TimeSpan tiempo)
+		public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo, string tiendaId)
+		{
+			bool usar = false;
+
+			string seleccionarTarea = "SELECT * FROM adminTiendas WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", tiendaId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						DateTime ultimaComprobacion = DateTime.Parse(lector.GetString(1));
+
+						if ((DateTime.Now - ultimaComprobacion) < tiempo)
+						{
+							usar = true;
+						}
+					}
+				}
+			}
+			
+			return usar;
+		}
+
+
+		public static bool ComprobarTareaUso(SqlConnection conexion, string id, TimeSpan tiempo)
 		{
             string seleccionarTarea = "SELECT * FROM adminTareas WHERE id=@id";
 
