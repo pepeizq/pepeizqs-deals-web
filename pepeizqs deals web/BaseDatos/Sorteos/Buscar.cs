@@ -117,5 +117,56 @@ namespace BaseDatos.Sorteos
 
             return null;
         }
+
+        public static List<Sorteos2.Sorteo> Activos(SqlConnection conexion)
+        {
+            List<Sorteos2.Sorteo> sorteos = new List<Sorteos2.Sorteo>();
+
+            string busqueda = "SELECT * FROM sorteos";
+
+            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+            {
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        Sorteos2.Sorteo sorteo = new Sorteos2.Sorteo();
+                        sorteo.Id = lector.GetInt32(0);
+                        sorteo.JuegoId = lector.GetInt32(1);
+                        sorteo.GrupoId = lector.GetString(2);
+                        sorteo.Clave = lector.GetString(3);
+
+                        if (lector.IsDBNull(4) == false)
+                        {
+                            if (lector.GetString(4) != null)
+                            {
+                                try
+                                {
+                                    sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                }
+                                catch { }
+                            }
+                        }
+
+                        sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
+
+                        if (lector.IsDBNull(6) == false)
+                        {
+                            if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+                            {
+                                sorteo.GanadorId = lector.GetString(6);
+                            }
+                        }
+
+                        if (DateTime.Now < sorteo.FechaTermina)
+                        {
+                            sorteos.Add(sorteo);
+                        }                            
+                    }
+                }
+            }
+
+            return sorteos;
+        }
     }
 }

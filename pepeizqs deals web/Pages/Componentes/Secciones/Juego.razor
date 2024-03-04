@@ -1697,7 +1697,6 @@
 	public static string PrecioMinimoActual(global::Juegos.Juego minimo, string idioma)
 	{
 		decimal minimoCantidad = 10000000;
-		JuegoPrecio minimoFinal = new JuegoPrecio();
 
 		foreach (var precio in minimo.PrecioActualesTiendas)
 		{
@@ -1715,35 +1714,27 @@
 				if (tempPrecio < minimoCantidad)
 				{
 					minimoCantidad = tempPrecio;
-					minimoFinal = precio;
 				}
 			}
 		}
 
-		if (minimoFinal != null)
+		if (minimoCantidad > 0 && minimoCantidad < 10000000)
 		{
-			if (minimoFinal.Precio > 0)
+			string precioTexto = string.Empty;
+
+			precioTexto = minimoCantidad.ToString();
+			precioTexto = precioTexto.Replace(".", ",");
+
+			int int1 = precioTexto.IndexOf(",");
+
+			if (int1 == precioTexto.Length - 2)
 			{
-				string precioTexto = string.Empty;
-
-				precioTexto = minimoFinal.Precio.ToString();
-				precioTexto = precioTexto.Replace(".", ",");
-
-				int int1 = precioTexto.IndexOf(",");
-
-				if (int1 == precioTexto.Length - 2)
-				{
-					precioTexto = precioTexto + "0";
-				}
-
-				precioTexto = precioTexto + "€";
-
-				return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+				precioTexto = precioTexto + "0";
 			}
-			else
-			{
-				return Idiomas.CogerCadena(idioma, "Search.String2");
-			}
+
+			precioTexto = precioTexto + "€";
+
+			return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
 		}
 
 		return Idiomas.CogerCadena(idioma, "Search.String2");

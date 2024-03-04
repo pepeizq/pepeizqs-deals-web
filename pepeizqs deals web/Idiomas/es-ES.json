@@ -128,6 +128,10 @@
     "Valor": "Inicio"
   },
   {
+    "Id": "Index.Giveaways",
+    "Valor": "Sorteos Semanales"
+  },
+  {
     "Id": "Login.Title",
     "Valor": "Iniciar Sesión"
   },
@@ -1028,6 +1032,10 @@
     "Valor": "Última comprobación"
   },
   {
+    "Id": "Settings.String61",
+    "Valor": "Ese usuario de Steam ya está asociado a otra cuenta registrada."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },
@@ -1130,6 +1138,10 @@
   {
     "Id": "Giveaways.String12",
     "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación de tu cuenta cada 7 dias)."
+  },
+  {
+    "Id": "Giveaways.String13",
+    "Valor": "Tener una cuenta registrada en la web."
   },
   {
     "Id": "Month.1",

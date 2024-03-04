@@ -132,6 +132,10 @@
     "Valor": "This website is open source, this means that you can take the source code and create your own version of the website, although I must add that the code does not include the database."
   },
   {
+    "Id": "Index.Giveaways",
+    "Valor": "Weekly Giveaways"
+  },
+  {
     "Id": "Login.Title",
     "Valor": "Log in"
   },
@@ -1032,6 +1036,10 @@
     "Valor": "Last check"
   },
   {
+    "Id": "Settings.String61",
+    "Valor": "That Steam user is already associated with another registered account."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },
@@ -1134,6 +1142,10 @@
   {
     "Id": "Giveaways.String12",
     "Valor": "In your Steam account, have the profile and game details set to Public (the website will check your account every 7 days)."
+  },
+  {
+    "Id": "Giveaways.String13",
+    "Valor": "Have a registered account on the website."
   },
   {
     "Id": "Month.1",

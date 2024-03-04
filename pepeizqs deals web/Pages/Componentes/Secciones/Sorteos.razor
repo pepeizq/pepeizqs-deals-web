@@ -50,14 +50,14 @@
 
     if (sorteosGrupoNormal.Count > 0)
     {      
-        <div class="perfil">
+        <div class="perfil" style="padding-top: 25px; padding-bottom: 30px;">
             @foreach (var sorteo in sorteosGrupoNormal)
             {
                 if (sorteo.Sorteo.FechaTermina >= DateTime.Now)
                 {
                     if (sorteo.PuedeParticipar == true)
                     {
-                        <button class="boton-pequeño" style="padding: 0px;" @onclick="@(e => Entrar(e, sorteo))">
+                        <button class="boton-pequeño" style="padding: 0px; margin-top: 15px; margin-bottom: 15px;" @onclick="@(e => Entrar(e, sorteo))">
                             <div class="perfil-flexible-centrado">
                                 <div style="width: 20%;">
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
@@ -73,7 +73,7 @@
                     }
                     else
                     {
-                        <button class="boton-pequeño" style="padding: 0px; cursor: not-allowed; pointer-events: none;">
+                        <button class="boton-pequeño" style="padding: 0px; cursor: not-allowed; pointer-events: none; margin-top: 15px; margin-bottom: 15px;">
                             <div class="perfil-flexible-centrado">
                                 <div style="width: 20%;">
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
@@ -113,6 +113,7 @@
 
     <div id="normas2" class="perfil" style="padding: 20px;">
         <ul>
+            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String13")</li>
             <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String10")</li>
             <li><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String11")</a></li>
             <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String12")</li>
@@ -275,18 +276,18 @@
                                                 }
                                             }
 
-                                            // if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-                                            // {
-                                            //     List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+                                            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                            {
+                                                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 
-                                            //     if (juegosUsuario.Count < 50)
-                                            //     {
-                                            //         puedeParticipar = false;
-                                            //     }
-                                            // }
+                                                if (juegosUsuario.Count < 50)
+                                                {
+                                                    puedeParticipar = false;
+                                                }
+                                            }
                                         }
 
-                                        // nuevoSorteo.PuedeParticipar = puedeParticipar;
+                                        nuevoSorteo.PuedeParticipar = puedeParticipar;
                                     }                                  
 
                                     sorteosGrupoNormal.Add(nuevoSorteo);

@@ -31,6 +31,13 @@
 		</div>
 	</div>
 
+	@if (errorCuentaUsada == true)
+	{
+		<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String61")
+		</div>
+	}
+
 	@if (usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
 	{
 		<hr style="margin-top: 20px; margin-bottom: 20px;" />
@@ -124,6 +131,8 @@ else
 
 	private bool enseñarImagen = false;
 
+	private bool errorCuentaUsada = false;
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
@@ -131,6 +140,8 @@ else
 
 	private async void TextoCambiaSteamCuenta(ChangeEventArgs texto)
 	{
+		errorCuentaUsada = false;
+
 		bool tiempo = true;
 
 		if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
@@ -149,17 +160,30 @@ else
 
 				if (enlace.Contains("https://steamcommunity.com/id/") == true || enlace.Contains("https://steamcommunity.com/profiles/") == true)
 				{
-					SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+					bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(enlace);
 
-					usuario.SteamGames = datos.Juegos;
-					usuario.SteamWishlist = datos.Deseados;
-					usuario.Avatar = datos.Avatar;
-					usuario.Nickname = datos.Nombre;
-					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-					usuario.OfficialGroup = datos.GrupoPremium;
-					usuario.OfficialGroup2 = datos.GrupoNormal;
+					if (cuentaUsada == false)
+					{
+						SteamUsuario datos = await Cuenta.CargarDatos(enlace);
 
-					await UserManager.UpdateAsync(usuario);
+						if (datos != null)
+						{
+							usuario.SteamAccount = enlace;
+							usuario.SteamGames = datos.Juegos;
+							usuario.SteamWishlist = datos.Deseados;
+							usuario.Avatar = datos.Avatar;
+							usuario.Nickname = datos.Nombre;
+							usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+							usuario.OfficialGroup = datos.GrupoPremium;
+							usuario.OfficialGroup2 = datos.GrupoNormal;
+
+							await UserManager.UpdateAsync(usuario);
+						}
+					}
+					else
+					{
+						errorCuentaUsada = true;
+					}
 				}
 			}
 		}

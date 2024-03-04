@@ -290,50 +290,35 @@ else
 	</div>
 }
 
-@if (mensajeMostrar > 0)
+@if (sorteosActivos.Count > 0)
 {
-	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto;">
-		@if (mensajeMostrar == 1)
-		{
-			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;" href="/Identity/Account/Register">
-				<div style="display: flex; align-content: center; align-items: center;">
-					<div style="width: 10%; text-align: right; padding-right: 30px;">
-						<i class="fa-solid fa-circle-info" style="font-size: 32px;"></i>
-					</div>
-					<div style="width: 90%;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message1")
-					</div>
-				</div>
-			</a>
-		}
+	<div style="margin-bottom: 50px; height: 200px;">
+		<a href="/Giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
+			<div style="overflow: hidden; position: relative; height: 150px; display: flex; align-items: center;">
+				<div style="position: absolute; right: 0; top: 0;">
+					@{
+						int i = 0;
+						while (i < 3)
+						{
+							Juegos.Juego sorteoJuego = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[i].JuegoId.ToString());
 
-		@if (mensajeMostrar == 2)
-		{
-			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;">
-				<div style="display: flex; align-content: center; align-items: center;">
-					<div style="width: 10%; text-align: right; padding-right: 30px;">
-						<i class="fa-solid fa-euro-sign" style="font-size: 32px;"></i>
-					</div>
-					<div style="width: 90%;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message2")
-					</div>
-				</div>
-			</a>
-		}
+							if (sorteoJuego != null)
+							{
+								<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+							}
 
-		@if (mensajeMostrar == 3)
-		{
-			<a class="boton-pequeño" style="width: 100%; padding: 25px 35px; font-size: 17px; text-align: center;" href="https://github.com/pepeizq/pepeizqs-deals-web/">
-				<div style="display: flex; align-content: center; align-items: center;">
-					<div style="width: 10%; text-align: right; padding-right: 30px;">
-						<i class="fa-brands fa-github" style="font-size: 32px;"></i>
-					</div>
-					<div style="width: 90%;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Message3")
+							i += 1;
+						}
+					}
+				</div>
+
+				<div style="position: relative; left: 15%; transform: translateX(-50%);">
+					<div style="font-size: 24px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Giveaways")
 					</div>
 				</div>
-			</a>
-		}
+			</div>
+		</a>
 	</div>
 }
 
@@ -430,21 +415,15 @@ else
 
 	List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
 
-	private int mensajeMostrar = 0;
-
 	List<Noticia> noticiasMostrar = new List<Noticia>();
 	List<Noticia> noticiasGestor = new List<Noticia>();
 	List<Noticia> noticiaEvento = new List<Noticia>();
 
+	List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
-
-		if (usuario == null)
-		{
-			Random rnd = new Random();
-			mensajeMostrar = rnd.Next(1, 4);
-		}
 
 		//------------------------------------------------
 
@@ -643,6 +622,12 @@ else
 			}
 
 			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
+
+			#endregion
+
+			#region Sorteos
+
+			sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
 
 			#endregion
 		}

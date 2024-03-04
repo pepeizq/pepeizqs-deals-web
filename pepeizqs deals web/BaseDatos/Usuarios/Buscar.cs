@@ -1,5 +1,7 @@
 ﻿#nullable disable
 
+using APIs.Steam;
+using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
@@ -152,5 +154,46 @@ namespace BaseDatos.Usuarios
 
 			return null;
 		}
-	}
+
+        public static bool CuentaSteamUsada(string enlace)
+		{
+            if (enlace != null)
+            {
+				if (enlace.Contains("?") == true)
+				{
+					int int1 = enlace.IndexOf("?");
+					enlace = enlace.Remove(int1, enlace.Length - int1);
+				}
+
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					string busqueda = "SELECT * FROM AspNetUsers";
+
+					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+					{
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							while (lector.Read())
+							{
+								if (lector.IsDBNull(3) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+									{
+										if (Buscador.LimpiarNombre(enlace) == Buscador.LimpiarNombre(lector.GetString(3)))
+										{
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}			
+            }
+
+			return false;
+        }
+    }
 }

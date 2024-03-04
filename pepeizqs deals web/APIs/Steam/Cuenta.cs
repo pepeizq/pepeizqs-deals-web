@@ -7,16 +7,15 @@ namespace APIs.Steam
 {
     public static class Cuenta
     {
-        public static async Task<SteamUsuario> CargarDatos(string enlace)
+        public static async Task<SteamCuentaID64> CargarID64(string enlace)
         {
+            string id64 = string.Empty;
             int cuentaTipo = 0;
             string usuario = string.Empty;
-            string id64 = string.Empty;
 
             if (enlace.Contains("https://steamcommunity.com/id/") == true)
             {
                 cuentaTipo = 1;
-
                 usuario = enlace;
 
                 usuario = usuario.Replace("https://steamcommunity.com/id/", null);
@@ -68,9 +67,28 @@ namespace APIs.Steam
                 }
             }
 
-            if (id64 != string.Empty)
+            if (string.IsNullOrEmpty(id64) == false)
             {
-                string html = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamids=" + id64);
+                SteamCuentaID64 nuevaCuenta = new SteamCuentaID64
+                {
+                    ID64 = id64,
+                    CuentaTipo = cuentaTipo,
+                    Usuario = usuario
+                };
+
+                return nuevaCuenta;
+            }
+
+            return null;
+        }
+
+        public static async Task<SteamUsuario> CargarDatos(string enlace)
+        {
+            SteamCuentaID64 nuevaCuenta = await CargarID64(enlace);
+
+            if (nuevaCuenta != null)
+            {
+                string html = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamids=" + nuevaCuenta.ID64);
 
                 if (html != null)
                 {
@@ -117,13 +135,13 @@ namespace APIs.Steam
                         {
                             string htmlDeseados = string.Empty;
 
-                            if (cuentaTipo == 1)
+                            if (nuevaCuenta.CuentaTipo == 1)
                             {
-                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/id/" + usuario + "/wishlistdata/?p=" + i.ToString());
+                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/id/" + nuevaCuenta.Usuario + "/wishlistdata/?p=" + i.ToString());
                             }
-                            else if (cuentaTipo == 2)
+                            else if (nuevaCuenta.CuentaTipo == 2)
                             {
-                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/profiles/" + id64 + "/wishlistdata/?p=" + i.ToString());
+                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/profiles/" + nuevaCuenta.ID64 + "/wishlistdata/?p=" + i.ToString());
                             }
 
                             if (htmlDeseados != null)
@@ -321,9 +339,18 @@ namespace APIs.Steam
         public string capsule;
     }
 
-	//----------------------------------------------
+    //----------------------------------------------
 
-	public class SteamGruposAPI
+    public class SteamCuentaID64
+    {
+        public string ID64;
+        public int CuentaTipo;
+        public string Usuario;
+    }
+
+    //----------------------------------------------
+
+    public class SteamGruposAPI
 	{
 		[JsonProperty("response")]
 		public SteamGruposAPIDatos Datos { get; set; }
