@@ -291,7 +291,7 @@
 												
 												<div class="juego-descuento-precio">
 													<div style="font-size: 14px; margin: 20px;">
-														@Calculadora.HaceTiempo(precio.FechaDetectado, idioma)
+														@Calculadora.DiferenciaTiempo(precio.FechaDetectado, idioma)
 													</div>
 
 													<div style="width: 75px; text-align: center;" class="juego-descuento">
@@ -397,7 +397,7 @@
 
 									<div style="margin-right: 20px; width: 100%;">
 										<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label><br />
-										<label style="font-size: 13px; cursor: pointer;">@Calculadora.HaceTiempo(bundle3.FechaTermina, idioma)</label>
+										<label style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(bundle3.FechaTermina, idioma)</label>
 									</div>
 
 									<div>
@@ -468,7 +468,7 @@
 
 							<div style="margin-right: 20px; width: 100%;">
 								<label>@GratisCargar.DevolverGratis(gratis2.Tipo).Nombre</label><br />
-								<label style="font-size: 13px;">@Calculadora.HaceTiempo(gratis2.FechaTermina, idioma)</label>
+								<label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(gratis2.FechaTermina, idioma)</label>
 							</div>
 						</div>
 					}
@@ -533,7 +533,7 @@
 
 							<div style="margin-right: 20px; width: 100%;">
 								<label>@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Nombre</label><br />
-								<label style="font-size: 13px;">@Calculadora.HaceTiempo(suscripcion2.FechaTermina, idioma)</label>
+								<label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(suscripcion2.FechaTermina, idioma)</label>
 							</div>
 						</div>
 					}
@@ -880,7 +880,7 @@
 						}
 					}
 
-					drmPreparado = drmPreparado + " (" + Calculadora.HaceTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "Game.String13") + " " + tiendaFinal + ")";
+					drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "Game.String13") + " " + tiendaFinal + ")";
 				}
 				else
 				{

@@ -84,7 +84,7 @@ namespace Herramientas
 
 				if (dolar != null)
 				{
-					mensaje = "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.HaceTiempo(dolar.FechaActualizacion, "es-ES");
+					mensaje = "Dolar: " + dolar.Cantidad.ToString() + " " + Calculadora.DiferenciaTiempo(dolar.FechaActualizacion, "es-ES");
 				}
 			}
 
@@ -103,7 +103,7 @@ namespace Herramientas
 
 				if (libra != null)
 				{
-					mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.HaceTiempo(libra.FechaActualizacion, "es-ES");
+					mensaje = "Libra: " + libra.Cantidad.ToString() + " " + Calculadora.DiferenciaTiempo(libra.FechaActualizacion, "es-ES");
 				}
 			}
 

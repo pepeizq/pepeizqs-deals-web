@@ -102,7 +102,7 @@ namespace pepeizqs_deals_web.Pages
 
 					if (noticia.FechaTermina.Year > 2022)
 					{
-						fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.HaceTiempo(noticia.FechaEmpieza, idioma);
+						fechaEmpieza = Herramientas.Idiomas.CogerCadena(idioma, "News.String6") + " " + Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma);
 					}
 
 					if (noticia.FechaTermina.Year > 2022)

@@ -51,6 +51,18 @@
     if (sorteosGrupoNormal.Count > 0)
     {      
         <div class="perfil" style="padding-top: 25px; padding-bottom: 30px;">
+            <div style="padding-bottom: 10px;">
+                @if (sorteosGrupoNormal.Count == 1)
+                {
+                    @string.Format("{0} {1}{2}", Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String15"), Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(sorteosGrupoNormal[0].Sorteo.FechaTermina), idioma, 1), ":")
+                }
+                else
+                {
+                    @string.Format("{0} {1}{2}", Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String14"), Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(sorteosGrupoNormal[0].Sorteo.FechaTermina), idioma, 2), ":")
+                }
+                
+            </div>
+
             @foreach (var sorteo in sorteosGrupoNormal)
             {
                 if (sorteo.Sorteo.FechaTermina >= DateTime.Now)
@@ -79,18 +91,16 @@
                                     <img src="@sorteo.Juego.Imagenes.Capsule_231x87" style="max-height: 100%; max-width: 100%;" />
                                 </div>
 
-                                <div style="width: 80%; padding-left: 10px; padding-right: 10px;">
+                                <div style="width: 60%; padding-left: 10px; padding-right: 10px;">
                                     <div style="margin-bottom: 10px;">@sorteo.Juego.Nombre</div>
 
-                                    <div style="display: flex; align-items: center;">
-                                        <div>@CalcularParticipantes(sorteo.Sorteo)</div>
-
-                                        @if (sorteo.TieneJuego == true)
-                                        {
-                                            <div style="margin-left: 10px;">• @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String7")</div>
-                                        }
-                                    </div>                                    
+                                    <div>@CalcularParticipantes(sorteo.Sorteo)</div>                            
                                 </div>
+
+                                @if (sorteo.TieneJuego == true)
+                                {
+                                    <div style="width: 20%; padding-right: 40px; text-align: right;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String7")</div>
+                                }
                             </div>
                         </button>
                     }                    
@@ -143,6 +153,7 @@
 
     List<JuegoSorteo> sorteosGrupoPremium = new List<JuegoSorteo>();
     List<JuegoSorteo> sorteosGrupoNormal = new List<JuegoSorteo>();
+    private string mensajeTerminaNormal = string.Empty;
 
     private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();

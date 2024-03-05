@@ -104,7 +104,7 @@
 				@if (usuario.SteamAccountLastCheck != null)
 				{
 					<div style="margin-top: 15px;">
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String60"): @Herramientas.Calculadora.HaceTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String60"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
 					</div>
 				}
 			</div>

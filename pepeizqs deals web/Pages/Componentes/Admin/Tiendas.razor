@@ -104,7 +104,7 @@
 			tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
 		}
 		
-		return tienda.id + " " + Herramientas.Calculadora.HaceTiempo(tienda.fecha, "es-ES");
+		return tienda.id + " " + Herramientas.Calculadora.DiferenciaTiempo(tienda.fecha, "es-ES");
 	}
 
 	private async Task ActualizarDivisas(MouseEventArgs e)

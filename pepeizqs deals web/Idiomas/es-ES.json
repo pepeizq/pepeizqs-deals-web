@@ -620,48 +620,136 @@
     "Valor": "De hecho, en esta web no voy a usar servicios como Google Analytics, aunque seguramente Google me castigará en su buscador por ello."
   },
   {
-    "Id": "Timer.String1",
+    "Id": "Timer0.String1",
     "Valor": "hace {0} segundos"
   },
   {
-    "Id": "Timer.String2",
+    "Id": "Timer0.String2",
     "Valor": "hace {0} minutos"
   },
   {
-    "Id": "Timer.String3",
+    "Id": "Timer0.String3",
     "Valor": "hace 1 minuto"
   },
   {
-    "Id": "Timer.String4",
+    "Id": "Timer0.String4",
     "Valor": "hace {0} horas"
   },
   {
-    "Id": "Timer.String5",
+    "Id": "Timer0.String5",
     "Valor": "hace 1 hora"
   },
   {
-    "Id": "Timer.String6",
+    "Id": "Timer0.String6",
     "Valor": "hace {0} días"
   },
   {
-    "Id": "Timer.String7",
+    "Id": "Timer0.String7",
     "Valor": "ayer"
   },
   {
-    "Id": "Timer.String8",
+    "Id": "Timer0.String8",
     "Valor": "hace {0} meses"
   },
   {
-    "Id": "Timer.String9",
+    "Id": "Timer0.String9",
     "Valor": "hace 1 mes"
   },
   {
-    "Id": "Timer.String10",
+    "Id": "Timer0.String10",
     "Valor": "hace {0} años"
   },
   {
-    "Id": "Timer.String11",
+    "Id": "Timer0.String11",
     "Valor": "hace 1 año"
+  },
+  {
+    "Id": "Timer1.String1",
+    "Valor": "termina en {0} segundos"
+  },
+  {
+    "Id": "Timer1.String2",
+    "Valor": "termina en {0} minutos"
+  },
+  {
+    "Id": "Timer1.String3",
+    "Valor": "termina en 1 minuto"
+  },
+  {
+    "Id": "Timer1.String4",
+    "Valor": "termina en {0} horas"
+  },
+  {
+    "Id": "Timer1.String5",
+    "Valor": "termina en 1 hora"
+  },
+  {
+    "Id": "Timer1.String6",
+    "Valor": "termina en {0} días"
+  },
+  {
+    "Id": "Timer1.String7",
+    "Valor": "termina mañana"
+  },
+  {
+    "Id": "Timer1.String8",
+    "Valor": "termina en {0} meses"
+  },
+  {
+    "Id": "Timer1.String9",
+    "Valor": "termina en 1 mes"
+  },
+  {
+    "Id": "Timer1.String10",
+    "Valor": "termina en {0} años"
+  },
+  {
+    "Id": "Timer1.String11",
+    "Valor": "termina en 1 año"
+  },
+  {
+    "Id": "Timer2.String1",
+    "Valor": "terminan en {0} segundos"
+  },
+  {
+    "Id": "Timer2.String2",
+    "Valor": "terminan en {0} minutos"
+  },
+  {
+    "Id": "Timer2.String3",
+    "Valor": "terminan en 1 minuto"
+  },
+  {
+    "Id": "Timer2.String4",
+    "Valor": "terminan en {0} horas"
+  },
+  {
+    "Id": "Timer2.String5",
+    "Valor": "terminan en 1 hora"
+  },
+  {
+    "Id": "Timer2.String6",
+    "Valor": "terminan en {0} días"
+  },
+  {
+    "Id": "Timer2.String7",
+    "Valor": "terminan mañana"
+  },
+  {
+    "Id": "Timer2.String8",
+    "Valor": "terminan en {0} meses"
+  },
+  {
+    "Id": "Timer2.String9",
+    "Valor": "terminan en 1 mes"
+  },
+  {
+    "Id": "Timer2.String10",
+    "Valor": "terminan en {0} años"
+  },
+  {
+    "Id": "Timer2.String11",
+    "Valor": "terminan en 1 año"
   },
   {
     "Id": "Search.String1",
@@ -1129,7 +1217,7 @@
   },
   {
     "Id": "Giveaways.String10",
-    "Valor": "Tener una cuenta de Steam con al menos 50 juegos."
+    "Valor": "Tener una cuenta de Steam con al menos 50 juegos asociada a la cuenta registrada en la web."
   },
   {
     "Id": "Giveaways.String11",
@@ -1137,11 +1225,19 @@
   },
   {
     "Id": "Giveaways.String12",
-    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación de tu cuenta cada 7 dias)."
+    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación de tu cuenta cada 7 días)."
   },
   {
     "Id": "Giveaways.String13",
-    "Valor": "Tener una cuenta registrada en la web."
+    "Valor": "Tener una cuenta registrada en la web con un correo verificado."
+  },
+  {
+    "Id": "Giveaways.String14",
+    "Valor": "Estos sorteos"
+  },
+  {
+    "Id": "Giveaways.String15",
+    "Valor": "Este sorteo"
   },
   {
     "Id": "Month.1",

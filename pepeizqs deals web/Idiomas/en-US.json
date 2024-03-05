@@ -624,48 +624,136 @@
     "Valor": "In fact, on this website I am not going to use services like Google Analytics, although Google will surely punish me in its search engine for it."
   },
   {
-    "Id": "Timer.String1",
+    "Id": "Timer0.String1",
     "Valor": "{0} seconds ago"
   },
   {
-    "Id": "Timer.String2",
+    "Id": "Timer0.String2",
     "Valor": "{0} minutes ago"
   },
   {
-    "Id": "Timer.String3",
+    "Id": "Timer0.String3",
     "Valor": "about a minute ago"
   },
   {
-    "Id": "Timer.String4",
+    "Id": "Timer0.String4",
     "Valor": "{0} hours ago"
   },
   {
-    "Id": "Timer.String5",
+    "Id": "Timer0.String5",
     "Valor": "about an hour ago"
   },
   {
-    "Id": "Timer.String6",
+    "Id": "Timer0.String6",
     "Valor": "{0} days ago"
   },
   {
-    "Id": "Timer.String7",
+    "Id": "Timer0.String7",
     "Valor": "yesterday"
   },
   {
-    "Id": "Timer.String8",
+    "Id": "Timer0.String8",
     "Valor": "{0} months ago"
   },
   {
-    "Id": "Timer.String9",
+    "Id": "Timer0.String9",
     "Valor": "about a month ago"
   },
   {
-    "Id": "Timer.String10",
+    "Id": "Timer0.String10",
     "Valor": "{0} years ago"
   },
   {
-    "Id": "Timer.String11",
+    "Id": "Timer0.String11",
     "Valor": "about a year ago"
+  },
+  {
+    "Id": "Timer1.String1",
+    "Valor": "ends in {0} seconds"
+  },
+  {
+    "Id": "Timer1.String2",
+    "Valor": "ends in {0} minutes"
+  },
+  {
+    "Id": "Timer1.String3",
+    "Valor": "ends in 1 minute"
+  },
+  {
+    "Id": "Timer1.String4",
+    "Valor": "ends in {0} hours"
+  },
+  {
+    "Id": "Timer1.String5",
+    "Valor": "ends in 1 hour"
+  },
+  {
+    "Id": "Timer1.String6",
+    "Valor": "ends in {0} days"
+  },
+  {
+    "Id": "Timer1.String7",
+    "Valor": "ends tomorrow"
+  },
+  {
+    "Id": "Timer1.String8",
+    "Valor": "ends in {0} months"
+  },
+  {
+    "Id": "Timer1.String9",
+    "Valor": "ends in 1 month"
+  },
+  {
+    "Id": "Timer1.String10",
+    "Valor": "ends in {0} years"
+  },
+  {
+    "Id": "Timer1.String11",
+    "Valor": "ends in 1 year"
+  },
+  {
+    "Id": "Timer2.String1",
+    "Valor": "end in {0} seconds"
+  },
+  {
+    "Id": "Timer2.String2",
+    "Valor": "end in {0} minutes"
+  },
+  {
+    "Id": "Timer2.String3",
+    "Valor": "end in 1 minute"
+  },
+  {
+    "Id": "Timer2.String4",
+    "Valor": "end in {0} hours"
+  },
+  {
+    "Id": "Timer2.String5",
+    "Valor": "end in 1 hour"
+  },
+  {
+    "Id": "Timer2.String6",
+    "Valor": "end in {0} days"
+  },
+  {
+    "Id": "Timer2.String7",
+    "Valor": "end tomorrow"
+  },
+  {
+    "Id": "Timer2.String8",
+    "Valor": "end in {0} months"
+  },
+  {
+    "Id": "Timer2.String9",
+    "Valor": "end in 1 month"
+  },
+  {
+    "Id": "Timer2.String10",
+    "Valor": "end in {0} years"
+  },
+  {
+    "Id": "Timer2.String11",
+    "Valor": "end in 1 year"
   },
   {
     "Id": "Search.String1",
@@ -1133,7 +1221,7 @@
   },
   {
     "Id": "Giveaways.String10",
-    "Valor": "Have a Steam account with at least 50 games."
+    "Valor": "Have a Steam account with at least 50 games associated with the account registered on the website."
   },
   {
     "Id": "Giveaways.String11",
@@ -1145,7 +1233,15 @@
   },
   {
     "Id": "Giveaways.String13",
-    "Valor": "Have a registered account on the website."
+    "Valor": "Have a registered account on the website with a verified email."
+  },
+  {
+    "Id": "Giveaways.String14",
+    "Valor": "These giveaways"
+  },
+  {
+    "Id": "Giveaways.String15",
+    "Valor": "This giveaway"
   },
   {
     "Id": "Month.1",
