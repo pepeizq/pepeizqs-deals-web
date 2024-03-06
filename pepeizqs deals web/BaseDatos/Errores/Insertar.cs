@@ -48,8 +48,8 @@ namespace BaseDatos.Errores
             using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
             {
                 comando.Parameters.AddWithValue("@seccion", seccion);
-                comando.Parameters.AddWithValue("@mensaje", mensaje);
-                comando.Parameters.AddWithValue("@stacktrace", "nada");
+                comando.Parameters.AddWithValue("@mensaje", "nada");
+                comando.Parameters.AddWithValue("@stacktrace", mensaje);
                 comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 
                 comando.ExecuteNonQuery();

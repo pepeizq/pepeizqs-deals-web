@@ -5,6 +5,7 @@ using BaseDatos.Tiendas;
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace Tareas
 {
@@ -14,7 +15,7 @@ namespace Tareas
 		{
 			await Task.Delay(1000);
 
-			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(10);
+			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(1);
 
 			if (Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
 			{
@@ -51,6 +52,8 @@ namespace Tareas
 												{
 													Juego nuevoHistorico = juego;
 													nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
+
+													nuevoHistorico.IdMaestra = juego.Id;
 
 													juegosConMinimos.Add(nuevoHistorico);
 												}
@@ -165,9 +168,9 @@ namespace Tareas
 								{
 									BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
 
-									foreach (var juego in juegosDestacadosMostrar)
+									foreach (var juegoDestacado in juegosDestacadosMostrar)
 									{
-										BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosDestacados", conexion);
+										Insertar.Ejecutar(juegoDestacado, conexion, "portadaJuegosDestacados");
 									}
 								}
 
@@ -177,7 +180,7 @@ namespace Tareas
 
 								List<Juego> juegosMinimosMostrar = new List<Juego>();
 
-								foreach (var minimo in juegosConMinimos)
+								foreach (var juegoConMinimo in juegosConMinimos)
 								{
 									bool descarte1 = false;
 
@@ -185,7 +188,7 @@ namespace Tareas
 									{
 										foreach (var destacado in juegosDestacadosMostrar)
 										{
-											if (destacado.IdMaestra == minimo.IdMaestra)
+											if (destacado.IdMaestra == juegoConMinimo.IdMaestra)
 											{
 												descarte1 = true;
 											}
@@ -196,15 +199,15 @@ namespace Tareas
 									{
 										bool descarte2 = false;
 
-										if (minimo.Analisis == null)
+										if (juegoConMinimo.Analisis == null)
 										{
 											descarte2 = true;
 										}
 										else
 										{
-											if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
+											if (string.IsNullOrEmpty(juegoConMinimo.Analisis.Cantidad) == false)
 											{
-												string tempCantidad = minimo.Analisis.Cantidad;
+												string tempCantidad = juegoConMinimo.Analisis.Cantidad;
 												tempCantidad = tempCantidad.Replace(".", null);
 												tempCantidad = tempCantidad.Replace(",", null);
 
@@ -223,11 +226,11 @@ namespace Tareas
 										{
 											bool descarte3 = false;
 
-											if (minimo.Gratis != null)
+											if (juegoConMinimo.Gratis != null)
 											{
-												if (minimo.Gratis.Count > 0)
+												if (juegoConMinimo.Gratis.Count > 0)
 												{
-													foreach (var gratis in minimo.Gratis)
+													foreach (var gratis in juegoConMinimo.Gratis)
 													{
 														if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
 														{
@@ -241,9 +244,9 @@ namespace Tareas
 											{
 												bool descarte4 = false;
 
-												if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
+												if (string.IsNullOrEmpty(juegoConMinimo.FreeToPlay) == false)
 												{
-													if (minimo.FreeToPlay.ToLower() == "true")
+													if (juegoConMinimo.FreeToPlay.ToLower() == "true")
 													{
 														descarte4 = true;
 													}
@@ -251,7 +254,7 @@ namespace Tareas
 
 												if (descarte4 == false)
 												{
-													juegosMinimosMostrar.Add(minimo);
+													juegosMinimosMostrar.Add(juegoConMinimo);
 
 													if (juegosMinimosMostrar.Count == 100)
 													{
@@ -267,9 +270,9 @@ namespace Tareas
 								{
 									BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
 
-									foreach (var juego in juegosMinimosMostrar)
+									foreach (var juegoMinimo in juegosMinimosMostrar)
 									{
-										BaseDatos.Portada.Insertar.Juego(juego, "portadaJuegosMinimos", conexion);
+										Insertar.Ejecutar(juegoMinimo, conexion, "portadaJuegosMinimos");
 									}
 								}
 
@@ -277,9 +280,9 @@ namespace Tareas
 								{
 									BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
 
-									foreach (var juego in juegosConMinimos)
+									foreach (var juegoConMinimo in juegosConMinimos)
 									{
-										BaseDatos.Portada.Insertar.Juego(juego, "seccionMinimos", conexion);
+										Insertar.Ejecutar(juegoConMinimo, conexion, "seccionMinimos");
 									}
 								}
 

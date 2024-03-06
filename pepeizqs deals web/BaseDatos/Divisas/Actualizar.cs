@@ -17,11 +17,10 @@ namespace BaseDatos.Divisas
                 comando.Parameters.AddWithValue("@id", divisa.Id);
                 comando.Parameters.AddWithValue("@cantidad", divisa.Cantidad);
                 comando.Parameters.AddWithValue("@fecha", divisa.FechaActualizacion);
-
-                comando.ExecuteNonQuery();
+              
                 try
                 {
-
+                    comando.ExecuteNonQuery();
                 }
                 catch
                 {

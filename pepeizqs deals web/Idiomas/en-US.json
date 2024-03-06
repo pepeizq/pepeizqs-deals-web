@@ -120,20 +120,36 @@
     "Valor": "Website of PC video game deals from official stores"
   },
   {
-    "Id": "Index.Message1",
-    "Valor": "If you register an account on the website you can receive emails every time a game you want reaches a minimum price."
-  },
-  {
-    "Id": "Index.Message2",
-    "Valor": "This website does not use any type of advertising or data collection, so it depends exclusively on affiliates to pay the costs of maintaining the website."
-  },
-  {
-    "Id": "Index.Message3",
-    "Valor": "This website is open source, this means that you can take the source code and create your own version of the website, although I must add that the code does not include the database."
-  },
-  {
     "Id": "Index.Giveaways",
     "Valor": "Weekly Giveaways"
+  },
+  {
+    "Id": "Index.Tooltip1",
+    "Valor": "Has been in:"
+  },
+  {
+    "Id": "Index.Tooltip2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Index.Tooltip3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Index.Tooltip4",
+    "Valor": "1 free"
+  },
+  {
+    "Id": "Index.Tooltip5",
+    "Valor": "{0} free"
+  },
+  {
+    "Id": "Index.Tooltip6",
+    "Valor": "1 subscription"
+  },
+  {
+    "Id": "Index.Tooltip7",
+    "Valor": "{0} subscriptions"
   },
   {
     "Id": "Login.Title",

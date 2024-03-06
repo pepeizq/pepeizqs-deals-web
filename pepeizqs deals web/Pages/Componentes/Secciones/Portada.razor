@@ -130,11 +130,11 @@
 		position: relative;
 	}
 
-		.tooltip4 span {
+		.tooltip4 .tooltip-relleno {
 			display: none;
 		}
 
-		.tooltip4:hover span {
+		.tooltip4:hover .tooltip-relleno {
 			display: block;
 			position: fixed;
 			overflow: hidden;
@@ -206,7 +206,7 @@
 				}
 			}
 
-			<span id="tooltip-span" class="tooltip-relleno">
+			<div id="tooltip-destacados" class="tooltip-relleno">
 				@if (string.IsNullOrEmpty(tooltipVideo) == false)
 				{
 					<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
@@ -221,12 +221,20 @@
 						<div style="margin-right: 20px;">
 							<img src="@tooltipTienda" style="width: 20px; height: 20px;" />
 						</div>
+						
+						@if (string.IsNullOrEmpty(tooltipReviews) == false)
+						{
+							<div style="margin-right: 20px;">
+								<img src="@tooltipReviews" style="width: 20px; height: 20px;" />
+							</div>
+						}
+
 						<div>
 							@tooltipTiempo
 						</div>
 					</div>
 				</div>
-			</span>
+			</div>
 		</div>
 
 		<button @onclick="ClickearAdelante" class="boton-pequeño destacados-botonder" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-right"></i></button>
@@ -335,10 +343,10 @@ else
 		</div>
 	</div>
 
-	<div style="margin-bottom: 25px;">
+	<div class="tooltip4" style="margin-bottom: 25px;">
 		@foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 		{
-			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;">
+			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
 				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
@@ -367,6 +375,46 @@ else
 				</a>
 			</div>
 		}
+
+		<div id="tooltip-minimos" class="tooltip-relleno">
+			@if (string.IsNullOrEmpty(tooltipVideo) == false)
+			{
+				<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+			}
+
+			<div style="padding: 15px;">
+				<label>@tooltipNombre</label>
+				<div style="display: flex; align-items: center; margin-top: 10px; padding: 5px; text-align: center; justify-content: center;">
+					<div style="margin-right: 20px;">
+						<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" />
+					</div>
+					<div style="margin-right: 20px;">
+						<img src="@tooltipTienda" style="width: 20px; height: 20px;" />
+					</div>
+
+					@if (string.IsNullOrEmpty(tooltipReviews) == false)
+					{
+						<div style="margin-right: 20px;">
+							<img src="@tooltipReviews" style="width: 20px; height: 20px;" />
+						</div>
+					}
+
+					<div>
+						@tooltipTiempo
+					</div>
+				</div>
+
+				@if (string.IsNullOrEmpty(tooltipBundles) == false || string.IsNullOrEmpty(tooltipGratis) == false || string.IsNullOrEmpty(tooltipSuscripciones) == false)
+				{
+					<div style="font-size: 13px; margin-top: 10px; padding: 5px;">
+						@tooltipBundles
+						@tooltipGratis
+						@tooltipSuscripciones
+						@* test *@
+					</div>
+				}
+			</div>
+		</div>
 	</div>
 
 	<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
@@ -381,7 +429,7 @@ else
 		var x = e.clientX,
 			y = e.clientY;
 
-		var tooltipSpan = document.getElementById('tooltip-span');
+		var tooltipSpan = document.getElementById('tooltip-destacados');
 
 		if (screen.width / 2 > x) {
 			tooltipSpan.style.top = (y + 10) + 'px';
@@ -390,7 +438,18 @@ else
 		else {
 			tooltipSpan.style.top = (y - 10) + 'px';
 			tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
+		};
+
+		var tooltipSpan = document.getElementById('tooltip-minimos');
+
+		if (screen.width / 2 > x) {
+			tooltipSpan.style.top = (y + 10) + 'px';
+			tooltipSpan.style.left = (x + 20) + 'px';
 		}
+		else {
+			tooltipSpan.style.top = (y - 10) + 'px';
+			tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
+		};
 	};
 </script>
 
@@ -689,6 +748,10 @@ else
 	private string tooltipTienda = string.Empty;
 	private string tooltipTiempo = string.Empty;
 	private string tooltipVideo = string.Empty;
+	private string tooltipReviews = string.Empty;
+	private string tooltipBundles = string.Empty;
+	private string tooltipGratis = string.Empty;
+	private string tooltipSuscripciones = string.Empty;
 
 	private void CargarTooltip(MouseEventArgs args, global::Juegos.Juego juego)
 	{
@@ -697,6 +760,10 @@ else
 		tooltipTienda = CargarIconoTienda(juego);
 		tooltipTiempo = CargarFechaDetectado(juego);
 		tooltipVideo = null;
+		tooltipReviews = null;
+		tooltipBundles = null;
+		tooltipGratis = null;
+		tooltipSuscripciones = null;
 
 		if (juego.Media != null)
 		{
@@ -710,6 +777,44 @@ else
 				tooltipVideo = tooltipVideo.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
 				tooltipVideo = tooltipVideo.Replace("http://", "https://");
 			}
+		}
+
+		if (juego.Analisis != null)
+		{
+			if (int.Parse(juego.Analisis.Porcentaje) > 74)
+			{
+				tooltipReviews = "/imagenes/analisis/positive.webp";
+			}
+			else if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
+			{
+				tooltipReviews = "/imagenes/analisis/mixed.webp";
+			}
+			else if (int.Parse(juego.Analisis.Porcentaje) < 50)
+			{
+				tooltipReviews = "/imagenes/analisis/negative.webp";
+			}
+		}
+
+		if (juego.Bundles != null)
+		{
+			if (juego.Bundles.Count == 1)
+			{
+				tooltipBundles = Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip2");
+			}
+			else if (juego.Bundles.Count > 1)
+			{
+				tooltipBundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip3"), juego.Bundles.Count.ToString());
+			}			
+		}
+
+		if (juego.Gratis != null)
+		{
+			tooltipGratis = juego.Gratis.Count.ToString();
+		}
+
+		if (juego.Suscripciones != null)
+		{
+			tooltipSuscripciones = juego.Suscripciones.Count.ToString();
 		}
 	}
 

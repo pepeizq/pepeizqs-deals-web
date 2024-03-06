@@ -79,7 +79,7 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(11) == false)
 			{
-				if (lector.GetString(11) != null)
+				if (string.IsNullOrEmpty(lector.GetString(11)) == false)
 				{
 					try
 					{
@@ -91,8 +91,8 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(12) == false)
 			{
-				if (lector.GetString(12) != null)
-				{
+				if (string.IsNullOrEmpty(lector.GetString(12)) == false)
+				{					
 					try
 					{
 						juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
@@ -103,7 +103,7 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(13) == false)
 			{
-				if (lector.GetString(13) != null)
+				if (string.IsNullOrEmpty(lector.GetString(13)) == false)
 				{
 					try
 					{
@@ -115,7 +115,7 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(14) == false)
 			{
-				if (lector.GetString(14) != null)
+				if (string.IsNullOrEmpty(lector.GetString(14)) == false)
 				{
 					try
 					{
@@ -127,7 +127,7 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(15) == false)
 			{
-				if (lector.GetString(15) != null)
+				if (string.IsNullOrEmpty(lector.GetString(15)) == false)
 				{
 					try
 					{
@@ -152,7 +152,7 @@ namespace BaseDatos.Juegos
 
 			if (lector.IsDBNull(17) == false)
 			{
-				if (lector.GetString(17) != null)
+				if (string.IsNullOrEmpty(lector.GetString(17)) == false)
 				{
 					try
 					{
@@ -166,7 +166,7 @@ namespace BaseDatos.Juegos
 			{
 				if (lector.IsDBNull(18) == false)
 				{
-					if (lector.GetString(18) != null)
+					if (string.IsNullOrEmpty(lector.GetString(18)) == false)
 					{
 						juego.SlugGOG = lector.GetString(18);
 					}
@@ -178,7 +178,7 @@ namespace BaseDatos.Juegos
 			{
 				if (lector.IsDBNull(19) == false)
 				{
-					if (lector.GetString(19) != null)
+					if (string.IsNullOrEmpty(lector.GetString(19)) == false)
 					{
 						juego.Maestro = lector.GetString(19);
 					}
@@ -190,7 +190,7 @@ namespace BaseDatos.Juegos
 			{
 				if (lector.IsDBNull(20) == false)
 				{
-					if (lector.GetString(20) != null)
+					if (string.IsNullOrEmpty(lector.GetString(20)) == false)
 					{
 						juego.FreeToPlay = lector.GetString(20);
 					}
@@ -202,7 +202,7 @@ namespace BaseDatos.Juegos
 			{
 				if (lector.IsDBNull(21) == false)
 				{
-					if (lector.GetString(21) != null)
+					if (string.IsNullOrEmpty(lector.GetString(21)) == false)
 					{
 						juego.MayorEdad = lector.GetString(21);
 					}

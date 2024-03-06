@@ -112,24 +112,40 @@
     "Valor": "También puedes seguir las noticias en estas redes sociales:"
   },
   {
-    "Id": "Index.Message1",
-    "Valor": "Si registras una cuenta en la web puedes recibir correos cada vez que un juego de tus deseados alcanza un precio mínimo."
-  },
-  {
-    "Id": "Index.Message2",
-    "Valor": "Esta web no usa ningún tipo de anuncios o recopilación de datos, así que se depende exclusivamente de los afiliados para pagar los gastos de mantener la web."
-  },
-  {
-    "Id": "Index.Message3",
-    "Valor": "Esta web es de código abierto, esto quiere decir que podéis coger el código fuente y montar vuestra propia versión de la web, aunque debo añadir que el código no incluye la base de datos."
-  },
-  {
     "Id": "Index.Title",
     "Valor": "Inicio"
   },
   {
     "Id": "Index.Giveaways",
     "Valor": "Sorteos Semanales"
+  },
+  {
+    "Id": "Index.Tooltip1",
+    "Valor": "Ha estado en:"
+  },
+  {
+    "Id": "Index.Tooltip2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Index.Tooltip3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Index.Tooltip4",
+    "Valor": "1 vez gratis"
+  },
+  {
+    "Id": "Index.Tooltip5",
+    "Valor": "{0} veces gratis"
+  },
+  {
+    "Id": "Index.Tooltip6",
+    "Valor": "1 suscripción"
+  },
+  {
+    "Id": "Index.Tooltip7",
+    "Valor": "{0} suscripciones"
   },
   {
     "Id": "Login.Title",

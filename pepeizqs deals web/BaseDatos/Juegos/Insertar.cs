@@ -10,6 +10,33 @@ namespace BaseDatos.Juegos
 	{
 		public static void Ejecutar(Juego juego, SqlConnection conexion, string tabla = "juegos")
 		{
+			string añadirBundles1 = null;
+			string añadirBundles2 = null;
+
+			if (juego.Bundles != null)
+			{
+				añadirBundles1 = ", bundles";
+				añadirBundles2 = ", @bundles";
+			}
+
+			string añadirGratis1 = null;
+			string añadirGratis2 = null;
+
+			if (juego.Gratis != null)
+			{
+				añadirGratis1 = ", gratis";
+				añadirGratis2 = ", @gratis";
+			}
+
+			string añadirSuscripciones1 = null;
+			string añadirSuscripciones2 = null;
+
+			if (juego.Suscripciones != null)
+			{
+				añadirSuscripciones1 = ", suscripciones";
+				añadirSuscripciones2 = ", @suscripciones";
+			}
+
 			string añadirMaestro1 = null;
 			string añadirMaestro2 = null;
 
@@ -43,15 +70,15 @@ namespace BaseDatos.Juegos
 			string añadirIdMaestra1 = null;
 			string añadirIdMaestra2 = null;
 
-			if (tabla == "seccionMinimos")
+			if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados" || tabla == "portadaJuegosMinimos")
 			{
 				añadirIdMaestra1 = ", idMaestra";
 				añadirIdMaestra2 = ", @idMaestra";
 			}
 
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirIdMaestra1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirIdMaestra2 + ") ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirIdMaestra1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirIdMaestra2 + ") ";
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -67,6 +94,21 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+
+				if (juego.Bundles != null)
+				{
+					comando.Parameters.AddWithValue("@bundles", JsonConvert.SerializeObject(juego.Bundles));
+				}
+
+				if (juego.Gratis != null)
+				{
+					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(juego.Gratis));
+				}
+
+				if (juego.Suscripciones != null)
+				{
+					comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(juego.Suscripciones));
+				}
 
 				if (string.IsNullOrEmpty(juego.Maestro) == false)
 				{
@@ -86,19 +128,18 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
 				}
 
-				if (tabla == "seccionMinimos")
+				if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados" || tabla == "portadaJuegosMinimos")
 				{
 					comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				}
-
-				comando.ExecuteNonQuery();
+				
 				try
 				{
-					
+					comando.ExecuteNonQuery();
 				}
-				catch
+				catch (Exception ex) 
 				{
-
+					Errores.Insertar.Ejecutar("añadir juego", ex);
 				}
 			}
 		}
