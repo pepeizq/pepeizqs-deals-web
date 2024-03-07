@@ -5,7 +5,6 @@ using BaseDatos.Tiendas;
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 
 namespace Tareas
 {
@@ -282,7 +281,31 @@ namespace Tareas
 
 									foreach (var juegoConMinimo in juegosConMinimos)
 									{
-										Insertar.Ejecutar(juegoConMinimo, conexion, "seccionMinimos");
+										bool insertar = true;
+
+										if (juegoConMinimo.PrecioMinimosHistoricos != null)
+										{
+											if (juegoConMinimo.PrecioMinimosHistoricos.Count > 0) 
+											{
+												if (juegoConMinimo.PrecioMinimosHistoricos[0].DRM == JuegoDRM.NoEspecificado)
+												{
+													insertar = false;
+												}
+
+												DateTime fecha = juegoConMinimo.PrecioMinimosHistoricos[0].FechaActualizacion;
+												fecha.AddDays(14);
+
+												if (fecha > DateTime.Now)
+												{
+													insertar = false;
+												}
+											}
+										}
+
+										if (insertar == true)
+										{
+											Insertar.Ejecutar(juegoConMinimo, conexion, "seccionMinimos");
+										}										
 									}
 								}
 
