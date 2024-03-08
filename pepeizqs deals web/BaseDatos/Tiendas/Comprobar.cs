@@ -359,46 +359,5 @@ namespace BaseDatos.Tiendas
 				}
 			}
 		}
-
-		//public static void ComprobarMinimo(JuegoPrecio nuevaOferta, Juego juego)
-		//{
-		//	if (juego.PrecioMinimosHistoricos != null)
-		//	{
-		//		if (juego.PrecioMinimosHistoricos.Count > 0)
-		//		{
-		//			foreach (var minimo in juego.PrecioMinimosHistoricos)
-		//			{
-		//				decimal ofertaPrecio = nuevaOferta.Precio;
-
-		//				if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
-		//				{
-		//					ofertaPrecio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
-		//				}
-
-		//				if (minimo.DRM == nuevaOferta.DRM && minimo.Precio == ofertaPrecio)
-		//				{
-		//					if (minimo.FechaDetectado == nuevaOferta.FechaDetectado)
-		//					{
-		//						if (juego.UsuariosInteresados != null)
-		//						{
-		//							if (juego.UsuariosInteresados.Count > 0)
-		//							{
-		//								foreach (var usuarioInteresado in juego.UsuariosInteresados)
-		//								{
-		//									string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), nuevaOferta.DRM);
-
-		//									if (correo != null)
-		//									{
-		//										Herramientas.Correos.EnviarNuevoMinimo(juego, nuevaOferta, correo);
-		//									}
-		//								}
-		//							}
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
 	}
 }

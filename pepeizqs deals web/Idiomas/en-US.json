@@ -665,7 +665,7 @@
   },
   {
     "Id": "Timer0.String7",
-    "Valor": "yesterday"
+    "Valor": "1 day and {0} hours ago"
   },
   {
     "Id": "Timer0.String8",
@@ -673,7 +673,7 @@
   },
   {
     "Id": "Timer0.String9",
-    "Valor": "about a month ago"
+    "Valor": "1 month and {0} days ago"
   },
   {
     "Id": "Timer0.String10",
@@ -681,7 +681,7 @@
   },
   {
     "Id": "Timer0.String11",
-    "Valor": "about a year ago"
+    "Valor": "1 year and {0} months ago"
   },
   {
     "Id": "Timer1.String1",
@@ -709,7 +709,7 @@
   },
   {
     "Id": "Timer1.String7",
-    "Valor": "ends tomorrow"
+    "Valor": "ends in 1 day and {0} hours"
   },
   {
     "Id": "Timer1.String8",
@@ -753,7 +753,7 @@
   },
   {
     "Id": "Timer2.String7",
-    "Valor": "end tomorrow"
+    "Valor": "end in 1 day and {0} hours"
   },
   {
     "Id": "Timer2.String8",

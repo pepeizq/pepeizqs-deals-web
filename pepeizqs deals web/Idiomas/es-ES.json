@@ -661,7 +661,7 @@
   },
   {
     "Id": "Timer0.String7",
-    "Valor": "ayer"
+    "Valor": "hace 1 dia y {0} horas"
   },
   {
     "Id": "Timer0.String8",
@@ -669,7 +669,7 @@
   },
   {
     "Id": "Timer0.String9",
-    "Valor": "hace 1 mes"
+    "Valor": "hace 1 mes y {0} días"
   },
   {
     "Id": "Timer0.String10",
@@ -677,7 +677,7 @@
   },
   {
     "Id": "Timer0.String11",
-    "Valor": "hace 1 año"
+    "Valor": "hace 1 año y {0} meses"
   },
   {
     "Id": "Timer1.String1",
@@ -705,7 +705,7 @@
   },
   {
     "Id": "Timer1.String7",
-    "Valor": "termina mañana"
+    "Valor": "termina en 1 día y {0} horas"
   },
   {
     "Id": "Timer1.String8",
@@ -749,7 +749,7 @@
   },
   {
     "Id": "Timer2.String7",
-    "Valor": "terminan mañana"
+    "Valor": "terminan en 1 día y {0} horas"
   },
   {
     "Id": "Timer2.String8",

@@ -74,8 +74,13 @@
 				</div>
 
 				<div style="margin-top: 20px;">
+					<label style="margin-bottom: 10px;">Fecha Empieza:</label>
+					<input type="datetime-local" @onchange="@(e => CambiarFechaEmpieza(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionada">
+				</div>
+
+				<div style="margin-top: 20px;">
 					<label style="margin-bottom: 10px;">Fecha Termina:</label>
-					<input type="datetime-local" @onchange="@(e => CambiarFecha(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionada">
+					<input type="datetime-local" @onchange="@(e => CambiarFechaTermina(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionada">
 				</div>
 
 				<hr />
@@ -109,7 +114,8 @@
 	private string tipo = null;
 	private string drmSeleccionado = null;
 	private string enlaceSeleccionado = null;
-	private string fechaSeleccionada = null;
+	private string fechaEmpiezaSeleccionada = null;
+	private string fechaTerminaSeleccionada = null;
 	private string imagenNoticia = null;
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
@@ -137,8 +143,9 @@
 	private void CambiarGratis(ChangeEventArgs texto)
 	{
 		tipo = texto.Value.ToString();
-
-		fechaSeleccionada = Gratis2.GratisCargar.DevolverGratis(tipo).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+		enlaceSeleccionado = null;
+		// fechaEmpiezaSeleccionada = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+		// fechaTerminaSeleccionada = Gratis2.GratisCargar.DevolverGratis(tipo).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
 		drmSeleccionado = Gratis2.GratisCargar.DevolverGratis(tipo).DRMDefecto.ToString();
 	}
 
@@ -154,9 +161,14 @@
 		enlaceSeleccionado = Gratis2.GratisCargar.LimpiarEnlace(enlaceSeleccionado);
 	}
 
-	private void CambiarFecha(ChangeEventArgs texto)
+	private void CambiarFechaEmpieza(ChangeEventArgs texto)
 	{
-		fechaSeleccionada = texto.Value.ToString();
+		fechaEmpiezaSeleccionada = texto.Value.ToString();
+	}
+
+	private void CambiarFechaTermina(ChangeEventArgs texto)
+	{
+		fechaTerminaSeleccionada = texto.Value.ToString();
 	}
 
 	private void CambiarImagenNoticia(ChangeEventArgs texto)
@@ -177,8 +189,8 @@
 			gratis.Imagen = imagenSeleccionada;
 			gratis.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionado);
 			gratis.Enlace = enlaceSeleccionado;
-			gratis.FechaEmpieza = DateTime.Now;
-			gratis.FechaTermina = Convert.ToDateTime(fechaSeleccionada);
+			gratis.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionada);
+			gratis.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionada);
 			gratis.ImagenNoticia = imagenNoticia;
 
 			if (juego.Gratis == null)

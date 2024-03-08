@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="BaseDatos\Tiendas\Admin.cs~RF1cf1629c.TMP" />
+    <None Remove="Idiomas\es-ES.json~RF1c76f211.TMP" />
     <None Remove="Pages\Componentes\Secciones\Juego.razor~RF24b2ba79.TMP" />
     <None Remove="Tareas\Sorteos.cs~RF2f43e647.TMP" />
   </ItemGroup>

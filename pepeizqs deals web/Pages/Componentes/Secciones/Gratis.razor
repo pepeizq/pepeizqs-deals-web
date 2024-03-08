@@ -121,12 +121,20 @@
     @Herramientas.Idiomas.CogerCadena(idioma, "Free.String2")
 </div>
 
-<div style="display: flex; align-items: center; margin-top: 10px;">
+<div style="display: flex; align-items: start; margin-top: 10px;">
     @foreach (var año in años)
     {
-        <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="margin-right: 15px; padding: 6px 10px; width: auto;">
-            @año
-        </button>
+        <div style="margin-right: 15px;">
+            <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style=" padding: 6px 10px; width: auto;">
+                @año
+            </button>
+
+            @if (añoSeleccionado == año)
+            {
+                <div style="margin-top: 10px; background: var(--colorTexto); padding: 1px;">
+                </div>
+            }
+        </div>
     }
 </div>
 
@@ -261,7 +269,7 @@
 
         //--------------------------------------------------------------------
 
-        DateTime arranque = new DateTime(2023, 9, 1);
+        DateTime arranque = new DateTime(2018, 1, 1);
 
         int i = 0;
         while (i < 100)

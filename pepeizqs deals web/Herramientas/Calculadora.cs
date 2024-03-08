@@ -121,7 +121,7 @@
 			{
 				if (diferenciaTiempo.Days == 1)
 				{
-					mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String7");
+					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String7"), diferenciaTiempo.Hours);
 				}
 				else if (diferenciaTiempo.Days > 1)
 				{
@@ -132,8 +132,8 @@
 			{
 				if (diferenciaTiempo.Days > 30 && diferenciaTiempo.Days < 60)
 				{
-					mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String9");
-				}
+                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String9"), diferenciaTiempo.Days - 30);
+                }
 				else if (diferenciaTiempo.Days >= 60)
 				{
 					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String8"), diferenciaTiempo.Days / 30);
@@ -143,8 +143,8 @@
 			{
 				if (diferenciaTiempo.Days > 365 && diferenciaTiempo.Days < 730)
 				{
-					mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String11");
-				}
+                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String11"), (diferenciaTiempo.Days - 365) / 30);
+                }
 				else if (diferenciaTiempo.Days >= 730)
 				{
 					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String10"), diferenciaTiempo.Days / 365);

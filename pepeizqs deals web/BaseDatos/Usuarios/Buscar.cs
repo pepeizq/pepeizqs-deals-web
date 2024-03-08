@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using APIs.Steam;
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
@@ -111,6 +110,7 @@ namespace BaseDatos.Usuarios
 
 								if (correo == true && notificaciones == true)
 								{
+									//Deseados
 									if (lector.IsDBNull(20) == false)
 									{
 										if (lector.GetString(20) != null)
@@ -132,6 +132,7 @@ namespace BaseDatos.Usuarios
 													{
 														if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
 														{
+															//Correo
 															if (lector.IsDBNull(8) == false)
 															{
 																if (lector.GetString(8) != null)
