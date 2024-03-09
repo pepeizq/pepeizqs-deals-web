@@ -1,4 +1,6 @@
-﻿namespace Herramientas
+﻿using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+
+namespace Herramientas
 {
 	public enum Tiempo
 	{
@@ -93,7 +95,14 @@
 
 			if (diferenciaTiempo <= TimeSpan.FromSeconds(60))
 			{
-				mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String1"), diferenciaTiempo.Seconds);
+				if (diferenciaTiempo.Seconds == 1)
+				{
+                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String0"), diferenciaTiempo.Seconds);
+                }
+				else
+				{
+                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String1"), diferenciaTiempo.Seconds);
+                }				
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromMinutes(60))
 			{
@@ -132,7 +141,20 @@
 			{
 				if (diferenciaTiempo.Days > 30 && diferenciaTiempo.Days < 60)
 				{
-                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String9"), diferenciaTiempo.Days - 30);
+					int dias = diferenciaTiempo.Days - 30;
+
+					if (dias > 1)
+					{
+                        mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String9"), dias);
+                    }
+                    else if (dias == 1)
+					{
+                        mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String14");
+                    }
+					else
+					{
+                        mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String15");
+                    }
                 }
 				else if (diferenciaTiempo.Days >= 60)
 				{
@@ -143,7 +165,20 @@
 			{
 				if (diferenciaTiempo.Days > 365 && diferenciaTiempo.Days < 730)
 				{
-                    mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String11"), (diferenciaTiempo.Days - 365) / 30);
+					int meses = (diferenciaTiempo.Days - 365) / 30;
+
+					if (meses > 1) 
+					{
+                        mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String11"), meses);
+                    }
+                    else if (meses == 1)
+                    {
+						mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String12");
+                    }
+					else
+					{
+						mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String13");
+                    }
                 }
 				else if (diferenciaTiempo.Days >= 730)
 				{
@@ -153,5 +188,16 @@
 
 			return mensaje;
 		}
+
+        public static string DiferenciaDuranteDias(DateTime fechaEmpieza, DateTime fechaTermina)
+		{
+            string mensaje = string.Empty;
+            TimeSpan diferenciaTiempo = new TimeSpan();
+            diferenciaTiempo = fechaEmpieza.Subtract(fechaTermina);
+
+
+
+			return mensaje;
+        }
     }
 }

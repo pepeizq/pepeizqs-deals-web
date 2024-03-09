@@ -640,6 +640,10 @@
     "Valor": "In fact, on this website I am not going to use services like Google Analytics, although Google will surely punish me in its search engine for it."
   },
   {
+    "Id": "Timer0.String0",
+    "Valor": "1 second ago"
+  },
+  {
     "Id": "Timer0.String1",
     "Valor": "{0} seconds ago"
   },
@@ -684,6 +688,26 @@
     "Valor": "1 year and {0} months ago"
   },
   {
+    "Id": "Timer0.String12",
+    "Valor": "1 year and 1 month ago"
+  },
+  {
+    "Id": "Timer0.String13",
+    "Valor": "1 year ago"
+  },
+  {
+    "Id": "Timer0.String14",
+    "Valor": "1 month and 1 day ago"
+  },
+  {
+    "Id": "Timer0.String15",
+    "Valor": "1 month ago"
+  },
+  {
+    "Id": "Timer1.String0",
+    "Valor": "ends in 1 second"
+  },
+  {
     "Id": "Timer1.String1",
     "Valor": "ends in {0} seconds"
   },
@@ -717,7 +741,7 @@
   },
   {
     "Id": "Timer1.String9",
-    "Valor": "ends in 1 month"
+    "Valor": "ends in 1 month and {0} days"
   },
   {
     "Id": "Timer1.String10",
@@ -725,7 +749,27 @@
   },
   {
     "Id": "Timer1.String11",
+    "Valor": "ends in 1 year and {0} months"
+  },
+  {
+    "Id": "Timer1.String12",
+    "Valor": "ends in 1 year and 1 month"
+  },
+  {
+    "Id": "Timer1.String13",
     "Valor": "ends in 1 year"
+  },
+  {
+    "Id": "Timer1.String14",
+    "Valor": "ends in 1 month and 1 day"
+  },
+  {
+    "Id": "Timer1.String15",
+    "Valor": "ends in 1 month"
+  },
+  {
+    "Id": "Timer2.String0",
+    "Valor": "end in 1 second"
   },
   {
     "Id": "Timer2.String1",
@@ -761,7 +805,7 @@
   },
   {
     "Id": "Timer2.String9",
-    "Valor": "end in 1 month"
+    "Valor": "end in 1 month and {0} days"
   },
   {
     "Id": "Timer2.String10",
@@ -769,7 +813,23 @@
   },
   {
     "Id": "Timer2.String11",
+    "Valor": "end in 1 year and {0} months"
+  },
+  {
+    "Id": "Timer2.String12",
+    "Valor": "end in 1 year and 1 month"
+  },
+  {
+    "Id": "Timer2.String13",
     "Valor": "end in 1 year"
+  },
+  {
+    "Id": "Timer2.String14",
+    "Valor": "end in 1 month and 1 day"
+  },
+  {
+    "Id": "Timer2.String15",
+    "Valor": "end in 1 month"
   },
   {
     "Id": "Search.String1",
