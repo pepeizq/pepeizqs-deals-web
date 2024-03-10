@@ -122,7 +122,7 @@ namespace BaseDatos.Juegos
 													{
 														if (usuarioInteresado.DRM == minimo.DRM)
 														{
-															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM);
+															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
 
 															if (correo != null)
 															{

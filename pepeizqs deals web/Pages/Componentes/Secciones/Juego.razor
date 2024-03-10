@@ -457,7 +457,8 @@
 
 					@foreach (var gratis2 in GratisAntiguos(juego.Gratis))
 					{
-						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px; margin-top: 10px; margin-bottom: 10px;">
+						<hr/>
+						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
 							<div style="margin-right: 15px;">
 								<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
 							</div>
@@ -466,9 +467,14 @@
 								<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" />
 							</div>
 
-							<div style="margin-right: 20px; width: 100%;">
+							<div style="padding-right: 20px; width: 15%;">
 								<label>@GratisCargar.DevolverGratis(gratis2.Tipo).Nombre</label><br />
 								<label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(gratis2.FechaTermina, idioma)</label>
+							</div>
+
+							<div style="padding-right: 20px; width: 85%;">
+								<label>@Idiomas.CogerCadena(idioma, "Game.String37") @Calculadora.DiferenciaDuranteDias(gratis2.FechaEmpieza, gratis2.FechaTermina, idioma)</label><br />
+								<label style="font-size: 13px;">@gratis2.FechaEmpieza.Day.ToString()/@gratis2.FechaEmpieza.Month.ToString()/@gratis2.FechaEmpieza.Year.ToString() • @gratis2.FechaTermina.Day.ToString()/@gratis2.FechaTermina.Month.ToString()/@gratis2.FechaTermina.Year.ToString()</label>
 							</div>
 						</div>
 					}

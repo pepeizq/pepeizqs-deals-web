@@ -69,7 +69,7 @@ namespace BaseDatos.Usuarios
 			return null;
 		}
 
-		public static string UnUsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm)
+		public static string UnUsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm, int juegoIdSteam = 0)
 		{
 			if (string.IsNullOrEmpty(usuarioId) == false)
 			{
@@ -89,6 +89,7 @@ namespace BaseDatos.Usuarios
 							{
 								bool notificaciones = false;
 								bool correo = false;
+								bool steam = true;
 
 								//Enseñar Notificaciones Minimos
 								if (lector.IsDBNull(25) == false)
@@ -108,7 +109,36 @@ namespace BaseDatos.Usuarios
                                     }
                                 }
 
-								if (correo == true && notificaciones == true)
+                                //Juegos Steam
+								if (juegoIdSteam > 0)
+								{
+                                    if (drm == JuegoDRM.Steam)
+                                    {
+                                        if (lector.IsDBNull(4) == false)
+                                        {
+                                            if (string.IsNullOrEmpty(lector.GetString(4)) == false)
+                                            {
+                                                List<string> juegosSteam = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+
+                                                if (juegosSteam != null)
+                                                {
+                                                    if (juegosSteam.Count > 0)
+                                                    {
+                                                        foreach (var juegoSteam in juegosSteam)
+                                                        {
+															if (juegoSteam == juegoIdSteam.ToString())
+															{
+																steam = false;
+															}
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }                             
+
+                                if (correo == true && notificaciones == true && steam == true)
 								{
 									//Deseados
 									if (lector.IsDBNull(20) == false)

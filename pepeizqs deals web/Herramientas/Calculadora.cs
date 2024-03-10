@@ -130,7 +130,18 @@ namespace Herramientas
 			{
 				if (diferenciaTiempo.Days == 1)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String7"), diferenciaTiempo.Hours);
+					if (diferenciaTiempo.Hours == 0)
+					{
+                        mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String17");
+                    }
+					else if (diferenciaTiempo.Hours == 1)
+					{
+						mensaje = Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String16");
+                    }
+					else if (diferenciaTiempo.Hours > 1)
+					{
+                        mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String7"), diferenciaTiempo.Hours);
+                    }					
 				}
 				else if (diferenciaTiempo.Days > 1)
 				{
@@ -189,13 +200,24 @@ namespace Herramientas
 			return mensaje;
 		}
 
-        public static string DiferenciaDuranteDias(DateTime fechaEmpieza, DateTime fechaTermina)
+        public static string DiferenciaDuranteDias(DateTime fechaEmpieza, DateTime fechaTermina, string idioma)
 		{
             string mensaje = string.Empty;
             TimeSpan diferenciaTiempo = new TimeSpan();
-            diferenciaTiempo = fechaEmpieza.Subtract(fechaTermina);
+            diferenciaTiempo = fechaTermina.Subtract(fechaEmpieza);
 
-
+			if (diferenciaTiempo.Days == 1)
+			{
+                mensaje = Idiomas.CogerCadena(idioma, "Timer3.String1");
+            }
+			else if (diferenciaTiempo.Days > 1)
+			{
+                mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer3.String2"), diferenciaTiempo.Days);
+            }
+			else
+			{
+				mensaje = Idiomas.CogerCadena(idioma, "Timer3.String1");
+			}
 
 			return mensaje;
         }

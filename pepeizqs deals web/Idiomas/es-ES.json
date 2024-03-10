@@ -372,6 +372,10 @@
     "Valor": "Publicado por:"
   },
   {
+    "Id": "Game.String37",
+    "Valor": "Estuvo gratis"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },
@@ -665,7 +669,7 @@
   },
   {
     "Id": "Timer0.String7",
-    "Valor": "hace 1 dia y {0} horas"
+    "Valor": "hace 1 día y {0} horas"
   },
   {
     "Id": "Timer0.String8",
@@ -693,11 +697,19 @@
   },
   {
     "Id": "Timer0.String14",
-    "Valor": "hace 1 mes y 1 dia"
+    "Valor": "hace 1 mes y 1 día"
   },
   {
     "Id": "Timer0.String15",
     "Valor": "hace 1 mes"
+  },
+  {
+    "Id": "Timer0.String16",
+    "Valor": "hace 1 día y 1 hora"
+  },
+  {
+    "Id": "Timer0.String17",
+    "Valor": "hace 1 día"
   },
   {
     "Id": "Timer1.String0",
@@ -757,11 +769,19 @@
   },
   {
     "Id": "Timer1.String14",
-    "Valor": "termina en 1 mes y 1 dia"
+    "Valor": "termina en 1 mes y 1 día"
   },
   {
-    "Id": "Timer1.String14",
+    "Id": "Timer1.String15",
     "Valor": "termina en 1 mes"
+  },
+  {
+    "Id": "Timer1.String16",
+    "Valor": "termina en 1 día y 1 hora"
+  },
+  {
+    "Id": "Timer1.String17",
+    "Valor": "termina en 1 día"
   },
   {
     "Id": "Timer2.String0",
@@ -821,11 +841,27 @@
   },
   {
     "Id": "Timer2.String14",
-    "Valor": "terminan en 1 mes y 1 dia"
+    "Valor": "terminan en 1 mes y 1 día"
   },
   {
     "Id": "Timer2.String15",
     "Valor": "terminan en 1 mes"
+  },
+  {
+    "Id": "Timer2.String16",
+    "Valor": "terminan en 1 día y 1 hora"
+  },
+  {
+    "Id": "Timer2.String17",
+    "Valor": "terminan en 1 día"
+  },
+  {
+    "Id": "Timer3.String1",
+    "Valor": "durante 1 día"
+  },
+  {
+    "Id": "Timer3.String2",
+    "Valor": "durante {0} días"
   },
   {
     "Id": "Search.String1",

@@ -376,6 +376,10 @@
     "Valor": "Published by:"
   },
   {
+    "Id": "Game.String37",
+    "Valor": "It was free"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },
@@ -704,6 +708,14 @@
     "Valor": "1 month ago"
   },
   {
+    "Id": "Timer0.String16",
+    "Valor": "1 day and 1 hour ago"
+  },
+  {
+    "Id": "Timer0.String17",
+    "Valor": "1 day ago"
+  },
+  {
     "Id": "Timer1.String0",
     "Valor": "ends in 1 second"
   },
@@ -768,6 +780,14 @@
     "Valor": "ends in 1 month"
   },
   {
+    "Id": "Timer1.String16",
+    "Valor": "ends in 1 day and 1 hour"
+  },
+  {
+    "Id": "Timer1.String17",
+    "Valor": "ends in 1 day"
+  },
+  {
     "Id": "Timer2.String0",
     "Valor": "end in 1 second"
   },
@@ -830,6 +850,22 @@
   {
     "Id": "Timer2.String15",
     "Valor": "end in 1 month"
+  },
+  {
+    "Id": "Timer2.String16",
+    "Valor": "end in 1 day and 1 hour"
+  },
+  {
+    "Id": "Timer2.String17",
+    "Valor": "end in 1 day"
+  },
+  {
+    "Id": "Timer3.String1",
+    "Valor": "for 1 day"
+  },
+  {
+    "Id": "Timer3.String2",
+    "Valor": "for {0} days"
   },
   {
     "Id": "Search.String1",

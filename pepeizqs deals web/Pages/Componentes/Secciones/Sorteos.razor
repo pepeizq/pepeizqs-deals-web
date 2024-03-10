@@ -8,6 +8,27 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
+    <div style="display: flex; align-items: center; width: 100%;">
+        <div style="width: 70%; font-size: 23px; text-align: left;">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String2")
+        </div>
+
+        <div style="display: flex; align-items: center; width: 30%; justify-content: right;">
+            
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@if (sorteosGrupoPremium != null)
+{
+    
+}
+
 @if (sorteosGrupoNormal != null)
 {
     <div style="font-size: 23px; display: flex; align-items: center;">
@@ -123,7 +144,7 @@
 
     <div id="normas2" class="perfil" style="padding: 20px;">
         <ul>
-            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String13")</li>
+            <li><a href="https://pepeizqdeals.com/Identity/Account/Register" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String13")</a></li>
             <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String10")</li>
             <li><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String11")</a></li>
             <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String12")</li>
