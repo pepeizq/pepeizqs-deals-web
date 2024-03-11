@@ -1417,6 +1417,31 @@
 			}
 		}
 
+		if (bundlesAntiguos.Count > 0)
+		{
+			bundlesAntiguos.Sort(delegate (JuegoBundle j1, JuegoBundle j2)
+			{
+				if (j1 != null && j2 != null)
+				{
+					return j2.FechaEmpieza.CompareTo(j1.FechaEmpieza);
+				}
+				else
+				{
+					if (j1 != null)
+					{
+						return 0;
+					}
+
+					if (j2 != null)
+					{
+						return 1;
+					}
+
+					return 0;
+				}
+			});
+		}
+
 		return bundlesAntiguos;
 	}
 
@@ -1552,6 +1577,31 @@
 					}
 				}
 			}
+		}
+
+		if (gratisAntiguos.Count > 0)
+		{
+			gratisAntiguos.Sort(delegate (JuegoGratis j1, JuegoGratis j2)
+			{
+				if (j1 != null && j2 != null)
+				{
+					return j2.FechaEmpieza.CompareTo(j1.FechaEmpieza);
+				}
+				else
+				{
+					if (j1 != null)
+					{
+						return 0;
+					}
+
+					if (j2 != null)
+					{
+						return 1;
+					}
+
+					return 0;
+				}
+			});
 		}
 
 		return gratisAntiguos;

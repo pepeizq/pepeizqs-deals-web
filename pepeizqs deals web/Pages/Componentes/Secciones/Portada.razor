@@ -297,7 +297,7 @@ else
 	</div>
 }
 
-@if (sorteosActivos.Count > 0)
+@if (sorteosActivos.Count > 2)
 {
 	<div style="margin-bottom: 50px; height: 200px;">
 		<a href="/Giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
@@ -307,11 +307,14 @@ else
 						int i = 0;
 						while (i < 3)
 						{
-							Juegos.Juego sorteoJuego = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[i].JuegoId.ToString());
-
-							if (sorteoJuego != null)
+							if (sorteosActivos[i] != null)
 							{
-								<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+								Juegos.Juego sorteoJuego = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[i].JuegoId.ToString());
+
+								if (sorteoJuego != null)
+								{
+									<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+								}
 							}
 
 							i += 1;

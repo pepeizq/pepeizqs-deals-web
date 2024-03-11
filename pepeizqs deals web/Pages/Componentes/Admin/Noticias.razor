@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.Data.SqlClient
 @using Microsoft.VisualBasic;
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
@@ -138,6 +139,10 @@
 			</div>
 		}
 	}
+	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+	{
+		
+	}
 	else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
 	{
 		<hr />
@@ -263,21 +268,30 @@
 
 	private void CambiarNoticiaTipo(ChangeEventArgs texto)
 	{
-		noticiaTipoSeleccionada = texto.Value.ToString();	
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-		//-------------------------------------------------------
+		using (conexion)
+		{
+			noticiaTipoSeleccionada = texto.Value.ToString();
 
-		if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
-		{
-			bundleSeleccionado = Bundles2.BundlesCargar.GenerarListado()[1].Id.ToString();
-		}
-		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
-		{
-			gratisSeleccionado = Gratis2.GratisCargar.GenerarListado()[0].Tipo.ToString();
-		}
-		else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
-		{
-			suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
+			//-------------------------------------------------------
+
+			if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+			{
+				bundleSeleccionado = Bundles2.BundlesCargar.GenerarListado()[1].Id.ToString();
+			}
+			else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+			{
+				gratisSeleccionado = Gratis2.GratisCargar.GenerarListado()[0].Tipo.ToString();
+			}
+			else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+			{
+				suscripcionSeleccionada = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
+			}
+			else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+			{
+				GenerarSorteos(conexion);
+			}
 		}
 	}
 
@@ -844,6 +858,76 @@
 
 			fechaSeleccionada = null;
 		}
+	}
+
+	#endregion
+
+	#region Sorteos
+
+	private void GenerarSorteos(SqlConnection conexion)
+	{
+		List<Sorteos2.Sorteo> sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
+
+		if (sorteosActivos.Count > 0)
+		{
+			tituloEn = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways1"));
+			tituloEs = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways1"));
+
+			imagen = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[0].JuegoId.ToString()).Imagenes.Header_460x215;
+
+			fechaSeleccionada = sorteosActivos[0].FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+			enlace = "https://pepeizqdeals.com/Giveaways";
+
+			contenidoEn = "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways2") + "</div><br/>";
+			contenidoEs = "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways2") + "</div><br/>";
+
+			List<Sorteos2.Sorteo> sorteosPremium = new List<Sorteos2.Sorteo>();
+			List<Sorteos2.Sorteo> sorteosBasico = new List<Sorteos2.Sorteo>();
+
+			foreach (var activo in sorteosActivos)
+			{
+				if (activo.GrupoId == "40604285")
+				{
+					sorteosPremium.Add(activo);
+				}
+				else if (activo.GrupoId == "33500256")
+				{
+					sorteosBasico.Add(activo);
+				}
+			}
+
+			if (sorteosPremium.Count > 0)
+			{
+				contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways3") + "</div><ul>";
+				contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways3") + "</div><ul>";
+
+				foreach (var premium in sorteosPremium)
+				{
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+				}
+
+				contenidoEn = contenidoEn + "</ul>";
+				contenidoEs = contenidoEs + "</ul>";
+			}
+
+			if (sorteosBasico.Count > 0)
+			{
+				contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways4") + "</div><ul>";
+				contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways4") + "</div><ul>";
+
+				foreach (var basico in sorteosBasico)
+				{
+					contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+					contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+				}
+
+				contenidoEn = contenidoEn + "</ul>";
+				contenidoEs = contenidoEs + "</ul>";
+			}
+		}
+
 	}
 
 	#endregion

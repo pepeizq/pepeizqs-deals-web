@@ -188,6 +188,12 @@
 			gratis.Nombre = nombreSeleccionado;
 			gratis.Imagen = imagenSeleccionada;
 			gratis.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionado);
+
+			if (string.IsNullOrEmpty(enlaceSeleccionado) == true)
+			{
+				enlaceSeleccionado = "nada";
+			}
+
 			gratis.Enlace = enlaceSeleccionado;
 			gratis.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionada);
 			gratis.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionada);

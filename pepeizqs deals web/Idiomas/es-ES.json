@@ -528,6 +528,22 @@
     "Valor": "ha añadido los siguientes juegos:"
   },
   {
+    "Id": "News.Giveaways1",
+    "Valor": "Nuevos Sorteos Semanales en la web"
+  },
+  {
+    "Id": "News.Giveaways2",
+    "Valor": "Esta semana tenéis los siguientes juegos para sortear:"
+  },
+  {
+    "Id": "News.Giveaways3",
+    "Valor": "Grupo Premium"
+  },
+  {
+    "Id": "News.Giveaways4",
+    "Valor": "Grupo Básico"
+  },
+  {
     "Id": "Bundles.Title",
     "Valor": "Bundles"
   },
@@ -1293,11 +1309,11 @@
   },
   {
     "Id": "Giveaways.String1",
-    "Valor": "Sorteos Premium"
+    "Valor": "Grupo Premium"
   },
   {
     "Id": "Giveaways.String2",
-    "Valor": "Sorteos"
+    "Valor": "Grupo Básico"
   },
   {
     "Id": "Giveaways.String3",
@@ -1325,7 +1341,7 @@
   },
   {
     "Id": "Giveaways.String9",
-    "Valor": "Normas para entrar a los sorteos del grupo de Steam"
+    "Valor": "Normas para entrar a los sorteos"
   },
   {
     "Id": "Giveaways.String10",
@@ -1333,11 +1349,11 @@
   },
   {
     "Id": "Giveaways.String11",
-    "Valor": "Unirte al grupo de Steam."
+    "Valor": "Este grupo es de libre entrada pero es indispensable cumplir estas normas básicas:"
   },
   {
     "Id": "Giveaways.String12",
-    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación de tu cuenta cada 7 días)."
+    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación automática de tu cuenta cada 7 días)."
   },
   {
     "Id": "Giveaways.String13",
@@ -1350,6 +1366,34 @@
   {
     "Id": "Giveaways.String15",
     "Valor": "Este sorteo"
+  },
+  {
+    "Id": "Giveaways.String16",
+    "Valor": "Normas"
+  },
+  {
+    "Id": "Giveaways.String17",
+    "Valor": "Antes de solicitar el acceso al grupo debes contribuir a la web de una de las siguientes maneras:"
+  },
+  {
+    "Id": "Giveaways.String18",
+    "Valor": "Comprar cualquiera bundle de Humble Bundle donando a la web al menos 5 euros."
+  },
+  {
+    "Id": "Giveaways.String19",
+    "Valor": "Comentar sobre mi web cuando puede ser de ayuda en otros foros, redes sociales o webs externas (no quiero spam)."
+  },
+  {
+    "Id": "Giveaways.String20",
+    "Valor": "Una vez comprado el bundle deberás enviar un correo a admin@pepeizqdeals.com indicando que bundle has comprado, la donación y la fecha."
+  },
+  {
+    "Id": "Giveaways.String21",
+    "Valor": "Es requisito que se enlace a mi web y si esos enlaces generan más de 100 visitas (de humanos diferentes) enviarme un correo a admin@pepeizqdeals.com especificando los enlaces."
+  },
+  {
+    "Id": "Giveaways.String22",
+    "Valor": "Para ambas contribuciones también es necesario que me especifiquéis en el correo con que usuario de Steam habéis solicitado acceso para el Grupo Premium. Además para el Grupo Premium se aplicarán estas normas:"
   },
   {
     "Id": "Month.1",

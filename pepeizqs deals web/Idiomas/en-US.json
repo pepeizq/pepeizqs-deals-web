@@ -532,6 +532,22 @@
     "Valor": "has added the following games:"
   },
   {
+    "Id": "News.Giveaways1",
+    "Valor": "New Weekly Giveaways on the web"
+  },
+  {
+    "Id": "News.Giveaways2",
+    "Valor": "This week you have the following games for giveaways:"
+  },
+  {
+    "Id": "News.Giveaways3",
+    "Valor": "Premium Group"
+  },
+  {
+    "Id": "News.Giveaways4",
+    "Valor": "Basic Group"
+  },
+  {
     "Id": "Bundles.Title",
     "Valor": "Bundles"
   },
@@ -1297,11 +1313,11 @@
   },
   {
     "Id": "Giveaways.String1",
-    "Valor": "Premium Giveaways"
+    "Valor": "Premium Group"
   },
   {
     "Id": "Giveaways.String2",
-    "Valor": "Giveaways"
+    "Valor": "Basic Group"
   },
   {
     "Id": "Giveaways.String3",
@@ -1329,7 +1345,7 @@
   },
   {
     "Id": "Giveaways.String9",
-    "Valor": "Rules for entering Steam group giveaways"
+    "Valor": "Rules for entering giveaways"
   },
   {
     "Id": "Giveaways.String10",
@@ -1337,11 +1353,11 @@
   },
   {
     "Id": "Giveaways.String11",
-    "Valor": "Join the Steam group."
+    "Valor": "This group is free to enter but it is essential to comply with these basic rules:"
   },
   {
     "Id": "Giveaways.String12",
-    "Valor": "In your Steam account, have the profile and game details set to Public (the website will check your account every 7 days)."
+    "Valor": "In your Steam account, have the profile and game details set to Public (the website will automatic check your account every 7 days)."
   },
   {
     "Id": "Giveaways.String13",
@@ -1354,6 +1370,34 @@
   {
     "Id": "Giveaways.String15",
     "Valor": "This giveaway"
+  },
+  {
+    "Id": "Giveaways.String16",
+    "Valor": "Rules"
+  },
+  {
+    "Id": "Giveaways.String17",
+    "Valor": "Before requesting access to the group you must contribute to the website in one of the following ways:"
+  },
+  {
+    "Id": "Giveaways.String18",
+    "Valor": "Buy any Humble Bundle bundle by donating at least 5 euros to the website."
+  },
+  {
+    "Id": "Giveaways.String19",
+    "Valor": "Comment about my website when it can be helpful in other forums, social networks or external websites (I don't want spam)."
+  },
+  {
+    "Id": "Giveaways.String20",
+    "Valor": "Once the bundle has been purchased, you must send an email to admin@pepeizqdeals.com indicating which bundle you have purchased, the donation and the date."
+  },
+  {
+    "Id": "Giveaways.String21",
+    "Valor": "It is a requirement that you link to my website and if these links generate more than 100 visits (from different humans) send me an email to admin@pepeizqdeals.com specifying the links."
+  },
+  {
+    "Id": "Giveaways.String22",
+    "Valor": "For both contributions, it is also necessary that you specify in the email which Steam user you have requested access to for the Premium Group. Additionally, these rules will apply to the Premium Group:"
   },
   {
     "Id": "Month.1",
