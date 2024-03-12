@@ -251,6 +251,17 @@ namespace Tareas
 													}
 												}
 
+												if (juegoConMinimo.PrecioMinimosHistoricos != null)
+												{
+													if (juegoConMinimo.PrecioMinimosHistoricos.Count > 0)
+													{
+														if (juegoConMinimo.PrecioMinimosHistoricos[0].DRM == JuegoDRM.NoEspecificado)
+														{
+															descarte4 = true;
+														}
+													}
+												}
+
 												if (descarte4 == false)
 												{
 													juegosMinimosMostrar.Add(juegoConMinimo);

@@ -129,79 +129,83 @@ namespace APIs.Steam
 
                         string deseados = string.Empty;
 
-                        List<SteamDeseadoJuego> juegosDeseadosTodos = new List<SteamDeseadoJuego>();
-                        int i = 0;
-                        while (i < 100)
+                        try
                         {
-                            string htmlDeseados = string.Empty;
+                            List<SteamDeseadoJuego> juegosDeseadosTodos = new List<SteamDeseadoJuego>();
+                            int i = 0;
+                            while (i < 100)
+                            {
+                                string htmlDeseados = string.Empty;
 
-                            if (nuevaCuenta.CuentaTipo == 1)
-                            {
-                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/id/" + nuevaCuenta.Usuario + "/wishlistdata/?p=" + i.ToString());
-                            }
-                            else if (nuevaCuenta.CuentaTipo == 2)
-                            {
-                                htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/profiles/" + nuevaCuenta.ID64 + "/wishlistdata/?p=" + i.ToString());
-                            }
-
-                            if (htmlDeseados != null)
-                            {
-                                if (htmlDeseados == "[]")
+                                if (nuevaCuenta.CuentaTipo == 1)
                                 {
-                                    break;
+                                    htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/id/" + nuevaCuenta.Usuario + "/wishlistdata/?p=" + i.ToString());
+                                }
+                                else if (nuevaCuenta.CuentaTipo == 2)
+                                {
+                                    htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/profiles/" + nuevaCuenta.ID64 + "/wishlistdata/?p=" + i.ToString());
                                 }
 
-                                var juegosDeseados = new Dictionary<int, SteamDeseadoJuego>();
-
-                                try
+                                if (htmlDeseados != null)
                                 {
-                                    juegosDeseados = JsonConvert.DeserializeObject<Dictionary<int, SteamDeseadoJuego>>(htmlDeseados);
-                                }
-                                catch (Exception)
-                                {
-                                    break;
-                                };
-
-                                if (juegosDeseados != null)
-                                {
-                                    if (juegosDeseados.Count > 0)
+                                    if (htmlDeseados == "[]")
                                     {
-                                        foreach (var juegoDeseado in juegosDeseados)
+                                        break;
+                                    }
+
+                                    var juegosDeseados = new Dictionary<int, SteamDeseadoJuego>();
+
+                                    try
+                                    {
+                                        juegosDeseados = JsonConvert.DeserializeObject<Dictionary<int, SteamDeseadoJuego>>(htmlDeseados);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        break;
+                                    };
+
+                                    if (juegosDeseados != null)
+                                    {
+                                        if (juegosDeseados.Count > 0)
                                         {
-                                            juegosDeseadosTodos.Add(juegoDeseado.Value);
+                                            foreach (var juegoDeseado in juegosDeseados)
+                                            {
+                                                juegosDeseadosTodos.Add(juegoDeseado.Value);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                i += 1;
+                            }
+
+                            if (juegosDeseadosTodos.Count > 0)
+                            {
+                                foreach (var deseado in juegosDeseadosTodos)
+                                {
+                                    if (deseado.capsule != null)
+                                    {
+                                        string id = deseado.capsule;
+
+                                        int int1 = id.IndexOf("/apps/");
+                                        id = id.Remove(0, int1 + 6);
+
+                                        int int2 = id.IndexOf("/");
+                                        id = id.Remove(int2, id.Length - int2);
+
+                                        if (deseados == string.Empty)
+                                        {
+                                            deseados = id;
+                                        }
+                                        else
+                                        {
+                                            deseados = deseados + "," + id;
                                         }
                                     }
                                 }
                             }
-
-                            i += 1;
                         }
-
-                        if (juegosDeseadosTodos.Count > 0) 
-                        {
-                            foreach (var deseado in juegosDeseadosTodos)
-                            {
-                                if (deseado.capsule != null)
-                                {
-                                    string id = deseado.capsule;
-
-                                    int int1 = id.IndexOf("/apps/");
-                                    id = id.Remove(0, int1 + 6);
-
-                                    int int2 = id.IndexOf("/");
-                                    id = id.Remove(int2, id.Length - int2);
-
-                                    if (deseados == string.Empty)
-                                    {
-                                        deseados = id;
-                                    }
-                                    else
-                                    {
-                                        deseados = deseados + "," + id;
-                                    }
-                                }
-                            }
-                        }
+                        catch { }
 
                         //----------------------------------------------
 
@@ -221,7 +225,8 @@ namespace APIs.Steam
                                     {
                                         grupoPremium = true;
                                     }
-                                    else if (grupo.Id == "33500256")
+                                    
+                                    if (grupo.Id == "33500256")
 									{
 										grupoNormal = true;
 									}

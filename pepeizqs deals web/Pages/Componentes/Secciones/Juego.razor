@@ -1710,6 +1710,31 @@
 			}
 		}
 
+		if (suscripcionesAntiguas.Count > 0)
+		{
+			suscripcionesAntiguas.Sort(delegate (JuegoSuscripcion j1, JuegoSuscripcion j2)
+			{
+				if (j1 != null && j2 != null)
+				{
+					return j2.FechaEmpieza.CompareTo(j1.FechaEmpieza);
+				}
+				else
+				{
+					if (j1 != null)
+					{
+						return 0;
+					}
+
+					if (j2 != null)
+					{
+						return 1;
+					}
+
+					return 0;
+				}
+			});
+		}
+
 		return suscripcionesAntiguas;
 	}
 

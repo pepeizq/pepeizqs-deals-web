@@ -159,11 +159,6 @@ namespace BaseDatos.Tiendas
 						{
 							if (tienda2.Id == tienda.id)
 							{
-								//if (tienda2.AdminInteractuar == false)
-								//{
-								//	añadir = false;
-								//}
-
 								break;
 							}
 						}
@@ -177,6 +172,29 @@ namespace BaseDatos.Tiendas
 			}
 
 			tiendas = tiendas.OrderBy(x => x.fecha).ToList();
+
+			DateTime ahora = DateTime.Now;
+
+			if (ahora.Hour == 19)
+			{
+				foreach (var tienda in tiendas)
+				{
+					if (tienda.id == APIs.Steam.Tienda.Generar().Id)
+					{
+						if (tienda.fecha.Hour < 19)
+						{
+							return tienda;
+						}
+					}
+					else if (tienda.id == APIs.Humble.Tienda.Generar().Id)
+					{
+						if (tienda.fecha.Hour < 19)
+						{
+							return tienda;
+						}
+					}
+				}
+			}
 
 			return tiendas[0];
         }
