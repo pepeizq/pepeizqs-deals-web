@@ -234,16 +234,17 @@ namespace APIs.Steam
                             }
 						}
 
-						//----------------------------------------------
+                        //----------------------------------------------
 
-						SteamUsuario datos = new SteamUsuario
+                        SteamUsuario datos = new SteamUsuario
                         {
                             Juegos = juegos,
                             Deseados = deseados,
                             Avatar = cuenta.Datos.Jugador[0].Avatar,
                             Nombre = cuenta.Datos.Jugador[0].Nombre,
                             GrupoPremium = grupoPremium.ToString(),
-                            GrupoNormal = grupoNormal.ToString()
+                            GrupoNormal = grupoNormal.ToString(),
+                            SteamId = nuevaCuenta.ID64
                         };
 
                         return datos;
@@ -265,6 +266,7 @@ namespace APIs.Steam
 		public string Nombre { get; set; }
         public string GrupoPremium { get; set; }
 		public string GrupoNormal { get; set; }
+        public string SteamId { get; set; }
 	}
 
     //----------------------------------------------

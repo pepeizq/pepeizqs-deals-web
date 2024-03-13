@@ -34,11 +34,11 @@
 </style>
 
 <script>
-    window.onmousemove = function (e) {
+    function hover(e, id) {
         var x = e.clientX,
             y = e.clientY;
 
-        var tooltipSpan = document.getElementById('tooltip-gratis');
+        var tooltipSpan = document.getElementById(id);
 
         if (screen.width / 2 > x) {
             tooltipSpan.style.top = (y + 10) + 'px';
@@ -49,6 +49,14 @@
             tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
         };
     };
+
+    function moverScroll(id) {
+        const yOffset = -30;
+        const element = document.getElementById(id);
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
 </script>
 
 @if (gratisActuales.Count > 0)
@@ -57,33 +65,7 @@
 		@Herramientas.Idiomas.CogerCadena(idioma, "Free.String1")
 	</div>
 
-    <div class="tooltip4">
-        <div id="tooltip-gratis" class="tooltip-relleno">
-            @if (string.IsNullOrEmpty(tooltipVideo) == false)
-            {
-                <video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
-            }
-
-            <div style="padding: 15px; text-align: center;">
-                <label>@tooltipNombre</label>
-
-                @if (string.IsNullOrEmpty(tooltipReviewsIcono) == false && string.IsNullOrEmpty(tooltipReviewsCantidad) == false)
-                {
-                    <div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
-                        <img src="@tooltipReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
-                        <label style="font-size: 14px;">@tooltipReviewsCantidad</label>
-                    </div>
-                }
-
-                @if (string.IsNullOrEmpty(tooltipUsuarioTieneJuego) == false)
-                {
-                    <div>
-                        <label style="font-size: 14px;">@tooltipUsuarioTieneJuego</label>
-                    </div>
-                }
-            </div>
-        </div>
-
+    <div>
         @foreach (var gratisActual in gratisActuales)
         {
             <hr>
@@ -96,7 +78,33 @@
                 <div class="perfil" style="width: 80%; padding: 30px 40px;">
                     @foreach (var juego in gratisActual.Juegos)
                     {
-                        <div @onmouseover="@(e => CargarTooltip(e, juego, gratisActual.Tipo.Tipo))">
+                        <div class="tooltip4" onmousemove="hover(event, 'tooltip-@juego.JuegoId.ToString()')" @onmouseover="@(e => CargarTooltip(e, juego, gratisActual.Tipo.Tipo))">
+                            <div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno">
+                                @if (string.IsNullOrEmpty(tooltipVideo) == false)
+                                {
+                                    <video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+                                }
+
+                                <div style="padding: 15px; text-align: center;">
+                                    <label>@tooltipNombre</label>
+
+                                    @if (string.IsNullOrEmpty(tooltipReviewsIcono) == false && string.IsNullOrEmpty(tooltipReviewsCantidad) == false)
+                                    {
+                                        <div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
+                                            <img src="@tooltipReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
+                                            <label style="font-size: 14px;">@tooltipReviewsCantidad</label>
+                                        </div>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(tooltipUsuarioTieneJuego) == false)
+                                    {
+                                        <div>
+                                            <label style="font-size: 14px;">@tooltipUsuarioTieneJuego</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
                             <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 0px; margin-top: 10px; margin-bottom: 10px;" target="_blank">
                                 <div style="display: flex; align-items: center; position: relative;">
                                     <div style="width: 33%;">
@@ -139,12 +147,34 @@
             {
                 <div style="margin-top: 10px; background: var(--colorTexto); padding: 1px;">
                 </div>
+
+                <div style="position: absolute; margin-top: 15px; display: flex; align-items: center;">
+                    @foreach (var gratisPasado in gratisPasados)
+                    {
+                        List<Juegos.JuegoGratis> gratisAño = new List<Juegos.JuegoGratis>();
+
+                        foreach (var juego in gratisPasado.Juegos)
+                        {
+                            if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado)
+                            {
+                                gratisAño.Add(juego);
+                            }
+                        }
+
+                        if (gratisAño.Count > 0)
+                        {
+                            <div style="margin-right: 15px; font-size: 14px;">
+                                <a onclick="moverScroll('pasado-@gratisPasado.Tipo.Nombre')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;"><img src="@gratisPasado.Tipo.ImagenIcono" style="width: 22px; height: 22px;" /> (@gratisAño.Count.ToString())</a>
+                            </div>                           
+                        }
+                    }
+                </div>
             }
         </div>
     }
 </div>
 
-<div>
+<div style="margin-top: 55px;">
     @foreach (var gratisPasado in gratisPasados)
     {
         List<Juegos.JuegoGratis> gratisAño = new List<Juegos.JuegoGratis>();
@@ -161,7 +191,7 @@
         {
             <hr>
 
-            <div style="display: flex; align-items: start;">
+            <div id="pasado-@gratisPasado.Tipo.Nombre" style="display: flex; align-items: start;">
                 <div class="perfil" style="width: 20%;">
                     <img src="@gratisPasado.Tipo.ImagenLogo" />
                 </div>
@@ -275,7 +305,7 @@
 
         //--------------------------------------------------------------------
 
-        DateTime arranque = new DateTime(2018, 1, 1);
+        DateTime arranque = new DateTime(2011, 1, 1);
 
         int i = 0;
         while (i < 100)

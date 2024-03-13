@@ -37,18 +37,24 @@
 
 		<div style="width: auto; margin-left: 20px;">
 			<button @onclick="(e => MostrarPestaña(e, 4))" class="boton-pequeño" style="padding: 10px 15px;">
-				Suscripciones
+				Gratis
 			</button>
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
 			<button @onclick="(e => MostrarPestaña(e, 5))" class="boton-pequeño" style="padding: 10px 15px;">
-				Datos
+				Suscripciones
 			</button>
 		</div>
 
 		<div style="width: auto; margin-left: 20px;">
 			<button @onclick="(e => MostrarPestaña(e, 6))" class="boton-pequeño" style="padding: 10px 15px;">
+				Datos
+			</button>
+		</div>
+
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="(e => MostrarPestaña(e, 7))" class="boton-pequeño" style="padding: 10px 15px;">
 				Deseados
 			</button>
 		</div>
@@ -122,9 +128,13 @@
 		}
 		else if (pestañaMostrar == 4)
 		{
-			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoSuscripciones</textarea>
+			<textarea @onchange="(e => TextoCambiaGratis(e))" class="entrada-texto" rows="16">@textoGratis</textarea>
 		}
 		else if (pestañaMostrar == 5)
+		{
+			<textarea @onchange="(e => TextoCambiaSuscripciones(e))" class="entrada-texto" rows="16">@textoSuscripciones</textarea>
+		}
+		else if (pestañaMostrar == 6)
 		{
 			@if (juego.Tipo == JuegoTipo.DLC)
 			{
@@ -181,7 +191,7 @@
 				</div>
 			</div>
 		}
-		else if (pestañaMostrar == 6)
+		else if (pestañaMostrar == 7)
 		{
 			<textarea @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" rows="16">@textoDeseados</textarea>
 		}	
@@ -208,6 +218,11 @@
 		if (juego.Bundles != null)
 		{
 			textoBundles = JsonConvert.SerializeObject(juego.Bundles);
+		}
+
+		if (juego.Gratis != null)
+		{
+			textoGratis = JsonConvert.SerializeObject(juego.Gratis);
 		}
 
 		if (juego.Suscripciones != null)
@@ -415,6 +430,40 @@
 			{
 				juego.Bundles = null;
 				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
+			}
+		}
+	}
+
+	#endregion
+
+	#region Gratis
+
+	private string textoGratis = string.Empty;
+
+	private void TextoCambiaGratis(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoGratis = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(textoGratis);
+				BaseDatos.Juegos.Actualizar.Gratis(juego, conexion);
+			}
+		}
+		else
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.Gratis = null;
+				BaseDatos.Juegos.Actualizar.Gratis(juego, conexion);
 			}
 		}
 	}

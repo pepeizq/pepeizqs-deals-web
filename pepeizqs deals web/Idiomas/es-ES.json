@@ -1252,6 +1252,14 @@
     "Valor": "Ese usuario de Steam ya está asociado a otra cuenta registrada."
   },
   {
+    "Id": "Settings.String62",
+    "Valor": "ID64:"
+  },
+  {
+    "Id": "Settings.String63",
+    "Valor": "Actualizar"
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },

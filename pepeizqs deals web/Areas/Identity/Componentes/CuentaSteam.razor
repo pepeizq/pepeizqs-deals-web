@@ -9,7 +9,7 @@
 @if (usuario.EmailConfirmed == true)
 {
 	<div style="margin-top: 10px;">
-		<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
+		<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
 
 		<div style="display: flex; margin-top: 15px; margin-left: 10px;">
 			<div style="width: 6%; padding: 10px;">
@@ -38,12 +38,21 @@
 		</div>
 	}
 
-	@if (usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
+	@if (string.IsNullOrEmpty(enlaceCuenta) == false)
+	{
+		<hr style="margin-top: 20px; margin-bottom: 20px;" />
+
+		<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String63")
+		</button>
+	}
+
+	@if (usuario.SteamId != null || usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
 	{
 		<hr style="margin-top: 20px; margin-bottom: 20px;" />
 
 		<div class="perfil-flexible-centrado" style="align-items: start;">
-			@if (usuario.Avatar != null)
+			@if (string.IsNullOrEmpty(usuario.Avatar) == false)
 			{
 				<div style="width: 10%; padding: 3px 10px;">
 					<img src="@usuario.Avatar" style="max-width: 70px; max-height: 70px;" />
@@ -51,30 +60,37 @@
 			}
 
 			<div style="width: 90%; padding-left: 10px;">
-				@if (usuario.Nickname != null)
+				@if (string.IsNullOrEmpty(usuario.SteamId) == false)
 				{
 					<div>
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String62") @usuario.SteamId</label>
+					</div>
+				}
+
+				@if (string.IsNullOrEmpty(usuario.Nickname) == false)
+				{
+					<div style="margin-top: 5px;">
 						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String48") @usuario.Nickname</label>
 					</div>
 				}
 
-				@if (usuario.SteamGames != null)
+				@if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 				{
 					<div style="margin-top: 5px;">
 						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String49") @MensajeCantidad(usuario.SteamGames)</label>
 					</div>
 				}
 
-				@if (usuario.SteamWishlist != null)
+				@if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
 				{
 					<div style="margin-top: 5px;">
 						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String50") @MensajeCantidad(usuario.SteamWishlist)</label>
 					</div>
 				}
 
-				@if (usuario.OfficialGroup != null)
+				@if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
 				{
-					@if (usuario.OfficialGroup == "True")
+					if (usuario.OfficialGroup == "True")
 					{
 						<div style="margin-top: 15px;">
 							<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String51")</label>
@@ -86,8 +102,11 @@
 							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
 						</div>
 					}
+				}
 
-					@if (usuario.OfficialGroup2 == "True")
+				@if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
+				{
+					if (usuario.OfficialGroup2 == "True")
 					{
 						<div style="margin-top: 5px;">
 							<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String57")</label>
@@ -129,6 +148,10 @@ else
 
 	private Usuario usuario = new Usuario();
 
+	private bool desactivar = false;
+
+	private string enlaceCuenta = string.Empty;
+
 	private bool enseñarImagen = false;
 
 	private bool errorCuentaUsada = false;
@@ -136,6 +159,14 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+			{
+				enlaceCuenta = usuario.SteamAccount;
+			}			
+		}
 	}
 
 	private async void TextoCambiaSteamCuenta(ChangeEventArgs texto)
@@ -156,35 +187,9 @@ else
 		{
 			if (texto.Value.ToString().Trim().Length > 1)
 			{
-				string enlace = texto.Value.ToString().Trim();
+				enlaceCuenta = texto.Value.ToString().Trim();
 
-				if (enlace.Contains("https://steamcommunity.com/id/") == true || enlace.Contains("https://steamcommunity.com/profiles/") == true)
-				{
-					bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(enlace);
-
-					if (cuentaUsada == false)
-					{
-						SteamUsuario datos = await Cuenta.CargarDatos(enlace);
-
-						if (datos != null)
-						{
-							usuario.SteamAccount = enlace;
-							usuario.SteamGames = datos.Juegos;
-							usuario.SteamWishlist = datos.Deseados;
-							usuario.Avatar = datos.Avatar;
-							usuario.Nickname = datos.Nombre;
-							usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-							usuario.OfficialGroup = datos.GrupoPremium;
-							usuario.OfficialGroup2 = datos.GrupoNormal;
-
-							await UserManager.UpdateAsync(usuario);
-						}
-					}
-					else
-					{
-						errorCuentaUsada = true;
-					}
-				}
+				await ActualizarDatosCuenta();
 			}
 		}
 	}
@@ -232,5 +237,46 @@ else
 		{
 			enseñarImagen = true;
 		}
+	}
+
+	private async Task ActualizarDatos(MouseEventArgs e)
+	{
+		await ActualizarDatosCuenta();
+	}
+
+	private async Task ActualizarDatosCuenta()
+	{
+		desactivar = true;
+
+		if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true)
+		{
+			SteamUsuario datos = await Cuenta.CargarDatos(enlaceCuenta);
+
+			if (datos != null)
+			{
+				bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(enlaceCuenta, datos.SteamId, usuario.Id);
+
+				if (cuentaUsada == false)
+				{
+					usuario.SteamAccount = enlaceCuenta;
+					usuario.SteamGames = datos.Juegos;
+					usuario.SteamWishlist = datos.Deseados;
+					usuario.Avatar = datos.Avatar;
+					usuario.Nickname = datos.Nombre;
+					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+					usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.OfficialGroup2 = datos.GrupoNormal;
+					usuario.SteamId = datos.SteamId;
+
+					await UserManager.UpdateAsync(usuario);
+				}
+				else
+				{
+					errorCuentaUsada = true;
+				}
+			}
+		}
+
+		desactivar = false;
 	}
 }

@@ -186,7 +186,7 @@ namespace BaseDatos.Usuarios
 			return null;
 		}
 
-        public static bool CuentaSteamUsada(string enlace)
+        public static bool CuentaSteamUsada(string enlace, string usuarioSteamId, string usuarioWebId)
 		{
             if (enlace != null)
             {
@@ -208,13 +208,35 @@ namespace BaseDatos.Usuarios
 						{
 							while (lector.Read())
 							{
-								if (lector.IsDBNull(3) == false)
+								if (lector.IsDBNull(0) == false)
 								{
-									if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+									if (string.IsNullOrEmpty(lector.GetString(0)) == false)
 									{
-										if (Buscador.LimpiarNombre(enlace) == Buscador.LimpiarNombre(lector.GetString(3)))
+										if (lector.GetString(0) != usuarioWebId)
 										{
-											return true;
+											//ID Steam 64
+											if (lector.IsDBNull(28) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(28)) == false)
+												{
+													if (usuarioSteamId == lector.GetString(28))
+													{
+														return true;
+													}
+												}
+											}
+
+											//Cuenta Steam Community
+											if (lector.IsDBNull(3) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+												{
+													if (Buscador.LimpiarNombre(enlace) == Buscador.LimpiarNombre(lector.GetString(3)))
+													{
+														return true;
+													}
+												}
+											}
 										}
 									}
 								}

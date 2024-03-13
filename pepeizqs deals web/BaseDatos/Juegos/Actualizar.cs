@@ -199,6 +199,35 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void Gratis(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET gratis=@gratis WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+
+				if (juego.Bundles != null)
+				{
+					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(juego.Gratis));
+				}
+				else
+				{
+					comando.Parameters.AddWithValue("@gratis", "null");
+				}
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Suscripciones(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +

@@ -60,5 +60,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(100)")]
 	public string? OfficialGroup2 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? SteamId { get; set; }
 }
 
