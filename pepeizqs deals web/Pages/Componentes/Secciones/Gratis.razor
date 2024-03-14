@@ -218,22 +218,20 @@
                                 <ul>
                                     @foreach (var juegoMensual in gratisMensual)
                                     {
-                                        @if (gratisPasado.Tipo.DRMEnseñar == true)
-                                        {
-                                            <li>
-                                                <div>
-                                                    <a href="/game/@juegoMensual.JuegoId">@juegoMensual.Nombre</a> (@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))
+                                        <li>
+                                            <a href="/game/@juegoMensual.JuegoId" class="tooltip4" onmousemove="hover(event, 'pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()')" @onmouseover="@(e => CargarTooltipPasado(e, juegoMensual))">
+                                                <label style="cursor: pointer;">@juegoMensual.Nombre</label>
+
+                                                @if (gratisPasado.Tipo.DRMEnseñar == true)
+                                                {
+                                                    <label style="margin-left: 5px;">(@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))</label>
+                                                }
+
+                                                <div id="pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()" class="tooltip-relleno" style="padding: 10px;">
+                                                    @tooltipFecha
                                                 </div>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                <div>
-                                                    <a href="/game/@juegoMensual.JuegoId">@juegoMensual.Nombre</a>
-                                                </div>
-                                            </li>
-                                        }
+                                            </a>
+                                        </li>
                                     }
                                 </ul>
                             }
@@ -507,5 +505,13 @@
                 }
             }
         }
+    }
+
+    private string tooltipFecha = string.Empty;
+
+    private void CargarTooltipPasado(MouseEventArgs args, Juegos.JuegoGratis juegoGratis)
+    {
+        tooltipFecha = juegoGratis.FechaEmpieza.Day.ToString() + "/" + juegoGratis.FechaEmpieza.Month.ToString() + "/" + juegoGratis.FechaEmpieza.Year.ToString() + " • " +
+                       juegoGratis.FechaTermina.Day.ToString() + "/" + juegoGratis.FechaTermina.Month.ToString() + "/" + juegoGratis.FechaTermina.Year.ToString();
     }
 }

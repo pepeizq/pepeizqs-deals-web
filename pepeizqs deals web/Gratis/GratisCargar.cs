@@ -10,7 +10,9 @@ namespace Gratis2
 		Fanatical,
 		Ubisoft,
 		EpicGames,
-        Amplifiers
+        Amplifiers,
+		SEGA,
+		Humble
     }
 
 	public class GratisCargar
@@ -25,8 +27,10 @@ namespace Gratis2
 				APIs.GOG.Gratis.Generar(),
 				APIs.Fanatical.Gratis.Generar(),
 				APIs.Ubisoft.Gratis.Generar(),
-				APIs.Amplifiers.Gratis.Generar()
-			};
+				APIs.Amplifiers.Gratis.Generar(),
+                APIs.SEGA.Gratis.Generar(),
+				APIs.Humble.Gratis.Generar()
+            };
 
 			return gratis;
 		}
