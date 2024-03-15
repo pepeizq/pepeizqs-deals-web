@@ -38,15 +38,15 @@
         var x = e.clientX,
             y = e.clientY;
 
-        var tooltipSpan = document.getElementById(id);
+        var tooltip = document.getElementById(id);
 
         if (screen.width / 2 > x) {
-            tooltipSpan.style.top = (y + 10) + 'px';
-            tooltipSpan.style.left = (x + 20) + 'px';
+            tooltip.style.top = (y + 10) + 'px';
+            tooltip.style.left = (x + 20) + 'px';
         }
         else {
-            tooltipSpan.style.top = (y - 10) + 'px';
-            tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
+            tooltip.style.top = (y - 10) + 'px';
+            tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
         };
     };
 

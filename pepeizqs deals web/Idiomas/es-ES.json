@@ -1349,7 +1349,7 @@
   },
   {
     "Id": "Giveaways.String9",
-    "Valor": "Normas para entrar a los sorteos"
+    "Valor": "¿Como participar en los sorteos?"
   },
   {
     "Id": "Giveaways.String10",
@@ -1377,11 +1377,11 @@
   },
   {
     "Id": "Giveaways.String16",
-    "Valor": "Normas"
+    "Valor": "Como participar"
   },
   {
     "Id": "Giveaways.String17",
-    "Valor": "Antes de solicitar el acceso al grupo debes contribuir a la web de una de las siguientes maneras:"
+    "Valor": "Segundo, debes contribuir a la web en una de estas maneras (no son negociables):"
   },
   {
     "Id": "Giveaways.String18",
@@ -1393,15 +1393,35 @@
   },
   {
     "Id": "Giveaways.String20",
-    "Valor": "Una vez comprado el bundle deberás enviar un correo a admin@pepeizqdeals.com indicando que bundle has comprado, la donación y la fecha."
+    "Valor": "Una vez comprado el bundle deberás enviar un correo a admin@pepeizqdeals.com indicando que bundle has comprado, la donación, la fecha y también mencionar con que usuario de Steam has solicitado acceso al grupo."
   },
   {
     "Id": "Giveaways.String21",
-    "Valor": "Es requisito que se enlace a mi web y si esos enlaces generan más de 100 visitas (de humanos diferentes) enviarme un correo a admin@pepeizqdeals.com especificando los enlaces."
+    "Valor": "Es requisito que se enlace a mi web y si esos enlaces generan más de 100 visitas (de humanos diferentes) enviarme un correo a admin@pepeizqdeals.com especificando los enlaces y también mencionar con que usuario de Steam has solicitado acceso al grupo."
   },
   {
     "Id": "Giveaways.String22",
-    "Valor": "Para ambas contribuciones también es necesario que me especifiquéis en el correo con que usuario de Steam habéis solicitado acceso para el Grupo Premium. Además para el Grupo Premium se aplicarán estas normas:"
+    "Valor": "Primero has de cumplir los siguientes requisitos:"
+  },
+  {
+    "Id": "Giveaways.String23",
+    "Valor": "Antes de que entréis a los sorteos, necesito que leáis esto. Divido los sorteos en dos grupos: uno llamado Premium donde puede entrar todo aquel que me ayuda con la web (abajo específico como) y uno Básico donde  hago sorteos de juegos que ya mucha gente tiene. El motivo de la división de grupos se debe a que intento ser lo mas justo con los sorteos con el escaso presupuesto que manejo en la web."
+  },
+  {
+    "Id": "Giveaways.String24",
+    "Valor": "¿Como participar en los sorteos del Grupo Premium?"
+  },
+  {
+    "Id": "Giveaways.String25",
+    "Valor": "¿Como participar en los sorteos del Grupo Básico?"
+  },
+  {
+    "Id": "Giveaways.String26",
+    "Valor": "Solicitar acceso a este grupo de Steam."
+  },
+  {
+    "Id": "Giveaways.String27",
+    "Valor": "Unirte a este grupo de Steam."
   },
   {
     "Id": "Month.1",

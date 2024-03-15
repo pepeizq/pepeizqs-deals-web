@@ -150,6 +150,11 @@
 	}
 </style>
 
+@* Mensajes de Urgencia *@
+@* <div class="alert alert-danger alert-dismissible" style="margin-bottom: 40px;" role="alert">
+	I am having problems with the email server, i will try to respond when i can
+</div> *@
+
 @if (noticiaEvento.Count == 1)
 {
 	<div style="margin-bottom: 50px;">
@@ -182,7 +187,7 @@
 	<div style="display: flex; align-items: center; margin-bottom: 60px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div class="destacados-espacio tooltip4" style="display: grid; grid-auto-flow: column; width: 100%;">
+		<div class="destacados-espacio tooltip4" onmousemove="hover(event, 'tooltip-destacados')" style="display: grid; grid-auto-flow: column; width: 100%;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
 				if (destacado != null)
@@ -345,7 +350,7 @@ else
 		</div>
 	</div>
 
-	<div class="tooltip4" style="margin-bottom: 25px;">
+	<div class="tooltip4" onmousemove="hover(event, 'tooltip-minimos')" style="margin-bottom: 25px;">
 		@foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 		{
 			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
@@ -450,30 +455,19 @@ else
 }
 
 <script>
-	window.onmousemove = function (e) {
+	function hover(e, id) {
 		var x = e.clientX,
 			y = e.clientY;
 
-		var tooltipSpan = document.getElementById('tooltip-destacados');
+		var tooltip = document.getElementById(id);
 
 		if (screen.width / 2 > x) {
-			tooltipSpan.style.top = (y + 10) + 'px';
-			tooltipSpan.style.left = (x + 20) + 'px';
+			tooltip.style.top = (y + 10) + 'px';
+			tooltip.style.left = (x + 20) + 'px';
 		}
 		else {
-			tooltipSpan.style.top = (y - 10) + 'px';
-			tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
-		};
-
-		var tooltipSpan = document.getElementById('tooltip-minimos');
-
-		if (screen.width / 2 > x) {
-			tooltipSpan.style.top = (y + 10) + 'px';
-			tooltipSpan.style.left = (x + 20) + 'px';
-		}
-		else {
-			tooltipSpan.style.top = (y - 10) + 'px';
-			tooltipSpan.style.left = (x - 20 - tooltipSpan.getBoundingClientRect().width) + 'px';
+			tooltip.style.top = (y - 10) + 'px';
+			tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
 		};
 	};
 </script>
