@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+
+<style>
+    .admin-boton-hover {
+        margin: 0px;
+        border: 0px;
+        color: var(--colorTextoVisitado);
+        background-color: transparent;
+        line-height: 20px;
+        text-decoration: none;
+        vertical-align: middle;
+        transition-duration: 0.4s;
+    }
+
+        .admin-boton-hover:hover {
+            background-color: var(--fondoBotonPequeño);
+            color: var(--colorTextoVisitado);
+        }
+
+    .admin-panel {
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        overflow-x: auto;
+        position: fixed;
+        z-index: 1000;
+        padding: 10px;
+        background-color: var(--fondoOscuroTransparente);
+    }
+</style>
+
+<li class="nav-item" style="margin-right: 30px;">
+    <button class="admin-boton-hover" @onmouseenter="(e => MostrarPestaña(e))" @onclick="(e => MostrarPestaña(e))">Admin @adminNuevosCorreosMensaje</button>
+</li>
+
+@if (mostrarPestaña == true)
+{
+    <div class="admin-panel" style="display: flex; align-items: start;">
+        <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px;" @onclick="(e => CerrarPestaña(e))">
+            <i class="fa-solid fa-xmark" style="font-size: 40px;"></i>
+        </button>
+
+        <div style="display: flex; align-items: start; margin-top: 40px;">
+
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    private int adminNuevosCorreos = 0;
+    private string adminNuevosCorreosMensaje = string.Empty;
+    private int adminNuevosErrores = 0;
+    private string adminNuevosErroresMensaje = string.Empty;
+
+    private bool mostrarPestaña = false;
+
+    protected override void OnInitialized()
+    {
+        adminNuevosCorreos = Herramientas.Correos.ComprobarNuevosCorreos();
+
+        if (adminNuevosCorreos > 0)
+        {
+            if (adminNuevosCorreos == 1)
+            {
+                adminNuevosCorreosMensaje = "• 1 Nuevo Correo";
+            }
+            else if (adminNuevosCorreos > 1)
+            {
+                adminNuevosCorreosMensaje = "• " + adminNuevosCorreos.ToString() + " Nuevos Correos";
+            }
+        }
+
+        adminNuevosErrores = BaseDatos.Errores.Buscar.Todos().Count;
+
+        if (adminNuevosErrores > 0)
+        {
+            adminNuevosErroresMensaje = "(" + adminNuevosErrores.ToString() + ")";
+        }
+    }
+
+    private void MostrarPestaña(MouseEventArgs e)
+    {
+        mostrarPestaña = true;
+    }
+
+    private void CerrarPestaña(MouseEventArgs e)
+    {
+        mostrarPestaña = false;
+    }
+}

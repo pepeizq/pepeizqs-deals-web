@@ -25,10 +25,6 @@
     Usuario usuario = new Usuario();
 
     bool adminLogeado = false;
-    int adminNuevosCorreos = 0;
-    string adminNuevosCorreosMensaje = string.Empty;
-    int adminNuevosErrores = 0;
-    string adminNuevosErroresMensaje = string.Empty;
 
     if (usuarioLogeado == true)
     {
@@ -37,27 +33,6 @@
         if (await UsuarioCoger.RolDios(UserManager, User) == true)
         {
             adminLogeado = true;
-
-            adminNuevosCorreos = Herramientas.Correos.ComprobarNuevosCorreos();
-
-            if (adminNuevosCorreos > 0)
-            {
-                if (adminNuevosCorreos == 1)
-                {
-                    adminNuevosCorreosMensaje = "• 1 Nuevo Correo";
-                }
-                else if (adminNuevosCorreos > 1)
-                {
-                    adminNuevosCorreosMensaje = "• " + adminNuevosCorreos.ToString() + " Nuevos Correos";
-                }
-            }
-
-            adminNuevosErrores = BaseDatos.Errores.Buscar.Todos().Count;
-
-            if (adminNuevosErrores > 0)
-            {
-                adminNuevosErroresMensaje = "(" + adminNuevosErrores.ToString() + ")";
-            }
         }
     }
 }
@@ -173,26 +148,7 @@
                     <ul class="navbar-nav flex-grow-1" style="align-items: center; margin-top: 0px;">
                         @if (usuarioLogeado == true && adminLogeado == true)
                         {
-                            <li class="nav-item" style="margin-right: 30px;">
-                                <div class="menu-dropdown">
-                                    <button class="texto-cabecera" style="margin: 0px; border: 0px; color: var(--colorTextoVisitado); line-height: 20px;">Admin @adminNuevosCorreosMensaje</button>
-                                    <div class="menu-dropdown-contenido">
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da">Visitas</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://mail5017.site4now.net/interface/root#/email">Correo (@adminNuevosCorreos.ToString())</a>
-                                        <hr />
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Anadir">Añadir</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Tiendas">Tiendas</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Pendientes">Pendientes</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Errores">Errores @adminNuevosErroresMensaje</a>
-                                        <hr />
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Noticias">Noticias</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Bundles">Bundles</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Gratis">Gratis</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Suscripciones">Suscripciones</a>
-                                        <a class="texto-cabecera menu-dropdown-item" href="https://beta.pepeizqdeals.com/Admin/Sorteos">Sorteos</a>
-                                    </div>
-                                </div>
-                            </li>
+                            @(await Html.RenderComponentAsync<Componentes.Admin.Portada>(RenderMode.ServerPrerendered))
                         }
 
                         <li class="nav-item">
