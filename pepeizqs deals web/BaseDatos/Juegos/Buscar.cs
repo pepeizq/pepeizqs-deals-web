@@ -167,15 +167,6 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			try
-            {
-              
-            }
-            catch
-            {
-
-            }
-
             if (juegos.Count > 0)
             {
                 return juegos.OrderBy(x => x.Nombre)

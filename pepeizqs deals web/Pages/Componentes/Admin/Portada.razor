@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using BaseDatos.Avisos
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
 
 <style>
     .admin-boton-hover {
@@ -36,13 +38,51 @@
 
 @if (mostrarPestaña == true)
 {
-    <div class="admin-panel" style="display: flex; align-items: start;">
+    <div class="admin-panel">
         <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px;" @onclick="(e => CerrarPestaña(e))">
             <i class="fa-solid fa-xmark" style="font-size: 40px;"></i>
         </button>
 
-        <div style="display: flex; align-items: start; margin-top: 40px;">
+        <div style="display: flex; align-items: start; margin-top: 40px; width: 100%; font-size: 18px;">
+            <div style="width: 30%;">
+                <div class="perfil">
+                    <a href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Tiendas" style="text-decoration: none; margin-top: 10px;">Tiendas</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Pendientes" style="text-decoration: none; margin-top: 10px;">Pendientes</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Errores" style="text-decoration: none; margin-top: 10px;">Errores @adminNuevosErroresMensaje</a>
+                </div>
 
+                <label style="margin-top: 40px; padding-left: 40px;">Añadir</label>
+                <hr/>
+                <div class="perfil">
+                    <a href="https://beta.pepeizqdeals.com/Admin/Anadir" style="text-decoration: none;">Juego / DLC / Banda Sonora / Software</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none; margin-top: 10px;">Noticias</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none; margin-top: 10px;">Bundles</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none; margin-top: 10px;">Gratis</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Suscripciones" style="text-decoration: none; margin-top: 10px;">Suscripciones</a>
+                    <a href="https://beta.pepeizqdeals.com/Admin/Sorteos" style="text-decoration: none; margin-top: 10px;">Sorteos</a>
+                </div>
+            </div>
+
+            <div style="width: 70%; padding-left: 40px; padding-right: 20px;">
+                <label style="padding-left: 40px;">Avisos</label>
+                <hr />
+                <div class="perfil">
+                    <div style="display: flex; align-items: center;">
+                        <label style="margin-right: 20px; min-width: 30px;">EN:</label>
+                        <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px;">@avisoEn</textarea>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <label style="margin-right: 20px; min-width: 30px;">ES:</label>
+                        <textarea @oninput="@(e => ActualizarAviso(e, "es"))" class="entrada-texto" style="height: 35px;">@avisoEs</textarea>
+                    </div>
+
+                    <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 30px;" @onclick="@(e => BorrarAviso(e))">
+                        Borrar Aviso
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 }
@@ -60,6 +100,8 @@
 
     protected override void OnInitialized()
     {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
         adminNuevosCorreos = Herramientas.Correos.ComprobarNuevosCorreos();
 
         if (adminNuevosCorreos > 0)
@@ -74,12 +116,32 @@
             }
         }
 
-        adminNuevosErrores = BaseDatos.Errores.Buscar.Todos().Count;
-
-        if (adminNuevosErrores > 0)
+        using (conexion)
         {
-            adminNuevosErroresMensaje = "(" + adminNuevosErrores.ToString() + ")";
+            adminNuevosErrores = BaseDatos.Errores.Buscar.Todos(conexion).Count;
+
+            if (adminNuevosErrores > 0)
+            {
+                adminNuevosErroresMensaje = "(" + adminNuevosErrores.ToString() + ")";
+            }
+
+            //----------------------------------
+
+            Aviso aviso1 = BaseDatos.Avisos.Buscar.Ejecutar("en", conexion);
+
+            if (aviso1 != null)
+            {
+                avisoEn = aviso1.Mensaje;
+            }
+            
+            Aviso aviso2 = BaseDatos.Avisos.Buscar.Ejecutar("es", conexion);
+
+            if (aviso2 != null)
+            {
+                avisoEs = aviso2.Mensaje;
+            }
         }
+        
     }
 
     private void MostrarPestaña(MouseEventArgs e)
@@ -91,4 +153,32 @@
     {
         mostrarPestaña = false;
     }
+
+    #region Avisos
+
+    private string avisoEn = string.Empty;
+    private string avisoEs = string.Empty;
+
+    private void ActualizarAviso(ChangeEventArgs texto, string idioma)
+    {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar(texto.Value.ToString().Trim(), idioma, conexion);
+        }       
+    }
+
+    private void BorrarAviso(MouseEventArgs e)
+    {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "en", conexion);
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "es", conexion);
+        }
+    }
+
+    #endregion
 }

@@ -109,43 +109,36 @@
 
         SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-        if (conexion.State == System.Data.ConnectionState.Open)
+        using (conexion)
         {
-            using (conexion)
+            if (texto.Value.ToString().Trim().Length > 1)
             {
-                if (texto.Value.ToString().Trim().Length > 1)
+                if ((tarea != null) && (tarea.IsCompleted == false ||
+                           tarea.Status == TaskStatus.Running ||
+                           tarea.Status == TaskStatus.WaitingToRun ||
+                           tarea.Status == TaskStatus.WaitingForActivation))
                 {
-                    if ((tarea != null) && (tarea.IsCompleted == false ||
-                               tarea.Status == TaskStatus.Running ||
-                               tarea.Status == TaskStatus.WaitingToRun ||
-                               tarea.Status == TaskStatus.WaitingForActivation))
-                    {
-                        tarea.Dispose();
-                        resultadosBuscar = new List<Juegos.Juego>();
-                    }
-                    else
-                    {
-                        tarea = Task.Factory.StartNew(() =>
-                        {
-                            List<Juegos.Juego> resultados2 = new List<Juegos.Juego>();
-
-                            resultados2 = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 100);
-
-                            return resultados2;
-                        });
-
-                        resultadosBuscar = tarea.Result;     
-                    }
+                    tarea.Dispose();
+                    resultadosBuscar = new List<Juegos.Juego>();
                 }
                 else
                 {
-                    resultadosBuscar = new List<Juegos.Juego>();
+                    tarea = Task.Factory.StartNew(() =>
+                    {
+                        List<Juegos.Juego> resultados2 = new List<Juegos.Juego>();
+
+                        resultados2 = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 100);
+
+                        return resultados2;
+                    });
+
+                    resultadosBuscar = tarea.Result;
                 }
             }
-        }
-        else
-        {
-            resultadosBuscar = new List<Juegos.Juego>();
+            else
+            {
+                resultadosBuscar = new List<Juegos.Juego>();
+            }
         }
 
         if (resultadosBuscar != null)
