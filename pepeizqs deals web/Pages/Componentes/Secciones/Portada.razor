@@ -150,10 +150,13 @@
 	}
 </style>
 
-@* Mensajes de Urgencia *@
-@* <div class="alert alert-danger alert-dismissible" style="margin-bottom: 40px;" role="alert">
-	I am having problems with the email server, i will try to respond when i can
-</div> *@
+@if (aviso != null)
+{
+	<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); font-size: 17px; display: flex; align-items: center; margin-bottom: 40px; flex-direction: initial;">
+		<label style="padding-right: 20px;">@aviso.Fecha.Day.ToString()/@aviso.Fecha.Month.ToString()</label>
+		<label>@aviso.Mensaje</label>
+	</div>
+}
 
 @if (noticiaEvento.Count == 1)
 {
@@ -484,6 +487,8 @@ else
 
 	private Usuario usuario = new Usuario();
 
+	BaseDatos.Avisos.Aviso aviso = null;
+
 	List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
 	List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
 	public int cantidadDestacadosMostrar = 6;
@@ -509,6 +514,12 @@ else
 
 		using (conexion)
 		{
+			#region Aviso
+
+			aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
+
+			#endregion
+
 			#region Destacados
 
 			try

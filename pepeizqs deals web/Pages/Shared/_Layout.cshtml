@@ -148,7 +148,7 @@
                     <ul class="navbar-nav flex-grow-1" style="align-items: center; margin-top: 0px;">
                         @if (usuarioLogeado == true && adminLogeado == true)
                         {
-                            @(await Html.RenderComponentAsync<Componentes.Admin.Portada>(RenderMode.ServerPrerendered))
+                            @(await Html.RenderComponentAsync<Componentes.Admin.Portada>(RenderMode.Server))
                         }
 
                         <li class="nav-item">

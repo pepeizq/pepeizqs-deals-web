@@ -8,6 +8,15 @@ namespace BaseDatos.Avisos
     {
         public static Aviso Ejecutar(string idioma, SqlConnection conexion)
         {
+            if (idioma == "es-ES")
+            {
+                idioma = "es";
+            }
+            else if (idioma != "es")
+            {
+                idioma = "en";
+            }
+
             string sqlBuscar = "SELECT * FROM avisos WHERE id=@id";
 
             using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))

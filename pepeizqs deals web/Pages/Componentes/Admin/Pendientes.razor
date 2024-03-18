@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using BaseDatos.Pendientes
+@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.Data.SqlClient
 
 <div class="perfil">
@@ -22,17 +23,11 @@
 	{
 		<div style="display: flex; justify-content: space-between;">
 			<div style="min-width: 300px; margin: -10px 0px;">
-				@foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+				@foreach (var pendiente in pendientes)
 				{
-					@if (tienda.Id != "steam")
-					{
-						@if (int.Parse(BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id, conexion)) > 0)
-						{
-							<button @onclick="@(e => ClickearTienda(e, tienda.Id, tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
-								<img src="@tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @tienda.Nombre (@BaseDatos.Pendientes.LeerCantidad.Ejecutar(tienda.Id, conexion))
-							</button>
-						}
-					}
+					<button @onclick="@(e => ClickearTienda(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
+						<img src="@pendiente.Tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Tienda.Nombre (@pendiente.Pendientes.Count)
+					</button>
 				}
 			</div>
 
@@ -144,11 +139,33 @@
 
 	#nullable disable
 
-	SqlConnection conexion = new SqlConnection();
+	List<PendientesTienda> pendientes = new List<PendientesTienda>();
 
 	protected override void OnInitialized()
 	{
-		DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+			{
+				if (tienda.Id != "steam")
+				{
+					PendientesTienda pendienteTienda = new PendientesTienda();
+					pendienteTienda.Tienda = tienda;
+					pendienteTienda.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(tienda.Id, conexion);
+
+					if (pendienteTienda.Pendientes.Count > 0)
+					{
+						pendientes.Add(pendienteTienda);
+					}					
+				}
+			}
+
+			//---------------------------------------------
+
+			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
+		}		
 	}
 
 	private int pestañaMostrar = 0;
@@ -180,45 +197,65 @@
 	{
 		if (string.IsNullOrEmpty(id) == false)
 		{
-			BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.LeerJuego.Ejecutar(id, conexion);
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-			if (pendiente != null)
+			using (conexion)
 			{
-				nombrePendiente = pendiente.nombre;
+				BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.Buscar.PrimerJuego(id, conexion);
 
-				string imagen = pendiente.imagen;
-
-				if (imagen != null)
+				if (pendiente != null)
 				{
-					imagen = imagen.Replace("&amp;", "&");
+					nombrePendiente = pendiente.nombre;
+
+					string imagen = pendiente.imagen;
+
+					if (imagen != null)
+					{
+						imagen = imagen.Replace("&amp;", "&");
+					}
+
+					imagenPendiente = imagen;
+
+					enlacePendiente = pendiente.enlace;
+
+					idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
 				}
-
-				imagenPendiente = imagen;
-
-				enlacePendiente = pendiente.enlace;
-
-				idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombrePendiente, conexion);
-			}
+			}			
 		}		
 	}
 
 	private void ClickearDescartar(MouseEventArgs e, string enlace)
 	{
-		BaseDatos.Pendientes.DescartarJuego.Ejecutar(idTienda, enlace);
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-		ClickearTienda(idTienda);
+		using (conexion)
+		{
+			BaseDatos.Pendientes.Actualizar.Descartar(idTienda, enlace, conexion);
+
+			ClickearTienda(idTienda);
+		}
 	}
 
 	private void ClickearBuscar(MouseEventArgs e, string nombre)
 	{
-		idsPendiente = BaseDatos.Pendientes.BuscarJuego.Ejecutar(nombre, conexion);
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombre, conexion);
+		}		
 	}
 
 	private void ClickearActualizar(MouseEventArgs e, string enlace)
 	{
-		BaseDatos.Pendientes.ActualizarJuego.Ejecutar(idTienda, enlace, idsPendiente, conexion);
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-		ClickearTienda(idTienda);
+		using (conexion)
+		{
+			BaseDatos.Pendientes.Actualizar.Juego(idTienda, enlace, idsPendiente, conexion);
+
+			ClickearTienda(idTienda);
+		}
 	}
 
 	private void TextoCambia(ChangeEventArgs texto)
@@ -232,14 +269,19 @@
 
 	private void TextoCambiaBuscador(ChangeEventArgs texto)
 	{
-		if (texto.Value.ToString().Trim().Length > 2)
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
 		{
-			cadenaBusqueda = texto.Value.ToString().Trim();
-			juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 250);
-		}
-		else
-		{
-			juegosBuscador = new List<Juegos.Juego>();
+			if (texto.Value.ToString().Trim().Length > 2)
+			{
+				cadenaBusqueda = texto.Value.ToString().Trim();
+				juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 250);
+			}
+			else
+			{
+				juegosBuscador = new List<Juegos.Juego>();
+			}
 		}
 	}
 
@@ -293,6 +335,8 @@
 
 	private async Task BuscarDlcMaestro()
 	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
 		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
 
 		if (nuevoJuego != null)
