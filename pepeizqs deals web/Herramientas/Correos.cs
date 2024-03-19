@@ -8,6 +8,7 @@ using MailKit;
 using Noticias;
 using System.Net.Mail;
 using Sorteos2;
+using MimeKit;
 
 namespace Herramientas
 {
@@ -218,9 +219,9 @@ namespace Herramientas
 			}
 		}
 
-		public static int ComprobarNuevosCorreos()
+		public static List<MimeMessage> ComprobarNuevosCorreos()
 		{
-			int correos = 0;
+			List<MimeMessage> correos = new List<MimeMessage>();
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -235,9 +236,12 @@ namespace Herramientas
                     cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
                     cliente.Inbox.Open(FolderAccess.ReadOnly);
 
-                    //correos = cliente.Inbox.Search(SearchQuery.New).Count;
+                    foreach (var id in cliente.Inbox.Search(SearchQuery.NotSeen))
+                    {
+                        MimeMessage correo = cliente.Inbox.GetMessage(id);
 
-                    correos = cliente.Inbox.Search(SearchQuery.NotSeen).Count;
+						correos.Add(correo);
+                    }
                 }
 				catch { }
 
@@ -246,12 +250,5 @@ namespace Herramientas
 
             return correos;
         }
-	}
-
-	public class Correo
-	{
-		public string Host { get; set; }
-		public string CorreoDesde { get; set; }
-		public string Contraseña { get; set; }
 	}
 }

@@ -8,6 +8,12 @@
 @{
     #nullable disable
 
+    string discord = "https://discord.gg/GBT3FXnrm3";
+    string telegram = "https://t.me/pepeizqdeals2";
+    string reddit = "https://reddit.com/r/pepeizqdeals/";
+    string twitter = "https://twitter.com/pepeizqdeals";
+    string steam = "https://steamcommunity.com/groups/pepeizqdeals/";
+
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     string titulo = string.Empty;
@@ -153,7 +159,6 @@
 
                         <li class="nav-item">
                             <div style="display: flex; flex-direction: row; align-items: center;">
-                                <i class="fa-solid fa-magnifying-glass" style="margin-right: 15px;"></i>
                                 @(await Html.RenderComponentAsync<Componentes.Secciones.CabeceraBuscador>(RenderMode.ServerPrerendered, new { idioma = idioma }))
                             </div>
                         </li> 
@@ -162,11 +167,11 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <div style="display: flex; align-items: center; justify-content: center; font-size: 20px; text-align: center;">
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://discord.gg/GBT3FXnrm3" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://t.me/pepeizqdeals2" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://reddit.com/r/pepeizqdeals/" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://twitter.com/pepeizqdeals" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
                     </div>
                 </div>
             </div>
@@ -192,11 +197,11 @@
 
                 <div style="width: 25%; text-align: right;">
                     <div style="display: flex; align-items: center; justify-content: center; font-size: 24px; text-align: center;">
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://discord.gg/GBT3FXnrm3" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://t.me/pepeizqdeals2" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://reddit.com/r/pepeizqdeals/" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://twitter.com/pepeizqdeals" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="https://steamcommunity.com/groups/pepeizqdeals/" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
                     </div>
                 </div>
 

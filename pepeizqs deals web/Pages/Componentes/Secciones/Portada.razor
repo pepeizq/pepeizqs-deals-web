@@ -152,10 +152,13 @@
 
 @if (aviso != null)
 {
-	<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); font-size: 17px; display: flex; align-items: center; margin-bottom: 40px; flex-direction: initial;">
-		<label style="padding-right: 20px;">@aviso.Fecha.Day.ToString()/@aviso.Fecha.Month.ToString()</label>
-		<label>@aviso.Mensaje</label>
-	</div>
+	if (string.IsNullOrEmpty(aviso.Mensaje) == false)
+	{
+		<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); font-size: 17px; display: flex; align-items: center; margin-bottom: 40px; flex-direction: initial;">
+			<label style="padding-right: 20px;">@aviso.Fecha.Day.ToString()/@aviso.Fecha.Month.ToString()</label>
+			<label>@aviso.Mensaje</label>
+		</div>
+	}
 }
 
 @if (noticiaEvento.Count == 1)

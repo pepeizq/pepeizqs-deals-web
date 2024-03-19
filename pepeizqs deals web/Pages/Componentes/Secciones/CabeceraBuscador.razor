@@ -11,6 +11,7 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<i class="fa-solid fa-magnifying-glass" style="margin-right: 15px;"></i>
 <input type="text" @oninput="TextoCambia" class="entrada-texto" />
 
 @if (resultados != null)
@@ -95,6 +96,8 @@
     [Parameter]
     public string idioma { get; set; }
 
+    private bool cargado = false;
+
     List<Juegos.Juego> resultados = new List<Juegos.Juego>();
     List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
     List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
@@ -102,6 +105,12 @@
     List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
 
     Task<List<Juegos.Juego>> tarea;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(100);
+        cargado = true;
+    }
 
     private void TextoCambia(ChangeEventArgs texto)
     {

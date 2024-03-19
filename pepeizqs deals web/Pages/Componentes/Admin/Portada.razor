@@ -1,6 +1,10 @@
 ﻿@using BaseDatos.Avisos
+@using BaseDatos.Errores
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.Data.SqlClient
+@using MimeKit
+
+@attribute [StreamRendering(true)]
 
 <style>
     .admin-boton-hover {
@@ -30,55 +34,90 @@
         padding: 10px;
         background-color: var(--fondoOscuroTransparente);
     }
+
+    .admin-lateral {
+        color: var(--colorTexto);
+        background-color: transparent;
+        border: 0px;
+        padding: 8px 20px;
+        text-align: left;
+    }
+
+         .admin-lateral:hover {
+                background-color: var(--fondoBotonPequeño);
+                color: var(--colorTextoVisitado);
+         }
 </style>
 
 <li class="nav-item" style="margin-right: 30px;">
-    <button class="admin-boton-hover" @onmouseenter="(e => MostrarPestaña(e))" @onclick="(e => MostrarPestaña(e))">Admin @nuevosCorreosMensaje</button>
+    <button class="admin-boton-hover" @onmouseenter="(e => MostrarAdmin(e))" @onclick="(e => MostrarAdmin(e))">Admin @nuevosCorreosMensaje</button>
 </li>
 
-@if (mostrarPestaña == true)
+@if (mostrarAdmin == true)
 {
     <div class="admin-panel">
-        <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px;" @onclick="(e => CerrarPestaña(e))">
+        <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px;" @onclick="(e => CerrarAdmin(e))">
             <i class="fa-solid fa-xmark" style="font-size: 40px;"></i>
         </button>
 
-        <div style="display: flex; align-items: start; margin-top: 40px; width: 100%; font-size: 18px;">
-            <div style="width: 30%;">
-                <div class="perfil" style="padding: 20px 30px; border: 1px solid var(--fondoBoton);">
-                    <a href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Tiendas" style="text-decoration: none; margin-top: 10px;">Tiendas</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Pendientes" style="text-decoration: none; margin-top: 10px;">Pendientes @nuevosPendientesMensaje</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Errores" style="text-decoration: none; margin-top: 10px;">Errores @nuevosErroresMensaje</a>
+        <div style="display: flex; align-items: start; margin-top: 40px; width: 100%; font-size: 17px;">
+            <div style="width: 25%;">
+                <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
+                    <a class="admin-lateral" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Tiendas" style="text-decoration: none;">Tiendas</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Pendientes" style="text-decoration: none;">Pendientes @nuevosPendientesMensaje</a>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarErrores(e))">Errores @nuevosErroresMensaje</button>
                 </div>
 
                 <label style="margin-top: 40px; padding-left: 30px; padding-bottom: 15px;">Añadir</label>
-                <div class="perfil" style="padding: 20px 30px; border: 1px solid var(--fondoBoton);">
-                    <a href="https://beta.pepeizqdeals.com/Admin/Anadir" style="text-decoration: none;">Juego / DLC / Banda Sonora / Software</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none; margin-top: 10px;">Noticias</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none; margin-top: 10px;">Bundles</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none; margin-top: 10px;">Gratis</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Suscripciones" style="text-decoration: none; margin-top: 10px;">Suscripciones</a>
-                    <a href="https://beta.pepeizqdeals.com/Admin/Sorteos" style="text-decoration: none; margin-top: 10px;">Sorteos</a>
+                <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Anadir" style="text-decoration: none;">Juego / DLC / Banda Sonora / Software</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none;">Noticias</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none;">Bundles</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none;">Gratis</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Suscripciones" style="text-decoration: none;">Suscripciones</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Sorteos" style="text-decoration: none;">Sorteos</a>
                 </div>
             </div>
 
-            <div style="width: 70%; padding-left: 40px; padding-right: 20px;">
-                <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px; padding-bottom: 15px; display: flex; align-items: center;" @onclick="(e => MostrarCerrarAvisos(e))">
-                    @if (mostrarAvisos == true)
-                    {
-                        <i class="fa-solid fa-arrow-up" style="font-size: 20px;"></i>
-                    }
-                    else
-                    {
-                        <i class="fa-solid fa-arrow-down" style="font-size: 20px;"></i>
-                    }
+            <div style="width: 75%; padding-left: 40px; padding-right: 20px;">
+                @if (mostrarErrores == true)
+                {
+                    <label style="padding-left: 20px; padding-bottom: 15px;">Errores @nuevosErroresMensaje</label>
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <button @onclick="@(e => LimpiarErrores(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
+                        
+                        <hr />
 
-                    <div style="padding-left: 20px;">Avisos</div>
-                </button>
-                
+                        @foreach (var error in listaErrores)
+                        {
+                            <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                                <div style="padding-left: 10px; padding-right: 10px;">
+                                    <div>
+                                        @error.Seccion
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        @error.Fecha
+                                    </div>
+                                </div>
+                                <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                                    @error.Mensaje
+                                </div>
+                                <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                                    @error.Stacktrace
+                                </div>
+                            </div>
+
+                            <hr />
+                        }
+                    </div>
+                }
+
                 @if (mostrarAvisos == true)
                 {
+                    <label style="padding-left: 20px; padding-bottom: 15px;">Avisos</label>
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
                         <div style="display: flex; align-items: center;">
                             <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px;" placeholder="EN">@avisoEn</textarea>
@@ -92,7 +131,39 @@
                             Borrar Aviso
                         </button>
                     </div>
-                }              
+                }
+
+                @if (mostrarCorreos == true)
+                {
+                    <label style="padding-left: 2px; padding-bottom: 15px;">Correos</label>
+                    <div class="perfil" style="padding: 10px; border: 1px solid var(--fondoBoton);">
+                        @foreach (var correo in correos)
+                        {
+                            <div style="padding: 10px;">
+                                <div>@correo.Subject</div>
+
+                                @{
+                                    string correoString = correo.HtmlBody;
+                                    correoString = correoString.Replace("rgb(0,0,0)", "var(--colorTexto)");
+                                    correoString = correoString.Replace("rgb(0, 0, 0)", "var(--colorTexto)");
+                                    correoString = correoString.Replace("#000000", "var(--colorTexto)");
+                                    correoString = correoString.Replace("#26282a", "var(--colorTexto)");
+
+                                    MarkupString correoHtml = new MarkupString(correoString);
+                                }
+
+                                <div style="margin-top: 10px;">@correoHtml</div>
+
+                                <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px; margin-top: 20px;" />
+
+                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px; margin-bottom: 20px;" @onclick="@(e => ResponderCorreo(e))">
+                                    Responder
+                                </button>
+                                <hr />
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -102,28 +173,32 @@
 
     #nullable disable
 
-    private int nuevosCorreos = 0;
+    private List<MimeMessage> correos = new List<MimeMessage>();
+    private int nuevosCorreosCantidad = 0;
     private string nuevosCorreosMensaje = string.Empty;
-    private int nuevosPendientes = 0;
+    private string nuevosCorreosMensaje2 = string.Empty;
+    private int nuevosPendientesCantidad = 0;
     private string nuevosPendientesMensaje = string.Empty;
-    private int nuevosErrores = 0;
+    private int nuevosErroresCantidad = 0;
     private string nuevosErroresMensaje = string.Empty;
 
-    private bool mostrarPestaña = false;
+    private bool mostrarAdmin = false;
 
     protected override void OnInitialized()
     {
-        nuevosCorreos = Herramientas.Correos.ComprobarNuevosCorreos();
+        correos = Herramientas.Correos.ComprobarNuevosCorreos();
 
-        if (nuevosCorreos > 0)
+        if (correos.Count > 0)
         {
-            if (nuevosCorreos == 1)
+            nuevosCorreosMensaje2 = "(" + correos.Count.ToString() + ")";
+
+            if (correos.Count == 1)
             {
-                nuevosCorreosMensaje = "• 1 Nuevo Correo";
+                nuevosCorreosMensaje = "• 1 Nuevo Correo";             
             }
-            else if (nuevosCorreos > 1)
+            else if (correos.Count > 1)
             {
-                nuevosCorreosMensaje = "• " + nuevosCorreos.ToString() + " Nuevos Correos";
+                nuevosCorreosMensaje = "• " + correos.Count.ToString() + " Nuevos Correos";
             }
         }
 
@@ -131,20 +206,22 @@
 
         using (conexion)
         {
-            nuevosPendientes = BaseDatos.Pendientes.Buscar.Todos(conexion).Count;
+            nuevosPendientesCantidad = BaseDatos.Pendientes.Buscar.Todos(conexion).Count;
 
-            if (nuevosPendientes > 0)
+            if (nuevosPendientesCantidad > 0)
             {
-                nuevosPendientesMensaje = "(" + nuevosPendientes.ToString() + ")";
+                nuevosPendientesMensaje = "(" + nuevosPendientesCantidad.ToString() + ")";
             }
 
             //----------------------------------
 
-            nuevosErrores = BaseDatos.Errores.Buscar.Todos(conexion).Count;
+            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
 
-            if (nuevosErrores > 0)
+            nuevosErroresCantidad = listaErrores.Count;
+
+            if (nuevosErroresCantidad > 0)
             {
-                nuevosErroresMensaje = "(" + nuevosErrores.ToString() + ")";
+                nuevosErroresMensaje = "(" + nuevosErroresCantidad.ToString() + ")";
             }
 
             //----------------------------------
@@ -166,15 +243,53 @@
 
     }
 
-    private void MostrarPestaña(MouseEventArgs e)
+    private void MostrarAdmin(MouseEventArgs e)
     {
-        mostrarPestaña = true;
+        mostrarAdmin = true;
     }
 
-    private void CerrarPestaña(MouseEventArgs e)
+    private void CerrarAdmin(MouseEventArgs e)
     {
-        mostrarPestaña = false;
+        mostrarAdmin = false;
     }
+
+    private void CerrarPestañas()
+    {
+        mostrarAvisos = false;
+        mostrarCorreos = false;
+        mostrarErrores = false;
+    }
+
+    #region Errores
+
+    private bool mostrarErrores = false;
+    List<Error> listaErrores = new List<Error>();
+
+    private void MostrarCerrarErrores(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarErrores == true)
+        {
+            mostrarErrores = false;
+        }
+        else
+        {
+            mostrarErrores = true;
+        }
+    }
+
+    private void LimpiarErrores(MouseEventArgs e)
+    {
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            BaseDatos.Errores.Limpiar.Ejecutar(conexion);
+        }
+    }
+
+    #endregion
 
     #region Avisos
 
@@ -184,6 +299,8 @@
 
     private void MostrarCerrarAvisos(MouseEventArgs e)
     {
+        CerrarPestañas();
+
         if (mostrarAvisos == true)
         {
             mostrarAvisos = false;
@@ -204,7 +321,7 @@
         }       
     }
 
-    private void BorrarAviso(MouseEventArgs e)
+    private Task BorrarAviso(MouseEventArgs e)
     {
         SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -213,6 +330,38 @@
             BaseDatos.Avisos.Actualizar.Ejecutar("", "en", conexion);
             BaseDatos.Avisos.Actualizar.Ejecutar("", "es", conexion);
         }
+
+        return null;
+    }
+
+    #endregion
+
+    #region Correos
+
+    private bool mostrarCorreos = false;
+
+    private void MostrarCerrarCorreos(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarCorreos == true)
+        {
+            mostrarCorreos = false;
+        }
+        else
+        {
+            mostrarCorreos = true;
+        }
+    }
+
+    private void TextoRespuestaCorreo(ChangeEventArgs texto, string idioma)
+    {
+
+    }
+
+    private void ResponderCorreo(MouseEventArgs e)
+    {
+        
     }
 
     #endregion
