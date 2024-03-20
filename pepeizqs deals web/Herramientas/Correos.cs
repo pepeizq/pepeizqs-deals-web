@@ -6,9 +6,9 @@ using MailKit.Search;
 using MailKit.Security;
 using MailKit;
 using Noticias;
-using System.Net.Mail;
 using Sorteos2;
 using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace Herramientas
 {
@@ -183,39 +183,71 @@ namespace Herramientas
 			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
 
-		private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
+        public static void EnviarCorreo(MimeMessage correo)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-
-			string host = builder.Configuration.GetValue<string>("Correo:Host");
-			string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
-			MailMessage mensaje = new MailMessage();
-			mensaje.From = new MailAddress(correoDesde, "pepeizq's deals");
-			mensaje.To.Add(correoHacia);
-			mensaje.Subject = titulo;
-			mensaje.Body = html;
-			mensaje.IsBodyHtml = true;
-
-			SmtpClient cliente = new SmtpClient();
-			cliente.Host = host;
-
-			string texto1 = "gmail.com";
-			string texto2 = correoDesde.ToLower();
-
-			if (texto2.Contains(texto1) == true)
+			if (correo != null)
 			{
-                cliente.Port = 587;
-                cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
-                cliente.EnableSsl = true;
-                cliente.Send(mensaje);  
+				using (var cliente = new SmtpClient())
+				{
+                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+                    string host = builder.Configuration.GetValue<string>("Correo:Host");
+                    string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
+                    cliente.Connect(host, 25, SecureSocketOptions.Auto);
+					cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+					cliente.Send(correo);
+					cliente.Disconnect(true);
+				}
 			}
-			else
+        }
+
+        private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
+		{
+			if (string.IsNullOrEmpty(correoDesde) == false && string.IsNullOrEmpty(correoHacia) == false) 
 			{
-                cliente.Port = 25;
-                cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
-                cliente.EnableSsl = false;
-                cliente.Send(mensaje);
+				WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+				string host = builder.Configuration.GetValue<string>("Correo:Host");
+				string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
+                System.Net.Mail.MailMessage mensaje = new System.Net.Mail.MailMessage();
+				mensaje.From = new System.Net.Mail.MailAddress(correoDesde, "pepeizq's deals");
+				mensaje.To.Add(correoHacia);
+				mensaje.Subject = titulo;
+				mensaje.Body = html;
+				mensaje.IsBodyHtml = true;
+
+                System.Net.Mail.SmtpClient cliente = new System.Net.Mail.SmtpClient();
+				cliente.Host = host;
+
+				string texto1 = "gmail.com";
+				string texto2 = correoDesde.ToLower();
+
+				if (texto2.Contains(texto1) == true)
+				{
+					cliente.Port = 587;
+					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+					cliente.EnableSsl = true;
+
+					try
+					{
+                        cliente.Send(mensaje);
+                    }
+                    catch { }                   
+				}
+				else
+				{
+					cliente.Port = 25;
+					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
+					cliente.EnableSsl = false;
+
+					try
+					{
+						cliente.Send(mensaje);
+					}
+					catch { }
+				}
 			}
 		}
 

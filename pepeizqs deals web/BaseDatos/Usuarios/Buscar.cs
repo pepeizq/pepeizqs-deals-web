@@ -118,8 +118,14 @@ namespace BaseDatos.Usuarios
                                         {
                                             if (string.IsNullOrEmpty(lector.GetString(4)) == false)
                                             {
-                                                List<string> juegosSteam = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
-
+												List<string> juegosSteam = new List<string>();
+												
+												try
+												{
+													juegosSteam = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+												}
+												catch { }
+												
                                                 if (juegosSteam != null)
                                                 {
                                                     if (juegosSteam.Count > 0)

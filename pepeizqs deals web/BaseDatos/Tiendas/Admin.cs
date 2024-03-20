@@ -2,7 +2,6 @@
 
 using Herramientas;
 using Microsoft.Data.SqlClient;
-using System.Drawing;
 using Tiendas2;
 
 namespace BaseDatos.Tiendas
@@ -338,7 +337,52 @@ namespace BaseDatos.Tiendas
             }
         }
 
-        public static string CargarValorAdicional(string tienda, SqlConnection conexion)
+		public static string LeerDato(SqlConnection conexion, string id)
+		{
+			string seleccionarDato = "SELECT * FROM adminDatos WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(seleccionarDato, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						return lector.GetString(1);
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public static void ActualizarDato(SqlConnection conexion, string id, string contenido)
+		{
+			string sqlActualizar = "UPDATE adminDatos " +
+						"SET contenido=@contenido WHERE id=@id";
+
+			SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
+
+			using (comando)
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@contenido", contenido);
+
+				SqlDataReader lector = comando.ExecuteReader();
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
 		{
 			string valor = string.Empty;
 

@@ -1,4 +1,6 @@
-﻿using Herramientas;
+﻿#nullable disable
+
+using Herramientas;
 using Microsoft.Data.SqlClient;
 
 namespace Tareas

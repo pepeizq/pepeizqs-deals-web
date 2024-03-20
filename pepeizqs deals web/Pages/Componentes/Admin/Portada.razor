@@ -61,7 +61,7 @@
         </button>
 
         <div style="display: flex; align-items: start; margin-top: 40px; width: 100%; font-size: 17px;">
-            <div style="width: 25%;">
+            <div style="width: 15%;">
                 <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
                     <a class="admin-lateral" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>
@@ -71,9 +71,9 @@
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarErrores(e))">Errores @nuevosErroresMensaje</button>
                 </div>
 
-                <label style="margin-top: 40px; padding-left: 30px; padding-bottom: 15px;">Añadir</label>
+                <label style="margin-top: 40px; padding-left: 20px; padding-bottom: 15px;">Añadir</label>
                 <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
-                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Anadir" style="text-decoration: none;">Juego / DLC / Banda Sonora / Software</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Anadir" style="text-decoration: none;">Juego</a>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none;">Noticias</a>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none;">Bundles</a>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none;">Gratis</a>
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div style="width: 75%; padding-left: 40px; padding-right: 20px;">
+            <div style="width: 85%; padding-left: 40px; padding-right: 20px;">
                 @if (mostrarErrores == true)
                 {
                     <label style="padding-left: 20px; padding-bottom: 15px;">Errores @nuevosErroresMensaje</label>
@@ -156,7 +156,7 @@
 
                                 <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px; margin-top: 20px;" />
 
-                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px; margin-bottom: 20px;" @onclick="@(e => ResponderCorreo(e))">
+                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px; margin-bottom: 20px;" @onclick="@(e => ResponderCorreo(e, correo))">
                                     Responder
                                 </button>
                                 <hr />
@@ -173,6 +173,8 @@
 
     #nullable disable
 
+    SqlConnection conexion = new SqlConnection();
+
     private List<MimeMessage> correos = new List<MimeMessage>();
     private int nuevosCorreosCantidad = 0;
     private string nuevosCorreosMensaje = string.Empty;
@@ -186,27 +188,32 @@
 
     protected override void OnInitialized()
     {
-        correos = Herramientas.Correos.ComprobarNuevosCorreos();
-
-        if (correos.Count > 0)
+        if (conexion.State != System.Data.ConnectionState.Open)
         {
-            nuevosCorreosMensaje2 = "(" + correos.Count.ToString() + ")";
-
-            if (correos.Count == 1)
-            {
-                nuevosCorreosMensaje = "• 1 Nuevo Correo";             
-            }
-            else if (correos.Count > 1)
-            {
-                nuevosCorreosMensaje = "• " + correos.Count.ToString() + " Nuevos Correos";
-            }
+            conexion = Herramientas.BaseDatos.Conectar();
         }
-
-        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
         using (conexion)
         {
-            nuevosPendientesCantidad = BaseDatos.Pendientes.Buscar.Todos(conexion).Count;
+            nuevosCorreosCantidad = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos"));
+
+            if (nuevosCorreosCantidad > 0)
+            {
+                nuevosCorreosMensaje2 = "(" + nuevosCorreosCantidad.ToString() + ")";
+
+                if (nuevosCorreosCantidad == 1)
+                {
+                    nuevosCorreosMensaje = "• 1 Nuevo Correo";
+                }
+                else if (nuevosCorreosCantidad > 1)
+                {
+                    nuevosCorreosMensaje = "• " + nuevosCorreosCantidad.ToString() + " Nuevos Correos";
+                }
+            }
+
+            //----------------------------------
+
+            nuevosPendientesCantidad = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes"));
 
             if (nuevosPendientesCantidad > 0)
             {
@@ -215,9 +222,7 @@
 
             //----------------------------------
 
-            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
-
-            nuevosErroresCantidad = listaErrores.Count;
+            nuevosErroresCantidad = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores"));
 
             if (nuevosErroresCantidad > 0)
             {
@@ -267,6 +272,11 @@
 
     private void MostrarCerrarErrores(MouseEventArgs e)
     {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
         CerrarPestañas();
 
         if (mostrarErrores == true)
@@ -276,16 +286,32 @@
         else
         {
             mostrarErrores = true;
+
+            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
+
+            nuevosErroresCantidad = listaErrores.Count;
+
+            if (nuevosErroresCantidad > 0)
+            {
+                nuevosErroresMensaje = "(" + nuevosErroresCantidad.ToString() + ")";
+            }
         }
     }
 
     private void LimpiarErrores(MouseEventArgs e)
     {
-        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
 
         using (conexion)
         {
             BaseDatos.Errores.Limpiar.Ejecutar(conexion);
+
+            listaErrores = null;
+            nuevosErroresCantidad = 0;
+            nuevosErroresMensaje = null;
         }
     }
 
@@ -313,7 +339,10 @@
 
     private void ActualizarAviso(ChangeEventArgs texto, string idioma)
     {
-        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
 
         using (conexion)
         {
@@ -321,17 +350,18 @@
         }       
     }
 
-    private Task BorrarAviso(MouseEventArgs e)
+    private void BorrarAviso(MouseEventArgs e)
     {
-        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
 
         using (conexion)
         {
             BaseDatos.Avisos.Actualizar.Ejecutar("", "en", conexion);
             BaseDatos.Avisos.Actualizar.Ejecutar("", "es", conexion);
         }
-
-        return null;
     }
 
     #endregion
@@ -351,6 +381,8 @@
         else
         {
             mostrarCorreos = true;
+
+            correos = Herramientas.Correos.ComprobarNuevosCorreos();
         }
     }
 
@@ -359,9 +391,68 @@
 
     }
 
-    private void ResponderCorreo(MouseEventArgs e)
+    private void ResponderCorreo(MouseEventArgs e, MimeMessage correo)
     {
-        
+        MimeMessage respuesta = new MimeMessage();
+
+        if (correo.ReplyTo.Count > 0)
+        {
+            respuesta.To.AddRange(correo.ReplyTo);
+        }
+        else if (correo.From.Count > 0)
+        {
+            respuesta.To.AddRange(correo.From);
+        }
+        else if (correo.Sender != null)
+        {
+            respuesta.To.Add(correo.Sender);
+        }
+
+        if (correo.Subject.StartsWith("Re:", StringComparison.OrdinalIgnoreCase) == false)
+        {
+            respuesta.Subject = "Re:" + correo.Subject;
+        }        
+        else
+        {
+            respuesta.Subject = correo.Subject;
+        }       
+
+        if (string.IsNullOrEmpty(correo.MessageId) == false)
+        {
+            respuesta.InReplyTo = correo.MessageId;
+
+            foreach (var id in correo.References)
+            {
+                respuesta.References.Add(id);
+            }
+
+            respuesta.References.Add(correo.MessageId);
+        }
+
+        using (StringWriter cita = new StringWriter())
+        {
+            var enviar = correo.Sender ?? correo.From.Mailboxes.FirstOrDefault();
+
+            cita.WriteLine("On {0}, {1} wrote:", correo.Date.ToString("f"), !string.IsNullOrEmpty(enviar.Name) ? enviar.Name : enviar.Address);
+
+            using (var reader = new StringReader(correo.TextBody))
+            {
+                string linea;
+
+                while ((linea = reader.ReadLine()) != null)
+                {
+                    cita.Write("> ");
+                    cita.WriteLine(linea);
+                }
+            }
+
+            respuesta.Body = new TextPart("plain")
+            {
+                Text = cita.ToString()
+            };
+        }
+
+        Herramientas.Correos.EnviarCorreo(respuesta);
     }
 
     #endregion

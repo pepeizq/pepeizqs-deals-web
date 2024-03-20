@@ -57,12 +57,14 @@ builder.Services.AddSingleton<Tareas.GestionadorTiendas>();
 builder.Services.AddSingleton<Tareas.GestionadorMinimos>();
 builder.Services.AddSingleton<Tareas.GestionadorDivisas>();
 builder.Services.AddSingleton<Tareas.GestionadorSorteos>();
+builder.Services.AddSingleton<Tareas.GestionadorAdmin>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorMinimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorDivisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorSorteos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdmin>());
 
 #endregion
 
