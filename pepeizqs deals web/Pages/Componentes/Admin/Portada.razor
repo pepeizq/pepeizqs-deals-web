@@ -135,15 +135,29 @@
 
                 @if (mostrarCorreos == true)
                 {
-                    <label style="padding-left: 2px; padding-bottom: 15px;">Correos</label>
-                    <div class="perfil" style="padding: 10px; border: 1px solid var(--fondoBoton);">
-                        @foreach (var correo in correos)
+                    <div style="display: flex; align-items: center; padding-bottom: 15px;">
+                        <label style="padding-left: 20px; width: 100%;">Correos</label>
+
+                        @if (correos.Count > 1)
                         {
+                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto; margin-right: 15px;" @onclick="@(e => CambiarPosicionCorreo(e, -1))">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto;" @onclick="@(e => CambiarPosicionCorreo(e, 1))">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        }
+                    </div>
+
+                    @if (correos.Count > 0)
+                    {
+                        <div class="perfil" style="padding: 10px; border: 1px solid var(--fondoBoton);">
                             <div style="padding: 10px;">
-                                <div>@correo.Subject</div>
+                                <div>@correos[posicionCorreosMostrar].Date.ToString() - @correos[posicionCorreosMostrar].Subject</div>
+                                <hr/>
 
                                 @{
-                                    string correoString = correo.HtmlBody;
+                                    string correoString = correos[posicionCorreosMostrar].HtmlBody;
                                     correoString = correoString.Replace("rgb(0,0,0)", "var(--colorTexto)");
                                     correoString = correoString.Replace("rgb(0, 0, 0)", "var(--colorTexto)");
                                     correoString = correoString.Replace("#000000", "var(--colorTexto)");
@@ -153,16 +167,17 @@
                                 }
 
                                 <div style="margin-top: 10px;">@correoHtml</div>
-
-                                <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px; margin-top: 20px;" />
-
-                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px; margin-bottom: 20px;" @onclick="@(e => ResponderCorreo(e, correo))">
-                                    Responder
-                                </button>
-                                <hr />
                             </div>
-                        }
-                    </div>
+                        </div>
+
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px;" />
+
+                            <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px;" @onclick="@(e => ResponderCorreo(e, correos[posicionCorreosMostrar]))">
+                                Responder
+                            </button>
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -370,6 +385,9 @@
 
     private bool mostrarCorreos = false;
 
+    private int posicionCorreosMostrar = 0;
+    private string textoRespuestaCorreos = string.Empty;
+
     private void MostrarCerrarCorreos(MouseEventArgs e)
     {
         CerrarPestañas();
@@ -386,22 +404,42 @@
         }
     }
 
+    private void CambiarPosicionCorreo(MouseEventArgs e, int nuevaPosicion)
+    {
+        posicionCorreosMostrar = posicionCorreosMostrar + nuevaPosicion;
+
+        if (posicionCorreosMostrar < 0)
+        {
+            posicionCorreosMostrar = correos.Count - 1;
+        }
+        else if (posicionCorreosMostrar == correos.Count - 1)
+        {
+            posicionCorreosMostrar = 0;
+        }
+    }
+
     private void TextoRespuestaCorreo(ChangeEventArgs texto, string idioma)
     {
-
+        textoRespuestaCorreos = texto.Value.ToString();
     }
 
     private void ResponderCorreo(MouseEventArgs e, MimeMessage correo)
     {
         MimeMessage respuesta = new MimeMessage();
 
-        if (correo.ReplyTo.Count > 0)
+        if (correo.ReplyTo != null)
         {
-            respuesta.To.AddRange(correo.ReplyTo);
+            if (correo.ReplyTo.Count > 0)
+            {
+                respuesta.To.AddRange(correo.ReplyTo);
+            }
         }
-        else if (correo.From.Count > 0)
+        else if (correo.From != null)
         {
-            respuesta.To.AddRange(correo.From);
+            if (correo.From.Count > 0)
+            {
+                respuesta.To.AddRange(correo.From);
+            }
         }
         else if (correo.Sender != null)
         {
@@ -431,9 +469,9 @@
 
         using (StringWriter cita = new StringWriter())
         {
-            var enviar = correo.Sender ?? correo.From.Mailboxes.FirstOrDefault();
+            var destinatario = correo.Sender ?? correo.From.Mailboxes.FirstOrDefault();
 
-            cita.WriteLine("On {0}, {1} wrote:", correo.Date.ToString("f"), !string.IsNullOrEmpty(enviar.Name) ? enviar.Name : enviar.Address);
+            cita.WriteLine("{0}, {1}:", correo.Date.ToString("f"), !string.IsNullOrEmpty(destinatario.Name) ? destinatario.Name : destinatario.Address);
 
             using (var reader = new StringReader(correo.TextBody))
             {
@@ -448,7 +486,7 @@
 
             respuesta.Body = new TextPart("plain")
             {
-                Text = cita.ToString()
+                Text = cita.ToString() + Environment.NewLine + Environment.NewLine + textoRespuestaCorreos
             };
         }
 

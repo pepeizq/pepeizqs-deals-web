@@ -194,8 +194,8 @@ namespace Herramientas
                     string host = builder.Configuration.GetValue<string>("Correo:Host");
                     string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
 
-                    cliente.Connect(host, 25, SecureSocketOptions.Auto);
-					cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+                    cliente.Connect(host, 143, SecureSocketOptions.StartTlsWhenAvailable);
+                    cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
 					cliente.Send(correo);
 					cliente.Disconnect(true);
 				}
@@ -279,6 +279,11 @@ namespace Herramientas
 
 				cliente.Disconnect(true);
 			}
+
+			if (correos.Count > 0)
+			{
+				correos = correos.OrderByDescending(x => x.Date).ToList();
+            }
 
             return correos;
         }
