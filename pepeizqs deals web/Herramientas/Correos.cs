@@ -9,6 +9,11 @@ using Noticias;
 using Sorteos2;
 using MimeKit;
 using MailKit.Net.Smtp;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Humanizer;
+using Microsoft.Extensions.Hosting;
+using NuGet.Packaging.Signing;
+using MimeKit.Utils;
 
 namespace Herramientas
 {
@@ -183,23 +188,61 @@ namespace Herramientas
 			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
 
-        public static void EnviarCorreo(MimeMessage correo)
+        public static void EnviarCorreo(MimeMessage correo, MimeMessage respuesta, UniqueId id)
 		{
 			if (correo != null)
 			{
-				using (var cliente = new SmtpClient())
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string host = builder.Configuration.GetValue<string>("Correo:Host");
+                string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
+                using (SmtpClient cliente = new SmtpClient())
 				{
-                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                    cliente.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 
-                    string host = builder.Configuration.GetValue<string>("Correo:Host");
-                    string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
-                    cliente.Connect(host, 143, SecureSocketOptions.StartTlsWhenAvailable);
+                    correo.From.Add(new MailboxAddress("pepeizq's deals", "admin@pepeizqdeals.com"));
+					
+                    cliente.Connect(host, 25, false);
                     cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
 					cliente.Send(correo);
-					cliente.Disconnect(true);
+                    cliente.Disconnect(true);
 				}
-			}
+
+				if (respuesta != null)
+				{
+                    using (ImapClient cliente = new ImapClient())
+                    {
+                        cliente.Connect(host, 143, SecureSocketOptions.Auto);
+                        cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+
+                        cliente.Inbox.Open(FolderAccess.ReadWrite);
+                        cliente.Inbox.SetFlags(id, MessageFlags.Deleted, true);
+                        cliente.Inbox.Expunge();
+
+                        cliente.Disconnect(true);
+                    }
+                }
+
+            }
+        }
+
+        public static void BorrarCorreo(UniqueId id)
+		{
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string host = builder.Configuration.GetValue<string>("Correo:Host");
+            string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+
+            using (ImapClient cliente = new ImapClient())
+            {
+                cliente.Connect(host, 143, SecureSocketOptions.Auto);
+                cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+
+                cliente.Inbox.Open(FolderAccess.ReadWrite);
+                cliente.Inbox.SetFlags(id, MessageFlags.Deleted, true);
+                cliente.Inbox.Expunge();
+
+                cliente.Disconnect(true);
+            }
         }
 
         private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
@@ -251,9 +294,9 @@ namespace Herramientas
 			}
 		}
 
-		public static List<MimeMessage> ComprobarNuevosCorreos()
+		public static List<CorreoConId> ComprobarNuevosCorreos()
 		{
-			List<MimeMessage> correos = new List<MimeMessage>();
+			List<CorreoConId> correos = new List<CorreoConId>();
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -272,7 +315,11 @@ namespace Herramientas
                     {
                         MimeMessage correo = cliente.Inbox.GetMessage(id);
 
-						correos.Add(correo);
+						CorreoConId nuevoCorreo = new CorreoConId();
+						nuevoCorreo.Correo = correo;
+						nuevoCorreo.Id = id;
+
+                        correos.Add(nuevoCorreo);
                     }
                 }
 				catch { }
@@ -282,10 +329,16 @@ namespace Herramientas
 
 			if (correos.Count > 0)
 			{
-				correos = correos.OrderByDescending(x => x.Date).ToList();
+				correos = correos.OrderByDescending(x => x.Correo.Date).ToList();
             }
 
             return correos;
         }
+	}
+
+	public class CorreoConId
+	{
+		public MimeMessage Correo;
+		public UniqueId Id;
 	}
 }

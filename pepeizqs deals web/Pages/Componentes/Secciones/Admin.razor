@@ -1,0 +1,1102 @@
+﻿@using BaseDatos.Avisos
+@using BaseDatos.Errores
+@using BaseDatos.Pendientes
+@using MailKit
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
+@using MimeKit
+@using Tiendas2
+
+@attribute [StreamRendering(true)]
+
+<style>
+    .admin-boton-hover {
+        margin: 0px;
+        border: 0px;
+        color: var(--colorTextoVisitado);
+        background-color: transparent;
+        line-height: 20px;
+        text-decoration: none;
+        vertical-align: middle;
+        transition-duration: 0.4s;
+    }
+
+        .admin-boton-hover:hover {
+            background-color: var(--fondoBotonPequeño);
+            color: var(--colorTextoVisitado);
+        }
+
+    .admin-panel {
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        overflow-x: auto;
+        position: fixed;
+        z-index: 1000;
+        padding: 10px;
+        background-color: var(--fondoOscuroTransparente);
+    }
+
+    .admin-lateral {
+        color: var(--colorTexto);
+        background-color: transparent;
+        border: 0px;
+        padding: 8px 20px;
+        text-align: left;
+    }
+
+         .admin-lateral:hover {
+                background-color: var(--fondoBotonPequeño);
+                color: var(--colorTextoVisitado);
+         }
+</style>
+
+<li class="nav-item" style="margin-right: 30px;">
+    <button class="admin-boton-hover" @onmouseenter="(e => MostrarAdmin(e))" @onclick="(e => MostrarAdmin(e))">Admin @nuevosCorreosMensaje</button>
+</li>
+
+@if (mostrarAdmin == true)
+{
+    <div class="admin-panel">
+        <div style="display: flex; align-items: end;">
+            <div style="width: 15%;">
+                <button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px;" @onclick="(e => CerrarAdmin(e))">
+                    <i class="fa-solid fa-xmark" style="font-size: 40px;"></i>
+                </button>
+            </div>
+
+            <div style="width: 85%; padding-left: 60px; padding-right: 20px;">
+                <label style="font-size: 20px;">@titulo</label>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: start; margin-top: 15px; width: 100%; font-size: 17px;">
+            <div style="width: 15%;">
+                <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
+                    <a class="admin-lateral" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarTiendas(e))">Tiendas</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarDivisas(e))">Divisas</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarPendientes(e))">Pendientes @nuevosPendientesMensaje</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarDLCs(e))">DLCs @nuevosDLCsMensaje</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarErrores(e))">Errores @nuevosErroresMensaje</button>
+                </div>
+
+                <label style="margin-top: 40px; padding-left: 20px; padding-bottom: 15px;">Añadir</label>
+                <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarAñadir(e))">Juego</button>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none;">Noticias</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none;">Bundles</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none;">Gratis</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Suscripciones" style="text-decoration: none;">Suscripciones</a>
+                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Sorteos" style="text-decoration: none;">Sorteos</a>
+                </div>
+            </div>
+
+            <div style="width: 85%; padding-left: 40px; padding-right: 20px;">
+                @if (mostrarErrores == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <button @onclick="@(e => LimpiarErrores(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
+                        
+                        <hr />
+
+                        @foreach (var error in listaErrores)
+                        {
+                            <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                                <div style="padding-left: 10px; padding-right: 10px;">
+                                    <div>
+                                        @error.Seccion
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        @error.Fecha
+                                    </div>
+                                </div>
+                                <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                                    @error.Mensaje
+                                </div>
+                                <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                                    @error.Stacktrace
+                                </div>
+                            </div>
+
+                            <hr />
+                        }
+                    </div>
+                }
+
+                @if (mostrarAvisos == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <div style="display: flex; align-items: center;">
+                            <textarea @oninput="@(e => ActualizarAviso(e, "en"))" class="entrada-texto" style="height: 35px;" placeholder="EN">@avisoEn</textarea>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 20px;">
+                            <textarea @oninput="@(e => ActualizarAviso(e, "es"))" class="entrada-texto" style="height: 35px;" placeholder="ES">@avisoEs</textarea>
+                        </div>
+
+                        <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 30px;" @onclick="@(e => BorrarAviso(e))">
+                            Borrar Aviso
+                        </button>
+                    </div>
+                }
+
+                @if (mostrarCorreos == true)
+                {
+                    <div style="display: flex; align-items: center; padding-bottom: 15px;">
+                        @if (correos.Count > 1)
+                        {
+                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto; margin-right: 15px;" @onclick="@(e => CambiarPosicionCorreo(e, -1))">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto;" @onclick="@(e => CambiarPosicionCorreo(e, 1))">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        }
+                    </div>
+
+                    @if (correos.Count > 0)
+                    {
+                        if (correos[posicionCorreosMostrar] != null)
+                        {
+                            <div class="perfil" style="padding: 10px; border: 1px solid var(--fondoBoton);">
+                                <div style="padding: 10px;">
+                                    <div>@correos[posicionCorreosMostrar].Correo.Date.ToString() - @correos[posicionCorreosMostrar].Correo.Subject</div>
+                                    <hr />
+
+                                    @if (string.IsNullOrEmpty(correos[posicionCorreosMostrar].Correo.HtmlBody) == false)
+                                    {
+                                        string correoString = correos[posicionCorreosMostrar].Correo.HtmlBody;
+                                        correoString = correoString.Replace("rgb(0,0,0)", "var(--colorTexto)");
+                                        correoString = correoString.Replace("rgb(0, 0, 0)", "var(--colorTexto)");
+                                        correoString = correoString.Replace("#000000", "var(--colorTexto)");
+                                        correoString = correoString.Replace("#26282a", "var(--colorTexto)");
+
+                                        MarkupString correoHtml = new MarkupString(correoString);
+
+                                        <div style="margin-top: 10px;">@correoHtml</div>
+                                    }
+
+                                </div>
+                            </div>
+
+                            <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                                <textarea @oninput="@(e => TextoRespuestaCorreo(e))" class="entrada-texto" style="height: 35px;" />
+
+                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px;" @onclick="@(e => ResponderCorreo(e, correos[posicionCorreosMostrar].Correo, correos[posicionCorreosMostrar].Id))">
+                                    Responder
+                                </button>
+                            </div>
+
+                            <div style="margin-top: 40px; padding-left: 20px;">
+                                <button class="boton-pequeño" style="padding: 10px 15px; width: auto;" @onclick="@(e => BorrarCorreo(e, correos[posicionCorreosMostrar].Id))">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        }
+                    }
+                }
+
+                @if (mostrarTiendas == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <label>Siguiente Comprobación: @LeerSiguienteTienda()</label>
+                        <hr/>
+                        <div>
+                            @foreach (Tienda tienda in TiendasCargar.GenerarListado())
+                            {
+                                @if (tienda.AdminEnseñar == true)
+                                {
+                                    <div style="margin-top: 15px; margin-bottom: 15px;">
+                                        @if (tienda.AdminInteractuar == true)
+                                        {
+                                            <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 40px;">
+                                                <div style="display: flex; align-items: center;">
+                                                    <div style="width: 40%;">
+                                                        <img src="@tienda.Imagen300x80" style="height: 40px;" />
+                                                    </div>
+
+                                                    <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                                                </div>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <div style="display: flex; align-items: center; height: fit-content; padding: 20px 40px;">
+                                                <div style="width: 40%;">
+                                                    <img src="@tienda.Imagen300x80" style="height: 40px;" />
+                                                </div>
+
+                                                <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                        
+                    </div>
+
+                        @*                             <div class="perfil" style="margin-top: 30px;">
+                <label>Divisas</label>
+                <hr />
+
+                <div>
+                <div>
+                <button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center;">Actualizar</button>
+                </div>
+                <div style="padding-top: 20px;">
+                <div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
+                <div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
+                </div>
+                </div>
+                </div> *@
+
+                }
+
+                @if (mostrarDivisas == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <div>
+                            <button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Actualizar</button>
+                        </div>
+                        <div style="padding-top: 20px;">
+                            <div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
+                            <div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
+                        </div>
+                    </div>
+                }
+
+                @if (mostrarDLCs == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <button @onclick="(async () => await BuscarDlcMaestro())" class="boton-pequeño" style="padding: 10px 15px; width: 250px;">
+                            Buscar Maestro
+                        </button>
+
+                        <div style="margin-top: 30px;">
+                            <a href="/game/@DLCs[posicionDLC].Id.ToString()" target="_blank">
+                                <img src="@DLCs[posicionDLC].Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                            </a>
+
+                            <label style="margin-left: 20px;">@DLCs[posicionDLC].Nombre</label>
+                        </div>
+                    </div>
+                }
+
+                @if (mostrarPendientes == true)
+                {
+                    <div class="perfil" style="display: flex; justify-content: space-between; padding: 20px; border: 1px solid var(--fondoBoton); flex-direction: row;">
+                        <div style="min-width: 300px; margin: -10px 0px;">
+                            @foreach (var pendiente in pendientes)
+                            {
+                                <button @onclick="@(e => ClickearTiendaPendientes(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
+                                    <img src="@pendiente.Tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Tienda.Nombre (@pendiente.Pendientes.Count)
+                                </button>
+                            }
+                        </div>
+
+                        <div style="width: 100%; padding-left: 50px;">
+                            <div style="margin-bottom: 20px;">
+                                Tienda: @tiendaElegidaPendiente
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="width: 30%;">
+                                    <a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
+                                </div>
+
+                                <div style="width: 70%; margin-left: 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+                                    </div>
+
+                                    <div>
+                                        <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; margin: 20px 0px;">
+                                        <div>
+                                            <button @onclick="@(e => ClickearDescartarPendientes(e, @enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+                                        </div>
+
+                                        <div>
+                                            <button @onclick="@(e => ClickearBuscarPendientes(e, @nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
+                                        </div>
+
+                                        <div>
+                                            <button @onclick="@(e => ClickearActualizarPendientes(e, @enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 40px;">
+                                <input type="text" @oninput="TextoCambiarBuscadorPendientes" class="entrada-texto" />
+
+                                @if (juegosBuscador != null)
+                                {
+                                    @if (juegosBuscador.Count > 0)
+                                    {
+                                        <div>
+                                            @foreach (var juego in juegosBuscador)
+                                            {
+                                                <hr />
+
+                                                <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+                                                    <div style="width: 150px; min-width: 150px;">
+                                                        <button @onclick="@(e => ClickearIdPendientes(e, @juego.Id.ToString()))" class="boton-pequeño" style="text-align: center; height: 65px;">
+                                                            Añadir ID
+
+                                                            <div style="font-size: 13px; margin-top: 5px;">
+                                                                @juego.Id
+                                                            </div>
+                                                        </button>
+                                                    </div>
+
+                                                    <div style="padding-left: 15px;">
+                                                        <a href="/game/@juego.Id.ToString()" target="_blank">
+                                                            <img src="@juego.Imagenes.Capsule_231x87" style="width: 231px; height: 87px;" />
+                                                        </a>
+                                                    </div>
+
+                                                    <div style="width: 100%; padding: 5px 10px; flex: 1;">
+                                                        @juego.Nombre
+                                                    </div>
+
+                                                    <div class="admin-busqueda-juego-derecha">
+                                                        <button @onclick="@(e => ClickearBorrarPendientes(e, @juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label style="margin-top: 20px; margin-left: 10px;">No hay resultados</label>
+                                    }
+                                }
+                                else
+                                {
+                                    <label style="margin-top: 20px; margin-left: 10px;">No hay resultados</label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (mostrarAñadir == true)
+                {
+                    
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    [Inject]
+    protected Herramientas.IDecompiladores decompilador { get; set; }
+
+    SqlConnection conexion = new SqlConnection();
+
+    private string titulo = string.Empty;
+
+    private bool mostrarAdmin = false;
+
+    protected override void OnInitialized()
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")));
+            ActualizarMensajeDLCs(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "dlcs")));
+            ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
+            ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
+
+            //----------------------------------
+
+            Aviso aviso1 = BaseDatos.Avisos.Buscar.Ejecutar("en", conexion);
+
+            if (aviso1 != null)
+            {
+                avisoEn = aviso1.Mensaje;
+            }
+
+            Aviso aviso2 = BaseDatos.Avisos.Buscar.Ejecutar("es", conexion);
+
+            if (aviso2 != null)
+            {
+                avisoEs = aviso2.Mensaje;
+            }
+        }
+
+    }
+
+    private void MostrarAdmin(MouseEventArgs e)
+    {
+        mostrarAdmin = true;
+    }
+
+    private void CerrarAdmin(MouseEventArgs e)
+    {
+        mostrarAdmin = false;
+    }
+
+    private void CerrarPestañas()
+    {
+        titulo = null;
+
+        mostrarAvisos = false;
+        mostrarCorreos = false;
+        mostrarErrores = false;
+        mostrarTiendas = false;
+        mostrarDivisas = false;
+        mostrarDLCs = false;
+        mostrarPendientes = false;
+    }
+
+    #region Errores
+
+    private bool mostrarErrores = false;
+
+    List<Error> listaErrores = new List<Error>();
+    private int nuevosErroresCantidad = 0;
+    private string nuevosErroresMensaje = string.Empty;
+
+    private void ActualizarMensajeErrores(int i)
+    {
+        nuevosErroresCantidad = i;
+
+        if (nuevosErroresCantidad > 0)
+        {
+            nuevosErroresMensaje = "(" + nuevosErroresCantidad.ToString() + ")";
+        }
+    }
+
+    private void MostrarCerrarErrores(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        CerrarPestañas();
+
+        if (mostrarErrores == false)
+        {
+            mostrarErrores = true;
+
+            titulo = "Errores";
+
+            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
+
+            ActualizarMensajeErrores(listaErrores.Count);
+        }
+    }
+
+    private void LimpiarErrores(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Errores.Limpiar.Ejecutar(conexion);
+
+            listaErrores = null;
+
+            ActualizarMensajeErrores(0);
+        }
+    }
+
+    #endregion
+
+    #region Avisos
+
+    private bool mostrarAvisos = false;
+    private string avisoEn = string.Empty;
+    private string avisoEs = string.Empty;
+
+    private void MostrarCerrarAvisos(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarAvisos == false)
+        {
+            mostrarAvisos = true;
+
+            titulo = "Avisos";
+        }
+    }
+
+    private void ActualizarAviso(ChangeEventArgs texto, string idioma)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar(texto.Value.ToString().Trim(), idioma, conexion);
+        }       
+    }
+
+    private void BorrarAviso(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "en", conexion);
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "es", conexion);
+
+            avisoEn = null;
+            avisoEs = null;
+        }
+    }
+
+    #endregion
+
+    #region Correos
+
+    private bool mostrarCorreos = false;
+
+    private List<Herramientas.CorreoConId> correos = new List<Herramientas.CorreoConId>();
+    private int nuevosCorreosCantidad = 0;
+    private string nuevosCorreosMensaje = string.Empty;
+    private string nuevosCorreosMensaje2 = string.Empty;
+    private int posicionCorreosMostrar = 0;
+    private string textoRespuestaCorreos = string.Empty;
+
+    private void ActualizarMensajeCorreos(int i)
+    {
+        nuevosCorreosCantidad = i;
+
+        if (nuevosCorreosCantidad > 0)
+        {
+            nuevosCorreosMensaje2 = "(" + nuevosCorreosCantidad.ToString() + ")";
+
+            if (nuevosCorreosCantidad == 1)
+            {
+                nuevosCorreosMensaje = "• 1 Nuevo Correo";
+            }
+            else if (nuevosCorreosCantidad > 1)
+            {
+                nuevosCorreosMensaje = "• " + nuevosCorreosCantidad.ToString() + " Nuevos Correos";
+            }
+        }
+    }
+
+    private void MostrarCerrarCorreos(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarCorreos == false)
+        {
+            mostrarCorreos = true;
+
+            titulo = "Correos";
+
+            correos = Herramientas.Correos.ComprobarNuevosCorreos();
+
+            ActualizarMensajeCorreos(correos.Count);
+        }
+    }
+
+    private void CambiarPosicionCorreo(MouseEventArgs e, int nuevaPosicion)
+    {
+        posicionCorreosMostrar = posicionCorreosMostrar + nuevaPosicion;
+
+        if (posicionCorreosMostrar < 0)
+        {
+            posicionCorreosMostrar = correos.Count - 1;
+        }
+        else if (posicionCorreosMostrar == correos.Count - 1)
+        {
+            posicionCorreosMostrar = 0;
+        }
+    }
+
+    private void TextoRespuestaCorreo(ChangeEventArgs texto)
+    {
+        textoRespuestaCorreos = texto.Value.ToString();
+    }
+
+    private void ResponderCorreo(MouseEventArgs e, MimeMessage correo, UniqueId id)
+    {
+        MimeMessage respuesta = new MimeMessage();
+
+        if (correo.ReplyTo.Count > 0)
+        {
+            respuesta.To.AddRange(correo.ReplyTo);
+        }
+        if (correo.From.Count > 0)
+        {
+            respuesta.To.AddRange(correo.From);
+        }
+        else if (correo.Sender != null)
+        {
+            respuesta.To.Add(correo.Sender);
+        }
+
+        if (correo.Subject.StartsWith("Re:", StringComparison.OrdinalIgnoreCase) == false)
+        {
+            respuesta.Subject = "Re:" + correo.Subject;
+        }        
+        else
+        {
+            respuesta.Subject = correo.Subject;
+        }       
+
+        if (string.IsNullOrEmpty(correo.MessageId) == false)
+        {
+            respuesta.InReplyTo = correo.MessageId;
+
+            foreach (var id2 in correo.References)
+            {
+                respuesta.References.Add(id2);
+            }
+
+            respuesta.References.Add(correo.MessageId);
+        }
+
+        using (StringWriter cita = new StringWriter())
+        {
+            var destinatario = correo.Sender ?? correo.From.Mailboxes.FirstOrDefault();
+
+            cita.WriteLine("{0}, {1}:", correo.Date.ToString("f"), !string.IsNullOrEmpty(destinatario.Name) ? destinatario.Name : destinatario.Address);
+
+            using (var reader = new StringReader(correo.TextBody))
+            {
+                string linea;
+
+                while ((linea = reader.ReadLine()) != null)
+                {
+                    cita.Write("> ");
+                    cita.WriteLine(linea);
+                }
+            }
+
+            respuesta.Body = new TextPart("plain")
+            {
+                Text = cita.ToString() + Environment.NewLine + Environment.NewLine + textoRespuestaCorreos
+            };
+        }
+
+        Herramientas.Correos.EnviarCorreo(respuesta, correo, id);
+    }
+
+    private void BorrarCorreo(MouseEventArgs e, UniqueId id)
+    {
+        Herramientas.Correos.BorrarCorreo(id);
+
+        correos = Herramientas.Correos.ComprobarNuevosCorreos();
+
+        ActualizarMensajeCorreos(correos.Count);
+    }
+
+    #endregion
+
+    #region Tiendas
+
+    private bool mostrarTiendas = false;
+
+    private string tiendaElegida = null;
+
+    private void MostrarCerrarTiendas(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarTiendas == false)
+        {
+            mostrarTiendas = true;
+
+            titulo = "Tiendas";
+        }
+    }
+
+    private async Task ClickearTienda(MouseEventArgs e, string id)
+    {
+        tiendaElegida = id;
+
+        if (id != null)
+        {
+            await TiendasCargar.AdminTiendas(id, decompilador);
+        }
+    }
+
+    private string LeerSiguienteTienda()
+    {
+        BaseDatos.Tiendas.AdminTarea tienda = new BaseDatos.Tiendas.AdminTarea();
+
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
+        }
+
+        return tienda.id + " " + Herramientas.Calculadora.DiferenciaTiempo(tienda.fecha, "es-ES");
+    }
+
+    #endregion
+
+    #region Divisas
+
+    private bool mostrarDivisas = false;
+
+    private void MostrarCerrarDivisas(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarDivisas == false)
+        {
+            mostrarDivisas = true;
+
+            titulo = "Divisas";
+        }
+    }
+
+    private async Task ActualizarDivisas(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            await Herramientas.Divisas.ActualizarDatos(conexion);
+        }
+    }
+
+    #endregion
+
+    #region DLCs
+
+    private bool mostrarDLCs = false;
+
+    private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
+    private int nuevosDLCsCantidad = 0;
+    private string nuevosDLCsMensaje = string.Empty;
+    private int posicionDLC = 0;
+    private string textoDlcMaestro = string.Empty;
+
+    private void ActualizarMensajeDLCs(int i)
+    {
+        nuevosDLCsCantidad = i;
+
+        if (nuevosDLCsCantidad > 0)
+        {
+            nuevosDLCsMensaje = "(" + nuevosDLCsCantidad.ToString() + ")";
+        }
+    }
+
+    private void MostrarCerrarDLCs(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarDLCs == false)
+        {
+            mostrarDLCs = true;
+
+            titulo = "DLCs";
+
+            DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
+
+            ActualizarMensajeDLCs(DLCs.Count);
+        }
+    }
+
+    private async Task BuscarDlcMaestro()
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
+
+        if (nuevoJuego != null)
+        {
+            textoDlcMaestro = nuevoJuego.Maestro;
+
+            if (string.IsNullOrEmpty(textoDlcMaestro) == false)
+            {
+                using (conexion)
+                {
+                    DLCs[posicionDLC].Maestro = textoDlcMaestro;
+                    BaseDatos.Juegos.Actualizar.DlcMaestro(DLCs[posicionDLC], conexion);
+                }
+
+                posicionDLC += 1;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Pendientes
+
+    private bool mostrarPendientes = false;
+
+    List<PendientesTienda> pendientes = new List<PendientesTienda>();
+    private int nuevosPendientesCantidad = 0;
+    private string nuevosPendientesMensaje = string.Empty;
+
+    private void ActualizarMensajePendientes(int i)
+    {
+        nuevosPendientesCantidad = i;
+
+        if (nuevosPendientesCantidad > 0)
+        {
+            nuevosPendientesMensaje = "(" + nuevosPendientesCantidad.ToString() + ")";
+        }
+    }
+
+    private void MostrarCerrarPendientes(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarPendientes == false)
+        {
+            mostrarPendientes = true;
+
+            titulo = "Pendientes";
+
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            pendientes.Clear();
+
+            foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+            {
+                if (tienda.Id != "steam")
+                {
+                    PendientesTienda pendienteTienda = new PendientesTienda();
+                    pendienteTienda.Tienda = tienda;
+                    pendienteTienda.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(tienda.Id, conexion);
+
+                    if (pendienteTienda.Pendientes.Count > 0)
+                    {
+                        pendientes.Add(pendienteTienda);
+                    }
+                }
+            }
+
+            ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(conexion).Count);
+        }
+    }
+
+    private string idTiendaPendiente = null;
+    private string imagenPendiente = null;
+    private string nombrePendiente = null;
+    private string enlacePendiente = null;
+    private string idsPendiente = "0";
+    private string cadenaBusquedaPendiente = null;
+    private string tiendaElegidaPendiente = null;
+
+    private void ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
+    {
+        idTiendaPendiente = id;
+        tiendaElegidaPendiente = nombre;
+
+        ClickearTiendaPendientes(idTiendaPendiente);
+    }
+
+    private void ClickearTiendaPendientes(string id)
+    {
+        if (string.IsNullOrEmpty(id) == false)
+        {
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Pendientes.Pendiente pendiente = BaseDatos.Pendientes.Buscar.PrimerJuego(id, conexion);
+
+                if (pendiente != null)
+                {
+                    nombrePendiente = pendiente.nombre;
+
+                    string imagen = pendiente.imagen;
+
+                    if (imagen != null)
+                    {
+                        imagen = imagen.Replace("&amp;", "&");
+                    }
+
+                    imagenPendiente = imagen;
+
+                    enlacePendiente = pendiente.enlace;
+
+                    idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
+                }
+            }
+        }
+    }
+
+    private void ClickearDescartarPendientes(MouseEventArgs e, string enlace)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Pendientes.Actualizar.Descartar(idTiendaPendiente, enlace, conexion);
+
+            ClickearTiendaPendientes(idTiendaPendiente);
+        }
+    }
+
+    private void ClickearBuscarPendientes(MouseEventArgs e, string nombre)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombre, conexion);
+        }
+    }
+
+    private void ClickearActualizarPendientes(MouseEventArgs e, string enlace)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Pendientes.Actualizar.Juego(idTiendaPendiente, enlace, idsPendiente, conexion);
+
+            ClickearTiendaPendientes(idTiendaPendiente);
+        }
+    }
+
+    private void TextoCambiaPendientes(ChangeEventArgs texto)
+    {
+        idsPendiente = texto.Value.ToString();
+    }
+
+    //--------------------------------------------------------------------------------------------
+
+    List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+
+    private void TextoCambiarBuscadorPendientes(ChangeEventArgs texto)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            if (texto.Value.ToString().Trim().Length > 2)
+            {
+                cadenaBusquedaPendiente = texto.Value.ToString().Trim();
+                juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
+            }
+            else
+            {
+                juegosBuscador = new List<Juegos.Juego>();
+            }
+        }
+    }
+
+    private void ClickearIdPendientes(MouseEventArgs e, string id)
+    {
+        if (string.IsNullOrEmpty(idsPendiente) == true)
+        {
+            idsPendiente = id;
+        }
+        else
+        {
+            if (idsPendiente != "0")
+            {
+                if (idsPendiente.Contains(",") == false)
+                {
+                    if (idsPendiente.Contains(id) == false)
+                    {
+                        idsPendiente = idsPendiente + "," + id;
+                    }
+                }
+                else
+                {
+                    if (idsPendiente.Contains(id + ",") == false)
+                    {
+                        idsPendiente = idsPendiente + "," + id;
+                    }
+                }
+            }
+            else
+            {
+                idsPendiente = id;
+            }
+        }
+    }
+
+    private void ClickearBorrarPendientes(MouseEventArgs e, string id)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Juegos.Borrar.Ejecutar(id, conexion);
+
+            juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
+        }
+    }
+
+    #endregion
+
+    #region Añadir
+
+    private bool mostrarAñadir = false;
+
+    private void MostrarCerrarAñadir(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarAñadir == false)
+        {
+            mostrarAñadir = true;
+
+            titulo = "Añadir";
+        }
+    }
+
+    #endregion
+}

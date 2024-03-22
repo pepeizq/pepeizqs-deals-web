@@ -18,7 +18,7 @@ namespace Tareas
 			{
 				Admin.ActualizarTareaUso(conexion, "datos", DateTime.Now);
 
-				List<MimeMessage> correos = new List<MimeMessage>();
+				List<Herramientas.CorreoConId> correos = new List<Herramientas.CorreoConId>();
 
 				correos = Herramientas.Correos.ComprobarNuevosCorreos();
 
@@ -31,6 +31,10 @@ namespace Tareas
 				int errores = BaseDatos.Errores.Buscar.Todos(conexion).Count;
 
                 Admin.ActualizarDato(conexion, "errores", errores.ToString());
+
+                int dlcs = BaseDatos.Juegos.Buscar.DLCs(null, conexion, false).Count;
+
+                Admin.ActualizarDato(conexion, "dlcs", dlcs.ToString());
             }
 		}
 	}
