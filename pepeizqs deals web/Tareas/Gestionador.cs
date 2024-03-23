@@ -230,15 +230,8 @@ namespace Tareas
 				{
 					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-					try
-					{
-						await DatosAdmin.Ejecutar(conexion);
-					}
-					catch (Exception ex)
-					{
-						BaseDatos.Errores.Insertar.Ejecutar("Tarea - Admin", ex, conexion);
-					}
-				}
+                    await DatosAdmin.Ejecutar(conexion);
+                }
 			}
 		}
 

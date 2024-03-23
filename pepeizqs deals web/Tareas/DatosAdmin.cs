@@ -2,7 +2,6 @@
 
 using BaseDatos.Tiendas;
 using Microsoft.Data.SqlClient;
-using MimeKit;
 
 namespace Tareas
 {
@@ -18,23 +17,77 @@ namespace Tareas
 			{
 				Admin.ActualizarTareaUso(conexion, "datos", DateTime.Now);
 
-				List<Herramientas.CorreoConId> correos = new List<Herramientas.CorreoConId>();
+                try
+                {
+                    List<Herramientas.CorreoConId> correos = Herramientas.Correos.ComprobarNuevosCorreos();
 
-				correos = Herramientas.Correos.ComprobarNuevosCorreos();
+                    if (correos.Count > 0)
+                    {
+                        Admin.ActualizarDato(conexion, "correos", correos.Count.ToString());
+                    }
+                    else
+                    {
+                        Admin.ActualizarDato(conexion, "correos", "0");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Admin", ex, conexion);
+                }
 
-				Admin.ActualizarDato(conexion, "correos", correos.Count.ToString());
+                try
+                {
+                    List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
 
-				int pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion).Count;
+                    if (pendientes.Count > 0)
+                    {
+                        Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
+                    }
+                    else
+                    {
+                        Admin.ActualizarDato(conexion, "pendientes", "0");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Admin", ex, conexion);
+                }
 
-                Admin.ActualizarDato(conexion, "pendientes", pendientes.ToString());
+                try
+                {
+                    List<BaseDatos.Errores.Error> errores = BaseDatos.Errores.Buscar.Todos(conexion);
 
-				int errores = BaseDatos.Errores.Buscar.Todos(conexion).Count;
+                    if (errores.Count > 0)
+                    {
+                        Admin.ActualizarDato(conexion, "errores", errores.Count.ToString());
+                    }
+                    else
+                    {
+                        Admin.ActualizarDato(conexion, "errores", "0");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Admin", ex, conexion);
+                }
 
-                Admin.ActualizarDato(conexion, "errores", errores.ToString());
+                try
+                {
+                    List<Juegos.Juego> dlcs = BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
 
-                int dlcs = BaseDatos.Juegos.Buscar.DLCs(null, conexion, false).Count;
-
-                Admin.ActualizarDato(conexion, "dlcs", dlcs.ToString());
+                    if (dlcs.Count > 0)
+                    {
+                        Admin.ActualizarDato(conexion, "dlcs", dlcs.Count.ToString());
+                    }
+                    else
+                    {
+                        Admin.ActualizarDato(conexion, "dlcs", "0");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Admin", ex, conexion);
+                }
             }
 		}
 	}
