@@ -3,9 +3,14 @@
 @using BaseDatos.Pendientes
 @using MailKit
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
+@using Microsoft.VisualBasic
 @using MimeKit
+@using pepeizqs_deals_web.Areas.Identity.Data
 @using Tiendas2
+
+@inject UserManager<Usuario> UserManager
 
 @attribute [StreamRendering(true)]
 
@@ -911,6 +916,247 @@
                         </div>
                     </div>
                 }
+
+                @if (mostrarNoticias == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        <div style="display: flex; margin-bottom: 20px;">
+                            <div class="opciones-combobox" style="margin-left: 20px; width: 33%;">
+                                <select @onchange="@(e => CambiarNoticiaTipo(e))">
+                                    @foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
+                                    {
+                                        <option value="@tipo">@tipo</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        @if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+                        {
+                            <hr />
+
+                            <div class="opciones-combobox" style="margin-left: 20px; margin-top: 10px; width: 33%;">
+                                <select @onchange="@(e => CambiarBundleNoticias(e))">
+                                    @foreach (Bundles2.Bundle bundle in Bundles2.BundlesCargar.GenerarListado())
+                                    {
+                                        <option value="@bundle.Tipo">@bundle.NombreTienda</option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (bundleSeleccionadoNoticias != null)
+                            {
+                                <div style="margin-left: 20px; margin-top: 20px;">
+                                    @foreach (var bundle in BaseDatos.Bundles.Buscar.UnTipo(bundleSeleccionadoNoticias, Herramientas.Tiempo.Actual))
+                                    {
+                                        <button @onclick="@(e => ClickearBundleNoticias(e, bundle.Id))" class="boton-pequeño" style="margin: 10px 0px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="width: 12%; margin: 10px;" />
+                                                <div style="margin-left: 20px;">@bundle.NombreBundle</div>
+                                            </div>
+                                        </button>
+                                    }
+                                </div>
+
+                                <hr />
+
+                                <div style="margin-left: 20px; margin-bottom: 10px;">
+                                    <label style="margin: 10px;">Juegos:</label>
+                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                                </div>
+                            }
+                        }
+                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+                        {
+                            <hr />
+
+                            <div class="opciones-combobox" style="margin-left: 20px; margin-top: 10px; width: 33%;">
+                                <select @onchange="@(e => CambiarGratisNoticias(e))">
+                                    @foreach (Gratis2.Gratis gratis in Gratis2.GratisCargar.GenerarListado())
+                                    {
+                                        <option value="@gratis.Tipo">@gratis.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (gratisSeleccionadoNoticias != null)
+                            {
+                                <div style="margin-left: 20px; margin-top: 20px;">
+                                    @foreach (var gratis in BaseDatos.Gratis.Buscar.UnTipo(gratisSeleccionadoNoticias, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
+                                    {
+                                        <button @onclick="@(e => ClickearGratisJuegoNoticias(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+                                            <div style="display: flex; align-items: center;">
+                                                @if (plantillaNoticias.Juegos != null)
+                                                {
+                                                    @if (plantillaNoticias.Juegos.Contains(gratis.JuegoId.ToString()) == true)
+                                                    {
+                                                        <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+                                                    }
+                                                }
+
+                                                <img src="@Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).ImagenLogo" style="width: 12%; margin: 10px;" />
+                                                <div style="margin-left: 20px;">@gratis.Nombre</div>
+                                            </div>
+                                        </button>
+                                    }
+                                </div>
+
+                                <hr />
+
+                                <div style="margin-left: 20px; margin-bottom: 10px;">
+                                    <label style="margin: 10px;">Juegos:</label>
+                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                                </div>
+                            }
+                        }
+                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+                        {
+                            <hr />
+
+                            <div class="opciones-combobox" style="margin-left: 20px; margin-top: 10px; width: 33%;">
+                                <select @onchange="@(e => CambiarSuscripcion(e))">
+                                    @foreach (Suscripciones2.Suscripcion suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+                                    {
+                                        <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (suscripcionSeleccionadaNoticias != null)
+                            {
+                                <div style="margin-left: 20px; margin-top: 20px;">
+                                    @foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionadaNoticias, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
+                                    {
+                                        <button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+                                            <div style="display: flex; align-items: center;">
+                                                @if (plantillaNoticias.Juegos != null)
+                                                {
+                                                    @if (plantillaNoticias.Juegos.Contains(suscripcion.JuegoId.ToString()) == true)
+                                                    {
+                                                        <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+                                                    }
+                                                }
+
+                                                <img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ImagenLogo" style="width: 12%; margin: 10px;" />
+                                                <div style="margin-left: 20px;">@suscripcion.Nombre</div>
+                                            </div>
+                                        </button>
+                                    }
+                                </div>
+
+                                <hr />
+
+                                <div style="margin-left: 20px; margin-bottom: 10px;">
+                                    <label style="margin: 10px;">Juegos:</label>
+                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                                </div>
+                            }
+                        }
+                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+                        {
+
+                        }
+                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+                        {
+                            <hr />
+
+                            <div style="margin-left: 20px; margin-bottom: 10px;">
+                                <label style="margin: 10px;">Juegos IDs:</label>
+                                <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                            </div>
+
+                            <div style="margin-left: 20px; margin-bottom: 10px;">
+                                <label style="margin: 10px;">Juegos Buscador:</label>
+                                <input type="text" @oninput="TextoCambiaBuscadorNoticias" class="entrada-texto" style="margin-bottom: 20px;" />
+
+                                @if (juegosBuscadorNoticias != null)
+                                {
+                                    @if (juegosBuscadorNoticias.Count > 0)
+                                    {
+                                        <div>
+                                            @foreach (var juego in juegosBuscadorNoticias)
+                                            {
+                                                <div class="perfil-flexible-centrado perfil-espacio-top">
+                                                    <button @onclick="@(e => SeleccionarJuegoNoticias(e, juego.Id.ToString()))" class="boton-pequeño">
+                                                        <div class="perfil-flexible-centrado">
+                                                            <div style="width: 12%;">
+                                                                <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                                                            </div>
+
+                                                            <div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+                                                                @juego.Id - @juego.Nombre
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+
+                        <hr />
+
+                        <div style="margin-left: 20px;">
+                            <label style="margin: 10px;">Título EN:</label>
+                            <input type="text" @onchange="@(e => CambiarTituloEnNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEn" />
+                        </div>
+
+                        <div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+                            <label style="margin: 10px;">Título ES:</label>
+                            <input type="text" @onchange="@(e => CambiarTituloEsNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEs" />
+                        </div>
+
+                        <hr />
+
+                        <div style="margin-left: 20px;">
+                            <label style="margin: 10px;">Imagen Noticia:</label>
+                            <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@plantillaNoticias.Imagen">
+                            <img src="@plantillaNoticias.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                        </div>
+
+                        <hr />
+
+                        <div style="margin-left: 20px;">
+                            <label style="margin: 10px;">Fecha Termina:</label>
+                            <input type="datetime-local" @onchange="@(e => CambiarFechaNoticias(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@plantillaNoticias.Fecha">
+                        </div>
+
+                        <div style="margin-top: 10px; margin-left: 20px; margin-bottom: 10px;">
+                            <label style="margin: 10px;">Enlace:</label>
+                            <input type="text" class="entrada-texto" value="@plantillaNoticias.Enlace" />
+                        </div>
+
+                        <hr />
+
+                        <div style="margin-left: 20px;">
+                            <label style="margin: 10px;">Contenido EN:</label>
+                            <textarea @onchange="@(e => CambiarContenidoEnNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEn</textarea>
+                        </div>
+
+                        <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+                            @((MarkupString)plantillaNoticias.ContenidoEn)
+                        </div>
+
+                        <hr />
+
+                        <div style="margin-left: 20px;">
+                            <label style="margin: 10px;">Contenido ES:</label>
+                            <textarea @onchange="@(e => CambiarContenidoEsNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEs</textarea>
+                        </div>
+
+                        <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+                            @((MarkupString)plantillaNoticias.ContenidoEs)
+                        </div>
+
+                        <hr />
+
+                        <div style="display: flex; margin-top: 40px; width: 33%;">
+                            <button @onclick="@(e => AñadirNoticia(e))" class="boton" style="text-align: center;">Añadir Noticia</button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -984,6 +1230,7 @@
         mostrarDLCs = false;
         mostrarPendientes = false;
         mostrarAñadir = false;
+        mostrarNoticias = false;
     }
 
     #region Errores
@@ -1989,6 +2236,258 @@
         }
 
         juegoAñadir = null;
+    }
+
+    #endregion
+
+    #region Noticias
+
+    private bool mostrarNoticias = false;
+
+    private void MostrarCerrarNoticias(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarNoticias == false)
+        {
+            mostrarNoticias = true;
+
+            titulo = "Noticias";
+        }
+    }
+
+    private string noticiaTipoSeleccionada = null;
+
+    private List<Juegos.Juego> juegosBuscadorNoticias = new List<Juegos.Juego>();
+
+    private string bundleSeleccionadoNoticias = null;
+    private string gratisSeleccionadoNoticias = null;
+    private string suscripcionSeleccionadaNoticias = null;
+
+    private global::Noticias.Plantilla plantillaNoticias = new global::Noticias.Plantilla();
+
+    private void CambiarNoticiaTipo(ChangeEventArgs texto)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            noticiaTipoSeleccionada = texto.Value.ToString();
+
+            //-------------------------------------------------------
+
+            if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+            {
+                bundleSeleccionadoNoticias = Bundles2.BundlesCargar.GenerarListado()[1].Id.ToString();
+            }
+            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+            {
+                gratisSeleccionadoNoticias = Gratis2.GratisCargar.GenerarListado()[0].Tipo.ToString();
+            }
+            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+            {
+                suscripcionSeleccionadaNoticias = Suscripciones2.SuscripcionesCargar.GenerarListado()[0].Id.ToString();
+            }
+            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+            {
+                GenerarSorteos(conexion);
+            }
+        }
+    }
+
+    private void CambiarTituloEnNoticias(ChangeEventArgs texto)
+    {
+        plantillaNoticias.TituloEn = texto.Value.ToString();
+    }
+
+    private void CambiarTituloEsNoticias(ChangeEventArgs texto)
+    {
+        plantillaNoticias.TituloEs = texto.Value.ToString();
+    }
+
+    private void CambiarImagenNoticia(ChangeEventArgs texto)
+    {
+        plantillaNoticias.Imagen = texto.Value.ToString();
+    }
+
+    private void CambiarContenidoEnNoticias(ChangeEventArgs texto)
+    {
+        plantillaNoticias.ContenidoEn = texto.Value.ToString();
+    }
+
+    private void CambiarContenidoEsNoticias(ChangeEventArgs texto)
+    {
+        plantillaNoticias.ContenidoEs = texto.Value.ToString();
+    }
+
+    private void CambiarFechaNoticias(ChangeEventArgs texto)
+    {
+        plantillaNoticias.Fecha = texto.Value.ToString();
+    }
+
+    private void AñadirNoticia(MouseEventArgs e)
+    {
+        global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+        noticia.TituloEn = plantillaNoticias.TituloEn;
+        noticia.TituloEs = plantillaNoticias.TituloEs;
+        noticia.Imagen = plantillaNoticias.Imagen;
+        noticia.ContenidoEn = plantillaNoticias.ContenidoEn;
+        noticia.ContenidoEs = plantillaNoticias.ContenidoEs;
+        noticia.Juegos = plantillaNoticias.Juegos;
+        noticia.FechaEmpieza = DateTime.Now;
+        noticia.FechaTermina = Convert.ToDateTime(plantillaNoticias.Fecha);
+        noticia.Enlace = plantillaNoticias.Enlace;
+
+        if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+        {
+            noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
+            noticia.BundleTipo = Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
+        }
+        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+        {
+            noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
+            noticia.GratisTipo = Gratis2.GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
+        }
+        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+        {
+            noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
+            noticia.SuscripcionTipo = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
+        }
+
+        BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+        foreach (var usuario in UserManager.Users)
+        {
+            if (usuario.NotificationNews == true)
+            {
+                Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email);
+            }
+        }
+
+        plantillaNoticias = new global::Noticias.Plantilla();
+
+        bundleSeleccionadoNoticias = null;
+        gratisSeleccionadoNoticias = null;
+        suscripcionSeleccionadaNoticias = null;
+    }
+
+    private void TextoCambiaBuscadorNoticias(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegosBuscadorNoticias = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+        }
+        else
+        {
+            juegosBuscadorNoticias = new List<Juegos.Juego>();
+        }
+    }
+
+    private void SeleccionarJuegoNoticias(MouseEventArgs e, string id)
+    {
+        plantillaNoticias = global::Noticias.Plantillas.Rumores(plantillaNoticias, id);
+
+        juegosBuscadorNoticias = new List<Juegos.Juego>();
+    }
+
+    private void CambiarBundleNoticias(ChangeEventArgs texto)
+    {
+        bundleSeleccionadoNoticias = texto.Value.ToString();
+    }
+
+    private void ClickearBundleNoticias(MouseEventArgs e, int bundleId)
+    {
+        plantillaNoticias = global::Noticias.Plantillas.Bundles(bundleId);
+    }
+
+    private void CambiarGratisNoticias(ChangeEventArgs texto)
+    {
+        gratisSeleccionadoNoticias = texto.Value.ToString();
+    }
+
+    private void ClickearGratisJuegoNoticias(MouseEventArgs e, int juegoId)
+    {
+        plantillaNoticias = global::Noticias.Plantillas.Gratis(plantillaNoticias, juegoId, gratisSeleccionadoNoticias);
+    }
+
+    private void CambiarSuscripcion(ChangeEventArgs texto)
+    {
+        suscripcionSeleccionadaNoticias = texto.Value.ToString();
+    }
+
+    private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId)
+    {
+        plantillaNoticias = global::Noticias.Plantillas.Suscripciones(plantillaNoticias, juegoId, suscripcionSeleccionadaNoticias);
+    }
+
+    private void GenerarSorteos(SqlConnection conexion)
+    {
+        List<Sorteos2.Sorteo> sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
+
+        if (sorteosActivos.Count > 0)
+        {
+            tituloEn = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways1"));
+            tituloEs = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways1"));
+
+            imagen = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[0].JuegoId.ToString()).Imagenes.Header_460x215;
+
+            fechaSeleccionada = sorteosActivos[0].FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            enlace = "https://pepeizqdeals.com/Giveaways";
+
+            contenidoEn = "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways2") + "</div><br/>";
+            contenidoEs = "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways2") + "</div><br/>";
+
+            List<Sorteos2.Sorteo> sorteosPremium = new List<Sorteos2.Sorteo>();
+            List<Sorteos2.Sorteo> sorteosBasico = new List<Sorteos2.Sorteo>();
+
+            foreach (var activo in sorteosActivos)
+            {
+                if (activo.GrupoId == "40604285")
+                {
+                    sorteosPremium.Add(activo);
+                }
+                else if (activo.GrupoId == "33500256")
+                {
+                    sorteosBasico.Add(activo);
+                }
+            }
+
+            if (sorteosPremium.Count > 0)
+            {
+                contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways3") + "</div><ul>";
+                contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways3") + "</div><ul>";
+
+                foreach (var premium in sorteosPremium)
+                {
+                    contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+                    contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+                }
+
+                contenidoEn = contenidoEn + "</ul>";
+                contenidoEs = contenidoEs + "</ul>";
+            }
+
+            if (sorteosBasico.Count > 0)
+            {
+                contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways4") + "</div><ul>";
+                contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways4") + "</div><ul>";
+
+                foreach (var basico in sorteosBasico)
+                {
+                    contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+                    contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+                }
+
+                contenidoEn = contenidoEn + "</ul>";
+                contenidoEs = contenidoEs + "</ul>";
+            }
+        }
+
     }
 
     #endregion
