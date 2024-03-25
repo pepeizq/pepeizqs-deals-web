@@ -12,4 +12,10 @@ namespace Sorteos2
         public DateTime FechaTermina;
         public string GanadorId;
     }
+
+    public class GrupoSorteo
+    {
+        public string Nombre;
+        public string Id;
+    }
 }

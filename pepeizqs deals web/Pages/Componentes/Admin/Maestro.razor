@@ -92,11 +92,11 @@
                 <label style="margin-top: 40px; padding-left: 20px; padding-bottom: 15px;">Añadir</label>
                 <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarAñadir(e))">Juego</button>
-                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Noticias" style="text-decoration: none;">Noticias</a>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarNoticias(e))">Noticias</button>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Bundles" style="text-decoration: none;">Bundles</a>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Gratis" style="text-decoration: none;">Gratis</a>
                     <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Suscripciones" style="text-decoration: none;">Suscripciones</a>
-                    <a class="admin-lateral" href="https://beta.pepeizqdeals.com/Admin/Sorteos" style="text-decoration: none;">Sorteos</a>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarSorteos(e))">Sorteos</button>
                 </div>
             </div>
 
@@ -108,26 +108,29 @@
                         
                         <hr />
 
-                        @foreach (var error in listaErrores)
+                        @if (listaErrores.Count > 0)
                         {
-                            <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
-                                <div style="padding-left: 10px; padding-right: 10px;">
-                                    <div>
-                                        @error.Seccion
+                            foreach (var error in listaErrores)
+                            {
+                                <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                                    <div style="padding-left: 10px; padding-right: 10px;">
+                                        <div>
+                                            @error.Seccion
+                                        </div>
+                                        <div style="margin-top: 15px;">
+                                            @error.Fecha
+                                        </div>
                                     </div>
-                                    <div style="margin-top: 15px;">
-                                        @error.Fecha
+                                    <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                                        @error.Mensaje
+                                    </div>
+                                    <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                                        @error.Stacktrace
                                     </div>
                                 </div>
-                                <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
-                                    @error.Mensaje
-                                </div>
-                                <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
-                                    @error.Stacktrace
-                                </div>
-                            </div>
 
-                            <hr />
+                                <hr />
+                            }
                         }
                     </div>
                 }
@@ -1157,6 +1160,84 @@
                         </div>
                     </div>
                 }
+
+                @if (mostrarSorteos == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                        @if (idSeleccionadaSorteos == null)
+                        {
+                            <div>
+                                <label style="margin-bottom: 10px;">Juego:</label>
+                                <input type="text" @oninput="TextoCambiaBuscadorSorteos" class="entrada-texto" />
+
+                                @if (juegosBuscadorSorteos != null)
+                                {
+                                    @if (juegosBuscadorSorteos.Count > 0)
+                                    {
+                                        <div>
+                                            @foreach (var juego in juegosBuscadorSorteos)
+                                            {
+                                                <div class="perfil-flexible-centrado perfil-espacio-top">
+                                                    <button @onclick="@(e => ClickearJuegoSorteos(e, juego.Id.ToString(), juego.Nombre, juego.Imagenes.Library_600x900, juego.Imagenes.Header_460x215))" class="boton-pequeño" style="text-align:center;">
+                                                        <div class="perfil-flexible-centrado">
+                                                            <div style="width: 12%;">
+                                                                <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                                                            </div>
+
+                                                            <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+                                                                @juego.Nombre<br />
+                                                                <span style="font-size: 13px;">@juego.Id.ToString()</span>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="display: flex;">
+                                <div style="width: 15%;">
+                                    <img src="@imagenSeleccionadaSorteos" style="max-height: 100%; max-width: 100%;" />
+                                </div>
+
+                                <div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+                                    <div style="margin-left: 5px;">
+                                        @nombreSeleccionadoSorteos
+                                    </div>
+
+                                    <div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
+                                        <select @onchange="@(e => CambiarGrupoSorteos(e))">
+                                            @foreach (var grupo in gruposSorteos)
+                                            {
+                                                <option value="@grupo.Id">@grupo.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div style="width: 33%; margin-top: 20px;">
+                                        <div style="margin-bottom: 10px; margin-left: 5px;">Clave:</div>
+                                        <input type="text" @oninput="TextoCambiaClaveSorteos" class="entrada-texto" />
+                                    </div>
+
+                                    <div style="width: 33%; margin-top: 20px;">
+                                        <div style="margin-bottom: 10px; margin-left: 5px;">Fecha Termina:</div>
+                                        <input type="datetime-local" @onchange="@(e => CambiarFechaSorteos(e))" class="entrada-texto" value="@fechaSeleccionadaSorteos">
+                                    </div>
+
+                                    <hr />
+
+                                    <div style="display: flex; margin-top: 40px; width: 33%;">
+                                        <button @onclick="@(e => AñadirSorteo(e))" class="boton" style="text-align: center;">Añadir Sorteo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -1231,6 +1312,7 @@
         mostrarPendientes = false;
         mostrarAñadir = false;
         mostrarNoticias = false;
+        mostrarSorteos = false;
     }
 
     #region Errores
@@ -2275,6 +2357,8 @@
 
         using (conexion)
         {
+            plantillaNoticias = new global::Noticias.Plantilla();
+
             noticiaTipoSeleccionada = texto.Value.ToString();
 
             //-------------------------------------------------------
@@ -2430,64 +2514,128 @@
 
         if (sorteosActivos.Count > 0)
         {
-            tituloEn = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways1"));
-            tituloEs = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways1"));
+            plantillaNoticias = global::Noticias.Plantillas.Sorteos(sorteosActivos);
+        }
+    }
 
-            imagen = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[0].JuegoId.ToString()).Imagenes.Header_460x215;
+    #endregion
 
-            fechaSeleccionada = sorteosActivos[0].FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+    #region Sorteos
 
-            enlace = "https://pepeizqdeals.com/Giveaways";
+    private bool mostrarSorteos = false;
 
-            contenidoEn = "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways2") + "</div><br/>";
-            contenidoEs = "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways2") + "</div><br/>";
+    private void MostrarCerrarSorteos(MouseEventArgs e)
+    {
+        CerrarPestañas();
 
-            List<Sorteos2.Sorteo> sorteosPremium = new List<Sorteos2.Sorteo>();
-            List<Sorteos2.Sorteo> sorteosBasico = new List<Sorteos2.Sorteo>();
+        if (mostrarSorteos == false)
+        {
+            mostrarSorteos = true;
 
-            foreach (var activo in sorteosActivos)
+            titulo = "Sorteos";
+
+            gruposSorteos = new List<Sorteos2.GrupoSorteo>();
+
+            Sorteos2.GrupoSorteo grupoPremium = new Sorteos2.GrupoSorteo();
+            grupoPremium.Nombre = "Premium";
+            grupoPremium.Id = "40604285";
+            gruposSorteos.Add(grupoPremium);
+
+            Sorteos2.GrupoSorteo grupoNormal = new Sorteos2.GrupoSorteo();
+            grupoNormal.Nombre = "Normal";
+            grupoNormal.Id = "33500256";
+            gruposSorteos.Add(grupoNormal);
+
+            grupoSeleccionadoSorteos = gruposSorteos[0].Id;
+
+            //---------------------------------------------
+
+            DateTime fechaSabado = DateTime.Now;
+            fechaSabado = fechaSabado.AddDays(1);
+
+            int i = 1;
+            while (i <= 7)
             {
-                if (activo.GrupoId == "40604285")
+                if (fechaSabado.DayOfWeek == DayOfWeek.Saturday)
                 {
-                    sorteosPremium.Add(activo);
+                    break;
                 }
-                else if (activo.GrupoId == "33500256")
+                else
                 {
-                    sorteosBasico.Add(activo);
+                    fechaSabado = fechaSabado.AddDays(1);
                 }
+
+                i += 1;
             }
 
-            if (sorteosPremium.Count > 0)
-            {
-                contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways3") + "</div><ul>";
-                contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways3") + "</div><ul>";
+            fechaSabado = new DateTime(fechaSabado.Year, fechaSabado.Month, fechaSabado.Day, 10, 0, 0);
 
-                foreach (var premium in sorteosPremium)
-                {
-                    contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
-                    contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
-                }
+            fechaSeleccionadaSorteos = fechaSabado.ToString("yyyy-MM-ddTHH:mm:ss");
+        }
+    }
 
-                contenidoEn = contenidoEn + "</ul>";
-                contenidoEs = contenidoEs + "</ul>";
-            }
+    List<Juegos.Juego> juegosBuscadorSorteos = new List<Juegos.Juego>();
 
-            if (sorteosBasico.Count > 0)
-            {
-                contenidoEn = contenidoEn + "<div>" + Herramientas.Idiomas.CogerCadena("en-US", "News.Giveaways4") + "</div><ul>";
-                contenidoEs = contenidoEs + "<div>" + Herramientas.Idiomas.CogerCadena("es-ES", "News.Giveaways4") + "</div><ul>";
+    List<Sorteos2.GrupoSorteo> gruposSorteos = new List<Sorteos2.GrupoSorteo>();
 
-                foreach (var basico in sorteosBasico)
-                {
-                    contenidoEn = contenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
-                    contenidoEs = contenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
-                }
+    private string idSeleccionadaSorteos = null;
+    private string nombreSeleccionadoSorteos = null;
+    private string imagenSeleccionadaSorteos = null;
+    private string grupoSeleccionadoSorteos = null;
+    private string claveSorteos = null;
+    private string fechaSeleccionadaSorteos = null;
 
-                contenidoEn = contenidoEn + "</ul>";
-                contenidoEs = contenidoEs + "</ul>";
-            }
+    private void TextoCambiaBuscadorSorteos(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegosBuscadorSorteos = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+        }
+        else
+        {
+            juegosBuscadorSorteos = new List<Juegos.Juego>();
+        }
+    }
+
+    private void ClickearJuegoSorteos(MouseEventArgs e, string id, string nombre, string imagenVertical, string imagenNoticia2)
+    {
+        juegosBuscadorSorteos = new List<Juegos.Juego>();
+
+        idSeleccionadaSorteos = id;
+        nombreSeleccionadoSorteos = nombre;
+        imagenSeleccionadaSorteos = imagenVertical;
+    }
+
+    private void CambiarGrupoSorteos(ChangeEventArgs texto)
+    {
+        grupoSeleccionadoSorteos = texto.Value.ToString();
+    }
+
+    private void TextoCambiaClaveSorteos(ChangeEventArgs texto)
+    {
+        claveSorteos = texto.Value.ToString();
+    }
+
+    private void CambiarFechaSorteos(ChangeEventArgs texto)
+    {
+        fechaSeleccionadaSorteos = texto.Value.ToString();
+    }
+
+    private void AñadirSorteo(MouseEventArgs e)
+    {
+        if (string.IsNullOrEmpty(claveSorteos) == false)
+        {
+            Sorteos2.Sorteo nuevoSorteo = new Sorteos2.Sorteo();
+            nuevoSorteo.GrupoId = grupoSeleccionadoSorteos;
+            nuevoSorteo.JuegoId = int.Parse(idSeleccionadaSorteos);
+            nuevoSorteo.Clave = claveSorteos;
+            nuevoSorteo.FechaTermina = Convert.ToDateTime(fechaSeleccionadaSorteos);
+            nuevoSorteo.Participantes = new List<string>();
+
+            BaseDatos.Sorteos.Insertar.Ejecutar(nuevoSorteo);
         }
 
+        idSeleccionadaSorteos = null;
     }
 
     #endregion

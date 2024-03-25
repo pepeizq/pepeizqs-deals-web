@@ -408,6 +408,70 @@ namespace Noticias
             return plantilla;
         }
 
+        public static Plantilla Sorteos(List<Sorteos2.Sorteo> sorteosActivos)
+        {
+            Plantilla plantilla = new Plantilla();
+
+            plantilla.TituloEn = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Idiomas.CogerCadena("en-US", "News.Giveaways1"));
+            plantilla.TituloEs = string.Format("{0} {1}", sorteosActivos.Count.ToString(), Idiomas.CogerCadena("es-ES", "News.Giveaways1"));
+
+            plantilla.Imagen = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[0].JuegoId.ToString()).Imagenes.Header_460x215;
+
+            plantilla.Fecha = sorteosActivos[0].FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            plantilla.Enlace = "https://pepeizqdeals.com/Giveaways";
+
+            plantilla.ContenidoEn = "<div>" + Idiomas.CogerCadena("en-US", "News.Giveaways2") + "</div><br/>";
+            plantilla.ContenidoEs = "<div>" + Idiomas.CogerCadena("es-ES", "News.Giveaways2") + "</div><br/>";
+
+            List<Sorteos2.Sorteo> sorteosPremium = new List<Sorteos2.Sorteo>();
+            List<Sorteos2.Sorteo> sorteosBasico = new List<Sorteos2.Sorteo>();
+
+            foreach (var activo in sorteosActivos)
+            {
+                if (activo.GrupoId == "40604285")
+                {
+                    sorteosPremium.Add(activo);
+                }
+                else if (activo.GrupoId == "33500256")
+                {
+                    sorteosBasico.Add(activo);
+                }
+            }
+
+            if (sorteosPremium.Count > 0)
+            {
+                plantilla.ContenidoEn = plantilla.ContenidoEn + "<div>" + Idiomas.CogerCadena("en-US", "News.Giveaways3") + "</div><ul>";
+                plantilla.ContenidoEs = plantilla.ContenidoEs + "<div>" + Idiomas.CogerCadena("es-ES", "News.Giveaways3") + "</div><ul>";
+
+                foreach (var premium in sorteosPremium)
+                {
+                    plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+                    plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#premium" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(premium.JuegoId.ToString()).Nombre + "</a></li>";
+                }
+
+                plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul>";
+                plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul>";
+            }
+
+            if (sorteosBasico.Count > 0)
+            {
+                plantilla.ContenidoEn = plantilla.ContenidoEn + "<div>" + Idiomas.CogerCadena("en-US", "News.Giveaways4") + "</div><ul>";
+                plantilla.ContenidoEs = plantilla.ContenidoEs + "<div>" + Idiomas.CogerCadena("es-ES", "News.Giveaways4") + "</div><ul>";
+
+                foreach (var basico in sorteosBasico)
+                {
+                    plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+                    plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + "https://pepeizqdeals.com/Giveaways#basic" + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + BaseDatos.Juegos.Buscar.UnJuego(basico.JuegoId.ToString()).Nombre + "</a></li>";
+                }
+
+                plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul>";
+                plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul>";
+            }
+
+            return plantilla;
+        }
+
         public static Plantilla Rumores(Plantilla plantilla, string juegoId)
         {
             if (plantilla.Juegos == null)
