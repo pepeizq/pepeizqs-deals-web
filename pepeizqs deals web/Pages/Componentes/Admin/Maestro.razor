@@ -1161,6 +1161,11 @@
                     </div>
                 }
 
+                @if (mostrarBundles == true)
+                {
+                    
+                }
+
                 @if (mostrarSorteos == true)
                 {
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
@@ -1312,6 +1317,7 @@
         mostrarPendientes = false;
         mostrarAñadir = false;
         mostrarNoticias = false;
+        mostrarBundles = false;
         mostrarSorteos = false;
     }
 
@@ -1342,7 +1348,11 @@
 
         CerrarPestañas();
 
-        if (mostrarErrores == false)
+        if (mostrarErrores == true)
+        {
+            mostrarErrores = false;
+        }
+        else if (mostrarErrores == false)
         {
             mostrarErrores = true;
 
@@ -1383,7 +1393,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarAvisos == false)
+        if (mostrarAvisos == true)
+        {
+            mostrarAvisos = false;
+        }
+        else if (mostrarAvisos == false)
         {
             mostrarAvisos = true;
 
@@ -1457,7 +1471,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarCorreos == false)
+        if (mostrarCorreos == true)
+        {
+            mostrarCorreos = false;
+        }
+        else if (mostrarCorreos == false)
         {
             mostrarCorreos = true;
 
@@ -1573,7 +1591,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarTiendas == false)
+        if (mostrarTiendas == true)
+        {
+            mostrarTiendas = false;
+        }
+        else if (mostrarTiendas == false)
         {
             mostrarTiendas = true;
 
@@ -1618,7 +1640,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarDivisas == false)
+        if (mostrarDivisas == true)
+        {
+            mostrarDivisas = false;
+        }
+        else if (mostrarDivisas == false)
         {
             mostrarDivisas = true;
 
@@ -1665,7 +1691,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarDLCs == false)
+        if (mostrarDLCs == true)
+        {
+            mostrarDLCs = false;
+        }
+        else if (mostrarDLCs == false)
         {
             mostrarDLCs = true;
 
@@ -1727,7 +1757,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarPendientes == false)
+        if (mostrarPendientes == true)
+        {
+            mostrarPendientes = false;
+        }
+        else if (mostrarPendientes == false)
         {
             mostrarPendientes = true;
 
@@ -1955,7 +1989,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarAñadir == false)
+        if (mostrarAñadir == true)
+        {
+            mostrarAñadir = false;
+        }
+        else if (mostrarAñadir == false)
         {
             mostrarAñadir = true;
 
@@ -2330,7 +2368,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarNoticias == false)
+        if (mostrarNoticias == true)
+        {
+            mostrarNoticias = false;
+        }
+        else if (mostrarNoticias == false)
         {
             mostrarNoticias = true;
 
@@ -2520,6 +2562,30 @@
 
     #endregion
 
+    #region Bundles
+
+    private bool mostrarBundles = false;
+
+    private void MostrarCerrarBundles(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarBundles == true)
+        {
+            mostrarBundles = false;
+        }
+        else if (mostrarBundles == false)
+        {
+            mostrarBundles = true;
+
+            titulo = "Bundles";
+
+
+        }
+    }
+
+    #endregion
+
     #region Sorteos
 
     private bool mostrarSorteos = false;
@@ -2528,7 +2594,11 @@
     {
         CerrarPestañas();
 
-        if (mostrarSorteos == false)
+        if (mostrarSorteos == true)
+        {
+            mostrarSorteos = false;
+        }
+        else if (mostrarSorteos == false)
         {
             mostrarSorteos = true;
 
