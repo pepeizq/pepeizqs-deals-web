@@ -45,22 +45,22 @@ namespace APIs.Steam
 			int arranque = 0;
 			int tope = 100000;
 
-			if (mirarOfertas == true)
-			{
-				arranque = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, conexion));
+			//if (mirarOfertas == true)
+			//{
+			//	arranque = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, conexion));
 
-				tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
+			//	tope = int.Parse(BaseDatos.Tiendas.Admin.CargarValorAdicional2(Generar().Id, conexion));
 
-				if (tope == 0)
-				{
-					tope = 100000;
-				}
+			//	if (tope == 0)
+			//	{
+			//		tope = 100000;
+			//	}
 
-				if (arranque >= (tope - 300))
-				{
-					arranque = 0;
-				}
-			}
+			//	if (arranque >= (tope - 300))
+			//	{
+			//		arranque = 0;
+			//	}
+			//}
 
 			for (int i = arranque; i < tope; i += 50)
 			{
