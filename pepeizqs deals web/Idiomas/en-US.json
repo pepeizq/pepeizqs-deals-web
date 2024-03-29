@@ -380,6 +380,10 @@
     "Valor": "It was free"
   },
   {
+    "Id": "Game.String38",
+    "Valor": "It was in the subscription"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },

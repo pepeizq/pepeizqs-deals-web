@@ -103,6 +103,14 @@ namespace Herramientas
             {
                 enlace = APIs.Fanatical.Gratis.Referido(enlace);
             }
+            else if (tipo == APIs.Humble.Gratis.Generar().Tipo)
+            {
+                enlace = APIs.Humble.Gratis.Referido(enlace);
+            }
+            else if (tipo == APIs.IndieGala.Gratis.Generar().Tipo)
+            {
+                enlace = APIs.IndieGala.Gratis.Referido(enlace);
+            }
 
             //----------------------------------------
 

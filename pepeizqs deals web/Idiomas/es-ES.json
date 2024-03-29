@@ -376,6 +376,10 @@
     "Valor": "Estuvo gratis"
   },
   {
+    "Id": "Game.String38",
+    "Valor": "Estuvo en la suscripción"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },

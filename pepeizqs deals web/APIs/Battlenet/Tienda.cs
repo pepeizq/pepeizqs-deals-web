@@ -77,6 +77,7 @@ namespace APIs.Battlenet
 
 									if (string.IsNullOrEmpty(textoPrecioRebajado) == false)
 									{
+										textoPrecioRebajado = textoPrecioRebajado.Replace("€", null);
 										textoPrecioRebajado = textoPrecioRebajado.Replace("EUR", null);
 										textoPrecioRebajado = textoPrecioRebajado.Trim();
 									}
@@ -85,6 +86,7 @@ namespace APIs.Battlenet
 
 									if (string.IsNullOrEmpty(textoPrecioBase) == false)
 									{
+										textoPrecioBase = textoPrecioBase.Replace("€", null);
 										textoPrecioBase = textoPrecioBase.Replace("EUR", null);
 										textoPrecioBase = textoPrecioBase.Trim();
 									}

@@ -1507,8 +1507,13 @@
                                         </div>
 
                                         <div style="margin-top: 20px;">
+                                            <label style="margin-bottom: 10px;">Fecha Empieza:</label>
+                                            <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
+                                        </div>
+
+                                        <div style="margin-top: 20px;">
                                             <label style="margin-bottom: 10px;">Fecha Termina:</label>
-                                            <input type="datetime-local" @onchange="@(e => CambiarFechaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaSeleccionadaSuscripciones">
+                                            <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
                                         </div>
 
                                         <hr />
@@ -3321,8 +3326,8 @@
     {
         tipoGratis = texto.Value.ToString();
         enlaceSeleccionadoGratis = null;
-        // fechaEmpiezaSeleccionadaGratis = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-        // fechaTerminaSeleccionadaGratis = GratisCargar.DevolverGratis(tipo).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        fechaEmpiezaSeleccionadaGratis = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+        fechaTerminaSeleccionadaGratis = GratisCargar.DevolverGratis(tipoGratis).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         drmSeleccionadoGratis = GratisCargar.DevolverGratis(tipoGratis).DRMDefecto.ToString();
     }
 
@@ -3420,7 +3425,8 @@
     private string nombreSeleccionadoSuscripciones = null;
     private string suscripcionSeleccionadaSuscripciones = null;
     private string drmSeleccionadoSuscripciones = null;
-    private string fechaSeleccionadaSuscripciones = null;
+    private string fechaEmpiezaSeleccionadaSuscripciones = null;
+    private string fechaTerminaSeleccionadaSuscripciones = null;
     private string enlaceSeleccionadoSuscripciones = null;
     private string imagenNoticiaSuscripciones = null;
 
@@ -3463,7 +3469,8 @@
 
         if (suscripcionSeleccionadaSuscripciones == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
         {
-            fechaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+            fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         }
 
         if (drmSeleccionadoSuscripciones == null)
@@ -3481,7 +3488,7 @@
     {
         suscripcionSeleccionadaSuscripciones = texto.Value.ToString();
 
-        fechaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         drmSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).DRMDefecto.ToString();
         enlaceSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Enlace;
     }
@@ -3491,9 +3498,14 @@
         drmSeleccionadoSuscripciones = texto.Value.ToString();
     }
 
-    private void CambiarFechaSuscripciones(ChangeEventArgs texto)
+    private void CambiarFechaEmpiezaSuscripciones(ChangeEventArgs texto)
     {
-        fechaSeleccionadaSuscripciones = texto.Value.ToString();
+        fechaEmpiezaSeleccionadaSuscripciones = texto.Value.ToString();
+    }
+
+    private void CambiarFechaTerminaSuscripciones(ChangeEventArgs texto)
+    {
+        fechaTerminaSeleccionadaSuscripciones = texto.Value.ToString();
     }
 
     private void CambiarEnlaceSuscripciones(ChangeEventArgs texto)
@@ -3525,8 +3537,8 @@
             suscripcion.Imagen = imagenSeleccionadaSuscripciones;
             suscripcion.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoSuscripciones);
             suscripcion.Enlace = enlaceSeleccionadoSuscripciones;
-            suscripcion.FechaEmpieza = DateTime.Now;
-            suscripcion.FechaTermina = Convert.ToDateTime(fechaSeleccionadaSuscripciones);
+            suscripcion.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionadaSuscripciones);
+            suscripcion.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionadaSuscripciones);
             suscripcion.ImagenNoticia = imagenNoticiaSuscripciones;
 
             if (juegoSuscripciones.Suscripciones == null)

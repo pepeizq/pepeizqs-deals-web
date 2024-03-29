@@ -21,5 +21,10 @@
 
             return humble;
         }
+
+        public static string Referido(string enlace)
+        {
+            return enlace + "?partner=pepeizq";
+        }
     }
 }

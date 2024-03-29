@@ -5,7 +5,9 @@ namespace Suscripciones2
 	public enum SuscripcionTipo
 	{
 		HumbleChoice,
-		PrimeGaming
+		PrimeGaming,
+		HumbleMonthly,
+		TwitchPrime
 	}
 
 	public class SuscripcionesCargar
