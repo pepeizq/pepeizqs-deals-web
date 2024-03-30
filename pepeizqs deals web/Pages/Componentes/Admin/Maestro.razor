@@ -1508,7 +1508,7 @@
 
                                         <div style="margin-top: 20px;">
                                             <label style="margin-bottom: 10px;">Fecha Empieza:</label>
-                                            <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
+                                            <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionadaSuscripciones">
                                         </div>
 
                                         <div style="margin-top: 20px;">
@@ -3469,8 +3469,8 @@
 
         if (suscripcionSeleccionadaSuscripciones == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
         {
-            fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-            fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+            // fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            // fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         }
 
         if (drmSeleccionadoSuscripciones == null)
@@ -3488,7 +3488,7 @@
     {
         suscripcionSeleccionadaSuscripciones = texto.Value.ToString();
 
-        fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        // fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         drmSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).DRMDefecto.ToString();
         enlaceSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Enlace;
     }

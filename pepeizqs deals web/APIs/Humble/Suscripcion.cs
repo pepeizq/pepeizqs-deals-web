@@ -46,5 +46,43 @@ namespace APIs.Humble
 		{
 			return enlace + "?partner=pepeizq&refc=gXsa9X";
 		}
+
+		public static Suscripciones2.Suscripcion GenerarAntiguo()
+		{
+			Suscripciones2.Suscripcion humbleMonthly = new Suscripciones2.Suscripcion
+			{
+				Id = Suscripciones2.SuscripcionTipo.HumbleMonthly,
+				Nombre = "Humble Monthly",
+				ImagenLogo = "/imagenes/suscripciones/humblemonthly.webp",
+				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
+				Enlace = "https://www.humblebundle.com/membership/home",
+				DRMDefecto = JuegoDRM.Steam
+			};
+
+			DateTime fechaHumbleMonthly = DateTime.Now;
+			fechaHumbleMonthly = fechaHumbleMonthly.AddMonths(1);
+			fechaHumbleMonthly = new DateTime(fechaHumbleMonthly.Year, fechaHumbleMonthly.Month, 1, 19, 0, 0);
+
+			int i = 1;
+			while (i <= 7)
+			{
+				if (fechaHumbleMonthly.DayOfWeek == DayOfWeek.Tuesday)
+				{
+					break;
+				}
+				else
+				{
+					fechaHumbleMonthly = fechaHumbleMonthly.AddDays(1);
+				}
+
+				i += 1;
+			}
+
+			fechaHumbleMonthly = new DateTime(fechaHumbleMonthly.Year, fechaHumbleMonthly.Month, i, 19, 0, 0);
+
+			humbleMonthly.FechaSugerencia = fechaHumbleMonthly;
+
+			return humbleMonthly;
+		}
 	}
 }

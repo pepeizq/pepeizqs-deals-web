@@ -15,4 +15,10 @@ namespace Suscripciones2
 		public JuegoDRM DRMDefecto;
 		public string ImagenNoticia;
 	}
+
+    public class SuscripcionComponente
+    {
+        public Suscripcion Tipo;
+        public List<JuegoSuscripcion> Juegos;
+    }
 }

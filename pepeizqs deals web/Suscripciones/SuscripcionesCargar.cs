@@ -17,7 +17,9 @@ namespace Suscripciones2
 			List<Suscripcion> suscripciones = new List<Suscripcion>
 			{
 				APIs.Humble.Suscripcion.Generar(),
-				APIs.PrimeGaming.Suscripcion.Generar()
+				APIs.PrimeGaming.Suscripcion.Generar(),
+				APIs.Humble.Suscripcion.GenerarAntiguo(),
+				APIs.PrimeGaming.Suscripcion.GenerarAntiguo()
 			};
 
 			return suscripciones;

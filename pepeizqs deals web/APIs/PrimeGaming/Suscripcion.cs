@@ -24,5 +24,26 @@ namespace APIs.PrimeGaming
 
 			return primeGaming;
 		}
+
+		public static Suscripciones2.Suscripcion GenerarAntiguo()
+		{
+			Suscripciones2.Suscripcion twitchPrime = new Suscripciones2.Suscripcion
+			{
+				Id = Suscripciones2.SuscripcionTipo.TwitchPrime,
+				Nombre = "Twitch Prime",
+				ImagenLogo = "/imagenes/suscripciones/twitchprime_300x80.webp",
+				ImagenIcono = "/imagenes/suscripciones/twitchprime_icono.webp",
+				Enlace = "https://gaming.amazon.com/",
+				DRMDefecto = JuegoDRM.Amazon
+			};
+
+			DateTime fechaPrime = DateTime.Now;
+			fechaPrime = fechaPrime.AddMonths(1);
+			fechaPrime = new DateTime(fechaPrime.Year, fechaPrime.Month, fechaPrime.Day, 19, 0, 0);
+
+			twitchPrime.FechaSugerencia = fechaPrime;
+
+			return twitchPrime;
+		}
 	}
 }
