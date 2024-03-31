@@ -1012,6 +1012,10 @@
     "Valor": "Claves"
   },
   {
+    "Id": "SettingsLayout.String7",
+    "Valor": "Sorteos"
+  },
+  {
     "Id": "Settings.String1",
     "Valor": "Cambia la configuración de tu cuenta"
   },
@@ -1262,6 +1266,10 @@
   {
     "Id": "Settings.String63",
     "Valor": "Actualizar"
+  },
+  {
+    "Id": "Settings.String64",
+    "Valor": "Sorteos"
   },
   {
     "Id": "ForgotPassword.String1",

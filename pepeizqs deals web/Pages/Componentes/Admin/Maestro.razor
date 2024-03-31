@@ -109,32 +109,35 @@
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
                         <button @onclick="@(e => LimpiarErrores(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
                         
-                        <hr />
-
-                        @if (listaErrores.Count > 0)
+                        @if (listaErrores != null)
                         {
-                            foreach (var error in listaErrores)
+                            if (listaErrores.Count > 0)
                             {
-                                <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
-                                    <div style="padding-left: 10px; padding-right: 10px;">
-                                        <div>
-                                            @error.Seccion
-                                        </div>
-                                        <div style="margin-top: 15px;">
-                                            @error.Fecha
-                                        </div>
-                                    </div>
-                                    <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
-                                        @error.Mensaje
-                                    </div>
-                                    <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
-                                        @error.Stacktrace
-                                    </div>
-                                </div>
-
                                 <hr />
+
+                                foreach (var error in listaErrores)
+                                {
+                                    <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                                        <div style="padding-left: 10px; padding-right: 10px;">
+                                            <div>
+                                                @error.Seccion
+                                            </div>
+                                            <div style="margin-top: 15px;">
+                                                @error.Fecha
+                                            </div>
+                                        </div>
+                                        <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                                            @error.Mensaje
+                                        </div>
+                                        <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                                            @error.Stacktrace
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                }
                             }
-                        }
+                        }                       
                     </div>
                 }
 
@@ -1747,7 +1750,7 @@
         {
             BaseDatos.Errores.Limpiar.Ejecutar(conexion);
 
-            listaErrores = null;
+            listaErrores = new List<Error>();
 
             ActualizarMensajeErrores(0);
         }

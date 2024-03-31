@@ -12,6 +12,8 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
 
         public static string SteamAccount => "SteamAccount";
 
+        public static string Giveaways => "Giveaways";
+
         public static string Index => "Index";
 
         public static string Email => "Email";
@@ -33,6 +35,8 @@ namespace  pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
         public static string NotificationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Notifications);
 
 		public static string SteamAccountNavClass(ViewContext viewContext) => PageNavClass(viewContext, SteamAccount);
+
+        public static string GiveawaysNavClass(ViewContext viewContext) => PageNavClass(viewContext, Giveaways);
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 

@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario != null)
+{
+	<div style="margin-top: 10px;">
+	
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+			{
+				
+			}
+		}
+	}
+
+}

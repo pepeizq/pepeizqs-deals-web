@@ -1016,6 +1016,10 @@
     "Valor": "Keys"
   },
   {
+    "Id": "SettingsLayout.String7",
+    "Valor": "Giveaways"
+  },
+  {
     "Id": "Settings.String1",
     "Valor": "Change your account settings"
   },
@@ -1266,6 +1270,10 @@
   {
     "Id": "Settings.String63",
     "Valor": "Refresh"
+  },
+  {
+    "Id": "Settings.String64",
+    "Valor": "Giveaways"
   },
   {
     "Id": "ForgotPassword.String1",

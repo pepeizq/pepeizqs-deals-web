@@ -6,137 +6,140 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-@if (usuario.EmailConfirmed == true)
+@if (usuario != null)
 {
-	<div style="margin-top: 10px;">
-		<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
-
-		<div style="display: flex; margin-top: 15px; margin-left: 10px;">
-			<div style="width: 6%; padding: 10px;">
-				<i class="fa-solid fa-circle-info" style="font-size: 30px;"></i>
-			</div>
-
-			<div style="width: 94%;">
-				<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String46")</label>
-
-				<button @onclick="ClickearEnseñarImagen" class="btn btn-link" style="outline: none; border: 0; padding-left: 10px; color: var(--colorTextoOscuro);">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String47")
-				</button>
-
-				@if (enseñarImagen == true)
-				{
-					<img src="/imagenes/otros/permisos.jpg" style="margin: 10px;"/>
-				}
-			</div>
-		</div>
-	</div>
-
-	@if (errorCuentaUsada == true)
+	if (usuario.EmailConfirmed == true)
 	{
-		<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String61")
-		</div>
-	}
+		<div style="margin-top: 10px;">
+			<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
 
-	@if (string.IsNullOrEmpty(enlaceCuenta) == false)
-	{
-		<hr style="margin-top: 20px; margin-bottom: 20px;" />
-
-		<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String63")
-		</button>
-	}
-
-	@if (usuario.SteamId != null || usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
-	{
-		<hr style="margin-top: 20px; margin-bottom: 20px;" />
-
-		<div class="perfil-flexible-centrado" style="align-items: start;">
-			@if (string.IsNullOrEmpty(usuario.Avatar) == false)
-			{
-				<div style="width: 10%; padding: 3px 10px;">
-					<img src="@usuario.Avatar" style="max-width: 70px; max-height: 70px;" />
+			<div style="display: flex; margin-top: 15px; margin-left: 10px;">
+				<div style="width: 6%; padding: 10px;">
+					<i class="fa-solid fa-circle-info" style="font-size: 30px;"></i>
 				</div>
-			}
 
-			<div style="width: 90%; padding-left: 10px;">
-				@if (string.IsNullOrEmpty(usuario.SteamId) == false)
-				{
-					<div>
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String62") @usuario.SteamId</label>
-					</div>
-				}
+				<div style="width: 94%;">
+					<label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String46")</label>
 
-				@if (string.IsNullOrEmpty(usuario.Nickname) == false)
-				{
-					<div style="margin-top: 5px;">
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String48") @usuario.Nickname</label>
-					</div>
-				}
+					<button @onclick="ClickearEnseñarImagen" class="btn btn-link" style="outline: none; border: 0; padding-left: 10px; color: var(--colorTextoOscuro);">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String47")
+					</button>
 
-				@if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					<div style="margin-top: 5px;">
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String49") @MensajeCantidad(usuario.SteamGames)</label>
-					</div>
-				}
-
-				@if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
-				{
-					<div style="margin-top: 5px;">
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String50") @MensajeCantidad(usuario.SteamWishlist)</label>
-					</div>
-				}
-
-				@if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
-				{
-					if (usuario.OfficialGroup == "True")
+					@if (enseñarImagen == true)
 					{
-						<div style="margin-top: 15px;">
-							<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String51")</label>
+						<img src="/imagenes/otros/permisos.jpg" style="margin: 10px;" />
+					}
+				</div>
+			</div>
+		</div>
+
+		@if (errorCuentaUsada == true)
+		{
+			<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String61")
+			</div>
+		}
+
+		@if (string.IsNullOrEmpty(enlaceCuenta) == false)
+		{
+			<hr style="margin-top: 20px; margin-bottom: 20px;" />
+
+			<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String63")
+			</button>
+		}
+
+		@if (usuario.SteamId != null || usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
+		{
+			<hr style="margin-top: 20px; margin-bottom: 20px;" />
+
+			<div class="perfil-flexible-centrado" style="align-items: start;">
+				@if (string.IsNullOrEmpty(usuario.Avatar) == false)
+				{
+					<div style="width: 10%; padding: 3px 10px;">
+						<img src="@usuario.Avatar" style="max-width: 70px; max-height: 70px;" />
+					</div>
+				}
+
+				<div style="width: 90%; padding-left: 10px;">
+					@if (string.IsNullOrEmpty(usuario.SteamId) == false)
+					{
+						<div>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String62") @usuario.SteamId</label>
 						</div>
 					}
-					else
-					{
-						<div style="margin-top: 15px;">
-							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
-						</div>
-					}
-				}
 
-				@if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
-				{
-					if (usuario.OfficialGroup2 == "True")
-					{
-						<div style="margin-top: 5px;">
-							<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String57")</label>
-						</div>
-					}
-					else
+					@if (string.IsNullOrEmpty(usuario.Nickname) == false)
 					{
 						<div style="margin-top: 5px;">
-							<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String58")</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String48") @usuario.Nickname</label>
 						</div>
 					}
-				}
 
-				@if (usuario.SteamAccountLastCheck != null)
-				{
-					<div style="margin-top: 15px;">
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String60"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
-					</div>
-				}
+					@if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+					{
+						<div style="margin-top: 5px;">
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String49") @MensajeCantidad(usuario.SteamGames)</label>
+						</div>
+					}
+
+					@if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+					{
+						<div style="margin-top: 5px;">
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String50") @MensajeCantidad(usuario.SteamWishlist)</label>
+						</div>
+					}
+
+					@if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
+					{
+						if (usuario.OfficialGroup == "True")
+						{
+							<div style="margin-top: 15px;">
+								<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String51")</label>
+							</div>
+						}
+						else
+						{
+							<div style="margin-top: 15px;">
+								<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
+							</div>
+						}
+					}
+
+					@if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
+					{
+						if (usuario.OfficialGroup2 == "True")
+						{
+							<div style="margin-top: 5px;">
+								<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String57")</label>
+							</div>
+						}
+						else
+						{
+							<div style="margin-top: 5px;">
+								<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String58")</label>
+							</div>
+						}
+					}
+
+					@if (usuario.SteamAccountLastCheck != null)
+					{
+						<div style="margin-top: 15px;">
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String60"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+						</div>
+					}
+				</div>
+			</div>
+		}
+	}
+	else
+	{
+		<div style="margin-top: 10px;">
+			<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String44")
 			</div>
 		</div>
 	}
-}
-else
-{
-	<div style="margin-top: 10px;">
-		<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String44")
-		</div>
-	</div>
 }
 
 @code {
