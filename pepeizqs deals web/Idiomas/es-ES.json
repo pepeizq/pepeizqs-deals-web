@@ -1013,7 +1013,7 @@
   },
   {
     "Id": "SettingsLayout.String7",
-    "Valor": "Sorteos"
+    "Valor": "Grupos para Sorteos"
   },
   {
     "Id": "Settings.String1",
@@ -1216,14 +1216,6 @@
     "Valor": "Juegos en la lista de deseados:"
   },
   {
-    "Id": "Settings.String51",
-    "Valor": "Estás dentro del grupo Premium de Steam para los sorteos."
-  },
-  {
-    "Id": "Settings.String52",
-    "Valor": "No estás dentro del grupo Premium de Steam para los sorteos."
-  },
-  {
     "Id": "Settings.String53",
     "Valor": "Notificaciones por Correo"
   },
@@ -1270,6 +1262,90 @@
   {
     "Id": "Settings.String64",
     "Valor": "Sorteos"
+  },
+  {
+    "Id": "Settings.String65",
+    "Valor": "Grupo Básico"
+  },
+  {
+    "Id": "Settings.String66",
+    "Valor": "Grupo Premium"
+  },
+  {
+    "Id": "Settings.String67",
+    "Valor": "Tienes al menos 50 juegos en tu cuenta de Steam."
+  },
+  {
+    "Id": "Settings.String68",
+    "Valor": "Tienes menos de 50 juegos en tu cuenta de Steam."
+  },
+  {
+    "Id": "Settings.String69",
+    "Valor": "Se hizo una comprobación automática de tu cuenta de Steam en los últimos 7 días."
+  },
+  {
+    "Id": "Settings.String70",
+    "Valor": "No se comprobo tu cuenta de Steam en los últimos 7 días, comprueba que tus permisos estén en orden."
+  },
+  {
+    "Id": "Settings.String71",
+    "Valor": "Estás dentro del Grupo Básico de Steam."
+  },
+  {
+    "Id": "Settings.String72",
+    "Valor": "No estás dentro del Grupo Básico de Steam, únete al grupo."
+  },
+  {
+    "Id": "Settings.String73",
+    "Valor": "Estás dentro del Grupo Premium de Steam."
+  },
+  {
+    "Id": "Settings.String74",
+    "Valor": "No estás dentro del Grupo Premium de Steam, para entrar al grupo sigue leyendo."
+  },
+  {
+    "Id": "Settings.String75",
+    "Valor": "En primer lugar solicita acceso al Grupo Premium de Steam"
+  },
+  {
+    "Id": "Settings.String76",
+    "Valor": ", el acceso esta restringido para evitar que personas que no contribuyan con la web se lleven juegos y esto es importante, debes usar la misma cuenta de Steam que has enlazado con la web."
+  },
+  {
+    "Id": "Settings.String77",
+    "Valor": "En segundo lugar, debes de ayudarme con la web de una de las siguientes maneras:"
+  },
+  {
+    "Id": "Settings.String78",
+    "Valor": "Económicamente"
+  },
+  {
+    "Id": "Settings.String79",
+    "Valor": "Antes que pediros donaciones por Paypal prefiero que compréis el bundle que queráis de Humble Bundle usando mi referido y donando al menos 5 €. De esta manera os lleváis unos juegos vosotros y yo puedo cubrir los costes de mantener esta web sin anuncios ni rastreadores."
+  },
+  {
+    "Id": "Settings.String80",
+    "Valor": "Publicidad. No me puedo permitir pagar por ella y toda ayuda en esto es bienvenida, pero no busco spam. Busco que enlacéis a mi web en sitios donde pueda ser de ayuda, ya sea en foros o redes sociales, si vuestra ayuda generan más de 100 visitas (humanas) aceptaré tu petición de acceso al grupo (tendrás que avisarme en Contacto)."
+  },
+  {
+    "Id": "Settings.String81",
+    "Valor": "Bundle que has comprado para donar:"
+  },
+  {
+    "Id": "Settings.String82",
+    "Valor": "Nombre del Bundle"
+  },
+  {
+    "Id": "Settings.String83",
+    "Valor": "Cantidad que has usado en la donación:"
+  },
+  {
+    "Id": "Settings.String84",
+    "Valor": "Cantidad"
+  },
+  {
+    "Id": "Settings.String85",
+    "Valor": "Fecha y hora de la compra del bundle:"
   },
   {
     "Id": "ForgotPassword.String1",

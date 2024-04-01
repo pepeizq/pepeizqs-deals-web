@@ -90,38 +90,6 @@
 						</div>
 					}
 
-					@if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
-					{
-						if (usuario.OfficialGroup == "True")
-						{
-							<div style="margin-top: 15px;">
-								<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String51")</label>
-							</div>
-						}
-						else
-						{
-							<div style="margin-top: 15px;">
-								<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String52")</label>
-							</div>
-						}
-					}
-
-					@if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
-					{
-						if (usuario.OfficialGroup2 == "True")
-						{
-							<div style="margin-top: 5px;">
-								<i class="fa-solid fa-check texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String57")</label>
-							</div>
-						}
-						else
-						{
-							<div style="margin-top: 5px;">
-								<i class="fa-solid fa-xmark texto-info-entrada"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String58")</label>
-							</div>
-						}
-					}
-
 					@if (usuario.SteamAccountLastCheck != null)
 					{
 						<div style="margin-top: 15px;">

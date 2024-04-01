@@ -1017,7 +1017,7 @@
   },
   {
     "Id": "SettingsLayout.String7",
-    "Valor": "Giveaways"
+    "Valor": "Groups for Giveaways"
   },
   {
     "Id": "Settings.String1",
@@ -1220,14 +1220,6 @@
     "Valor": "Games on the wishlist:"
   },
   {
-    "Id": "Settings.String51",
-    "Valor": "You are in the Steam Premium Group for the giveaways."
-  },
-  {
-    "Id": "Settings.String52",
-    "Valor": "You are not in the Steam Premium Group for the giveaways."
-  },
-  {
     "Id": "Settings.String53",
     "Valor": "Email Notifications"
   },
@@ -1274,6 +1266,90 @@
   {
     "Id": "Settings.String64",
     "Valor": "Giveaways"
+  },
+  {
+    "Id": "Settings.String65",
+    "Valor": "Basic Group"
+  },
+  {
+    "Id": "Settings.String66",
+    "Valor": "Premium Group"
+  },
+  {
+    "Id": "Settings.String67",
+    "Valor": "You have at least 50 games on your Steam account."
+  },
+  {
+    "Id": "Settings.String68",
+    "Valor": "You have less than 50 games on your Steam account."
+  },
+  {
+    "Id": "Settings.String69",
+    "Valor": "Your Steam account has been automatically verified in the last 7 days."
+  },
+  {
+    "Id": "Settings.String70",
+    "Valor": "Your Steam account has not been verified in the last 7 days, check that your permissions are in order."
+  },
+  {
+    "Id": "Settings.String71",
+    "Valor": "You are in the Steam Basic Group."
+  },
+  {
+    "Id": "Settings.String72",
+    "Valor": "You are not in the Steam Basic Group, join the group."
+  },
+  {
+    "Id": "Settings.String73",
+    "Valor": "You are in the Steam Premium Group."
+  },
+  {
+    "Id": "Settings.String74",
+    "Valor": "You are not in the Steam Premium Group, to join the group continue reading."
+  },
+  {
+    "Id": "Settings.String75",
+    "Valor": "Firstly request access to the Steam Premium Group"
+  },
+  {
+    "Id": "Settings.String76",
+    "Valor": ", access is restricted to prevent people who do not contribute to the website from taking games and this is important, you must use the same Steam account that you have linked to the website."
+  },
+  {
+    "Id": "Settings.String77",
+    "Valor": "Secondly, you must help me with the website in one of the following ways:"
+  },
+  {
+    "Id": "Settings.String78",
+    "Valor": "Economically"
+  },
+  {
+    "Id": "Settings.String79",
+    "Valor": "Before asking you for donations through Paypal, i prefer that you buy the bundle you want from Humble Bundle using my affiliate and donating at least 5 €. This way you get some games and i can cover the costs of maintaining this website without ads or trackers."
+  },
+  {
+    "Id": "Settings.String80",
+    "Valor": "Advertising. I can't afford to pay for it and any help on this is welcome, but i'm not looking for spam. I'm looking for you to link to my website in places where it can be helpful, whether in forums or social networks. If your help generates more than 100 (human) visits, i will accept your request for access to the group (you will have to let me know in Contact)."
+  },
+  {
+    "Id": "Settings.String81",
+    "Valor": "Bundle that you have purchased to donate:"
+  },
+  {
+    "Id": "Settings.String82",
+    "Valor": "Bundle Name"
+  },
+  {
+    "Id": "Settings.String83",
+    "Valor": "Amount you have used in the donation:"
+  },
+  {
+    "Id": "Settings.String84",
+    "Valor": "Amount"
+  },
+  {
+    "Id": "Settings.String85",
+    "Valor": "Date and time of bundle purchase:"
   },
   {
     "Id": "ForgotPassword.String1",
