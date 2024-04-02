@@ -84,6 +84,7 @@
                 <div class="perfil" style="padding: 10px 0px; border: 1px solid var(--fondoBoton);">
                     <a class="admin-lateral" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarSolicitudes(e))">Solicitudes @nuevasSolicitudesMensaje</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarTiendas(e))">Tiendas</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarDivisas(e))">Divisas</button>
@@ -156,6 +157,38 @@
                             Borrar Aviso
                         </button>
                     </div>
+                }
+
+                @if (mostrarSolicitudes == true)
+                {
+                    if (listaSolicitudes.Count > 0)
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                            @foreach (var solicitud in listaSolicitudes)
+                            {
+                                <hr/>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <img src="@solicitud.AvatarSteam" style="width: 40px; height: 40px; margin-right: 20px;" />
+
+                                        <div style="width: 50%; padding-right: 20px;">
+                                            <label>@solicitud.NicknameSteam</label><br />
+                                            <label style="margin-top: 10px; font-size: 13px;">@solicitud.UsuarioSteam</label>
+                                        </div>
+
+                                        <div style="width: 33%; padding-right: 20px;">
+                                            <label>@solicitud.Correo</label><br />
+                                            <label style="margin-top: 10px; font-size: 13px;">@solicitud.IdUsuario</label>
+                                        </div>
+                                    </div>
+
+                                    <button class="boton-pequeño" style="padding: 10px 15px; max-width: 120px;" @onclick="@(e => BorrarAviso(e))">
+                                        Borrar
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    }
                 }
 
                 @if (mostrarCorreos == true)
@@ -275,13 +308,16 @@
                             Buscar Maestro
                         </button>
 
-                        <div style="margin-top: 30px;">
-                            <a href="/game/@DLCs[posicionDLC].Id.ToString()" target="_blank">
-                                <img src="@DLCs[posicionDLC].Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                            </a>
+                        @if (DLCs.Count > 0)
+                        {
+                            <div style="margin-top: 30px;">
+                                <a href="/game/@DLCs[posicionDLC].Id.ToString()" target="_blank">
+                                    <img src="@DLCs[posicionDLC].Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                                </a>
 
-                            <label style="margin-left: 20px;">@DLCs[posicionDLC].Nombre</label>
-                        </div>
+                                <label style="margin-left: 20px;">@DLCs[posicionDLC].Nombre</label>
+                            </div>
+                        }
                     </div>
                 }
 
@@ -1647,6 +1683,7 @@
             ActualizarMensajeDLCs(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "dlcs")));
             ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
             ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
+            ActualizarMensajeSolicitudes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "solicitudes")));
 
             //----------------------------------
 
@@ -1682,6 +1719,7 @@
         titulo = null;
 
         mostrarAvisos = false;
+        mostrarSolicitudes = false;
         mostrarCorreos = false;
         mostrarErrores = false;
         mostrarTiendas = false;
@@ -1808,6 +1846,57 @@
             avisoEn = null;
             avisoEs = null;
         }
+    }
+
+    #endregion
+
+    #region Solicitudes
+
+    private bool mostrarSolicitudes = false;
+
+    List<BaseDatos.Usuarios.SolicitudGrupo> listaSolicitudes = new List<BaseDatos.Usuarios.SolicitudGrupo>();
+    private int nuevoasSolicitudesCantidad = 0;
+    private string nuevasSolicitudesMensaje = string.Empty;
+
+    private void ActualizarMensajeSolicitudes(int i)
+    {
+        nuevoasSolicitudesCantidad = i;
+
+        if (nuevoasSolicitudesCantidad > 0)
+        {
+            nuevasSolicitudesMensaje = "(" + nuevoasSolicitudesCantidad.ToString() + ")";
+        }
+    }
+
+    private void MostrarCerrarSolicitudes(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarSolicitudes == true)
+        {
+            mostrarSolicitudes = false;
+        }
+        else if (mostrarSolicitudes == false)
+        {
+            mostrarSolicitudes = true;
+
+            titulo = "Solicitudes Grupo Premium";
+
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                listaSolicitudes = BaseDatos.Usuarios.Solicitud.DevolverTodo(conexion);
+            }         
+        }
+    }
+
+    private void BorrarSolicitud(BaseDatos.Usuarios.SolicitudGrupo solicitud)
+    {
+        
     }
 
     #endregion
@@ -3551,7 +3640,15 @@
 
             juegoSuscripciones.Suscripciones.Add(suscripcion);
 
-            BaseDatos.Suscripciones.Insertar.Ejecutar(int.Parse(idSeleccionadaSuscripciones), juegoSuscripciones.Suscripciones, suscripcion);
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Suscripciones.Insertar.Ejecutar(int.Parse(idSeleccionadaSuscripciones), juegoSuscripciones.Suscripciones, suscripcion, conexion);
+            }   
         }
 
         idSeleccionadaSuscripciones = null;

@@ -57,14 +57,22 @@ builder.Services.AddSingleton<Tareas.GestionadorTiendas>();
 builder.Services.AddSingleton<Tareas.GestionadorMinimos>();
 builder.Services.AddSingleton<Tareas.GestionadorDivisas>();
 builder.Services.AddSingleton<Tareas.GestionadorSorteos>();
-builder.Services.AddSingleton<Tareas.GestionadorAdmin>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminCorreos>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminPendientes>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminErrores>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminDLCs>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminSolicitudes>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorMinimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorDivisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorSorteos>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdmin>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminPendientes>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminErrores>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminDLCs>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminSolicitudes>());
 
 #endregion
 

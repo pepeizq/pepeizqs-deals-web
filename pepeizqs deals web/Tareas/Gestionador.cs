@@ -207,13 +207,13 @@ namespace Tareas
 		}
 	}
 
-	public class GestionadorAdmin : BackgroundService
+	public class GestionadorAdminCorreos : BackgroundService
 	{
-		private readonly ILogger<GestionadorAdmin> _logger;
+		private readonly ILogger<GestionadorAdminCorreos> _logger;
 		private readonly IServiceScopeFactory _factoria;
 		private readonly IDecompiladores _decompilador;
 
-		public GestionadorAdmin(ILogger<GestionadorAdmin> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		public GestionadorAdminCorreos(ILogger<GestionadorAdminCorreos> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
 		{
 			_logger = logger;
 			_factoria = factory;
@@ -230,7 +230,7 @@ namespace Tareas
 				{
 					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-                    await DatosAdmin.Ejecutar(conexion);
+                    await DatosAdmin.Correos(conexion);
                 }
 			}
 		}
@@ -240,4 +240,140 @@ namespace Tareas
 			await base.StopAsync(stoppingToken);
 		}
 	}
+
+    public class GestionadorAdminPendientes : BackgroundService
+    {
+        private readonly ILogger<GestionadorAdminPendientes> _logger;
+        private readonly IServiceScopeFactory _factoria;
+        private readonly IDecompiladores _decompilador;
+
+        public GestionadorAdminPendientes(ILogger<GestionadorAdminPendientes> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        {
+            _logger = logger;
+            _factoria = factory;
+            _decompilador = decompilador;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken tokenParar)
+        {
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+            while (await timer.WaitForNextTickAsync(tokenParar))
+            {
+                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                {
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                    await DatosAdmin.Pendientes(conexion);
+                }
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
+
+    public class GestionadorAdminErrores : BackgroundService
+    {
+        private readonly ILogger<GestionadorAdminErrores> _logger;
+        private readonly IServiceScopeFactory _factoria;
+        private readonly IDecompiladores _decompilador;
+
+        public GestionadorAdminErrores(ILogger<GestionadorAdminErrores> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        {
+            _logger = logger;
+            _factoria = factory;
+            _decompilador = decompilador;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken tokenParar)
+        {
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+            while (await timer.WaitForNextTickAsync(tokenParar))
+            {
+                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                {
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                    await DatosAdmin.Errores(conexion);
+                }
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
+
+    public class GestionadorAdminDLCs : BackgroundService
+    {
+        private readonly ILogger<GestionadorAdminDLCs> _logger;
+        private readonly IServiceScopeFactory _factoria;
+        private readonly IDecompiladores _decompilador;
+
+        public GestionadorAdminDLCs(ILogger<GestionadorAdminDLCs> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        {
+            _logger = logger;
+            _factoria = factory;
+            _decompilador = decompilador;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken tokenParar)
+        {
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+            while (await timer.WaitForNextTickAsync(tokenParar))
+            {
+                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                {
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                    await DatosAdmin.DLCs(conexion);
+                }
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
+
+    public class GestionadorAdminSolicitudes : BackgroundService
+    {
+        private readonly ILogger<GestionadorAdminSolicitudes> _logger;
+        private readonly IServiceScopeFactory _factoria;
+        private readonly IDecompiladores _decompilador;
+
+        public GestionadorAdminSolicitudes(ILogger<GestionadorAdminSolicitudes> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        {
+            _logger = logger;
+            _factoria = factory;
+            _decompilador = decompilador;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken tokenParar)
+        {
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+            while (await timer.WaitForNextTickAsync(tokenParar))
+            {
+                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                {
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                    await DatosAdmin.Solicitudes(conexion);
+                }
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
 }

@@ -1348,6 +1348,30 @@
     "Valor": "Fecha y hora de la compra del bundle:"
   },
   {
+    "Id": "Settings.String86",
+    "Valor": "Enviar Solicitud"
+  },
+  {
+    "Id": "Settings.String87",
+    "Valor": "Solicitud recibida, en cuanto pueda comprobaré que esta todo en orden."
+  },
+  {
+    "Id": "Settings.String88",
+    "Valor": "Aqui puedes consultar si tu cuenta cumple las condiciones necesarias para entrar en los grupos de sorteos."
+  },
+  {
+    "Id": "Settings.String89",
+    "Valor": "Cumples con todas las condiciones para entrar a los sorteos del Grupo Básico."
+  },
+  {
+    "Id": "Settings.String90",
+    "Valor": "Cumples con todas las condiciones para entrar a los sorteos del Grupo Premium."
+  },
+  {
+    "Id": "Settings.String91",
+    "Valor": "No has enlazado una cuenta de Steam."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "¿Olvidaste tu contraseña?"
   },

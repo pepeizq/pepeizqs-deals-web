@@ -1,6 +1,7 @@
 ﻿@using APIs.Steam
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.Data.SqlClient
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
@@ -11,6 +12,8 @@
 	<div style="margin-top: 10px;">
 		@if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
 		{
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String88")
+
 			<hr style="margin-top: 20px; margin-bottom: 20px;" />
 
 			<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
@@ -60,6 +63,13 @@
 						<i class="fa-solid fa-xmark" style="width: 20px; margin-right: 10px;"></i> <a href="https://steamcommunity.com/groups/pepeizqdeals" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String72")</a>
 					</div>
 				}
+
+				@if (Condicion1() == true && Condicion2() == true && Condicion3() == true)
+				{
+					<div style="display: flex; align-items: center; margin-top: 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String89")
+					</div>
+				}
 			</div>
 
 			<div>
@@ -103,56 +113,65 @@
 				{
 					<div style="display: flex; align-items: center; margin-top: 15px;">
 						<i class="fa-solid fa-xmark" style="width: 20px;"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String74")</label>
-
-
 					</div>
+
+					<div style="display: flex; align-items: center; margin-top: 15px;">
+						<i class="fa-solid fa-xmark" style="width: 20px;"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String74")</label>
+					</div>
+
+					<div style="margin-left: 30px; margin-top: 15px; display: inline-block;">
+						<a href="https://steamcommunity.com/groups/pepeizqdeals2" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String75")</a>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String76")
+					</div>
+
+					<div style="margin-left: 30px; margin-top: 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String77")
+						<ul>
+							<li><a @onclick="@(e => AbrirCerrarSolicitud(e))" style="color: #95c0fe; text-decoration: underline; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String78")</a>. @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String79")</li>
+
+							@if (solicitudMostrar == false)
+							{
+								<li style="margin-top: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String80")</li>
+							}
+						</ul>
+					</div>
+
+					@if (solicitudMostrar == true && solicitudPendiente == false)
+					{
+						<div style="margin-left: 60px; margin-top: 15px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String81")
+							<input class="entrada-texto" style="margin-top: 10px; margin-bottom: 15px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String82")" value="@solicitudBundle" @oninput="TextoCambiaSolicitudBundle" />
+
+							@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String83")
+							<input class="entrada-texto" style="margin-top: 10px; margin-bottom: 15px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String84")" value="@solicitudCantidad" @oninput="TextoCambiaSolicitudCantidad" />
+
+							@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String85")
+							<input type="datetime-local" @onchange="@(e => CambiarFechaSolicitud(e))" class="entrada-texto" style="width: 33%; min-width: 100px; margin-top: 10px; margin-bottom: 15px" value="@solicitudFecha">
+
+							<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => EnviarSolicitud(e))">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String86")
+							</button>
+						</div>
+					}
+
+					@if (solicitudPendiente == true)
+					{
+						<div style="margin-left: 60px; margin-top: 15px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String87")
+						</div>
+					}
 				}
 
-				<div style="display: flex; align-items: center; margin-top: 15px;">
-					<i class="fa-solid fa-xmark" style="width: 20px;"></i> <label style="margin-left: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String74")</label>
-				</div>
-
-				<div style="margin-left: 30px; margin-top: 15px; display: inline-block;">
-					<a href="https://steamcommunity.com/groups/pepeizqdeals2" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String75")</a>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String76")
-				</div>
-
-				<div style="margin-left: 30px; margin-top: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String77")
-					<ul>
-						<li><a @onclick="@(e => AbrirCerrarSolicitud(e))" style="color: #95c0fe; text-decoration: underline; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String78")</a>. @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String79")</li>
-						
-						@if (solicitudMostrar == false)
-						{
-							<li style="margin-top: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String80")</li>
-						}
-					</ul>
-				</div>
-
-				@if (solicitudMostrar == true)
+				@if (Condicion1() == true && Condicion2() == true && Condicion4() == true)
 				{
-					<div style="margin-left: 60px; margin-top: 15px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String81")
-						<input class="entrada-texto" style="margin-top: 10px; margin-bottom: 15px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String82")" value="@solicitudBundle" @oninput="TextoCambiaSolicitudBundle" />
-
-						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String83")
-						<input class="entrada-texto" style="margin-top: 10px; margin-bottom: 15px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String84")" value="@solicitudCantidad" @oninput="TextoCambiaSolicitudCantidad" />
-
-						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String85")
-						<input type="datetime-local" @onchange="@(e => CambiarFechaSolicitud(e))" class="entrada-texto" style="width: 33%; min-width: 100px; margin-top: 10px; margin-bottom: 15px" value="@solicitudFecha">
-
-						<button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => EnviarSolicitud(e))">
-							@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String86")
-						</button>
+					<div style="display: flex; align-items: center; margin-top: 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String90")
 					</div>
 				}
-
 			</div>
-
-
 		}
 		else
 		{
-			
+			@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String91")
 		}
 	</div>
 }
@@ -168,9 +187,24 @@
 
 	private bool desactivar = false;
 
+	SqlConnection conexion = new SqlConnection();
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			if (conexion.State != System.Data.ConnectionState.Open)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			using (conexion)
+			{
+				solicitudPendiente = BaseDatos.Usuarios.Solicitud.ComprobarEstadoUsuario(usuario.Id, conexion);
+			}			
+		}		
 	}
 
 	private async Task ActualizarDatos(MouseEventArgs e)
@@ -291,6 +325,7 @@
 	#region Solicitud Humble
 
 	private bool solicitudMostrar = false;
+	private bool solicitudPendiente = false;
 	private string solicitudBundle = string.Empty;
 	private string solicitudCantidad = string.Empty;
 	private string solicitudFecha = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
@@ -326,7 +361,17 @@
 	{
 		solicitudMostrar = false;
 
+		if (conexion.State != System.Data.ConnectionState.Open)
+		{
+			conexion = Herramientas.BaseDatos.Conectar();
+		}
 
+		using (conexion)
+		{
+			BaseDatos.Usuarios.Solicitud.Insertar(usuario.Id, usuario.Email, usuario.SteamAccount, usuario.Avatar, usuario.Nickname, solicitudBundle, solicitudCantidad, solicitudFecha, conexion);
+		}
+
+		solicitudPendiente = true;
 	}
 
 	#endregion

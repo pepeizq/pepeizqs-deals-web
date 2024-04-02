@@ -1352,6 +1352,30 @@
     "Valor": "Date and time of bundle purchase:"
   },
   {
+    "Id": "Settings.String86",
+    "Valor": "Send Request"
+  },
+  {
+    "Id": "Settings.String87",
+    "Valor": "Request received, as soon as i can i will check that everything is in order."
+  },
+  {
+    "Id": "Settings.String88",
+    "Valor": "Here you can check if your account meets the necessary conditions to enter the giveaways groups."
+  },
+  {
+    "Id": "Settings.String89",
+    "Valor": "You meet all the conditions to enter the Basic Group giveaways."
+  },
+  {
+    "Id": "Settings.String90",
+    "Valor": "You meet all the conditions to enter the Premium Group giveaways."
+  },
+  {
+    "Id": "Settings.String91",
+    "Valor": "You have not linked a Steam account."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },
