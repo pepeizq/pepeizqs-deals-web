@@ -12,10 +12,6 @@
     <div style="display: flex; align-items: center; width: 100%;">
         <div style="display: flex; align-items: center; width: 70%; text-align: left;">
             <label style="font-size: 23px;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.Title")</label>
-
-            <a onclick="moverScroll('premium')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String1") (@sorteosGrupoPremium.Count.ToString())</a>
-
-            <a onclick="moverScroll('basic')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String2") (@sorteosGrupoNormal.Count.ToString())</a>
         </div>
 
         <div style="display: flex; align-items: center; width: 30%; justify-content: right;">
@@ -26,41 +22,6 @@
 
 <div style="font-size: 23px; display: flex; align-items: center; margin-top: 40px;">
     <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String1")</label>
-
-    @if (usuario != null)
-    {
-        bool apto = false;
-
-        if (usuario != null)
-        {
-            if (string.IsNullOrEmpty(usuario.OfficialGroup) == false)
-            {
-                if (usuario.OfficialGroup.ToLower() == "true")
-                {
-                    apto = true;
-                }
-            }
-
-            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-            {
-                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-
-                if (juegosUsuario.Count < 50)
-                {
-                    apto = false;
-                }
-            }
-        }
-
-        if (apto == true)
-        {
-            <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String5")</a>
-        }
-        else
-        {
-            <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6")</a>
-        }
-    }
 </div>
 
 <hr />
@@ -136,41 +97,6 @@
 
 <div style="font-size: 23px; display: flex; align-items: center; margin-top: 40px;">
     <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String2")</label>
-
-    @if (usuario != null)
-    {
-        bool apto = false;
-
-        if (usuario != null)
-        {
-            if (string.IsNullOrEmpty(usuario.OfficialGroup2) == false)
-            {
-                if (usuario.OfficialGroup2.ToLower() == "true")
-                {
-                    apto = true;
-                }
-            }
-
-            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-            {
-                List<string> juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-
-                if (juegosUsuario.Count < 50)
-                {
-                    apto = false;
-                }
-            }
-        }
-
-        if (apto == true)
-        {
-            <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String5")</a>
-        }
-        else
-        {
-            <a onclick="moverScroll('normas2')" style="color: var(--colorTextoOscuro); text-decoration: underline; font-size: 15px; margin-left: 15px; cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String6")</a>
-        }
-    }
 </div>
 
 <hr />
@@ -251,44 +177,14 @@
 <hr />
 
 <div id="normas2" class="perfil">
-    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String23")</label>
-</div>
-
-<div style="font-size: 23px; display: flex; align-items: center; margin-top: 50px;">
-    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String24")</label>
-</div>
-
-<hr />
-
-<div class="perfil">
-    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String22")</label>
-    <ul>
-        <li><a href="https://pepeizqdeals.com/Identity/Account/Register" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String13")</a></li>
-        <li><a href="https://pepeizqdeals.com/Identity/Account/Manage/SteamAccount" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String10")</a></li>
-        <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String12")</li>
-        <li><a href="https://steamcommunity.com/groups/pepeizqdeals2/" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String26")</a></li>
-    </ul>
-    <label style="margin-top: 10px;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String17")</label>
-    <ul>
-        <li><a href="/imagenes/otros/donacionhumble.png" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String18")</a> @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String20")</li>
-        <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String19") @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String21")</li>
-    </ul>
-</div>
-
-<div style="font-size: 23px; display: flex; align-items: center; margin-top: 50px;">
-    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String25")</label>
-</div>
-
-<hr />
-
-<div class="perfil">
-    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String11")</label>
-    <ul>
-        <li><a href="https://pepeizqdeals.com/Identity/Account/Register" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String13")</a></li>
-        <li><a href="https://pepeizqdeals.com/Identity/Account/Manage/SteamAccount" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String10")</a></li>
-        <li>@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String12")</li>
-        <li><a href="https://steamcommunity.com/groups/pepeizqdeals2/" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String27")</a></li>
-    </ul>
+    @if (usuario == null)
+    {
+        <a href="/Identity/Account/Register">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String17")</a>
+    }
+    else
+    {
+        <a href="/Identity/Account/Manage/Giveaways">@Herramientas.Idiomas.CogerCadena(idioma, "Giveaways.String18")</a>
+    }
 </div>
 
 <script>

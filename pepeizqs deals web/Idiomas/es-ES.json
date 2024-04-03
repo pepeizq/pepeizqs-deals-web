@@ -1325,7 +1325,7 @@
   },
   {
     "Id": "Settings.String80",
-    "Valor": "Publicidad. No me puedo permitir pagar por ella y toda ayuda en esto es bienvenida, pero no busco spam. Busco que enlacéis a mi web en sitios donde pueda ser de ayuda, ya sea en foros o redes sociales, si vuestra ayuda generan más de 100 visitas (humanas) aceptaré tu petición de acceso al grupo (tendrás que avisarme en Contacto)."
+    "Valor": "Publicidad. No me puedo permitir pagar por ella y toda ayuda en esto es bienvenida, pero no busco spam. Busco que enlacéis a mi web en sitios donde pueda ser de ayuda, ya sea en foros o redes sociales. Si vuestra ayuda generan más de 100 visitas (humanas) aceptaré tu petición de acceso al grupo (tendrás que avisarme en Contacto)."
   },
   {
     "Id": "Settings.String81",
@@ -1370,6 +1370,10 @@
   {
     "Id": "Settings.String91",
     "Valor": "No has enlazado una cuenta de Steam."
+  },
+  {
+    "Id": "Settings.String92",
+    "Valor": "Ejemplo."
   },
   {
     "Id": "ForgotPassword.String1",
@@ -1444,14 +1448,6 @@
     "Valor": "participantes"
   },
   {
-    "Id": "Giveaways.String5",
-    "Valor": "puedes participar en estos sorteos"
-  },
-  {
-    "Id": "Giveaways.String6",
-    "Valor": "no puedes participar en estos sorteos, mira como se entra"
-  },
-  {
     "Id": "Giveaways.String7",
     "Valor": "Ya tienes este juego"
   },
@@ -1462,22 +1458,6 @@
   {
     "Id": "Giveaways.String9",
     "Valor": "¿Como participar en los sorteos?"
-  },
-  {
-    "Id": "Giveaways.String10",
-    "Valor": "Tener una cuenta de Steam con al menos 50 juegos asociada a la cuenta registrada en la web."
-  },
-  {
-    "Id": "Giveaways.String11",
-    "Valor": "Este grupo es de libre entrada pero es indispensable cumplir estas normas básicas:"
-  },
-  {
-    "Id": "Giveaways.String12",
-    "Valor": "En tu cuenta de Steam tener el perfil y los detalles de los juegos en Público (la web hará una comprobación automática de tu cuenta cada 7 días)."
-  },
-  {
-    "Id": "Giveaways.String13",
-    "Valor": "Tener una cuenta registrada en la web con un correo verificado."
   },
   {
     "Id": "Giveaways.String14",
@@ -1493,47 +1473,11 @@
   },
   {
     "Id": "Giveaways.String17",
-    "Valor": "Segundo, debes contribuir a la web en una de estas maneras (no son negociables):"
+    "Valor": "Para participar en los sorteos es obligatorio registrar una cuenta."
   },
   {
     "Id": "Giveaways.String18",
-    "Valor": "Comprar cualquiera bundle de Humble Bundle donando a la web al menos 5 euros."
-  },
-  {
-    "Id": "Giveaways.String19",
-    "Valor": "Comentar sobre mi web cuando puede ser de ayuda en otros foros, redes sociales o webs externas (no quiero spam)."
-  },
-  {
-    "Id": "Giveaways.String20",
-    "Valor": "Una vez comprado el bundle deberás enviar un correo a admin@pepeizqdeals.com indicando que bundle has comprado, la donación, la fecha y también mencionar con que usuario de Steam has solicitado acceso al grupo."
-  },
-  {
-    "Id": "Giveaways.String21",
-    "Valor": "Es requisito que se enlace a mi web y si esos enlaces generan más de 100 visitas (de humanos diferentes) enviarme un correo a admin@pepeizqdeals.com especificando los enlaces y también mencionar con que usuario de Steam has solicitado acceso al grupo."
-  },
-  {
-    "Id": "Giveaways.String22",
-    "Valor": "Primero has de cumplir los siguientes requisitos:"
-  },
-  {
-    "Id": "Giveaways.String23",
-    "Valor": "Antes de que entréis a los sorteos, necesito que leáis esto. Divido los sorteos en dos grupos: uno llamado Premium donde puede entrar todo aquel que me ayuda con la web (abajo específico como) y uno Básico donde  hago sorteos de juegos que ya mucha gente tiene. El motivo de la división de grupos se debe a que intento ser lo mas justo con los sorteos con el escaso presupuesto que manejo en la web."
-  },
-  {
-    "Id": "Giveaways.String24",
-    "Valor": "¿Como participar en los sorteos del Grupo Premium?"
-  },
-  {
-    "Id": "Giveaways.String25",
-    "Valor": "¿Como participar en los sorteos del Grupo Básico?"
-  },
-  {
-    "Id": "Giveaways.String26",
-    "Valor": "Solicitar acceso a este grupo de Steam."
-  },
-  {
-    "Id": "Giveaways.String27",
-    "Valor": "Unirte a este grupo de Steam."
+    "Valor": "Consulta si cumples con los requisitos de cada grupo desde este apartado de tu cuenta."
   },
   {
     "Id": "Month.1",

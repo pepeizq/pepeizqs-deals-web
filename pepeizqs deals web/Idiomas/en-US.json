@@ -1376,6 +1376,10 @@
     "Valor": "You have not linked a Steam account."
   },
   {
+    "Id": "Settings.String92",
+    "Valor": "Example."
+  },
+  {
     "Id": "ForgotPassword.String1",
     "Valor": "Forgot your password?"
   },
@@ -1448,14 +1452,6 @@
     "Valor": "entries"
   },
   {
-    "Id": "Giveaways.String5",
-    "Valor": "you can enter these giveaways"
-  },
-  {
-    "Id": "Giveaways.String6",
-    "Valor": "you can't enter these giveaways, see how to enter"
-  },
-  {
     "Id": "Giveaways.String7",
     "Valor": "You already have this game"
   },
@@ -1466,22 +1462,6 @@
   {
     "Id": "Giveaways.String9",
     "Valor": "How to participate in the giveaways?"
-  },
-  {
-    "Id": "Giveaways.String10",
-    "Valor": "Have a Steam account with at least 50 games associated with the account registered on the website."
-  },
-  {
-    "Id": "Giveaways.String11",
-    "Valor": "This group is free to enter but it is essential to comply with these basic rules:"
-  },
-  {
-    "Id": "Giveaways.String12",
-    "Valor": "In your Steam account, have the profile and game details set to Public (the website will automatic check your account every 7 days)."
-  },
-  {
-    "Id": "Giveaways.String13",
-    "Valor": "Have a registered account on the website with a verified email."
   },
   {
     "Id": "Giveaways.String14",
@@ -1497,47 +1477,11 @@
   },
   {
     "Id": "Giveaways.String17",
-    "Valor": "Second, you must contribute to the website in one of these ways (they are non negotiable):"
+    "Valor": "To participate in the giveaways you must register an account."
   },
   {
     "Id": "Giveaways.String18",
-    "Valor": "Buy any Humble Bundle bundle by donating at least 5 euros to the website."
-  },
-  {
-    "Id": "Giveaways.String19",
-    "Valor": "Comment about my website when it can be helpful in other forums, social networks or external websites (I don't want spam)."
-  },
-  {
-    "Id": "Giveaways.String20",
-    "Valor": "Once the bundle has been purchased, you must send an email to admin@pepeizqdeals.com indicating which bundle you have purchased, the donation, the date and also mention which Steam user you have requested access to the group."
-  },
-  {
-    "Id": "Giveaways.String21",
-    "Valor": "It is a requirement that you link to my website and if these links generate more than 100 visits (from different humans) send me an email to admin@pepeizqdeals.com specifying the links and also mention which Steam user you have requested access to the group."
-  },
-  {
-    "Id": "Giveaways.String22",
-    "Valor": "First you must meet the following requirements:"
-  },
-  {
-    "Id": "Giveaways.String23",
-    "Valor": "Before you enter the giveaways, i need you to read this. I divide the giveaways into two groups: one called Premium where anyone who helps me with the website can enter (i specify how below) and a Basic one where i do giveaway for games that many people already have. The reason for the division of groups is because i try to be as fair as possible with the limited budget that i manage on the web."
-  },
-  {
-    "Id": "Giveaways.String24",
-    "Valor": "How to participate in the Premium Group giveaways?"
-  },
-  {
-    "Id": "Giveaways.String25",
-    "Valor": "How to participate in the Basic Group giveaways?"
-  },
-  {
-    "Id": "Giveaways.String26",
-    "Valor": "Request access to this Steam group."
-  },
-  {
-    "Id": "Giveaways.String27",
-    "Valor": "Join to this Steam group."
+    "Valor": "Check if you meet the requirements of each group from this section of your account."
   },
   {
     "Id": "Month.1",

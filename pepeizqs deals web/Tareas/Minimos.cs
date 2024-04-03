@@ -152,7 +152,7 @@ namespace Tareas
 
 												if (Convert.ToInt32(tempCantidad) >= 5000)
 												{
-													if (i < 60)
+													if (i < 30)
 													{
 														juegosDestacadosMostrar.Add(minimo);
 														i += 1;
@@ -266,7 +266,7 @@ namespace Tareas
 												{
 													juegosMinimosMostrar.Add(juegoConMinimo);
 
-													if (juegosMinimosMostrar.Count == 100)
+													if (juegosMinimosMostrar.Count == 80)
 													{
 														break;
 													}

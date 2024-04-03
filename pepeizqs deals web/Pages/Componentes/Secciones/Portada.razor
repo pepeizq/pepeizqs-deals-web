@@ -535,47 +535,10 @@ else
 			{
 				if (juegosDestacadosGestor.Count > 0)
 				{
-					juegosDestacadosGestor.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+					if (juegosDestacadosGestor.Count > 0)
 					{
-						global::Juegos.JuegoPrecio p1 = null;
-
-						if (j1.PrecioMinimosHistoricos != null)
-						{
-							if (j1.PrecioMinimosHistoricos.Count > 0)
-							{
-								p1 = j1.PrecioMinimosHistoricos[0];
-							}
-						}
-
-						global::Juegos.JuegoPrecio p2 = null;
-
-						if (j2.PrecioMinimosHistoricos != null)
-						{
-							if (j2.PrecioMinimosHistoricos.Count > 0)
-							{
-								p2 = j2.PrecioMinimosHistoricos[0];
-							}
-						}
-
-						if (p1 != null && p2 != null)
-						{
-							return p2.FechaUltimoMinimo.CompareTo(p1.FechaUltimoMinimo);
-						}
-						else
-						{
-							if (p1 != null)
-							{
-								return 0;
-							}
-
-							if (p2 != null)
-							{
-								return 1;
-							}
-
-							return 0;
-						}
-					});
+						juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
+					}
 
 					foreach (var juego in juegosDestacadosGestor)
 					{
@@ -617,47 +580,7 @@ else
 			{
 				if (juegosMinimosMostrar.Count > 0)
 				{
-					juegosMinimosMostrar.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
-					{
-						global::Juegos.JuegoPrecio p1 = null;
-
-						if (j1.PrecioMinimosHistoricos != null)
-						{
-							if (j1.PrecioMinimosHistoricos.Count > 0)
-							{
-								p1 = j1.PrecioMinimosHistoricos[0];
-							}
-						}
-
-						global::Juegos.JuegoPrecio p2 = null;
-
-						if (j2.PrecioMinimosHistoricos != null)
-						{
-							if (j2.PrecioMinimosHistoricos.Count > 0)
-							{
-								p2 = j2.PrecioMinimosHistoricos[0];
-							}
-						}
-
-						if (p1 != null && p2 != null)
-						{
-							return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
-						}
-						else
-						{
-							if (p1 != null)
-							{
-								return 0;
-							}
-
-							if (p2 != null)
-							{
-								return 1;
-							}
-
-							return 0;
-						}
-					});
+					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
 
 					foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 					{
