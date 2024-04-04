@@ -1,8 +1,9 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
+using pepeizqs_deals_web.Areas.Identity.Componentes;
 using pepeizqs_deals_web.Areas.Identity.Data;
-using System.Collections.Generic;
 
 namespace BaseDatos.Usuarios
 {
@@ -12,8 +13,8 @@ namespace BaseDatos.Usuarios
             string mensaje, string cantidad, string fecha, SqlConnection conexion)
 		{
             string sqlInsertar = "INSERT INTO solicitudes " +
-                "(id, correo, usuarioSteam, avatarSteam, nicknameSteam, bundleMensaje, cantidadMensaje, fechaMensaje) VALUES " +
-                "(@id, @correo, @usuarioSteam, @avatarSteam, @nicknameSteam, @bundleMensaje, @cantidadMensaje, @fechaMensaje) ";
+                "(id, correo, usuarioSteam, avatarSteam, nicknameSteam, bundleMensaje, cantidadMensaje, fechaMensaje, aprobado) VALUES " +
+                "(@id, @correo, @usuarioSteam, @avatarSteam, @nicknameSteam, @bundleMensaje, @cantidadMensaje, @fechaMensaje, @aprobado) ";
 
             using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
             {
@@ -25,8 +26,9 @@ namespace BaseDatos.Usuarios
                 comando.Parameters.AddWithValue("@bundleMensaje", mensaje);
                 comando.Parameters.AddWithValue("@cantidadMensaje", cantidad);
                 comando.Parameters.AddWithValue("@fechaMensaje", fecha);
+				comando.Parameters.AddWithValue("@aprobado", "false");
 
-                try
+				try
                 {
                     comando.ExecuteNonQuery();
                 }
@@ -70,7 +72,7 @@ namespace BaseDatos.Usuarios
         {
             List<SolicitudGrupo> solicitudes = new List<SolicitudGrupo>();
 
-			string busqueda = "SELECT * FROM solicitudes";
+			string busqueda = "SELECT * FROM solicitudes WHERE aprobado='false'";
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
@@ -87,7 +89,8 @@ namespace BaseDatos.Usuarios
                             BundleMensaje = lector.GetString(4),
                             CantidadMensaje = lector.GetString(5),
                             FechaMensaje = DateTime.Parse(lector.GetString(6)),
-                            NicknameSteam = lector.GetString(7)
+                            NicknameSteam = lector.GetString(7),
+                            Aprobado = lector.GetString(8)
 						};
 
                         solicitudes.Add(nuevaSolicitud);
@@ -97,6 +100,47 @@ namespace BaseDatos.Usuarios
 
             return solicitudes;
 		}
+
+        public static void AprobarUsuario(string idUsuario, SqlConnection conexion)
+        {
+            string sqlActualizar = "UPDATE solicitudes " +
+                   "SET aprobado=@aprobado WHERE Id=@Id";
+
+            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", idUsuario);
+                comando.Parameters.AddWithValue("@aprobado", "true");
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+		public static void BorrarUsuario(string idUsuario, SqlConnection conexion)
+		{
+            string sqlBorrar = "DELETE FROM solicitudes " +
+                  "WHERE Id=@Id";
+
+            using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", idUsuario);
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch
+                {
+
+                }
+            }
+        }
 	}
 
     public class SolicitudGrupo
@@ -109,5 +153,6 @@ namespace BaseDatos.Usuarios
         public string CantidadMensaje;
         public DateTime FechaMensaje;
         public string NicknameSteam;
+        public string Aprobado;
     }
 }

@@ -152,11 +152,31 @@
 
 @if (aviso != null)
 {
-	if (string.IsNullOrEmpty(aviso.Mensaje) == false)
+	if (string.IsNullOrEmpty(aviso.Mensaje.Trim()) == false)
 	{
 		<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); font-size: 17px; display: flex; align-items: center; margin-bottom: 40px; flex-direction: initial;">
 			<label style="padding-right: 20px;">@aviso.Fecha.Day.ToString()/@aviso.Fecha.Month.ToString()</label>
-			<label>@aviso.Mensaje</label>
+			
+			@{
+				bool hayEnlace = false;
+
+				if (string.IsNullOrEmpty(aviso.Enlace.Trim()) == false)
+				{
+					if (aviso.Enlace.Contains("https://") == true)
+					{
+						hayEnlace = true;
+					}
+				}
+
+				if (hayEnlace == true)
+				{
+					<a href="@aviso.Enlace" target="_blank" style="text-decoration: none;">@aviso.Mensaje</a>
+				}
+				else
+				{
+					<label>@aviso.Mensaje</label>
+				}
+			}	
 		</div>
 	}
 }

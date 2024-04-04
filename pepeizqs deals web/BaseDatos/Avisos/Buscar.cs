@@ -32,7 +32,8 @@ namespace BaseDatos.Avisos
                             Aviso aviso = new Aviso
                             {
                                 Mensaje = lector.GetString(1),
-                                Fecha = DateTime.Parse(lector.GetString(2))
+                                Fecha = DateTime.Parse(lector.GetString(2)),
+                                Enlace = lector.GetString(3)
                             };
 
                             return aviso;
@@ -49,5 +50,6 @@ namespace BaseDatos.Avisos
     {
         public string Mensaje;
         public DateTime Fecha;
+        public string Enlace;
     }
 }
