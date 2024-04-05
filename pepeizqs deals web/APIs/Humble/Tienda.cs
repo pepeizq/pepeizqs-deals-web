@@ -147,6 +147,21 @@ namespace APIs.Humble
 
 			if (juegos.Count > 0) 
 			{
+				try
+				{
+					string limpieza = "TRUNCATE TABLE temporalhumble";
+
+					using (SqlCommand comando = new SqlCommand(limpieza, conexion))
+					{
+						comando.ExecuteNonQuery();
+					}
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+				}
+
+
 				int juegos2 = 0;
 
 				foreach (var juego in juegos)
@@ -278,16 +293,6 @@ namespace APIs.Humble
 							}
 						}
 					}
-				}
-			}
-
-			if (DateTime.Now.DayOfYear != fechaRecopilado.DayOfYear)
-			{
-				string limpieza = "TRUNCATE TABLE temporalhumble";
-
-				using (SqlCommand comando = new SqlCommand(limpieza, conexion))
-				{
-					comando.ExecuteNonQuery();
 				}
 			}
 		}

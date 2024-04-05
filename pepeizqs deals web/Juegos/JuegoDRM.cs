@@ -17,7 +17,8 @@ namespace Juegos
 		Amazon,
 		ElderScrolls,
 		BattleNet,
-		Giants
+		Giants,
+		PearlAbyss
 	}
 
 	public static class JuegoDRM2
@@ -168,6 +169,18 @@ namespace Juegos
             };
 
             drms.Add(giants);
+
+            //----------------------------
+
+            DRM pearl = new DRM
+            {
+                Id = JuegoDRM.PearlAbyss,
+                Nombre = "Pearl Abyss",
+                Imagen = "/imagenes/drm/pearlabyss.webp",
+                Acepciones = new List<string> { "pearl abyss" }
+            };
+
+            drms.Add(pearl);
 
             //----------------------------
 

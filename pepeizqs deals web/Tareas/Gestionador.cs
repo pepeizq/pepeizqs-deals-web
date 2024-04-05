@@ -376,4 +376,38 @@ namespace Tareas
             await base.StopAsync(stoppingToken);
         }
     }
+
+	public class GestionadorAdminGithub : BackgroundService
+	{
+		private readonly ILogger<GestionadorAdminGithub> _logger;
+		private readonly IServiceScopeFactory _factoria;
+		private readonly IDecompiladores _decompilador;
+
+		public GestionadorAdminGithub(ILogger<GestionadorAdminGithub> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		{
+			_logger = logger;
+			_factoria = factory;
+			_decompilador = decompilador;
+		}
+
+		protected override async Task ExecuteAsync(CancellationToken tokenParar)
+		{
+			using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+			while (await timer.WaitForNextTickAsync(tokenParar))
+			{
+				using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+				{
+					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+					await DatosAdmin.Github(conexion);
+				}
+			}
+		}
+
+		public override async Task StopAsync(CancellationToken stoppingToken)
+		{
+			await base.StopAsync(stoppingToken);
+		}
+	}
 }

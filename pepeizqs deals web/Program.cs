@@ -62,6 +62,7 @@ builder.Services.AddSingleton<Tareas.GestionadorAdminPendientes>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminErrores>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminDLCs>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminSolicitudes>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminGithub>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
@@ -73,6 +74,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminErrores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminDLCs>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminSolicitudes>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminGithub>());
 
 #endregion
 

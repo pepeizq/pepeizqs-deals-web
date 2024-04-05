@@ -155,7 +155,7 @@
                         if (suscripcionAño.Count > 0)
                         {
                             <div style="margin-right: 15px; font-size: 14px;">
-                                <a onclick="moverScroll('pasado-@suscripcionPasada.Tipo.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;"><img src="@suscripcionPasada.Tipo.ImagenIcono" style="width: 22px; height: 22px;" /> (@suscripcionAño.Count.ToString())</a>
+                                <a onclick="moverScroll('pasado-@suscripcionPasada.Tipo.Id.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;"><img src="@suscripcionPasada.Tipo.ImagenIcono" style="width: 22px; height: 22px;" /> (@suscripcionAño.Count.ToString())</a>
                             </div>
                         }
                     }
@@ -182,7 +182,7 @@
         {
             <hr>
 
-            <div id="pasado-@suscripcionPasada.Tipo.ToString()" style="display: flex; align-items: start;">
+            <div id="pasado-@suscripcionPasada.Tipo.Id.ToString()" style="display: flex; align-items: start;">
                 <div class="perfil" style="width: 20%;">
                     <img src="@suscripcionPasada.Tipo.ImagenLogo" />
                 </div>
