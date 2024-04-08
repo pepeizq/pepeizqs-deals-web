@@ -1,6 +1,4 @@
-﻿using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-
-namespace Herramientas
+﻿namespace Herramientas
 {
 	public enum Tiempo
 	{
