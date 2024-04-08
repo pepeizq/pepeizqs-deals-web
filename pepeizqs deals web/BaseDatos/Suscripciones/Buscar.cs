@@ -24,24 +24,28 @@ namespace BaseDatos.Suscripciones
                     {
                         while (lector.Read())
                         {
-							JuegoSuscripcion suscripcion = new JuegoSuscripcion
+							try
 							{
-								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
+                                JuegoSuscripcion suscripcion = new JuegoSuscripcion
+                                {
+                                    Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+                                    JuegoId = lector.GetInt32(1),
+                                    Nombre = lector.GetString(2),
+                                    Imagen = lector.GetString(3),
+                                    DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+                                    Enlace = lector.GetString(5),
+                                    FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+                                    FechaTermina = Convert.ToDateTime(lector.GetString(7))
+                                };
 
-							if (lector.IsDBNull(8) == false)
-							{
-								suscripcion.ImagenNoticia = lector.GetString(8);
-							}
+                                if (lector.IsDBNull(8) == false)
+                                {
+                                    suscripcion.ImagenNoticia = lector.GetString(8);
+                                }
 
-							suscripciones.Add(suscripcion);
+                                suscripciones.Add(suscripcion);
+                            }
+							catch { }
                         }
                     }
                 }
