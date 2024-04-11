@@ -32,7 +32,7 @@ namespace APIs._2Game
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string html = await decompilador.Estandar("https://2game.com/feeds/GoogleShopping_EU.xml");
+			string html = await Decompiladores.Estandar("https://2game.com/feeds/GoogleShopping_EU.xml");
 
 			if (string.IsNullOrEmpty(html) == false)
 			{

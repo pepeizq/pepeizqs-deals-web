@@ -37,7 +37,7 @@ namespace APIs.JoyBuggy
         {
             BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-            string html = await decompilador.Estandar("https://www.joybuggy.com/module/xmlfeeds/api?id=70");
+            string html = await Decompiladores.Estandar("https://www.joybuggy.com/module/xmlfeeds/api?id=70");
 
             if (string.IsNullOrEmpty(html) == false)
             {

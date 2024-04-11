@@ -32,7 +32,7 @@ namespace APIs.Voidu
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string html = await decompilador.Estandar("https://files.channable.com/FDPJ7_Cg8Pqi90kXICkb3g==.xml");
+			string html = await Decompiladores.Estandar("https://files.channable.com/FDPJ7_Cg8Pqi90kXICkb3g==.xml");
 
 			if (string.IsNullOrEmpty(html) == false) 
 			{

@@ -45,7 +45,7 @@ namespace APIs.DLGamer
 
 			int juegos2 = 0;
 
-			string html = await decompilador.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");
+			string html = await Decompiladores.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");
 
 			if (html != null)
 			{

@@ -37,7 +37,7 @@ namespace APIs.GOG
 			int i = 1;
 			while (i < 300)
 			{
-				string html = await decompilador.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
+				string html = await Decompiladores.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
 
 				if (html != null)
 				{

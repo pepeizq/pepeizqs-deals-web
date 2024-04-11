@@ -57,7 +57,7 @@ namespace APIs.Battlenet
 
 			foreach (var slug in listaSlugs)
 			{
-				string html = await decompilador.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
+				string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
 
 				if (html != null)
 				{
