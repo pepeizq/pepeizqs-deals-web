@@ -51,10 +51,19 @@ namespace Tareas
 												{
 													Juego nuevoHistorico = juego;
 													nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
-
 													nuevoHistorico.IdMaestra = juego.Id;
+													
+													bool añadir2 = true;
+													
+													if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
+													{
+														añadir = false;
+													}
 
-													juegosConMinimos.Add(nuevoHistorico);
+													if (añadir2 == true)
+													{
+														juegosConMinimos.Add(nuevoHistorico);
+													}													
 												}
 											}
 										}
@@ -70,12 +79,10 @@ namespace Tareas
 								juegosConMinimos.Sort(delegate (Juego j1, Juego j2)
 								{
 									JuegoPrecio j1Oferta = null;
-
 									if (j1.PrecioMinimosHistoricos.Count > 0)
 									{
 										j1Oferta = j1.PrecioMinimosHistoricos[0];
 									}
-
 									JuegoPrecio j2Oferta = null;
 
 									if (j2.PrecioMinimosHistoricos.Count > 0)
@@ -251,17 +258,6 @@ namespace Tareas
 													}
 												}
 
-												if (juegoConMinimo.PrecioMinimosHistoricos != null)
-												{
-													if (juegoConMinimo.PrecioMinimosHistoricos.Count > 0)
-													{
-														if (juegoConMinimo.PrecioMinimosHistoricos[0].DRM == JuegoDRM.NoEspecificado)
-														{
-															descarte4 = true;
-														}
-													}
-												}
-
 												if (descarte4 == false)
 												{
 													juegosMinimosMostrar.Add(juegoConMinimo);
@@ -279,7 +275,6 @@ namespace Tareas
 								if (juegosMinimosMostrar.Count > 0)
 								{
 									BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
-
 									foreach (var juegoMinimo in juegosMinimosMostrar)
 									{
 										Insertar.Ejecutar(juegoMinimo, conexion, "portadaJuegosMinimos");

@@ -1402,42 +1402,42 @@
 
                 @if (mostrarGratis == true)
                 {
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                        @if (idSeleccionadaGratis == null)
-                        {
-                            <div>
-                                <label style="margin-bottom: 10px;">Juego:</label>
-                                <input type="text" @oninput="TextoCambiaBuscadorGratis" class="entrada-texto" />
+                    @if (idSeleccionadaGratis == null)
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                            <label style="margin-bottom: 10px;">Juego:</label>
+                            <input type="text" @oninput="TextoCambiaBuscadorGratis" class="entrada-texto" />
 
-                                @if (juegosBuscadorGratis != null)
+                            @if (juegosBuscadorGratis != null)
+                            {
+                                @if (juegosBuscadorGratis.Count > 0)
                                 {
-                                    @if (juegosBuscadorGratis.Count > 0)
-                                    {
-                                        <div>
-                                            @foreach (var juego in juegosBuscadorGratis)
-                                            {
-                                                <div class="perfil-flexible-centrado perfil-espacio-top">
-                                                    <button @onclick="@(e => ClickearJuegoGratis(e, juego.Id.ToString(), juego.Nombre, juego.Imagenes.Library_600x900, juego.Imagenes.Header_460x215))" class="boton-pequeño" style="text-align:center;">
-                                                        <div class="perfil-flexible-centrado">
-                                                            <div style="width: 12%;">
-                                                                <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-                                                            </div>
-
-                                                            <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
-                                                                @juego.Nombre<br />
-                                                                <span style="font-size: 13px;">@juego.Id.ToString()</span>
-                                                            </div>
+                                    <div>
+                                        @foreach (var juego in juegosBuscadorGratis)
+                                        {
+                                            <div class="perfil-flexible-centrado perfil-espacio-top">
+                                                <button @onclick="@(e => ClickearJuegoGratis(e, juego.Id.ToString(), juego.Nombre, juego.Imagenes.Library_600x900, juego.Imagenes.Header_460x215))" class="boton-pequeño" style="text-align:center;">
+                                                    <div class="perfil-flexible-centrado">
+                                                        <div style="width: 12%;">
+                                                            <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
                                                         </div>
-                                                    </button>
-                                                </div>
-                                            }
-                                        </div>
-                                    }
+
+                                                        <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+                                                            @juego.Nombre<br />
+                                                            <span style="font-size: 13px;">@juego.Id.ToString()</span>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
                                 }
-                            </div>
-                        }
-                        else
-                        {
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
                             <div style="display: flex;">
                                 <div style="width: 15%;">
                                     <img src="@imagenSeleccionadaGratis" style="max-height: 100%; max-width: 100%;" />
@@ -1482,131 +1482,125 @@
                                     <div style="margin-top: 20px;">
                                         <label style="margin-bottom: 10px;">Fecha Termina:</label>
                                         <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaGratis(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaGratis">
-                                    </div>
-
-                                    <hr />
-
-                                    <div>
-                                        <label style="margin: 10px;">Imagen Noticia:</label>
-                                        <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticiaGratis">
-                                        <img src="@imagenNoticiaGratis" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-
-                                    <hr />
-
-                                    <div style="display: flex; margin-top: 40px; width: 33%;">
-                                        <button @onclick="@(e => AñadirJuegoGratis(e))" class="boton" style="text-align: center;">Añadir Gratis</button>
-                                    </div>
+                                    </div>                                   
                                 </div>
                             </div>
-                        }
-                    </div>
+                        </div>
+
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <label style="margin-bottom: 10px;">Imagen Noticia:</label>
+                            <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticiaGratis">
+                            <img src="@imagenNoticiaGratis" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                        </div>
+
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <div style="display: flex; width: 33%;">
+                                <button @onclick="@(e => AñadirJuegoGratis(e))" class="boton" style="text-align: center;">Añadir Gratis</button>
+                            </div>
+                        </div>
+                    }
                 }
 
                 @if (mostrarSuscripciones == true)
                 {
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                        @if (idSeleccionadaSuscripciones == null)
-                        {
-                            <div>
-                                <label style="margin-bottom: 10px;">Juego:</label>
-                                <input type="text" @oninput="TextoCambiaBuscadorSuscripciones" class="entrada-texto" />
+                    @if (idSeleccionadaSuscripciones == null)
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                            <label style="margin-bottom: 10px;">Juego:</label>
+                            <input type="text" @oninput="TextoCambiaBuscadorSuscripciones" class="entrada-texto" />
 
-                                @if (juegosBuscadorSuscripciones != null)
+                            @if (juegosBuscadorSuscripciones != null)
+                            {
+                                @if (juegosBuscadorSuscripciones.Count > 0)
                                 {
-                                    @if (juegosBuscadorSuscripciones.Count > 0)
-                                    {
-                                        <div>
-                                            @foreach (var juego in juegosBuscadorSuscripciones)
-                                            {
-                                                <div class="perfil-flexible-centrado perfil-espacio-top">
-                                                    <button @onclick="@(e => SeleccionarJuegoSuscripciones(e, juego.Id.ToString(), juego.Imagenes.Library_600x900, juego.Nombre, juego.Imagenes.Header_460x215))" class="boton-pequeño">
-                                                        <div class="perfil-flexible-centrado">
-                                                            <div style="width: 12%;">
-                                                                <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-                                                            </div>
-
-                                                            <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
-                                                                @juego.Nombre<br />
-                                                                <span style="font-size: 13px;">@juego.Id.ToString()</span>
-                                                            </div>
+                                    <div>
+                                        @foreach (var juego in juegosBuscadorSuscripciones)
+                                        {
+                                            <div class="perfil-flexible-centrado perfil-espacio-top">
+                                                <button @onclick="@(e => SeleccionarJuegoSuscripciones(e, juego.Id.ToString(), juego.Imagenes.Library_600x900, juego.Nombre, juego.Imagenes.Header_460x215))" class="boton-pequeño">
+                                                    <div class="perfil-flexible-centrado">
+                                                        <div style="width: 12%;">
+                                                            <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
                                                         </div>
-                                                    </button>
-                                                </div>
-                                            }
-                                        </div>
-                                    }
+
+                                                        <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+                                                            @juego.Nombre<br />
+                                                            <span style="font-size: 13px;">@juego.Id.ToString()</span>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
                                 }
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                <div style="display: flex;">
-                                    <div style="width: 15%;">
-                                        <img src="@imagenSeleccionadaSuscripciones" style="max-height: 100%; max-width: 100%;" />
+                            }
+                         </div>
+                    }
+                    else
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+                            <div style="display: flex;">
+                                <div style="width: 15%;">
+                                    <img src="@imagenSeleccionadaSuscripciones" style="max-height: 100%; max-width: 100%;" />
+                                </div>
+
+                                <div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+                                    @nombreSeleccionadoSuscripciones
+
+                                    <div style="width: 33%; margin-top: 20px;">
+                                        <label style="margin-bottom: 10px;">Suscripcion:</label>
+                                        <div class="opciones-combobox">
+                                            <select @onchange="@(e => CambiarTipoSuscripcion(e))">
+                                                @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
+                                                {
+                                                    <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                                }
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <div style="width: 85%; padding-left: 20px; padding-right: 20px;">
-                                        @nombreSeleccionadoSuscripciones
-
-                                        <div style="width: 33%; margin-top: 20px;">
-                                            <label style="margin-bottom: 10px;">Suscripcion:</label>
-                                            <div class="opciones-combobox">
-                                                <select @onchange="@(e => CambiarTipoSuscripcion(e))">
-                                                    @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
-                                                    {
-                                                        <option value="@suscripcion.Id">@suscripcion.Nombre</option>
-                                                    }
-                                                </select>
-                                            </div>
+                                    <div style="width: 33%; margin-top: 20px;">
+                                        <label style="margin-bottom: 10px;">DRM:</label>
+                                        <div class="opciones-combobox">
+                                            <select @onchange="@(e => CambiarDRMSuscripciones(e))" value="@drmSeleccionadoSuscripciones">
+                                                @foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+                                                {
+                                                    <option value="@drm.Id">@drm.Nombre</option>
+                                                }
+                                            </select>
                                         </div>
+                                    </div>
 
-                                        <div style="width: 33%; margin-top: 20px;">
-                                            <label style="margin-bottom: 10px;">DRM:</label>
-                                            <div class="opciones-combobox">
-                                                <select @onchange="@(e => CambiarDRMSuscripciones(e))" value="@drmSeleccionadoSuscripciones">
-                                                    @foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
-                                                    {
-                                                        <option value="@drm.Id">@drm.Nombre</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div style="margin-top: 20px;">
+                                        <label style="margin-bottom: 10px;">Enlace:</label>
+                                        <input @onchange="@(e => CambiarEnlaceSuscripciones(e))" class="entrada-texto" value="@enlaceSeleccionadoSuscripciones">
+                                    </div>
 
-                                        <div style="margin-top: 20px;">
-                                            <label style="margin-bottom: 10px;">Enlace:</label>
-                                            <input @onchange="@(e => CambiarEnlaceSuscripciones(e))" class="entrada-texto" value="@enlaceSeleccionadoSuscripciones">
-                                        </div>
+                                    <div style="margin-top: 20px;">
+                                        <label style="margin-bottom: 10px;">Fecha Empieza:</label>
+                                        <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionadaSuscripciones">
+                                    </div>
 
-                                        <div style="margin-top: 20px;">
-                                            <label style="margin-bottom: 10px;">Fecha Empieza:</label>
-                                            <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionadaSuscripciones">
-                                        </div>
-
-                                        <div style="margin-top: 20px;">
-                                            <label style="margin-bottom: 10px;">Fecha Termina:</label>
-                                            <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
-                                        </div>
-
-                                        <hr />
-
-                                        <div>
-                                            <label style="margin: 10px;">Imagen Noticia:</label>
-                                            <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticiaSuscripciones">
-                                            <img src="@imagenNoticiaSuscripciones" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                        </div>
-
-                                        <hr />
-
-                                        <div style="display: flex; margin-top: 40px; width: 33%;">
-                                            <button @onclick="@(e => AñadirJuegoSuscripciones(e))" class="boton" style="text-align: center;">Añadir Suscripción</button>
-                                        </div>
+                                    <div style="margin-top: 20px;">
+                                        <label style="margin-bottom: 10px;">Fecha Termina:</label>
+                                        <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
+                        </div>
+
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <label style="margin-bottom: 10px;">Imagen Noticia:</label>
+                            <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@imagenNoticiaSuscripciones">
+                            <img src="@imagenNoticiaSuscripciones" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                        </div>
+
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <div style="display: flex; width: 33%;">
+                                <button @onclick="@(e => AñadirJuegoSuscripciones(e))" class="boton" style="text-align: center;">Añadir Suscripción</button>
+                            </div>
+                        </div>
+                    }
                 }
 
                 @if (mostrarSorteos == true)
