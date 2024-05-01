@@ -5,6 +5,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace APIs.GreenManGaming
@@ -41,13 +42,9 @@ namespace APIs.GreenManGaming
 
 			if (html != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GreenManGamingJuegos));
-				GreenManGamingJuegos listaJuegos = null;
-
-				using (TextReader lector = new StringReader(html))
-				{
-					listaJuegos = (GreenManGamingJuegos)xml.Deserialize(lector);
-				}
+                XmlSerializer xml = new XmlSerializer(typeof(GreenManGamingJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+                GreenManGamingJuegos listaJuegos = (GreenManGamingJuegos)xml.Deserialize(stream);
 
 				if (listaJuegos != null)
 				{

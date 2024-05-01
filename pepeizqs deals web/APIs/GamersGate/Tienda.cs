@@ -5,6 +5,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace APIs.GamersGate
@@ -41,13 +42,9 @@ namespace APIs.GamersGate
 
 			if (html != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
-				GamersGateJuegos listaJuegos = null;
-
-				using (TextReader lector = new StringReader(html))
-				{
-					listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
-				}
+                XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+                GamersGateJuegos listaJuegos = (GamersGateJuegos)xml.Deserialize(stream);
 
 				if (listaJuegos != null)
 				{

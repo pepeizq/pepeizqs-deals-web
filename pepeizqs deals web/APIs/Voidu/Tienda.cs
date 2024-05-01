@@ -54,63 +54,75 @@ namespace APIs.Voidu
 
 							foreach (VoiduJuego juego in listaJuegos.Juegos)
 							{
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+								string tempBase = juego.PrecioBase;
+								string tempRebajado = juego.PrecioRebajado;
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+								tempBase = tempBase.Replace("NA", null);
+								tempBase = tempBase.Trim();
 
-								if (descuento > 0)
+								tempRebajado = tempRebajado.Replace("NA", null);
+								tempRebajado = tempRebajado.Trim();
+
+								if (string.IsNullOrEmpty(tempBase) == false && string.IsNullOrEmpty(tempRebajado) == false)
 								{
-									string nombre = WebUtility.HtmlDecode(juego.Nombre);
+									decimal precioBase = decimal.Parse(tempBase);
+									decimal precioRebajado = decimal.Parse(tempRebajado);
 
-									string enlace = juego.Enlace;
+									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-                                    if (string.IsNullOrEmpty(enlace) == false)
-                                    {
-                                        if (enlace.Contains("?") == true)
+									if (descuento > 0)
+									{
+										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+										string enlace = juego.Enlace;
+
+										if (string.IsNullOrEmpty(enlace) == false)
 										{
-											int int1 = enlace.IndexOf("?");
-											enlace = enlace.Remove(int1, enlace.Length - int1);
+											if (enlace.Contains("?") == true)
+											{
+												int int1 = enlace.IndexOf("?");
+												enlace = enlace.Remove(int1, enlace.Length - int1);
+											}
 										}
-                                    }
 
-                                    string imagen = "vacio";
+										string imagen = "vacio";
 
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Euro,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = Generar().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now,
-										FechaActualizacion = DateTime.Now
-									};
+										JuegoPrecio oferta = new JuegoPrecio
+										{
+											Nombre = nombre,
+											Enlace = enlace,
+											Imagen = imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
+											DRM = drm,
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
+										};
 
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+										try
+										{
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+										}
+										catch (Exception ex)
+										{
+											BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+										}
+
+										juegos2 += 1;
+
+										try
+										{
+											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										}
+										catch (Exception ex)
+										{
+											BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+										}
 									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-                                    }
-
-									juegos2 += 1;
-
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-                                    }
 								}
 							}
 						}

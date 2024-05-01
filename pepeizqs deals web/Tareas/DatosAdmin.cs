@@ -7,7 +7,7 @@ namespace Tareas
 {
 	public class DatosAdmin
 	{
-		public static async Task Correos(SqlConnection conexion)
+		public static async Task CorreosDeals(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 
@@ -19,11 +19,11 @@ namespace Tareas
 
                 try
                 {
-                    List<Herramientas.CorreoConId> correos = Herramientas.Correos.ComprobarNuevosCorreos();
+                    List<Herramientas.CorreoConId> correosDeals = Herramientas.Correos.ComprobarNuevosCorreos(0);
 
-                    if (correos.Count > 0)
+                    if (correosDeals.Count > 0)
                     {
-                        Admin.ActualizarDato(conexion, "correos", correos.Count.ToString());
+                        Admin.ActualizarDato(conexion, "correos", correosDeals.Count.ToString());
                     }
                     else
                     {
@@ -32,10 +32,40 @@ namespace Tareas
                 }
                 catch (Exception ex)
                 {
-                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos", ex, conexion);
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Deals", ex, conexion);
                 }
             }
 		}
+
+        public static async Task CorreosApps(SqlConnection conexion)
+        {
+            await Task.Delay(1000);
+
+            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
+
+            if (Admin.ComprobarTareaUso(conexion, "correos2", tiempoSiguiente) == true)
+            {
+                Admin.ActualizarTareaUso(conexion, "correos2", DateTime.Now);
+
+                try
+                {
+                    List<Herramientas.CorreoConId> correosApps = Herramientas.Correos.ComprobarNuevosCorreos(1);
+
+                    if (correosApps.Count > 0)
+                    {
+                        Admin.ActualizarDato(conexion, "correos2", correosApps.Count.ToString());
+                    }
+                    else
+                    {
+                        Admin.ActualizarDato(conexion, "correos2", "0");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Apps", ex, conexion);
+                }
+            }
+        }
 
         public static async Task Pendientes(SqlConnection conexion)
         {
@@ -156,35 +186,5 @@ namespace Tareas
                 }
             }
         }
-
-		public static async Task Github(SqlConnection conexion)
-		{
-			await Task.Delay(1000);
-
-			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
-
-			if (Admin.ComprobarTareaUso(conexion, "github", tiempoSiguiente) == true)
-			{
-				Admin.ActualizarTareaUso(conexion, "github", DateTime.Now);
-
-				try
-				{
-                    string fecha = await Herramientas.Github.UltimaModificacion();
-
-					if (string.IsNullOrEmpty(fecha) == false)
-					{
-						Admin.ActualizarDato(conexion, "github", fecha);
-					}
-					else
-					{
-						Admin.ActualizarDato(conexion, "github", "0");
-					}
-				}
-				catch (Exception ex)
-				{
-					BaseDatos.Errores.Insertar.Ejecutar("Tarea - Github", ex, conexion);
-				}
-			}
-		}
 	}
 }

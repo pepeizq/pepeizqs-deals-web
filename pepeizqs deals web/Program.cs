@@ -57,24 +57,24 @@ builder.Services.AddSingleton<Tareas.GestionadorTiendas>();
 builder.Services.AddSingleton<Tareas.GestionadorMinimos>();
 builder.Services.AddSingleton<Tareas.GestionadorDivisas>();
 builder.Services.AddSingleton<Tareas.GestionadorSorteos>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminCorreos>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminCorreosDeals>();
+builder.Services.AddSingleton<Tareas.GestionadorAdminCorreosApps>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminPendientes>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminErrores>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminDLCs>();
 builder.Services.AddSingleton<Tareas.GestionadorAdminSolicitudes>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminGithub>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorMinimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorDivisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorSorteos>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreosDeals>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreosApps>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminPendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminErrores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminDLCs>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminSolicitudes>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminGithub>());
 
 #endregion
 
@@ -155,14 +155,14 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddRateLimiter(_ => _
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
-    {
-        options.PermitLimit = 2;
-        options.Window = TimeSpan.FromSeconds(10);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 5;
-    }));
+//builder.Services.AddRateLimiter(_ => _
+//    .AddFixedWindowLimiter(policyName: "fixed", options =>
+//    {
+//        options.PermitLimit = 2;
+//        options.Window = TimeSpan.FromSeconds(10);
+//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        options.QueueLimit = 5;
+//    }));
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
 //{
@@ -181,17 +181,13 @@ var app = builder.Build();
     app.UseHsts();
 //}
 
-app.MapRazorPages();
-
-app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
-
 app.MapControllers();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
 //app.UseResponseCaching();
 
@@ -215,8 +211,12 @@ app.UseStaticFiles(new StaticFileOptions
 	RequestPath = "/imagenes"
 });
 
-app.MapHealthChecks("/estado");
+//app.MapHealthChecks("/estado");
 
-app.UseRequestLocalization();
+//app.UseRequestLocalization();
+
+app.MapRazorPages();
+
+app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.Run();

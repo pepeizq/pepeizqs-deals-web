@@ -8,8 +8,11 @@
     <UserSecretsId>0e01717b-b8fb-4a4e-8d56-378f1a9f3771</UserSecretsId>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="APIs\Gamesplanet\Tienda.cs~RF15378675.TMP" />
+  </ItemGroup>
 
   <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
@@ -71,7 +74,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_WebToolingArtifacts Remove="Properties\PublishProfiles\beta.pubxml" />
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\web.pubxml" />
   </ItemGroup>
 

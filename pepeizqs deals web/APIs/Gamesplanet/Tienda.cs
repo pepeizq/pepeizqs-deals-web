@@ -5,7 +5,9 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Text;
 using System.Xml.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIs.Gamesplanet
 {
@@ -92,81 +94,85 @@ namespace APIs.Gamesplanet
 
 			if (htmluk != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-				GamesplanetJuegos listaJuegos = null;
-				TextReader lector = new StringReader(htmluk);
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmluk));
+                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
 
-				using (lector)
-				{
-					listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
-				}
+    //            XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+				//GamesplanetJuegos listaJuegos = null;
+				//TextReader lector = new StringReader(htmluk);
 
-				lector.Close();
+				//using (lector)
+				//{
+				//	listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
+    //            }
 
-				if (listaJuegos != null)
-				{
-					if (listaJuegos.Juegos != null)
-					{
-						int juegos2 = 0;
+    //            lector.Close();
 
-						if (listaJuegos.Juegos.Count > 0)
-						{
-							foreach (GamesplanetJuego juego in listaJuegos.Juegos)
-							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        int juegos2 = 0;
 
-								string enlace = juego.Enlace;
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
-								string imagen = juego.Imagen;
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+                                if (descuento > 0)
+                                {
+                                    string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+                                    string enlace = juego.Enlace;
 
-								if (descuento > 0)
-								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarUk().Id);
+                                    string imagen = juego.Imagen;
 
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Libra,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = GenerarUk().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now,
-										FechaActualizacion = DateTime.Now
-									};
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarUk().Id);
 
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-									}
-									catch (Exception ex)
-									{
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Libra,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarUk().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now,
+                                        FechaActualizacion = DateTime.Now
+                                    };
+
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
                                     }
 
-									juegos2 += 1;
+                                    juegos2 += 1;
 
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
                                     }
-								}
-							}
-						}
-					}
-				}
-			}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
         public static async Task BuscarOfertasFr(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
@@ -177,81 +183,74 @@ namespace APIs.Gamesplanet
 
 			if (htmlfr != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-				GamesplanetJuegos listaJuegos = null;
-				TextReader lector = new StringReader(htmlfr);
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlfr));
+                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
 
-				using (lector)
-				{
-					listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
-				}
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            int juegos2 = 0;
 
-				lector.Close();
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
-				if (listaJuegos != null)
-				{
-					if (listaJuegos.Juegos != null)
-					{
-						if (listaJuegos.Juegos.Count > 0)
-						{
-							int juegos2 = 0;
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-							foreach (GamesplanetJuego juego in listaJuegos.Juegos)
-							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+                                if (descuento > 0)
+                                {
+                                    string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								string enlace = juego.Enlace;
+                                    string enlace = juego.Enlace;
 
-								string imagen = juego.Imagen;
+                                    string imagen = juego.Imagen;
 
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarFr().Id);
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Euro,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarFr().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now,
+                                        FechaActualizacion = DateTime.Now
+                                    };
 
-								if (descuento > 0)
-								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarFr().Id);
-
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Euro,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = GenerarFr().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now,
-										FechaActualizacion = DateTime.Now
-									};
-
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
                                     }
 
-									juegos2 += 1;
+                                    juegos2 += 1;
 
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
                                     }
-								}
-							}
-						}
-					}
-				}
-			}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
 		public static async Task BuscarOfertasDe(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
@@ -262,81 +261,74 @@ namespace APIs.Gamesplanet
 
 			if (htmlde != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-				GamesplanetJuegos listaJuegos = null;
-				TextReader lector = new StringReader(htmlde);
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlde));
+                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
 
-				using (lector)
-				{
-					listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
-				}
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            int juegos2 = 0;
 
-				lector.Close();
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
-				if (listaJuegos != null)
-				{
-					if (listaJuegos.Juegos != null)
-					{
-						if (listaJuegos.Juegos.Count > 0)
-						{
-							int juegos2 = 0;
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-							foreach (GamesplanetJuego juego in listaJuegos.Juegos)
-							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+                                if (descuento > 0)
+                                {
+                                    string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								string enlace = juego.Enlace;
+                                    string enlace = juego.Enlace;
 
-								string imagen = juego.Imagen;
+                                    string imagen = juego.Imagen;
 
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarDe().Id);
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Euro,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarDe().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now,
+                                        FechaActualizacion = DateTime.Now
+                                    };
 
-								if (descuento > 0)
-								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarDe().Id);
-
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Euro,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = GenerarDe().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now,
-										FechaActualizacion = DateTime.Now
-									};
-
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
                                     }
 
-									juegos2 += 1;
+                                    juegos2 += 1;
 
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
                                     }
-								}
-							}
-						}
-					}
-				}
-			}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
 		public static async Task BuscarOfertasUs(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
@@ -347,81 +339,74 @@ namespace APIs.Gamesplanet
 
 			if (htmlus != null)
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-				GamesplanetJuegos listaJuegos = null;
-				TextReader lector = new StringReader(htmlus);
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlus));
+                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
 
-				using (lector)
-				{
-					listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
-				}
+                if (listaJuegos != null)
+                {
+                    if (listaJuegos.Juegos != null)
+                    {
+                        if (listaJuegos.Juegos.Count > 0)
+                        {
+                            int juegos2 = 0;
 
-				lector.Close();
+                            foreach (GamesplanetJuego juego in listaJuegos.Juegos)
+                            {
+                                decimal precioBase = decimal.Parse(juego.PrecioBase);
+                                decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
-				if (listaJuegos != null)
-				{
-					if (listaJuegos.Juegos != null)
-					{
-						if (listaJuegos.Juegos.Count > 0)
-						{
-							int juegos2 = 0;
+                                int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-							foreach (GamesplanetJuego juego in listaJuegos.Juegos)
-							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+                                if (descuento > 0)
+                                {
+                                    string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
-								string enlace = juego.Enlace;
+                                    string enlace = juego.Enlace;
 
-								string imagen = juego.Imagen;
+                                    string imagen = juego.Imagen;
 
-								decimal precioBase = decimal.Parse(juego.PrecioBase);
-								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+                                    JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarUs().Id);
 
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+                                    JuegoPrecio oferta = new JuegoPrecio
+                                    {
+                                        Nombre = nombre,
+                                        Enlace = enlace,
+                                        Imagen = imagen,
+                                        Moneda = JuegoMoneda.Dolar,
+                                        Precio = precioRebajado,
+                                        Descuento = descuento,
+                                        Tienda = GenerarUs().Id,
+                                        DRM = drm,
+                                        FechaDetectado = DateTime.Now,
+                                        FechaActualizacion = DateTime.Now
+                                    };
 
-								if (descuento > 0)
-								{
-									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, GenerarUs().Id);
-
-									JuegoPrecio oferta = new JuegoPrecio
-									{
-										Nombre = nombre,
-										Enlace = enlace,
-										Imagen = imagen,
-										Moneda = JuegoMoneda.Dolar,
-										Precio = precioRebajado,
-										Descuento = descuento,
-										Tienda = GenerarUs().Id,
-										DRM = drm,
-										FechaDetectado = DateTime.Now,
-										FechaActualizacion = DateTime.Now
-									};
-
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
                                     }
 
-									juegos2 += 1;
+                                    juegos2 += 1;
 
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
+                                    try
+                                    {
+                                        BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                    }
+                                    catch (Exception ex)
+                                    {
                                         BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
                                     }
-								}
-							}
-						}
-					}
-				}
-			}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
     }
 

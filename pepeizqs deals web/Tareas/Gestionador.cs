@@ -207,13 +207,13 @@ namespace Tareas
 		}
 	}
 
-	public class GestionadorAdminCorreos : BackgroundService
+	public class GestionadorAdminCorreosDeals : BackgroundService
 	{
-		private readonly ILogger<GestionadorAdminCorreos> _logger;
+		private readonly ILogger<GestionadorAdminCorreosDeals> _logger;
 		private readonly IServiceScopeFactory _factoria;
 		private readonly IDecompiladores _decompilador;
 
-		public GestionadorAdminCorreos(ILogger<GestionadorAdminCorreos> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		public GestionadorAdminCorreosDeals(ILogger<GestionadorAdminCorreosDeals> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
 		{
 			_logger = logger;
 			_factoria = factory;
@@ -230,7 +230,7 @@ namespace Tareas
 				{
 					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-                    await DatosAdmin.Correos(conexion);
+                    await DatosAdmin.CorreosDeals(conexion);
                 }
 			}
 		}
@@ -240,6 +240,40 @@ namespace Tareas
 			await base.StopAsync(stoppingToken);
 		}
 	}
+
+    public class GestionadorAdminCorreosApps : BackgroundService
+    {
+        private readonly ILogger<GestionadorAdminCorreosApps> _logger;
+        private readonly IServiceScopeFactory _factoria;
+        private readonly IDecompiladores _decompilador;
+
+        public GestionadorAdminCorreosApps(ILogger<GestionadorAdminCorreosApps> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        {
+            _logger = logger;
+            _factoria = factory;
+            _decompilador = decompilador;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken tokenParar)
+        {
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+            while (await timer.WaitForNextTickAsync(tokenParar))
+            {
+                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                {
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                    await DatosAdmin.CorreosApps(conexion);
+                }
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            await base.StopAsync(stoppingToken);
+        }
+    }
 
     public class GestionadorAdminPendientes : BackgroundService
     {
@@ -376,38 +410,4 @@ namespace Tareas
             await base.StopAsync(stoppingToken);
         }
     }
-
-	public class GestionadorAdminGithub : BackgroundService
-	{
-		private readonly ILogger<GestionadorAdminGithub> _logger;
-		private readonly IServiceScopeFactory _factoria;
-		private readonly IDecompiladores _decompilador;
-
-		public GestionadorAdminGithub(ILogger<GestionadorAdminGithub> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
-		{
-			_logger = logger;
-			_factoria = factory;
-			_decompilador = decompilador;
-		}
-
-		protected override async Task ExecuteAsync(CancellationToken tokenParar)
-		{
-			using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
-
-			while (await timer.WaitForNextTickAsync(tokenParar))
-			{
-				using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
-				{
-					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-					await DatosAdmin.Github(conexion);
-				}
-			}
-		}
-
-		public override async Task StopAsync(CancellationToken stoppingToken)
-		{
-			await base.StopAsync(stoppingToken);
-		}
-	}
 }

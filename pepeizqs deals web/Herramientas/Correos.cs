@@ -2,18 +2,13 @@
 
 using Juegos;
 using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
 using MailKit.Search;
 using MailKit.Security;
 using MailKit;
+using MimeKit;
 using Noticias;
 using Sorteos2;
-using MimeKit;
-using MailKit.Net.Smtp;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using Humanizer;
-using Microsoft.Extensions.Hosting;
-using NuGet.Packaging.Signing;
-using MimeKit.Utils;
 
 namespace Herramientas
 {
@@ -294,21 +289,44 @@ namespace Herramientas
 			}
 		}
 
-		public static List<CorreoConId> ComprobarNuevosCorreos()
+		//tipos
+		//0 pepeizqdeals
+		//1 pepeizqapps
+		public static List<CorreoConId> ComprobarNuevosCorreos(int tipo)
 		{
 			List<CorreoConId> correos = new List<CorreoConId>();
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
-            string host = builder.Configuration.GetValue<string>("Correo:Host");
-            string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+			string host = string.Empty;
+			string contraseña = string.Empty;
+
+            if (tipo == 0) 
+			{ 
+				host = builder.Configuration.GetValue<string>("Correo:Host");
+                contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
+            }
+			else if (tipo == 1)
+            {
+                host = builder.Configuration.GetValue<string>("Correo2:Host");
+                contraseña = builder.Configuration.GetValue<string>("Correo2:Contraseña");
+            }
 
             using (ImapClient cliente = new ImapClient())
             {
 				try
 				{
                     cliente.Connect(host, 143, SecureSocketOptions.Auto);
-                    cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+
+					if (tipo == 0)
+					{
+                        cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
+                    }
+					else if (tipo == 1) 
+					{
+                        cliente.Authenticate("admin@pepeizqapps.com", contraseña);
+                    }
+                    
                     cliente.Inbox.Open(FolderAccess.ReadOnly);
 
                     foreach (var id in cliente.Inbox.Search(SearchQuery.NotSeen))

@@ -87,9 +87,14 @@
                         <button class="admin-lateral" @onclick="(e => MostrarCerrarErrores(e))">Errores @nuevosErroresMensaje</button>
                     }
 
-                    @if (nuevosCorreosCantidad > 0)
+                    @if (nuevosCorreosDeals > 0)
                     {
                         <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>                        
+                    }
+
+                    @if (nuevosCorreosApps > 0)
+                    {
+                        <a class="admin-lateral" target="_blank" href="https://mail5017.site4now.net/interface/root">Nuevo Correo Apps</a>
                     }
 
                     @if (nuevosPendientesCantidad > 0)
@@ -102,7 +107,7 @@
                         <button class="admin-lateral" @onclick="(e => MostrarCerrarSolicitudes(e))">Solicitudes @nuevasSolicitudesMensaje</button>                        
                     }
 
-                    <a class="admin-lateral" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none;">Visitas</a>                                        
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarVisitas(e))">Visitas</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarTiendas(e))">Tiendas</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarDivisas(e))">Divisas</button>                
@@ -121,6 +126,19 @@
             </div>
 
             <div style="width: 85%; padding-left: 40px; padding-right: 20px;">
+                @if (mostrarVisitas == true)
+                {
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">                       
+                        <div>
+                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">pepeizq's deals</a>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749301&h=247c8c635b3636dbad356b8bfe410387" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">pepeizq's apps</a>
+                        </div>                      
+                    </div>
+                }
+
                 @if (mostrarErrores == true)
                 {
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
@@ -1707,7 +1725,7 @@
 
         using (conexion)
         {
-            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")));
+            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
             ActualizarMensajeDLCs(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "dlcs")));
             ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
             ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
@@ -1729,6 +1747,7 @@
     {
         titulo = null;
 
+        mostrarVisitas = false;
         mostrarAvisos = false;
         mostrarSolicitudes = false;
         mostrarCorreos = false;
@@ -1744,6 +1763,28 @@
         mostrarSuscripciones = false;
         mostrarSorteos = false;
     }
+
+    #region Visitas
+
+    private bool mostrarVisitas = false;
+
+    private void MostrarCerrarVisitas(MouseEventArgs e)
+    {
+        CerrarPestañas();
+
+        if (mostrarVisitas == true)
+        {
+            mostrarVisitas = false;
+        }
+        else if (mostrarVisitas == false)
+        {
+            mostrarVisitas = true;
+
+            titulo = "Visitas";
+        }
+    }
+
+    #endregion
 
     #region Errores
 
@@ -1984,29 +2025,32 @@
     private bool mostrarCorreos = false;
 
     private List<Herramientas.CorreoConId> correos = new List<Herramientas.CorreoConId>();
-    private int nuevosCorreosCantidad = 0;
+    private int nuevosCorreosDeals = 0;
+    private int nuevosCorreosApps = 0;
     private string nuevosCorreosMensaje = string.Empty;
     private string nuevosCorreosMensaje2 = string.Empty;
     private int posicionCorreosMostrar = 0;
     private string textoRespuestaCorreos = string.Empty;
 
-    private void ActualizarMensajeCorreos(int i)
+    private void ActualizarMensajeCorreos(int correosDeals, int correosApps)
     {
-        nuevosCorreosCantidad = i;
+        nuevosCorreosDeals = correosDeals;
 
-        if (nuevosCorreosCantidad > 0)
+        if (nuevosCorreosDeals > 0)
         {
-            nuevosCorreosMensaje2 = "(" + nuevosCorreosCantidad.ToString() + ")";
+            nuevosCorreosMensaje2 = "(" + nuevosCorreosDeals.ToString() + ")";
 
-            if (nuevosCorreosCantidad == 1)
+            if (nuevosCorreosDeals == 1)
             {
                 nuevosCorreosMensaje = "• 1 Nuevo Correo";
             }
-            else if (nuevosCorreosCantidad > 1)
+            else if (nuevosCorreosDeals > 1)
             {
-                nuevosCorreosMensaje = "• " + nuevosCorreosCantidad.ToString() + " Nuevos Correos";
+                nuevosCorreosMensaje = "• " + nuevosCorreosDeals.ToString() + " Nuevos Correos";
             }
         }
+
+        nuevosCorreosApps = correosApps;
     }
 
     private void MostrarCerrarCorreos(MouseEventArgs e)
@@ -2023,9 +2067,9 @@
 
             titulo = "Correos";
 
-            correos = Herramientas.Correos.ComprobarNuevosCorreos();
+            correos = Herramientas.Correos.ComprobarNuevosCorreos(0);
 
-            ActualizarMensajeCorreos(correos.Count);
+            ActualizarMensajeCorreos(correos.Count, Herramientas.Correos.ComprobarNuevosCorreos(1).Count);
         }
     }
 
@@ -2116,9 +2160,9 @@
     {
         Herramientas.Correos.BorrarCorreo(id);
 
-        correos = Herramientas.Correos.ComprobarNuevosCorreos();
+        correos = Herramientas.Correos.ComprobarNuevosCorreos(0);
 
-        ActualizarMensajeCorreos(correos.Count);
+        ActualizarMensajeCorreos(correos.Count, Herramientas.Correos.ComprobarNuevosCorreos(1).Count);
     }
 
     #endregion
