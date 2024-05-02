@@ -43,9 +43,8 @@ namespace APIs.IndieGala
 
 			int i = 1;
 			while (i < 10)
-			{
-				await Task.Delay(1000);
-				string html = Decompiladores.GZipFormato("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
+			{				
+				string html = await Decompiladores.Estandar("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
 
 				if (html != null)
 				{

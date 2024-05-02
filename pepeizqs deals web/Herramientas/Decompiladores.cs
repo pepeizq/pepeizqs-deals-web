@@ -55,11 +55,19 @@ namespace Herramientas
 
 		public static async Task<string> Estandar(string enlace)
         {
-			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-			HttpClient cliente = factoria.CreateClient("Decompilador");
+            //ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+            //IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+            //HttpClient cliente = factoria.CreateClient("Decompilador");
 
-			string contenido = string.Empty;
+            HttpClient cliente = new HttpClient(new SocketsHttpHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip,
+                PooledConnectionLifetime = TimeSpan.FromMinutes(15),
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(10),
+                MaxConnectionsPerServer = 2
+            }, true);
+
+            string contenido = string.Empty;
 
 			cliente.DefaultRequestHeaders.Clear();
 			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
@@ -75,9 +83,11 @@ namespace Herramientas
 			return contenido;
         }
 
-		public static string GZipFormato(string enlace) 
+		public static async Task<string> GZipFormato(string enlace) 
         {
-			string html = string.Empty;
+            await Task.Delay(1000);
+
+            string html = string.Empty;
 
 			HttpRequestMessage mensaje = new HttpRequestMessage();
             mensaje.RequestUri = new Uri(enlace);
@@ -101,7 +111,7 @@ namespace Herramientas
 
 					Stream stream = respuesta.Result;
 
-					using (GZipStream descompresion = new GZipStream(stream, CompressionMode.Decompress))
+					using (GZipStream descompresion = new GZipStream(stream, CompressionMode.Decompress, false))
 					{
 						using (StreamReader lector = new StreamReader(descompresion))
 						{

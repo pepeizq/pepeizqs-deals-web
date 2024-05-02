@@ -205,11 +205,11 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-	FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "imagenes")),
-	RequestPath = "/imagenes"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//	FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "imagenes")),
+//	RequestPath = "/imagenes"
+//});
 
 //app.MapHealthChecks("/estado");
 
@@ -217,6 +217,6 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapRazorPages();
 
-app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
+app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
 
 app.Run();

@@ -183,9 +183,20 @@ namespace APIs.Gamesplanet
 
 			if (htmlfr != null)
 			{
-                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlfr));
-                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
+                using (StreamWriter writer = File.CreateText("temporal/" + Tienda.GenerarFr().Id + ".xml"))
+                {
+                    writer.WriteLine(htmlfr);
+                }
+
+                GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
+
+                try
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                    Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlfr));
+                    listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
+                }
+                catch { }
 
                 if (listaJuegos != null)
                 {
