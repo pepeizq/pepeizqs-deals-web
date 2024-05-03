@@ -55,19 +55,11 @@ namespace Herramientas
 
 		public static async Task<string> Estandar(string enlace)
         {
-            //ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-            //IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-            //HttpClient cliente = factoria.CreateClient("Decompilador");
+			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+			HttpClient cliente = factoria.CreateClient("Decompilador");
 
-            HttpClient cliente = new HttpClient(new SocketsHttpHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip,
-                PooledConnectionLifetime = TimeSpan.FromMinutes(15),
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(10),
-                MaxConnectionsPerServer = 2
-            }, true);
-
-            string contenido = string.Empty;
+			string contenido = string.Empty;
 
 			cliente.DefaultRequestHeaders.Clear();
 			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");

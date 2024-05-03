@@ -5,9 +5,7 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
-using System.Text;
 using System.Xml.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIs.Gamesplanet
 {
@@ -90,24 +88,14 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
+			string htmluk = await decompilador.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmluk != null)
 			{
+                GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
+
                 XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmluk));
-                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
-
-    //            XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-				//GamesplanetJuegos listaJuegos = null;
-				//TextReader lector = new StringReader(htmluk);
-
-				//using (lector)
-				//{
-				//	listaJuegos = (GamesplanetJuegos)xml.Deserialize(lector);
-    //            }
-
-    //            lector.Close();
+                listaJuegos = (GamesplanetJuegos)xml.Deserialize(new StringReader(htmluk));
 
                 if (listaJuegos != null)
                 {
@@ -179,24 +167,14 @@ namespace APIs.Gamesplanet
         {
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlfr = await decompilador.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlfr != null)
 			{
-                using (StreamWriter writer = File.CreateText("temporal/" + Tienda.GenerarFr().Id + ".xml"))
-                {
-                    writer.WriteLine(htmlfr);
-                }
-
                 GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
 
-                try
-                {
-                    XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-                    Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlfr));
-                    listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
-                }
-                catch { }
+                XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
+                listaJuegos = (GamesplanetJuegos)xml.Deserialize(new StringReader(htmlfr));
 
                 if (listaJuegos != null)
                 {
@@ -268,13 +246,14 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlde = await decompilador.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlde != null)
 			{
+                GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
+
                 XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlde));
-                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
+                listaJuegos = (GamesplanetJuegos)xml.Deserialize(new StringReader(htmlde));
 
                 if (listaJuegos != null)
                 {
@@ -346,13 +325,14 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
+			string htmlus = await decompilador.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlus != null)
 			{
+                GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
+
                 XmlSerializer xml = new XmlSerializer(typeof(GamesplanetJuegos));
-                Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(htmlus));
-                GamesplanetJuegos listaJuegos = (GamesplanetJuegos)xml.Deserialize(stream);
+                listaJuegos = (GamesplanetJuegos)xml.Deserialize(new StringReader(htmlus));
 
                 if (listaJuegos != null)
                 {

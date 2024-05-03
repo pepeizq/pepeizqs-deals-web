@@ -36,13 +36,10 @@ namespace APIs.Voidu
 
 			if (string.IsNullOrEmpty(html) == false) 
 			{
-				XmlSerializer xml = new XmlSerializer(typeof(VoiduJuegos));
-				VoiduJuegos listaJuegos = null;
+                VoiduJuegos listaJuegos = new VoiduJuegos();
 
-				using (TextReader lector = new StringReader(html))
-				{
-					listaJuegos = (VoiduJuegos)xml.Deserialize(lector);
-				}
+                XmlSerializer xml = new XmlSerializer(typeof(VoiduJuegos));
+                listaJuegos = (VoiduJuegos)xml.Deserialize(new StringReader(html));
 
 				if (listaJuegos != null)
 				{
