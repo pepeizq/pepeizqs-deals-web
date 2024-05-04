@@ -20,22 +20,30 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
 
-			while (await timer.WaitForNextTickAsync(tokenParar))
-			{
-				using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
-				{
-					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+            string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-					try
-					{
-						await Noticias.Ejecutar(conexion);
-					}
-					catch (Exception ex)
-					{
-						BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
-					}
+            if (poolUsada == poolBuscador)
+            {
+                using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+			    while (await timer.WaitForNextTickAsync(tokenParar))
+			    {
+                    using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+				    {                  
+                        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                        try
+                        {
+                            await Noticias.Ejecutar(conexion);
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
+                        }
+                    }                       
 				}
 			}
 		}
@@ -61,28 +69,36 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-            using PeriodicTimer timer = new(TimeSpan.FromSeconds(10));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
 
-            while (await timer.WaitForNextTickAsync(tokenParar))
+            string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+
+            if (poolUsada == poolBuscador)
             {
-                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                int i = 0;
+                while (i < 100)
                 {
-                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                    string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
+                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
-                    string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
-
-                    if (poolUsada == poolBuscador)
+                    try
                     {
-                        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-                        try
-                        {
-                            await Tiendas.Ejecutar(conexion, _decompilador);
-                        }
-                        catch { }
+                        await Tiendas.Ejecutar(conexion, _decompilador);
                     }
+                    catch { }
                 }
+                //using PeriodicTimer timer = new(TimeSpan.FromSeconds(10));
+
+                //while (await timer.WaitForNextTickAsync(tokenParar))
+                //{
+                //    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+                //    try
+                //    {
+                //        await Tiendas.Ejecutar(conexion, _decompilador);
+                //    }
+                //    catch { }
+                //}                    
             }    
 		}
 
@@ -107,18 +123,18 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-            using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
 
-            while (await timer.WaitForNextTickAsync(tokenParar))
+            string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+
+            if (poolUsada == poolBuscador)
             {
-                using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
+                using PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
+
+                while (await timer.WaitForNextTickAsync(tokenParar))
                 {
-                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                    string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
-
-                    string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
-
-                    if (poolUsada == poolBuscador)
+                    using (AsyncServiceScope scope = _factoria.CreateAsyncScope())
                     {
                         SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 

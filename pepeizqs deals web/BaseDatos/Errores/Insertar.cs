@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#nullable disable
+
+using Microsoft.Data.SqlClient;
 
 namespace BaseDatos.Errores
 {
