@@ -10,7 +10,7 @@ namespace Tareas
 	{
 		public static async Task Ejecutar(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(120);
+			TimeSpan siguienteComprobacion = TimeSpan.FromMinutes(120);
 			List<string> ids = new List<string>();
 
 			foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
@@ -25,9 +25,7 @@ namespace Tareas
 			{
 				AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
 
-				DateTime ultimaComprobacion = tiendaComprobar.fecha;
-
-				if (DateTime.Now - ultimaComprobacion > tiempoSiguiente)
+				if (DateTime.Now - tiendaComprobar.fecha > siguienteComprobacion)
 				{
 					try
 					{

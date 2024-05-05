@@ -76,29 +76,18 @@ namespace Tareas
 
             if (poolUsada == poolBuscador)
             {
-                int i = 0;
-                while (i < 100)
-                {
-                    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(30));
 
+                while (await timer.WaitForNextTickAsync(tokenParar))
+                {
                     try
                     {
+                        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
                         await Tiendas.Ejecutar(conexion, _decompilador);
                     }
                     catch { }
                 }
-                //using PeriodicTimer timer = new(TimeSpan.FromSeconds(10));
-
-                //while (await timer.WaitForNextTickAsync(tokenParar))
-                //{
-                //    SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-                //    try
-                //    {
-                //        await Tiendas.Ejecutar(conexion, _decompilador);
-                //    }
-                //    catch { }
-                //}                    
             }    
 		}
 
