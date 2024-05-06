@@ -69,14 +69,14 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //string poolBuscador = builder.Configuration.GetValue<string>("PoolBuscador:Contenido");
 
-            string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+            //string poolUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-            if (poolUsada == poolBuscador)
-            {
-                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(30));
+            //if (poolUsada == poolBuscador)
+            //{
+                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
 
                 while (await timer.WaitForNextTickAsync(tokenParar))
                 {
@@ -89,7 +89,7 @@ namespace Tareas
                     catch { }
                 }
             }    
-		}
+		//}
 
 		public override async Task StopAsync(CancellationToken stoppingToken)
 		{
