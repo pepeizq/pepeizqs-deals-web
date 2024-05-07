@@ -1,17 +1,18 @@
 ﻿#nullable disable
 
+using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
 namespace Tareas
 {
-    public class Divisas : BackgroundService
+    public class CorreosDeals : BackgroundService
     {
-        private readonly ILogger<Divisas> _logger;
+        private readonly ILogger<CorreosDeals> _logger;
         private readonly IServiceScopeFactory _factoria;
         private readonly IDecompiladores _decompilador;
 
-        public Divisas(ILogger<Divisas> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        public CorreosDeals(ILogger<CorreosDeals> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
         {
             _logger = logger;
             _factoria = factory;
@@ -36,22 +37,29 @@ namespace Tareas
                 {
                     try
                     {
-                        TimeSpan tiempo = TimeSpan.FromDays(1);
+                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                        Divisa dolar = BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
-
-                        DateTime ultimaComprobacion = dolar.FechaActualizacion;
-
-                        if (DateTime.Now - ultimaComprobacion > tiempo)
+                        if (Admin.ComprobarTareaUso(conexion, "correos", tiempoSiguiente) == true)
                         {
-                            await Herramientas.Divisas.ActualizarDatos(conexion);
+                            Admin.ActualizarTareaUso(conexion, "correos", DateTime.Now);
+
+                            List<CorreoConId> correosDeals = Correos.ComprobarNuevosCorreos(0);
+
+                            if (correosDeals.Count > 0)
+                            {
+                                Admin.ActualizarDato(conexion, "correos", correosDeals.Count.ToString());
+                            }
+                            else
+                            {
+                                Admin.ActualizarDato(conexion, "correos", "0");
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Divisas", ex, conexion);
+                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Deals", ex, conexion);
                     }
-                }
+                }           
             }
         }
 

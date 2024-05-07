@@ -1,17 +1,18 @@
 ﻿#nullable disable
 
+using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
 namespace Tareas
 {
-    public class Divisas : BackgroundService
+    public class DLCs : BackgroundService
     {
-        private readonly ILogger<Divisas> _logger;
+        private readonly ILogger<DLCs> _logger;
         private readonly IServiceScopeFactory _factoria;
         private readonly IDecompiladores _decompilador;
 
-        public Divisas(ILogger<Divisas> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+        public DLCs(ILogger<DLCs> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
         {
             _logger = logger;
             _factoria = factory;
@@ -36,20 +37,27 @@ namespace Tareas
                 {
                     try
                     {
-                        TimeSpan tiempo = TimeSpan.FromDays(1);
+                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                        Divisa dolar = BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
-
-                        DateTime ultimaComprobacion = dolar.FechaActualizacion;
-
-                        if (DateTime.Now - ultimaComprobacion > tiempo)
+                        if (Admin.ComprobarTareaUso(conexion, "dlcs", tiempoSiguiente) == true)
                         {
-                            await Herramientas.Divisas.ActualizarDatos(conexion);
+                            Admin.ActualizarTareaUso(conexion, "dlcs", DateTime.Now);
+
+                            List<Juegos.Juego> dlcs = BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
+
+                            if (dlcs.Count > 0)
+                            {
+                                Admin.ActualizarDato(conexion, "dlcs", dlcs.Count.ToString());
+                            }
+                            else
+                            {
+                                Admin.ActualizarDato(conexion, "dlcs", "0");
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Divisas", ex, conexion);
+                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - DLCs", ex, conexion);
                     }
                 }
             }

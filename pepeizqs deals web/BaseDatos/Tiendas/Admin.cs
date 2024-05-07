@@ -148,15 +148,15 @@ namespace BaseDatos.Tiendas
 					{
 						AdminTarea tienda = new AdminTarea
 						{
-							id = lector.GetString(0),
-							fecha = DateTime.Parse(lector.GetString(1))
+							Id = lector.GetString(0),
+							Fecha = DateTime.Parse(lector.GetString(1))
 						};
 
 						bool añadir = true;
 
 						foreach (var tienda2 in TiendasCargar.GenerarListado())
 						{
-							if (tienda2.Id == tienda.id)
+							if (tienda2.Id == tienda.Id)
 							{
 								break;
 							}
@@ -170,32 +170,58 @@ namespace BaseDatos.Tiendas
 				}
 			}
 
-			tiendas = tiendas.OrderBy(x => x.fecha).ToList();
+			tiendas = tiendas.OrderBy(x => x.Fecha).ToList();
 
 			DateTime ahora = DateTime.Now;
 
-			if (ahora.Hour == 19)
+			if (ahora.Hour == 19 || ahora.Hour == 20)
 			{
 				foreach (var tienda in tiendas)
 				{
-					if (tienda.id == APIs.Steam.Tienda.Generar().Id)
+					if (tienda.Id == APIs.Steam.Tienda.Generar().Id)
 					{
-						if (tienda.fecha.Hour < 19)
-						{
+                        if (ahora - tienda.Fecha > TimeSpan.FromMinutes(20))
+                        {
 							return tienda;
 						}
 					}
-					else if (tienda.id == APIs.Humble.Tienda.Generar().Id)
+					else if (tienda.Id == APIs.Humble.Tienda.Generar().Id)
 					{
-						if (tienda.fecha.Hour < 19)
+						if (ahora - tienda.Fecha > TimeSpan.FromHours(2))
 						{
 							return tienda;
 						}
 					}
 				}
 			}
+			else if (ahora.Hour == 17)
+			{
+                foreach (var tienda in tiendas)
+                {
+                    if (tienda.Id == APIs.Fanatical.Tienda.Generar().Id)
+                    {
+                        if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
+                        {
+                            return tienda;
+                        }
+                    }
+                }
+            }
+            else if (ahora.Hour == 15)
+            {
+                foreach (var tienda in tiendas)
+                {
+                    if (tienda.Id == APIs.GOG.Tienda.Generar().Id)
+                    {
+                        if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
+                        {
+                            return tienda;
+                        }
+                    }
+                }
+            }
 
-			return tiendas[0];
+            return tiendas[0];
         }
 
         public static bool ComprobarTiendasUso(SqlConnection conexion, TimeSpan tiempo)
@@ -212,15 +238,15 @@ namespace BaseDatos.Tiendas
 					{
 						AdminTarea tienda = new AdminTarea
 						{
-							id = lector.GetString(0),
-							fecha = DateTime.Parse(lector.GetString(1))
+							Id = lector.GetString(0),
+							Fecha = DateTime.Parse(lector.GetString(1))
 						};
 
 						bool añadir = true;
 
 						foreach (var tienda2 in TiendasCargar.GenerarListado())
 						{
-							if (tienda2.Id == tienda.id)
+							if (tienda2.Id == tienda.Id)
 							{
 								if (tienda2.AdminInteractuar == false)
 								{
@@ -243,11 +269,11 @@ namespace BaseDatos.Tiendas
 
 			if (tiendas.Count > 0)
 			{
-                tiendas = tiendas.OrderBy(x => x.fecha).ToList();
+                tiendas = tiendas.OrderBy(x => x.Fecha).ToList();
 
 				foreach (var tienda in tiendas) 
 				{
-                    DateTime ultimaComprobacion = tienda.fecha;
+                    DateTime ultimaComprobacion = tienda.Fecha;
 
                     if ((DateTime.Now - ultimaComprobacion) < tiempo)
                     {
@@ -449,7 +475,7 @@ namespace BaseDatos.Tiendas
 
 	public class AdminTarea
 	{
-		public string id;
-		public DateTime fecha;
+		public string Id;
+		public DateTime Fecha;
 	}
 }

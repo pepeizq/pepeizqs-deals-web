@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <None Remove="APIs\Gamesplanet\Tienda.cs~RF15378675.TMP" />
+    <None Remove="BaseDatos\Tiendas\Admin.cs~RF34438614.TMP" />
+    <None Remove="Tareas\Tiendas.cs~RF33d262b3.TMP" />
   </ItemGroup>
 
   <ItemGroup>

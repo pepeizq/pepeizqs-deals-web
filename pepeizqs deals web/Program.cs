@@ -52,29 +52,29 @@ builder.Services.Configure<HostOptions>(hostOptions =>
 	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
-builder.Services.AddSingleton<Tareas.GestionadorNoticias>();
-builder.Services.AddSingleton<Tareas.GestionadorTiendas>();
-builder.Services.AddSingleton<Tareas.GestionadorMinimos>();
-builder.Services.AddSingleton<Tareas.GestionadorDivisas>();
-builder.Services.AddSingleton<Tareas.GestionadorSorteos>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminCorreosDeals>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminCorreosApps>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminPendientes>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminErrores>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminDLCs>();
-builder.Services.AddSingleton<Tareas.GestionadorAdminSolicitudes>();
+builder.Services.AddSingleton<Tareas.Noticias>();
+builder.Services.AddSingleton<Tareas.Tiendas>();
+builder.Services.AddSingleton<Tareas.Minimos>();
+builder.Services.AddSingleton<Tareas.Divisas>();
+builder.Services.AddSingleton<Tareas.Sorteos>();
+builder.Services.AddSingleton<Tareas.CorreosDeals>();
+builder.Services.AddSingleton<Tareas.CorreosApps>();
+builder.Services.AddSingleton<Tareas.Pendientes>();
+builder.Services.AddSingleton<Tareas.Errores>();
+builder.Services.AddSingleton<Tareas.DLCs>();
+builder.Services.AddSingleton<Tareas.Solicitudes>();
 
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorNoticias>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorTiendas>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorMinimos>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorDivisas>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorSorteos>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreosDeals>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminCorreosApps>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminPendientes>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminErrores>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminDLCs>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.GestionadorAdminSolicitudes>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Noticias>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Sorteos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosDeals>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.DLCs>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Solicitudes>());
 
 #endregion
 
