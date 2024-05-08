@@ -1,4 +1,6 @@
-﻿using BaseDatos.Tiendas;
+﻿#nullable disable
+
+using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 

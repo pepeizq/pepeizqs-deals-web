@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Net;
@@ -66,9 +67,21 @@ namespace Herramientas
 
 			try
 			{
-				HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
-				contenido = await respuesta.Content.ReadAsStringAsync();
-				respuesta.Dispose();
+				HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseHeadersRead);
+				//contenido = await respuesta.Content.ReadAsStringAsync();
+
+                Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
+                {
+                    Stream stream = t.Result;
+                    using (StreamReader lector = new StreamReader(stream))
+                    {
+                        contenido = lector.ReadToEnd();
+                    }
+                });
+
+                tarea.Wait();
+
+                respuesta.Dispose();
 			}
 			catch { }
 

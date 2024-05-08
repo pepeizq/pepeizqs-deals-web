@@ -1,10 +1,13 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Web.Administration;
+using System.Diagnostics;
 
 namespace BaseDatos.Errores
 {
-	public static class Insertar
+    public static class Insertar
 	{
         public static void Ejecutar(string seccion, Exception ex)
 		{
@@ -39,6 +42,21 @@ namespace BaseDatos.Errores
 
                 }
             }
+
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string poolTexto = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+
+            using (ServerManager gestor = new ServerManager())
+            {
+                ApplicationPool pool = gestor.ApplicationPools[poolTexto];
+
+                if (pool != null)
+                {
+                    pool.Recycle();
+                }
+
+                gestor.CommitChanges();
+            };
         }
 
         public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)
