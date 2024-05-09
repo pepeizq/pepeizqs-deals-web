@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Gratis2;
 using Herramientas;
 using Microsoft.VisualBasic;
 
@@ -156,44 +157,73 @@ namespace Noticias
 
             if (lista != null)
             {
-                #region Titulo
+                Juegos.JuegoGratis juegoGratis1 = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0]));
+
+                if (juegoGratis1.Juego == null)
+                {
+                    juegoGratis1.Juego = BaseDatos.Juegos.Buscar.UnJuego(juegoGratis1.JuegoId);
+                }
 
                 if (lista.Count == 1)
-                {
-                    plantilla.TituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString1");
-                    plantilla.TituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString1");
-                }
-                else if (lista.Count == 2)
-                {
-                    plantilla.TituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString2") + " " +
-                        BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString3");
-                    plantilla.TituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString2") + " " +
-                        BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString3");
-                }
-                else if (lista.Count > 2)
-                {
-                    plantilla.TituloEn = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
-                        BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString4");
-                    plantilla.TituloEs = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).Nombre + ", " +
-                        BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1])).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString4");
-                }
+                { 
+                    plantilla.TituloEn = juegoGratis1.Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString1") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                    plantilla.TituloEs = juegoGratis1.Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString1") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
 
-                plantilla.TituloEn = plantilla.TituloEn + " " + Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
-                plantilla.TituloEs = plantilla.TituloEs + " " + Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
-
-                #endregion
-
-                #region Contenido
-
-                if (lista.Count == 1)
-                {
-                    plantilla.ContenidoEn = Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString5");
-                    plantilla.ContenidoEs = Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString5");
+                    if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.Game)
+                    {
+                        plantilla.ContenidoEn = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString5");
+                        plantilla.ContenidoEs = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString5");
+                    }
+                    else if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.DLC)
+                    {
+                        plantilla.ContenidoEn = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString7");
+                        plantilla.ContenidoEs = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString7");
+                    }
                 }
                 else if (lista.Count > 1)
                 {
-                    plantilla.ContenidoEn = Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString6");
-                    plantilla.ContenidoEs = Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString6");
+                    Juegos.JuegoGratis juegoGratis2 = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[1]));
+
+                    if (juegoGratis2.Juego == null)
+                    {
+                        juegoGratis2.Juego = BaseDatos.Juegos.Buscar.UnJuego(juegoGratis1.JuegoId);
+                    }
+
+                    if (lista.Count == 2)
+                    {
+                        plantilla.TituloEn = juegoGratis1.Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString2") + " " +
+                            juegoGratis2.Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString3") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                        plantilla.TituloEs = juegoGratis1.Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString2") + " " +
+                            juegoGratis2.Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString3") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                    }
+                    else if (lista.Count > 2)
+                    {
+                        if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.Game && juegoGratis2.Juego.Tipo == Juegos.JuegoTipo.Game)
+                        {
+                            plantilla.TituloEn = juegoGratis1.Nombre + ", " + juegoGratis2.Nombre + " " +
+                                Idiomas.CogerCadena("en-US", "News.FreeString4") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                            plantilla.TituloEs = juegoGratis1.Nombre + ", " + juegoGratis2.Nombre + " " +
+                                Idiomas.CogerCadena("es-ES", "News.FreeString4") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                        }
+                        else if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.DLC && juegoGratis2.Juego.Tipo == Juegos.JuegoTipo.DLC)
+                        {
+                            plantilla.TituloEn = juegoGratis1.Nombre + ", " + juegoGratis2.Nombre + " " +
+                                Idiomas.CogerCadena("en-US", "News.FreeString9") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                            plantilla.TituloEs = juegoGratis1.Nombre + ", " + juegoGratis2.Nombre + " " +
+                                Idiomas.CogerCadena("es-ES", "News.FreeString9") + " " + GratisCargar.DevolverGratis(tipoSeleccionado).Nombre;
+                        }
+                    }
+
+                    if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.Game && juegoGratis2.Juego.Tipo == Juegos.JuegoTipo.Game)
+                    {
+                        plantilla.ContenidoEn = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString6");
+                        plantilla.ContenidoEs = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString6");
+                    }
+                    else if (juegoGratis1.Juego.Tipo == Juegos.JuegoTipo.DLC && juegoGratis2.Juego.Tipo == Juegos.JuegoTipo.DLC)
+                    {
+                        plantilla.ContenidoEn = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("en-US", "News.FreeString8");
+                        plantilla.ContenidoEs = GratisCargar.DevolverGratis(tipoSeleccionado).Nombre + " " + Idiomas.CogerCadena("es-ES", "News.FreeString8");
+                    }
                 }
 
                 plantilla.ContenidoEn = plantilla.ContenidoEn + Environment.NewLine + "<ul>" + Environment.NewLine;
@@ -214,7 +244,7 @@ namespace Noticias
                             plantilla.Enlace = null;
                         }
 
-                        if (Gratis2.GratisCargar.DevolverGratis(tipoSeleccionado).DRMEnseñar == true)
+                        if (GratisCargar.DevolverGratis(tipoSeleccionado).DRMEnseñar == true)
                         {
                             plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
                             plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
@@ -230,27 +260,16 @@ namespace Noticias
                 plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul>";
                 plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul>";
 
-                #endregion
-
-                #region Imagen
-
-                if (BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia != null)
+                if (juegoGratis1.ImagenNoticia != null)
                 {
-                    plantilla.Imagen = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).ImagenNoticia;
+                    plantilla.Imagen = juegoGratis1.ImagenNoticia;
                 }
                 else
                 {
-                    Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).JuegoId.ToString());
-                    plantilla.Imagen = juego.Imagenes.Library_1920x620;
+                    plantilla.Imagen = juegoGratis1.Juego.Imagenes.Library_1920x620;
                 }
 
-                #endregion
-
-                #region Fecha
-
-                plantilla.Fecha = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
-
-                #endregion
+                plantilla.Fecha = juegoGratis1.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
             }
             else
             {

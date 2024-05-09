@@ -42,21 +42,6 @@ namespace BaseDatos.Errores
 
                 }
             }
-
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string poolTexto = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
-
-            using (ServerManager gestor = new ServerManager())
-            {
-                ApplicationPool pool = gestor.ApplicationPools[poolTexto];
-
-                if (pool != null)
-                {
-                    pool.Recycle();
-                }
-
-                gestor.CommitChanges();
-            };
         }
 
         public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)

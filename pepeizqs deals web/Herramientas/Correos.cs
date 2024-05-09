@@ -41,9 +41,28 @@ namespace Herramientas
 
             string html = string.Empty;
 
-            using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
-            {
-                html = r.ReadToEnd();
+			if (string.IsNullOrEmpty(noticia.Enlace) == false)
+			{
+                using (StreamReader r = new StreamReader("Plantillas/NuevaNoticiaConEnlace.html"))
+                {
+                    html = r.ReadToEnd();
+                }
+
+				string enlace = noticia.Enlace;
+
+                if (enlace.Contains("https://pepeizqdeals.com") == false)
+                {
+                    enlace = enlace.Replace("/link/", "https://pepeizqdeals.com/link/");
+                }
+
+                html = html.Replace("{{enlace}}", enlace);
+            }
+			else
+			{
+                using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
+                {
+                    html = r.ReadToEnd();
+                }
             }
 
 			string contenido = noticia.ContenidoEn;
@@ -143,10 +162,10 @@ namespace Herramientas
 				html = r.ReadToEnd();
 			}
 
-			string descripcion = juego.Nombre + " has reached a new minimum registered price:";
-			string imagen = juego.Imagenes.Capsule_231x87;
+			string descripcion = juego.Nombre + " has reached a new minimum price registered on pepeizqdeals.com:";
+			string imagen = juego.Imagenes.Header_460x215;
 			string descuento = precio.Descuento.ToString() + "%";
-			string precio2 = JuegoFicha.PrepararPrecio(precio.Precio, true, precio.Moneda);
+			string precio2 = JuegoFicha.PrepararPrecio(precio.Precio, false, precio.Moneda);
 			string enlace = "https://pepeizqdeals.com" + EnlaceAcortador.Generar(precio.Enlace, precio.Tienda);
 			string imagenTienda = string.Empty;
 

@@ -14,6 +14,7 @@
     <None Remove="APIs\Gamesplanet\Tienda.cs~RF15378675.TMP" />
     <None Remove="BaseDatos\Errores\Insertar.cs~RF39a78cd3.TMP" />
     <None Remove="BaseDatos\Tiendas\Admin.cs~RF34438614.TMP" />
+    <None Remove="Plantillas\NuevaNoticiaConEnlace.html" />
     <None Remove="Tareas\Tiendas.cs~RF33d262b3.TMP" />
   </ItemGroup>
 
@@ -107,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\GanadorSorteo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Plantillas\NuevaNoticiaConEnlace.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Plantillas\NuevaNoticia.html">

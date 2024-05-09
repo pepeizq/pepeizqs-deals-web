@@ -7,7 +7,12 @@ namespace BaseDatos.Juegos
 {
 	public static class Buscar
 	{
-		public static Juego UnJuego(string id = null, string idSteam = null, string idGog = null)
+        public static Juego UnJuego(int id)
+		{
+			return UnJuego(id.ToString());
+		}
+
+        public static Juego UnJuego(string id = null, string idSteam = null, string idGog = null)
 		{
 			string sqlBuscar = string.Empty;
 			string idParametro = string.Empty;

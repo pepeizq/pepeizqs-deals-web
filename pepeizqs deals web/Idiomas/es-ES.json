@@ -504,6 +504,18 @@
     "Valor": "ha puesto para reclamar sin coste alguno los siguientes juegos:"
   },
   {
+    "Id": "News.FreeString7",
+    "Valor": "ha puesto para reclamar sin coste alguno el siguiente DLC:"
+  },
+  {
+    "Id": "News.FreeString8",
+    "Valor": "ha puesto para reclamar sin coste alguno los siguientes DLCs:"
+  },
+  {
+    "Id": "News.FreeString9",
+    "Valor": "y más DLCs están gratis para reclamar en"
+  },
+  {
     "Id": "News.SubscriptionString1",
     "Valor": "ha sido añadido a la suscripción de {0}"
   },

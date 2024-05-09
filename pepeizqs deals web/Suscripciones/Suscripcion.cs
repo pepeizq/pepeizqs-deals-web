@@ -14,6 +14,7 @@ namespace Suscripciones2
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
 		public string ImagenNoticia;
+		public bool AdminInteracturar;
 	}
 
     public class SuscripcionComponente

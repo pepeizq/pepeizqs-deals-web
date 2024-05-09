@@ -149,7 +149,8 @@ namespace BaseDatos.Tiendas
 						AdminTarea tienda = new AdminTarea
 						{
 							Id = lector.GetString(0),
-							Fecha = DateTime.Parse(lector.GetString(1))
+							Fecha = DateTime.Parse(lector.GetString(1)),
+							Mensaje = lector.GetString(2)
 						};
 
 						bool añadir = true;
@@ -477,5 +478,6 @@ namespace BaseDatos.Tiendas
 	{
 		public string Id;
 		public DateTime Fecha;
+		public string Mensaje;
 	}
 }

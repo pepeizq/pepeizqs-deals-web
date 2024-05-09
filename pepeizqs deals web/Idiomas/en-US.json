@@ -508,6 +508,18 @@
     "Valor": "has set up the following games to claim at no cost:"
   },
   {
+    "Id": "News.FreeString7",
+    "Valor": "has set up the following DLC to claim at no cost:"
+  },
+  {
+    "Id": "News.FreeString8",
+    "Valor": "has set up the following DLCs to claim at no cost:"
+  },
+  {
+    "Id": "News.FreeString9",
+    "Valor": "and more DLCs are free to claim"
+  },
+  {
     "Id": "News.SubscriptionString1",
     "Valor": "has been added to the {0} subscription"
   },

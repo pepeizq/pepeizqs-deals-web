@@ -21,44 +21,51 @@ namespace Tareas
 
         protected override async Task ExecuteAsync(CancellationToken tokenParar)
         {
-            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+            string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-            while (await timer.WaitForNextTickAsync(tokenParar))
+            if (piscinaApp != piscinaUsada)
             {
-                SqlConnection conexion = new SqlConnection();
+                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
 
-                try
+                while (await timer.WaitForNextTickAsync(tokenParar))
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch {}
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
-                    TimeSpan siguienteComprobacion = TimeSpan.FromMinutes(120);
-                    List<string> ids = new List<string>();
-
-                    foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+                    try
                     {
-                        if (tienda.AdminInteractuar == true)
-                        {
-                            ids.Add(tienda.Id);
-                        }
+                        conexion = Herramientas.BaseDatos.Conectar();
                     }
+                    catch { }
 
-                    if (Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60)) == false)
+                    if (conexion.State == System.Data.ConnectionState.Open)
                     {
-                        AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
+                        TimeSpan siguienteComprobacion = TimeSpan.FromMinutes(120);
+                        List<string> ids = new List<string>();
 
-                        if (DateTime.Now - tiendaComprobar.Fecha > siguienteComprobacion)
+                        foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
                         {
-                            try
+                            if (tienda.AdminInteractuar == true)
                             {
-                                await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.Id, _decompilador);
+                                ids.Add(tienda.Id);
                             }
-                            catch (Exception ex)
+                        }
+
+                        if (Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60)) == false)
+                        {
+                            AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
+
+                            if (DateTime.Now - tiendaComprobar.Fecha > siguienteComprobacion)
                             {
-                                BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.Id, ex, conexion);
+                                try
+                                {
+                                    await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.Id, _decompilador);
+                                }
+                                catch (Exception ex)
+                                {
+                                    BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.Id, ex, conexion);
+                                }
                             }
                         }
                     }

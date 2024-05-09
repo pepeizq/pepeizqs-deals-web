@@ -201,6 +201,21 @@ app.UseAuthorization();
 //	}
 //});
 
+app.Use(next =>
+{
+    return async httpContext =>
+    {
+        try
+        {
+            await next(httpContext);
+        }
+        catch (OutOfMemoryException m)
+        {
+            Environment.FailFast(m.ToString());
+        }
+    };
+});
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

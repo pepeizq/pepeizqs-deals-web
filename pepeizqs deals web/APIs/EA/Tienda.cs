@@ -35,7 +35,7 @@ namespace APIs.EA
 
 			int juegos2 = 0;
 
-			string html = await decompilador.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
+			string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
 
 			if (html != null)
 			{
@@ -59,7 +59,7 @@ namespace APIs.EA
 
 							superIds = superIds.Remove(superIds.Length - 1, 1);
 
-							string html2 = await decompilador.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+							string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
 							AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
 							superIds = string.Empty;
 						}
@@ -70,7 +70,7 @@ namespace APIs.EA
 							{
 								superIds = superIds.Remove(superIds.Length - 1, 1);
 
-								string html2 = await decompilador.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
+								string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
 								AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
 							}
 						}

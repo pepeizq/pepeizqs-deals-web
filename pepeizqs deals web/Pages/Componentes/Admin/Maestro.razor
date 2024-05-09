@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
 @using Microsoft.VisualBasic
+@using Microsoft.Web.Administration
 @using MimeKit
 @using Suscripciones2
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -130,12 +131,30 @@
                 {
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">                       
                         <div>
-                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">pepeizq's deals</a>
+                            pepeizqdeals.com    
+                        </div>
+                        
+                        <div style="margin-top: 20px;">
+                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Smarterasp</a>
                         </div>
 
                         <div style="margin-top: 20px;">
-                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749301&h=247c8c635b3636dbad356b8bfe410387" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">pepeizq's apps</a>
-                        </div>                      
+                            <a class="boton-pequeño" href="https://dash.cloudflare.com/a419bd795a2aa4915b886e422f16c484/pepeizqdeals.com/analytics/traffic" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Cloudflare</a>
+                        </div>
+                     </div>
+                     
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">  
+                        <div>
+                            pepeizqapps.com
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749301&h=247c8c635b3636dbad356b8bfe410387" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Smarterasp</a>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <a class="boton-pequeño" href="https://dash.cloudflare.com/a419bd795a2aa4915b886e422f16c484/pepeizqapps.com/analytics/traffic" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Cloudflare</a>
+                        </div>
                     </div>
                 }
 
@@ -1001,22 +1020,20 @@
                 @if (mostrarNoticias == true)
                 {
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                        <div style="display: flex; margin-bottom: 20px;">
-                            <div class="opciones-combobox" style="width: 33%;">
-                                <select @onchange="@(e => CambiarNoticiaTipo(e))">
-                                    @foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
-                                    {
-                                        <option value="@tipo">@tipo</option>
-                                    }
-                                </select>
-                            </div>
+                        <div class="opciones-combobox" style="width: 33%;">
+                            <select @onchange="@(e => CambiarNoticiaTipo(e))">
+                                @foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
+                                {
+                                    <option value="@tipo">@tipo</option>
+                                }
+                            </select>
                         </div>
+                    </div>
 
-                        @if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
-                        {
-                            <hr />
-
-                            <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
+                    @if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                            <div class="opciones-combobox" style="width: 33%;">
                                 <select @onchange="@(e => CambiarBundleNoticias(e))">
                                     @foreach (Bundle bundle in BundlesCargar.GenerarListado())
                                     {
@@ -1033,24 +1050,25 @@
                                         <button @onclick="@(e => ClickearBundleNoticias(e, bundle.Id))" class="boton-pequeño" style="margin: 10px 0px;">
                                             <div style="display: flex; align-items: center;">
                                                 <img src="@BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="width: 12%; margin: 10px;" />
-                                                <div>@bundle.NombreBundle</div>
+                                                <div style="margin-left: 20px;">@bundle.NombreBundle</div>
                                             </div>
                                         </button>
                                     }
                                 </div>
-
-                                <hr />
-
-                                <div style="margin-bottom: 10px;">
-                                    <label style="margin: 10px;">Juegos:</label>
-                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
-                                </div>
                             }
-                        }
-                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
-                        {
-                            <hr />
+                        </div>
 
+                        @if (bundleSeleccionadoNoticias != null)
+                        {
+                            <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                                <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                            </div>
+                        }
+                    }
+                    else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                             <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
                                 <select @onchange="@(e => CambiarGratisNoticias(e))">
                                     @foreach (Gratis gratis in GratisCargar.GenerarListado())
@@ -1081,19 +1099,20 @@
                                         </button>
                                     }
                                 </div>
-
-                                <hr />
-
-                                <div style="margin-bottom: 10px;">
-                                    <label style="margin: 10px;">Juegos:</label>
-                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
-                                </div>
                             }
-                        }
-                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+                        </div>  
+                        
+                        @if (gratisSeleccionadoNoticias != null)
                         {
-                            <hr />
-
+                            <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                                <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                            </div>
+                        }
+                    }
+                    else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                             <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
                                 <select @onchange="@(e => CambiarSuscripcion(e))">
                                     @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
@@ -1119,28 +1138,25 @@
                                                 }
 
                                                 <img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ImagenLogo" style="width: 12%; margin: 10px;" />
-                                                <div>@suscripcion.Nombre</div>
+                                                <div style="margin-left: 20px;">@suscripcion.Nombre</div>
                                             </div>
                                         </button>
                                     }
                                 </div>
-
-                                <hr />
-
-                                <div style="margin-bottom: 10px;">
-                                    <label style="margin: 10px;">Juegos:</label>
-                                    <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
-                                </div>
                             }
-                        }
-                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
-                        {
+                        </div>
 
-                        }
-                        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+                        @if (suscripcionSeleccionadaNoticias != null)
                         {
-                            <hr />
-
+                            <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                                <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+                            </div>
+                        }
+                    }
+                    else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+                    {
+                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                             <div style="margin-bottom: 10px;">
                                 <label style="margin: 10px;">Juegos IDs:</label>
                                 <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
@@ -1175,63 +1191,71 @@
                                     }
                                 }
                             </div>
-                        }
+                        </div>
+                    }
+
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+                        <div>
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Título EN:</label>
+                            <input type="text" @onchange="@(e => CambiarTituloEnNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEn" />
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Título ES:</label>
+                            <input type="text" @onchange="@(e => CambiarTituloEsNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEs" />
+                        </div>
                     </div>
 
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                         <div>
-                            <label style="margin: 10px;">Título EN:</label>
-                            <input type="text" @onchange="@(e => CambiarTituloEnNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEn" />
-                        </div>
-
-                        <div style="margin-top: 10px; margin-bottom: 10px;">
-                            <label style="margin: 10px;">Título ES:</label>
-                            <input type="text" @onchange="@(e => CambiarTituloEsNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEs" />
-                        </div>
-
-                        <hr />
-
-                        <div>
-                            <label style="margin: 10px;">Imagen Noticia:</label>
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Imagen Noticia:</label>
                             <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@plantillaNoticias.Imagen">
-                            <img src="@plantillaNoticias.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+
+                            @if (string.IsNullOrEmpty(plantillaNoticias.Imagen) == false)
+                            {
+                                <img src="@plantillaNoticias.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                            }                         
                         </div>
+                    </div>
 
-                        <hr />
-
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                         <div>
-                            <label style="margin: 10px;">Fecha Termina:</label>
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Fecha Termina:</label>
                             <input type="datetime-local" @onchange="@(e => CambiarFechaNoticias(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@plantillaNoticias.Fecha">
                         </div>
 
-                        <div style="margin-top: 10px; margin-bottom: 10px;">
-                            <label style="margin: 10px;">Enlace:</label>
+                        <div style="margin-top: 20px;">
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Enlace:</label>
                             <input type="text" class="entrada-texto" value="@plantillaNoticias.Enlace" />
                         </div>
                     </div>
 
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-
                         <div>
-                            <label style="margin: 10px;">Contenido EN:</label>
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Contenido EN:</label>
                             <textarea @onchange="@(e => CambiarContenidoEnNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEn</textarea>
                         </div>
 
-                        <div style="margin-top: 20px; margin-bottom: 10px;">
-                            @((MarkupString)plantillaNoticias.ContenidoEn)
-                        </div>
+                        @if (string.IsNullOrEmpty(plantillaNoticias.ContenidoEn) == false)
+                        {
+                            <div style="margin-top: 20px; margin-bottom: 10px;">
+                                @((MarkupString)plantillaNoticias.ContenidoEn)
+                            </div>
+                        }
+                    </div>
 
-                        <hr />
-
+                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                         <div>
-                            <label style="margin: 10px;">Contenido ES:</label>
+                            <label style="margin-left: 10px; margin-bottom: 10px;">Contenido ES:</label>
                             <textarea @onchange="@(e => CambiarContenidoEsNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEs</textarea>
                         </div>
 
-                        <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
-                            @((MarkupString)plantillaNoticias.ContenidoEs)
-                        </div>
-
+                        @if (string.IsNullOrEmpty(plantillaNoticias.ContenidoEs) == false)
+                        {
+                            <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+                                @((MarkupString)plantillaNoticias.ContenidoEs)
+                            </div>  
+                        }
                     </div>
 
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
@@ -1571,7 +1595,10 @@
                                             <select @onchange="@(e => CambiarTipoSuscripcion(e))">
                                                 @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
                                                 {
-                                                    <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                                    @if (suscripcion.AdminInteracturar == true)
+                                                    {
+                                                        <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                                    }                                                   
                                                 }
                                             </select>
                                         </div>
@@ -3683,8 +3710,8 @@
 
         if (suscripcionSeleccionadaSuscripciones == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
         {
-            // fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-            // fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+            fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         }
 
         if (drmSeleccionadoSuscripciones == null)

@@ -13,7 +13,8 @@ namespace APIs.PrimeGaming
 				ImagenLogo = "/imagenes/suscripciones/primegaming.webp",
 				ImagenIcono = "/imagenes/suscripciones/primegaming_icono.webp",
 				Enlace = "https://gaming.amazon.com/",
-				DRMDefecto = JuegoDRM.Amazon
+				DRMDefecto = JuegoDRM.Amazon,
+				AdminInteracturar = true
 			};
 
 			DateTime fechaPrime = DateTime.Now;
@@ -34,7 +35,8 @@ namespace APIs.PrimeGaming
 				ImagenLogo = "/imagenes/suscripciones/twitchprime_300x80.webp",
 				ImagenIcono = "/imagenes/suscripciones/twitchprime_icono.webp",
 				Enlace = "https://gaming.amazon.com/",
-				DRMDefecto = JuegoDRM.Amazon
+				DRMDefecto = JuegoDRM.Amazon,
+				AdminInteracturar = false
 			};
 
 			DateTime fechaPrime = DateTime.Now;
