@@ -225,68 +225,67 @@ namespace BaseDatos.Tiendas
             return tiendas[0];
         }
 
-        public static bool ComprobarTiendasUso(SqlConnection conexion, TimeSpan tiempo)
-        {
+        public static AdminTarea ComprobarTiendasUso(SqlConnection conexion, TimeSpan tiempo)
+		{
             List<AdminTarea> tiendas = new List<AdminTarea>();
 
-			string seleccionarTarea = "SELECT * FROM adminTiendas";
+            string seleccionarTarea = "SELECT * FROM adminTiendas";
 
-			using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
-			{
-				using (SqlDataReader lector = comando.ExecuteReader())
-				{
-					while (lector.Read())
-					{
-						AdminTarea tienda = new AdminTarea
-						{
-							Id = lector.GetString(0),
-							Fecha = DateTime.Parse(lector.GetString(1))
-						};
-
-						bool añadir = true;
-
-						foreach (var tienda2 in TiendasCargar.GenerarListado())
-						{
-							if (tienda2.Id == tienda.Id)
-							{
-								if (tienda2.AdminInteractuar == false)
-								{
-									añadir = false;
-								}
-
-								break;
-							}
-						}
-
-						if (añadir == true)
-						{
-							tiendas.Add(tienda);
-						}
-					}
-				}
-			}
-
-			bool enUso = false;
-
-			if (tiendas.Count > 0)
-			{
-                tiendas = tiendas.OrderBy(x => x.Fecha).ToList();
-
-				foreach (var tienda in tiendas) 
-				{
-                    DateTime ultimaComprobacion = tienda.Fecha;
-
-                    if ((DateTime.Now - ultimaComprobacion) < tiempo)
+            using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
+            {
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    while (lector.Read())
                     {
-                       enUso = true;
+                        AdminTarea tienda = new AdminTarea
+                        {
+                            Id = lector.GetString(0),
+                            Fecha = DateTime.Parse(lector.GetString(1))
+                        };
+
+                        bool añadir = true;
+
+                        foreach (var tienda2 in TiendasCargar.GenerarListado())
+                        {
+                            if (tienda2.Id == tienda.Id)
+                            {
+                                if (tienda2.AdminInteractuar == false)
+                                {
+                                    añadir = false;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (añadir == true)
+                        {
+                            tiendas.Add(tienda);
+                        }
                     }
                 }
             }
 
-            return enUso;
+            if (tiendas.Count > 0)
+            {
+                tiendas = tiendas.OrderBy(x => x.Fecha).ToList();
+
+                foreach (var tienda in tiendas)
+                {
+                    DateTime ultimaComprobacion = tienda.Fecha;
+
+                    if ((DateTime.Now - ultimaComprobacion) < tiempo)
+                    {
+                        return tienda;
+                    }
+                }
+            }
+
+            return null;
         }
 
-		public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo, string tiendaId)
+
+        public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo, string tiendaId)
 		{
 			bool usar = false;
 

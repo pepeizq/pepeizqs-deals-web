@@ -34,7 +34,7 @@ namespace Herramientas
 
             try
             {
-                HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+                HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseHeadersRead);
                 contenido = await respuesta.Content.ReadAsStringAsync();
                 respuesta.Dispose();
             }
@@ -67,21 +67,22 @@ namespace Herramientas
 
 			try
 			{
-				HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseHeadersRead);
-				//contenido = await respuesta.Content.ReadAsStringAsync();
+				using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
+				{
+                    //contenido = await respuesta.Content.ReadAsStringAsync();
+                    respuesta.EnsureSuccessStatusCode();
 
-                Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
-                {
-                    Stream stream = t.Result;
-                    using (StreamReader lector = new StreamReader(stream))
+                    Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
                     {
-                        contenido = lector.ReadToEnd();
-                    }
-                });
+                        Stream stream = t.Result;
+                        using (StreamReader lector = new StreamReader(stream))
+                        {
+                            contenido = lector.ReadToEnd();
+                        }
+                    });
 
-                tarea.Wait();
-
-                respuesta.Dispose();
+                    tarea.Wait();
+                };
 			}
 			catch { }
 

@@ -9,6 +9,7 @@ using MailKit;
 using MimeKit;
 using Noticias;
 using Sorteos2;
+using Microsoft.Data.SqlClient;
 
 namespace Herramientas
 {
@@ -35,49 +36,56 @@ namespace Herramientas
             }
 		}
 
-		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia)
+		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion)
 		{
-			string titulo = noticia.TituloEn;
-
-            string html = string.Empty;
-
-			if (string.IsNullOrEmpty(noticia.Enlace) == false)
+			try
 			{
-                using (StreamReader r = new StreamReader("Plantillas/NuevaNoticiaConEnlace.html"))
+                string titulo = noticia.TituloEn;
+
+                string html = string.Empty;
+
+                if (string.IsNullOrEmpty(noticia.Enlace) == false)
                 {
-                    html = r.ReadToEnd();
+                    using (StreamReader r = new StreamReader("Plantillas/NuevaNoticiaConEnlace.html"))
+                    {
+                        html = r.ReadToEnd();
+                    }
+
+                    string enlace = noticia.Enlace;
+
+                    if (enlace.Contains("https://pepeizqdeals.com") == false)
+                    {
+                        enlace = enlace.Replace("/link/", "https://pepeizqdeals.com/link/");
+                    }
+
+                    html = html.Replace("{{enlace}}", enlace);
+                }
+                else
+                {
+                    using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
+                    {
+                        html = r.ReadToEnd();
+                    }
                 }
 
-				string enlace = noticia.Enlace;
+                string contenido = noticia.ContenidoEn;
 
-                if (enlace.Contains("https://pepeizqdeals.com") == false)
+                if (contenido.Contains("https://pepeizqdeals.com") == false)
                 {
-                    enlace = enlace.Replace("/link/", "https://pepeizqdeals.com/link/");
+                    contenido = contenido.Replace("/link/", "https://pepeizqdeals.com/link/");
                 }
 
-                html = html.Replace("{{enlace}}", enlace);
+                html = html.Replace("{{titulo}}", titulo);
+                html = html.Replace("{{imagen}}", noticia.Imagen);
+                html = html.Replace("{{contenido}}", contenido);
+                html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+
+                EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
             }
-			else
+			catch (Exception ex) 
 			{
-                using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
-                {
-                    html = r.ReadToEnd();
-                }
-            }
-
-			string contenido = noticia.ContenidoEn;
-
-			if (contenido.Contains("https://pepeizqdeals.com") == false)
-			{
-				contenido = contenido.Replace("/link/", "https://pepeizqdeals.com/link/");
+				global::BaseDatos.Errores.Insertar.Ejecutar("Correos - Enviar Noticia", ex, conexion);
 			}
-
-			html = html.Replace("{{titulo}}", titulo);
-			html = html.Replace("{{imagen}}", noticia.Imagen);
-			html = html.Replace("{{contenido}}", contenido);
-            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-
-            EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
         }
 
         public static void EnviarContraseñaReseteada(string correoHacia)

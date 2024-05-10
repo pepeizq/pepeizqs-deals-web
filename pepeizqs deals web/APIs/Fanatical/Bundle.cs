@@ -21,11 +21,16 @@ namespace APIs.Fanatical
 				Pick = false
 			};
 
-			DateTime fechaBundle = DateTime.Now;
-			fechaBundle = fechaBundle.AddDays(14);
-			fechaBundle = new DateTime(fechaBundle.Year, fechaBundle.Month, fechaBundle.Day, 17, 0, 0);
+            DateTime fechaEmpieza = DateTime.Now;
+            fechaEmpieza = new DateTime(fechaEmpieza.Year, fechaEmpieza.Month, fechaEmpieza.Day, 17, 0, 0);
 
-			bundle.FechaTermina = fechaBundle;
+            bundle.FechaEmpieza = fechaEmpieza;
+
+            DateTime fechaTermina = DateTime.Now;
+			fechaTermina = fechaTermina.AddDays(14);
+			fechaTermina = new DateTime(fechaTermina.Year, fechaTermina.Month, fechaTermina.Day, 17, 0, 0);
+
+			bundle.FechaTermina = fechaTermina;
 
 			return bundle;
 		}

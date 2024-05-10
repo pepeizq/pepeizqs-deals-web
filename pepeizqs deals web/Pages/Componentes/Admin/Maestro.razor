@@ -321,7 +321,7 @@
                 @if (mostrarTiendas == true)
                 {
                     <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                        <label>Siguiente Comprobación: @LeerSiguienteTienda()</label>
+                        <label>@TiendasInfo()</label>
                         <hr/>
                         <div>
                             @foreach (Tienda tienda in TiendasCargar.GenerarListado())
@@ -1238,7 +1238,7 @@
 
                         @if (string.IsNullOrEmpty(plantillaNoticias.ContenidoEn) == false)
                         {
-                            <div style="margin-top: 20px; margin-bottom: 10px;">
+                            <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
                                 @((MarkupString)plantillaNoticias.ContenidoEn)
                             </div>
                         }
@@ -1295,9 +1295,15 @@
                             </div>
 
                             <div style="margin-top: 20px;">
+                                <label style="margin-bottom: 10px;">Fecha Empieza:</label><br />
+                                <label style="margin-bottom: 10px;">@bundle.FechaEmpieza.ToString("yyyy-MM-ddTHH:mm:ss")</label>
+                                <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaBundle(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@bundle.FechaEmpieza.ToString("yyyy-MM-ddTHH:mm:ss")">
+                            </div>
+
+                            <div style="margin-top: 20px;">
                                 <label style="margin-bottom: 10px;">Fecha Termina:</label><br />
                                 <label style="margin-bottom: 10px;">@bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss")</label>
-                                <input type="datetime-local" @onchange="@(e => CambiarFechaBundle(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaBundle(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss")">
                             </div>
 
                             <div style="margin-top: 20px;">
@@ -2226,9 +2232,12 @@
         }
     }
 
-    private string LeerSiguienteTienda()
+    private string TiendasInfo()
     {
-        BaseDatos.Tiendas.AdminTarea tienda = new BaseDatos.Tiendas.AdminTarea();
+        string info = String.Empty;
+
+        BaseDatos.Tiendas.AdminTarea siguiente = new BaseDatos.Tiendas.AdminTarea();
+        BaseDatos.Tiendas.AdminTarea enUso = new BaseDatos.Tiendas.AdminTarea();
 
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -2237,10 +2246,21 @@
 
         using (conexion)
         {
-            tienda = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
+            siguiente = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
+            enUso = BaseDatos.Tiendas.Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60));
         }
 
-        return tienda.Id + " " + Herramientas.Calculadora.DiferenciaTiempo(tienda.Fecha, "es-ES");
+        if (siguiente != null)
+        {
+            info = info + "Siguiente: " + siguiente.Id;
+        }
+
+        if (enUso != null)
+        {
+            info = info + " - Comprobando: " + enUso.Id;
+        }
+
+        return info;
     }
 
     #endregion
@@ -3069,49 +3089,60 @@
 
     private void AñadirNoticia(MouseEventArgs e)
     {
-        global::Noticias.Noticia noticia = new global::Noticias.Noticia();
-
-        noticia.TituloEn = plantillaNoticias.TituloEn;
-        noticia.TituloEs = plantillaNoticias.TituloEs;
-        noticia.Imagen = plantillaNoticias.Imagen;
-        noticia.ContenidoEn = plantillaNoticias.ContenidoEn;
-        noticia.ContenidoEs = plantillaNoticias.ContenidoEs;
-        noticia.Juegos = plantillaNoticias.Juegos;
-        noticia.FechaEmpieza = DateTime.Now;
-        noticia.FechaTermina = Convert.ToDateTime(plantillaNoticias.Fecha);
-        noticia.Enlace = plantillaNoticias.Enlace;
-
-        if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+        if (conexion.State != System.Data.ConnectionState.Open)
         {
-            noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
-            noticia.BundleTipo = BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
-        }
-        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
-        {
-            noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
-            noticia.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
-        }
-        else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
-        {
-            noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
-            noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
+            conexion = Herramientas.BaseDatos.Conectar();
         }
 
-        BaseDatos.Noticias.Insertar.Ejecutar(noticia);
-
-        foreach (var usuario in UserManager.Users)
+        if (conexion.State == System.Data.ConnectionState.Open)
         {
-            if (usuario.NotificationNews == true)
+            using (conexion)
             {
-                Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email);
+                global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+
+                noticia.TituloEn = plantillaNoticias.TituloEn;
+                noticia.TituloEs = plantillaNoticias.TituloEs;
+                noticia.Imagen = plantillaNoticias.Imagen;
+                noticia.ContenidoEn = plantillaNoticias.ContenidoEn;
+                noticia.ContenidoEs = plantillaNoticias.ContenidoEs;
+                noticia.Juegos = plantillaNoticias.Juegos;
+                noticia.FechaEmpieza = DateTime.Now;
+                noticia.FechaTermina = Convert.ToDateTime(plantillaNoticias.Fecha);
+                noticia.Enlace = plantillaNoticias.Enlace;
+
+                if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+                {
+                    noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
+                    noticia.BundleTipo = BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
+                }
+                else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+                {
+                    noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
+                    noticia.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
+                }
+                else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+                {
+                    noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
+                    noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
+                }
+
+                BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+
+                foreach (var usuario in UserManager.Users)
+                {
+                    if (usuario.NotificationNews == true)
+                    {
+                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                    }
+                }
+
+                plantillaNoticias = new global::Noticias.Plantilla();
+
+                bundleSeleccionadoNoticias = null;
+                gratisSeleccionadoNoticias = null;
+                suscripcionSeleccionadaNoticias = null;
             }
         }
-
-        plantillaNoticias = new global::Noticias.Plantilla();
-
-        bundleSeleccionadoNoticias = null;
-        gratisSeleccionadoNoticias = null;
-        suscripcionSeleccionadaNoticias = null;
     }
 
     private void TextoCambiaBuscadorNoticias(ChangeEventArgs texto)
@@ -3266,7 +3297,15 @@
         }
     }
 
-    private void CambiarFechaBundle(ChangeEventArgs texto)
+    private void CambiarFechaEmpiezaBundle(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            bundle.FechaEmpieza = Convert.ToDateTime(texto.Value.ToString().Trim());
+        }
+    }
+
+    private void CambiarFechaTerminaBundle(ChangeEventArgs texto)
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
@@ -3499,8 +3538,6 @@
     {
         if (bundle != null)
         {
-            bundle.FechaEmpieza = DateTime.Now;
-
             BaseDatos.Bundles.Insertar.Ejecutar(bundle);
 
             enlaceBundle = null;
