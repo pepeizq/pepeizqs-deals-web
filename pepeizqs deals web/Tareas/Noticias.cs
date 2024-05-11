@@ -21,80 +21,87 @@ namespace Tareas
 
         protected override async Task ExecuteAsync(CancellationToken tokenParar)
         {
-            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+            string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-            while (await timer.WaitForNextTickAsync(tokenParar))
+            if (piscinaApp != piscinaUsada)
             {
-                SqlConnection conexion = new SqlConnection();
+                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
 
-                try
+                while (await timer.WaitForNextTickAsync(tokenParar))
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        List<Noticia> noticiasMostrar = new List<Noticia>();
-                        List<Noticia> noticiaEvento = new List<Noticia>();
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-                        if (noticias.Count > 0)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            int i = 0;
-                            foreach (var noticia in noticias)
+                            List<Noticia> noticiasMostrar = new List<Noticia>();
+                            List<Noticia> noticiaEvento = new List<Noticia>();
+
+                            List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+                            if (noticias.Count > 0)
                             {
-                                if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+                                int i = 0;
+                                foreach (var noticia in noticias)
                                 {
-                                    if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
+                                    if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
                                     {
-                                        DateTime fechaEncabezado = noticia.FechaEmpieza;
-                                        fechaEncabezado = fechaEncabezado.AddDays(3);
-
-                                        if (DateTime.Now < fechaEncabezado)
+                                        if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
                                         {
-                                            noticiaEvento.Add(noticia);
-                                        }
-                                    }
+                                            DateTime fechaEncabezado = noticia.FechaEmpieza;
+                                            fechaEncabezado = fechaEncabezado.AddDays(3);
 
-                                    if (i < 6)
-                                    {
-                                        noticiasMostrar.Add(noticia);
-                                        i += 1;
+                                            if (DateTime.Now < fechaEncabezado)
+                                            {
+                                                noticiaEvento.Add(noticia);
+                                            }
+                                        }
+
+                                        if (i < 6)
+                                        {
+                                            noticiasMostrar.Add(noticia);
+                                            i += 1;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if (noticiasMostrar.Count > 0)
-                        {
-                            BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
-
-                            foreach (var noticia in noticiasMostrar)
+                            if (noticiasMostrar.Count > 0)
                             {
-                                BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
+                                BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
+
+                                foreach (var noticia in noticiasMostrar)
+                                {
+                                    BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
+                                }
+                            }
+
+                            if (noticiaEvento.Count > 0)
+                            {
+                                BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
+
+                                foreach (var noticia in noticiaEvento)
+                                {
+                                    BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
+                                }
                             }
                         }
-
-                        if (noticiaEvento.Count > 0)
+                        catch (Exception ex)
                         {
-                            BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
-
-                            foreach (var noticia in noticiaEvento)
-                            {
-                                BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
-                            }
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
-                    }
-                }             
-            }
+                }
+            }                
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)

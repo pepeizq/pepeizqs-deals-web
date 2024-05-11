@@ -42,8 +42,8 @@ namespace BaseDatos.Errores
 
                 }
 
-                Process process = Process.GetCurrentProcess();
-                process.Kill();
+                //Process process = Process.GetCurrentProcess();
+                //process.Kill();
             }
         }
 

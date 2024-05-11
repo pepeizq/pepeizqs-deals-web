@@ -111,13 +111,13 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
-//builder.Services.AddSignalR(opciones =>
-//{
-//    opciones.EnableDetailedErrors = true;
-//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-//    opciones.MaximumReceiveMessageSize = 1000;
-//});
+builder.Services.AddSignalR(opciones =>
+{
+    opciones.EnableDetailedErrors = true;
+    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+    opciones.MaximumReceiveMessageSize = 1000;
+});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {
@@ -201,21 +201,6 @@ app.UseAuthorization();
 //	}
 //});
 
-app.Use(next =>
-{
-    return async httpContext =>
-    {
-        try
-        {
-            await next(httpContext);
-        }
-        catch (OutOfMemoryException m)
-        {
-            Environment.FailFast(m.ToString());
-        }
-    };
-});
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -232,6 +217,6 @@ app.UseStaticFiles();
 
 app.MapRazorPages();
 
-app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
+app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.Run();

@@ -1117,7 +1117,10 @@
                                 <select @onchange="@(e => CambiarSuscripcion(e))">
                                     @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
                                     {
-                                        <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                        if (suscripcion.AdminInteracturar == true)
+                                        {
+                                            <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                        }                                      
                                     }
                                 </select>
                             </div>
@@ -3766,7 +3769,7 @@
     {
         suscripcionSeleccionadaSuscripciones = texto.Value.ToString();
 
-        // fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         drmSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).DRMDefecto.ToString();
         enlaceSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Enlace;
     }
