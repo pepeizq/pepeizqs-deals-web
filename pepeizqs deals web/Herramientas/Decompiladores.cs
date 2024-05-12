@@ -2,6 +2,7 @@
 
 using Azure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using System.IO.Compression;
 using System.Net;
 
@@ -54,7 +55,7 @@ namespace Herramientas
 		//	MaxConnectionsPerServer = 2
 		//}, false);
 
-		public static async Task<string> Estandar(string enlace)
+		public static async Task<string> Estandar(string enlace, SqlConnection conexion = null)
         {
 			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
 			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
@@ -69,22 +70,28 @@ namespace Herramientas
 			{
 				using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
 				{
-                    //contenido = await respuesta.Content.ReadAsStringAsync();
-                    respuesta.EnsureSuccessStatusCode();
+                    contenido = respuesta.Content.ReadAsStringAsync().Result;
+                    //respuesta.EnsureSuccessStatusCode();
 
-                    Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
-                    {
-                        Stream stream = t.Result;
-                        using (StreamReader lector = new StreamReader(stream))
-                        {
-                            contenido = lector.ReadToEnd();
-                        }
-                    });
+                    //Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
+                    //{
+                    //    Stream stream = t.Result;
+                    //    using (StreamReader lector = new StreamReader(stream))
+                    //    {
+                    //        contenido = lector.ReadToEnd();
+                    //    }
+                    //});
 
-                    tarea.Wait();
+                    //tarea.Wait();
                 };
 			}
-			catch { }
+			catch (Exception ex)
+			{ 
+				if (conexion != null)
+				{
+					global::BaseDatos.Errores.Insertar.Ejecutar("Decompilador", ex);
+				}
+			}
 
 			return contenido;
         }

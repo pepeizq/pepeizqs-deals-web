@@ -21,43 +21,50 @@ namespace Tareas
 
         protected override async Task ExecuteAsync(CancellationToken tokenParar)
         {
-            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+            string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-            while (await timer.WaitForNextTickAsync(tokenParar))
+            if (piscinaApp != piscinaUsada)
             {
-                SqlConnection conexion = new SqlConnection();
+                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
 
-                try
+                while (await timer.WaitForNextTickAsync(tokenParar))
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        if (Admin.ComprobarTareaUso(conexion, "pendientes", tiempoSiguiente) == true)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
+                            if (Admin.ComprobarTareaUso(conexion, "pendientes", tiempoSiguiente) == true)
+                            {
+                                Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
 
-                            if (pendientes.Count > 0)
-                            {
-                                Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
-                            }
-                            else
-                            {
-                                Admin.ActualizarDato(conexion, "pendientes", "0");
+                                List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
+
+                                if (pendientes.Count > 0)
+                                {
+                                    Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
+                                }
+                                else
+                                {
+                                    Admin.ActualizarDato(conexion, "pendientes", "0");
+                                }
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Pendientes", ex, conexion);
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Pendientes", ex, conexion);
+                        }
                     }
                 }
             }

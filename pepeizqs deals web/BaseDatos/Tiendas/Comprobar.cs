@@ -139,8 +139,6 @@ namespace BaseDatos.Tiendas
 						}
 
 						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
-
-						//ComprobarMinimo(oferta, juego);
 					}
 				}
 			}

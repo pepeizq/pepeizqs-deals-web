@@ -43,7 +43,7 @@ namespace APIs.Fanatical
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed");
+			string html = await Decompiladores.Estandar("https://feed.fanatical.com/feed", conexion);
 
 			if (html != null)
 			{
