@@ -27,11 +27,11 @@ namespace Tareas
 
             if (piscinaApp != piscinaUsada)
             {
-                using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+                SqlConnection conexion = new SqlConnection();
 
-                while (await timer.WaitForNextTickAsync(tokenParar))
+                while (!tokenParar.IsCancellationRequested)
                 {
-                    SqlConnection conexion = new SqlConnection();
+                    await Task.Delay(30000, tokenParar);
 
                     try
                     {
@@ -56,7 +56,7 @@ namespace Tareas
                         {
                             AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
 
-                            if (DateTime.Now - tiendaComprobar.Fecha > siguienteComprobacion)
+                            if ((DateTime.Now - tiendaComprobar.Fecha > siguienteComprobacion) || tiendaComprobar.MinimoHoras == false)
                             {
                                 try
                                 {

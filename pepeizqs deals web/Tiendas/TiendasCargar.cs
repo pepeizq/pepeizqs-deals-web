@@ -107,7 +107,7 @@ namespace Tiendas2
             }
         }
 
-		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador)
+		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador = null)
 		{
 			if (id == APIs.Steam.Tienda.Generar().Id)
 			{

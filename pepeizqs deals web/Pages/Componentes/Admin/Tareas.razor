@@ -1,0 +1,67 @@
+﻿@using BaseDatos.Tiendas
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
+@using Microsoft.Web.Administration
+
+@code {
+
+    #nullable disable
+
+    protected override async Task OnInitializedAsync()
+    {
+        WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+        string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+
+        if (piscinaApp != piscinaUsada)
+        {
+            SqlConnection conexion = new SqlConnection();
+
+            try
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            catch { }
+
+            if (conexion.State == System.Data.ConnectionState.Open)
+            {
+                TimeSpan siguienteComprobacion = TimeSpan.FromMinutes(120);
+                List<string> ids = new List<string>();
+
+                foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+                {
+                    if (tienda.AdminInteractuar == true)
+                    {
+                        ids.Add(tienda.Id);
+                    }
+                }
+
+                if (Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60)) == null)
+                {
+                    AdminTarea tiendaComprobar = Admin.TiendaSiguiente(conexion);
+
+                    if ((DateTime.Now - tiendaComprobar.Fecha > siguienteComprobacion) || tiendaComprobar.MinimoHoras == false)
+                    {
+                        try
+                        {
+                            await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.Id, ex, conexion);
+                        }
+
+                        try
+                        {
+                            new ServerManager().ApplicationPools[piscinaApp]?.Recycle();
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Pool", ex, conexion);
+                        }                 
+                    }
+                }
+            }
+        }
+    }
+}

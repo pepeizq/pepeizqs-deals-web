@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-using Azure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.IO.Compression;
 using System.Net;
@@ -23,20 +21,23 @@ namespace Herramientas
 			fabrica = _fabrica;
 		}
 
-		[HttpGet("Decompilador")]
 		public async Task<string> Estandar(string enlace)
 		{
-            HttpClient cliente = fabrica.CreateClient("Decompilador");
-
+            HttpClient cliente = fabrica.CreateClient();
+		
             string contenido = string.Empty;
 
-            cliente.DefaultRequestHeaders.Clear();
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
             try
             {
-                HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseHeadersRead);
-                contenido = await respuesta.Content.ReadAsStringAsync();
+                HttpResponseMessage respuesta = await cliente.GetAsync(enlace);
+                
+				if (respuesta.IsSuccessStatusCode == true)
+				{
+                    contenido = await respuesta.Content.ReadAsStringAsync();
+                }
+				
                 respuesta.Dispose();
             }
             catch { }

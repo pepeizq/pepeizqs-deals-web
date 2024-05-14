@@ -37,7 +37,7 @@ namespace APIs.GamersGate
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
+			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU", conexion);
 
 			if (html != null)
 			{

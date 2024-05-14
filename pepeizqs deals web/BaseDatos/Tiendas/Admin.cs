@@ -150,7 +150,8 @@ namespace BaseDatos.Tiendas
 						{
 							Id = lector.GetString(0),
 							Fecha = DateTime.Parse(lector.GetString(1)),
-							Mensaje = lector.GetString(2)
+							Mensaje = lector.GetString(2),
+							MinimoHoras = true
 						};
 
 						bool añadir = true;
@@ -183,6 +184,8 @@ namespace BaseDatos.Tiendas
 					{
                         if (ahora - tienda.Fecha > TimeSpan.FromMinutes(20))
                         {
+							tienda.MinimoHoras = false;
+
 							return tienda;
 						}
 					}
@@ -190,7 +193,9 @@ namespace BaseDatos.Tiendas
 					{
 						if (ahora - tienda.Fecha > TimeSpan.FromHours(2))
 						{
-							return tienda;
+                            tienda.MinimoHoras = false;
+
+                            return tienda;
 						}
 					}
 				}
@@ -203,6 +208,8 @@ namespace BaseDatos.Tiendas
                     {
                         if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
                         {
+                            tienda.MinimoHoras = false;
+
                             return tienda;
                         }
                     }
@@ -216,6 +223,8 @@ namespace BaseDatos.Tiendas
                     {
                         if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
                         {
+                            tienda.MinimoHoras = false;
+
                             return tienda;
                         }
                     }
@@ -478,5 +487,6 @@ namespace BaseDatos.Tiendas
 		public string Id;
 		public DateTime Fecha;
 		public string Mensaje;
+		public bool MinimoHoras;
 	}
 }
