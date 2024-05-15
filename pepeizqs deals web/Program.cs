@@ -52,8 +52,8 @@ builder.Services.Configure<HostOptions>(hostOptions =>
 	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
+builder.Services.AddSingleton<Tareas.Pings>();
 builder.Services.AddSingleton<Tareas.Noticias>();
-//builder.Services.AddSingleton<Tareas.Tiendas>();
 builder.Services.AddSingleton<Tareas.Minimos>();
 builder.Services.AddSingleton<Tareas.Divisas>();
 builder.Services.AddSingleton<Tareas.Sorteos>();
@@ -64,8 +64,8 @@ builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.DLCs>();
 builder.Services.AddSingleton<Tareas.Solicitudes>();
 
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Noticias>());
-//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Sorteos>());

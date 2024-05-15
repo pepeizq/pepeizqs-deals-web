@@ -213,7 +213,7 @@
                                             <a href="/game/@juegoMensual.JuegoId" class="tooltip4" onmousemove="hover(event, 'pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()')" @onmouseover="@(e => CargarTooltipPasado(e, juegoMensual))">
                                                 <label style="cursor: pointer;">@juegoMensual.Nombre</label>
 
-                                                <label>(@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))</label>
+                                                <label style="cursor: pointer;">(@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))</label>
 
                                                 <div id="pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()" class="tooltip-relleno" style="padding: 10px;">
                                                     @tooltipFecha

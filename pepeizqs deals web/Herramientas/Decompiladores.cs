@@ -56,43 +56,35 @@ namespace Herramientas
 		//	MaxConnectionsPerServer = 2
 		//}, false);
 
-		public static async Task<string> Estandar(string enlace, SqlConnection conexion = null)
+		public static async Task<string> Estandar(string enlace)
         {
-			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-			HttpClient cliente = factoria.CreateClient("Decompilador");
+			//ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+			//IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+			//HttpClient cliente = factoria.CreateClient("Decompilador");
 
 			string contenido = string.Empty;
 
-			cliente.DefaultRequestHeaders.Clear();
-			cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+			//cliente.DefaultRequestHeaders.Clear();
+			//cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
 			try
 			{
-				using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
-				{
-                    contenido = respuesta.Content.ReadAsStringAsync().Result;
-                    //respuesta.EnsureSuccessStatusCode();
+                using (var cliente = new HttpClient())
+                {
+					cliente.DefaultRequestHeaders.Clear();
+					cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
-                    //Task tarea = respuesta.Content.ReadAsStreamAsync().ContinueWith(t =>
-                    //{
-                    //    Stream stream = t.Result;
-                    //    using (StreamReader lector = new StreamReader(stream))
-                    //    {
-                    //        contenido = lector.ReadToEnd();
-                    //    }
-                    //});
-
-                    //tarea.Wait();
-                };
+					for (int i = 0; i < 100; i += 1)
+                    {
+                        using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
+                        {
+                            contenido = respuesta.Content.ReadAsStringAsync().Result;
+							break;
+                        }
+                    }
+                }    
 			}
-			catch (Exception ex)
-			{ 
-				if (conexion != null)
-				{
-					global::BaseDatos.Errores.Insertar.Ejecutar("Decompilador", ex);
-				}
-			}
+			catch { }
 
 			return contenido;
         }

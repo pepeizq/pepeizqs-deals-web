@@ -1,7 +1,8 @@
 ﻿@using BaseDatos.Tiendas
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.Data.SqlClient
-@using Microsoft.Web.Administration
+
+@inject IHostApplicationLifetime AppLifetime
 
 @code {
 
@@ -49,16 +50,9 @@
                         catch (Exception ex)
                         {
                             BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.Id, ex, conexion);
-                        }
 
-                        try
-                        {
-                            new ServerManager().ApplicationPools[piscinaApp]?.Recycle();
-                        }
-                        catch (Exception ex)
-                        {
-                            BaseDatos.Errores.Insertar.Ejecutar("Pool", ex, conexion);
-                        }                 
+                            AppLifetime.StopApplication();
+                        }            
                     }
                 }
             }

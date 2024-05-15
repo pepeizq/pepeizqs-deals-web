@@ -14,7 +14,8 @@ namespace Gratis2
 		SEGA,
 		Humble,
 		BundleStars,
-		IndieGala
+		IndieGala,
+		Behavior
     }
 
 	public class GratisCargar
@@ -33,7 +34,8 @@ namespace Gratis2
                 APIs.SEGA.Gratis.Generar(),
 				APIs.Humble.Gratis.Generar(),
 				APIs.Fanatical.Gratis.GenerarAntiguo(),
-				APIs.IndieGala.Gratis.Generar()
+				APIs.IndieGala.Gratis.Generar(),
+				APIs.Behavior.Gratis.Generar()
             };
 
 			return gratis;

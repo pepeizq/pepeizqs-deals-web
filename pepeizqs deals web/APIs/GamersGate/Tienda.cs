@@ -4,6 +4,7 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Xml.Serialization;
 
@@ -37,14 +38,18 @@ namespace APIs.GamersGate
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU", conexion);
+			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 
-			if (html != null)
+			if (string.IsNullOrEmpty(html) == false)
 			{
                 GamersGateJuegos listaJuegos = new GamersGateJuegos();
-
                 XmlSerializer xml = new XmlSerializer(typeof(GamersGateJuegos));
-                listaJuegos = (GamersGateJuegos)xml.Deserialize(new StringReader(html));
+
+                using (StringReader lector = new StringReader(html))
+                {
+                    listaJuegos = (GamersGateJuegos)xml.Deserialize(lector);
+					lector.Dispose();
+                }        
 
                 if (listaJuegos != null)
 				{

@@ -88,7 +88,7 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml", conexion);
+			string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmluk != null)
 			{
@@ -167,7 +167,7 @@ namespace APIs.Gamesplanet
         {
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml", conexion);
+			string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlfr != null)
 			{
@@ -246,7 +246,7 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml", conexion);
+			string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlde != null)
 			{
@@ -325,7 +325,7 @@ namespace APIs.Gamesplanet
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
-			string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml", conexion);
+			string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
 			if (htmlus != null)
 			{
