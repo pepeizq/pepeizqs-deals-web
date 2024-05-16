@@ -25,127 +25,132 @@
 
 	<hr>
 
-	<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
-		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
-			@foreach (var bundle in bundlesActuales)
-			{
-				<button @onclick="@(e => SeleccionarBundleActual(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
-					@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
-					{
-						<div class="perfil" style="display: flex; align-items: center; padding: 20px;">
-							<div style="width: 30%;">
-								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
-							</div>
-							<div style="width: 40%; padding-left: 15px; padding-right: 15px;">
-								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
-							</div>
-							<div style="width: 30%;">
-								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
-							</div>
-						</div>
-					}
-					else
-					{
-						<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
-							<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
-						</div>
-					}
-
-					<div style="margin-top: 20px; text-align: center; font-size: 14px;">
-						@MostrarFechaTermina(bundle.FechaTermina)
-					</div>
-				</button>
-
-				<hr/>
-			}
-		</div>
-
-		<div style="width: 65%; padding-left: 20px;">
-			@if (bundleSeleccionado != null)
-			{
-				@if (bundleSeleccionado.Pick == false)
+	<div style="margin-top: 40px; margin-bottom: 40px;">
+		@if (mostrarBundleSeleccionado == false)
+		{
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
+				@foreach (var bundle in bundlesActuales)
 				{
-					@if (bundleSeleccionado.Tiers.Count > 0)
-					{
-						@foreach (var tier in OrdenarTiers(bundleSeleccionado.Tiers))
+					<button @onclick="@(e => SeleccionarBundleActual(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
+						@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
 						{
-							<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
-								<div style="text-align: center; margin-bottom: 20px;">
-									@MostrarPrecio(tier)
+							<div class="perfil" style="display: flex; align-items: center; padding: 20px;">
+								<div style="width: 30%;">
+									<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
 								</div>
-
-								<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
-									@foreach (var juego in bundleSeleccionado.Juegos)
-									{
-										@if (juego.Tier.Posicion == tier.Posicion)
-										{
-											<div style="text-align: center; max-width: 231px;">
-												<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
-													<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
-
-													@if (usuario != null)
-													{
-														@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
-														{
-															@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
-															{
-																<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
-																	<i class="fa-solid fa-check" style="font-size: 16px;"></i>
-																</div>
-															}
-															else
-															{
-																<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
-																	<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
-																</div>
-															}
-														}
-													}
-												</a>
-											</div>
-										}
-									}
+								<div style="width: 40%; padding-left: 15px; padding-right: 15px;">
+									<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
+								</div>
+								<div style="width: 30%;">
+									<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
 								</div>
 							</div>
 						}
-					}					
-				}
-				else
-				{
-					<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
-						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
-							@foreach (var juego in bundleSeleccionado.Juegos)
-							{
-								<div style="text-align: center; max-width: 231px;">
-									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
-										<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+						else
+						{
+							<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
+								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
+							</div>
+						}
 
-										@if (usuario != null)
+						<div style="margin-top: 20px; text-align: center; font-size: 14px;">
+							@MostrarFechaTermina(bundle.FechaTermina)
+						</div>
+					</button>
+
+					<hr />
+				}
+			</div>
+		}
+		else
+		{
+			<div>
+				@if (bundleSeleccionado != null)
+				{
+					@if (bundleSeleccionado.Pick == false)
+					{
+						@if (bundleSeleccionado.Tiers.Count > 0)
+						{
+							@foreach (var tier in OrdenarTiers(bundleSeleccionado.Tiers))
+							{
+								<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
+									<div style="text-align: center; margin-bottom: 20px;">
+										@MostrarPrecio(tier)
+									</div>
+
+									<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
+										@foreach (var juego in bundleSeleccionado.Juegos)
 										{
-											@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+											@if (juego.Tier.Posicion == tier.Posicion)
 											{
-												@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
-												{
-													<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
-														<i class="fa-solid fa-check" style="font-size: 16px;"></i>
-													</div>
-												}
-												else
-												{
-													<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
-														<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
-													</div>
-												}
+												<div style="text-align: center; max-width: 231px;">
+													<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
+														<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+
+														@if (usuario != null)
+														{
+															@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+															{
+																@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+																{
+																	<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
+																		<i class="fa-solid fa-check" style="font-size: 16px;"></i>
+																	</div>
+																}
+																else
+																{
+																	<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
+																		<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
+																	</div>
+																}
+															}
+														}
+													</a>
+												</div>
 											}
 										}
-									</a>
+									</div>
 								</div>
 							}
+						}
+					}
+					else
+					{
+						<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
+							<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
+								@foreach (var juego in bundleSeleccionado.Juegos)
+								{
+									<div style="text-align: center; max-width: 231px;">
+										<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
+											<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+
+											@if (usuario != null)
+											{
+												@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+												{
+													@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+													{
+														<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
+															<i class="fa-solid fa-check" style="font-size: 16px;"></i>
+														</div>
+													}
+													else
+													{
+														<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
+															<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
+														</div>
+													}
+												}
+											}
+										</a>
+									</div>
+								}
+							</div>
 						</div>
-					</div>
+					}
 				}
-			}
-		</div>
+			</div>
+		}
 	</div>
 }
 
@@ -267,6 +272,7 @@
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 	Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
+	private bool mostrarBundleSeleccionado = false;
 
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
@@ -416,7 +422,7 @@
 		{
 			tiers.Sort(delegate (Bundles2.BundleTier t1, Bundles2.BundleTier t2)
 			{
-			return t1.Posicion.CompareTo(t2.Posicion);
+				return t1.Posicion.CompareTo(t2.Posicion);
 			});
 		}
 
@@ -477,5 +483,7 @@
 	private void SeleccionarBundleActual(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
 	{
 		bundleSeleccionado = nuevoBundle;
+
+		mostrarBundleSeleccionado = true;
 	}
 }
