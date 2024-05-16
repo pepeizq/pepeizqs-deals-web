@@ -7,109 +7,114 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<script>
+	function moverScroll(id) {
+		const yOffset = -30;
+		const element = document.getElementById(id);
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+		window.scrollTo({ top: y, behavior: 'smooth' });
+	}
+</script>
+
 @if (bundlesActuales.Count > 0)
 {
 	<div style="font-size: 23px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String1")
 	</div>
 
-	@foreach (var bundle in bundlesActuales)
-	{
-		<hr>
+	<hr>
 
-		<div style="display: flex; align-items: center; margin-top: 40px; margin-bottom: 40px;">
-			<div style="width: 40%;">
-				<div class="perfil">
+	<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
+			@foreach (var bundle in bundlesActuales)
+			{
+				<button @onclick="@(e => SeleccionarBundleActual(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
 					@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
 					{
-						<div style="display: flex; align-items: center;">
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 30%;">
+						<div class="perfil" style="display: flex; align-items: center; padding: 20px;">
+							<div style="width: 30%;">
 								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[0]" style="max-width: 100%;" />
-							</a>
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 40%; padding-left: 15px; padding-right: 15px;">
+							</div>
+							<div style="width: 40%; padding-left: 15px; padding-right: 15px;">
 								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
-							</a>
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank" style="width: 30%;">
+							</div>
+							<div style="width: 30%;">
 								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenesExtra[1]" style="max-width: 100%;" />
-							</a>
+							</div>
 						</div>
 					}
 					else
 					{
-						<div style="width: 100%; text-align: center;">
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" target="_blank">
-								<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
-							</a>
+						<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
+							<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
 						</div>
 					}
 
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="padding: 10px; text-align: center; margin-top: 30px;" target="_blank">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
-					</a>
+					<div style="margin-top: 20px; text-align: center; font-size: 14px;">
+						@MostrarFechaTermina(bundle.FechaTermina)
+					</div>
+				</button>
 
-					@if (bundle.Pick == true)
-					{
-						<div style="margin-top: 20px; text-align: center;">
-							@((MarkupString)MostrarMensajePick(bundle.Tiers))
-						</div>
-					}
-				</div>
+				<hr/>
+			}
+		</div>
 
-				<div style="margin-top: 20px; text-align: center; font-size: 14px;">
-					@MostrarFechaTermina(bundle.FechaTermina)
-				</div>
-			</div>
-
-			<div style="width: 60%; padding-left: 20px;">
-				@if (bundle.Pick == false)
+		<div style="width: 65%; padding-left: 20px;">
+			@if (bundleSeleccionado != null)
+			{
+				@if (bundleSeleccionado.Pick == false)
 				{
-					@foreach (var tier in OrdenarTiers(bundle.Tiers))
+					@if (bundleSeleccionado.Tiers.Count > 0)
 					{
-						<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
-							<div style="text-align: center; margin-bottom: 20px;">
-								@MostrarPrecio(tier)
-							</div>
+						@foreach (var tier in OrdenarTiers(bundleSeleccionado.Tiers))
+						{
+							<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
+								<div style="text-align: center; margin-bottom: 20px;">
+									@MostrarPrecio(tier)
+								</div>
 
-							<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
-								@foreach (var juego in bundle.Juegos)
-								{
-									@if (juego.Tier.Posicion == tier.Posicion)
+								<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
+									@foreach (var juego in bundleSeleccionado.Juegos)
 									{
-										<div style="text-align: center; max-width: 231px;">
-											<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
-												<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+										@if (juego.Tier.Posicion == tier.Posicion)
+										{
+											<div style="text-align: center; max-width: 231px;">
+												<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
+													<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
 
-												@if (usuario != null)
-												{
-													@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
+													@if (usuario != null)
 													{
-														@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+														@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) != null)
 														{
-															<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
-																<i class="fa-solid fa-check" style="font-size: 16px;"></i>
-															</div>
-														}
-														else
-														{
-															<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
-																<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
-															</div>
+															@if (ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "3" || ComprobarUsuarioJuego(juego.Juego, juego.DRM) == "5")
+															{
+																<div style="padding: 6px 12px; background-color: var(--fondoBien); color: var(--colorTextoBien); position: absolute; bottom: -5px; right: -5px;">
+																	<i class="fa-solid fa-check" style="font-size: 16px;"></i>
+																</div>
+															}
+															else
+															{
+																<div style="padding: 6px 12px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta); position: absolute; bottom: -5px; right: -5px;">
+																	<i class="fa-solid fa-xmark" style="font-size: 16px;"></i>
+																</div>
+															}
 														}
 													}
-												}
-											</a>
-										</div>
+												</a>
+											</div>
+										}
 									}
-								}
+								</div>
 							</div>
-						</div>
-					}
+						}
+					}					
 				}
 				else
 				{
 					<div class="perfil" style="margin-top: 10px; margin-bottom: 10px; padding: 30px;">
 						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; justify-items: center;">
-							@foreach (var juego in bundle.Juegos)
+							@foreach (var juego in bundleSeleccionado.Juegos)
 							{
 								<div style="text-align: center; max-width: 231px;">
 									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative;">
@@ -138,34 +143,63 @@
 							}
 						</div>
 					</div>
-				}				
-			</div>					
+				}
+			}
 		</div>
-	}
+	</div>
 }
 
 <div style="font-size: 23px;">
 	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
 </div>
 
-<div style="display: flex; align-items: center; margin-top: 10px;">
+<div style="display: flex; align-items: start; margin-top: 10px;">
 	@foreach (var año in años)
 	{
-		<button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="margin-right: 15px; padding: 6px 10px; width: auto;">
-			@año
-		</button>
+		<div style="margin-right: 15px;">
+			<button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="padding: 6px 10px; width: auto;">
+				@año
+			</button>
+
+			@if (añoSeleccionado == año)
+			{
+				<div style="margin-top: 10px; background: var(--colorTexto); padding: 1px;">
+				</div>
+
+				<div style="position: absolute; margin-top: 15px; display: flex; align-items: center;">
+					@foreach (var bundleTipo in Bundles2.BundlesCargar.CargarBundles())
+					{
+						List<Bundles2.Bundle> bundlesAño = new List<Bundles2.Bundle>();
+
+						foreach (var bundlePasado in bundlesPasados)
+						{
+							if (bundlePasado.FechaEmpieza.Year.ToString() == añoSeleccionado && bundleTipo == bundlePasado.Tipo)
+							{
+								bundlesAño.Add(bundlePasado);
+							}
+						}
+
+						if (bundlesAño.Count > 0)
+						{
+							<div style="margin-right: 15px; font-size: 14px;">
+								<a onclick="moverScroll('pasado-@bundleTipo.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;"><img src="@Bundles2.BundlesCargar.DevolverBundle(bundleTipo).ImagenIcono" style="width: 22px; height: 22px;" /> (@bundlesAño.Count.ToString())</a>
+							</div>
+						}
+					}
+				</div>				
+			}
+		</div>
 	}
 </div>
 
-@if (bundlesPasados.Count > 0)
-{
-	@foreach (var tipo in Bundles2.BundlesCargar.CargarBundles())
+<div style="margin-top: 55px;">
+	@foreach (var bundleTipo in Bundles2.BundlesCargar.CargarBundles())
 	{
 		List<Bundles2.Bundle> bundlesAño = new List<Bundles2.Bundle>();
 
 		foreach (var bundlePasado in bundlesPasados)
 		{
-			if (bundlePasado.FechaEmpieza.Year.ToString() == añoSeleccionado && bundlePasado.Tipo == tipo)
+			if (bundlePasado.FechaEmpieza.Year.ToString() == añoSeleccionado && bundleTipo == bundlePasado.Tipo)
 			{
 				bundlesAño.Add(bundlePasado);
 			}
@@ -175,14 +209,12 @@
 		{
 			<hr>
 
-			<div style="display: flex; align-items: start; margin-top: 40px; margin-bottom: 40px;">
-				<div style="width: 25%;">
-					<div class="perfil">
-						<img src="@Bundles2.BundlesCargar.DevolverBundle(tipo).ImagenTienda" style="max-width: 100%;" />
-					</div>
+			<div id="pasado-@bundleTipo.ToString()" style="display: flex; align-items: start;">
+				<div class="perfil" style="width: 20%;">
+					<img src="@Bundles2.BundlesCargar.DevolverBundle(bundleTipo).ImagenTienda" />
 				</div>
 
-				<div class="perfil" style="width: 75%;">
+				<div class="perfil" style="width: 80%;">
 					@{
 						int i = 1;
 						while (i < 13)
@@ -205,9 +237,9 @@
 									@foreach (var bundleMensual in bundlesMensual)
 									{
 										<li>
-											<div>
-												<a href="/bundle/@bundleMensual.Id">@bundleMensual.NombreBundle</a> 
-											</div>
+											<a href="/bundle/@bundleMensual.Id">
+												@bundleMensual.NombreBundle
+											</a>
 										</li>
 									}
 								</ul>
@@ -220,7 +252,7 @@
 			</div>
 		}
 	}
-}
+</div>
 
 @code {
 
@@ -234,6 +266,7 @@
 
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
+	Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
 
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
@@ -280,7 +313,7 @@
 
 		//--------------------------------------------------------------------
 
-		DateTime arranque = new DateTime(2023, 9, 1);
+		DateTime arranque = new DateTime(2010, 1, 1);
 
 		int i = 0;
 		while (i < 100)
@@ -328,6 +361,8 @@
 			if (bundlesActuales.Count > 0)
 			{
 				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
+
+				bundleSeleccionado = bundlesActuales[0];
 			}
 		}
 	}
@@ -377,10 +412,13 @@
 
 	private List<Bundles2.BundleTier> OrdenarTiers(List<Bundles2.BundleTier> tiers)
 	{
-		tiers.Sort(delegate (Bundles2.BundleTier t1, Bundles2.BundleTier t2)
+		if (tiers != null)
 		{
+			tiers.Sort(delegate (Bundles2.BundleTier t1, Bundles2.BundleTier t2)
+			{
 			return t1.Posicion.CompareTo(t2.Posicion);
-		});
+			});
+		}
 
 		return tiers;
 	}
@@ -434,5 +472,10 @@
 		}
 
 		return null;
+	}
+
+	private void SeleccionarBundleActual(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
+	{
+		bundleSeleccionado = nuevoBundle;
 	}
 }
