@@ -217,6 +217,6 @@ app.UseStaticFiles();
 
 app.MapRazorPages();
 
-app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
+app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
 
 app.Run();

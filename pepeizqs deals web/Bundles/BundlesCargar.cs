@@ -7,7 +7,8 @@ namespace Bundles2
 		Desconocido,
 		HumbleBundle,
 		Fanatical,
-		JingleJam
+		JingleJam,
+		IndieGala
 	}
 
 	public class BundlesCargar
@@ -19,7 +20,8 @@ namespace Bundles2
 				APIs.Desconocido.Bundle.Generar(),
 				APIs.Humble.Bundle.Generar(),
 				APIs.Fanatical.Bundle.Generar(),
-				APIs.JingleJam.Bundle.Generar()
+				APIs.JingleJam.Bundle.Generar(),
+				APIs.IndieGala.Bundle.Generar()
 			};
 
 			return bundles;
@@ -49,7 +51,7 @@ namespace Bundles2
 
 							return nuevoBundle;
 						}
-						else if (bundle.Tipo == BundleTipo.JingleJam)
+						else
 						{
 							Bundle nuevoBundle = bundle;
 							nuevoBundle.Enlace = LimpiarEnlace(enlace);

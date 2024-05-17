@@ -600,6 +600,26 @@
     "Valor": "games"
   },
   {
+    "Id": "Bundles.String9",
+    "Valor": "Minimum Price"
+  },
+  {
+    "Id": "Bundles.String10",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Bundles.String11",
+    "Valor": "Free"
+  },
+  {
+    "Id": "Bundles.String12",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "Bundles.String13",
+    "Valor": "You already have this game on Steam"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Free"
   },

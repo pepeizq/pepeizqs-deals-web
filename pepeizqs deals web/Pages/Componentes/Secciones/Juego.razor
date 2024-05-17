@@ -1316,9 +1316,9 @@
 
 	#region Bundles
 
-	private static List<Bundle> BundleCargar(int id)
+	private static List<Bundles2.Bundle> BundleCargar(int id)
 	{
-		List<Bundle> bundle = new List<Bundle>();
+		List<Bundles2.Bundle> bundle = new List<Bundles2.Bundle>();
 		bundle.Add(global::BaseDatos.Bundles.Buscar.UnBundle(id));
 
 		return bundle;
@@ -1451,7 +1451,7 @@
 		return bundlesAntiguos;
 	}
 
-	public string BundlesPrepararPrecio(Bundle bundle, int juegoId)
+	public string BundlesPrepararPrecio(Bundles2.Bundle bundle, int juegoId)
 	{
 		foreach (var juego in bundle.Juegos)
 		{

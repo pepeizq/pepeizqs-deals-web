@@ -596,6 +596,26 @@
     "Valor": "juegos"
   },
   {
+    "Id": "Bundles.String9",
+    "Valor": "Precio Mínimo"
+  },
+  {
+    "Id": "Bundles.String10",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Bundles.String11",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "Bundles.String12",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "Bundles.String13",
+    "Valor": "Este juego ya lo tienes en Steam"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Gratis"
   },
