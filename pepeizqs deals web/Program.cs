@@ -111,13 +111,13 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
-builder.Services.AddSignalR(opciones =>
-{
-    opciones.EnableDetailedErrors = true;
-    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-    opciones.MaximumReceiveMessageSize = 1000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//    opciones.EnableDetailedErrors = true;
+//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+//    opciones.MaximumReceiveMessageSize = 1000;
+//});
 
 builder.Services.Configure<IdentityOptions>(opciones =>
 {

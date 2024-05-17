@@ -223,7 +223,20 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js"></script>
+    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            reconnectionOptions: {
+                maxRetries: 4,
+                retryIntervalMilliseconds: 3000
+            }
+        });
+    </script>
+    <script>
+        _reconnectCallback = function (d) {
+            document.location.reload();
+        }
+    </script>
 
     <script>
         function moverScroll(id) {
