@@ -325,7 +325,7 @@
 										@foreach (var bundleMensual in bundlesMensual)
 										{
 											<li>
-												<a href="/bundle/@bundleMensual.Id">
+												<a @onclick="@(e => SeleccionarBundleActual(e, bundleMensual))">
 													@bundleMensual.NombreBundle
 												</a>
 											</li>
