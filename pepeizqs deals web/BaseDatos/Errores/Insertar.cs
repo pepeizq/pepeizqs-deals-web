@@ -1,9 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Web.Administration;
-using System.Diagnostics;
 
 namespace BaseDatos.Errores
 {
@@ -41,9 +38,6 @@ namespace BaseDatos.Errores
                 {
 
                 }
-
-                //Process process = Process.GetCurrentProcess();
-                //process.Kill();
             }
         }
 

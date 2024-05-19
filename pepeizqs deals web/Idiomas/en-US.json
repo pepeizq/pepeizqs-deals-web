@@ -620,6 +620,14 @@
     "Valor": "You already have this game on Steam"
   },
   {
+    "Id": "Bundles.String14",
+    "Valor": "Minimum cost purchasing separately"
+  },
+  {
+    "Id": "Bundles.String15",
+    "Valor": "DLC"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Free"
   },

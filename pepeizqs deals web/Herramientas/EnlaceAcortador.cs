@@ -85,12 +85,19 @@ namespace Herramientas
 
 			Enlace enlaceFinal = Buscar.Base(enlace);
 
-			if (enlaceFinal == null)
+			if (enlaceFinal == null && string.IsNullOrEmpty(enlace) == false)
 			{
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id;
+			if (enlaceFinal != null)
+			{
+				return "/link/" + enlaceFinal.Id;
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public static string Generar(string enlace, GratisTipo tipo)

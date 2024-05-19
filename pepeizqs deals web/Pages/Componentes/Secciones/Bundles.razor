@@ -31,7 +31,7 @@
 		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
 			@foreach (var bundle in bundlesActuales)
 			{
-				<button @onclick="@(e => SeleccionarBundleActual(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
+				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
 					@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
 					{
 						<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
@@ -46,7 +46,7 @@
 					}
 
 					<div style="margin-top: 15px; text-align: center; font-size: 14px;">
-						@MostrarFechaTermina(bundle.FechaTermina)
+						@MostrarFecha(bundle.FechaEmpieza, bundle.FechaTermina)
 					</div>
 				</button>
 			}
@@ -58,7 +58,7 @@
 			@if (bundleSeleccionado != null)
 			{
 				<div class="perfil" style="margin-bottom: 40px; padding: 30px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-					<button @onclick="@(e => CerrarBundleActual(e))" class="boton-pequeño" style="width: 70px; text-align: center; font-size: 23px;">
+					<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: 70px; text-align: center; font-size: 23px;">
 						<i class="fa-solid fa-arrow-left"></i>
 					</button>
 
@@ -73,7 +73,7 @@
 									@bundleSeleccionado.NombreBundle
 								</div>
 								<div>
-									@MostrarFechaTermina(bundleSeleccionado.FechaTermina)
+									@MostrarFecha(bundleSeleccionado.FechaEmpieza, bundleSeleccionado.FechaTermina)
 								</div>
 							</div>
 						</div>
@@ -82,144 +82,184 @@
 
 				@if (bundleSeleccionado.Tiers.Count > 0)
 				{
-					@foreach (var tier in OrdenarTiers(bundleSeleccionado.Tiers))
+					decimal totalMinimos = 0;
+
+					foreach (var tier in OrdenarTiers(bundleSeleccionado.Tiers))
 					{
 						<div class="perfil" style="margin-bottom: 40px; padding: 30px;">
-							<div style="margin-bottom: 10px;">
-								@if (bundleSeleccionado.Pick == true)
-								{
-									@((MarkupString)MostrarMensajePick(bundleSeleccionado.Tiers))
-								}
-								else
-								{
-									@MostrarTierPrecio(tier)
-								}
-							</div>
-
-							<hr />
-
 							@{
+								List<Bundles2.BundleJuego> juegosTier = new List<Bundles2.BundleJuego>();
+
 								foreach (var juego in bundleSeleccionado.Juegos)
 								{
 									if (juego.Tier.Posicion == tier.Posicion)
 									{
-										bool usuarioTieneJuego = ComprobarUsuarioTieneJuego(juego.Juego, juego.DRM);
+										juegosTier.Add(juego);
+									}
+								}
 
-										string fondoColor = string.Empty;
-										string tooltip = string.Empty;
+								if (juegosTier.Count > 0)
+								{
+									juegosTier = juegosTier.OrderBy(x => x.Nombre).ToList();
+								}
 
-										if (usuarioTieneJuego == true)
+								if (bundleSeleccionado.Pick == true)
+								{
+									<div style="font-size: 18px; margin-bottom: 10px;">
+										@((MarkupString)MostrarMensajePick(bundleSeleccionado.Tiers))
+									</div>									
+								}
+								else
+								{
+									<div style="font-size: 18px; margin-bottom: 5px;">
+										@MostrarTierPrecio(tier)
+									</div>
+
+									foreach (var juego in juegosTier)
+									{
+										if (juego.Juego.PrecioMinimosHistoricos != null)
 										{
-											fondoColor = "background-color: var(--fondoBien);";
-											tooltip = Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String13");
-										}
+											foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
+											{
+												if (historico.DRM == juego.DRM)
+												{
+													totalMinimos = totalMinimos + historico.Precio;
 
-										<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative; @fondoColor" title="@tooltip">
-											<div style="display: flex; align-items: center; padding: 10px;">
-												<div style="text-align: center; max-width: 231px;">
-													<img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
+													break;
+												}
+											}
+										}
+									}
+
+									<div style="font-size: 14px; margin-bottom: 10px;">
+										@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String14"): @ArreglarPrecio(totalMinimos)
+									</div>
+								}
+
+								<hr />
+
+								foreach (var juego in juegosTier)
+								{
+									bool usuarioTieneJuego = ComprobarUsuarioTieneJuego(juego.Juego, juego.DRM);
+
+									string fondoColor = string.Empty;
+									string tooltip = string.Empty;
+
+									if (usuarioTieneJuego == true)
+									{
+										fondoColor = "background-color: var(--fondoBien);";
+										tooltip = Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String13");
+									}
+
+									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative; @fondoColor" title="@tooltip">
+										<div style="display: flex; align-items: center; padding: 10px;">
+											<div style="text-align: center; width: 17%;">
+												<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
+											</div>
+
+											<div style="padding-left: 20px; padding-right: 20px; text-align: left;">
+												<div style="margin-bottom: 10px; font-size: 17px;">
+													@juego.Nombre
 												</div>
 
-												<div style="padding-left: 20px; padding-right: 20px; text-align: left;">
-													<div style="margin-bottom: 10px; font-size: 17px;">
-														@juego.Nombre
-													</div>
-
+												<div style="display: flex; align-items: center;">
 													<div>
 														<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 20px; height: 20px;" />
 													</div>
-												</div>
 
-												<div style="margin-left: auto; margin-right: 0; display: flex; align-items: center;">
-													@{
-														Juegos.Juego juegoBD = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
-
-														if (juegoBD != null)
-														{
-															if (juegoBD.PrecioMinimosHistoricos != null)
-															{
-																foreach (var historico in juegoBD.PrecioMinimosHistoricos)
-																{
-																	if (historico.DRM == juego.DRM)
-																	{
-																		<div style="padding-left: 20px; text-align: center;">
-																			<div style="margin-bottom: 5px;">
-																				@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String9")
-																			</div>
-
-																			<div>
-																				@ArreglarPrecio(historico.Precio)
-																			</div>
-																		</div>
-
-																		break;
-																	}
-																}
-															}
-
-															int bundlesEstado = 0;
-
-															if (juegoBD.Bundles != null)
-															{
-																bundlesEstado = juegoBD.Bundles.Count;
-
-																if (bundlesEstado > 0)
-																{
-																	bundlesEstado -= 1;
-																}
-															}
-
-															<div style="padding-left: 20px; text-align: center;">
-																<div style="margin-bottom: 5px;">
-																	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String10")
-																</div>
-
-																<div>
-																	@bundlesEstado
-																</div>
-															</div>
-
-															int gratisEstado = 0;
-
-															if (juegoBD.Gratis != null)
-															{
-																gratisEstado = juegoBD.Gratis.Count;
-															}
-
-															<div style="padding-left: 20px; text-align: center;">
-																<div style="margin-bottom: 5px;">
-																	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String11")
-																</div>
-
-																<div>
-																	@gratisEstado
-																</div>
-															</div>
-
-															int suscripcionesEstado = 0;
-
-															if (juegoBD.Suscripciones != null)
-															{
-																suscripcionesEstado = juegoBD.Suscripciones.Count;
-															}
-
-															<div style="padding-left: 20px; text-align: center;">
-																<div style="margin-bottom: 5px;">
-																	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String12")
-																</div>
-
-																<div>
-																	@suscripcionesEstado
-																</div>
-															</div>
-														}
+													@if (juego.Juego.Tipo == Juegos.JuegoTipo.DLC)
+													{
+														<div style="margin-left: 15px; font-size: 14px; background: var(--fondoDlc);">
+															<span style="padding: 4px 6px; line-height: 24px; vertical-align: middle;">@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String15")</span>
+														</div>
 													}
 												</div>
 											</div>
-										</a>
 
-										<hr />
-									}
+											<div style="margin-left: auto; margin-right: 0; display: flex; align-items: center;">
+												@{
+													if (juego.Juego.PrecioMinimosHistoricos != null)
+													{
+														foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
+														{
+															if (historico.DRM == juego.DRM)
+															{
+																<div style="padding-left: 20px; text-align: center;">
+																	<div style="margin-bottom: 5px;">
+																		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String9")
+																	</div>
+
+																	<div>
+																		@ArreglarPrecio(historico.Precio)
+																	</div>
+																</div>
+
+																break;
+															}
+														}
+													}
+
+													int bundlesEstado = 0;
+
+													if (juego.Juego.Bundles != null)
+													{
+														bundlesEstado = juego.Juego.Bundles.Count;
+
+														if (bundlesEstado > 0)
+														{
+															bundlesEstado -= 1;
+														}
+													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String10")
+														</div>
+
+														<div>
+															@bundlesEstado
+														</div>
+													</div>
+
+													int gratisEstado = 0;
+
+													if (juego.Juego.Gratis != null)
+													{
+														gratisEstado = juego.Juego.Gratis.Count;
+													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String11")
+														</div>
+
+														<div>
+															@gratisEstado
+														</div>
+													</div>
+
+													int suscripcionesEstado = 0;
+
+													if (juego.Juego.Suscripciones != null)
+													{
+														suscripcionesEstado = juego.Juego.Suscripciones.Count;
+													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String12")
+														</div>
+
+														<div>
+															@suscripcionesEstado
+														</div>
+													</div>
+												}
+											</div>
+										</div>
+									</a>
+
+									<hr />
 								}
 							}
 						</div>
@@ -319,15 +359,17 @@
 
 								if (bundlesMensual.Count > 0)
 								{
+									bundlesMensual = bundlesMensual.OrderBy(x => x.NombreBundle).ToList();
+
 									<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
 
 									<ul>
 										@foreach (var bundleMensual in bundlesMensual)
 										{
 											<li>
-												<a @onclick="@(e => SeleccionarBundleActual(e, bundleMensual))">
+												<button @onclick="@(e => SeleccionarBundle(e, bundleMensual))" style="background: transparent; border: 0; cursor: pointer; text-decoration: underline; color: var(--colorEnlace);">
 													@bundleMensual.NombreBundle
-												</a>
+												</button>
 											</li>
 										}
 									</ul>
@@ -431,15 +473,6 @@
 			{
 				if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 				{
-					foreach (var juego in bundle.Juegos)
-					{
-						Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-						juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
-						juego.Juego = juego2;
-					}
-
-					bundle.ImagenBundle = await Herramientas.Imagenes.DescargarYGuardar(bundle.ImagenBundle, "bundles", bundle.Id.ToString(), "header", dominio);
-
 					bundlesActuales.Add(bundle);
 				}
 				else
@@ -462,11 +495,11 @@
 		añoSeleccionado = nuevoAño;
 	}
 
-	private string MostrarFechaTermina(DateTime fecha)
+	private string MostrarFecha(DateTime fechaEmpieza, DateTime fechaTermina)
 	{
-		if (fecha.Year > 2022)
+		if (fechaTermina.Year > 2022)
 		{
-			TimeSpan diferenciaTiempo = fecha.Subtract(DateTime.Now);
+			TimeSpan diferenciaTiempo = fechaTermina.Subtract(DateTime.Now);
 
 			if (diferenciaTiempo.Days > 1)
 			{
@@ -480,13 +513,9 @@
 			{
 				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String6"), diferenciaTiempo.Days);
 			}
-			else
-			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String7"), diferenciaTiempo.Days);
-			}
 		}
 
-		return null;
+		return Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String7") + " • " + fechaEmpieza.Day.ToString() + "/" + fechaEmpieza.Month.ToString() + "/" + fechaEmpieza.Year.ToString() + " • " + fechaTermina.Day.ToString() + "/" + fechaTermina.Month.ToString() + "/" + fechaTermina.Year.ToString();
 	}
 
 	private string MostrarTierPrecio(Bundles2.BundleTier tier)
@@ -550,20 +579,25 @@
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	private void SeleccionarBundleActual(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
+	private void SeleccionarBundle(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
 	{
 		bundleSeleccionado = nuevoBundle;
+
+		foreach (var juego in bundleSeleccionado.Juegos)
+		{
+			juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());		
+		}
 
 		mostrarBundleSeleccionado = true;
 
 		NavigationManager.NavigateTo($"/Bundles", false);
 	}
 
-	private void CerrarBundleActual(MouseEventArgs e)
+	private void CerrarBundle(MouseEventArgs e)
 	{
 		mostrarBundleSeleccionado = false;
 

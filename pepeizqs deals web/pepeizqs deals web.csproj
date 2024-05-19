@@ -83,15 +83,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="imagenes\bundles\ancla.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="imagenes\juegos\ancla.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="imagenes\noticias\ancla.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Plantillas\CambioContraseña.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

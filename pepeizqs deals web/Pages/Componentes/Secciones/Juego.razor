@@ -208,7 +208,7 @@
 						{
 							@if (CargarEstadoDeseado(usuario, juego, drm, idioma).Length > 0)
 							{
-								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoAlerta); color: var(--colorTextoAlerta);">
+								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoBien); color: var(--colorTexto);">
 									<div class="perfil-flexible-centrado">
 										<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
@@ -1785,26 +1785,29 @@
 	{
 		decimal minimoCantidad = 10000000;
 
-		foreach (var precio in minimo.PrecioActualesTiendas)
+		if (minimo.PrecioActualesTiendas != null)
 		{
-			bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
-
-			if (fechaEncaja == true)
+			foreach (var precio in minimo.PrecioActualesTiendas)
 			{
-				decimal tempPrecio = precio.Precio;
+				bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
 
-				if (precio.Moneda != JuegoMoneda.Euro)
+				if (fechaEncaja == true)
 				{
-					tempPrecio = Divisas.Cambio(tempPrecio, precio.Moneda);
-				}
+					decimal tempPrecio = precio.Precio;
 
-				if (tempPrecio < minimoCantidad)
-				{
-					minimoCantidad = tempPrecio;
+					if (precio.Moneda != JuegoMoneda.Euro)
+					{
+						tempPrecio = Divisas.Cambio(tempPrecio, precio.Moneda);
+					}
+
+					if (tempPrecio < minimoCantidad)
+					{
+						minimoCantidad = tempPrecio;
+					}
 				}
 			}
 		}
-
+		
 		if (minimoCantidad > 0 && minimoCantidad < 10000000)
 		{
 			string precioTexto = string.Empty;

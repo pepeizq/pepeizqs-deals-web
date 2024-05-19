@@ -616,6 +616,14 @@
     "Valor": "Este juego ya lo tienes en Steam"
   },
   {
+    "Id": "Bundles.String14",
+    "Valor": "Coste mínimo comprando por separado"
+  },
+  {
+    "Id": "Bundles.String15",
+    "Valor": "DLC"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Gratis"
   },

@@ -103,6 +103,11 @@ namespace APIs.IndieGala
 											drm = JuegoDRM.Epic;
 										}
 
+										if (ComprobarElderFalsos(enlace) == true)
+										{
+											drm = JuegoDRM.ElderScrolls;
+										}
+
 										JuegoPrecio oferta = new JuegoPrecio
 										{
 											Nombre = nombre,
@@ -165,6 +170,23 @@ namespace APIs.IndieGala
 				"629820",
 				"9b06280a",
 				"f69bbded"
+			];
+
+			foreach (var enlace in enlaces)
+			{
+				if (enlaceJuego.Contains("/" + enlace) == true)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarElderFalsos(string enlaceJuego)
+		{
+			List<string> enlaces = [
+				"2662630_elder"
 			];
 
 			foreach (var enlace in enlaces)
