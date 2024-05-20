@@ -98,6 +98,16 @@
 							fondoColor = "background-color: var(--fondoBien);";
 							tooltip = Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String13");
 						}
+						else
+						{
+							bool usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego.Juego, juego.DRM);
+
+							if (usuarioTieneDeseado == true)
+							{
+								fondoColor = "background-color: var(--fondoAlerta);";
+								tooltip = Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String16");
+							}
+						}
 
 						<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative; @fondoColor" title="@tooltip">
 							<div style="display: flex; align-items: center; padding: 10px;">

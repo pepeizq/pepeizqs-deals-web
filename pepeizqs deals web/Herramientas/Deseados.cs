@@ -1,21 +1,25 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#nullable disable
+
+using Juegos;
+using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace Herramientas
 {
 	public static class Deseados
 	{
-		public static void ActualizarJuegoConUsuarios(Juegos.Juego juego, Juegos.JuegoDRM drm, Usuario usuario, bool estado)
+		public static void ActualizarJuegoConUsuarios(Juego juego, JuegoDRM drm, Usuario usuario, bool estado)
 		{
 			SqlConnection conexion = BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				List<Juegos.JuegoUsuariosInteresados> usuariosInteresados = juego.UsuariosInteresados;
+				List<JuegoUsuariosInteresados> usuariosInteresados = juego.UsuariosInteresados;
 
 				if (usuariosInteresados == null)
 				{
-					usuariosInteresados = new List<Juegos.JuegoUsuariosInteresados>();
+					usuariosInteresados = new List<JuegoUsuariosInteresados>();
 				}
 
 				if (usuariosInteresados.Count > 0)
@@ -39,7 +43,7 @@ namespace Herramientas
 					}
 					else
 					{
-						Juegos.JuegoUsuariosInteresados nuevo = new Juegos.JuegoUsuariosInteresados();
+						JuegoUsuariosInteresados nuevo = new JuegoUsuariosInteresados();
 						nuevo.UsuarioId = usuario.Id;
 						nuevo.DRM = drm;
 
@@ -61,7 +65,7 @@ namespace Herramientas
 				}
 				else
 				{
-					Juegos.JuegoUsuariosInteresados nuevo = new Juegos.JuegoUsuariosInteresados();
+					JuegoUsuariosInteresados nuevo = new JuegoUsuariosInteresados();
 					nuevo.UsuarioId = usuario.Id;
 					nuevo.DRM = drm;
 
@@ -70,6 +74,34 @@ namespace Herramientas
 
 				global::BaseDatos.Juegos.Actualizar.UsuariosInteresados(juego, conexion, usuariosInteresados);
 			}
+		}
+
+		public static bool ComprobarSiEsta(Usuario usuario, Juego juego, JuegoDRM drm)
+		{
+			bool estado = false;
+			List<JuegoDeseado> deseados = new List<JuegoDeseado>();
+
+			if (usuario.Wishlist != null)
+			{
+				deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+			}
+
+			if (deseados.Count > 0)
+			{
+				foreach (var deseado in deseados)
+				{
+					if (juego.Id == int.Parse(deseado.IdBaseDatos))
+					{
+						if (drm == deseado.DRM)
+						{
+							estado = true;
+							break;
+						}
+					}
+				}
+			}
+
+			return estado;
 		}
 	}
 }

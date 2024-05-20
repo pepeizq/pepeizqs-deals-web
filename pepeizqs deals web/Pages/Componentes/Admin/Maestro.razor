@@ -1035,7 +1035,7 @@
                         <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
                             <div class="opciones-combobox" style="width: 33%;">
                                 <select @onchange="@(e => CambiarBundleNoticias(e))">
-                                    @foreach (Bundle bundle in BundlesCargar.GenerarListado())
+                                    @foreach (Bundles2.Bundle bundle in BundlesCargar.GenerarListado())
                                     {
                                         <option value="@bundle.Tipo">@bundle.NombreTienda</option>
                                     }
@@ -3230,7 +3230,7 @@
     }
 
     private string enlaceBundle = null;
-    private Bundle bundle = new Bundle();
+    private Bundles2.Bundle bundle = new Bundles2.Bundle();
 
     private string juegosIdsBundle = null;
     private string cadenaBusquedaBundle = null;
@@ -3247,9 +3247,13 @@
             enlaceBundle = null;
         }
 
-        if (enlaceBundle != null)
+        if (string.IsNullOrEmpty(enlaceBundle) == false)
         {
-            Task<Bundle> tarea = Task.Run(() =>
+            enlaceBundle = enlaceBundle.Replace("https://www.steamgifts.com/redirect?url=", null);
+            enlaceBundle = enlaceBundle.Replace("%3A", ":");
+            enlaceBundle = enlaceBundle.Replace("%2F", "/");
+
+            Task<Bundles2.Bundle> tarea = Task.Run(() =>
             {
                 return BundlesCargar.SeleccionarBundle(enlaceBundle);
             });
@@ -3271,6 +3275,19 @@
                             juegosIdsBundle = juegosIdsBundle + "," + juego.JuegoId;
                         }
                     }
+                }
+            }
+
+            if (bundle != null)
+            {
+                if (string.IsNullOrEmpty(bundle.ImagenBundle) == true)
+                {
+                    bundle.ImagenBundle = bundle.ImagenTienda;
+                }
+
+                if (string.IsNullOrEmpty(bundle.ImagenNoticia) == true)
+                {
+                    bundle.ImagenNoticia = bundle.ImagenTienda;
                 }
             }
         }

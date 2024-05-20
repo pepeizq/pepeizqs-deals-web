@@ -208,7 +208,7 @@ namespace BaseDatos.Juegos
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
 
-				if (juego.Bundles != null)
+				if (juego.Gratis != null)
 				{
 					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(juego.Gratis));
 				}

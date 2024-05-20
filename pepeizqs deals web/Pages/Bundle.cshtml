@@ -1,9 +1,42 @@
 ﻿@page
 @model pepeizqs_deals_web.Pages.BundleModel
 
+@using Herramientas
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+@using System.Net;
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
+	#nullable disable
+
 	ViewData["Title"] = @Model.bundle.NombreBundle + " • " + @Model.bundle.NombreTienda;
 	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
+
+	bool adminLogeado = false;
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+
+		if (await UsuarioCoger.RolDios(UserManager, User) == true)
+		{
+			adminLogeado = true;
+		}
+	}
+}
+
+@if (usuarioLogeado == true)
+{
+	@if (adminLogeado == true)
+	{
+		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id }))
+	}
 }
 
 @(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id }))

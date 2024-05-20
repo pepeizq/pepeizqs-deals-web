@@ -281,39 +281,42 @@
         decimal minimoCantidad = 10000000;
         Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
 
-        foreach (var oferta in juego.PrecioActualesTiendas)
+        if (juego.PrecioActualesTiendas != null)
         {
-            bool drmAdecuado = true;
-
-            if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+            foreach (var oferta in juego.PrecioActualesTiendas)
             {
-                drmAdecuado = false;
-            }
-            else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
-            {
-                drmAdecuado = false;
-            }
+                bool drmAdecuado = true;
 
-            if (drmAdecuado == true)
-            {
-                bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
-
-                if (fechaEncaja == true)
+                if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
                 {
-                    decimal tempPrecio = oferta.Precio;
+                    drmAdecuado = false;
+                }
+                else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+                {
+                    drmAdecuado = false;
+                }
 
-                    if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
-                    {
-                        tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
-                    }
+                if (drmAdecuado == true)
+                {
+                    bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
 
-                    if (tempPrecio < minimoCantidad)
+                    if (fechaEncaja == true)
                     {
-                        minimoCantidad = tempPrecio;
+                        decimal tempPrecio = oferta.Precio;
+
+                        if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+                        {
+                            tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+                        }
+
+                        if (tempPrecio < minimoCantidad)
+                        {
+                            minimoCantidad = tempPrecio;
+                        }
                     }
                 }
-            }        
-        }
+            }
+        }      
 
         if (minimoCantidad > 0 && minimoCantidad < 10000000)
         {

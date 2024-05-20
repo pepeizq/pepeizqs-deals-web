@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
+@using Newtonsoft.Json
+
+<div style="padding: 20px; background: var(--fondoCuerpo); margin-bottom: 50px;">
+	<div style="display: flex; align-items: center; margin-bottom: 20px;">
+		<div style="width: 100%;">
+			Admin Editar • @bundle.NombreBundle
+		</div>
+	</div>
+	
+	<div style="display: flex; align-items: center;">
+		<textarea @onchange="(e => TextoCambiaBundle(e))" class="entrada-texto" rows="16">@textoBundle</textarea>
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public int bundleId { get; set; }
+
+	public Bundles2.Bundle bundle = new Bundles2.Bundle();
+
+	private string textoBundle = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(10);
+
+		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+
+		textoBundle = JsonConvert.SerializeObject(bundle);
+	}
+
+	private void TextoCambiaBundle(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				Bundles2.Bundle nuevoBundle = JsonConvert.DeserializeObject<Bundles2.Bundle>(nuevoTexto);
+				BaseDatos.Bundles.Actualizar.Ejecutar(nuevoBundle, conexion);
+			}
+		}
+	}
+}

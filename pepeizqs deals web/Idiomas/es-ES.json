@@ -380,6 +380,18 @@
     "Valor": "Estuvo en la suscripción"
   },
   {
+    "Id": "Game.String39",
+    "Valor": "Tier"
+  },
+  {
+    "Id": "Game.String40",
+    "Valor": "Eligiendo 1 juego"
+  },
+  {
+    "Id": "Game.String41",
+    "Valor": "Eligiendo {0} juegos"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Últimas Noticias"
   },
@@ -622,6 +634,10 @@
   {
     "Id": "Bundles.String15",
     "Valor": "DLC"
+  },
+  {
+    "Id": "Bundles.String16",
+    "Valor": "Está en tu lista de deseados"
   },
   {
     "Id": "Free.Title",

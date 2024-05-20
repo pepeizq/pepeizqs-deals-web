@@ -384,6 +384,18 @@
     "Valor": "It was in the subscription"
   },
   {
+    "Id": "Game.String39",
+    "Valor": "Tier"
+  },
+  {
+    "Id": "Game.String40",
+    "Valor": "Choosing 1 game"
+  },
+  {
+    "Id": "Game.String41",
+    "Valor": "Choosing {0} games"
+  },
+  {
     "Id": "LastNews.Title",
     "Valor": "Last News"
   },
@@ -626,6 +638,10 @@
   {
     "Id": "Bundles.String15",
     "Valor": "DLC"
+  },
+  {
+    "Id": "Bundles.String16",
+    "Valor": "It's on your wishlist"
   },
   {
     "Id": "Free.Title",

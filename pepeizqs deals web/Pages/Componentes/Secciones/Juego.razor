@@ -208,7 +208,7 @@
 						{
 							@if (CargarEstadoDeseado(usuario, juego, drm, idioma).Length > 0)
 							{
-								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoBien); color: var(--colorTexto);">
+								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoAlerta);">
 									<div class="perfil-flexible-centrado">
 										<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
@@ -218,7 +218,7 @@
 							}
 							else
 							{
-								@if (ComprobarSiEstaDeseado(drm) == true)
+								@if (Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm) == true)
 								{
 									<button @onclick="(e => CambiarEstadoDeseado(e, false, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
 										<div class="perfil-flexible-centrado">
@@ -337,30 +337,31 @@
 					{
 						if (bundle2.BundleId > 0)
 						{
-							foreach (var bundle3 in BundleCargar(bundle2.BundleId))
+							var bundle3 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle2.BundleId);
+
+							if (bundle3 != null)
 							{
-								if (bundle3 != null)
-								{
-									<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
-										<div style="display: flex; align-items: center;">
-											<div style="margin-right: 15px;">
-												<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
-											</div>
-
-											<div style="margin-right: 30px;">
-												<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
-											</div>
-
-											<div style="margin-right: 20px; width: 100%;">
-												<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label>
-											</div>
-
-											<div>
-												<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
-											</div>
+								<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
+									<div style="display: flex; align-items: center;">
+										<div style="margin-right: 15px;">
+											<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
 										</div>
-									</a>
-								}
+
+										<div style="margin-right: 30px;">
+											<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
+										</div>
+
+										<div style="margin-right: 20px; width: 100%;">
+											<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label><br />
+											<label style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(bundle3.FechaTermina, idioma, 1)</label>
+										</div>
+
+										<div style="text-align: right;">
+											<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
+											<label style="font-size: 13px; cursor: pointer;">@BundlesPrepararInfo(bundle3, juego.Id)</label>
+										</div>
+									</div>
+								</a>
 							}
 						}						
 					}
@@ -383,7 +384,9 @@
 
 					@foreach (var bundle2 in BundlesAntiguos(juego.Bundles))
 					{
-						@foreach (var bundle3 in BundleCargar(bundle2.BundleId))
+						var bundle3 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle2.BundleId);
+
+						if (bundle3 != null)
 						{
 							<a class="juego-boton-pequeño" href="/bundle/@bundle2.BundleId.ToString()" style="font-size: 17px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
 								<div style="display: flex; align-items: center;">
@@ -400,8 +403,9 @@
 										<label style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(bundle3.FechaTermina, idioma)</label>
 									</div>
 
-									<div>
+									<div style="text-align: right;">
 										<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
+										<label style="font-size: 13px; cursor: pointer;">@BundlesPrepararInfo(bundle3, juego.Id)</label>
 									</div>
 								</div>
 							</a>
@@ -1132,7 +1136,7 @@
 		{
 			if (usuario.SteamGames != null)
 			{
-				List<string> juegosSteam = GenerarLista(usuario.SteamGames);
+				List<string> juegosSteam = Listados.Generar(usuario.SteamGames);
 
 				if (juegosSteam.Count > 0)
 				{
@@ -1158,7 +1162,7 @@
 
 		if (mensaje == string.Empty)
 		{
-			List<string> deseadosSteam = GenerarLista(usuario.SteamWishlist);
+			List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
 
 			if (deseadosSteam.Count > 0)
 			{
@@ -1185,66 +1189,6 @@
 		}
 
 		return mensaje;
-	}
-
-	private static List<string> GenerarLista(string contenido)
-	{
-		List<string> lista = new List<string>();
-
-		if (contenido != null)
-		{
-			int i = 0;
-			int j = 100000;
-
-			while (i < j)
-			{
-				if (contenido.Contains(",") == true)
-				{
-					int int1 = contenido.IndexOf(",");
-					string temp1 = contenido.Remove(int1, contenido.Length - int1);
-					lista.Add(temp1);
-
-					contenido = contenido.Remove(0, int1 + 1);
-				}
-				else
-				{
-					lista.Add(contenido);
-					break;
-				}
-
-				i += 1;
-			}
-		}
-
-		return lista;
-	}
-
-	private bool ComprobarSiEstaDeseado(JuegoDRM drm)
-	{
-		bool estado = false;
-		List<Juegos.JuegoDeseado> deseados = new List<Juegos.JuegoDeseado>();
-
-		if (usuario.Wishlist != null)
-		{
-			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
-		}
-
-		if (deseados.Count > 0)
-		{
-			foreach (var deseado in deseados)
-			{
-				if (juego.Id == int.Parse(deseado.IdBaseDatos))
-				{
-					if (drm == deseado.DRM)
-					{						
-						estado = true;
-						break;
-					}
-				}
-			}
-		}
-
-		return estado;
 	}
 
 	private async void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
@@ -1315,14 +1259,6 @@
 	#endregion
 
 	#region Bundles
-
-	private static List<Bundles2.Bundle> BundleCargar(int id)
-	{
-		List<Bundles2.Bundle> bundle = new List<Bundles2.Bundle>();
-		bundle.Add(global::BaseDatos.Bundles.Buscar.UnBundle(id));
-
-		return bundle;
-	}
 
 	public string BundlesComprobar(List<JuegoBundle> listaBundles, JuegoDRM drm)
 	{
@@ -1480,6 +1416,36 @@
 		}
 
 		return null;
+	}
+
+	public string BundlesPrepararInfo(Bundles2.Bundle bundle, int juegoId)
+	{
+		if (bundle.Pick == false)
+		{
+			int tier = 0;
+
+			foreach (var juego in bundle.Juegos)
+			{
+				if (juegoId.ToString() == juego.JuegoId)
+				{
+					tier = juego.Tier.Posicion;
+					break;
+				}
+			}
+
+			return Herramientas.Idiomas.CogerCadena(idioma, "Game.String39") + " " + tier.ToString();
+		}
+		else
+		{
+			if (bundle.Tiers[0].CantidadJuegos == 1)
+			{
+				return Herramientas.Idiomas.CogerCadena(idioma, "Game.String40");
+			}
+			else
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Game.String41"), bundle.Tiers[0].CantidadJuegos.ToString());
+			}
+		}
 	}
 
 	#endregion 
