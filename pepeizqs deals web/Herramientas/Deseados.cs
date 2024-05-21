@@ -77,31 +77,32 @@ namespace Herramientas
 		}
 
 		public static bool ComprobarSiEsta(Usuario usuario, Juego juego, JuegoDRM drm)
-		{
-			bool estado = false;
-			List<JuegoDeseado> deseados = new List<JuegoDeseado>();
-
-			if (usuario.Wishlist != null)
+		{	
+			if (usuario != null)
 			{
-				deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
-			}
+				List<JuegoDeseado> deseados = new List<JuegoDeseado>();
 
-			if (deseados.Count > 0)
-			{
-				foreach (var deseado in deseados)
+				if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 				{
-					if (juego.Id == int.Parse(deseado.IdBaseDatos))
+					deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+				}
+
+				if (deseados.Count > 0)
+				{
+					foreach (var deseado in deseados)
 					{
-						if (drm == deseado.DRM)
+						if (juego.Id == int.Parse(deseado.IdBaseDatos))
 						{
-							estado = true;
-							break;
+							if (drm == deseado.DRM)
+							{
+								return true;
+							}
 						}
 					}
 				}
 			}
-
-			return estado;
+			
+			return false;
 		}
 	}
 }

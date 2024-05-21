@@ -1,12 +1,14 @@
 ﻿@using APIs.Steam
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JavaScript
 
 <script>
 	function moverScroll(id) {
@@ -31,22 +33,20 @@
 		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
 			@foreach (var bundle in bundlesActuales)
 			{
-				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="background-color: transparent; padding: 0px;">
-					@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
-					{
-						<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
+				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">					
+					<div style="width: 100%; text-align: center; padding: 5px;">
+						@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
+						{
 							<img src="@bundle.ImagenNoticia" style="max-width: 100%;" />
-						</div>
-					}
-					else
-					{
-						<div class="perfil" style="width: 100%; text-align: center; padding: 5px;">
+						}
+						else
+						{
 							<img src="@bundle.ImagenBundle" style="max-width: 100%;" />
-						</div>
-					}
+						}
 
-					<div style="margin-top: 15px; text-align: center; font-size: 14px;">
-						@MostrarFecha(bundle.FechaEmpieza, bundle.FechaTermina)
+						<div style="margin-top: 10px; margin-bottom: 5px; text-align: center; font-size: 14px;">
+							@MostrarFecha(bundle.FechaEmpieza, bundle.FechaTermina)
+						</div>
 					</div>
 				</button>
 			}
@@ -291,7 +291,7 @@
 
 @if (mostrarBundleSeleccionado == false)
 {
-	<div style="font-size: 23px;">
+	<div id="bundles-archivo" style="font-size: 23px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String2")
 	</div>
 
@@ -597,7 +597,7 @@
 		return false;
 	}
 
-	private void SeleccionarBundle(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
+	private async void SeleccionarBundle(MouseEventArgs e, Bundles2.Bundle nuevoBundle)
 	{
 		bundleSeleccionado = nuevoBundle;
 
@@ -608,14 +608,14 @@
 
 		mostrarBundleSeleccionado = true;
 
-		NavigationManager.NavigateTo($"/Bundles", false);
+		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 
-	private void CerrarBundle(MouseEventArgs e)
+	private async void CerrarBundle(MouseEventArgs e)
 	{
 		mostrarBundleSeleccionado = false;
 
-		NavigationManager.NavigateTo($"/Bundles", false);
+		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 
 	private string ArreglarPrecio(decimal precioDecimal)

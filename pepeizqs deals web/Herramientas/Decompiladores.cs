@@ -58,33 +58,31 @@ namespace Herramientas
 
 		public static async Task<string> Estandar(string enlace)
         {
-			//ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-			//IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
-			//HttpClient cliente = factoria.CreateClient("Decompilador");
+			ServiceProvider servicio = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
+			HttpClient cliente = factoria.CreateClient("Decompilador");
 
 			string contenido = string.Empty;
 
-			//cliente.DefaultRequestHeaders.Clear();
-			//cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
-
-			try
+			using (cliente)
 			{
-                using (var cliente = new HttpClient())
-                {
-					cliente.DefaultRequestHeaders.Clear();
-					cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
+				cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
-					for (int i = 0; i < 100; i += 1)
-                    {
-                        using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
-                        {
-                            contenido = respuesta.Content.ReadAsStringAsync().Result;
+				for (int i = 0; i < 100; i += 1)
+				{
+					try
+					{
+						using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
+						{
+							contenido = await respuesta.Content.ReadAsStringAsync();
 							break;
-                        }
-                    }
-                }    
+						}
+					}
+					catch { }
+				}
 			}
-			catch { }
+
+			cliente.Dispose();
 
 			return contenido;
         }

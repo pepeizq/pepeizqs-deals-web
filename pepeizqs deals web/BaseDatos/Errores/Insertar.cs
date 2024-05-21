@@ -30,6 +30,7 @@ namespace BaseDatos.Errores
                 comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 
                 comando.ExecuteNonQuery();
+                
                 try
                 {
 

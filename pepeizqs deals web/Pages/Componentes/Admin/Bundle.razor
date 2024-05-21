@@ -16,25 +16,25 @@
 
 @code {
 
-	#nullable disable
+    #nullable disable
 
-	[Parameter]
-	public string idioma { get; set; }
+    [Parameter]
+    public string idioma { get; set; }
 
-	[Parameter]
-	public int bundleId { get; set; }
+    [Parameter]
+    public int bundleId { get; set; }
 
-	public Bundles2.Bundle bundle = new Bundles2.Bundle();
+    public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-	private string textoBundle = string.Empty;
+    private string textoBundle = string.Empty;
 
-	protected override async Task OnInitializedAsync()
-	{
-		await Task.Delay(10);
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(10);
 
-		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+        bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
-		textoBundle = JsonConvert.SerializeObject(bundle);
+        textoBundle = JsonConvert.SerializeObject(bundle);
 	}
 
 	private void TextoCambiaBundle(ChangeEventArgs texto)
