@@ -26,58 +26,65 @@ namespace Tareas
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
-                SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-                try
+                if (piscinaApp == piscinaUsada)
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(20);
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        if (Admin.ComprobarTareaUso(conexion, "sorteos", tiempoSiguiente) == true)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            Admin.ActualizarTareaUso(conexion, "sorteos", DateTime.Now);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(20);
 
-                            List<Sorteo> listaSorteos = BaseDatos.Sorteos.Buscar.Todos(conexion);
-
-                            if (listaSorteos != null)
+                            if (Admin.ComprobarTareaUso(conexion, "sorteos", tiempoSiguiente) == true)
                             {
-                                if (listaSorteos.Count > 0)
+                                Admin.ActualizarTareaUso(conexion, "sorteos", DateTime.Now);
+
+                                List<Sorteo> listaSorteos = BaseDatos.Sorteos.Buscar.Todos(conexion);
+
+                                if (listaSorteos != null)
                                 {
-                                    foreach (var sorteo in listaSorteos)
+                                    if (listaSorteos.Count > 0)
                                     {
-                                        if (DateTime.Now > sorteo.FechaTermina && string.IsNullOrEmpty(sorteo.GanadorId) == true)
+                                        foreach (var sorteo in listaSorteos)
                                         {
-                                            if (sorteo.Participantes != null)
+                                            if (DateTime.Now > sorteo.FechaTermina && string.IsNullOrEmpty(sorteo.GanadorId) == true)
                                             {
-                                                if (sorteo.Participantes.Count > 0)
+                                                if (sorteo.Participantes != null)
                                                 {
-                                                    Random rnd = new Random();
-                                                    int ganador = rnd.Next(0, sorteo.Participantes.Count);
-                                                    string usuarioId = sorteo.Participantes[ganador];
-
-                                                    string correo = BaseDatos.Usuarios.Buscar.UnUsuarioCorreo(conexion, usuarioId);
-
-                                                    if (string.IsNullOrEmpty(correo) == false)
+                                                    if (sorteo.Participantes.Count > 0)
                                                     {
-                                                        Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
+                                                        Random rnd = new Random();
+                                                        int ganador = rnd.Next(0, sorteo.Participantes.Count);
+                                                        string usuarioId = sorteo.Participantes[ganador];
 
-                                                        BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave
+                                                        string correo = BaseDatos.Usuarios.Buscar.UnUsuarioCorreo(conexion, usuarioId);
+
+                                                        if (string.IsNullOrEmpty(correo) == false)
                                                         {
-                                                            Nombre = juego.Nombre,
-                                                            JuegoId = juego.Id.ToString(),
-                                                            Codigo = sorteo.Clave
-                                                        };
+                                                            Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
 
-                                                        BaseDatos.Usuarios.Actualizar.Claves(conexion, usuarioId, nuevaClave);
-                                                        BaseDatos.Sorteos.Actualizar.Ganador(sorteo, conexion, usuarioId);
-                                                        Correos.EnviarGanadorSorteo(juego, sorteo, correo);
+                                                            BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave
+                                                            {
+                                                                Nombre = juego.Nombre,
+                                                                JuegoId = juego.Id.ToString(),
+                                                                Codigo = sorteo.Clave
+                                                            };
+
+                                                            BaseDatos.Usuarios.Actualizar.Claves(conexion, usuarioId, nuevaClave);
+                                                            BaseDatos.Sorteos.Actualizar.Ganador(sorteo, conexion, usuarioId);
+                                                            Correos.EnviarGanadorSorteo(juego, sorteo, correo);
+                                                        }
                                                     }
                                                 }
                                             }
@@ -86,12 +93,12 @@ namespace Tareas
                                 }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Sorteos", ex, conexion);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Sorteos", ex, conexion);
-                    }
-                }
+                }                   
             }
         }
 

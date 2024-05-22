@@ -25,41 +25,48 @@ namespace Tareas
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
-				SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-				try
+				if (piscinaApp == piscinaUsada)
 				{
-					conexion = Herramientas.BaseDatos.Conectar();
-				}
-				catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-				if (conexion.State == System.Data.ConnectionState.Open)
-				{
-					try
-					{
-						TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
+                    try
+                    {
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-						if (Admin.ComprobarTareaUso(conexion, "pendientes", tiempoSiguiente) == true)
-						{
-							Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
+                        {
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-							List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
+                            if (Admin.ComprobarTareaUso(conexion, "pendientes", tiempoSiguiente) == true)
+                            {
+                                Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
 
-							if (pendientes.Count > 0)
-							{
-								Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
-							}
-							else
-							{
-								Admin.ActualizarDato(conexion, "pendientes", "0");
-							}
-						}
-					}
-					catch (Exception ex)
-					{
-						BaseDatos.Errores.Insertar.Ejecutar("Tarea - Pendientes", ex, conexion);
-					}
-				}
+                                List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
+
+                                if (pendientes.Count > 0)
+                                {
+                                    Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
+                                }
+                                else
+                                {
+                                    Admin.ActualizarDato(conexion, "pendientes", "0");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Pendientes", ex, conexion);
+                        }
+                    }
+                }                  
 			}
 		}
 

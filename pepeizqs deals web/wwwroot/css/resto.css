@@ -73,10 +73,10 @@
     filter: saturate(0.85);
 }
 
-.boton:hover {
-    color: var(--colorTexto);
-    background-color: var(--fondoBotonHover);
-}
+    .boton:hover {
+        color: var(--colorTexto);
+        background-color: var(--fondoBotonHover);
+    }
 
 .boton-pequeño {
     color: var(--colorTexto);
@@ -89,15 +89,15 @@
     font-size: 16px;
     border: 0px;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: transform .2s;
     filter: saturate(0.85);
 }
 
-.boton-pequeño:hover {
-    color: var(--colorTextoHover);
-    background-color: var(--fondoBotonPequeñoHover);
-    transform: scale(1.01);
-}
+    .boton-pequeño:hover {
+        color: var(--colorTextoHover);
+        background-color: var(--fondoBotonPequeñoHover);
+        transform: scale(1.01);
+    }
 
 .boton-peligro {
     color: var(--colorTexto);
@@ -114,10 +114,10 @@
     text-decoration: none;
 }
 
-.boton-peligro:hover {
-    color: var(--colorTexto);
-    background-color: var(--colorTextoPeligroHover);
-}
+    .boton-peligro:hover {
+        color: var(--colorTexto);
+        background-color: var(--colorTextoPeligroHover);
+    }
 
 .boton-pequeño-peligro {
     color: var(--colorTexto);
@@ -747,4 +747,38 @@ select {
 
 .subir-arriba:hover {
     transform: scale(1.1);
+}
+
+.enlace-falso {
+    color: var(--colorEnlace);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .enlace-falso:hover {
+        color: var(--colorEnlaceHover);
+    }
+
+.tooltip-juego {
+    text-decoration: none;
+    position: relative;
+}
+
+    .tooltip-juego .tooltip-relleno {
+        display: none;
+    }
+
+    .tooltip-juego:hover .tooltip-relleno {
+        display: block;
+        position: fixed;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+.tooltip-relleno {
+    background-color: var(--fondoBotonPequeño);
+    color: var(--colorTexto);
+    border: 1px solid var(--fondoBoton);
+    border-radius: 2px;
+    z-index: 1;
 }

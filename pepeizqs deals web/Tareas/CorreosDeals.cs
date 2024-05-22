@@ -25,41 +25,48 @@ namespace Tareas
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
-                SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-                try
+                if (piscinaApp == piscinaUsada)
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        if (Admin.ComprobarTareaUso(conexion, "correos", tiempoSiguiente) == true)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            Admin.ActualizarTareaUso(conexion, "correos", DateTime.Now);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            List<CorreoConId> correosDeals = Correos.ComprobarNuevosCorreos(0);
+                            if (Admin.ComprobarTareaUso(conexion, "correos", tiempoSiguiente) == true)
+                            {
+                                Admin.ActualizarTareaUso(conexion, "correos", DateTime.Now);
 
-                            if (correosDeals.Count > 0)
-                            {
-                                Admin.ActualizarDato(conexion, "correos", correosDeals.Count.ToString());
-                            }
-                            else
-                            {
-                                Admin.ActualizarDato(conexion, "correos", "0");
+                                List<CorreoConId> correosDeals = Correos.ComprobarNuevosCorreos(0);
+
+                                if (correosDeals.Count > 0)
+                                {
+                                    Admin.ActualizarDato(conexion, "correos", correosDeals.Count.ToString());
+                                }
+                                else
+                                {
+                                    Admin.ActualizarDato(conexion, "correos", "0");
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Deals", ex, conexion);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Deals", ex, conexion);
-                    }
-                }           
+                }                          
             }
         }
 

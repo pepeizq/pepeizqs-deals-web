@@ -628,20 +628,12 @@
     "Valor": "Subscriptions"
   },
   {
-    "Id": "Bundles.String13",
-    "Valor": "You already have this game on Steam"
-  },
-  {
     "Id": "Bundles.String14",
     "Valor": "Minimum cost purchasing separately"
   },
   {
     "Id": "Bundles.String15",
     "Valor": "DLC"
-  },
-  {
-    "Id": "Bundles.String16",
-    "Valor": "It's on your wishlist"
   },
   {
     "Id": "Free.Title",
@@ -654,22 +646,6 @@
   {
     "Id": "Free.String2",
     "Valor": "Free Archive"
-  },
-  {
-    "Id": "Free.String3",
-    "Valor": "You already have this game"
-  },
-  {
-    "Id": "Free.String4",
-    "Valor": "You don't have this game"
-  },
-  {
-    "Id": "Free.String5",
-    "Valor": "You already have this game on Steam"
-  },
-  {
-    "Id": "Free.String6",
-    "Valor": "You don't have this game on Steam"
   },
   {
     "Id": "Subscriptions.Title",
@@ -1586,5 +1562,17 @@
   {
     "Id": "Month.12",
     "Valor": "December"
+  },
+  {
+    "Id": "Tooltip.String1",
+    "Valor": "You already have this game on Steam"
+  },
+  {
+    "Id": "Tooltip.String2",
+    "Valor": "You don't have this game on Steam"
+  },
+  {
+    "Id": "Tooltip.String3",
+    "Valor": "This game is on your wishlist"
   }
 ]

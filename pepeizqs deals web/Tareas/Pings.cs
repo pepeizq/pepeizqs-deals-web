@@ -1,6 +1,6 @@
-﻿using BaseDatos.Tiendas;
+﻿#nullable disable
+
 using Herramientas;
-using Microsoft.Data.SqlClient;
 
 namespace Tareas
 {
@@ -23,7 +23,14 @@ namespace Tareas
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
-                string html = await Decompiladores.Estandar("https://tareas.pepeizqapps.com/");
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+
+                if (piscinaApp == piscinaUsada)
+                {
+                    string html = await Decompiladores.Estandar("https://tareas.pepeizqapps.com/");
+                }                    
             }
         }
 

@@ -76,7 +76,7 @@ namespace Herramientas
 			}
 		}
 
-		public static bool ComprobarSiEsta(Usuario usuario, Juego juego, JuegoDRM drm)
+		public static bool ComprobarSiEsta(Usuario usuario, Juego juego, JuegoDRM drm, bool usarIdMaestra = false)
 		{	
 			if (usuario != null)
 			{
@@ -91,13 +91,26 @@ namespace Herramientas
 				{
 					foreach (var deseado in deseados)
 					{
-						if (juego.Id == int.Parse(deseado.IdBaseDatos))
+						if (usarIdMaestra == false)
 						{
-							if (drm == deseado.DRM)
+							if (juego.Id == int.Parse(deseado.IdBaseDatos))
 							{
-								return true;
+								if (drm == deseado.DRM)
+								{
+									return true;
+								}
 							}
 						}
+						else
+						{
+							if (juego.IdMaestra == int.Parse(deseado.IdBaseDatos))
+							{
+								if (drm == deseado.DRM)
+								{
+									return true;
+								}
+							}
+						}						
 					}
 				}
 			}

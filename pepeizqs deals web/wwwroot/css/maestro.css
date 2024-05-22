@@ -20,6 +20,7 @@
     --colorTextoDlc: #edddf0;
     --fondoDlc: #733b7f;
     --colorEnlace: #95c0fe;
+    --colorEnlaceHover: #3486fd;
 }
 
 @font-face {
@@ -30,8 +31,12 @@
 }
 
 a {
-    color: #95c0fe;
+    color: var(--colorEnlace);
 }
+
+    a:hover {
+        color: var(--colorEnlaceHover);
+    }
 
 dl, ol, ul {
     margin-top: 15px;

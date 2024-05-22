@@ -7,49 +7,7 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<style>
-    .tooltip4 {
-        text-decoration: none;
-        position: relative;
-    }
-
-        .tooltip4 .tooltip-relleno {
-            display: none;
-        }
-
-        .tooltip4:hover .tooltip-relleno {
-            display: block;
-            position: fixed;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-    .tooltip-relleno {
-        background-color: var(--fondoBotonPequeño);
-        color: var(--colorTexto);
-        border: 1px solid var(--fondoBoton);
-        border-radius: 2px;
-        z-index: 1;
-    }
-</style>
-
 <script>
-    function hover(e, id) {
-        var x = e.clientX,
-            y = e.clientY;
-
-        var tooltip = document.getElementById(id);
-
-        if (screen.width / 2 > x) {
-            tooltip.style.top = (y + 10) + 'px';
-            tooltip.style.left = (x + 20) + 'px';
-        }
-        else {
-            tooltip.style.top = (y - 10) + 'px';
-            tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
-        };
-    };
-
     function moverScroll(id) {
         const yOffset = -30;
         const element = document.getElementById(id);
@@ -78,34 +36,64 @@
                 <div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
                     @foreach (var juego in suscripcionActual.Juegos)
                     {
-                        <div class="tooltip4" onmousemove="hover(event, 'tooltip-@juego.JuegoId.ToString()')" @onmouseover="@(e => CargarTooltip(e, juego, suscripcionActual.Tipo.Id))">
+                        bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego.Juego, juego.DRM);
+                        bool usuarioTieneDeseado = false;
+
+                        string fondoColor = string.Empty;
+
+                        if (usuarioTieneJuego == true)
+                        {
+                            fondoColor = "background-color: var(--fondoBien);";
+                        }
+                        else
+                        {
+                            usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego.Juego, juego.DRM);
+
+                            if (usuarioTieneDeseado == true)
+                            {
+                                fondoColor = "background-color: var(--fondoAlerta);";
+                            }
+                        }
+
+                        bool usuarioConectado = false;
+
+                        if (usuario != null)
+                        {
+                            usuarioConectado = true;
+                        }
+
+                        Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego.Juego, juego.DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
+
+                        <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()')">
                             <div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno">
-                                @if (string.IsNullOrEmpty(tooltipVideo) == false)
+                                @if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
                                 {
-                                    <video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+                                    <video src="@tooltipDatos.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
                                 }
 
                                 <div style="padding: 15px; text-align: center;">
-                                    <label>@tooltipNombre</label>
+                                    <div style="text-align: center;">
+                                        @tooltipDatos.Nombre
+                                    </div>
 
-                                    @if (string.IsNullOrEmpty(tooltipReviewsIcono) == false && string.IsNullOrEmpty(tooltipReviewsCantidad) == false)
+                                    @if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
                                     {
                                         <div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
-                                            <img src="@tooltipReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
-                                            <label style="font-size: 14px;">@tooltipReviewsCantidad</label>
+                                            <img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
+                                            <label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
                                         </div>
                                     }
 
-                                    @if (string.IsNullOrEmpty(tooltipUsuarioTieneJuego) == false)
+                                    @if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
                                     {
-                                        <div>
-                                            <label style="font-size: 14px;">@tooltipUsuarioTieneJuego</label>
+                                        <div style="text-align: center;">
+                                            @tooltipDatos.UsuarioMensaje
                                         </div>
                                     }
                                 </div>
                             </div>
 
-                            <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 0px;" target="_blank">
+                            <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 2px; @fondoColor" target="_blank">
                                 <div>
                                     <img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" />
                                 </div>
@@ -210,14 +198,10 @@
                                     @foreach (var juegoMensual in suscripcionesMensual)
                                     {
                                         <li>
-                                            <a href="/game/@juegoMensual.JuegoId" class="tooltip4" onmousemove="hover(event, 'pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()')" @onmouseover="@(e => CargarTooltipPasado(e, juegoMensual))">
+                                            <a href="/game/@juegoMensual.JuegoId">
                                                 <label style="cursor: pointer;">@juegoMensual.Nombre</label>
 
                                                 <label style="cursor: pointer;">(@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))</label>
-
-                                                <div id="pasado-@juegoMensual.FechaEmpieza.Ticks.ToString()" class="tooltip-relleno" style="padding: 10px;">
-                                                    @tooltipFecha
-                                                </div>
                                             </a>
                                         </li>
                                     }
@@ -403,112 +387,5 @@
     private void CambiarAño(MouseEventArgs e, string nuevoAño)
     {
         añoSeleccionado = nuevoAño;
-    }
-
-    private string ComprobarUsuarioJuego(Juegos.Juego juego, Juegos.JuegoDRM drm)
-    {
-		if (usuario != null && juego.Tipo == Juegos.JuegoTipo.Game)
-		{
-			if (juegosUsuario.Count > 0)
-			{
-				foreach (var juegoUsuario in juegosUsuario)
-				{
-					if (juegoUsuario == juego.IdSteam.ToString())
-					{
-						if (drm == Juegos.JuegoDRM.Steam)
-						{
-							return "3";
-						}
-						else
-						{
-							return "5";
-						}
-					}
-				}
-
-                if (drm == Juegos.JuegoDRM.Steam)
-				{
-					return "4";
-				}
-				else
-				{
-					return "6";
-				}
-			}
-		}
-
-		return null;
-	}
-
-    private string tooltipNombre = string.Empty;
-    private string tooltipVideo = string.Empty;
-    private string tooltipReviewsIcono = string.Empty;
-    private string tooltipReviewsCantidad = string.Empty;
-    private string tooltipUsuarioTieneJuego = string.Empty;
-
-    private void CargarTooltip(MouseEventArgs args, Juegos.JuegoSuscripcion juegoSuscripcion, Suscripciones2.SuscripcionTipo tipo)
-    {
-        Juegos.Juego juego = juegoSuscripcion.Juego;
-
-        tooltipNombre = juego.Nombre;
-        tooltipVideo = null;
-        tooltipReviewsIcono = null;
-        tooltipReviewsCantidad = null;
-        tooltipUsuarioTieneJuego = null;
-
-        if (juego.Media != null)
-        {
-            if (string.IsNullOrEmpty(juego.Media.Video) == false)
-            {
-                int int1 = juego.Media.Video.LastIndexOf("/");
-                string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
-
-                tooltipVideo = temp1 + "/microtrailer.webm";
-
-                tooltipVideo = tooltipVideo.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-                tooltipVideo = tooltipVideo.Replace("http://", "https://");
-            }
-        }
-
-        if (juego.Analisis != null)
-        {
-            if (int.Parse(juego.Analisis.Porcentaje) > 74)
-            {
-                tooltipReviewsIcono = "/imagenes/analisis/positive.webp";
-            }
-            else if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-            {
-                tooltipReviewsIcono = "/imagenes/analisis/mixed.webp";
-            }
-            else if (int.Parse(juego.Analisis.Porcentaje) < 50)
-            {
-                tooltipReviewsIcono = "/imagenes/analisis/negative.webp";
-            }
-
-            tooltipReviewsCantidad = juego.Analisis.Porcentaje.ToString() + "% • " + Herramientas.Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad);
-        }
-
-        if (usuario != null)
-        {
-            if (ComprobarUsuarioJuego(juego, juegoSuscripcion.DRM) != null)
-            {
-                if (ComprobarUsuarioJuego(juego, juegoSuscripcion.DRM) == "3" || ComprobarUsuarioJuego(juego, juegoSuscripcion.DRM) == "5")
-                {
-                    tooltipUsuarioTieneJuego = Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego, juegoSuscripcion.DRM));
-                }
-                else
-                {
-                    tooltipUsuarioTieneJuego = Herramientas.Idiomas.CogerCadena(idioma, "Free.String" + ComprobarUsuarioJuego(juego, juegoSuscripcion.DRM));
-                }
-            }
-        }
-    }
-
-    private string tooltipFecha = string.Empty;
-
-    private void CargarTooltipPasado(MouseEventArgs args, Juegos.JuegoSuscripcion juegoSuscripcion)
-    {
-        tooltipFecha = juegoSuscripcion.FechaEmpieza.Day.ToString() + "/" + juegoSuscripcion.FechaEmpieza.Month.ToString() + "/" + juegoSuscripcion.FechaEmpieza.Year.ToString() + " • " +
-                       juegoSuscripcion.FechaTermina.Day.ToString() + "/" + juegoSuscripcion.FechaTermina.Month.ToString() + "/" + juegoSuscripcion.FechaTermina.Year.ToString();
     }
 }

@@ -25,75 +25,82 @@ namespace Tareas
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
-				SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-				try
+				if (piscinaApp == piscinaUsada)
 				{
-					conexion = Herramientas.BaseDatos.Conectar();
-				}
-				catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-				if (conexion.State == System.Data.ConnectionState.Open)
-				{
-					try
-					{
-						List<Noticia> noticiasMostrar = new List<Noticia>();
-						List<Noticia> noticiaEvento = new List<Noticia>();
+                    try
+                    {
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-						List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
+                        {
+                            List<Noticia> noticiasMostrar = new List<Noticia>();
+                            List<Noticia> noticiaEvento = new List<Noticia>();
 
-						if (noticias.Count > 0)
-						{
-							int i = 0;
-							foreach (var noticia in noticias)
-							{
-								if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
-								{
-									if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
-									{
-										DateTime fechaEncabezado = noticia.FechaEmpieza;
-										fechaEncabezado = fechaEncabezado.AddDays(3);
+                            List<Noticia> noticias = BaseDatos.Noticias.Buscar.Todas().OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-										if (DateTime.Now < fechaEncabezado)
-										{
-											noticiaEvento.Add(noticia);
-										}
-									}
+                            if (noticias.Count > 0)
+                            {
+                                int i = 0;
+                                foreach (var noticia in noticias)
+                                {
+                                    if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+                                    {
+                                        if (noticia.Tipo == NoticiaTipo.Eventos && noticiaEvento.Count == 0)
+                                        {
+                                            DateTime fechaEncabezado = noticia.FechaEmpieza;
+                                            fechaEncabezado = fechaEncabezado.AddDays(3);
 
-									if (i < 6)
-									{
-										noticiasMostrar.Add(noticia);
-										i += 1;
-									}
-								}
-							}
-						}
+                                            if (DateTime.Now < fechaEncabezado)
+                                            {
+                                                noticiaEvento.Add(noticia);
+                                            }
+                                        }
 
-						if (noticiasMostrar.Count > 0)
-						{
-							BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
+                                        if (i < 6)
+                                        {
+                                            noticiasMostrar.Add(noticia);
+                                            i += 1;
+                                        }
+                                    }
+                                }
+                            }
 
-							foreach (var noticia in noticiasMostrar)
-							{
-								BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
-							}
-						}
+                            if (noticiasMostrar.Count > 0)
+                            {
+                                BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticias", conexion);
 
-						if (noticiaEvento.Count > 0)
-						{
-							BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
+                                foreach (var noticia in noticiasMostrar)
+                                {
+                                    BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticias", conexion);
+                                }
+                            }
 
-							foreach (var noticia in noticiaEvento)
-							{
-								BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
-							}
-						}
-					}
-					catch (Exception ex)
-					{
-						BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
-					}
-				}
+                            if (noticiaEvento.Count > 0)
+                            {
+                                BaseDatos.Portada.Limpiar.Ejecutar("portadaNoticiasEvento", conexion);
+
+                                foreach (var noticia in noticiaEvento)
+                                {
+                                    BaseDatos.Portada.Insertar.Noticia(noticia, "portadaNoticiasEvento", conexion);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Noticias", ex, conexion);
+                        }
+                    }
+                }                   
 			}
 		}
 

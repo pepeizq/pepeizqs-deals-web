@@ -25,41 +25,48 @@ namespace Tareas
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
-                SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-                try
+                if (piscinaApp == piscinaUsada)
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        if (Admin.ComprobarTareaUso(conexion, "errores", tiempoSiguiente) == true)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            Admin.ActualizarTareaUso(conexion, "errores", DateTime.Now);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            List<BaseDatos.Errores.Error> errores = BaseDatos.Errores.Buscar.Todos(conexion);
+                            if (Admin.ComprobarTareaUso(conexion, "errores", tiempoSiguiente) == true)
+                            {
+                                Admin.ActualizarTareaUso(conexion, "errores", DateTime.Now);
 
-                            if (errores.Count > 0)
-                            {
-                                Admin.ActualizarDato(conexion, "errores", errores.Count.ToString());
-                            }
-                            else
-                            {
-                                Admin.ActualizarDato(conexion, "errores", "0");
+                                List<BaseDatos.Errores.Error> errores = BaseDatos.Errores.Buscar.Todos(conexion);
+
+                                if (errores.Count > 0)
+                                {
+                                    Admin.ActualizarDato(conexion, "errores", errores.Count.ToString());
+                                }
+                                else
+                                {
+                                    Admin.ActualizarDato(conexion, "errores", "0");
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Errores", ex, conexion);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Errores", ex, conexion);
-                    }
-                }
+                }                  
             }
         }
 

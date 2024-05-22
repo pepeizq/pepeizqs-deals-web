@@ -624,20 +624,12 @@
     "Valor": "Suscripciones"
   },
   {
-    "Id": "Bundles.String13",
-    "Valor": "Este juego ya lo tienes en Steam"
-  },
-  {
     "Id": "Bundles.String14",
     "Valor": "Coste mínimo comprando por separado"
   },
   {
     "Id": "Bundles.String15",
     "Valor": "DLC"
-  },
-  {
-    "Id": "Bundles.String16",
-    "Valor": "Está en tu lista de deseados"
   },
   {
     "Id": "Free.Title",
@@ -650,22 +642,6 @@
   {
     "Id": "Free.String2",
     "Valor": "Gratis Archivo"
-  },
-  {
-    "Id": "Free.String3",
-    "Valor": "Este juego ya lo tienes"
-  },
-  {
-    "Id": "Free.String4",
-    "Valor": "Este juego no lo tienes"
-  },
-  {
-    "Id": "Free.String5",
-    "Valor": "Ya tienes este juego en Steam"
-  },
-  {
-    "Id": "Free.String6",
-    "Valor": "No tienes este juego en Steam"
   },
   {
     "Id": "Subscriptions.Title",
@@ -1582,5 +1558,17 @@
   {
     "Id": "Month.12",
     "Valor": "Diciembre"
+  },
+  {
+    "Id": "Tooltip.String1",
+    "Valor": "Ya tienes este juego en Steam"
+  },
+  {
+    "Id": "Tooltip.String2",
+    "Valor": "No tienes este juego en Steam"
+  },
+  {
+    "Id": "Tooltip.String3",
+    "Valor": "Este juego está en tu lista de deseados"
   }
 ]

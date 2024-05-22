@@ -24,34 +24,41 @@ namespace Tareas
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
-                SqlConnection conexion = new SqlConnection();
+                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-                try
+                if (piscinaApp == piscinaUsada)
                 {
-                    conexion = Herramientas.BaseDatos.Conectar();
-                }
-                catch { }
+                    SqlConnection conexion = new SqlConnection();
 
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
                     try
                     {
-                        TimeSpan tiempo = TimeSpan.FromDays(1);
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                    catch { }
 
-                        Divisa dolar = BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
-
-                        DateTime ultimaComprobacion = dolar.FechaActualizacion;
-
-                        if (DateTime.Now - ultimaComprobacion > tiempo)
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                    {
+                        try
                         {
-                            await Herramientas.Divisas.ActualizarDatos(conexion);
+                            TimeSpan tiempo = TimeSpan.FromDays(1);
+
+                            Divisa dolar = BaseDatos.Divisas.Buscar.Ejecutar(conexion, "USD");
+
+                            DateTime ultimaComprobacion = dolar.FechaActualizacion;
+
+                            if (DateTime.Now - ultimaComprobacion > tiempo)
+                            {
+                                await Herramientas.Divisas.ActualizarDatos(conexion);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Divisas", ex, conexion);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        BaseDatos.Errores.Insertar.Ejecutar("Tarea - Divisas", ex, conexion);
-                    }
-                }
+                }                    
             }
         }
 
