@@ -644,6 +644,42 @@
     "Valor": "Gratis Archivo"
   },
   {
+    "Id": "Free.String3",
+    "Valor": "{0} juego"
+  },
+  {
+    "Id": "Free.String4",
+    "Valor": "{0} juegos"
+  },
+  {
+    "Id": "Free.String5",
+    "Valor": "y"
+  },
+  {
+    "Id": "Free.String6",
+    "Valor": "{0} DLC"
+  },
+  {
+    "Id": "Free.String7",
+    "Valor": "{0} DLCs"
+  },
+  {
+    "Id": "Free.String8",
+    "Valor": "esta gratis para reclamar"
+  },
+  {
+    "Id": "Free.String9",
+    "Valor": "están gratis para reclamar"
+  },
+  {
+    "Id": "Free.String10",
+    "Valor": "No hay nada gratis para reclamar"
+  },
+  {
+    "Id": "Free.String11",
+    "Valor": "Comprueba los juegos y DLCs para PC que se pueden reclamar gratuitamente"
+  },
+  {
     "Id": "Subscriptions.Title",
     "Valor": "Suscripciones"
   },

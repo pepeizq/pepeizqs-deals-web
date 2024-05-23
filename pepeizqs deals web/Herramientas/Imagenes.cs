@@ -1,7 +1,7 @@
 ﻿#nullable disable
 
-using ImageProcessor;
-using ImageProcessor.Plugins.WebP.Imaging.Formats;
+//using ImageProcessor;
+//using ImageProcessor.Plugins.WebP.Imaging.Formats;
 
 namespace Herramientas
 {

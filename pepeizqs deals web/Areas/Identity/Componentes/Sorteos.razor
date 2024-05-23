@@ -191,9 +191,9 @@
 
 	SqlConnection conexion = new SqlConnection();
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
 
 		if (usuario != null)
 		{

@@ -206,32 +206,91 @@
 					<div id="@drm">
 						@if (usuarioLogeado == true)
 						{
-							@if (CargarEstadoDeseado(usuario, juego, drm, idioma).Length > 0)
-							{
-								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoAlerta);">
-									<div class="perfil-flexible-centrado">
-										<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, drm);
+							bool usuarioTieneDeseado = false;
 
-										<label style="text-align: left; padding-left: 25px; width: 100%;">@CargarEstadoDeseado(usuario, juego, drm, idioma)</label>
+							string mensaje = string.Empty;
+
+							if (usuarioTieneJuego == true)
+							{
+								if (juego.Tipo == Juegos.JuegoTipo.Game)
+								{
+									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String5");
+								}
+								else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+								{
+									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String6");
+								}
+
+								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoBien);">
+									<div class="perfil-flexible-centrado">
+										<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+
+										<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
 									</div>
 								</div>
 							}
 							else
 							{
-								@if (Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm) == true)
+								if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
 								{
-									<button @onclick="(e => CambiarEstadoDeseado(e, false, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
-										<div class="perfil-flexible-centrado">
-											<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+									List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
 
-											<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String3")</div>
+									if (deseadosSteam.Count > 0)
+									{
+										foreach (var deseado in deseadosSteam)
+										{
+											if (juego.IdSteam > 0)
+											{
+												if (juego.IdSteam == int.Parse(deseado) && drm == Juegos.JuegoDRM.Steam)
+												{
+													if (juego.Tipo == Juegos.JuegoTipo.Game)
+													{
+														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String7");
+													}
+													else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+													{
+														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String8");
+													}
+
+													break;
+												}
+											}
+										}
+									}
+								}
+								
+								if (string.IsNullOrEmpty(mensaje) == false)
+								{
+									<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoAlerta);">
+										<div class="perfil-flexible-centrado">
+											<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+
+											<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
 										</div>
-									</button>
+									</div>
 								}
 								else
 								{
-									<button @onclick="(e => CambiarEstadoDeseado(e, true, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String4")</button>
-								}
+									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm);
+
+									if (usuarioTieneDeseado == true)
+									{
+										<button @onclick="(e => CambiarEstadoDeseado(e, false, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											<div class="perfil-flexible-centrado">
+												<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+
+												<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String3")</div>
+											</div>
+										</button>
+									}
+									else
+									{
+										<button @onclick="(e => CambiarEstadoDeseado(e, true, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											@Herramientas.Idiomas.CogerCadena(idioma, "Game.String4")
+										</button>
+									}
+								}								
 							}
 						}
 
@@ -748,6 +807,7 @@
 	public Juegos.Juego juego { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private List<string> juegosUsuario = new List<string>();
 	private bool usuarioLogeado = false;
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
@@ -759,6 +819,8 @@
 		if (usuario != null)
 		{
 			usuarioLogeado = true;
+
+			juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 		}
 
 		//-------------------------------------------
@@ -1128,69 +1190,6 @@
 	}
 
 	#region Deseados
-
-	private static string CargarEstadoDeseado(Usuario usuario, Juegos.Juego juego, JuegoDRM drm, string idioma)
-	{
-		string mensaje = string.Empty;
-
-		if (juego.IdSteam > 0 && drm == Juegos.JuegoDRM.Steam)
-		{
-			if (usuario.SteamGames != null)
-			{
-				List<string> juegosSteam = Listados.Generar(usuario.SteamGames);
-
-				if (juegosSteam.Count > 0)
-				{
-					foreach (var juegoSteam in juegosSteam)
-					{
-						if (int.Parse(juegoSteam) == juego.IdSteam)
-						{
-							if (juego.Tipo == Juegos.JuegoTipo.Game)
-							{
-								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String5");
-							}
-							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-							{
-								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String6");
-							}
-
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		if (mensaje == string.Empty)
-		{
-			List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
-
-			if (deseadosSteam.Count > 0)
-			{
-				foreach (var deseado in deseadosSteam)
-				{
-					if (juego.IdSteam > 0)
-					{
-						if (juego.IdSteam == int.Parse(deseado) && drm == Juegos.JuegoDRM.Steam)
-						{
-							if (juego.Tipo == Juegos.JuegoTipo.Game)
-							{
-								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String7");
-							}
-							else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-							{
-								mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String8");
-							}
-
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		return mensaje;
-	}
 
 	private async void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
 	{

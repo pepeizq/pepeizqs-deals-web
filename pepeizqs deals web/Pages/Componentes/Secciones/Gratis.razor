@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
 @using pepeizqs_deals_web.Areas.Identity.Data;
+@using Toolbelt.Blazor.HeadElement
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
@@ -16,6 +17,14 @@
         window.scrollTo({ top: y, behavior: 'smooth' });
     }
 </script>
+
+<Title>
+   @titulo • pepeizq's deals
+</Title>
+
+<Meta Property="og:title" Content="@titulo" />
+<Meta Property="description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Free.String11")" />
+<Meta Property="robots" Content="index, follow" />
 
 @if (juegosActuales.Count > 0)
 {
@@ -309,6 +318,8 @@
     [Parameter]
     public string dominio { get; set; }
 
+    private string titulo = string.Empty;
+
     private List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
     private List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
 
@@ -320,7 +331,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
 
         if (usuario != null)
         {
@@ -402,7 +413,78 @@
 
             if (juegosActuales.Count > 0)
             {
-                juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();	
+                juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
+
+                int juegos = 0;
+                int dlcs = 0;
+
+                foreach (var juego in juegosActuales)
+                {
+                    if (juego.Juego.Tipo == Juegos.JuegoTipo.Game)
+                    {
+                        juegos += 1;
+                    }
+                    else if (juego.Juego.Tipo == Juegos.JuegoTipo.DLC)
+                    {
+                        dlcs += 1;
+                    }
+                }
+
+                if (juegos == 0)
+                {
+                    if (dlcs == 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String6"), dlcs.ToString()) + " " + Herramientas.Idiomas.CogerCadena(idioma, "Free.String8");
+                    }
+                    else if (dlcs > 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String7"), dlcs.ToString()) + " " + Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                }
+                else if (juegos > 0)
+                {
+                    if (juegos == 1 && dlcs == 0)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String3"), juegos.ToString()) + " " + Herramientas.Idiomas.CogerCadena(idioma, "Free.String8");
+                    }
+                    else if (juegos > 1 && dlcs == 0)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String4"), juegos.ToString()) + " " + Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                    else if (juegos == 1 && dlcs == 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String3"), juegos.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String5") + " " +
+                            string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String6"), dlcs.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                    else if (juegos > 1 && dlcs == 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String4"), juegos.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String5") + " " +
+                            string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String6"), dlcs.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                    else if (juegos == 1 && dlcs > 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String3"), juegos.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String5") + " " +
+                            string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String7"), dlcs.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                    else if (juegos > 1 && dlcs > 1)
+                    {
+                        titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String4"), juegos.ToString()) + " " + 
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String5") + " " +
+                            string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Free.String7"), dlcs.ToString()) + " " +
+                            Herramientas.Idiomas.CogerCadena(idioma, "Free.String9");
+                    }
+                }
+
+                if (string.IsNullOrEmpty(titulo) == true)
+                {
+                    titulo = Herramientas.Idiomas.CogerCadena(idioma, "Free.String10");
+                }
             }
 
             if (juegosPasados.Count > 0)

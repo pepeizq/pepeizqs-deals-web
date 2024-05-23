@@ -134,10 +134,10 @@
     text-decoration: none;
 }
 
-.boton-pequeño-peligro:hover {
-    color: var(--colorTexto);
-    background-color: var(--colorTextoPeligroHover);
-}
+    .boton-pequeño-peligro:hover {
+        color: var(--colorTexto);
+        background-color: var(--colorTextoPeligroHover);
+    }
 
 .cuerpo-login {
     margin-top: 30px;
@@ -350,14 +350,15 @@
     font-size: 14px;
     border: 0px;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: transform .2s;
     filter: saturate(0.85);
 }
 
-.juego-boton-pequeño:hover {
-    color: var(--colorTexto);
-    background-color: var(--fondoBotonPequeñoHover);
-}
+    .juego-boton-pequeño:hover {
+        color: var(--colorTexto);
+        background-color: var(--fondoBotonPequeñoHover);
+        transform: scale(1.01);
+    }
 
 .juego-imagen-boton {
     margin: 20px;

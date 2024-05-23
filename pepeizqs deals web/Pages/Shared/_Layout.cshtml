@@ -17,6 +17,7 @@
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     string titulo = string.Empty;
+    string descripcion = Herramientas.Idiomas.CogerCadena(idioma, "Index.Subtitle");
 
     if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
     {
@@ -48,6 +49,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@descripcion"/>
+    <meta name="keywords" content="deals, games, free, offers, bundles" />
+
     <title>@titulo</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />

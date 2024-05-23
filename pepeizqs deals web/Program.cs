@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Threading.RateLimiting;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -96,6 +94,12 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 #region Estado Middlewares
 
 builder.Services.AddHealthChecks();
+
+#endregion
+
+#region SEO
+
+builder.Services.AddHeadElementHelper();
 
 #endregion
 
