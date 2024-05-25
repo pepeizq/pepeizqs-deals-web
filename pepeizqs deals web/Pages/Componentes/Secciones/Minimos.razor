@@ -59,10 +59,12 @@
 					bool usuarioTieneDeseado = false;
 
 					string fondoColor = string.Empty;
+					string fondoDescuento = "background-color: darkgreen;";
 
 					if (usuarioTieneJuego == true)
 					{
 						fondoColor = "background-color: var(--fondoBien);";
+						fondoDescuento = "backdrop-filter: brightness(70%);";
 					}
 					else
 					{
@@ -71,6 +73,7 @@
 						if (usuarioTieneDeseado == true)
 						{
 							fondoColor = "background-color: var(--fondoAlerta);";
+							fondoDescuento = "backdrop-filter: brightness(70%);";
 						}
 					}
 
@@ -164,16 +167,16 @@
 									</div>
 								</div>
 
-								<div style="width: 35%; display: flex; align-items: center; justify-content: center; text-align: center;">
-									<div style="width: 30%;">
+								<div style="width: 35%; display: flex; align-items: center; justify-content: right; text-align: right; padding-right: 20px;">
+									<div style="margin-right: 40px; width: 35%;">
 										<img src="@CargarImagenTienda(juego)" style="width: 100%;" />
 									</div>
 
-									<div style="padding: 10px 15px; margin: 0px 30px 0px 40px;" class="juego-descuento">
+									<div style="padding: 10px 15px; margin-right: 10px; font-size: 18px; @fondoDescuento">
 										@CargarDescuento(juego)
 									</div>
 
-									<div style="font-size: 18px;">
+									<div style="width: 100px; padding: 20px; font-size: 18px;">
 										@CargarPrecio(juego)
 									</div>
 								</div>

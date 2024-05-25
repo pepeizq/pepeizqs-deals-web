@@ -636,6 +636,22 @@
     "Valor": "DLC"
   },
   {
+    "Id": "Bundles.String16",
+    "Valor": "{0} bundle available to purchase"
+  },
+  {
+    "Id": "Bundles.String17",
+    "Valor": "{0} bundles available to purchase"
+  },
+  {
+    "Id": "Bundles.String18",
+    "Valor": "There are no bundles available to purchase"
+  },
+  {
+    "Id": "Bundles.String19",
+    "Valor": "Check out the latest PC game bundles available for purchase"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Free"
   },

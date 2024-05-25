@@ -632,6 +632,22 @@
     "Valor": "DLC"
   },
   {
+    "Id": "Bundles.String16",
+    "Valor": "{0} bundle disponible para comprar"
+  },
+  {
+    "Id": "Bundles.String17",
+    "Valor": "{0} bundles disponible para comprar"
+  },
+  {
+    "Id": "Bundles.String18",
+    "Valor": "No hay bundles disponibles para comprar"
+  },
+  {
+    "Id": "Bundles.String19",
+    "Valor": "Comprueba los ultimos bundles de juegos para PC que hay disponibles para comprar"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Gratis"
   },

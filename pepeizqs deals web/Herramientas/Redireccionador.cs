@@ -71,9 +71,9 @@ namespace Herramientas
 		public IActionResult CogerBundleId(int Id)
 		{
 			return Redirect("~/bundle?id=" + Id.ToString());
-        }
+		}
 
-        [HttpGet("news-rss")]
+		[HttpGet("news-rss")]
         public IActionResult CogerNoticiasRSS()
         {
             if (User.Identity.IsAuthenticated == true)

@@ -50,8 +50,6 @@
                         catch (Exception ex)
                         {
                             BaseDatos.Errores.Insertar.Ejecutar(tiendaComprobar.Id, ex, conexion);
-
-                            AppLifetime.StopApplication();
                         }            
                     }
                 }

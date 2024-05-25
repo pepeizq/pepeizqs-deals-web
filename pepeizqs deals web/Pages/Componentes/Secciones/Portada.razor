@@ -1,4 +1,5 @@
-﻿@using BaseDatos.Juegos;
+﻿@using APIs.Steam
+@using BaseDatos.Juegos;
 @using Juegos;
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
@@ -27,17 +28,17 @@
 		margin-left: 20px;
 	}
 
-	.destacado-juego {
-		min-width: 150px;
-		max-width: 200px;
-	}
-
-	.destacado-fuente {
+	.destacado-precio {
 		font-size: 18px;
+		padding: 8px 10px;
 	}
 
 	.noticia-fuente {
 		font-size: 18px;
+	}
+
+	.noticia-categoria {
+		font-size: 15px;
 	}
 
 	.noticia-fecha {
@@ -82,17 +83,17 @@
 			margin-left: 5px;
 		}
 
-		.destacado-juego {
-			min-width: 100px;
-			max-width: 150px;
-		}
-
-		.destacado-fuente {
-			font-size: 11px;
+		.destacado-precio {
+			font-size: 8px;
+			padding: 4px 5px;
 		}
 
 		.noticia-fuente {
 			font-size: 13px;
+		}
+
+		.noticia-categoria {
+			font-size: 11px;
 		}
 
 		.noticia-fecha {
@@ -200,7 +201,7 @@
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
-		<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDeals")</a>
+		<a href="/historical-lows" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDeals")</a>
 		
 		<div class="tooltip2" style="margin-left: 20px;">
 			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
@@ -210,24 +211,46 @@
 		</div>
 	</div>
 
-	<div style="display: flex; align-items: center; margin-bottom: 60px;">
+	<div style="width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 60px;">
 		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
 
-		<div class="destacados-espacio tooltip4" onmousemove="hover(event, 'tooltip-destacados')" style="display: grid; grid-auto-flow: column; width: 100%;">
+		<div class="destacados-espacio tooltip4" onmousemove="hover(event, 'tooltip-destacados')" style="width: 100%; display: flex; align-items: center; justify-content: center;">
 			@foreach (var destacado in juegosDestacadosMostrar)
 			{
 				if (destacado != null)
 				{
-					<div class="destacado-juego" @onmouseover="@(e => CargarTooltip(e, destacado))">
-						<a href="game/@destacado.IdMaestra" class="boton-pequeño destacado-fuente" style="padding: 2px;">
+					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM);
+					bool usuarioTieneDeseado = false;
+
+					string fondoColor = string.Empty;
+					string fondoDescuento = "background-color: darkgreen;";
+
+					if (usuarioTieneJuego == true)
+					{
+						fondoColor = "background-color: var(--fondoBien);";
+						fondoDescuento = "backdrop-filter: brightness(70%);";
+					}
+					else
+					{
+						usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true);
+
+						if (usuarioTieneDeseado == true)
+						{
+							fondoColor = "background-color: var(--fondoAlerta);";
+							fondoDescuento = "backdrop-filter: brightness(70%);";
+						}
+					}
+
+					<div @onmouseover="@(e => CargarTooltip(e, destacado))" style="width: 25%;">
+						<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 2px; @fondoColor">
 							<div>
-								<img src="@destacado.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" />
+								<img src="@destacado.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
 							</div>
 							<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
-								<div style="background-color: darkgreen; margin: 0px; padding: 8px 10px;">
+								<div class="destacado-precio" style="margin: 0px; @fondoDescuento">
 									@CargarDescuento(destacado)
 								</div>
-								<div style="padding: 8px 10px;">
+								<div class="destacado-precio">
 									@CargarPrecio(destacado)
 								</div>
 							</div>
@@ -244,7 +267,7 @@
 
 				<div style="padding: 15px; text-align: center;">
 					<label>@tooltipNombre</label>
-					<div style="display: flex; align-items: center; margin-top: 10px; padding: 5px; text-align: center; justify-content: center;">
+					<div style="display: flex; align-items: center; margin-top: 8px; padding: 5px; text-align: center; justify-content: center;">
 						<div style="margin-right: 20px;">
 							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" />
 						</div>
@@ -274,7 +297,7 @@
 @if (noticiasMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
-		<a href="/LastNews" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNews")</a>
+		<a href="/last-news" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNews")</a>
 
 		<a href="@Herramientas.Idiomas.CogerRSS(idioma)" target="_blank" style="margin-left: 20px;"><i class="fa-solid fa-rss"></i></a>		
 	</div>
@@ -298,9 +321,9 @@
 								@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
 								{
 									<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" />
-								}	
+								}
 
-								<label style="font-size: 15px;">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
+								<label class="noticia-categoria">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
 							</div>
 
 							<div class="noticia-fuente">
@@ -314,7 +337,7 @@
 	</div>
 
 	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto; width: 400px;">
-		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastNews">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
 		</a>
 	</div>
@@ -322,7 +345,7 @@
 else
 {
 	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto; width: 700px;">
-		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/LastNews">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsNo")
 		</a>
 	</div>
@@ -366,7 +389,7 @@ else
 @if (juegosMinimosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
-		<a href="/HistoricalLow" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
+		<a href="/historical-lows" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
 
 		<div class="tooltip2" style="margin-left: 20px;">
 			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
@@ -379,8 +402,30 @@ else
 	<div class="tooltip4" onmousemove="hover(event, 'tooltip-minimos')" style="margin-bottom: 25px;">
 		@foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
 		{
+			bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
+			bool usuarioTieneDeseado = false;
+
+			string fondoColor = string.Empty;
+			string fondoDescuento = "background-color: darkgreen;";
+
+			if (usuarioTieneJuego == true)
+			{
+				fondoColor = "background-color: var(--fondoBien);";
+				fondoDescuento = "backdrop-filter: brightness(70%);";
+			}
+			else
+			{
+				usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+
+				if (usuarioTieneDeseado == true)
+				{
+					fondoColor = "background-color: var(--fondoAlerta);";
+					fondoDescuento = "backdrop-filter: brightness(70%);";
+				}
+			}
+
 			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
-				<a class="boton-pequeño" style="padding: 2px;" href="/game/@juego.IdMaestra">
+				<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
 							<img src="@juego.Imagenes.Capsule_231x87" style="height: 100%; width: 100%;" />
@@ -396,7 +441,7 @@ else
 						</div>
 
 						<div style="width: 17%; display: flex; align-items: center; justify-content: center; text-align: center;">
-							<div class="minimo-fuente minimo-espacio2" style="background-color: darkgreen;">
+							<div class="minimo-fuente minimo-espacio2" style="@fondoDescuento">
 								@CargarDescuento(juego)
 							</div>
 
@@ -474,7 +519,7 @@ else
 	</div>
 
 	<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
-		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/HistoricalLow?mode=last">
+		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/historical-lows?mode=last">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
 		</a>
 	</div>
@@ -505,31 +550,62 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
-	[Parameter]
-	public string dominio { get; set; }
-
 	private Usuario usuario = new Usuario();
+	private List<string> juegosUsuario = new List<string>();
 
-	BaseDatos.Avisos.Aviso aviso = null;
+	private BaseDatos.Avisos.Aviso aviso = null;
 
-	List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
-	List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
-	public int cantidadDestacadosMostrar = 6;
-	public int posicionDestacadosMostrar = 0;
-	public int topeAtras = 0;
-	public int topeAdelante = 0;
+	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
+	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
+	private int cantidadDestacadosMostrar = 6;
+	private int posicionDestacadosMostrar = 0;
+	private int topeAtras = 0;
+	private int topeAdelante = 0;
 
-	List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
+	private List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
 
-	List<Noticia> noticiasMostrar = new List<Noticia>();
-	List<Noticia> noticiasGestor = new List<Noticia>();
-	List<Noticia> noticiaEvento = new List<Noticia>();
+	private List<Noticia> noticiasMostrar = new List<Noticia>();
+	private List<Noticia> noticiasGestor = new List<Noticia>();
+	private List<Noticia> noticiaEvento = new List<Noticia>();
 
-	List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
+	private List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
 
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+			{
+				bool tiempo = true;
+
+				if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+				{
+					if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+					{
+						tiempo = false;
+					}
+				}
+
+				if (tiempo == true)
+				{
+					SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+
+					usuario.SteamGames = datos.Juegos;
+					usuario.SteamWishlist = datos.Deseados;
+					usuario.Avatar = datos.Avatar;
+					usuario.Nickname = datos.Nombre;
+					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+					usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.OfficialGroup2 = datos.GrupoNormal;
+
+					await UserManager.UpdateAsync(usuario);
+				}
+			}
+
+			juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+		}
 
 		//------------------------------------------------
 
@@ -558,15 +634,6 @@ else
 					if (juegosDestacadosGestor.Count > 0)
 					{
 						juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
-					}
-
-					foreach (var juego in juegosDestacadosGestor)
-					{
-						try
-						{
-							juego.Imagenes.Library_600x900 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.IdMaestra.ToString(), "library_600x900", dominio);
-						}
-						catch { }
 					}
 
 					for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
@@ -601,15 +668,6 @@ else
 				if (juegosMinimosMostrar.Count > 0)
 				{
 					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
-
-					foreach (global::Juegos.Juego juego in juegosMinimosMostrar)
-					{
-						try
-						{
-							juego.Imagenes.Capsule_231x87 = await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.IdMaestra.ToString(), "capsule_231x87", dominio);
-						}
-						catch { }
-					}
 				}
 			}			
 
@@ -631,15 +689,6 @@ else
 
 					foreach (Noticia noticia in noticiasGestor)
 					{
-						if (noticia.Imagen != null)
-						{
-							try
-							{
-								noticia.Imagen = await Herramientas.Imagenes.DescargarYGuardar(noticia.Imagen, "noticias", noticia.IdMaestra.ToString(), "header", dominio);
-							}
-							catch { }
-						}
-
 						if (noticia.Enlace == null)
 						{
 							noticia.Enlace = "/news/" + noticia.IdMaestra.ToString();

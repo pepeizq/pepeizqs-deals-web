@@ -8,7 +8,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <div class="perfil" style="margin-bottom: 40px; padding: 30px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-	<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="text-decoration: none;" target="_blank">
+	<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="text-decoration: none; width: 100%; color: var(--colorEnlace);" target="_blank">
 		<div style="display: flex; align-items: center; flex-direction: row;">
 			<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
 				<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" />
@@ -24,6 +24,10 @@
 			</div>
 		</div>
 	</a>
+
+	<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px; margin-right: 20px;">
+		<i class="fa-solid fa-link"></i>
+	</a>
 </div>
 
 @if (bundle.Tiers != null)
@@ -34,7 +38,7 @@
 	{
 		foreach (var tier in OrdenarTiers(bundle.Tiers))
 		{
-			<div class="perfil" style="margin-bottom: 40px; padding: 30px;">
+			<div class="perfil" style="margin-bottom: 20px; padding: 5px; background-color: transparent;">
 				@{
 					List<Bundles2.BundleJuego> juegosTier = new List<Bundles2.BundleJuego>();
 
@@ -53,7 +57,7 @@
 
 					if (bundle.Pick == true)
 					{
-						<div style="font-size: 18px; margin-bottom: 10px;">
+						<div style="font-size: 18px; margin-bottom: 20px;">
 							@((MarkupString)MostrarMensajePick(bundle.Tiers))
 						</div>
 					}
@@ -79,12 +83,10 @@
 							}
 						}
 
-						<div style="font-size: 14px; margin-bottom: 10px;">
+						<div style="font-size: 14px; margin-bottom: 20px;">
 							@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String14"): @ArreglarPrecio(totalMinimos)
 						</div>
 					}
-
-					<hr />
 
 					foreach (var juego in juegosTier)
 					{
@@ -145,7 +147,7 @@
 								</div>
 							</div>
 
-							<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; background: transparent; position: relative; @fondoColor">
+							<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; margin-bottom: 20px; position: relative; @fondoColor">
 								<div style="display: flex; align-items: center; padding: 10px;">
 									<div style="text-align: center; width: 17%;">
 										<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
@@ -253,8 +255,6 @@
 								</div>
 							</a>
 						</div>
-
-						<hr />
 					}
 				}
 			</div>
@@ -269,21 +269,21 @@
 
 @code {
 
-	#nullable disable
+    #nullable disable
 
-	[Parameter]
-	public string idioma { get; set; }
+    [Parameter]
+    public string idioma { get; set; }
 
-	[Parameter]
-	public int bundleId { get; set; }
+    [Parameter]
+    public int bundleId { get; set; }
 
-	public Bundles2.Bundle bundle = new Bundles2.Bundle();
+    public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-	private Usuario usuario = new Usuario();
-	private List<string> juegosUsuario = new List<string>();
+    private Usuario usuario = new Usuario();
+    private List<string> juegosUsuario = new List<string>();
 
-	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
 		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
 		foreach (var juego in bundle.Juegos)
