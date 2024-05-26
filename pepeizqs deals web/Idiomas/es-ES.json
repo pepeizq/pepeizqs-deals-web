@@ -585,7 +585,7 @@
   },
   {
     "Id": "Bundles.String3",
-    "Valor": "Abrir el Bundle"
+    "Valor": "Abrir Bundle"
   },
   {
     "Id": "Bundles.String4",
@@ -1098,6 +1098,10 @@
   {
     "Id": "SettingsLayout.String7",
     "Valor": "Grupos para Sorteos"
+  },
+  {
+    "Id": "Account.Title",
+    "Valor": "Cuenta"
   },
   {
     "Id": "Settings.String1",

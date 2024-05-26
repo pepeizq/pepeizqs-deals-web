@@ -123,7 +123,7 @@
 			{
 				if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
 				{
-					SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+					SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
 
 					usuario.SteamGames = datos.Juegos;
 					usuario.SteamWishlist = datos.Deseados;

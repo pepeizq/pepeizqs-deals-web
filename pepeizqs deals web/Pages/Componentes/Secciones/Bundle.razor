@@ -7,27 +7,28 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div class="perfil" style="margin-bottom: 40px; padding: 30px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-	<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="text-decoration: none; width: 100%; color: var(--colorEnlace);" target="_blank">
-		<div style="display: flex; align-items: center; flex-direction: row;">
+<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+	<div style="display: flex; align-items: center; flex-direction: row;">
+		<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
 			<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
-				<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" />
+				<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
 			</div>
+		</a>
 
-			<div style="padding-left: 20px; padding-right: 20px;">
-				<div style="font-size: 18px; margin-bottom: 5px;">
-					@bundle.NombreBundle
-				</div>
-				<div>
-					@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
-				</div>
+		<div style="padding-left: 20px; padding-right: 20px;">
+			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
+				@bundle.NombreBundle
+			</a>
+
+			<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
+				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+				</a>
+
+				@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
 			</div>
 		</div>
-	</a>
-
-	<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px; margin-right: 20px;">
-		<i class="fa-solid fa-link"></i>
-	</a>
+	</div>
 </div>
 
 @if (bundle.Tiers != null)
@@ -148,13 +149,13 @@
 							</div>
 
 							<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; margin-bottom: 20px; position: relative; @fondoColor">
-								<div style="display: flex; align-items: center; padding: 10px;">
+								<div style="display: flex; align-items: center; padding: 2px;">
 									<div style="text-align: center; width: 17%;">
 										<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
 									</div>
 
 									<div style="padding-left: 20px; padding-right: 20px; text-align: left;">
-										<div style="margin-bottom: 10px; font-size: 17px;">
+										<div style="margin-bottom: 7px; font-size: 17px;">
 											@juego.Nombre
 										</div>
 
@@ -172,7 +173,7 @@
 										</div>
 									</div>
 
-									<div style="margin-left: auto; margin-right: 5px; display: flex; align-items: center;">
+									<div style="margin-left: auto; margin-right: 15px; display: flex; align-items: center;">
 										@{
 											if (juego.Juego.PrecioMinimosHistoricos != null)
 											{
@@ -311,7 +312,7 @@
 
 				if (tiempo == true)
 				{
-					SteamUsuario datos = await Cuenta.CargarDatos(usuario.SteamAccount);
+					SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
 
 					usuario.SteamGames = datos.Juegos;
 					usuario.SteamWishlist = datos.Deseados;

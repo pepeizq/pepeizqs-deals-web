@@ -10,7 +10,13 @@
 	</div>
 	
 	<div style="display: flex; align-items: center;">
-		<textarea @onchange="(e => TextoCambiaBundle(e))" class="entrada-texto" rows="16">@textoBundle</textarea>
+		<div style="width: 15%; padding-right: 20px; text-align: right;">
+			Nombre
+		</div>
+
+		<div style="width: 85%;">
+			<textarea @onchange="(e => TextoCambiaNombre(e))" class="entrada-texto" rows="1">@textoNombre</textarea>
+		</div>	
 	</div>
 </div>
 
@@ -26,7 +32,7 @@
 
     public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-    private string textoBundle = string.Empty;
+    private string textoNombre = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,10 +40,10 @@
 
         bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
-        textoBundle = JsonConvert.SerializeObject(bundle);
+        textoNombre = bundle.NombreBundle;
 	}
 
-	private void TextoCambiaBundle(ChangeEventArgs texto)
+	private void TextoCambiaNombre(ChangeEventArgs texto)
 	{
 		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
 		{
@@ -47,8 +53,7 @@
 
 			using (conexion)
 			{
-				Bundles2.Bundle nuevoBundle = JsonConvert.DeserializeObject<Bundles2.Bundle>(nuevoTexto);
-				BaseDatos.Bundles.Actualizar.Ejecutar(nuevoBundle, conexion);
+				BaseDatos.Bundles.Actualizar.Nombre(bundleId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

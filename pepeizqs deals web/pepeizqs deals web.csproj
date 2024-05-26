@@ -107,6 +107,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\account.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tareas.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Bundle.razor" />
@@ -139,6 +140,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Bundle.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\account.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -28,9 +28,33 @@ namespace BaseDatos.Bundles
 				comando.Parameters.AddWithValue("@pick", bundle.Pick.ToString());
 				comando.Parameters.AddWithValue("@imagenNoticia", bundle.ImagenNoticia);
 
+				comando.ExecuteNonQuery();
 				try
 				{
-					comando.ExecuteNonQuery();
+					
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void Nombre(string id, string nombre, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE bundles " +
+					"SET nombre=@nombre " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@nombre", nombre);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+					
 				}
 				catch
 				{

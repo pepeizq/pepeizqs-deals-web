@@ -1,0 +1,160 @@
+﻿@using APIs.Steam
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+@using pepeizqs_deals_web.Areas.Identity.Data
+@using Toolbelt.Blazor.HeadElement
+
+@attribute [IgnoreAntiforgeryToken]
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavManager
+
+<Title>
+   @titulo • pepeizq's deals
+</Title>
+
+<Meta Property="og:title" Content="@titulo" />
+
+@if (usuarioConectado == true)
+{
+	<div class="perfil">
+		<div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String1")</div>
+
+		<hr />
+
+		<div style="display: flex; flex-wrap: wrap;">
+			<div style="width: 25%; display: flex; flex-wrap: wrap; flex-direction: column;">
+				<a class="perfil-lateral" @onclick="(e => MostrarCorreo(e))">
+					<div style="display: flex; align-items: center;">
+						<i class="fa-solid fa-envelope" style="width: 20px;"></i>
+
+						<span style="margin-left: 15px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "SettingsLayout.String1")
+						</span>
+					</div>
+				</a>
+				<a class="perfil-lateral" id="email" asp-page="./Email">
+					<div style="display: flex; align-items: center;">
+						<i class="fa-solid fa-envelope" style="width: 20px;"></i>
+
+						<span style="margin-left: 15px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "SettingsLayout.String1")
+						</span>
+					</div>
+				</a>
+
+				<hr/>
+
+				<a class="perfil-lateral" @onclick="(e => Desconectar(e))">
+					<div style="display: flex; align-items: center;">
+						<i class="fa-solid fa-envelope" style="width: 20px;"></i>
+
+						<span style="margin-left: 15px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "SettingsLayout.String1")
+						</span>
+					</div>
+				</a>
+			</div>
+
+			<div style="width: 75%;">
+				@if (mostrarCorreo == true)
+				{
+					
+				}
+			</div>
+		</div>
+
+	</div>
+}
+else
+{
+	
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+	private bool usuarioConectado = false;
+
+	private string titulo = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+		if (usuario != null)
+		{
+			usuarioConectado = true;
+
+			if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+			{
+				bool tiempo = true;
+
+				if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+				{
+					if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+					{
+						tiempo = false;
+					}
+				}
+
+				if (tiempo == true)
+				{
+					SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+
+					usuario.SteamGames = datos.Juegos;
+					usuario.SteamWishlist = datos.Deseados;
+					usuario.Avatar = datos.Avatar;
+					usuario.Nickname = datos.Nombre;
+					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+					usuario.OfficialGroup = datos.GrupoPremium;
+					usuario.OfficialGroup2 = datos.GrupoNormal;
+
+					await UserManager.UpdateAsync(usuario);
+				}
+			}
+		}
+	}
+
+	private void CerrarPestañas()
+	{
+		titulo = null;
+
+		mostrarCorreo = false;
+	}
+
+	#region Correo
+
+	private bool mostrarCorreo = false;
+
+	private void MostrarCorreo(MouseEventArgs e)
+	{
+		CerrarPestañas();
+
+		mostrarCorreo = true;
+	}
+
+	#endregion
+
+	#region Desconectar
+
+	private async void Desconectar(MouseEventArgs e)
+	{
+		if (usuarioConectado == true)
+		{
+			await SignInManager.SignOutAsync();
+
+			NavManager.NavigateTo("/", true);
+		}
+	}
+
+	#endregion
+}

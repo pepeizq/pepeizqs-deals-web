@@ -1,0 +1,9 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.FreeModel
+
+@{
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Account.Title");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Cuenta>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma }))

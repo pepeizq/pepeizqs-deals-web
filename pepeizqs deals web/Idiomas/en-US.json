@@ -589,7 +589,7 @@
   },
   {
     "Id": "Bundles.String3",
-    "Valor": "Open the Bundle"
+    "Valor": "Open Bundle"
   },
   {
     "Id": "Bundles.String4",
@@ -1102,6 +1102,10 @@
   {
     "Id": "SettingsLayout.String7",
     "Valor": "Groups for Giveaways"
+  },
+  {
+    "Id": "Account.Title",
+    "Valor": "Change your account settings"
   },
   {
     "Id": "Settings.String1",
