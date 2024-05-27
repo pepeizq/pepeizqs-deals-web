@@ -295,7 +295,7 @@ namespace Tareas
                                                                 {
                                                                     juegosMinimosMostrar.Add(juegoConMinimo);
 
-                                                                    if (juegosMinimosMostrar.Count == 80)
+                                                                    if (juegosMinimosMostrar.Count >= 80)
                                                                     {
                                                                         break;
                                                                     }

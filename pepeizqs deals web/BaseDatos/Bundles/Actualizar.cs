@@ -62,5 +62,51 @@ namespace BaseDatos.Bundles
 				}
 			}
 		}
+
+		public static void FechaEmpieza(string id, string fechaEmpieza, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE bundles " +
+					"SET fechaEmpieza=@fechaEmpieza " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@fechaEmpieza", fechaEmpieza);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void Juegos(string id, string juegos, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE bundles " +
+					"SET juegos=@juegos " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@juegos", juegos);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }

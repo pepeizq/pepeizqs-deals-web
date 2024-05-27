@@ -9,7 +9,6 @@ using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -176,6 +175,8 @@ builder.Services.AddControllersWithViews();
 //	serverOptions.AllowSynchronousIO = true;
 //});
 
+builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
@@ -224,8 +225,15 @@ app.MapRazorPages();
 
 app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
 
-app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Redireccionador}/{action=CogerBundleId}/{id?}");
+//app.MapControllerRoute(
+//		name: "bundle",
+//		pattern: "{controller=Redireccionador}/{action=Bundle}/{id?}");
+
+app.UseMvc(rutas =>
+{
+    rutas.MapRoute(
+	    name: "default",
+	    template: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();

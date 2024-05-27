@@ -2,46 +2,76 @@
 @using Microsoft.Data.SqlClient
 @using Newtonsoft.Json
 
-<div style="padding: 20px; background: var(--fondoCuerpo); margin-bottom: 50px;">
-	<div style="display: flex; align-items: center; margin-bottom: 20px;">
-		<div style="width: 100%;">
-			Admin Editar • @bundle.NombreBundle
-		</div>
-	</div>
-	
-	<div style="display: flex; align-items: center;">
-		<div style="width: 15%; padding-right: 20px; text-align: right;">
-			Nombre
+@if (bundle != null)
+{
+	<div style="padding: 20px; background: var(--fondoCuerpo);">
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 100%;">
+				Admin Editar • @bundle.NombreBundle
+			</div>
 		</div>
 
-		<div style="width: 85%;">
-			<textarea @onchange="(e => TextoCambiaNombre(e))" class="entrada-texto" rows="1">@textoNombre</textarea>
-		</div>	
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Nombre
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaNombre(e))" class="entrada-texto" rows="1">@textoNombre</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Fecha Empieza
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaFechaEmpieza(e))" class="entrada-texto" rows="1">@textoFechaEmpieza</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Juegos
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaJuegos(e))" class="entrada-texto" rows="5">@textoJuegos</textarea>
+			</div>
+		</div>
 	</div>
-</div>
+
+	<hr/>
+}
 
 @code {
 
-    #nullable disable
+	#nullable disable
 
-    [Parameter]
-    public string idioma { get; set; }
+	[Parameter]
+	public string idioma { get; set; }
 
-    [Parameter]
-    public int bundleId { get; set; }
+	[Parameter]
+	public int bundleId { get; set; }
 
-    public Bundles2.Bundle bundle = new Bundles2.Bundle();
+	public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-    private string textoNombre = string.Empty;
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(10);
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(10);
+		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
-        bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
-
-        textoNombre = bundle.NombreBundle;
+		if (bundle != null)
+		{
+			textoNombre = bundle.NombreBundle;
+			textoFechaEmpieza = bundle.FechaEmpieza.ToString();
+			textoJuegos = JsonConvert.SerializeObject(bundle.Juegos);
+		}
 	}
+
+	private string textoNombre = string.Empty;
 
 	private void TextoCambiaNombre(ChangeEventArgs texto)
 	{
@@ -54,6 +84,40 @@
 			using (conexion)
 			{
 				BaseDatos.Bundles.Actualizar.Nombre(bundleId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoFechaEmpieza = string.Empty;
+
+	private void TextoCambiaFechaEmpieza(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Bundles.Actualizar.FechaEmpieza(bundleId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoJuegos = string.Empty;
+
+	private void TextoCambiaJuegos(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

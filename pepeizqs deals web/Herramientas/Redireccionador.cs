@@ -4,9 +4,22 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Noticias;
+using pepeizqs_deals_web.Pages;
 
 namespace Herramientas
 {
+	public class RedireccionadorController : Controller
+	{
+		[HttpGet("bundle/{Id}")]
+		public IActionResult Bundle([FromQuery] int Id)
+		{
+			BundleModel2 bundleModel2 = new BundleModel2();
+			bundleModel2.Id = Id;
+
+			return View(bundleModel2);
+		}
+	}
+
 	public class Redireccionador : Controller
 	{
 		[ResponseCache(Duration = 2000)]
@@ -35,7 +48,7 @@ namespace Herramientas
 
                     if (juego != null)
                     {
-                        return Content(JsonConvert.SerializeObject(juego));
+                        return Ok(juego);
                     }
                 }
 			}
@@ -66,12 +79,12 @@ namespace Herramientas
 			return Redirect("~/news?id=" + Id.ToString());
 		}
 
-		[ResponseCache(Duration = 2000)]
-		[HttpGet("bundle/{id}")]
-		public IActionResult CogerBundleId(int Id)
-		{
-			return Redirect("~/bundle?id=" + Id.ToString());
-		}
+		//[ResponseCache(Duration = 2000)]
+		//[HttpGet("bundle/{id}")]
+		//public IActionResult CogerBundleId(int Id)
+		//{
+		//	return Redirect("~/bundle?id=" + Id.ToString());
+		//}
 
 		[HttpGet("news-rss")]
         public IActionResult CogerNoticiasRSS()
