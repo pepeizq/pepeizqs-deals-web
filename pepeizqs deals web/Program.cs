@@ -175,8 +175,6 @@ builder.Services.AddControllersWithViews();
 //	serverOptions.AllowSynchronousIO = true;
 //});
 
-builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
-
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
@@ -224,16 +222,5 @@ app.UseStaticFiles();
 app.MapRazorPages();
 
 app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
-
-//app.MapControllerRoute(
-//		name: "bundle",
-//		pattern: "{controller=Redireccionador}/{action=Bundle}/{id?}");
-
-app.UseMvc(rutas =>
-{
-    rutas.MapRoute(
-	    name: "default",
-	    template: "{controller=Home}/{action=Index}/{id?}");
-});
 
 app.Run();

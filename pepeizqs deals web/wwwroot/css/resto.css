@@ -336,11 +336,6 @@
     width: 32px;
 }
 
-.juego-analisis-texto2 {
-    margin-bottom: 10px;
-    text-align: center;
-}
-
 .juego-boton-pequeño {
     color: var(--colorTexto);
     background-color: var(--fondoBotonPequeño);

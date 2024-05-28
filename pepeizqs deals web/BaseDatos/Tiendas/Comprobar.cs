@@ -311,6 +311,13 @@ namespace BaseDatos.Tiendas
 											juego.SlugGOG = slugGOG;
 										}
 									}
+									else
+									{
+										if (slugGOG != null)
+										{
+											juego.SlugGOG = slugGOG;
+										}
+									}
 
 									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
 								}

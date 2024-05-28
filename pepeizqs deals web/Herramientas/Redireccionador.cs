@@ -4,57 +4,52 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Noticias;
-using pepeizqs_deals_web.Pages;
 
 namespace Herramientas
 {
-	public class RedireccionadorController : Controller
-	{
-		[HttpGet("bundle/{Id}")]
-		public IActionResult Bundle([FromQuery] int Id)
-		{
-			BundleModel2 bundleModel2 = new BundleModel2();
-			bundleModel2.Id = Id;
-
-			return View(bundleModel2);
-		}
-	}
-
 	public class Redireccionador : Controller
 	{
-		[ResponseCache(Duration = 2000)]
-		[HttpGet("game/{id}")]
-		public IActionResult CogerJuegoId(int Id)
+		[ResponseCache(Duration = 5000)]
+		[HttpGet("api/game/{id}")]
+		public IActionResult ApiJuego(int Id)
 		{
-			return Redirect("~/game?id=" + Id.ToString());
-		}
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(Id.ToString());
 
-		[ResponseCache(Duration = 2000)]
-		[HttpGet("steam/{id}")]
-		public IActionResult CogerJuegoIdSteam(int Id)
-		{
-			return Redirect("~/game?idSteam=" + Id.ToString());
-		}
-
-		[ResponseCache(Duration = 2000)]
-		[HttpGet("api/{id}")]
-		public IActionResult CogerApiId(int Id)
-		{
-            if (User.Identity.IsAuthenticated == true)
+			if (juego != null)
 			{
-				if (global::BaseDatos.Usuarios.Buscar.RolDios(User.Identity.Name) == true)
-				{
-                    Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(Id.ToString());
-
-                    if (juego != null)
-                    {
-                        return Ok(juego);
-                    }
-                }
+				return Ok(juego);
 			}
 
-            return Redirect("~/");
+			return Redirect("~/");
         }
+
+		[ResponseCache(Duration = 5000)]
+		[HttpGet("api/steam/{id}")]
+		public IActionResult ApiJuegoSteam(int Id)
+		{
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(null, Id.ToString());
+
+			if (juego != null)
+			{
+				return Ok(juego);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 5000)]
+		[HttpGet("api/gog/{id}")]
+		public IActionResult ApiJuegoGog(string Id)
+		{
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(null, null, Id);
+
+			if (juego != null)
+			{
+				return Ok(juego);
+			}
+
+			return Redirect("~/");
+		}
 
 		[ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
@@ -78,13 +73,6 @@ namespace Herramientas
 		{
 			return Redirect("~/news?id=" + Id.ToString());
 		}
-
-		//[ResponseCache(Duration = 2000)]
-		//[HttpGet("bundle/{id}")]
-		//public IActionResult CogerBundleId(int Id)
-		//{
-		//	return Redirect("~/bundle?id=" + Id.ToString());
-		//}
 
 		[HttpGet("news-rss")]
         public IActionResult CogerNoticiasRSS()

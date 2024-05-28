@@ -6,30 +6,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace pepeizqs_deals_web.Pages
 {
-    public class GameModel : PageModel
-    {
+	public class gogModel : PageModel
+	{
 		public string idioma = string.Empty;
 
 		public Juego juego = JuegoCrear.Generar();
 
 		[BindProperty(SupportsGet = true)]
-		public int id { get; set; }
+		public string id { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		public string nombre { get; set; }
 
 		public void OnGet()
-        {
+		{
 			try
 			{
 				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 			}
 			catch { }
 
-			if (id > 0)
+			if (string.IsNullOrEmpty(id) == false)
 			{
-				juego = BaseDatos.Juegos.Buscar.UnJuego(id);
-			}			
+				juego = BaseDatos.Juegos.Buscar.UnJuego(null, null, id);
+			}
 		}
 	}
 }

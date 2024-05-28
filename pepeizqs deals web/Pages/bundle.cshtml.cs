@@ -1,6 +1,5 @@
 #nullable disable
 
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,9 +11,13 @@ namespace pepeizqs_deals_web.Pages
 
         public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-		public string id = string.Empty;
+		[BindProperty(SupportsGet = true)]
+		public int id { get; set; }
 
-        public void OnGet()
+		[BindProperty(SupportsGet = true)]
+		public string nombre { get; set; }
+
+		public void OnGet()
         {
             try
             {
@@ -22,17 +25,10 @@ namespace pepeizqs_deals_web.Pages
             }
             catch { }
 
-            //id = Request.Query["id"].ToString();
-
-            if (string.IsNullOrEmpty(id) == false)
+            if (id > 0)
             {
-                bundle = BaseDatos.Bundles.Buscar.UnBundle(int.Parse(id));
-            }
+                bundle = BaseDatos.Bundles.Buscar.UnBundle(id);
+			}
 		}
-    }
-
-    public class BundleModel2
-    {
-        public int Id { get; set; }
     }
 }

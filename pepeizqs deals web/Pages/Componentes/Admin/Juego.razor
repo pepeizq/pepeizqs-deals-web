@@ -11,7 +11,7 @@
 			Admin Editar • @juego.Nombre
 		</div>
 		
-		<a href="/api/@juego.Id" target="_blank" style="padding: 10px 15px; text-decoration: none;">
+		<a href="/api/game/@juego.Id" target="_blank" style="padding: 10px 15px; text-decoration: none;">
 			Api
 		</a>
 	</div>
@@ -157,10 +157,10 @@
 				<div style="width: 20%; padding: 0px 30px; text-align: right;">
 					<label>FreeToPlay</label>
 				</div>
-				<div style="width: 10%;">
+				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" value="@textoF2P" />
 				</div>
-				<div style="width: 70%; padding: 0px 30px;">
+				<div style="width: 60%; padding: 0px 30px;">
 					<label>(true si es F2P)</label>
 				</div>
 			</div>
@@ -169,10 +169,10 @@
 				<div style="width: 20%; padding: 0px 30px; text-align: right;">
 					<label>Id Steam</label>
 				</div>
-				<div style="width: 10%;">
+				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
 				</div>
-				<div style="width: 70%; padding: 0px 30px;">
+				<div style="width: 60%; padding: 0px 30px;">
 					<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
 						Actualizar
 					</button>
@@ -181,12 +181,21 @@
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
 				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+					<label>Slug GOG</label>
+				</div>
+				<div style="width: 20%;">
+					<input type="text" @oninput="TextoCambiaSlugGOG" class="entrada-texto" value="@slugGOG" />
+				</div>
+			</div>
+
+			<div style="display: flex; align-items: center; margin-top: 20px;">
+				<div style="width: 20%; padding: 0px 30px; text-align: right;">
 					<label>Tipo</label>
 				</div>
-				<div style="width: 10%;">
+				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
 				</div>
-				<div style="width: 70%; padding: 0px 30px;">
+				<div style="width: 60%; padding: 0px 30px;">
 					<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
 				</div>
 			</div>
@@ -206,12 +215,10 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public string dominio { get; set; }
-
-	[Parameter]
 	public Juegos.Juego juego { get; set; }
 
 	private string idSteam = string.Empty;
+	private string slugGOG = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -239,6 +246,11 @@
 		{
 			idSteam = juego.IdSteam.ToString();
 		}	
+
+		if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+		{
+			slugGOG = juego.SlugGOG;
+		}
 
 		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 		{
@@ -304,7 +316,7 @@
 		}
 	}
 
-	private async void TextoCambiaImagenOrigen(ChangeEventArgs texto)
+	private void TextoCambiaImagenOrigen(ChangeEventArgs texto)
 	{
 		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
 		{
@@ -315,27 +327,22 @@
 			if (pestañaMostrarImagenes == 1)
 			{			
 				juego.Imagenes.Capsule_231x87 = nuevoTexto;
-				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", dominio);
 			}
 			else if (pestañaMostrarImagenes == 2)
 			{
 				juego.Imagenes.Header_460x215 = nuevoTexto;
-				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, "juegos", juego.Id.ToString(), "header_460x215", dominio);
 			}
 			else if (pestañaMostrarImagenes == 3)
 			{
 				juego.Imagenes.Library_600x900 = nuevoTexto;
-				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", dominio);
 			}
 			else if (pestañaMostrarImagenes == 4)
 			{
 				juego.Imagenes.Library_1920x620 = nuevoTexto;
-				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_1920x620, "juegos", juego.Id.ToString(), "library_1920x620", dominio);
 			}
 			else if (pestañaMostrarImagenes == 5)
 			{
 				juego.Imagenes.Logo = nuevoTexto;
-				await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Logo, "juegos", juego.Id.ToString(), "logo", dominio);
 			}
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
@@ -582,6 +589,24 @@
 				BaseDatos.Juegos.Actualizar.IdSteam(juego, conexion);
 
 				await ActualizarDatosSteamApi();
+			}
+		}
+	}
+
+	private void TextoCambiaSlugGOG(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			slugGOG = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.SlugGOG = slugGOG;
+				BaseDatos.Juegos.Actualizar.SlugGOG(juego, conexion);
 			}
 		}
 	}

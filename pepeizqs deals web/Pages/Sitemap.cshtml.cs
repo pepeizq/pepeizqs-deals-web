@@ -69,30 +69,30 @@ namespace pepeizqs_deals_web.Pages
 
 			#region Noticias
 
-			//List<Noticias.Noticia> noticias = BaseDatos.Noticias.Buscar.Todas();
+			List<Noticias.Noticia> noticias = BaseDatos.Noticias.Buscar.Todas();
 
-			//foreach (Noticias.Noticia noticia in noticias)
-			//{
-   //             DateTime fechaTemporal = noticia.FechaEmpieza;
-   //             fechaTemporal = fechaTemporal.AddDays(3);
+			foreach (Noticias.Noticia noticia in noticias)
+			{
+				DateTime fechaTemporal = noticia.FechaEmpieza;
+				fechaTemporal = fechaTemporal.AddDays(3);
 
-			//	if (fechaTemporal > DateTime.Now)
-			//	{
-   //                 string texto = "<url>" + Environment.NewLine +
-   //                 "<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "</loc>" + Environment.NewLine +
-   //                 "<news:news>" + Environment.NewLine +
-   //                 "<news:publication>" + Environment.NewLine +
-   //                 "<news:name>pepeizq's deals</news:name>" + Environment.NewLine +
-   //                 "<news:language>en</news:language>" + Environment.NewLine +
-   //                 "</news:publication>" + Environment.NewLine +
-   //                 "<news:publication_date>" + noticia.FechaEmpieza.ToString("yyyy-MM-dd") + "</news:publication_date>" + Environment.NewLine +
-   //                 "<news:title>" + noticia.TituloEn + "</news:title>" + Environment.NewLine +
-   //                 "</news:news>" + Environment.NewLine +
-   //                 "</url>";
+				if (fechaTemporal > DateTime.Now)
+				{
+					string texto = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "</loc>" + Environment.NewLine +
+					"<news:news>" + Environment.NewLine +
+					"<news:publication>" + Environment.NewLine +
+					"<news:name>pepeizq's deals</news:name>" + Environment.NewLine +
+					"<news:language>en</news:language>" + Environment.NewLine +
+					"</news:publication>" + Environment.NewLine +
+					"<news:publication_date>" + noticia.FechaEmpieza.ToString("yyyy-MM-dd") + "</news:publication_date>" + Environment.NewLine +
+					"<news:title>" + noticia.TituloEn + "</news:title>" + Environment.NewLine +
+					"</news:news>" + Environment.NewLine +
+					"</url>";
 
-   //                 sb.Append(texto);
-   //             }
-			//}
+					sb.Append(texto);
+				}
+			}
 
 			#endregion
 

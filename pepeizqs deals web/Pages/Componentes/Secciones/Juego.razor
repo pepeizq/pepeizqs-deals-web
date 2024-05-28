@@ -4,6 +4,7 @@
 @using Juegos
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
 @using Microsoft.VisualBasic
 @using Newtonsoft.Json
 @using Suscripciones2
@@ -14,22 +15,29 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IJSRuntime JS
+
+<script>
+	window.ChangeUrl = function (url) {
+		history.pushState(null, '', url);
+	}
+</script>
 
 <div>
 	@if (juego.Tipo == JuegoTipo.Game)
 	{
-		<img class="juego-fondo" src="@Imagenes.DescargarYGuardar(juego.Imagenes.Library_1920x620, "juegos", juego.Id.ToString(), "library_1920x620", dominio).Result"/>
+		<img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre"/>
 	}
 
 	<div class="juego-contenido">
 		<div class="perfil-espacio-bottom juego-cabecera" style="position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
 			<div class="perfil-flexible-centrado">
 				<div class="juego-flexible-izquierda">
-					<img src="@Imagenes.DescargarYGuardar(LimpiarImagenJuego(juego.Imagenes.Header_460x215), "juegos", juego.Id.ToString(), "header_460x215", dominio).Result" class="juego-imagen" />
+					<img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" />
 				</div>
 				
 				<div class="juego-titulo">
-					<div>@juego.Nombre</div>
+					<h1 style="font-size: 20px;">@juego.Nombre</h1>
 
 					<div style="margin-right: 10px; margin-top: 10px; display: flex; align-items: center;">
 						<div style="margin-right: 5px; display: flex; align-items: center;">
@@ -47,7 +55,7 @@
 										{
 											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px; margin-right: 10px">
 												<div style="display: flex; align-items: center;">
-													<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" />
+													<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" alt="DRM"/>
 												</div>
 											</button>
 										}
@@ -91,29 +99,29 @@
 					{
 						@if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
 						{
-							<div style="font-size: 14px; margin-bottom: 15px;">
-								<div class="tooltip2 juego-analisis-display">
-									<div style="display: flex; align-items: center;">
+							<div style="font-size: 14px; margin-bottom: 15px; flex: 0 0 auto;">
+								<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-reviews')">
+									<div style="display: flex; align-items: center; justify-content: right;">
 										@if (int.Parse(juego.Analisis.Porcentaje) > 74)
 										{
-											<img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" />
+											<img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" alt="Reviews"/>
 										}
 
 										@if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
 										{
-											<img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" />
+											<img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" alt="Reviews" />
 										}
 
 										@if (int.Parse(juego.Analisis.Porcentaje) < 50)
 										{
-											<img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" />
+											<img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" alt="Reviews" />
 										}
 
 										<div style="margin-left: 10px;">@juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)</div>
 									</div>
 
-									<div class="tooltip-abrir tooltip-abajo" style="padding: 20px; width: 100%;">
-										<div class="juego-analisis-texto2">@Idiomas.CogerCadena(idioma, "Game.String2")</div>
+									<div id="tooltip-reviews" class="tooltip-relleno">
+										<div style="margin: 8px;">@Idiomas.CogerCadena(idioma, "Game.String2")</div>
 									</div>
 								</div>
 							</div>
@@ -126,17 +134,17 @@
 							<div>
 								@if (juego.Caracteristicas.Windows == true)
 								{
-									<img src="/imagenes/sistemas/windows.webp" />
+									<img src="/imagenes/sistemas/windows.webp" alt="System" />
 								}
 
 								@if (juego.Caracteristicas.Mac == true)
 								{
-									<img src="/imagenes/sistemas/mac.webp" />
+									<img src="/imagenes/sistemas/mac.webp" alt="System" />
 								}
 
 								@if (juego.Caracteristicas.Linux == true)
 								{
-									<img src="/imagenes/sistemas/linux.webp" />
+									<img src="/imagenes/sistemas/linux.webp" alt="System" />
 								}
 							</div>
 						}												
@@ -302,10 +310,8 @@
 								}
 								else
 								{
-									<img src="@JuegoDRM2.SacarImagen(drm)" />
+									<img src="@JuegoDRM2.SacarImagen(drm)" alt="DRM"/>
 								}
-
-
 							</div>
 
 							<div class="perfil" style="width: 90%;">
@@ -344,7 +350,7 @@
 										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 											<div class="perfil-flexible-centrado">
 												<div>
-													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" />
+													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store"/>
 													<span style="margin-left: 15px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
 												</div>
 												
@@ -403,11 +409,11 @@
 								<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
 									<div style="display: flex; align-items: center;">
 										<div style="margin-right: 15px;">
-											<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+											<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
 										</div>
 
 										<div style="margin-right: 30px;">
-											<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
+											<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 										</div>
 
 										<div style="margin-right: 20px; width: 100%;">
@@ -450,11 +456,11 @@
 							<a class="juego-boton-pequeño" href="/bundle/@bundle2.BundleId.ToString()" style="font-size: 17px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
 								<div style="display: flex; align-items: center;">
 									<div style="margin-right: 15px;">
-										<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+										<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
 									</div>
 
 									<div style="margin-right: 30px;">
-										<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" />
+										<img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 									</div>
 
 									<div style="margin-right: 20px; width: 100%;">
@@ -488,11 +494,11 @@
 						<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
 							<div style="display: flex; align-items: center;">
 								<div style="margin-right: 15px;">
-									<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+									<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
 								</div>
 
 								<div style="margin-right: 30px;">
-									<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" />
+									<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 								</div>
 
 								<div style="margin-right: 20px; width: 100%;">
@@ -523,11 +529,11 @@
 						<hr/>
 						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
 							<div style="margin-right: 15px; width: 22px; height: 22px;">
-								<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+								<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
 							</div>
 
 							<div style="margin-right: 30px; width: 22px; height: 22px;">
-								<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" />
+								<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 							</div>
 
 							<div style="padding-right: 20px; width: 15%;">
@@ -559,11 +565,11 @@
 						<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(suscripcion2.Enlace, suscripcion2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
 							<div style="display: flex; align-items: center;">
 								<div style="margin-right: 15px;">
-									<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+									<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription"/>
 								</div>
 
 								<div style="margin-right: 30px;">
-									<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" />
+									<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 								</div>
 
 								<div style="margin-right: 20px; width: 100%;">
@@ -595,11 +601,11 @@
 						<hr />
 						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
 							<div style="margin-right: 15px; width: 22px; height: 22px;">
-								<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+								<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" />
 							</div>
 
 							<div style="margin-right: 30px; width: 22px; height: 22px;">
-								<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" />
+								<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 							</div>
 
 							<div style="padding-right: 20px; width: 15%;">
@@ -634,7 +640,7 @@
 								{
 									<div>
 										<div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @(juego.Media.Capturas.Count)</div>
-										<img src="@Imagenes.DescargarYGuardar(mediaMostrar, "juegos", juego.Id.ToString(), "captura" + mediaMostrarPosicion.ToString(), dominio).Result" style="width: 100%;">
+										<img src="@mediaMostrar" style="width: 100%;" alt="@juego.Nombre">
 									</div>
 
 									<a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
@@ -648,7 +654,7 @@
 											if (juego.Media.Video != null)
 											{
 												<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
-													<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, "juegos", juego.Id.ToString(), "miniaturaVideo", dominio).Result" style="width: 100%;">
+													<img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre">
 													<i class="fa-solid fa-circle-play" style="position: absolute; font-size: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: pointer;"></i>
 												</div>
 											}
@@ -659,7 +665,7 @@
 												int nuevaPosicion = i;
 
 												<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
-													<img class="juego-galeria-capturas juego-galeria-cursor" src="@Imagenes.DescargarYGuardar(juego.Media.Miniaturas[i], "juegos", juego.Id.ToString(), "miniatura" + i.ToString(), dominio).Result" style="width: 100%;">
+													<img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre">
 												</div>
 
 												i += 1;
@@ -768,7 +774,7 @@
 					<a class="juego-boton-pequeño" href="/game/@dlc.Id" target="_blank" style="font-size: 16px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; padding: 0px;">
 						<div style="display: flex; align-items: center;">
 							<div style="margin-right: 20px;">
-								<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" />
+								<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
 							</div>
 
 							<div style="margin-right: 20px; width: 100%;">
@@ -799,9 +805,6 @@
 
 	[Parameter]
 	public string idioma { get; set; }
-
-	[Parameter]
-	public string dominio { get; set; }
 
 	[Parameter]
 	public Juegos.Juego juego { get; set; }
@@ -845,6 +848,17 @@
 					}
 				}
 			}			
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (juego != null)
+			{
+				await JS.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+			}
 		}
 	}
 

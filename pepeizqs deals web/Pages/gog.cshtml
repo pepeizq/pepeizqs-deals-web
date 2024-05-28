@@ -1,0 +1,12 @@
+﻿@page "/gog/{id}/{nombre?}"
+
+@model pepeizqs_deals_web.Pages.gogModel
+
+@{
+	#nullable disable
+
+	ViewData["Title"] = Model.juego.Nombre;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego }))

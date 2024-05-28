@@ -1,11 +1,19 @@
 ﻿@using APIs.Steam
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IJSRuntime JS
+
+<script>
+	window.ChangeUrl = function (url) {
+		history.pushState(null, '', url);
+	}
+</script>
 
 @if (bundle != null)
 {
@@ -333,6 +341,17 @@
 			}
 
 			juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (bundle != null)
+			{
+				await JS.InvokeVoidAsync("ChangeUrl", "/bundle/" + bundleId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/");
+			}			
 		}
 	}
 

@@ -1,4 +1,5 @@
-﻿@page 
+﻿@page "/game/{id:int}/{nombre?}"
+
 @model pepeizqs_deals_web.Pages.GameModel
 
 @using Herramientas
@@ -35,9 +36,8 @@
 {
 	@if (adminLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego, dominio = HttpContext.Request.Host.Value }))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego }))
 	}
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego, dominio = HttpContext.Request.Host.Value }))
-
+@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego }))

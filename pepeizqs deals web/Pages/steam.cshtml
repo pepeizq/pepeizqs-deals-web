@@ -1,0 +1,12 @@
+﻿@page "/steam/{id:int}/{nombre?}"
+
+@model pepeizqs_deals_web.Pages.steamModel
+
+@{
+	#nullable disable
+
+	ViewData["Title"] = Model.juego.Nombre;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego}))

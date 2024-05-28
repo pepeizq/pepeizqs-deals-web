@@ -56,12 +56,12 @@
     "Valor": "Código Fuente"
   },
   {
-    "Id": "Layout.Contact",
-    "Valor": "Contacto"
+    "Id": "Layout.Api",
+    "Valor": "API"
   },
   {
-    "Id": "Layout.Beta",
-    "Valor": "Versión Beta"
+    "Id": "Layout.Contact",
+    "Valor": "Contacto"
   },
   {
     "Id": "Index.Subtitle",
@@ -1566,6 +1566,46 @@
   {
     "Id": "Giveaways.String18",
     "Valor": "Consulta si cumples con los requisitos de cada grupo desde este apartado de tu cuenta."
+  },
+  {
+    "Id": "Api.Title",
+    "Valor": "API"
+  },
+  {
+    "Id": "Api.String1",
+    "Valor": "Juegos (1)"
+  },
+  {
+    "Id": "Api.String2",
+    "Valor": "Podéis acceder a la API del juego usando la ID que se puede sacar directamente del enlace del juego (la ID son los números subrayados):"
+  },
+  {
+    "Id": "Api.String3",
+    "Valor": "Con el número de la ID podéis cargar la API del juego usando este enlace:"
+  },
+  {
+    "Id": "Api.String4",
+    "Valor": "Juegos (2)"
+  },
+  {
+    "Id": "Api.String5",
+    "Valor": "Para esta manera de acceder a la API del juego es necesario saber la ID del juego en Steam, tenéis dos opciones para conocer la ID (la ID es los números subrayados):"
+  },
+  {
+    "Id": "Api.String6",
+    "Valor": "Con el número de la ID de Steam podéis cargar la API del juego usando este enlace:"
+  },
+  {
+    "Id": "Api.String7",
+    "Valor": "Juegos (3)"
+  },
+  {
+    "Id": "Api.String8",
+    "Valor": "Para esta manera de acceder a la API del juego es necesario saber el Slug del juego en GOG, tenéis dos opciones para conocer el Slug (el Slug son las letras subrayadas):"
+  },
+  {
+    "Id": "Api.String9",
+    "Valor": "Con las letras del Slug de GOG podéis cargar la API del juego usando este enlace:"
   },
   {
     "Id": "Month.1",

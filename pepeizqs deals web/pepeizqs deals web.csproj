@@ -12,9 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Componentes\api.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="APIs\Gamesplanet\Tienda.cs~RF15378675.TMP" />
     <None Remove="BaseDatos\Errores\Insertar.cs~RF39a78cd3.TMP" />
     <None Remove="BaseDatos\Tiendas\Admin.cs~RF34438614.TMP" />
+    <None Remove="Pages\Componentes\Secciones\Bundle.razor~RF391f5136.TMP" />
     <None Remove="Plantillas\NuevaNoticiaConEnlace.html" />
     <None Remove="Tareas\Tiendas.cs~RF33d262b3.TMP" />
   </ItemGroup>
@@ -107,11 +112,12 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\account.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tareas.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\api.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Bundle.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Sorteos.razor" />
+    <_ContentIncludedByDefault Remove="Pages\gog.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -131,6 +137,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\api.cshtml" />
     <None Include="wwwroot\robots.txt" />
   </ItemGroup>
 
@@ -143,7 +150,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\account.cshtml" />
+    <UpToDateCheckInput Remove="Pages\Componentes\api.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\gog.cshtml" />
   </ItemGroup>
 
 </Project>

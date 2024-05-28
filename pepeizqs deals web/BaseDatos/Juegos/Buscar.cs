@@ -36,8 +36,8 @@ namespace BaseDatos.Juegos
 				{
 					if (idGog != null)
 					{
-						sqlBuscar = "SELECT * FROM juegos WHERE idGog=@idGog";
-						idParametro = "@idGog";
+						sqlBuscar = "SELECT * FROM juegos WHERE slugGog=@slugGog";
+						idParametro = "@slugGog";
 						idBuscar = idGog;
 					}
 				}

@@ -399,5 +399,27 @@ namespace BaseDatos.Juegos
 				}
 			}
 		}
+
+		public static void SlugGOG(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET slugGOG=@slugGOG WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+					
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }

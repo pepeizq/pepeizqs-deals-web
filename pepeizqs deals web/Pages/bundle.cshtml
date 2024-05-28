@@ -1,7 +1,9 @@
-﻿@page
-@* @model pepeizqs_deals_web.Pages.BundleModel *@
+﻿@page "/bundle/{id:int}/{nombre?}"
+
+@model pepeizqs_deals_web.Pages.BundleModel
 
 @using Herramientas
+@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using System.Net;
@@ -9,12 +11,10 @@
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
-@model BundleModel2
-
 @{
 	#nullable disable
 
-	// ViewData["Title"] = "test1" + " • " + "test2";
+	ViewData["Title"] = Model.bundle.NombreBundle + " • " + Model.bundle.NombreTienda;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -37,8 +37,8 @@
 {
 	@if (adminLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.ServerPrerendered, new { idioma = "es-ES", bundleId = Model.Id }))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id }))
 	}
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new { idioma = "es-ES", bundleId = Model.Id }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id }))
