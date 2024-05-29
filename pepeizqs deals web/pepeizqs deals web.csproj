@@ -115,7 +115,9 @@
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tareas.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\api.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Api.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Bundle.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Noticia.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Sorteos.razor" />
     <_ContentIncludedByDefault Remove="Pages\gog.cshtml" />
   </ItemGroup>
@@ -155,6 +157,14 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\gog.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Api.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Noticia.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Bundles2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -51,6 +52,45 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
+		[ResponseCache(Duration = 5000)]
+		[HttpGet("api/bundle/{id}/{juegos}")]
+		public IActionResult ApiBundle(int Id, string Juegos)
+		{
+			Bundle bundle = global::BaseDatos.Bundles.Buscar.UnBundle(Id);
+
+			if (bundle != null)
+			{
+				if (string.IsNullOrEmpty(Juegos) == false)
+				{
+					if (Juegos.ToLower() == "games")
+					{
+						foreach (var juego in bundle.Juegos) 
+						{ 
+							juego.Juego = global::BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
+						}
+					}
+				}
+
+				return Ok(bundle);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 5000)]
+		[HttpGet("api/news/{id}")]
+		public IActionResult ApiNoticia(int Id)
+		{
+			Noticia noticia = global::BaseDatos.Noticias.Buscar.UnaNoticia(Id);
+
+			if (noticia != null)
+			{
+				return Ok(noticia);
+			}
+
+			return Redirect("~/");
+		}
+
 		[ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
 		public IActionResult CogerAcortador(int Id)
@@ -65,13 +105,6 @@ namespace Herramientas
 			{
 				return Redirect("~/");
 			}			
-		}
-
-		[ResponseCache(Duration = 2000)]
-		[HttpGet("news/{id}")]
-		public IActionResult CogerNoticiaId(int Id)
-		{
-			return Redirect("~/news?id=" + Id.ToString());
 		}
 
 		[HttpGet("news-rss")]

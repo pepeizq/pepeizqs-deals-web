@@ -1,13 +1,14 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using Noticias;
 using System.Net;
 
 namespace BaseDatos.Noticias
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(global::Noticias.Noticia noticia)
+		public static void Ejecutar(Noticia noticia)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -16,7 +17,7 @@ namespace BaseDatos.Noticias
 				string añadirImagen1 = string.Empty;
 				string añadirImagen2 = string.Empty;
 
-				if (noticia.Imagen != null)
+				if (string.IsNullOrEmpty(noticia.Imagen) == false)
 				{
 					añadirImagen1 = ", imagen";
 					añadirImagen2 = ", @imagen";
@@ -30,7 +31,7 @@ namespace BaseDatos.Noticias
 				string añadirEnlace1 = string.Empty;
 				string añadirEnlace2 = string.Empty;
 
-				if (noticia.Enlace != null)
+				if (string.IsNullOrEmpty(noticia.Enlace) == false)
 				{
 					añadirEnlace1 = ", enlace";
 					añadirEnlace2 = ", @enlace";
@@ -44,7 +45,7 @@ namespace BaseDatos.Noticias
 				string añadirJuegos1 = string.Empty;
 				string añadirJuegos2 = string.Empty;
 
-				if (noticia.Juegos != null)
+				if (string.IsNullOrEmpty(noticia.Juegos) == false)
 				{
 					añadirJuegos1 = ", juegos";
 					añadirJuegos2 = ", @juegos";
@@ -58,7 +59,7 @@ namespace BaseDatos.Noticias
 				string añadirBundle1 = string.Empty;
 				string añadirBundle2 = string.Empty;
 
-				if (noticia.Tipo == global::Noticias.NoticiaTipo.Bundles)
+				if (noticia.Tipo == NoticiaTipo.Bundles)
 				{
 					añadirBundle1 = ", bundleTipo";
 					añadirBundle2 = ", @bundleTipo";
@@ -67,7 +68,7 @@ namespace BaseDatos.Noticias
 				string añadirGratis1 = string.Empty;
 				string añadirGratis2 = string.Empty;
 
-				if (noticia.Tipo == global::Noticias.NoticiaTipo.Gratis)
+				if (noticia.Tipo == NoticiaTipo.Gratis)
 				{
 					añadirGratis1 = ", gratisTipo";
 					añadirGratis2 = ", @gratisTipo";
@@ -76,48 +77,62 @@ namespace BaseDatos.Noticias
 				string añadirSuscripcion1 = string.Empty;
 				string añadirSuscripcion2 = string.Empty;
 
-				if (noticia.Tipo == global::Noticias.NoticiaTipo.Suscripciones)
+				if (noticia.Tipo == NoticiaTipo.Suscripciones)
 				{
 					añadirSuscripcion1 = ", suscripcionTipo";
 					añadirSuscripcion2 = ", @suscripcionTipo";
 				}
 
+				string añadirBundleId1 = string.Empty;
+				string añadirBundleId2 = string.Empty;
+
+				if (noticia.BundleId > 0)
+				{
+					añadirBundleId1 = ", bundleId";
+					añadirBundleId2 = ", @bundleId";
+				}
+
 				string sqlInsertar = "INSERT INTO noticias " +
-					"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + añadirJuegos1 + añadirBundle1 + añadirGratis1 + añadirSuscripcion1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
-					"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + añadirJuegos2 + añadirBundle2 + añadirGratis2 + añadirSuscripcion2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
+					"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + añadirJuegos1 + añadirBundle1 + añadirGratis1 + añadirSuscripcion1 + añadirBundleId1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
+					"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + añadirJuegos2 + añadirBundle2 + añadirGratis2 + añadirSuscripcion2 + añadirBundleId2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
 					comando.Parameters.AddWithValue("@noticiaTipo", noticia.Tipo);
 
-					if (noticia.Imagen != null)
+					if (string.IsNullOrEmpty(noticia.Imagen) == false)
 					{
 						comando.Parameters.AddWithValue("@imagen", noticia.Imagen);
 					}
 
-					if (noticia.Enlace != null)
+					if (string.IsNullOrEmpty(noticia.Enlace) == false)
 					{
 						comando.Parameters.AddWithValue("@enlace", noticia.Enlace);
 					}
 
-					if (noticia.Juegos != null)
+					if (string.IsNullOrEmpty(noticia.Juegos) == false)
 					{
 						comando.Parameters.AddWithValue("@juegos", noticia.Juegos);
 					}
 
-					if (noticia.Tipo == global::Noticias.NoticiaTipo.Bundles)
+					if (noticia.Tipo == NoticiaTipo.Bundles)
 					{
 						comando.Parameters.AddWithValue("@bundleTipo", noticia.BundleTipo);
 					}
 
-					if (noticia.Tipo == global::Noticias.NoticiaTipo.Gratis)
+					if (noticia.Tipo == NoticiaTipo.Gratis)
 					{
 						comando.Parameters.AddWithValue("@gratisTipo", noticia.GratisTipo);
 					}
 
-					if (noticia.Tipo == global::Noticias.NoticiaTipo.Suscripciones)
+					if (noticia.Tipo == NoticiaTipo.Suscripciones)
 					{
 						comando.Parameters.AddWithValue("@suscripcionTipo", noticia.SuscripcionTipo);
+					}
+
+					if (noticia.BundleId > 0)
+					{
+						comando.Parameters.AddWithValue("@bundleId", noticia.BundleId);
 					}
 
 					comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());

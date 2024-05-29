@@ -1,4 +1,5 @@
-﻿@page
+﻿@page "/news/{id:int}/{nombre?}/"
+
 @model pepeizqs_deals_web.Pages.NewsModel
 
 @{
@@ -8,101 +9,4 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="juego-wrap">
-	@if (@Model.fondo != null)
-	{
-		<img class="juego-fondo" src="@await Herramientas.Imagenes.DescargarYGuardar(Model.fondo, "noticias", Model.noticia.Id.ToString(), "fondo", HttpContext.Request.Host.Value)" onerror="this.parentNode.removeChild(this)" />
-	}
-	
-    <div class="juego-contenido">
-		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; align-items: center;">
-			@if (@Model.imagenLogo != null)
-			{
-				<div>
-					<img src="@Model.imagenLogo" style="max-width: 200px; max-height: 80px;" />
-				</div>
-			}
-			
-			<div style="padding-left: 40px; padding-right: 40px;">
-				<div style="font-size: 22px;">
-					@Model.titulo
-				</div>
-
-				<div style="display: flex; font-size: 14px; margin-top: 20px;">
-					<div>@Model.fechaEmpieza</div>
-
-					@if (Model.fechaTermina != null)
-					{
-						<div style="margin-left: 30px;">
-							@Model.fechaTermina
-						</div>
-					}
-				</div>
-			</div>
-		</div>
-
-		@if (Model.enlace != null)
-		{
-			<a href="@Model.enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
-				<div>
-					<label>@Model.mensajeEnlace</label>
-				</div>
-			</a>
-		}
-
-		<div class="perfil" style="margin-top: 40px;">
-			@Html.Raw(Model.contenido)
-		</div>
-
-		@if (Model.video != null)
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				@Html.Raw(Model.video)
-			</div>
-		}
-
-		@if (Model.juegos.Count > 0)
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				<div style="margin-bottom: 20px;">
-					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String5")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-					@foreach (var juego in Model.juegos)
-					{
-						<div style="min-width: 150px; max-width: 200px;">
-							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
-								<div>
-									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='@juego.Imagenes.Capsule_231x87';" />
-								</div>
-							</a>
-						</div>
-					}
-				</div>
-			</div>	
-		}
-
-		@if (Model.dlcs.Count > 0)
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				<div style="margin-bottom: 20px;">
-					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String10")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-					@foreach (var juego in Model.dlcs)
-					{
-						<div style="min-width: 200px; max-width: 250px;">
-							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
-								<div>
-									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" />
-								</div>
-							</a>
-						</div>
-					}
-				</div>
-			</div>
-		}
-	</div>
-</div>
+@(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, noticiaId = Model.noticia.Id }))

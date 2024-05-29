@@ -1577,7 +1577,7 @@
   },
   {
     "Id": "Api.String1",
-    "Valor": "Games (1)"
+    "Valor": "Games (Web)"
   },
   {
     "Id": "Api.String2",
@@ -1589,7 +1589,7 @@
   },
   {
     "Id": "Api.String4",
-    "Valor": "Games (2)"
+    "Valor": "Games (Steam)"
   },
   {
     "Id": "Api.String5",
@@ -1601,7 +1601,7 @@
   },
   {
     "Id": "Api.String7",
-    "Valor": "Games (3)"
+    "Valor": "Games (GOG)"
   },
   {
     "Id": "Api.String8",
@@ -1610,6 +1610,34 @@
   {
     "Id": "Api.String9",
     "Valor": "With your GOG Slug letters you can load the game API using this link:"
+  },
+  {
+    "Id": "Api.String10",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Api.String11",
+    "Valor": "You can access the bundle API using the ID that can be taken directly from the bundle link (the ID is the underlined numbers):"
+  },
+  {
+    "Id": "Api.String12",
+    "Valor": "With the ID number you can load the bundle API using this link:"
+  },
+  {
+    "Id": "Api.String13",
+    "Valor": "Note: If you want to directly load the API of the games in the bundle, just add the 'games' tag to the link to show the API of each game:"
+  },
+  {
+    "Id": "Api.String14",
+    "Valor": "News"
+  },
+  {
+    "Id": "Api.String15",
+    "Valor": "You can access the news API using the ID that can be taken directly from the news link (the ID is the underlined numbers):"
+  },
+  {
+    "Id": "Api.String16",
+    "Valor": "With the ID number you can load the news API using this link:"
   },
   {
     "Id": "Month.1",

@@ -1,0 +1,478 @@
+﻿@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Mvc.Razor;
+@using Microsoft.Data.SqlClient;
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inherits Juegos.Juego
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavManager
+
+<div class="menu-dropdown">
+    <button class="texto-cabecera" style="border: 0px; margin-left: 0px; margin-right: 30px;"><i class="fa-solid fa-bars" style="font-size: 20px; line-height: 40px;"></i></button>
+    <div class="menu-dropdown-contenido">
+
+        @if (usuario != null)
+        {
+            <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Manage/Email">
+                <div style="display: flex; align-items: center;">
+                    @if (string.IsNullOrEmpty(usuario!.Avatar) == true)
+                    {
+                        <div>@usuario.Email</div>
+                    }
+                    else
+                    {
+                        @if (usuario.Avatar.ToLower().Contains(".jpg") == true || usuario.Avatar.ToLower().Contains(".jpeg") == true || usuario.Avatar.ToLower().Contains(".png") == true || usuario.Avatar.ToLower().Contains(".webp") == true)
+                        {
+                            <img src="@usuario.Avatar" style="max-height: 32px; max-width: 32px;" />
+                            <div style="margin-left: 15px;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Account")</div>
+                        }
+                        else
+                        {
+                            <div>@usuario.Email</div>
+                        }
+                    }
+                </div>
+            </a>
+
+            <a class="texto-cabecera menu-dropdown-item" href="/wishlist">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Wishlist")
+            </a>
+
+            <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%;">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
+            </button>
+        }
+        else
+        {
+            <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Login">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
+            </a>
+            <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Register">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
+            </a>
+        }
+
+        <hr>
+
+        <a class="texto-cabecera menu-dropdown-item" href="/historical-lows">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.HistoricalLows")
+        </a>
+        <a class="texto-cabecera menu-dropdown-item" href="/bundles">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Bundles")
+        </a>
+        <a class="texto-cabecera menu-dropdown-item" href="/free">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Free")
+        </a>
+        <a class="texto-cabecera menu-dropdown-item" href="/subscriptions">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Subscriptions")
+        </a>
+        <hr>
+        <a class="texto-cabecera menu-dropdown-item" href="/giveaways">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Giveaways")
+        </a>
+        <hr>
+        <a class="texto-cabecera menu-dropdown-item" href="/last-news">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.LastNews")
+        </a>
+        <a class="texto-cabecera menu-dropdown-item" href="/last-added">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Layout.LastAdded")
+        </a>
+    </div>
+</div>
+
+<a class="texto-logo" asp-page="/Index">pepeizq's deals</a>
+
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1" style="align-items: center; margin-top: 0px;">
+        @if (adminLogeado == true)
+        {
+            <pepeizqs_deals_web.Pages.Componentes.Admin.Maestro />
+        }
+
+        <li class="nav-item">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <i class="fa-solid fa-magnifying-glass" style="margin-right: 15px;"></i>
+                <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+
+                @if (resultados != null)
+                {
+                    @if (resultados.Count > 0)
+                    {
+                        <div class="buscador-panel" style="display: flex; align-items: start;">
+                            <div style="width: 20%; padding-right: 20px;">
+                                @if (resultadosJuegos.Count > 0)
+                                {
+                                    <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Game))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String7") (@resultadosJuegos.Count)
+                                    </button>
+                                }
+
+                                @if (resultadosDLCs.Count > 0)
+                                {
+                                    <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.DLC))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String8") (@resultadosDLCs.Count)
+                                    </button>
+                                }
+
+                                @if (resultadosBandasSonoras.Count > 0)
+                                {
+                                    <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Music))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String9") (@resultadosBandasSonoras.Count)
+                                    </button>
+                                }
+                            </div>
+
+                            <div style="width: 80%;">
+                                @{
+                                    List<Juegos.Juego> resultadosFinal = new List<Juegos.Juego>();
+
+                                    if (pestañaSeleccionada == Juegos.JuegoTipo.Game && resultadosJuegos.Count > 0)
+                                    {
+                                        resultadosFinal = resultadosJuegos;
+                                    }
+                                    else if (pestañaSeleccionada == Juegos.JuegoTipo.DLC && resultadosDLCs.Count > 0)
+                                    {
+                                        resultadosFinal = resultadosDLCs;
+                                    }
+                                    else if (pestañaSeleccionada == Juegos.JuegoTipo.Music && resultadosBandasSonoras.Count > 0)
+                                    {
+                                        resultadosFinal = resultadosBandasSonoras;
+                                    }
+                                    else if (pestañaSeleccionada == Juegos.JuegoTipo.Software && resultadosSoftware.Count > 0)
+                                    {
+                                        resultadosFinal = resultadosSoftware;
+                                    }
+
+                                    @foreach (var juego in resultadosFinal)
+                                    {
+                                        <div class="perfil-flexible-centrado" style="margin-top: 10px;">
+                                            <a class="boton-pequeño" href="/game/@juego.Id" style="padding: 0px;">
+                                                <div class="perfil-flexible-centrado">
+                                                    <div>
+                                                        <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                                                    </div>
+
+                                                    <div style="width: 100%; padding-left: 15px; padding-right: 15px;">
+                                                        @juego.Nombre
+                                                    </div>
+
+                                                    <div style="padding: 20px; min-width: 200px; text-align: center;">
+                                                        @GenerarMensaje(juego)
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+    <div style="display: flex; align-items: center; justify-content: center; font-size: 20px; text-align: center;">
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    [Parameter]
+    public bool adminLogeado { get; set; }
+
+    [Parameter]
+    public string discord { get; set; }
+
+    [Parameter]
+    public string telegram { get; set; }
+
+    [Parameter]
+    public string reddit { get; set; }
+
+    [Parameter]
+    public string twitter { get; set; }
+
+    [Parameter]
+    public string steam { get; set; }
+
+    private bool cargado = false;
+
+    private Usuario usuario = new Usuario();
+
+    List<Juegos.Juego> resultados = new List<Juegos.Juego>();
+    List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
+    List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
+    List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
+    List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
+
+    Task<List<Juegos.Juego>> tarea;
+
+    protected override void OnInitialized()
+    {
+        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+
+        cargado = true;
+    }
+
+    private void Desconectar(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/Identity/Account/Logout", true, false);
+    }
+
+    private void TextoCambiaBuscador(ChangeEventArgs texto)
+    {
+        List<Juegos.Juego> resultadosBuscar = new List<Juegos.Juego>();
+
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            if (texto.Value.ToString().Trim().Length > 1)
+            {
+                if ((tarea != null) && (tarea.IsCompleted == false ||
+                           tarea.Status == TaskStatus.Running ||
+                           tarea.Status == TaskStatus.WaitingToRun ||
+                           tarea.Status == TaskStatus.WaitingForActivation))
+                {
+                    tarea.Dispose();
+                    resultadosBuscar = new List<Juegos.Juego>();
+                }
+                else
+                {
+                    tarea = Task.Factory.StartNew(() =>
+                    {
+                        List<Juegos.Juego> resultados2 = new List<Juegos.Juego>();
+
+                        resultados2 = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 100);
+
+                        return resultados2;
+                    });
+
+                    resultadosBuscar = tarea.Result;
+                }
+            }
+            else
+            {
+                resultadosBuscar = new List<Juegos.Juego>();
+            }
+        }
+
+        if (resultadosBuscar != null)
+        {
+            pestañaSeleccionada = Juegos.JuegoTipo.Game;
+
+            resultados.Clear();
+            resultadosJuegos.Clear();
+            resultadosDLCs.Clear();
+            resultadosBandasSonoras.Clear();
+            resultadosSoftware.Clear();
+
+            resultados = resultadosBuscar;
+
+            if (resultadosBuscar.Count > 0)
+            {
+                foreach (var resultado in resultadosBuscar)
+                {
+                    if (resultado.Tipo == Juegos.JuegoTipo.Game)
+                    {
+                        resultadosJuegos.Add(resultado);
+                    }
+                    else if (resultado.Tipo == Juegos.JuegoTipo.DLC)
+                    {
+                        resultadosDLCs.Add(resultado);
+                    }
+                    else if (resultado.Tipo == Juegos.JuegoTipo.Music)
+                    {
+                        resultadosBandasSonoras.Add(resultado);
+                    }
+                    else if (resultado.Tipo == Juegos.JuegoTipo.Software)
+                    {
+                        resultadosSoftware.Add(resultado);
+                    }
+                }
+
+                if (resultadosJuegos.Count > 0)
+                {
+                    pestañaSeleccionada = Juegos.JuegoTipo.Game;
+
+                    resultadosJuegos = resultadosJuegos.OrderBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).ToList();
+                }
+
+                if (resultadosDLCs.Count > 0)
+                {
+                    if (resultadosJuegos.Count == 0)
+                    {
+                        pestañaSeleccionada = Juegos.JuegoTipo.DLC;
+                    }
+
+                    resultadosDLCs = resultadosDLCs.OrderBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).ToList();
+                }
+
+                if (resultadosBandasSonoras.Count > 0)
+                {
+                    if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0)
+                    {
+                        pestañaSeleccionada = Juegos.JuegoTipo.Music;
+                    }
+
+                    resultadosBandasSonoras = resultadosBandasSonoras.OrderBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).ToList();
+                }
+
+                if (resultadosSoftware.Count > 0)
+                {
+                    if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0 && resultadosBandasSonoras.Count == 0)
+                    {
+                        pestañaSeleccionada = Juegos.JuegoTipo.Software;
+                    }
+
+                    resultadosSoftware = resultadosSoftware.OrderBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).ToList();
+                }
+            }
+        } 
+    }
+
+    private string GenerarMensaje(Juegos.Juego juego)
+    {
+        string mensaje = string.Empty;
+
+        if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+        {
+            if (juego.FreeToPlay.ToLower() == "true")
+            {
+                return Herramientas.Idiomas.CogerCadena(idioma, "Search.String6");
+            }
+        }
+
+        if (juego.Gratis != null)
+        {
+            if (juego.Gratis.Count > 0)
+            {
+                foreach (var gratis in juego.Gratis)
+                {
+                    if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String5");
+                    }
+                }
+            }
+        }
+
+        if (juego.Bundles != null)
+        {
+            if (juego.Bundles.Count > 0)
+            {
+                foreach (var bundle in juego.Bundles)
+                {
+                    if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String4");
+                    }
+                }
+            }
+        }
+
+        if (juego.Suscripciones != null)
+        {
+            if (juego.Suscripciones.Count > 0)
+            {
+                foreach (var suscripcion in juego.Suscripciones)
+                {
+                    if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+                    {
+                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String3");
+                    }
+                }
+            }
+        }
+
+        decimal minimoCantidad = 10000000;
+        Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+        if (juego.PrecioActualesTiendas != null)
+        {
+            foreach (var oferta in juego.PrecioActualesTiendas)
+            {
+                bool drmAdecuado = true;
+
+                if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+                {
+                    drmAdecuado = false;
+                }
+                else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+                {
+                    drmAdecuado = false;
+                }
+
+                if (drmAdecuado == true)
+                {
+                    bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(oferta);
+
+                    if (fechaEncaja == true)
+                    {
+                        decimal tempPrecio = oferta.Precio;
+
+                        if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+                        {
+                            tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+                        }
+
+                        if (tempPrecio < minimoCantidad)
+                        {
+                            minimoCantidad = tempPrecio;
+                        }
+                    }
+                }
+            }
+        }      
+
+        if (minimoCantidad > 0 && minimoCantidad < 10000000)
+        {
+            string precioTexto = string.Empty;
+
+            precioTexto = minimoCantidad.ToString();
+            precioTexto = precioTexto.Replace(".", ",");
+
+            int int1 = precioTexto.IndexOf(",");
+
+            if (int1 == precioTexto.Length - 2)
+            {
+                precioTexto = precioTexto + "0";
+            }
+
+            precioTexto = precioTexto + "€";
+
+            return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+        }
+        else
+        {
+            return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
+        }
+    }
+
+    Juegos.JuegoTipo pestañaSeleccionada = Juegos.JuegoTipo.Game;
+
+    private void CambiarPestaña(MouseEventArgs e, Juegos.JuegoTipo pestaña)
+    {
+        pestañaSeleccionada = pestaña;
+    }
+}
+

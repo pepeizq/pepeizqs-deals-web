@@ -139,13 +139,13 @@
 			@if (juego.Tipo == JuegoTipo.DLC)
 			{
 				<div style="display: flex; align-items: center; margin-top: 20px;">
-					<div style="width: 20%; padding: 0px 30px; text-align: right;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
 						<label>Maestro</label>
 					</div>
-					<div style="width: 10%;">
+					<div style="width: 20%;">
 						<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" value="@textoDlcMaestro" />
 					</div>
-					<div style="width: 70%; padding: 0px 30px;">
+					<div style="width: 65%; padding: 0px 30px;">
 						<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
 							Buscar
 						</button>
@@ -154,25 +154,25 @@
 			}
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+				<div style="width: 15%; padding: 0px 30px; text-align: right;">
 					<label>FreeToPlay</label>
 				</div>
 				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" value="@textoF2P" />
 				</div>
-				<div style="width: 60%; padding: 0px 30px;">
+				<div style="width: 65%; padding: 0px 30px;">
 					<label>(true si es F2P)</label>
 				</div>
 			</div>
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+				<div style="width: 15%; padding: 0px 30px; text-align: right;">
 					<label>Id Steam</label>
 				</div>
 				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
 				</div>
-				<div style="width: 60%; padding: 0px 30px;">
+				<div style="width: 65%; padding: 0px 30px;">
 					<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
 						Actualizar
 					</button>
@@ -180,7 +180,7 @@
 			</div>
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+				<div style="width: 15%; padding: 0px 30px; text-align: right;">
 					<label>Slug GOG</label>
 				</div>
 				<div style="width: 20%;">
@@ -189,13 +189,13 @@
 			</div>
 
 			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 20%; padding: 0px 30px; text-align: right;">
+				<div style="width: 15%; padding: 0px 30px; text-align: right;">
 					<label>Tipo</label>
 				</div>
 				<div style="width: 20%;">
 					<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
 				</div>
-				<div style="width: 60%; padding: 0px 30px;">
+				<div style="width: 65%; padding: 0px 30px;">
 					<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
 				</div>
 			</div>

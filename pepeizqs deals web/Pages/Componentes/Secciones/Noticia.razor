@@ -1,0 +1,234 @@
+﻿@using Bundles2
+@using Gratis2
+@using Microsoft.JSInterop
+@using Noticias
+@using Suscripciones2
+
+@inject IJSRuntime JS
+
+<script>
+	window.ChangeUrl = function (url) {
+		history.pushState(null, '', url);
+	}
+</script>
+
+<div class="juego-wrap">
+	@if (juegos != null)
+	{
+		if (juegos.Count > 0)
+		{
+			<img class="juego-fondo" src="@juegos[0].Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" />
+		}
+	}
+
+	<div class="juego-contenido">
+		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; align-items: center;">
+			@{
+				string imagenCabecera = string.Empty;
+
+				if (noticia.Tipo == NoticiaTipo.Bundles)
+				{
+					imagenCabecera = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
+				}
+				else if (noticia.Tipo == NoticiaTipo.Gratis)
+				{
+					imagenCabecera = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
+				}
+				else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+				{
+					imagenCabecera = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
+				}
+
+				if (string.IsNullOrEmpty(imagenCabecera) == false)
+				{
+					<div>
+						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" />
+					</div>
+				}
+			}
+
+			<div style="padding-left: 40px; padding-right: 40px;">
+				<div style="font-size: 22px;">
+					@titulo
+				</div>
+
+				<div style="display: flex; font-size: 14px; margin-top: 20px;">
+					<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
+
+					@{
+						string fechaTermina = string.Empty;
+						TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
+
+						if (diferenciaTiempo.Days > 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days < 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+						}
+
+						if (string.IsNullOrEmpty(fechaTermina) == false)
+						{
+							<div style="margin-left: 30px;">
+								@fechaTermina
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+
+		@if (string.IsNullOrEmpty(noticia.Enlace) == false)
+		{
+			<a href="@noticia.Enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
+				<div>
+					@if (noticia.Tipo == NoticiaTipo.Bundles)
+					{
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String7")</label>
+					}
+					else if (noticia.Tipo == NoticiaTipo.Gratis)
+					{
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String8")</label>
+					}
+					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+					{
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String9")</label>
+					}
+				</div>
+			</a>
+		}
+
+		@if (noticia.Tipo == NoticiaTipo.Bundles)
+		{
+			if (noticia.BundleId > 0)
+			{
+				<div class="perfil" style="margin-top: 40px; padding-bottom: 20px;">
+					<Bundle bundleId="@noticia.BundleId" idioma="@idioma" modulo="true" />
+				</div>				
+			}
+		}
+		else
+		{
+			<div class="perfil" style="margin-top: 40px;">
+				@((MarkupString)Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs))
+			</div>
+		}
+
+		@if (juegos != null)
+		{
+			if (juegos.Count == 1)
+			{
+				if (juegos[0].Media.Video != null)
+				{
+					<div style="display: flex; height: 100%;">
+						<video controls="true" autoplay="false" muted="true" src="@juegos[0].Media.Video" style="width: 100%; height: auto;" />
+					</div>					
+				}
+			}
+		}
+
+
+@* 		@if (Model.juegos.Count > 0)
+		{
+			<div class="perfil" style="margin-top: 40px;">
+				<div style="margin-bottom: 20px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String5")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+					@foreach (var juego in Model.juegos)
+					{
+						<div style="min-width: 150px; max-width: 200px;">
+							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
+								<div>
+									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='@juego.Imagenes.Capsule_231x87';" />
+								</div>
+							</a>
+						</div>
+					}
+				</div>
+			</div>
+		} *@
+
+@* 		@if (Model.dlcs.Count > 0)
+		{
+			<div class="perfil" style="margin-top: 40px;">
+				<div style="margin-bottom: 20px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String10")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+					@foreach (var juego in Model.dlcs)
+					{
+						<div style="min-width: 200px; max-width: 250px;">
+							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
+								<div>
+									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" />
+								</div>
+							</a>
+						</div>
+					}
+				</div>
+			</div>
+		} *@
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public int noticiaId { get; set; }
+
+	public Noticias.Noticia noticia = new Noticias.Noticia();
+
+	private string titulo = string.Empty;
+	private List<Juegos.Juego> juegos = new List<Juegos.Juego>();
+
+	protected override void OnInitialized()
+	{
+		if (noticiaId > 0)
+		{
+			noticia = BaseDatos.Noticias.Buscar.UnaNoticia(noticiaId);
+		}
+
+		if (noticia != null)
+		{
+			titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+
+			List<string> juegosTexto = Herramientas.Listados.Generar(noticia.Juegos);
+
+			if (juegosTexto != null)
+			{
+				foreach (var juego in juegosTexto)
+				{
+					juegos.Add(BaseDatos.Juegos.Buscar.UnJuego(juego));
+				}
+			}
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (noticia != null)
+			{
+				await JS.InvokeVoidAsync("ChangeUrl", "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/");
+			}
+		}
+	}
+}

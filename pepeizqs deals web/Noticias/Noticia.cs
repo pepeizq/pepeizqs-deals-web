@@ -23,5 +23,6 @@ namespace Noticias
 		public DateTime FechaEmpieza;
 		public DateTime FechaTermina;
 		public int IdMaestra;
+		public int BundleId;
 	}
 }

@@ -16,6 +16,7 @@ namespace Noticias
 
             if (bundle != null)
             {
+                plantilla.BundleId = bundleId.ToString();
                 plantilla.Juegos = null;
 
                 for (int i = 0; i < bundle.Juegos.Count; i += 1)
@@ -533,5 +534,6 @@ namespace Noticias
         public string Fecha;
         public string Enlace;
         public string Imagen;
+        public string BundleId;
     }
 }

@@ -10,6 +10,7 @@
 @using Microsoft.VisualBasic
 @using Microsoft.Web.Administration
 @using MimeKit
+@using Noticias
 @using Suscripciones2
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using Tiendas2
@@ -42,7 +43,7 @@
         position: fixed;
         z-index: 1000;
         padding: 10px;
-        background-color: var(--fondoOscuroTransparente);
+        backdrop-filter: blur(15px);
     }
 
     .admin-lateral {
@@ -3022,7 +3023,7 @@
     private string gratisSeleccionadoNoticias = null;
     private string suscripcionSeleccionadaNoticias = null;
 
-    private global::Noticias.Plantilla plantillaNoticias = new global::Noticias.Plantilla();
+    private Plantilla plantillaNoticias = new Plantilla();
 
     private void CambiarNoticiaTipo(ChangeEventArgs texto)
     {
@@ -3033,25 +3034,25 @@
 
         using (conexion)
         {
-            plantillaNoticias = new global::Noticias.Plantilla();
+            plantillaNoticias = new Plantilla();
 
             noticiaTipoSeleccionada = texto.Value.ToString();
 
             //-------------------------------------------------------
 
-            if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+            if (noticiaTipoSeleccionada == NoticiaTipo.Bundles.ToString())
             {
                 bundleSeleccionadoNoticias = BundlesCargar.GenerarListado()[1].Id.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
             {
                 gratisSeleccionadoNoticias = GratisCargar.GenerarListado()[0].Tipo.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             {
                 suscripcionSeleccionadaNoticias = SuscripcionesCargar.GenerarListado()[0].Id.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Sorteos.ToString())
             {
                 GenerarSorteos(conexion);
             }
@@ -3099,7 +3100,7 @@
         {
             using (conexion)
             {
-                global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+                Noticia noticia = new Noticia();
 
                 noticia.TituloEn = plantillaNoticias.TituloEn;
                 noticia.TituloEs = plantillaNoticias.TituloEs;
@@ -3111,19 +3112,20 @@
                 noticia.FechaTermina = Convert.ToDateTime(plantillaNoticias.Fecha);
                 noticia.Enlace = plantillaNoticias.Enlace;
 
-                if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+                if (noticiaTipoSeleccionada == NoticiaTipo.Bundles.ToString())
                 {
-                    noticia.Tipo = global::Noticias.NoticiaTipo.Bundles;
+                    noticia.Tipo = NoticiaTipo.Bundles;
                     noticia.BundleTipo = BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
+                    noticia.BundleId = int.Parse(plantillaNoticias.BundleId);
                 }
-                else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+                else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
                 {
-                    noticia.Tipo = global::Noticias.NoticiaTipo.Gratis;
+                    noticia.Tipo = NoticiaTipo.Gratis;
                     noticia.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
                 }
-                else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+                else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
-                    noticia.Tipo = global::Noticias.NoticiaTipo.Suscripciones;
+                    noticia.Tipo = NoticiaTipo.Suscripciones;
                     noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
                 }
 
@@ -3137,7 +3139,7 @@
                     }
                 }
 
-                plantillaNoticias = new global::Noticias.Plantilla();
+                plantillaNoticias = new Plantilla();
 
                 bundleSeleccionadoNoticias = null;
                 gratisSeleccionadoNoticias = null;
@@ -3160,7 +3162,7 @@
 
     private void SeleccionarJuegoNoticias(MouseEventArgs e, string id)
     {
-        plantillaNoticias = global::Noticias.Plantillas.Rumores(plantillaNoticias, id);
+        plantillaNoticias = Plantillas.Rumores(plantillaNoticias, id);
 
         juegosBuscadorNoticias = new List<Juegos.Juego>();
     }
@@ -3172,7 +3174,7 @@
 
     private void ClickearBundleNoticias(MouseEventArgs e, int bundleId)
     {
-        plantillaNoticias = global::Noticias.Plantillas.Bundles(bundleId);
+        plantillaNoticias = Plantillas.Bundles(bundleId);
     }
 
     private void CambiarGratisNoticias(ChangeEventArgs texto)

@@ -17,31 +17,34 @@
 
 @if (bundle != null)
 {
-	<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-		<div style="display: flex; align-items: center; flex-direction: row;">
-			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
-				<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
-					<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
-				</div>
-			</a>
-
-			<div style="padding-left: 20px; padding-right: 20px;">
-				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
-					@bundle.NombreBundle
+	if (modulo == false)
+	{
+		<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+			<div style="display: flex; align-items: center; flex-direction: row;">
+				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
+					<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
+						<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
+					</div>
 				</a>
 
-				<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+				<div style="padding-left: 20px; padding-right: 20px;">
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
+						@bundle.NombreBundle
 					</a>
 
-					@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
+					<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
+						<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
+							@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+						</a>
+
+						@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
-	@if (bundle.Tiers != null)
+	}
+	
+	if (bundle.Tiers != null)
 	{
 		decimal totalMinimos = 0;
 
@@ -289,6 +292,9 @@
 	[Parameter]
 	public int bundleId { get; set; }
 
+	[Parameter]
+	public bool modulo { get; set; }
+
 	public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
 	private Usuario usuario = new Usuario();
@@ -346,7 +352,7 @@
 
 	protected override async Task OnAfterRenderAsync(bool primerRender)
 	{
-		if (primerRender == true)
+		if (primerRender == true && modulo == false)
 		{
 			if (bundle != null)
 			{

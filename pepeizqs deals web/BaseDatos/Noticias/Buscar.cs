@@ -90,6 +90,24 @@ namespace BaseDatos.Noticias
 								noticia.ContenidoEs = lector.GetString(13);
 							}
 
+							if (lector.IsDBNull(14) == false)
+							{
+								try
+								{
+									noticia.IdMaestra = lector.GetInt32(14);
+								}
+								catch { }
+							}
+
+							try
+							{
+								if (lector.IsDBNull(15) == false)
+								{
+									noticia.BundleId = lector.GetInt32(15);
+								}
+							}
+							catch { }
+
 							return noticia;
 						}
 					}
@@ -257,6 +275,15 @@ namespace BaseDatos.Noticias
 							}
 							catch { }							
 						}
+
+						try
+						{
+							if (lector.IsDBNull(15) == false)
+							{
+								noticia.BundleId = lector.GetInt32(15);
+							}
+						}
+						catch { }
 
 						noticias.Add(noticia);
 					}
