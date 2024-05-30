@@ -238,28 +238,6 @@ namespace APIs.Humble
                 }
             }
 
-            if (string.IsNullOrEmpty(bundle.ImagenBundle) == false)
-            {
-                if (bundle.ImagenBundle.ToLower().Contains(".jpg") == false ||
-					bundle.ImagenBundle.ToLower().Contains(".jpeg") == false ||
-					bundle.ImagenBundle.ToLower().Contains(".png") == false ||
-					bundle.ImagenBundle.ToLower().Contains(".webp") == false)
-                {
-                    bundle.ImagenBundle = null;
-				}
-            }
-
-			if (string.IsNullOrEmpty(bundle.ImagenNoticia) == false)
-			{
-				if (bundle.ImagenNoticia.ToLower().Contains(".jpg") == false ||
-					bundle.ImagenNoticia.ToLower().Contains(".jpeg") == false ||
-					bundle.ImagenNoticia.ToLower().Contains(".png") == false ||
-					bundle.ImagenNoticia.ToLower().Contains(".webp") == false)
-				{
-					bundle.ImagenNoticia = null;
-				}
-			}
-
 			return bundle;
 		}
 	}

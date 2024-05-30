@@ -18,8 +18,12 @@
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String7")
 		</button>
 
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles;" @onclick="(e => MostrarBundles(e))">
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles1;" @onclick="(e => MostrarBundles1(e))">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String10")
+		</button>
+
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles2;" @onclick="(e => MostrarBundles2(e))">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String17")
 		</button>
 
 		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias;" @onclick="(e => MostrarNoticias(e))">
@@ -87,7 +91,7 @@
 			</div>
 		}
 
-		@if (mostrarBundles == true)
+		@if (mostrarBundles1 == true)
 		{
 			<div>
 				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String11")
@@ -106,6 +110,23 @@
 
 				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
 					<label style="text-decoration: none;">https://pepeizqdeals.com/api/bundle/199/games/</label>
+				</div>
+			</div>
+		}
+
+		@if (mostrarBundles2 == true)
+		{
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String18")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/</label>
+				</div>
+
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String19")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/<label style="text-decoration: underline;">25</label>/</label>
 				</div>
 			</div>
 		}
@@ -147,13 +168,15 @@
 		fondoJuegos1 = "transparent";
 		fondoJuegos2 = "transparent";
 		fondoJuegos3 = "transparent";
-		fondoBundles = "transparent";
+		fondoBundles1 = "transparent";
+		fondoBundles2 = "transparent";
 		fondoNoticias = "transparent";
 
 		mostrarJuegos1 = false;
 		mostrarJuegos2 = false;
 		mostrarJuegos3 = false;
-		mostrarBundles = false;
+		mostrarBundles1 = false;
+		mostrarBundles2 = false;
 		mostrarNoticias = false;
 	}
 
@@ -190,15 +213,26 @@
 		mostrarJuegos3 = true;
 	}
 
-	private bool mostrarBundles = false;
-	private string fondoBundles = "transparent";
+	private bool mostrarBundles1 = false;
+	private string fondoBundles1 = "transparent";
 
-	private void MostrarBundles(MouseEventArgs e)
+	private void MostrarBundles1(MouseEventArgs e)
 	{
 		CerrarPestañas();
 
-		fondoBundles = "var(--fondoCodigo)";
-		mostrarBundles = true;
+		fondoBundles1 = "var(--fondoCodigo)";
+		mostrarBundles1 = true;
+	}
+
+	private bool mostrarBundles2 = false;
+	private string fondoBundles2 = "transparent";
+
+	private void MostrarBundles2(MouseEventArgs e)
+	{
+		CerrarPestañas();
+
+		fondoBundles2 = "var(--fondoCodigo)";
+		mostrarBundles2 = true;
 	}
 
 	private bool mostrarNoticias = false;

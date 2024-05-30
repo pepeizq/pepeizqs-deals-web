@@ -1577,7 +1577,7 @@
   },
   {
     "Id": "Api.String1",
-    "Valor": "Games (Web)"
+    "Valor": "Game (Web)"
   },
   {
     "Id": "Api.String2",
@@ -1589,7 +1589,7 @@
   },
   {
     "Id": "Api.String4",
-    "Valor": "Games (Steam)"
+    "Valor": "Game (Steam)"
   },
   {
     "Id": "Api.String5",
@@ -1601,7 +1601,7 @@
   },
   {
     "Id": "Api.String7",
-    "Valor": "Games (GOG)"
+    "Valor": "Game (GOG)"
   },
   {
     "Id": "Api.String8",
@@ -1613,7 +1613,7 @@
   },
   {
     "Id": "Api.String10",
-    "Valor": "Bundles"
+    "Valor": "Bundle"
   },
   {
     "Id": "Api.String11",
@@ -1638,6 +1638,18 @@
   {
     "Id": "Api.String16",
     "Valor": "With the ID number you can load the news API using this link:"
+  },
+  {
+    "Id": "Api.String17",
+    "Valor": "Bundles (Last)"
+  },
+  {
+    "Id": "Api.String18",
+    "Valor": "To know the latest bundles that have been added to the website, just access this API link:"
+  },
+  {
+    "Id": "Api.String19",
+    "Valor": "Note: It can be expanded up to a maximum of 25 loaded bundles by adding a number at the end (it is underlined):"
   },
   {
     "Id": "Month.1",

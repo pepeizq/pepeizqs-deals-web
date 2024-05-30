@@ -7,6 +7,31 @@ namespace BaseDatos.Bundles
 {
 	public static class Buscar
 	{
+		public static Bundles2.Bundle Cargar(SqlDataReader lector)
+		{
+            Bundles2.Bundle bundle = new Bundles2.Bundle
+            {
+                Id = lector.GetInt32(0),
+                Tipo = Bundles2.BundlesCargar.DevolverBundle(int.Parse(lector.GetString(1))).Tipo,
+                NombreBundle = lector.GetString(2),
+                NombreTienda = lector.GetString(3),
+                ImagenBundle = lector.GetString(4),
+                Enlace = lector.GetString(5),
+                FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+                FechaTermina = Convert.ToDateTime(lector.GetString(7)),
+                Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
+                Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
+                Pick = Convert.ToBoolean(lector.GetString(10))
+            };
+
+            if (lector.IsDBNull(11) == false)
+            {
+                bundle.ImagenNoticia = lector.GetString(11);
+            }
+
+			return bundle;
+        }
+
 		public static List<Bundles2.Bundle> Todos()
 		{
 			List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
@@ -23,27 +48,7 @@ namespace BaseDatos.Bundles
 					{
 						while (lector.Read())
 						{
-							Bundles2.Bundle bundle = new Bundles2.Bundle
-							{
-								Id = lector.GetInt32(0),
-								Tipo = Bundles2.BundlesCargar.DevolverBundle(int.Parse(lector.GetString(1))).Tipo,
-								NombreBundle = lector.GetString(2),
-								NombreTienda = lector.GetString(3),
-								ImagenBundle = lector.GetString(4),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7)),
-								Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
-								Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
-								Pick = Convert.ToBoolean(lector.GetString(10))
-							};
-
-							if (lector.IsDBNull(11) == false)
-							{
-								bundle.ImagenNoticia = lector.GetString(11);
-							}
-
-							bundles.Add(bundle);
+							bundles.Add(Cargar(lector));
 						}
 					}
 				}
@@ -68,27 +73,9 @@ namespace BaseDatos.Bundles
 					{
 						while (lector.Read())
 						{
-							Bundles2.Bundle bundle = new Bundles2.Bundle
-							{
-								Id = lector.GetInt32(0),
-								Tipo = Bundles2.BundlesCargar.DevolverBundle(int.Parse(lector.GetString(1))).Tipo,
-								NombreBundle = lector.GetString(2),
-								NombreTienda = lector.GetString(3),
-								ImagenBundle = lector.GetString(4),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7)),
-								Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
-								Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
-								Pick = Convert.ToBoolean(lector.GetString(10))
-                            };
+							Bundles2.Bundle bundle = Cargar(lector);
 
-							if (lector.IsDBNull(11) == false)
-							{
-								bundle.ImagenNoticia = lector.GetString(11);
-							}
-
-							if (tipo != "0")
+                            if (tipo != "0")
 							{
 								if (bundle.Tipo == Bundles2.BundlesCargar.DevolverBundle(tipo).Tipo)
 								{
@@ -136,27 +123,7 @@ namespace BaseDatos.Bundles
 					{
 						while (lector.Read())
 						{
-							Bundles2.Bundle bundle = new Bundles2.Bundle
-							{
-								Id = lector.GetInt32(0),
-								Tipo = Bundles2.BundlesCargar.DevolverBundle(int.Parse(lector.GetString(1))).Tipo,
-								NombreBundle = lector.GetString(2),
-								NombreTienda = lector.GetString(3),
-								ImagenBundle = lector.GetString(4),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7)),
-								Juegos = JsonConvert.DeserializeObject<List<Bundles2.BundleJuego>>(lector.GetString(8)),
-								Tiers = JsonConvert.DeserializeObject<List<Bundles2.BundleTier>>(lector.GetString(9)),
-								Pick = Convert.ToBoolean(lector.GetString(10))                            
-                            };
-
-							if (lector.IsDBNull(11) == false)
-							{
-								bundle.ImagenNoticia = lector.GetString(11);
-							}
-
-							return bundle;
+							return Cargar(lector);
 						}
 					}
 				}
@@ -164,5 +131,30 @@ namespace BaseDatos.Bundles
 
 			return null;
 		}
-	}
+
+        public static List<Bundles2.Bundle> Ultimos(string cantidad)
+        {
+            List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
+
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                string busqueda = "SELECT TOP " + cantidad + " * FROM bundles ORDER BY id DESC";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            bundles.Add(Cargar(lector));
+                        }
+                    }
+                }
+            }
+
+            return bundles;
+        }
+    }
 }

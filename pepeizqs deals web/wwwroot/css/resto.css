@@ -398,19 +398,6 @@
     margin: 20px;
 }
 
-.buscador-panel {
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    overflow-x: auto;
-    position: fixed;
-    z-index: 1000;
-    margin-top: 70px;
-    padding: 10px;
-    backdrop-filter: blur(20px);
-}
-
 .juego-galeria-contenedor {
     position: relative;
 }

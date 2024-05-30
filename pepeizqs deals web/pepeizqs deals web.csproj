@@ -112,6 +112,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Bundles.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tareas.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\api.cshtml" />
@@ -165,6 +166,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Noticia.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Admin\Bundles.razor" />
   </ItemGroup>
 
 </Project>

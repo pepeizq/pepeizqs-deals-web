@@ -1573,7 +1573,7 @@
   },
   {
     "Id": "Api.String1",
-    "Valor": "Juegos (Web)"
+    "Valor": "Juego (Web)"
   },
   {
     "Id": "Api.String2",
@@ -1585,7 +1585,7 @@
   },
   {
     "Id": "Api.String4",
-    "Valor": "Juegos (Steam)"
+    "Valor": "Juego (Steam)"
   },
   {
     "Id": "Api.String5",
@@ -1597,7 +1597,7 @@
   },
   {
     "Id": "Api.String7",
-    "Valor": "Juegos (GOG)"
+    "Valor": "Juego (GOG)"
   },
   {
     "Id": "Api.String8",
@@ -1609,7 +1609,7 @@
   },
   {
     "Id": "Api.String10",
-    "Valor": "Bundles"
+    "Valor": "Bundle"
   },
   {
     "Id": "Api.String11",
@@ -1625,7 +1625,7 @@
   },
   {
     "Id": "Api.String14",
-    "Valor": "Noticias"
+    "Valor": "Noticia"
   },
   {
     "Id": "Api.String15",
@@ -1634,6 +1634,18 @@
   {
     "Id": "Api.String16",
     "Valor": "Con el número de la ID podéis cargar la API de la noticia usando este enlace:"
+  },
+  {
+    "Id": "Api.String17",
+    "Valor": "Bundles (Últimos)"
+  },
+  {
+    "Id": "Api.String18",
+    "Valor": "Para conocer los últimos bundles que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "Api.String19",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 bundles cargados añadiendo un número al final (esta subrayado):"
   },
   {
     "Id": "Month.1",

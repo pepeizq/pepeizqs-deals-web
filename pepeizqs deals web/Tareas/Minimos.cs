@@ -88,7 +88,7 @@ namespace Tareas
 
                                                                     if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
                                                                     {
-                                                                        añadir = false;
+                                                                        añadir2 = false;
                                                                     }
 
                                                                     if (añadir2 == true)

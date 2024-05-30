@@ -77,7 +77,33 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
-		[ResponseCache(Duration = 5000)]
+        [ResponseCache(Duration = 5000)]
+        [HttpGet("api/last-bundles/{Cantidad}/")]
+        public IActionResult ApiBundlesUltimos(int Cantidad)
+        {
+			int cantidadFinal = 5;
+
+			if (Cantidad > 0)
+			{
+				cantidadFinal = Cantidad;
+			}
+
+			if (cantidadFinal > 25)
+			{
+				cantidadFinal = 25;
+			}
+
+            List<Bundle> bundles = global::BaseDatos.Bundles.Buscar.Ultimos(cantidadFinal.ToString());
+
+            if (bundles != null)
+            {
+                return Ok(bundles);
+            }
+
+            return Redirect("~/");
+        }
+
+        [ResponseCache(Duration = 5000)]
 		[HttpGet("api/news/{id}")]
 		public IActionResult ApiNoticia(int Id)
 		{
