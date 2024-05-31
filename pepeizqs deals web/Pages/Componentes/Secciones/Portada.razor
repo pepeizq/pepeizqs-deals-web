@@ -182,22 +182,6 @@
 	}
 }
 
-@if (noticiaEvento.Count == 1)
-{
-	<div style="margin-bottom: 50px;">
-		<a href="@CargarEnlaceNoticia(noticiaEvento[0])" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
-			<div style="overflow: hidden; position: relative; height: 150px; display: flex; align-items: center;">
-				<img style="opacity: 0.2; position: absolute; left: 0; top: 0; width: 100%; height: auto;" src="@CargarFondoNoticia(noticiaEvento[0])">
-				<div style="position: relative; left: 50%; transform: translateX(-50%);">
-					<div style="font-size: 24px;">
-						@Herramientas.Idiomas.MirarTexto(idioma, @noticiaEvento[0].TituloEn, @noticiaEvento[0].TituloEs)
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-}
-
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
@@ -305,8 +289,19 @@
 	<div style="margin-bottom: 25px;">
 		@foreach (var noticia in noticiasMostrar)
 		{
-			<div class="perfil-flexible-centrado" style="margin-top: 20px;">
-				<a class="boton-pequeño" style="padding: 1px;" href="@noticia.Enlace" target="@SacarNoticiaNuevaPestaña(noticia)">
+			<div style="margin-top: 20px;">
+			@{
+				string objetivo = "_self";
+
+				if (string.IsNullOrEmpty(noticia.Enlace) == false)
+				{
+					if (noticia.Enlace.Contains("/link/") == true)
+					{
+						objetivo = "_blank";
+					}
+				}
+
+				<a class="boton-pequeño" style="padding: 2px;" href="@noticia.Enlace" target="@objetivo">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 25%;">
 							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" />
@@ -332,6 +327,7 @@
 						</div>
 					</div>
 				</a>
+			}
 			</div>
 		}
 	</div>
@@ -566,7 +562,6 @@ else
 
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasGestor = new List<Noticias.Noticia>();
-	private List<Noticias.Noticia> noticiaEvento = new List<Noticias.Noticia>();
 
 	private List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
 
@@ -677,7 +672,7 @@ else
 
 			try
 			{
-				noticiasGestor = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticias");
+				noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas(conexion, "30");
 			}
 			catch { }
 
@@ -721,8 +716,6 @@ else
 				}
 			}
 
-			noticiaEvento = BaseDatos.Noticias.Buscar.Todas(conexion, "portadaNoticiasEvento");
-
 			#endregion
 
 			#region Sorteos
@@ -731,19 +724,6 @@ else
 
 			#endregion
 		}
-	}
-
-	private string SacarNoticiaNuevaPestaña(Noticias.Noticia noticia)
-	{
-		if (noticia.Enlace != null)
-		{
-			if (noticia.Enlace.Contains("/link/") == true)
-			{
-				return "_blank";
-			}
-		}
-
-		return "_self";
 	}
 
 	private void ClickearAdelante()

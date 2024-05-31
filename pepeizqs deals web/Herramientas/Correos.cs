@@ -173,7 +173,21 @@ namespace Herramientas
 			string descripcion = juego.Nombre + " has reached a new minimum price registered on pepeizqdeals.com:";
 			string imagen = juego.Imagenes.Header_460x215;
 			string descuento = precio.Descuento.ToString() + "%";
-			string precio2 = JuegoFicha.PrepararPrecio(precio.Precio, false, precio.Moneda);
+
+			string precio2 = string.Empty;
+
+			precio2 = precio.Precio.ToString();
+			precio2 = precio2.Replace(".", ",");
+
+			int int1 = precio2.IndexOf(",");
+
+			if (int1 == precio2.Length - 2)
+			{
+				precio2 = precio2 + "0";
+			}
+
+			precio2 = precio2 + "€";
+
 			string enlace = "https://pepeizqdeals.com" + EnlaceAcortador.Generar(precio.Enlace, precio.Tienda);
 			string imagenTienda = string.Empty;
 

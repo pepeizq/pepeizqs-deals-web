@@ -1573,7 +1573,7 @@
   },
   {
     "Id": "Api.String1",
-    "Valor": "Juego (Web)"
+    "Valor": "Juego"
   },
   {
     "Id": "Api.String2",
@@ -1585,7 +1585,7 @@
   },
   {
     "Id": "Api.String4",
-    "Valor": "Juego (Steam)"
+    "Valor": "Steam"
   },
   {
     "Id": "Api.String5",
@@ -1597,7 +1597,7 @@
   },
   {
     "Id": "Api.String7",
-    "Valor": "Juego (GOG)"
+    "Valor": "GOG"
   },
   {
     "Id": "Api.String8",
@@ -1646,6 +1646,30 @@
   {
     "Id": "Api.String19",
     "Valor": "Nota: Se puede ampliar hasta un máximo de 25 bundles cargados añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "Api.String20",
+    "Valor": "Noticias (Últimas)"
+  },
+  {
+    "Id": "Api.String21",
+    "Valor": "Para conocer las últimas noticias que han sido añadidas a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "Api.String22",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 noticias cargadas añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "Api.String23",
+    "Valor": "Gratis (Últimos)"
+  },
+  {
+    "Id": "Api.String24",
+    "Valor": "Para conocer los últimos juegos gratuitos que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "Api.String25",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 juegos gratuitos cargados añadiendo un número al final (esta subrayado):"
   },
   {
     "Id": "Month.1",

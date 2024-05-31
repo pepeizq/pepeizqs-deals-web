@@ -1036,7 +1036,7 @@
 				{
 					if (precio.DRM == drm && precio.Descuento > 0)
 					{
-						bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
+						bool fechaEncaja = Calculadora.CalcularAntiguedad(precio);
 
 						if (fechaEncaja == true)
 						{
@@ -1769,7 +1769,7 @@
 		{
 			foreach (var precio in minimo.PrecioActualesTiendas)
 			{
-				bool fechaEncaja = JuegoFicha.CalcularAntiguedad(precio);
+				bool fechaEncaja = Calculadora.CalcularAntiguedad(precio);
 
 				if (fechaEncaja == true)
 				{

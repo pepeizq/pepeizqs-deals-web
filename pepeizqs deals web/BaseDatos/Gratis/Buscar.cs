@@ -8,6 +8,28 @@ namespace BaseDatos.Gratis
 {
 	public static class Buscar
 	{
+		public static JuegoGratis Cargar(SqlDataReader lector)
+		{
+            JuegoGratis gratis = new JuegoGratis
+            {
+                Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
+                JuegoId = lector.GetInt32(1),
+                Nombre = lector.GetString(2),
+                Imagen = lector.GetString(3),
+                DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+                Enlace = lector.GetString(5),
+                FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+                FechaTermina = Convert.ToDateTime(lector.GetString(7))
+            };
+
+            if (lector.IsDBNull(9) == false)
+            {
+                gratis.ImagenNoticia = lector.GetString(9);
+            }
+
+			return gratis;
+        }
+
 		public static List<JuegoGratis> Todos()
 		{
 			List<JuegoGratis> listaGratis = new List<JuegoGratis>();
@@ -24,24 +46,7 @@ namespace BaseDatos.Gratis
 					{
 						while (lector.Read())
 						{
-							JuegoGratis gratis = new JuegoGratis
-							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
-
-							if (lector.IsDBNull(9) == false)
-							{
-								gratis.ImagenNoticia = lector.GetString(9);
-							}
-
-							listaGratis.Add(gratis);
+							listaGratis.Add(Cargar(lector));
 						}
 					}
 				}
@@ -68,22 +73,7 @@ namespace BaseDatos.Gratis
 					{
 						while (lector.Read())
 						{
-							JuegoGratis gratis = new JuegoGratis
-							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
-
-							if (lector.IsDBNull(9) == false)
-							{
-								gratis.ImagenNoticia = lector.GetString(9);
-							}
+							JuegoGratis gratis = Cargar(lector);
 
 							if (tiempo == Herramientas.Tiempo.Atemporal)
 							{
@@ -127,24 +117,7 @@ namespace BaseDatos.Gratis
 					{
 						while (lector.Read())
 						{
-							JuegoGratis gratis = new JuegoGratis
-							{
-								Tipo = GratisCargar.DevolverGratis(lector.GetInt32(0)).Tipo,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
-
-							if (lector.IsDBNull(9) == false)
-							{
-								gratis.ImagenNoticia = lector.GetString(9);
-							}
-
-							return gratis;
+							return Cargar(lector);
 						}
 					}
 				}
@@ -152,5 +125,35 @@ namespace BaseDatos.Gratis
 
 			return null;
 		}
-	}
+
+        public static List<JuegoGratis> Ultimos(string cantidad)
+        {
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                return Ultimos(conexion, cantidad);
+            }
+        }
+
+        public static List<JuegoGratis> Ultimos(SqlConnection conexion, string cantidad)
+        {
+            List<JuegoGratis> juegos = new List<JuegoGratis>();
+
+            string busqueda = "SELECT TOP " + cantidad + " * FROM gratis ORDER BY id DESC";
+
+            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+            {
+                using (SqlDataReader lector = comando.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        juegos.Add(Cargar(lector));
+                    }
+                }
+            }
+
+            return juegos;
+        }
+    }
 }

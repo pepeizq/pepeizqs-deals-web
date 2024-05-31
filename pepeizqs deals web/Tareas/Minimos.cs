@@ -73,7 +73,7 @@ namespace Tareas
                                                             {
                                                                 bool añadir = false;
 
-                                                                if (JuegoFicha.CalcularAntiguedad(juego.PrecioMinimosHistoricos[i]) == true)
+                                                                if (Calculadora.CalcularAntiguedad(juego.PrecioMinimosHistoricos[i]) == true)
                                                                 {
                                                                     añadir = true;
                                                                 }

@@ -198,7 +198,7 @@
 		{
 			foreach (var precio in juego.PrecioActualesTiendas)
 			{
-				bool fechaEncaja = Herramientas.JuegoFicha.CalcularAntiguedad(precio);
+				bool fechaEncaja = Herramientas.Calculadora.CalcularAntiguedad(precio);
 
 				if (fechaEncaja == true)
 				{

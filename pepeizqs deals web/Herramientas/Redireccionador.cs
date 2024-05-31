@@ -10,7 +10,7 @@ namespace Herramientas
 {
 	public class Redireccionador : Controller
 	{
-		[ResponseCache(Duration = 5000)]
+		[ResponseCache(Duration = 6000)]
 		[HttpGet("api/game/{id}")]
 		public IActionResult ApiJuego(int Id)
 		{
@@ -24,7 +24,7 @@ namespace Herramientas
 			return Redirect("~/");
         }
 
-		[ResponseCache(Duration = 5000)]
+		[ResponseCache(Duration = 6000)]
 		[HttpGet("api/steam/{id}")]
 		public IActionResult ApiJuegoSteam(int Id)
 		{
@@ -38,7 +38,7 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
-		[ResponseCache(Duration = 5000)]
+		[ResponseCache(Duration = 6000)]
 		[HttpGet("api/gog/{id}")]
 		public IActionResult ApiJuegoGog(string Id)
 		{
@@ -52,7 +52,21 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
-		[ResponseCache(Duration = 5000)]
+        [ResponseCache(Duration = 6000)]
+        [HttpGet("api/bundle/{id}/")]
+        public IActionResult ApiBundle(int Id)
+        {
+            Bundle bundle = global::BaseDatos.Bundles.Buscar.UnBundle(Id);
+
+            if (bundle != null)
+            {
+                return Ok(bundle);
+            }
+
+            return Redirect("~/");
+        }
+
+        [ResponseCache(Duration = 6000)]
 		[HttpGet("api/bundle/{id}/{juegos}")]
 		public IActionResult ApiBundle(int Id, string Juegos)
 		{
@@ -77,7 +91,21 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
-        [ResponseCache(Duration = 5000)]
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("api/last-bundles/")]
+		public IActionResult ApiBundlesUltimos()
+		{
+			List<Bundle> bundles = global::BaseDatos.Bundles.Buscar.Ultimos("5");
+
+			if (bundles != null)
+			{
+				return Ok(bundles);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
         [HttpGet("api/last-bundles/{Cantidad}/")]
         public IActionResult ApiBundlesUltimos(int Cantidad)
         {
@@ -103,7 +131,7 @@ namespace Herramientas
             return Redirect("~/");
         }
 
-        [ResponseCache(Duration = 5000)]
+        [ResponseCache(Duration = 6000)]
 		[HttpGet("api/news/{id}")]
 		public IActionResult ApiNoticia(int Id)
 		{
@@ -117,7 +145,87 @@ namespace Herramientas
 			return Redirect("~/");
 		}
 
-		[ResponseCache(Duration = 2000)]
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("api/last-news/")]
+		public IActionResult ApiNoticiasUltimas()
+		{
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("5");
+
+			if (noticias != null)
+			{
+				return Ok(noticias);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("api/last-news/{Cantidad}/")]
+		public IActionResult ApiNoticiasUltimas(int Cantidad)
+		{
+			int cantidadFinal = 5;
+
+			if (Cantidad > 0)
+			{
+				cantidadFinal = Cantidad;
+			}
+
+			if (cantidadFinal > 25)
+			{
+				cantidadFinal = 25;
+			}
+
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(cantidadFinal.ToString());
+
+			if (noticias != null)
+			{
+				return Ok(noticias);
+			}
+
+			return Redirect("~/");
+		}
+
+        [ResponseCache(Duration = 6000)]
+        [HttpGet("api/last-free/")]
+        public IActionResult ApiGratisUltimos()
+        {
+            List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos("5");
+
+            if (gratis != null)
+            {
+                return Ok(gratis);
+            }
+
+            return Redirect("~/");
+        }
+
+        [ResponseCache(Duration = 6000)]
+        [HttpGet("api/last-free/{Cantidad}/")]
+        public IActionResult ApiGratisUltimos(int Cantidad)
+        {
+            int cantidadFinal = 5;
+
+            if (Cantidad > 0)
+            {
+                cantidadFinal = Cantidad;
+            }
+
+            if (cantidadFinal > 25)
+            {
+                cantidadFinal = 25;
+            }
+
+            List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos(cantidadFinal.ToString());
+
+            if (gratis != null)
+            {
+                return Ok(gratis);
+            }
+
+            return Redirect("~/");
+        }
+
+        [ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
 		public IActionResult CogerAcortador(int Id)
 		{

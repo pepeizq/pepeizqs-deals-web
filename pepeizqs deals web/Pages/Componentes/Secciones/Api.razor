@@ -5,17 +5,9 @@
 </h1>
 
 <div class="perfil" style="align-items: start; flex-direction: row;">
-	<div style="width: 20%;">
+	<div style="width: 20%; border-right: solid 3px; border-color: var(--fondoCodigo);">
 		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoJuegos1;" @onclick="(e => MostrarJuegos1(e))">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String1")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoJuegos2;" @onclick="(e => MostrarJuegos2(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String4")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoJuegos3;" @onclick="(e => MostrarJuegos3(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String7")
 		</button>
 
 		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles1;" @onclick="(e => MostrarBundles1(e))">
@@ -26,12 +18,20 @@
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String17")
 		</button>
 
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias;" @onclick="(e => MostrarNoticias(e))">
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoGratis1;" @onclick="(e => MostrarGratis1(e))">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String23")
+		</button>
+
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias1;" @onclick="(e => MostrarNoticias1(e))">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String14")
+		</button>
+
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias2;" @onclick="(e => MostrarNoticias2(e))">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String20")
 		</button>
 	</div>
 
-	<div style="width: 80%; padding: 20px 0px 20px 30px; border-left: solid 3px; border-color: var(--fondoCodigo);">
+	<div style="width: 80%; padding: 20px 0px 20px 30px;">
 		@if (mostrarJuegos1 == true)
 		{
 			<div>
@@ -47,10 +47,13 @@
 					<label style="text-decoration: none;">https://pepeizqdeals.com/api/game/6391</label>
 				</div>
 			</div>
-		}
 
-		@if (mostrarJuegos2 == true)
-		{
+			<hr/>
+
+			<div style="margin-top: 20px; margin-bottom: 20px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String4")
+			</div>
+			
 			<div>
 				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String5")
 
@@ -68,10 +71,13 @@
 					<label style="text-decoration: none;">https://pepeizqdeals.com/api/steam/1091500</label>
 				</div>
 			</div>
-		}
 
-		@if (mostrarJuegos3 == true)
-		{
+			<hr/>
+
+			<div style="margin-top: 20px; margin-bottom: 20px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String7")
+			</div>
+			
 			<div>
 				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String8")
 
@@ -131,7 +137,24 @@
 			</div>
 		}
 
-		@if (mostrarNoticias == true)
+		@if (mostrarGratis1 == true)
+		{
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String24")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/</label>
+				</div>
+
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String25")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/<label style="text-decoration: underline;">25</label>/</label>
+				</div>
+			</div>
+		}
+
+		@if (mostrarNoticias1 == true)
 		{
 			<div>
 				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String15")
@@ -144,6 +167,23 @@
 
 				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
 					<label style="text-decoration: none;">https://pepeizqdeals.com/api/news/293/</label>
+				</div>
+			</div>
+		}
+
+		@if (mostrarNoticias2 == true)
+		{
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String21")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/</label>
+				</div>
+
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String22")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/<label style="text-decoration: underline;">25</label>/</label>
 				</div>
 			</div>
 		}
@@ -166,18 +206,18 @@
 	private void CerrarPestañas()
 	{
 		fondoJuegos1 = "transparent";
-		fondoJuegos2 = "transparent";
-		fondoJuegos3 = "transparent";
 		fondoBundles1 = "transparent";
 		fondoBundles2 = "transparent";
-		fondoNoticias = "transparent";
+		fondoGratis1 = "transparent";
+		fondoNoticias1 = "transparent";
+		fondoNoticias2 = "transparent";
 
 		mostrarJuegos1 = false;
-		mostrarJuegos2 = false;
-		mostrarJuegos3 = false;
 		mostrarBundles1 = false;
 		mostrarBundles2 = false;
-		mostrarNoticias = false;
+		mostrarGratis1 = false;
+		mostrarNoticias1 = false;
+		mostrarNoticias2 = false;
 	}
 
 	private bool mostrarJuegos1 = false;
@@ -189,28 +229,6 @@
 
 		fondoJuegos1 = "var(--fondoCodigo)";
 		mostrarJuegos1 = true;
-	}
-
-	private bool mostrarJuegos2 = false;
-	private string fondoJuegos2 = "transparent";
-
-	private void MostrarJuegos2(MouseEventArgs e)
-	{
-		CerrarPestañas();
-
-		fondoJuegos2 = "var(--fondoCodigo)";
-		mostrarJuegos2 = true;
-	}
-
-	private bool mostrarJuegos3 = false;
-	private string fondoJuegos3 = "transparent";
-
-	private void MostrarJuegos3(MouseEventArgs e)
-	{
-		CerrarPestañas();
-
-		fondoJuegos3 = "var(--fondoCodigo)";
-		mostrarJuegos3 = true;
 	}
 
 	private bool mostrarBundles1 = false;
@@ -235,14 +253,36 @@
 		mostrarBundles2 = true;
 	}
 
-	private bool mostrarNoticias = false;
-	private string fondoNoticias = "transparent";
+	private bool mostrarGratis1 = false;
+	private string fondoGratis1 = "transparent";
 
-	private void MostrarNoticias(MouseEventArgs e)
+	private void MostrarGratis1(MouseEventArgs e)
 	{
 		CerrarPestañas();
 
-		fondoNoticias = "var(--fondoCodigo)";
-		mostrarNoticias = true;
+		fondoGratis1 = "var(--fondoCodigo)";
+		mostrarGratis1 = true;
+	}
+
+	private bool mostrarNoticias1 = false;
+	private string fondoNoticias1 = "transparent";
+
+	private void MostrarNoticias1(MouseEventArgs e)
+	{
+		CerrarPestañas();
+
+		fondoNoticias1 = "var(--fondoCodigo)";
+		mostrarNoticias1 = true;
+	}
+
+	private bool mostrarNoticias2 = false;
+	private string fondoNoticias2 = "transparent";
+
+	private void MostrarNoticias2(MouseEventArgs e)
+	{
+		CerrarPestañas();
+
+		fondoNoticias2 = "var(--fondoCodigo)";
+		mostrarNoticias2 = true;
 	}
 }

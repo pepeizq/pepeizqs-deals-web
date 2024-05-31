@@ -1,4 +1,6 @@
-﻿namespace Herramientas
+﻿using Juegos;
+
+namespace Herramientas
 {
 	public enum Tiempo
 	{
@@ -219,5 +221,45 @@
 
 			return mensaje;
         }
-    }
+
+		public static bool CalcularAntiguedad(JuegoPrecio precio)
+		{
+			bool fechaEncaja = true;
+
+			if (precio.FechaTermina.Year < 2023 && precio.FechaActualizacion.Year < 2023)
+			{
+				fechaEncaja = false;
+			}
+
+			if (precio.FechaTermina.Year > 2022)
+			{
+				if (DateTime.Now >= precio.FechaTermina)
+				{
+					fechaEncaja = false;
+				}
+			}
+			else
+			{
+				if (precio.FechaActualizacion.Year > 2022)
+				{
+					if (precio.FechaActualizacion.Year != DateTime.Now.Year || precio.FechaActualizacion.DayOfYear + 2 <= DateTime.Now.DayOfYear)
+					{
+						fechaEncaja = false;
+					}
+				}
+				else
+				{
+					if (precio.FechaDetectado.Year > 2022)
+					{
+						if (precio.FechaDetectado.Year != DateTime.Now.Year || precio.FechaDetectado.DayOfYear + 7 <= DateTime.Now.DayOfYear)
+						{
+							fechaEncaja = false;
+						}
+					}
+				}
+			}
+
+			return fechaEncaja;
+		}
+	}
 }
