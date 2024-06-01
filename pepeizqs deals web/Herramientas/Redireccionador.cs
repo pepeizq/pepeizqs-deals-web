@@ -248,26 +248,11 @@ namespace Herramientas
             {
                 if (global::BaseDatos.Usuarios.Buscar.RolDios(User.Identity.Name) == true)
                 {
-					List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas();
-					List<Noticia> noticiasMostrar = new List<Noticia>();
+					List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("10");
 
-					if (noticias != null)
+					if (noticias.Count > 0)
 					{
-						if (noticias.Count > 0)
-						{
-							foreach (var noticia in noticias)
-							{
-								if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
-								{
-									noticiasMostrar.Add(noticia);
-								}
-							}
-						}
-                    }
-
-					if (noticiasMostrar.Count > 0)
-					{
-                        return Content(JsonConvert.SerializeObject(noticiasMostrar));
+                        return Content(JsonConvert.SerializeObject(noticias));
                     }
                 }
             }
