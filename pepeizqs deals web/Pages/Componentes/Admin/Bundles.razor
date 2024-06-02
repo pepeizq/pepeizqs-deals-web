@@ -48,7 +48,9 @@
 
         <div style="margin-top: 20px;">
             <label style="margin-bottom: 10px;">Pick Up:</label>
-            <input @onchange="@(e => CambiarPick(e))" class="entrada-texto" style="min-width: 100px; width: 10%;" value="@bundle.Pick.ToString()" />
+            <div class="checkbox-caja">
+                <input type="checkbox" class="checkbox-interior" checked="@bundle.Pick" @onchange="@(e => CambiarPick(e))">
+            </div>
         </div>
 
         <div style="margin-top: 20px;">

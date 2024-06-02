@@ -131,7 +131,7 @@ namespace BaseDatos.Tiendas
 					if (actualizar == true && insertar == false)
 					{
 						DateTime fechaComprobacion = Convert.ToDateTime(juego.FechaSteamAPIComprobacion);
-						fechaComprobacion = fechaComprobacion.AddDays(28);
+						fechaComprobacion = fechaComprobacion.AddDays(35);
 
 						if (fechaComprobacion < DateTime.Now)
 						{
@@ -163,7 +163,10 @@ namespace BaseDatos.Tiendas
 
 					if (juego.Tipo == JuegoTipo.DLC)
 					{
-						juego.Maestro = nuevoJuego.Maestro;
+						if (string.IsNullOrEmpty(juego.Maestro) == false)
+						{
+							juego.Maestro = nuevoJuego.Maestro;
+						}						
 					}
 					
 					juego.FechaSteamAPIComprobacion = DateTime.Now;

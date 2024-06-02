@@ -23,6 +23,16 @@
 	}
 </script>
 
+<script>
+	function moverScroll(id) {
+		const yOffset = -175;
+		const element = document.getElementById(id);
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+		window.scrollTo({ top: y, behavior: 'smooth' });
+	}
+</script>
+
 <div>
 	@if (juego.Tipo == JuegoTipo.Game)
 	{
@@ -453,7 +463,7 @@
 
 						if (bundle3 != null)
 						{
-							<a class="juego-boton-pequeño" href="/bundle/@bundle2.BundleId.ToString()" style="font-size: 17px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
+							<button @onclick="(e => BundleAbrir(e, bundle2.BundleId))" class="boton-pequeño" style="font-size: 17px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
 								<div style="display: flex; align-items: center;">
 									<div style="margin-right: 15px;">
 										<img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
@@ -473,7 +483,7 @@
 										<label style="font-size: 13px; cursor: pointer;">@BundlesPrepararInfo(bundle3, juego.Id)</label>
 									</div>
 								</div>
-							</a>
+							</button>
 						}
 					}
 				}			
@@ -789,15 +799,10 @@
 	</div>
 </div>
 
-<script>
-	function moverScroll(id) {
-		const yOffset = -175;
-		const element = document.getElementById(id);
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-		window.scrollTo({ top: y, behavior: 'smooth' });
-	}
-</script>
+@if (abiertoBundle == true)
+{
+	<Bundle bundleId="@bundleId" idioma="@idioma"/>
+}
 
 @code {
 
@@ -812,6 +817,9 @@
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 	private bool usuarioLogeado = false;
+
+	private bool abiertoBundle = false;
+	private int bundleId = 0;
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
@@ -1460,6 +1468,12 @@
 				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Game.String41"), bundle.Tiers[0].CantidadJuegos.ToString());
 			}
 		}
+	}
+
+	private async void BundleAbrir(MouseEventArgs e, int bundleId2)
+	{
+		abiertoBundle = true;
+		bundleId = bundleId2;
 	}
 
 	#endregion 
