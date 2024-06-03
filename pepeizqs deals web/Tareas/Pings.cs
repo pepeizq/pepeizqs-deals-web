@@ -1,6 +1,9 @@
 ﻿#nullable disable
 
 using Herramientas;
+using Microsoft.Data.SqlClient;
+using System.Net.Http;
+using System.Text;
 
 namespace Tareas
 {
@@ -30,7 +33,7 @@ namespace Tareas
                 if (piscinaApp == piscinaUsada)
                 {
                     string html = await Decompiladores.Estandar("https://tareas.pepeizqapps.com/");
-                }                    
+				}                    
             }
         }
 

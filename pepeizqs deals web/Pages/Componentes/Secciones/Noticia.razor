@@ -3,6 +3,7 @@
 @using Microsoft.JSInterop
 @using Noticias
 @using Suscripciones2
+@using Toolbelt.Blazor.HeadElement
 
 @inject IJSRuntime JS
 
@@ -11,6 +12,18 @@
 		history.pushState(null, '', url);
 	}
 </script>
+
+<Title>
+   @titulo • pepeizq's deals
+</Title>
+
+<Meta Property="og:title" Content="@titulo" />
+<Meta Property="og:type" Content="article" />
+<Meta Property="description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
+<Meta Property="og:description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
+<Meta Property="og:url" Content="@enlace" />
+<Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
+<Meta Property="robots" Content="index, follow" />
 
 <div class="juego-wrap">
 	@if (juegos != null)
@@ -130,7 +143,7 @@
 				if (juegos[0].Media.Video != null)
 				{
 					<div style="display: flex; height: 100%;">
-						<video controls="true" autoplay="false" muted="true" src="@juegos[0].Media.Video" style="width: 100%; height: auto;" />
+						<video controls autoplay muted src="@juegos[0].Media.Video" style="width: 100%; height: auto;" />
 					</div>					
 				}
 			}
@@ -196,6 +209,7 @@
 	public Noticias.Noticia noticia = new Noticias.Noticia();
 
 	private string titulo = string.Empty;
+	private string enlace = string.Empty;
 	private List<Juegos.Juego> juegos = new List<Juegos.Juego>();
 
 	protected override void OnInitialized()
@@ -208,6 +222,7 @@
 		if (noticia != null)
 		{
 			titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+			enlace = "https://pepeizqdeals.com/news/" + noticiaId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/";
 
 			List<string> juegosTexto = Herramientas.Listados.Generar(noticia.Juegos);
 

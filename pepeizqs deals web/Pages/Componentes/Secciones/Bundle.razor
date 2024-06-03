@@ -19,7 +19,7 @@
 {
 	if (modulo == false)
 	{
-		<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+		<div class="perfil" style="margin-bottom: 20px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
 			<div style="display: flex; align-items: center; flex-direction: row;">
 				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
 					<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 	}
-	
+
 	if (bundle.Tiers != null)
 	{
 		decimal totalMinimos = 0;
@@ -52,7 +52,14 @@
 		{
 			foreach (var tier in OrdenarTiers(bundle.Tiers))
 			{
-				<div class="perfil" style="margin-bottom: 20px; padding: 5px; background-color: transparent;">
+				string marginFinal = string.Empty;
+
+				if (tier.Posicion != bundle.Tiers.Count && bundle.Pick == false)
+				{
+					marginFinal = "margin-bottom: 40px;";
+				}
+
+				<div class="perfil" style="padding: 0px; background-color: transparent; @marginFinal">
 					@{
 						List<Bundles2.BundleJuego> juegosTier = new List<Bundles2.BundleJuego>();
 
@@ -71,34 +78,41 @@
 
 						if (bundle.Pick == true)
 						{
-							<div style="font-size: 18px; margin-bottom: 20px;">
-								@((MarkupString)MostrarMensajePick(bundle.Tiers))
+							<div class="perfil" style="display: flex; align-items: center; width: 100%; flex-direction: row; font-size: 18px; padding: 20px; margin-bottom: 20px;">
+								@foreach (var tier2 in OrdenarTiers(bundle.Tiers))
+								{
+									<div style="width: 100%; text-align: center;">
+										<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> / <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String20"))</label>
+									</div>
+								}
 							</div>
 						}
 						else
 						{
-							<div style="font-size: 18px; margin-bottom: 5px;">
-								@MostrarTierPrecio(tier)
-							</div>
+							<div class="perfil" style="font-size: 18px; padding: 20px 40px; margin-bottom: 10px;">
+								<div style="margin-bottom: 5px;">
+									Tier @tier.Posicion: @ArreglarPrecio(decimal.Parse(tier.Precio))
+								</div>
 
-							foreach (var juego in juegosTier)
-							{
-								if (juego.Juego.PrecioMinimosHistoricos != null)
+								@foreach (var juego in juegosTier)
 								{
-									foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
+									if (juego.Juego.PrecioMinimosHistoricos != null)
 									{
-										if (historico.DRM == juego.DRM)
+										foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
 										{
-											totalMinimos = totalMinimos + historico.Precio;
+											if (historico.DRM == juego.DRM)
+											{
+												totalMinimos = totalMinimos + historico.Precio;
 
-											break;
+												break;
+											}
 										}
 									}
 								}
-							}
 
-							<div style="font-size: 14px; margin-bottom: 20px;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String14"): @ArreglarPrecio(totalMinimos)
+								<div style="font-size: 14px;">
+									@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String14"): @ArreglarPrecio(totalMinimos)
+								</div>
 							</div>
 						}
 
@@ -161,113 +175,124 @@
 									</div>
 								</div>
 
-								<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; margin-bottom: 20px; position: relative; @fondoColor">
-									<div style="display: flex; align-items: center; padding: 2px;">
-										<div style="text-align: center; width: 17%;">
-											<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
-										</div>
+								@{
+									string marginIzq = string.Empty;
 
-										<div style="padding-left: 20px; padding-right: 20px; text-align: left;">
-											<div style="margin-bottom: 7px; font-size: 17px;">
-												@juego.Nombre
+									if (bundle.Pick == false)
+									{
+										marginIzq = "margin-left: 40px;";
+									}
+								}
+
+								<div style="margin-bottom: 10px; @marginIzq">
+									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor">
+										<div style="display: flex; align-items: center; padding: 2px;">
+											<div style="text-align: center; width: 17%;">
+												<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
 											</div>
 
-											<div style="display: flex; align-items: center;">
-												<div>
-													<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 20px; height: 20px;" />
+											<div style="padding-left: 20px; padding-right: 20px; text-align: left;">
+												<div style="margin-bottom: 7px; font-size: 17px;">
+													@juego.Nombre
 												</div>
 
-												@if (juego.Juego.Tipo == Juegos.JuegoTipo.DLC)
-												{
-													<div style="margin-left: 15px; font-size: 14px; background: var(--fondoDlc);">
-														<span style="padding: 4px 6px; line-height: 24px; vertical-align: middle;">@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String15")</span>
+												<div style="display: flex; align-items: center;">
+													<div>
+														<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 20px; height: 20px;" />
 													</div>
-												}
-											</div>
-										</div>
 
-										<div style="margin-left: auto; margin-right: 15px; display: flex; align-items: center;">
-											@{
-												if (juego.Juego.PrecioMinimosHistoricos != null)
-												{
-													foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
+													@if (juego.Juego.Tipo == Juegos.JuegoTipo.DLC)
 													{
-														if (historico.DRM == juego.DRM)
+														<div style="margin-left: 15px; font-size: 14px; background: var(--fondoDlc);">
+															<span style="padding: 4px 6px; line-height: 24px; vertical-align: middle;">@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String15")</span>
+														</div>
+													}
+												</div>
+											</div>
+
+											<div style="margin-left: auto; margin-right: 15px; display: flex; align-items: center; font-size: 15px;">
+												@{
+													if (juego.Juego.PrecioMinimosHistoricos != null)
+													{
+														foreach (var historico in juego.Juego.PrecioMinimosHistoricos)
 														{
-															<div style="padding-left: 20px; text-align: center;">
-																<div style="margin-bottom: 5px;">
-																	@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String9")
+															if (historico.DRM == juego.DRM)
+															{
+																<div style="padding-left: 20px; text-align: center;">
+																	<div style="margin-bottom: 5px;">
+																		@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String9")
+																	</div>
+
+																	<div>
+																		@ArreglarPrecio(historico.Precio)
+																	</div>
 																</div>
 
-																<div>
-																	@ArreglarPrecio(historico.Precio)
-																</div>
-															</div>
-
-															break;
+																break;
+															}
 														}
 													}
-												}
 
-												int bundlesEstado = 0;
+													int bundlesEstado = 0;
 
-												if (juego.Juego.Bundles != null)
-												{
-													bundlesEstado = juego.Juego.Bundles.Count;
-
-													if (bundlesEstado > 0)
+													if (juego.Juego.Bundles != null)
 													{
-														bundlesEstado -= 1;
+														bundlesEstado = juego.Juego.Bundles.Count;
+
+														if (bundlesEstado > 0)
+														{
+															bundlesEstado -= 1;
+														}
 													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String10")
+														</div>
+
+														<div>
+															@bundlesEstado
+														</div>
+													</div>
+
+													int gratisEstado = 0;
+
+													if (juego.Juego.Gratis != null)
+													{
+														gratisEstado = juego.Juego.Gratis.Count;
+													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String11")
+														</div>
+
+														<div>
+															@gratisEstado
+														</div>
+													</div>
+
+													int suscripcionesEstado = 0;
+
+													if (juego.Juego.Suscripciones != null)
+													{
+														suscripcionesEstado = juego.Juego.Suscripciones.Count;
+													}
+
+													<div style="padding-left: 20px; text-align: center;">
+														<div style="margin-bottom: 5px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String12")
+														</div>
+
+														<div>
+															@suscripcionesEstado
+														</div>
+													</div>
 												}
-
-												<div style="padding-left: 20px; text-align: center;">
-													<div style="margin-bottom: 5px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String10")
-													</div>
-
-													<div>
-														@bundlesEstado
-													</div>
-												</div>
-
-												int gratisEstado = 0;
-
-												if (juego.Juego.Gratis != null)
-												{
-													gratisEstado = juego.Juego.Gratis.Count;
-												}
-
-												<div style="padding-left: 20px; text-align: center;">
-													<div style="margin-bottom: 5px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String11")
-													</div>
-
-													<div>
-														@gratisEstado
-													</div>
-												</div>
-
-												int suscripcionesEstado = 0;
-
-												if (juego.Juego.Suscripciones != null)
-												{
-													suscripcionesEstado = juego.Juego.Suscripciones.Count;
-												}
-
-												<div style="padding-left: 20px; text-align: center;">
-													<div style="margin-bottom: 5px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String12")
-													</div>
-
-													<div>
-														@suscripcionesEstado
-													</div>
-												</div>
-											}
+											</div>
 										</div>
-									</div>
-								</a>
+									</a>
+								</div>	
 							</div>
 						}
 					}
@@ -361,17 +386,6 @@
 		}
 	}
 
-	private string MostrarTierPrecio(Bundles2.BundleTier tier)
-	{
-		string mensaje = "Tier " + tier.Posicion.ToString() + " • ";
-
-		string precio = tier.Precio;
-		precio = precio.Replace(".", ",");
-		precio = precio + "€";
-
-		return mensaje + precio;
-	}
-
 	private List<Bundles2.BundleTier> OrdenarTiers(List<Bundles2.BundleTier> tiers)
 	{
 		if (tiers != null)
@@ -383,22 +397,6 @@
 		}
 
 		return tiers;
-	}
-
-	private string MostrarMensajePick(List<Bundles2.BundleTier> tiers)
-	{
-		string mensaje = string.Empty;
-
-		foreach (var tier in tiers)
-		{
-			string precio = tier.Precio;
-			precio = precio.Replace(".", ",");
-			precio = precio + "€";
-
-			mensaje = mensaje + "<div>" + tier.CantidadJuegos.ToString() + "  " + Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") + " • " + precio + "</div>";
-		}
-
-		return mensaje;
 	}
 
 	private string ArreglarPrecio(decimal precioDecimal)

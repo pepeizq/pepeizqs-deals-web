@@ -20,7 +20,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoIndex);
 
 			string textoBundles = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/Bundles</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/bundles</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
 					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
@@ -28,7 +28,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoBundles);
 
 			string textoGratis = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/Free</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/free</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
 					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
@@ -36,7 +36,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoGratis);
 
 			string textoSuscripciones = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/Subscriptions</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/subscriptions</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
 					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
@@ -44,7 +44,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoSuscripciones);
 
 			string textoMinimos = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/HistoricalLow</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/historical-lows</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
 					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
@@ -52,7 +52,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoMinimos);
 
 			string textoNoticias = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/LastNews</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/last-news</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
 					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
@@ -60,7 +60,7 @@ namespace pepeizqs_deals_web.Pages
 			sb.Append(textoNoticias);
 
 			string textoAñadidos = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/LastAdded</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/last-added</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
 					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
@@ -74,12 +74,12 @@ namespace pepeizqs_deals_web.Pages
 			foreach (Noticias.Noticia noticia in noticias)
 			{
 				DateTime fechaTemporal = noticia.FechaEmpieza;
-				fechaTemporal = fechaTemporal.AddDays(3);
+				fechaTemporal = fechaTemporal.AddDays(7);
 
 				if (fechaTemporal > DateTime.Now)
 				{
 					string texto = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "</loc>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "</loc>" + Environment.NewLine +
 					"<news:news>" + Environment.NewLine +
 					"<news:publication>" + Environment.NewLine +
 					"<news:name>pepeizq's deals</news:name>" + Environment.NewLine +

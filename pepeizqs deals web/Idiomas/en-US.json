@@ -652,6 +652,10 @@
     "Valor": "Check out the latest PC game bundles available for purchase"
   },
   {
+    "Id": "Bundles.String20",
+    "Valor": "per unit"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Free"
   },

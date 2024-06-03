@@ -16,6 +16,7 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JS
+@inject NavigationManager NavManager
 
 <script>
 	window.ChangeUrl = function (url) {
@@ -799,11 +800,6 @@
 	</div>
 </div>
 
-@if (abiertoBundle == true)
-{
-	<Bundle bundleId="@bundleId" idioma="@idioma"/>
-}
-
 @code {
 
 	#nullable disable
@@ -817,9 +813,6 @@
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 	private bool usuarioLogeado = false;
-
-	private bool abiertoBundle = false;
-	private int bundleId = 0;
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
@@ -1470,10 +1463,9 @@
 		}
 	}
 
-	private async void BundleAbrir(MouseEventArgs e, int bundleId2)
+	private void BundleAbrir(MouseEventArgs e, int bundleId)
 	{
-		abiertoBundle = true;
-		bundleId = bundleId2;
+		NavManager.NavigateTo("/bundle/" + bundleId.ToString(), true);
 	}
 
 	#endregion 

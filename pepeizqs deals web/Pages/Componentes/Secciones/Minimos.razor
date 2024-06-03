@@ -148,10 +148,10 @@
 											}
 										}
 
-										<div style="margin-left: 20px; font-size: 13px;">@CargarDetectado(juego)</div>
-
 										@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 										{
+											<div style="margin-left: 20px; font-size: 13px;">@CargarDetectado(juego)</div>
+
 											<div style="margin-left: 20px; font-size: 13px;">@juego.IdMaestra</div>
 
 											<div style="margin-left: 20px; font-size: 13px;">@juego.IdSteam</div>

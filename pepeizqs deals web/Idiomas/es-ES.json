@@ -648,6 +648,10 @@
     "Valor": "Comprueba los ultimos bundles de juegos para PC que hay disponibles para comprar"
   },
   {
+    "Id": "Bundles.String20",
+    "Valor": "cada unidad"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Gratis"
   },

@@ -25,7 +25,11 @@
 </Title>
 
 <Meta Property="og:title" Content="@titulo" />
+<Meta Property="og:type" Content="website" />
 <Meta Property="description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
+<Meta Property="og:description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
+<Meta Property="og:url" Content="https://pepeizqdeals.com/bundles/" />
+<Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
 <Meta Property="robots" Content="index, follow" />
 
 @if (bundlesActuales.Count > 0)
@@ -62,44 +66,42 @@
 	}
 	else
 	{
-		<div style="margin-top: 20px;">
-			@if (bundleSeleccionado != null)
-			{
-				<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-					<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-						<i class="fa-solid fa-arrow-left"></i>
-					</button>
+		@if (bundleSeleccionado != null)
+		{
+			<div class="perfil" style="margin-bottom: 20px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+				<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+					<i class="fa-solid fa-arrow-left"></i>
+				</button>
 
-					<div style="display: flex; align-items: center; flex-direction: row;">
-						<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" style="width: auto;" target="_blank">
-							<div style="height: 60px; padding-left: 40px; padding-right: 20px;">
-								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
-							</div>
+				<div style="display: flex; align-items: center; flex-direction: row;">
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" style="width: auto;" target="_blank">
+						<div style="height: 60px; padding-left: 40px; padding-right: 20px;">
+							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
+						</div>
+					</a>
+
+					<div style="padding-left: 20px; padding-right: 20px;">
+						<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
+							@bundleSeleccionado.NombreBundle
 						</a>
 
-						<div style="padding-left: 20px; padding-right: 20px;">
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
-								@bundleSeleccionado.NombreBundle
+						<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
 							</a>
 
-							<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-								<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
-									@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
-								</a>
+							<a href="/bundle/@bundleSeleccionado.Id" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
+								<i class="fa-solid fa-link"></i>
+							</a>
 
-								<a href="/bundle/@bundleSeleccionado.Id" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
-									<i class="fa-solid fa-link"></i>
-								</a>
-
-								@MostrarFecha(bundleSeleccionado.FechaEmpieza, bundleSeleccionado.FechaTermina)
-							</div>
+							@MostrarFecha(bundleSeleccionado.FechaEmpieza, bundleSeleccionado.FechaTermina)
 						</div>
-					</div>	
+					</div>
 				</div>
+			</div>
 
-				<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" modulo="true" />
-			}
-		</div>
+			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" modulo="true" />
+		}
 	}
 }
 
