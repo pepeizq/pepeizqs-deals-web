@@ -54,6 +54,9 @@
 
     <title>@titulo</title>
 
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, 
+        new { idioma = idioma, titulo = titulo, descripcion = descripcion }))
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/maestro.css" asp-append-version="true" type="text/css" />
     <link rel="stylesheet" href="~/css/cabecera_cuerpo_pie.css" asp-append-version="true" type="text/css" />

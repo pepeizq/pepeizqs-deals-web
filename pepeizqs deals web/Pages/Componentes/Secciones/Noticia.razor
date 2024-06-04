@@ -3,7 +3,6 @@
 @using Microsoft.JSInterop
 @using Noticias
 @using Suscripciones2
-@using Toolbelt.Blazor.HeadElement
 
 @inject IJSRuntime JS
 
@@ -13,24 +12,14 @@
 	}
 </script>
 
-<Title>
-   @titulo • pepeizq's deals
-</Title>
-
-<Meta Property="og:title" Content="@titulo" />
-<Meta Property="og:type" Content="article" />
-<Meta Property="description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
-<Meta Property="og:description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
-<Meta Property="og:url" Content="@enlace" />
-<Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
-<Meta Property="robots" Content="index, follow" />
+<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "News.String11")" video="@video" />
 
 <div class="juego-wrap">
 	@if (juegos != null)
 	{
 		if (juegos.Count > 0)
 		{
-			<img class="juego-fondo" src="@juegos[0].Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" />
+			<img class="juego-fondo" src="@juegos[0].Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" alt="Background"/>
 		}
 	}
 
@@ -55,15 +44,15 @@
 				if (string.IsNullOrEmpty(imagenCabecera) == false)
 				{
 					<div>
-						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" />
+						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo"/>
 					</div>
 				}
 			}
 
 			<div style="padding-left: 40px; padding-right: 40px;">
-				<div style="font-size: 22px;">
+				<h1 style="font-size: 22px;">
 					@titulo
-				</div>
+				</h1>
 
 				<div style="display: flex; font-size: 14px; margin-top: 20px;">
 					<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
@@ -136,17 +125,11 @@
 			</div>
 		}
 
-		@if (juegos != null)
+		@if (string.IsNullOrEmpty(video) == false)
 		{
-			if (juegos.Count == 1)
-			{
-				if (juegos[0].Media.Video != null)
-				{
-					<div style="display: flex; height: 100%;">
-						<video controls autoplay muted src="@juegos[0].Media.Video" style="width: 100%; height: auto;" />
-					</div>					
-				}
-			}
+			<div style="display: flex; height: 100%;">
+				<video controls autoplay muted src="@video" style="width: 100%; height: auto;" />
+			</div>
 		}
 
 
@@ -210,6 +193,8 @@
 
 	private string titulo = string.Empty;
 	private string enlace = string.Empty;
+	private string video = string.Empty;
+
 	private List<Juegos.Juego> juegos = new List<Juegos.Juego>();
 
 	protected override void OnInitialized()
@@ -231,6 +216,17 @@
 				foreach (var juego in juegosTexto)
 				{
 					juegos.Add(BaseDatos.Juegos.Buscar.UnJuego(juego));
+				}
+			}
+
+			if (juegos != null)
+			{
+				if (juegos.Count == 1)
+				{
+					if (juegos[0].Media.Video != null)
+					{
+						video = juegos[0].Media.Video;
+					}
 				}
 			}
 		}

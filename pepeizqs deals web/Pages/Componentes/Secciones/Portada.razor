@@ -228,7 +228,7 @@
 					<div @onmouseover="@(e => CargarTooltip(e, destacado))" style="width: 25%;">
 						<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 2px; @fondoColor">
 							<div>
-								<img src="@destacado.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
+								<img src="@destacado.Imagenes.Library_600x900" style="width: 100%; height: 100%;" alt="@destacado.Nombre" />
 							</div>
 							<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
 								<div class="destacado-precio" style="margin: 0px; @fondoDescuento">
@@ -253,16 +253,16 @@
 					<label>@tooltipNombre</label>
 					<div style="display: flex; align-items: center; margin-top: 8px; padding: 5px; text-align: center; justify-content: center;">
 						<div style="margin-right: 20px;">
-							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" />
+							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" alt="DRM"/>
 						</div>
 						<div style="margin-right: 20px;">
-							<img src="@tooltipTienda" style="width: 20px; height: 20px;" />
+							<img src="@tooltipTienda" style="width: 20px; height: 20px;" alt="Store"/>
 						</div>
 						
 						@if (string.IsNullOrEmpty(tooltipReviews) == false)
 						{
 							<div style="margin-right: 20px;">
-								<img src="@tooltipReviews" style="width: 20px; height: 20px;" />
+								<img src="@tooltipReviews" style="width: 20px; height: 20px;" alt="Reviews"/>
 							</div>
 						}
 
@@ -304,7 +304,7 @@
 				<a class="boton-pequeño" style="padding: 2px;" href="@noticia.Enlace" target="@objetivo">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 25%;">
-							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" />
+							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn"/>
 						</div>
 
 						<div style="width: 75%; padding: 20px 30px;">
@@ -315,7 +315,7 @@
 
 								@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
 								{
-									<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" />
+									<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" alt="Store"/>
 								}
 
 								<label class="noticia-categoria">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
@@ -363,7 +363,7 @@ else
 
 								if (sorteoJuego != null)
 								{
-									<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+									<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;" alt="@sorteoJuego.Nombre">
 								}
 							}
 
@@ -424,14 +424,14 @@ else
 				<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
-							<img src="@juego.Imagenes.Capsule_231x87" style="height: 100%; width: 100%;" />
+							<img src="@juego.Imagenes.Capsule_231x87" style="height: 100%; width: 100%;" alt="@juego.Nombre"/>
 						</div>
 
 						<div style="width: 73%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
 							<div class="minimo-fuente">@juego.Nombre</div>
 							<div style="margin-top: 10px; display: flex; align-items: center;">
-								<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
-								<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" />
+								<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM"/>
+								<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store"/>
 								<div class="minimo-fuentefecha">@CargarFechaDetectado(juego)</div>
 							</div>
 						</div>
@@ -460,16 +460,16 @@ else
 				<label style="padding-left: 5px; padding-right: 5px;">@tooltipNombre</label>
 				<div style="display: flex; align-items: center; margin-top: 5px; padding: 5px; text-align: left; justify-content: left;">
 					<div style="margin-right: 20px;">
-						<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" />
+						<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" alt="DRM"/>
 					</div>
 					<div style="margin-right: 20px;">
-						<img src="@tooltipTienda" style="width: 20px; height: 20px;" />
+						<img src="@tooltipTienda" style="width: 20px; height: 20px;" alt="Store"/>
 					</div>
 
 					@if (string.IsNullOrEmpty(tooltipReviews) == false)
 					{
 						<div style="margin-right: 20px;">
-							<img src="@tooltipReviews" style="width: 20px; height: 20px;" />
+							<img src="@tooltipReviews" style="width: 20px; height: 20px;" alt="Reviews"/>
 						</div>
 					}
 
@@ -620,7 +620,10 @@ else
 			{
 				juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);			
+			}
 
 			if (juegosDestacadosGestor != null)
 			{

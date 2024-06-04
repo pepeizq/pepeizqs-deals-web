@@ -1,4 +1,2 @@
 ﻿User-agent: *
-Disallow: /
-
-Sitemap: https://pepeizqdeals.com/sitemap.xml
+Allow: /

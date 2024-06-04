@@ -23,7 +23,7 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(20));
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
@@ -192,7 +192,7 @@ namespace Tareas
 
                                                                 if (Convert.ToInt32(tempCantidad) >= 5000)
                                                                 {
-                                                                    if (i < 30)
+                                                                    if (i < 24)
                                                                     {
                                                                         juegosDestacadosMostrar.Add(minimo);
                                                                         i += 1;

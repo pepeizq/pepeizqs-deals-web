@@ -25,10 +25,7 @@ builder.Services.AddDefaultIdentity<Usuario>(options =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
-builder.Services.AddRazorPages(opciones =>
-{
-    opciones.Conventions.AddPageRoute("/Sitemap", "sitemap.xml");
-});
+builder.Services.AddRazorPages();
 
 builder.Services.AddServerSideBlazor(opciones =>
 {
@@ -95,13 +92,13 @@ builder.Services.AddHealthChecks();
 
 #endregion
 
-#region SEO
+#region Seo
 
 builder.Services.AddHeadElementHelper();
 
 #endregion
 
-//----------------------------------------------------------------------------------
+#region Decompilador
 
 builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
     .ConfigurePrimaryHttpMessageHandler(() =>
@@ -112,6 +109,8 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
 		});
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
+
+#endregion
 
 //builder.Services.AddSignalR(opciones =>
 //{
@@ -183,7 +182,27 @@ var app = builder.Build();
     app.UseHsts();
 //}
 
+app.Use(async (context, next) =>
+{
+	await next();
+	if (context.Response.StatusCode == 404)
+	{
+		context.Request.Path = "/";
+		await next();
+	}
+});
+
+#region Seo
+
+app.UseHeadElementServerPrerendering();
+
+#endregion
+
+#region Redireccionador
+
 app.MapControllers();
+
+#endregion
 
 app.UseRouting();
 

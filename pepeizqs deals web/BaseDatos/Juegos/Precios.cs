@@ -136,6 +136,21 @@ namespace BaseDatos.Juegos
                                         else if (tempPrecio == minimo.Precio)
 										{
 											minimo.FechaActualizacion = precio.FechaActualizacion;
+
+											DateTime tempFecha = precio.FechaDetectado;
+											tempFecha = tempFecha.AddDays(30);
+
+											bool cambiarFechaDetectado = false;
+
+											if (tempFecha < minimo.FechaDetectado)
+											{
+												cambiarFechaDetectado = true;
+											}
+
+											if (cambiarFechaDetectado == true)
+											{
+												minimo.FechaDetectado = precio.FechaDetectado;
+											}
 										}
 
 										drmEncontrado = true;

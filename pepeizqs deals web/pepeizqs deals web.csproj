@@ -53,6 +53,9 @@
     <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="7.3.1" />
+    <PackageReference Include="Toolbelt.Blazor.HeadElement.Abstractions" Version="7.1.0" />
+    <PackageReference Include="Toolbelt.Blazor.HeadElement.ServerPrerendering" Version="7.3.1" />
+    <PackageReference Include="Toolbelt.Blazor.HeadElement.Services" Version="7.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -119,6 +122,7 @@
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Api.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Bundle.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Noticia.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Seo.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Secciones\Sorteos.razor" />
     <_ContentIncludedByDefault Remove="Pages\gog.cshtml" />
   </ItemGroup>
@@ -141,7 +145,6 @@
 
   <ItemGroup>
     <None Include="Pages\api.cshtml" />
-    <None Include="wwwroot\robots.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -170,6 +173,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Bundles.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Seo.razor" />
   </ItemGroup>
 
 </Project>

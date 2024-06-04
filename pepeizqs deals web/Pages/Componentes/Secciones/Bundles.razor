@@ -3,12 +3,11 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
 @using pepeizqs_deals_web.Areas.Identity.Data;
-@using Toolbelt.Blazor.HeadElement
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
-@inject IJSRuntime JavaScript
+@inject IJSRuntime JS
 
 <script>
 	function moverScroll(id) {
@@ -20,17 +19,7 @@
 	}
 </script>
 
-<Title>
-   @titulo • pepeizq's deals
-</Title>
-
-<Meta Property="og:title" Content="@titulo" />
-<Meta Property="og:type" Content="website" />
-<Meta Property="description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
-<Meta Property="og:description" Content="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
-<Meta Property="og:url" Content="https://pepeizqdeals.com/bundles/" />
-<Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
-<Meta Property="robots" Content="index, follow" />
+<Seo idioma="@idioma" titulo="@titulo" enlace="https://pepeizqdeals.com/bundles/" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
 
 @if (bundlesActuales.Count > 0)
 {
@@ -68,7 +57,7 @@
 	{
 		@if (bundleSeleccionado != null)
 		{
-			<div class="perfil" style="margin-bottom: 20px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+			<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
 				<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
 					<i class="fa-solid fa-arrow-left"></i>
 				</button>
@@ -376,13 +365,13 @@
 
 		mostrarBundleSeleccionado = true;
 
-		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
+		await JS.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 
 	private async void CerrarBundle(MouseEventArgs e)
 	{
 		mostrarBundleSeleccionado = false;
 
-		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
+		await JS.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 }

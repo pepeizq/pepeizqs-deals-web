@@ -19,7 +19,7 @@
 {
 	if (modulo == false)
 	{
-		<div class="perfil" style="margin-bottom: 20px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
+		<div class="perfil" style="margin-bottom: 40px; padding: 20px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
 			<div style="display: flex; align-items: center; flex-direction: row;">
 				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
 					<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
@@ -82,14 +82,21 @@
 								@foreach (var tier2 in OrdenarTiers(bundle.Tiers))
 								{
 									<div style="width: 100%; text-align: center;">
-										<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> / <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String20"))</label>
+										@if (tier2.CantidadJuegos == 1)
+										{
+											<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String21") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
+										}
+										else if (tier2.CantidadJuegos > 1)
+										{
+											<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> <label>/</label> <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String20"))</label>
+										}										
 									</div>
 								}
 							</div>
 						}
 						else
 						{
-							<div class="perfil" style="font-size: 18px; padding: 20px 40px; margin-bottom: 10px;">
+							<div class="perfil" style="font-size: 18px; padding: 20px 40px; margin-bottom: 20px;">
 								<div style="margin-bottom: 5px;">
 									Tier @tier.Posicion: @ArreglarPrecio(decimal.Parse(tier.Precio))
 								</div>
@@ -184,7 +191,7 @@
 									}
 								}
 
-								<div style="margin-bottom: 10px; @marginIzq">
+								<div style="margin-bottom: 20px; @marginIzq">
 									<a href="/game/@juego.JuegoId" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor">
 										<div style="display: flex; align-items: center; padding: 2px;">
 											<div style="text-align: center; width: 17%;">
