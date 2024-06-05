@@ -224,7 +224,7 @@
             {
                 List<string> listaJuegosPoseeSteam = new List<string>();
 
-                if (usuario.SteamGames != null)
+                if (string.IsNullOrEmpty(usuario.SteamGames) == false)
                 {
                     listaJuegosPoseeSteam = Herramientas.Listados.Generar(usuario.SteamGames);
                 }

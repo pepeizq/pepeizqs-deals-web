@@ -23,7 +23,7 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(20));
+			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
@@ -67,35 +67,35 @@ namespace Tareas
                                                 {
                                                     if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
                                                     {
-                                                        if (juego.PrecioMinimosHistoricos != null)
+                                                        if (juego.PrecioMinimosHistoricos != null && juego.Analisis.Cantidad.Length > 2)
                                                         {
                                                             for (int i = 0; i < juego.PrecioMinimosHistoricos.Count; i += 1)
                                                             {
-                                                                bool añadir = false;
+                                                                TimeSpan actualizado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaActualizacion);
 
-                                                                if (Calculadora.CalcularAntiguedad(juego.PrecioMinimosHistoricos[i]) == true)
+                                                                if (actualizado.Days >= 0 && actualizado.Days <= 1)
                                                                 {
-                                                                    añadir = true;
-                                                                }
+																	TimeSpan detectado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaDetectado);
 
-                                                                if (añadir == true)
-                                                                {
-                                                                    Juego nuevoHistorico = juego;
-                                                                    nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
-                                                                    nuevoHistorico.IdMaestra = juego.Id;
+																	if (actualizado.Days >= 0 && actualizado.Days <= 14)
+																	{
+																		Juego nuevoHistorico = juego;
+																		nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
+																		nuevoHistorico.IdMaestra = juego.Id;
 
-                                                                    bool añadir2 = true;
+																		bool añadir2 = true;
 
-                                                                    if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
-                                                                    {
-                                                                        añadir2 = false;
-                                                                    }
+																		if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
+																		{
+																			añadir2 = false;
+																		}
 
-                                                                    if (añadir2 == true)
-                                                                    {
-                                                                        juegosConMinimos.Add(nuevoHistorico);
-                                                                    }
-                                                                }
+																		if (añadir2 == true)
+																		{
+																			juegosConMinimos.Add(nuevoHistorico);
+																		}
+																	}
+																}																
                                                             }
                                                         }
                                                     }
@@ -182,25 +182,24 @@ namespace Tareas
 
                                                     if (añadir == true && minimo != null)
                                                     {
-                                                        if (minimo.Analisis != null)
-                                                        {
-                                                            if (string.IsNullOrEmpty(minimo.Analisis.Cantidad) == false)
-                                                            {
-                                                                string tempCantidad = minimo.Analisis.Cantidad;
-                                                                tempCantidad = tempCantidad.Replace(".", null);
-                                                                tempCantidad = tempCantidad.Replace(",", null);
+														string tempCantidad = minimo.Analisis.Cantidad;
+														tempCantidad = tempCantidad.Replace(".", null);
+														tempCantidad = tempCantidad.Replace(",", null);
 
-                                                                if (Convert.ToInt32(tempCantidad) >= 5000)
-                                                                {
-                                                                    if (i < 24)
-                                                                    {
-                                                                        juegosDestacadosMostrar.Add(minimo);
-                                                                        i += 1;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+														if (Convert.ToInt32(tempCantidad) >= 5000)
+														{
+															if (i < 24)
+															{
+																juegosDestacadosMostrar.Add(minimo);
+																i += 1;
+
+																if (i == 24)
+																{
+																	break;
+																}
+															}
+														}
+													}
                                                 }
 
                                                 if (juegosDestacadosMostrar.Count > 0)
@@ -238,30 +237,16 @@ namespace Tareas
                                                     {
                                                         bool descarte2 = false;
 
-                                                        if (juegoConMinimo.Analisis == null)
-                                                        {
-                                                            descarte2 = true;
-                                                        }
-                                                        else
-                                                        {
-                                                            if (string.IsNullOrEmpty(juegoConMinimo.Analisis.Cantidad) == false)
-                                                            {
-                                                                string tempCantidad = juegoConMinimo.Analisis.Cantidad;
-                                                                tempCantidad = tempCantidad.Replace(".", null);
-                                                                tempCantidad = tempCantidad.Replace(",", null);
+														string tempCantidad = juegoConMinimo.Analisis.Cantidad;
+														tempCantidad = tempCantidad.Replace(".", null);
+														tempCantidad = tempCantidad.Replace(",", null);
 
-                                                                if (Convert.ToInt32(tempCantidad) < 500)
-                                                                {
-                                                                    descarte2 = true;
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                descarte2 = true;
-                                                            }
-                                                        }
+														if (Convert.ToInt32(tempCantidad) < 500)
+														{
+															descarte2 = true;
+														}
 
-                                                        if (descarte2 == false)
+														if (descarte2 == false)
                                                         {
                                                             bool descarte3 = false;
 
@@ -309,46 +294,21 @@ namespace Tareas
                                                 {
                                                     BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
 
-                                                    foreach (var juegoMinimo in juegosMinimosMostrar)
+                                                    foreach (var minimoMostrar in juegosMinimosMostrar)
                                                     {
-                                                        Insertar.Ejecutar(juegoMinimo, conexion, "portadaJuegosMinimos");
-                                                    }
-                                                }
+														Insertar.Ejecutar(minimoMostrar, conexion, "portadaJuegosMinimos");
+													}
+												}
 
                                                 if (juegosConMinimos.Count > 0)
                                                 {
                                                     BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
 
-                                                    foreach (var juegoConMinimo in juegosConMinimos)
+                                                    foreach (var minimo in juegosConMinimos)
                                                     {
-                                                        bool insertar = false;
-
-                                                        if (juegoConMinimo.PrecioMinimosHistoricos != null)
-                                                        {
-                                                            if (juegoConMinimo.PrecioMinimosHistoricos.Count > 0)
-                                                            {
-                                                                if (juegoConMinimo.PrecioMinimosHistoricos[0].DRM == JuegoDRM.NoEspecificado || juegoConMinimo.PrecioMinimosHistoricos[0].DRM == JuegoDRM.DRMFree)
-                                                                {
-                                                                    insertar = false;
-                                                                }
-
-                                                                TimeSpan detectado = DateTime.Now.Subtract(juegoConMinimo.PrecioMinimosHistoricos[0].FechaDetectado);
-
-																TimeSpan estaActualizado = DateTime.Now.Subtract(juegoConMinimo.PrecioMinimosHistoricos[0].FechaActualizacion);
-
-                                                                if (detectado.Days >= 0 && detectado.Days < 15 && estaActualizado.Days >= 0 && estaActualizado.Days <= 2)
-                                                                {
-                                                                    insertar = true;
-                                                                }
-                                                            }
-                                                        }
-
-                                                        if (insertar == true)
-                                                        {
-                                                            Insertar.Ejecutar(juegoConMinimo, conexion, "seccionMinimos");
-                                                        }
-                                                    }
-                                                }
+														Insertar.Ejecutar(minimo, conexion, "seccionMinimos");
+													}                                                  
+												}
 
                                                 #endregion
                                             }

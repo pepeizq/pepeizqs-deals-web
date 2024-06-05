@@ -116,31 +116,33 @@ namespace BaseDatos.Usuarios
                                     {
                                         if (lector.IsDBNull(4) == false)
                                         {
-                                            if (string.IsNullOrEmpty(lector.GetString(4)) == false)
-                                            {
-												List<string> juegosSteam = new List<string>();
-												
-												try
+											string tempSteam = string.Empty;
+
+											try
+											{
+												tempSteam = lector.GetString(4);
+											}
+											catch { }
+
+											if (string.IsNullOrEmpty(tempSteam) == false)
+											{
+												List<string> juegosSteam = Listados.Generar(tempSteam);
+
+												if (juegosSteam != null)
 												{
-													juegosSteam = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
-												}
-												catch { }
-												
-                                                if (juegosSteam != null)
-                                                {
-                                                    if (juegosSteam.Count > 0)
-                                                    {
-                                                        foreach (var juegoSteam in juegosSteam)
-                                                        {
+													if (juegosSteam.Count > 0)
+													{
+														foreach (var juegoSteam in juegosSteam)
+														{
 															if (juegoSteam == juegoIdSteam.ToString())
 															{
 																steam = false;
 															}
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+														}
+													}
+												}												
+											}
+										}
                                     }
                                 }                             
 

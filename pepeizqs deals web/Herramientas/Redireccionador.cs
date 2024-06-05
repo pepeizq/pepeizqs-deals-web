@@ -254,7 +254,7 @@ namespace Herramientas
 
 					if (noticias.Count > 0)
 					{
-                        return Content(JsonConvert.SerializeObject(noticias));
+                        return Ok(noticias);
                     }
                 }
             }

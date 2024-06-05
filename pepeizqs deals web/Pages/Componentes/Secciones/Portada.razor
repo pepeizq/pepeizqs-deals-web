@@ -182,6 +182,66 @@
 	}
 }
 
+@if (usuario != null)
+{
+	@if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+	{
+		<div style="display: flex; flex-direction: row;">
+			<div class="juego-galeria-contenedor">
+				<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
+					<div style="position: relative; background-color: var(--fondoOscuro); padding: 5px;">
+						<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+
+						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), var(--fondoOscuro));
+								padding: 80px 60px 30px 60px; display: flex; align-items: center;">
+							
+							<div style="width: 100%;">
+								<img src="@juegoSeleccionado.Imagenes.Logo" style="height: 150px;" alt="@juegoSeleccionado.Nombre">
+							</div>
+
+							<img src="@CargarDRM(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 20px;" />
+							<img src="@CargarIconoTienda(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 40px;" />
+
+							<div style="background-color: darkgreen; padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
+								@CargarDescuento(juegoSeleccionado)
+							</div>
+							<div style="background-color: var(--fondoOscuro); padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
+								@CargarPrecio(juegoSeleccionado)
+							</div>
+						</div>
+					</div>
+				</a>
+				
+				
+
+				@* @if (mediaMostrarPosicion == 99999)
+		{
+		<video src="@mediaMostrar" controls autoplay="autoplay" loop muted poster="@juego.Imagenes.Header_460x215" preload="none" style="width: 854px; height: 480px; object-fit: cover;" />
+		}
+		else
+		{
+		<div>
+		<div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @(juego.Media.Capturas.Count)</div>
+		<img src="@mediaMostrar" style="width: 100%;" alt="@juego.Nombre">
+		</div>
+
+		<a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
+		<a class="juego-galeria-siguiente" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion + 1))">&#10095;</a>
+		} *@
+
+				<div class="juego-galeria-fila">
+					@foreach (var destacado in juegosDestacadosMostrar)
+					{
+						<div class="juego-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado.IdMaestra))">
+							<img class="juego-galeria-capturas juego-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%;" alt="Nombre">
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	}
+}
+
 @if (juegosDestacadosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
@@ -634,6 +694,8 @@ else
 						juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
 					}
 
+					juegoSeleccionado = juegosDestacadosGestor[0];
+
 					for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
 					{
 						if (i < juegosDestacadosGestor.Count)
@@ -726,6 +788,20 @@ else
 			sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
 
 			#endregion
+		}
+	}
+
+	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
+
+	private void CambiarJuegoDestacado(MouseEventArgs args, int nuevoJuegoId)
+	{
+		foreach (var juego in juegosDestacadosGestor)
+		{
+			if (nuevoJuegoId == juego.IdMaestra)
+			{
+				juegoSeleccionado = juego;
+				break;
+			}
 		}
 	}
 

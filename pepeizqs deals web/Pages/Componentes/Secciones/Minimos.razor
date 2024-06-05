@@ -150,7 +150,9 @@
 
 										@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
 										{
-											<div style="margin-left: 20px; font-size: 13px;">@CargarDetectado(juego)</div>
+											<div style="margin-left: 20px; font-size: 13px;">@juego.PrecioMinimosHistoricos[0].FechaActualizacion</div>
+
+											<div style="margin-left: 20px; font-size: 13px;">@juego.PrecioMinimosHistoricos[0].FechaDetectado</div>
 
 											<div style="margin-left: 20px; font-size: 13px;">@juego.IdMaestra</div>
 

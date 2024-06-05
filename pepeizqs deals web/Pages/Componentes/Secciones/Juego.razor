@@ -12,6 +12,8 @@
 @using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
 
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
+
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor

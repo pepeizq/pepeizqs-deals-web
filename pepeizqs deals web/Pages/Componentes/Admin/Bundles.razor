@@ -440,7 +440,7 @@
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+            juegosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), 100);
         }
         else
         {
@@ -469,11 +469,11 @@
             bundle.Tiers = new List<BundleTier>();
 
             BundleTier tier = new BundleTier
-                {
-                    Posicion = bundle.Tiers.Count + 1,
-                    Precio = "0.00",
-                    CantidadJuegos = 0
-                };
+            {
+                Posicion = bundle.Tiers.Count + 1,
+                Precio = "0.00",
+                CantidadJuegos = 0
+            };
 
             bundle.Tiers.Add(tier);
         }

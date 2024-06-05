@@ -1,4 +1,7 @@
-﻿@using Toolbelt.Blazor.HeadElement
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Toolbelt.Blazor.HeadElement
+
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
 @if (string.IsNullOrEmpty(titulo) == false)
 {

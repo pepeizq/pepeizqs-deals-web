@@ -1,14 +1,13 @@
 ﻿#nullable disable
 
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 
 namespace BaseDatos.Juegos
 {
 	public static class Precios
 	{
-		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, ViewDataDictionary objeto, SqlConnection conexion)
+		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion)
 		{
 			bool añadir = true;
 

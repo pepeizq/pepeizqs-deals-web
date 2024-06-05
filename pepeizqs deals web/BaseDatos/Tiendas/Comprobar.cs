@@ -138,7 +138,7 @@ namespace BaseDatos.Tiendas
 							juego = await ActualizarDatosAPI(juego);
 						}
 
-						Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+						Juegos.Precios.Actualizar(juego, oferta, conexion);
 					}
 				}
 			}
@@ -163,7 +163,7 @@ namespace BaseDatos.Tiendas
 
 					if (juego.Tipo == JuegoTipo.DLC)
 					{
-						if (string.IsNullOrEmpty(juego.Maestro) == false)
+						if (string.IsNullOrEmpty(juego.Maestro) == true)
 						{
 							juego.Maestro = nuevoJuego.Maestro;
 						}						
@@ -176,19 +176,10 @@ namespace BaseDatos.Tiendas
 			return juego;
 		}
 
-		public static void Resto(List<JuegoPrecio> ofertas, ViewDataDictionary objeto, SqlConnection conexion)
-		{
-			foreach (var oferta in ofertas)
-			{
-				Resto(oferta, objeto, conexion);
-			}
-		}
-
 		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null, string slugGOG = null)
 		{
-			bool insertarTienda = false;
+			//Buscar en tabla tienda
 			List<int> listaIds = new List<int>();
-
 			string buscarTienda = "SELECT * FROM tienda" + oferta.Tienda + " WHERE enlace=@enlace";
 
             using (SqlCommand comandoBuscar = new SqlCommand(buscarTienda, conexion))
@@ -197,15 +188,11 @@ namespace BaseDatos.Tiendas
 
                 using (SqlDataReader lector = comandoBuscar.ExecuteReader())
 				{
-					if (lector.Read() == false)
-					{
-						insertarTienda = true;
-					}
-					else
+					if (lector.Read() == true)
 					{
 						string tempIds = lector.GetString(3);
 
-						if (tempIds != null)
+						if (string.IsNullOrEmpty(tempIds) == false)
 						{
 							int i = 0;
 							while (i < 100)
@@ -232,7 +219,8 @@ namespace BaseDatos.Tiendas
 				}
 			}
 
-			if (insertarTienda == true)
+			//Insertar en tabla tienda o actualizar juego
+			if (listaIds.Count == 0)
 			{
 				int idBuscarJuego = 0;
 
@@ -255,17 +243,17 @@ namespace BaseDatos.Tiendas
 					"(enlace, nombre, imagen, idJuegos, descartado) VALUES " +
 					"(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
 
-                using (SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion))
+				using (SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion))
 				{
-                    comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
-                    comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
-                    comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
-                    comandoInsertar.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
+					comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
+					comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
+					comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
+					comandoInsertar.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
 					comandoInsertar.Parameters.AddWithValue("@descartado", "no");
 
 					try
 					{
-                        comandoInsertar.ExecuteNonQuery();
+						comandoInsertar.ExecuteNonQuery();
 					}
 					catch
 					{
@@ -273,8 +261,7 @@ namespace BaseDatos.Tiendas
 					}
 				}
 			}
-
-			if (listaIds.Count > 0)
+			else if (listaIds.Count > 0)
 			{
 				foreach (int id in listaIds)
 				{
@@ -322,7 +309,7 @@ namespace BaseDatos.Tiendas
 										}
 									}
 
-									Juegos.Precios.Actualizar(juego, oferta, objeto, conexion);
+									Juegos.Precios.Actualizar(juego, oferta, conexion);
 								}
 							}
 						}

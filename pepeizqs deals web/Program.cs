@@ -9,6 +9,8 @@ using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
@@ -165,12 +167,12 @@ builder.Services.AddControllersWithViews();
 //        options.QueueLimit = 5;
 //    }));
 
-//builder.WebHost.ConfigureKestrel(serverOptions =>
-//{
-//	serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-//	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-//	serverOptions.AllowSynchronousIO = true;
-//});
+builder.WebHost.ConfigureKestrel(opciones =>
+{
+    //serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+    //serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+    opciones.AllowSynchronousIO = true;
+});
 
 var app = builder.Build();
 
@@ -225,12 +227,6 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//	FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "imagenes")),
-//	RequestPath = "/imagenes"
-//});
 
 //app.MapHealthChecks("/estado");
 
