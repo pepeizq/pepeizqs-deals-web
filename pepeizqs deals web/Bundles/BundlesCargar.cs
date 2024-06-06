@@ -8,7 +8,8 @@ namespace Bundles2
 		HumbleBundle,
 		Fanatical,
 		JingleJam,
-		IndieGala
+		IndieGala,
+		Itchio
 	}
 
 	public class BundlesCargar
@@ -21,7 +22,8 @@ namespace Bundles2
 				APIs.Humble.Bundle.Generar(),
 				APIs.Fanatical.Bundle.Generar(),
 				APIs.JingleJam.Bundle.Generar(),
-				APIs.IndieGala.Bundle.Generar()
+				APIs.IndieGala.Bundle.Generar(),
+				APIs.itchio.Bundle.Generar()
 			};
 
 			return bundles;

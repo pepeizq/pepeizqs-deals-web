@@ -10,29 +10,12 @@
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Admin
 
+@attribute [StreamRendering(true)]
+
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
 <style>
-	.destacados-espacio {
-		gap: 15px;
-	}
-
-	.destacados-botonizq {
-		font-size: 20px;
-		margin-right: 20px;
-	}
-
-	.destacados-botonder {
-		font-size: 20px;
-		margin-left: 20px;
-	}
-
-	.destacado-precio {
-		font-size: 18px;
-		padding: 8px 10px;
-	}
-
 	.noticia-fuente {
 		font-size: 18px;
 	}
@@ -69,25 +52,6 @@
 	}
 
 	@@media (max-width: 800px) {
-		.destacados-espacio {
-			gap: 5px;
-		}
-
-		.destacados-botonizq {
-			font-size: 14px;
-			margin-right: 5px;
-		}
-
-		.destacados-botonder {
-			font-size: 14px;
-			margin-left: 5px;
-		}
-
-		.destacado-precio {
-			font-size: 8px;
-			padding: 4px 5px;
-		}
-
 		.noticia-fuente {
 			font-size: 13px;
 		}
@@ -151,6 +115,60 @@
 	}
 </style>
 
+<style>
+	.destacado-fondo {
+		display: block;
+	}
+
+	.destacado-video {
+		display: none;
+	}
+
+	.destacado-mostrar:hover .destacado-fondo{
+		display: none;
+	}
+
+	.destacado-mostrar:hover .destacado-video {
+		display: block;
+	}
+
+	.destacados-galeria-cursor {
+		cursor: pointer;
+	}
+
+	.destacados-galeria-fila {
+		display: flex;
+		overflow: auto;
+		padding-bottom: 15px;
+	}
+
+		.destacados-galeria-fila:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+	.destacados-galeria-columna {
+		float: left;
+		width: 16.66%;
+		flex: 0 0 auto;
+		padding: 5px;
+		aspect-ratio: 92/43;
+	}
+
+	.destacados-galeria-captura {
+		opacity: 0.3;
+		object-fit: cover;
+		overflow: hidden;
+		transition: transform .2s;
+	}
+
+	.destacados-galeria-captura:hover {
+		opacity: 1;
+		transform: scale(1.01);
+	}
+</style>
+
 @if (aviso != null)
 {
 	if (string.IsNullOrEmpty(aviso.Mensaje.Trim()) == false)
@@ -184,159 +202,92 @@
 
 @if (usuario != null)
 {
-	@if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+	if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
 	{
-		<div style="display: flex; flex-direction: row;">
-			<div class="juego-galeria-contenedor">
-				<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
-					<div style="position: relative; background-color: var(--fondoOscuro); padding: 5px;">
-						<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+		<label>@cronometroContador</label>
 
-						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), var(--fondoOscuro));
-								padding: 80px 60px 30px 60px; display: flex; align-items: center;">
-							
-							<div style="width: 100%;">
-								<img src="@juegoSeleccionado.Imagenes.Logo" style="height: 150px;" alt="@juegoSeleccionado.Nombre">
-							</div>
-
-							<img src="@CargarDRM(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 20px;" />
-							<img src="@CargarIconoTienda(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 40px;" />
-
-							<div style="background-color: darkgreen; padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
-								@CargarDescuento(juegoSeleccionado)
-							</div>
-							<div style="background-color: var(--fondoOscuro); padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
-								@CargarPrecio(juegoSeleccionado)
-							</div>
-						</div>
-					</div>
-				</a>
-				
-				
-
-				@* @if (mediaMostrarPosicion == 99999)
-		{
-		<video src="@mediaMostrar" controls autoplay="autoplay" loop muted poster="@juego.Imagenes.Header_460x215" preload="none" style="width: 854px; height: 480px; object-fit: cover;" />
-		}
-		else
-		{
 		<div>
-		<div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @(juego.Media.Capturas.Count)</div>
-		<img src="@mediaMostrar" style="width: 100%;" alt="@juego.Nombre">
-		</div>
-
-		<a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
-		<a class="juego-galeria-siguiente" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion + 1))">&#10095;</a>
-		} *@
-
-				<div class="juego-galeria-fila">
-					@foreach (var destacado in juegosDestacadosMostrar)
-					{
-						<div class="juego-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado.IdMaestra))">
-							<img class="juego-galeria-capturas juego-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%;" alt="Nombre">
-						</div>
-					}
-				</div>
-			</div>
+			<div/>
 		</div>
 	}
 }
 
-@if (juegosDestacadosMostrar.Count > 0)
-{
-	<div style="display: flex; font-size: 20px; padding-bottom: 20px; align-items: center; justify-content: center;">
-		<a href="/historical-lows" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDeals")</a>
-		
-		<div class="tooltip2" style="margin-left: 20px;">
-			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
-			<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Index.HighDealsInfo")
-			</div>
-		</div>
-	</div>
+<div style="margin-bottom: 40px; position: relative;">
+	@if (juegoSeleccionado != null)
+	{
+		string colorSeleccionado = "var(--fondoOscuro)";
 
-	<div style="width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 60px;">
-		<button @onclick="ClickearAtras" class="boton-pequeño destacados-botonizq" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-left"></i></button>
+		if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+		{
+			colorSeleccionado = "var(--fondoAlerta)";
+		}
 
-		<div class="destacados-espacio tooltip4" onmousemove="hover(event, 'tooltip-destacados')" style="width: 100%; display: flex; align-items: center; justify-content: center;">
-			@foreach (var destacado in juegosDestacadosMostrar)
-			{
-				if (destacado != null)
-				{
-					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM);
-					bool usuarioTieneDeseado = false;
-
-					string fondoColor = string.Empty;
-					string fondoDescuento = "background-color: darkgreen;";
-
-					if (usuarioTieneJuego == true)
+		<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
+			<div style="position: relative; padding: 5px; background-color: @colorSeleccionado;">
+				<div class="destacado-mostrar">
+					@if (string.IsNullOrEmpty(CargarVideo(juegoSeleccionado)) == false)
 					{
-						fondoColor = "background-color: var(--fondoBien);";
-						fondoDescuento = "backdrop-filter: brightness(70%);";
+						<div class="destacado-fondo">
+							<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+						</div>
+
+						<div class="destacado-video">
+							<video src="@CargarVideo(juegoSeleccionado)" autoplay="autoplay" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+						</div>
 					}
 					else
 					{
-						usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true);
-
-						if (usuarioTieneDeseado == true)
-						{
-							fondoColor = "background-color: var(--fondoAlerta);";
-							fondoDescuento = "backdrop-filter: brightness(70%);";
-						}
+						<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
 					}
 
-					<div @onmouseover="@(e => CargarTooltip(e, destacado))" style="width: 25%;">
-						<a href="game/@destacado.IdMaestra" class="boton-pequeño" style="padding: 2px; @fondoColor">
-							<div>
-								<img src="@destacado.Imagenes.Library_600x900" style="width: 100%; height: 100%;" alt="@destacado.Nombre" />
-							</div>
-							<div style="display: flex; align-content: center; align-items: center; justify-content: right;">
-								<div class="destacado-precio" style="margin: 0px; @fondoDescuento">
-									@CargarDescuento(destacado)
-								</div>
-								<div class="destacado-precio">
-									@CargarPrecio(destacado)
-								</div>
-							</div>
-						</a>
-					</div>
-				}
-			}
+					<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
+								padding: 80px 60px 30px 60px; display: flex; align-items: center;">
 
-			<div id="tooltip-destacados" class="tooltip-relleno">
-				@if (string.IsNullOrEmpty(tooltipVideo) == false)
-				{
-					<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
-				}
-
-				<div style="padding: 15px; text-align: center;">
-					<label>@tooltipNombre</label>
-					<div style="display: flex; align-items: center; margin-top: 8px; padding: 5px; text-align: center; justify-content: center;">
-						<div style="margin-right: 20px;">
-							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" alt="DRM"/>
+						<div style="width: 100%; height: 150px; display: flex; align-items: center;">
+							<img src="@juegoSeleccionado.Imagenes.Logo" style="max-width: 250px;" alt="@juegoSeleccionado.Nombre">
 						</div>
-						<div style="margin-right: 20px;">
-							<img src="@tooltipTienda" style="width: 20px; height: 20px;" alt="Store"/>
-						</div>
-						
-						@if (string.IsNullOrEmpty(tooltipReviews) == false)
-						{
-							<div style="margin-right: 20px;">
-								<img src="@tooltipReviews" style="width: 20px; height: 20px;" alt="Reviews"/>
-							</div>
-						}
 
-						<div>
-							@tooltipTiempo
+						<img src="@CargarDRM(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 20px;" />
+						<img src="@CargarIconoTienda(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 40px;" />
+
+						<div style="background-color: darkgreen; padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
+							@CargarDescuento(juegoSeleccionado)
+						</div>
+						<div style="background-color: var(--fondoOscuro); padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
+							@CargarPrecio(juegoSeleccionado)
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</a>
+	}
 
-		<button @onclick="ClickearAdelante" class="boton-pequeño destacados-botonder" style="width: 50px; height: 50px; text-align: center;"><i class="fa-solid fa-chevron-right"></i></button>
+	<div class="destacados-galeria-fila">
+		@foreach (var destacado in juegosDestacadosMostrar)
+		{
+			string opacidad = string.Empty;
+
+			if (juegoSeleccionado != null)
+			{
+				if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
+				{
+					opacidad = "opacity: 1;";
+				}
+			}
+			
+			string fondoDestacado = "background-color: var(--fondoOscuro);";
+
+			if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+			{
+				fondoDestacado = "background-color: var(--fondoAlerta);";
+			}
+
+			<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
+				<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
+			</div>
+		}
 	</div>
-}
+</div>
 
 @if (noticiasMostrar.Count > 0)
 {
@@ -481,7 +432,7 @@ else
 			}
 
 			<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
-				<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra">
+				<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/">
 					<div class="perfil-flexible-centrado">
 						<div style="width: 20%;">
 							<img src="@juego.Imagenes.Capsule_231x87" style="height: 100%; width: 100%;" alt="@juego.Nombre"/>
@@ -611,13 +562,6 @@ else
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
-	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
-	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
-	private int cantidadDestacadosMostrar = 6;
-	private int posicionDestacadosMostrar = 0;
-	private int topeAtras = 0;
-	private int topeAdelante = 0;
-
 	private List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
 
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
@@ -685,33 +629,7 @@ else
 				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);			
 			}
 
-			if (juegosDestacadosGestor != null)
-			{
-				if (juegosDestacadosGestor.Count > 0)
-				{
-					if (juegosDestacadosGestor.Count > 0)
-					{
-						juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
-					}
-
-					juegoSeleccionado = juegosDestacadosGestor[0];
-
-					for (int i = posicionDestacadosMostrar; i < cantidadDestacadosMostrar; i += 1)
-					{
-						if (i < juegosDestacadosGestor.Count)
-						{
-							if (juegosDestacadosGestor[i] != null)
-							{
-								juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-							}
-						}		
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
+			CargarJuegosDestacados();
 
 			#endregion
 
@@ -791,55 +709,96 @@ else
 		}
 	}
 
-	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
-
-	private void CambiarJuegoDestacado(MouseEventArgs args, int nuevoJuegoId)
+	protected override void OnAfterRender(bool primerRender)
 	{
-		foreach (var juego in juegosDestacadosGestor)
+		if (primerRender == true)
 		{
-			if (nuevoJuegoId == juego.IdMaestra)
+			CronometroDestacados();
+		}
+	}
+
+	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
+	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
+	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
+	private PeriodicTimer cronometro = null;
+	private int cronometroContador = 0;
+
+	private void CambiarJuegoDestacado(MouseEventArgs args, Juegos.Juego nuevoJuego)
+	{
+		juegoSeleccionado = nuevoJuego;
+
+		cronometroContador = 0;
+		cronometro.Dispose();
+		CronometroDestacados();
+	}
+
+	private void CargarJuegosDestacados()
+	{
+		if (juegosDestacadosGestor != null)
+		{
+			if (juegosDestacadosGestor.Count > 0)
 			{
-				juegoSeleccionado = juego;
-				break;
+				juegosDestacadosMostrar.Clear();
+
+				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => Random.Shared.Next()).ToList();
+
+				foreach (var destacadoGestor in juegosDestacadosGestor)
+				{
+					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, destacadoGestor, destacadoGestor.PrecioMinimosHistoricos[0].DRM);
+
+					if (usuarioTieneJuego == false)
+					{
+						juegosDestacadosMostrar.Add(destacadoGestor);
+					}
+
+					if (juegosDestacadosMostrar.Count == 6)
+					{
+						break;
+					}
+				}
+
+				juegoSeleccionado = juegosDestacadosMostrar[0];
 			}
 		}
 	}
 
-	private void ClickearAdelante()
+	private async void CronometroDestacados()
 	{
-		juegosDestacadosMostrar.Clear();
-
-		posicionDestacadosMostrar += cantidadDestacadosMostrar;
-		topeAdelante = posicionDestacadosMostrar + cantidadDestacadosMostrar;
-
-		if (topeAdelante > juegosDestacadosGestor.Count)
+		cronometro = new PeriodicTimer(TimeSpan.FromSeconds(1));
+		while (await cronometro.WaitForNextTickAsync())
 		{
-			posicionDestacadosMostrar = 0;
-			topeAdelante = cantidadDestacadosMostrar;
-		}
+			cronometroContador += 1;
 
-		for (int i = posicionDestacadosMostrar; i < topeAdelante; i += 1)
-		{
-			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
-		}
-	}
+			if (cronometroContador == 15)
+			{
+				bool tomarSiguiente = false;
 
-	private void ClickearAtras()
-	{
-		juegosDestacadosMostrar.Clear();
+				int i = 0;
+				foreach (var destacado in juegosDestacadosMostrar)
+				{
+					if (tomarSiguiente == true)
+					{
+						juegoSeleccionado = destacado;
+						break;
+					}
 
-		topeAtras = posicionDestacadosMostrar;
-		posicionDestacadosMostrar -= cantidadDestacadosMostrar;
+					if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
+					{
+						tomarSiguiente = true;
+					}
 
-		if (posicionDestacadosMostrar < 0)
-		{
-			posicionDestacadosMostrar = juegosDestacadosGestor.Count - cantidadDestacadosMostrar;
-			topeAtras = juegosDestacadosGestor.Count;
-		}
+					i += 1;
+				}
 
-		for (int i = posicionDestacadosMostrar; i < topeAtras; i += 1)
-		{
-			juegosDestacadosMostrar.Add(juegosDestacadosGestor[i]);
+				if (i == juegosDestacadosMostrar.Count)
+				{
+					CargarJuegosDestacados();
+				}
+
+				cronometroContador = 0;
+			}
+
+			await InvokeAsync(StateHasChanged);
 		}
 	}
 
@@ -863,25 +822,11 @@ else
 		tooltipDRM = CargarDRM(juego);
 		tooltipTienda = CargarIconoTienda(juego);
 		tooltipTiempo = CargarFechaDetectado(juego);
-		tooltipVideo = null;
+		tooltipVideo = CargarVideo(juego);
 		tooltipReviews = null;
 		tooltipBundles = null;
 		tooltipGratis = null;
 		tooltipSuscripciones = null;
-
-		if (juego.Media != null)
-		{
-			if (string.IsNullOrEmpty(juego.Media.Video) == false)
-			{
-				int int1 = juego.Media.Video.LastIndexOf("/");
-				string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
-
-				tooltipVideo = temp1 + "/microtrailer.webm";
-
-				tooltipVideo = tooltipVideo.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-				tooltipVideo = tooltipVideo.Replace("http://", "https://");
-			}
-		}
 
 		if (juego.Analisis != null)
 		{
@@ -1042,8 +987,29 @@ else
 		{
 			mensaje = Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma);
 		}
-		
+
 		return mensaje;
+	}
+
+	private string CargarVideo(global::Juegos.Juego juego)
+	{
+		string video = null;
+
+		if (juego.Media != null)
+		{
+			if (string.IsNullOrEmpty(juego.Media.Video) == false)
+			{
+				int int1 = juego.Media.Video.LastIndexOf("/");
+				string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
+
+				video = temp1 + "/microtrailer.webm";
+
+				video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
+				video = video.Replace("http://", "https://");
+			}
+		}
+
+		return video;
 	}
 
 	private string CargarEnlaceNoticia(Noticias.Noticia noticia)

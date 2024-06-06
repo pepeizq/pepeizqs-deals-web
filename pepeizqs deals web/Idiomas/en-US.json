@@ -68,14 +68,6 @@
     "Valor": "Contact"
   },
   {
-    "Id": "Index.HighDeals",
-    "Valor": "Highlighted Deals"
-  },
-  {
-    "Id": "Index.HighDealsInfo",
-    "Valor": "These deals are historical lows that have not been in bundles, free or subscriptions. And they also exceed 5,000 reviews on Steam."
-  },
-  {
     "Id": "Index.LastLows",
     "Valor": "Last Historical Lows"
   },
