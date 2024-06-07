@@ -8,7 +8,29 @@ namespace BaseDatos.Suscripciones
 {
     public static class Buscar
     {
-        public static List<JuegoSuscripcion> Todos()
+		public static JuegoSuscripcion Cargar(SqlDataReader lector)
+		{
+			JuegoSuscripcion suscripcion = new JuegoSuscripcion
+			{
+				Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
+				JuegoId = lector.GetInt32(1),
+				Nombre = lector.GetString(2),
+				Imagen = lector.GetString(3),
+				DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
+				Enlace = lector.GetString(5),
+				FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
+				FechaTermina = Convert.ToDateTime(lector.GetString(7))
+			};
+
+			if (lector.IsDBNull(8) == false)
+			{
+				suscripcion.ImagenNoticia = lector.GetString(8);
+			}
+
+			return suscripcion;
+		}
+
+		public static List<JuegoSuscripcion> Todos()
         {
             List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
 
@@ -24,29 +46,8 @@ namespace BaseDatos.Suscripciones
                     {
                         while (lector.Read())
                         {
-							try
-							{
-                                JuegoSuscripcion suscripcion = new JuegoSuscripcion
-                                {
-                                    Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
-                                    JuegoId = lector.GetInt32(1),
-                                    Nombre = lector.GetString(2),
-                                    Imagen = lector.GetString(3),
-                                    DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-                                    Enlace = lector.GetString(5),
-                                    FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-                                    FechaTermina = Convert.ToDateTime(lector.GetString(7))
-                                };
-
-                                if (lector.IsDBNull(8) == false)
-                                {
-                                    suscripcion.ImagenNoticia = lector.GetString(8);
-                                }
-
-                                suscripciones.Add(suscripcion);
-                            }
-							catch { }
-                        }
+							suscripciones.Add(Cargar(lector));
+						}
                     }
                 }
             } 
@@ -72,22 +73,7 @@ namespace BaseDatos.Suscripciones
 					{
 						while (lector.Read())
 						{
-							JuegoSuscripcion suscripcion = new JuegoSuscripcion
-							{
-								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
-
-							if (lector.IsDBNull(8) == false)
-							{
-								suscripcion.ImagenNoticia = lector.GetString(8);
-							}
+							JuegoSuscripcion suscripcion = Cargar(lector);
 
 							if (tiempo == Herramientas.Tiempo.Atemporal)
 							{
@@ -137,24 +123,7 @@ namespace BaseDatos.Suscripciones
 					{
 						while (lector.Read())
 						{
-							JuegoSuscripcion suscripcion = new JuegoSuscripcion
-							{
-								Tipo = SuscripcionesCargar.DevolverSuscripcion(lector.GetInt32(0)).Id,
-								JuegoId = lector.GetInt32(1),
-								Nombre = lector.GetString(2),
-								Imagen = lector.GetString(3),
-								DRM = JuegoDRM2.DevolverDRM(lector.GetInt32(4)),
-								Enlace = lector.GetString(5),
-								FechaEmpieza = Convert.ToDateTime(lector.GetString(6)),
-								FechaTermina = Convert.ToDateTime(lector.GetString(7))
-							};
-
-							if (lector.IsDBNull(8) == false)
-							{
-								suscripcion.ImagenNoticia = lector.GetString(8);
-							}
-
-							resultados.Add(suscripcion);
+							resultados.Add(Cargar(lector));
 						}
 					}
 				}
@@ -166,6 +135,36 @@ namespace BaseDatos.Suscripciones
 			}
 
 			return null;
+		}
+
+		public static List<JuegoSuscripcion> Ultimos(string cantidad)
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				return Ultimos(conexion, cantidad);
+			}
+		}
+
+		public static List<JuegoSuscripcion> Ultimos(SqlConnection conexion, string cantidad)
+		{
+			List<JuegoSuscripcion> juegos = new List<JuegoSuscripcion>();
+
+			string busqueda = "SELECT TOP " + cantidad + " * FROM suscripciones ORDER BY id DESC";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						juegos.Add(Cargar(lector));
+					}
+				}
+			}
+
+			return juegos;
 		}
 	}
 }

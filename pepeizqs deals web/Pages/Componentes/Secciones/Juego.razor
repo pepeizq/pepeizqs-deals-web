@@ -205,7 +205,7 @@
 		{
 			@if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 			{
-				@if (juego.FreeToPlay == "true")
+				@if (juego.FreeToPlay.ToLower() == "true")
 				{
 					<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; align-items: center;">
 						<i class="fa-solid fa-circle-info" style="font-size: 22px; margin-right: 30px;"></i>

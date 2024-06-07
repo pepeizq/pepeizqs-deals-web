@@ -139,7 +139,6 @@
 	.destacados-galeria-fila {
 		display: flex;
 		overflow: auto;
-		padding-bottom: 15px;
 	}
 
 		.destacados-galeria-fila:after {
@@ -152,7 +151,7 @@
 		float: left;
 		width: 16.66%;
 		flex: 0 0 auto;
-		padding: 5px;
+		padding: 3px 3px 0px 3px;
 		aspect-ratio: 92/43;
 	}
 
@@ -166,6 +165,52 @@
 	.destacados-galeria-captura:hover {
 		opacity: 1;
 		transform: scale(1.01);
+	}
+
+	.destacado-hueco {
+		padding: 80px 60px 30px 60px;
+	}
+
+	.destacado-logo-ancho {
+		max-width: 250px;
+	}
+
+	.destacado-logo-alto {
+		height: 150px;
+	}
+
+	.destacado-precio-descuento {
+		padding: 12px 15px;
+		font-size: 22px;
+	}
+
+	.destacado-icono {
+		width: 40px;
+		height: 40px;
+	}
+
+	@@media (max-width: 800px) {
+		.destacado-hueco {
+			padding: 40px 30px 15px 30px;
+		}
+
+		.destacado-logo-ancho {
+			max-width: 150px;
+		}
+
+		.destacado-logo-alto {
+			height: 100px;
+		}
+
+		.destacado-precio-descuento {
+			padding: 6px 8px;
+			font-size: 15px;
+		}
+
+		.destacado-icono {
+			width: 24px;
+			height: 24px;
+		}
 	}
 </style>
 
@@ -200,19 +245,7 @@
 	}
 }
 
-@if (usuario != null)
-{
-	if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
-	{
-		<label>@cronometroContador</label>
-
-		<div>
-			<div/>
-		</div>
-	}
-}
-
-<div style="margin-bottom: 40px; position: relative;">
+<div style="margin-bottom: 60px; position: relative;">
 	@if (juegoSeleccionado != null)
 	{
 		string colorSeleccionado = "var(--fondoOscuro)";
@@ -223,7 +256,7 @@
 		}
 
 		<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
-			<div style="position: relative; padding: 5px; background-color: @colorSeleccionado;">
+			<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
 				<div class="destacado-mostrar">
 					@if (string.IsNullOrEmpty(CargarVideo(juegoSeleccionado)) == false)
 					{
@@ -241,21 +274,23 @@
 					}
 
 					<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
-								padding: 80px 60px 30px 60px; display: flex; align-items: center;">
+								display: flex; align-items: center;" class="destacado-hueco">
 
-						<div style="width: 100%; height: 150px; display: flex; align-items: center;">
-							<img src="@juegoSeleccionado.Imagenes.Logo" style="max-width: 250px;" alt="@juegoSeleccionado.Nombre">
+						<div class="destacado-logo-alto" style="width: 100%; display: flex; align-items: center;">
+							<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-ancho" alt="@juegoSeleccionado.Nombre">
 						</div>
 
-						<img src="@CargarDRM(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 20px;" />
-						<img src="@CargarIconoTienda(juegoSeleccionado)" style="width: 40px; height: 40px; margin-right: 40px;" />
+						<div style="display: flex; align-items: center; margin-top: 40px; color: var(--colorTexto);">
+							<img class="destacado-icono" src="@CargarDRM(juegoSeleccionado)" style="margin-right: 20px;" alt="DRM" />
+							<img class="destacado-icono" src="@CargarIconoTienda(juegoSeleccionado)" style="margin-right: 40px;" alt="Store" />
 
-						<div style="background-color: darkgreen; padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
-							@CargarDescuento(juegoSeleccionado)
-						</div>
-						<div style="background-color: var(--fondoOscuro); padding: 12px 15px; font-size: 22px; color: var(--colorTexto);">
-							@CargarPrecio(juegoSeleccionado)
-						</div>
+							<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+								@CargarDescuento(juegoSeleccionado)
+							</div>
+							<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
+								@CargarPrecio(juegoSeleccionado)
+							</div>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -265,6 +300,7 @@
 	<div class="destacados-galeria-fila">
 		@foreach (var destacado in juegosDestacadosMostrar)
 		{
+			bool mostrarBarra = false;
 			string opacidad = string.Empty;
 
 			if (juegoSeleccionado != null)
@@ -272,6 +308,7 @@
 				if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
 				{
 					opacidad = "opacity: 1;";
+					mostrarBarra = true;
 				}
 			}
 			
@@ -284,6 +321,15 @@
 
 			<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
 				<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
+
+				@if (mostrarBarra == true)
+				{
+					int porcentaje = (cronometroContador * 100) / cronometroLimite;
+
+					<div style="height: 3px; width: 100%; background-color: transparent;">
+						<div style="height: 3px; background-color: var(--fondoCodigo); width: @porcentaje%;" />
+					</div>
+				}
 			</div>
 		}
 	</div>
@@ -298,48 +344,68 @@
 	</div>
 
 	<div style="margin-bottom: 25px;">
-		@foreach (var noticia in noticiasMostrar)
-		{
-			<div style="margin-top: 20px;">
-			@{
-				string objetivo = "_self";
+		@{
+			int i = 0;
 
-				if (string.IsNullOrEmpty(noticia.Enlace) == false)
+			foreach (var noticia in noticiasMostrar)
+			{
+				i += 1;
+
+				string marginArriba = "margin-top: 30px;";
+
+				if (i == 1)
 				{
-					if (noticia.Enlace.Contains("/link/") == true)
-					{
-						objetivo = "_blank";
-					}
+					marginArriba = "margin-top: 20px;";
 				}
 
-				<a class="boton-pequeño" style="padding: 2px;" href="@noticia.Enlace" target="@objetivo">
-					<div class="perfil-flexible-centrado">
-						<div style="width: 25%;">
-							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn"/>
-						</div>
+				<div style="padding-left: 30px; padding-right: 30px; @marginArriba">
+					@{
+						string objetivo = "_self";
 
-						<div style="width: 75%; padding: 20px 30px;">
-							<div style="margin-bottom: 20px; display: flex; align-items: center;">
-								<div class="noticia-fecha" style="margin-right: 20px;">
-									@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
+						if (string.IsNullOrEmpty(noticia.Enlace) == false)
+						{
+							if (noticia.Enlace.Contains("/link/") == true)
+							{
+								objetivo = "_blank";
+							}
+						}
+
+						string enlace = noticia.Enlace;
+
+						if (string.IsNullOrEmpty(enlace) == true)
+						{
+							enlace = "/news/" + noticia.Id + "/";
+						}
+
+						<a class="boton-pequeño" style="padding: 2px;" href="@enlace" target="@objetivo">
+							<div class="perfil-flexible-centrado">
+								<div style="width: 30%;">
+									<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
 								</div>
 
-								@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
-								{
-									<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" alt="Store"/>
-								}
+								<div style="width: 70%; padding: 20px 30px;">
+									<div style="margin-bottom: 20px; display: flex; align-items: center;">
+										<div class="noticia-fecha" style="margin-right: 20px;">
+											@noticia.FechaEmpieza.Day.ToString()/@noticia.FechaEmpieza.Month.ToString()/@noticia.FechaEmpieza.Year.ToString()
+										</div>
 
-								<label class="noticia-categoria">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
-							</div>
+										@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
+										{
+											<img src="@CargarIconoNoticia(noticia)" style="width: 16px; height: 16px; margin-right: 20px;" alt="Store" />
+										}
 
-							<div class="noticia-fuente">
-								@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
+										<label class="noticia-categoria">@NoticiasCargar.Traduccion(noticia.Tipo, idioma)</label>
+									</div>
+
+									<div class="noticia-fuente">
+										@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-				</a>
+						</a>
+					}
+				</div>
 			}
-			</div>
 		}
 	</div>
 
@@ -361,7 +427,7 @@ else
 @if (sorteosActivos.Count > 2)
 {
 	<div style="margin-bottom: 50px; height: 200px;">
-		<a href="/Giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
+		<a href="/giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
 			<div style="overflow: hidden; position: relative; height: 150px; display: flex; align-items: center;">
 				<div style="position: absolute; right: 0; top: 0;">
 					@{
@@ -667,11 +733,6 @@ else
 
 					foreach (Noticias.Noticia noticia in noticiasGestor)
 					{
-						if (noticia.Enlace == null)
-						{
-							noticia.Enlace = "/news/" + noticia.IdMaestra.ToString();
-						}
-
 						DateTime fechaTemporal = noticia.FechaEmpieza;
 						fechaTemporal = fechaTemporal.AddDays(3);
 
@@ -722,6 +783,7 @@ else
 	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
 	private PeriodicTimer cronometro = null;
 	private int cronometroContador = 0;
+	private int cronometroLimite = 30;
 
 	private void CambiarJuegoDestacado(MouseEventArgs args, Juegos.Juego nuevoJuego)
 	{
@@ -769,7 +831,7 @@ else
 		{
 			cronometroContador += 1;
 
-			if (cronometroContador == 15)
+			if (cronometroContador == cronometroLimite)
 			{
 				bool tomarSiguiente = false;
 

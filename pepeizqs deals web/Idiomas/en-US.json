@@ -77,7 +77,7 @@
   },
   {
     "Id": "Index.LastLowsInfo",
-    "Valor": "These deals are historical lows that have exceed 500 reviews on Steam."
+    "Valor": "These deals are historical lows that games have for the first time."
   },
   {
     "Id": "Index.LastAdded",
@@ -1678,6 +1678,18 @@
   {
     "Id": "Api.String25",
     "Valor": "Note: It can be expanded up to a maximum of 25 loaded free games by adding a number at the end (it is underlined):"
+  },
+  {
+    "Id": "Api.String26",
+    "Valor": "Subscriptions (Last)"
+  },
+  {
+    "Id": "Api.String27",
+    "Valor": "To know the latest subscriptions games that have been added to the website, just access this API link:"
+  },
+  {
+    "Id": "Api.String28",
+    "Valor": "Note: It can be expanded up to a maximum of 25 loaded subscriptions games by adding a number at the end (it is underlined):"
   },
   {
     "Id": "Month.1",

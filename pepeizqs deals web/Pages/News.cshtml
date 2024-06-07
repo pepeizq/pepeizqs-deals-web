@@ -2,11 +2,42 @@
 
 @model pepeizqs_deals_web.Pages.NewsModel
 
+@using Herramientas
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
 	#nullable disable
 
 	ViewData["Title"] = Herramientas.Idiomas.MirarTexto(Model.idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
 	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
+
+	bool adminLogeado = false;
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+
+		if (await UsuarioCoger.RolDios(UserManager, User) == true)
+		{
+			adminLogeado = true;
+		}
+	}
+}
+
+@if (usuarioLogeado == true)
+{
+	@if (adminLogeado == true)
+	{
+		@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, noticiaId = Model.noticia.Id }))
+	}
 }
 
 @(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, noticiaId = Model.noticia.Id }))

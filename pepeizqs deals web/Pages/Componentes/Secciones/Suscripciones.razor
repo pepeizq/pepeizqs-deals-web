@@ -200,7 +200,7 @@
                                     @foreach (var juegoMensual in suscripcionesMensual)
                                     {
                                         <li>
-                                            <a href="/game/@juegoMensual.JuegoId" style="text-decoration: none;">
+                                            <a href="/game/@juegoMensual.JuegoId/@Herramientas.EnlaceAdaptador.Nombre(juegoMensual.Nombre)/" style="text-decoration: none;">
                                                 @juegoMensual.Nombre (@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))
                                             </a>
                                         </li>

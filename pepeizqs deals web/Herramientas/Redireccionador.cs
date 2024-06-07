@@ -227,7 +227,47 @@ namespace Herramientas
             return Redirect("~/");
         }
 
-        [ResponseCache(Duration = 2000)]
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("api/last-subscriptions/")]
+		public IActionResult ApiSuscripcionesUltimos()
+		{
+			List<JuegoSuscripcion> suscripciones = global::BaseDatos.Suscripciones.Buscar.Ultimos("5");
+
+			if (suscripciones != null)
+			{
+				return Ok(suscripciones);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("api/last-subscriptions/{Cantidad}/")]
+		public IActionResult ApiSuscripcionesUltimos(int Cantidad)
+		{
+			int cantidadFinal = 5;
+
+			if (Cantidad > 0)
+			{
+				cantidadFinal = Cantidad;
+			}
+
+			if (cantidadFinal > 25)
+			{
+				cantidadFinal = 25;
+			}
+
+			List<JuegoSuscripcion> suscripciones = global::BaseDatos.Suscripciones.Buscar.Ultimos(cantidadFinal.ToString());
+
+			if (suscripciones != null)
+			{
+				return Ok(suscripciones);
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
 		public IActionResult CogerAcortador(int Id)
 		{

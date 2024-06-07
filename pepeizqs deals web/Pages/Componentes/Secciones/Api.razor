@@ -22,6 +22,10 @@
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String23")
 		</button>
 
+		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoSuscripciones1;" @onclick="(e => MostrarSuscripciones1(e))">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String26")
+		</button>
+
 		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias1;" @onclick="(e => MostrarNoticias1(e))">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String14")
 		</button>
@@ -154,6 +158,23 @@
 			</div>
 		}
 
+		@if (mostrarSuscripciones1 == true)
+		{
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String27")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/</label>
+				</div>
+
+				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String28")
+
+				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/<label style="text-decoration: underline;">25</label>/</label>
+				</div>
+			</div>
+		}
+
 		@if (mostrarNoticias1 == true)
 		{
 			<div>
@@ -209,6 +230,7 @@
 		fondoBundles1 = "transparent";
 		fondoBundles2 = "transparent";
 		fondoGratis1 = "transparent";
+		fondoSuscripciones1 = "transparent";
 		fondoNoticias1 = "transparent";
 		fondoNoticias2 = "transparent";
 
@@ -216,6 +238,7 @@
 		mostrarBundles1 = false;
 		mostrarBundles2 = false;
 		mostrarGratis1 = false;
+		mostrarSuscripciones1 = false;
 		mostrarNoticias1 = false;
 		mostrarNoticias2 = false;
 	}
@@ -262,6 +285,17 @@
 
 		fondoGratis1 = "var(--fondoCodigo)";
 		mostrarGratis1 = true;
+	}
+
+	private bool mostrarSuscripciones1 = false;
+	private string fondoSuscripciones1 = "transparent";
+
+	private void MostrarSuscripciones1(MouseEventArgs e)
+	{
+		CerrarPestañas();
+
+		fondoSuscripciones1 = "var(--fondoCodigo)";
+		mostrarSuscripciones1 = true;
 	}
 
 	private bool mostrarNoticias1 = false;

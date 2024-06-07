@@ -128,33 +128,7 @@
             <div style="width: 85%; padding-left: 40px; padding-right: 20px;">
                 @if (mostrarVisitas == true)
                 {
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">                       
-                        <div>
-                            pepeizqdeals.com    
-                        </div>
-                        
-                        <div style="margin-top: 20px;">
-                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Smarterasp</a>
-                        </div>
-
-                        <div style="margin-top: 20px;">
-                            <a class="boton-pequeño" href="https://dash.cloudflare.com/a419bd795a2aa4915b886e422f16c484/pepeizqdeals.com/analytics/traffic" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Cloudflare</a>
-                        </div>
-                     </div>
-                     
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">  
-                        <div>
-                            pepeizqapps.com
-                        </div>
-
-                        <div style="margin-top: 20px;">
-                            <a class="boton-pequeño" href="https://win6052.site4now.net/stats/awstats.pl?config=1112749301&h=247c8c635b3636dbad356b8bfe410387" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Smarterasp</a>
-                        </div>
-
-                        <div style="margin-top: 20px;">
-                            <a class="boton-pequeño" href="https://dash.cloudflare.com/a419bd795a2aa4915b886e422f16c484/pepeizqapps.com/analytics/traffic" style="text-decoration: none; text-align: center; width: 200px;" target="_blank">Cloudflare</a>
-                        </div>
-                    </div>
+                    <Visitas/>
                 }
 
                 @if (mostrarErrores == true)
@@ -2922,7 +2896,7 @@
         {
             using (conexion)
             {
-                Noticia noticia = new Noticia();
+                Noticias.Noticia noticia = new Noticias.Noticia();
 
                 noticia.TituloEn = plantillaNoticias.TituloEn;
                 noticia.TituloEs = plantillaNoticias.TituloEs;

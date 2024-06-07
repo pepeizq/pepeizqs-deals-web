@@ -291,6 +291,27 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void MayorEdad(Juego juego, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE juegos " +
+					"SET mayorEdad=@mayorEdad WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Nombre(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +

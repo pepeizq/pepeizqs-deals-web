@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.Data.SqlClient
+
+@if (noticia != null)
+{
+	<div style="padding: 20px; background: var(--fondoCuerpo); margin-bottom: 40px;">
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 100%;">
+				Admin Editar • @noticia.TituloEs
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Imagen
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaImagen(e))" class="entrada-texto" rows="1">@textoImagen</textarea>
+				<img src="@textoImagen" style="margin-top: 10px; max-height: 150px;"/>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Enlace
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaEnlace(e))" class="entrada-texto" rows="1">@textoEnlace</textarea>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public int noticiaId { get; set; }
+
+	public Noticias.Noticia noticia = new Noticias.Noticia();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(10);
+
+		noticia = BaseDatos.Noticias.Buscar.UnaNoticia(noticiaId);
+
+		if (noticia != null)
+		{
+			textoImagen = noticia.Imagen;
+		}
+	}
+
+	private string textoImagen = string.Empty;
+
+	private void TextoCambiaImagen(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoImagen = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.Imagen(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoEnlace = string.Empty;
+
+	private void TextoCambiaEnlace(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoEnlace = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.Enlace(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+}

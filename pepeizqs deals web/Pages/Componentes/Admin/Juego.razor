@@ -157,11 +157,17 @@
 				<div style="width: 15%; padding: 0px 30px; text-align: right;">
 					<label>FreeToPlay</label>
 				</div>
-				<div style="width: 20%;">
-					<input type="text" @oninput="TextoCambiaF2P" class="entrada-texto" value="@textoF2P" />
+				<div class="checkbox-caja">
+					<input type="checkbox" class="checkbox-interior" checked="@textoF2P" @onchange="@(e => TextoCambiaF2P(e))">
 				</div>
-				<div style="width: 65%; padding: 0px 30px;">
-					<label>(true si es F2P)</label>
+			</div>
+
+			<div style="display: flex; align-items: center; margin-top: 20px;">
+				<div style="width: 15%; padding: 0px 30px; text-align: right;">
+					<label>Mayor Edad</label>
+				</div>
+				<div class="checkbox-caja">
+					<input type="checkbox" class="checkbox-interior" checked="@textoEdad" @onchange="@(e => TextoCambiaEdad(e))">
 				</div>
 			</div>
 
@@ -254,7 +260,12 @@
 
 		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 		{
-			textoF2P = juego.FreeToPlay;
+			textoF2P = Convert.ToBoolean(juego.FreeToPlay);
+		}
+
+		if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+		{
+			textoEdad = Convert.ToBoolean(juego.MayorEdad);
 		}
 
 		tipo = juego.Tipo.ToString();
@@ -554,7 +565,7 @@
 		}
 	}
 
-	private string textoF2P = string.Empty;
+	private bool textoF2P = false;
 
 	private void TextoCambiaF2P(ChangeEventArgs texto)
 	{
@@ -562,14 +573,34 @@
 		{
 			string nuevoTexto = texto.Value.ToString().Trim();
 
-			textoF2P = nuevoTexto;
+			textoF2P = Convert.ToBoolean(nuevoTexto);
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				juego.FreeToPlay = textoF2P;
+				juego.FreeToPlay = textoF2P.ToString();
 				BaseDatos.Juegos.Actualizar.FreeToPlay(juego, conexion);
+			}
+		}
+	}
+
+	private bool textoEdad = false;
+
+	private void TextoCambiaEdad(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoEdad = Convert.ToBoolean(nuevoTexto);
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.MayorEdad = textoEdad.ToString();
+				BaseDatos.Juegos.Actualizar.MayorEdad(juego, conexion);
 			}
 		}
 	}

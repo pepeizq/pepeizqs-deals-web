@@ -286,7 +286,7 @@
                                     @foreach (var juegoMensual in gratisMensual)
                                     {
                                         <li>
-                                            <a href="/game/@juegoMensual.JuegoId">
+                                            <a href="/game/@juegoMensual.JuegoId/@Herramientas.EnlaceAdaptador.Nombre(juegoMensual.Nombre)/">
                                                 <label style="cursor: pointer;">@juegoMensual.Nombre</label> 
 
                                                 @if (gratisPasado.Tipo.DRMEnseñar == true)

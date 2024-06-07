@@ -83,14 +83,30 @@ namespace Tareas
 																		nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
 																		nuevoHistorico.IdMaestra = juego.Id;
 
-																		bool añadir2 = true;
+																		bool añadir = true;
 
 																		if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
 																		{
-																			añadir2 = false;
+																			añadir = false;
+																		}
+																		
+																		if (string.IsNullOrEmpty(nuevoHistorico.FreeToPlay) == false)
+																		{
+																			if (nuevoHistorico.FreeToPlay.ToLower() == "true")
+																			{
+																				añadir = false;
+																			}
+																		}
+																		
+																		if (string.IsNullOrEmpty(nuevoHistorico.MayorEdad) == false)
+																		{
+																			if (nuevoHistorico.MayorEdad.ToLower() == "true")
+																			{
+																				añadir = false;
+																			}
 																		}
 
-																		if (añadir2 == true)
+																		if (añadir == true)
 																		{
 																			juegosConMinimos.Add(nuevoHistorico);
 																		}
@@ -184,14 +200,7 @@ namespace Tareas
 															}
 														}
 													}
-													else if (string.IsNullOrEmpty(minimo.FreeToPlay) == false)
-                                                    {
-                                                        if (minimo.FreeToPlay.ToLower() == "true")
-                                                        {
-                                                            añadir = false;
-                                                        }
-                                                    }
-
+													
                                                     if (añadir == true && minimo != null)
                                                     {
 														string tempCantidad = minimo.Analisis.Cantidad;
@@ -298,24 +307,11 @@ namespace Tareas
 
 														if (descarte3 == false)
 														{
-															bool descarte4 = false;
+															juegosMinimosMostrar.Add(juegoConMinimo);
 
-															if (string.IsNullOrEmpty(juegoConMinimo.FreeToPlay) == false)
+															if (juegosMinimosMostrar.Count >= 80)
 															{
-																if (juegoConMinimo.FreeToPlay.ToLower() == "true")
-																{
-																	descarte4 = true;
-																}
-															}
-
-															if (descarte4 == false)
-															{
-																juegosMinimosMostrar.Add(juegoConMinimo);
-
-																if (juegosMinimosMostrar.Count >= 80)
-																{
-																	break;
-																}
+																break;
 															}
 														}
 													}

@@ -77,7 +77,7 @@
   },
   {
     "Id": "Index.LastLowsInfo",
-    "Valor": "Estas ofertas son mínimos históricos que superan los 500 análisis en Steam."
+    "Valor": "Estas ofertas son mínimos históricos que tienen por primera vez los juegos."
   },
   {
     "Id": "Index.LastAdded",
@@ -1674,6 +1674,18 @@
   {
     "Id": "Api.String25",
     "Valor": "Nota: Se puede ampliar hasta un máximo de 25 juegos gratuitos cargados añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "Api.String26",
+    "Valor": "Suscripciones (Últimas)"
+  },
+  {
+    "Id": "Api.String27",
+    "Valor": "Para conocer los últimos juegos de suscripciones que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "Api.String28",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 juegos de suscripciones cargados añadiendo un número al final (esta subrayado):"
   },
   {
     "Id": "Month.1",
