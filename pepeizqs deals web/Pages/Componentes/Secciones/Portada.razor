@@ -335,6 +335,75 @@
 	</div>
 </div>
 
+@if (usuario != null)
+{
+	if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+	{
+		@if (noticiasMostrar.Count > 0)
+		{
+			int i = 0;
+
+			<div style="display: flex; overflow: auto; padding-bottom: 20px; margin-left: 10px; margin-right: 10px; margin-bottom: 60px;">
+				@foreach (var noticia in noticiasMostrar)
+				{
+					i += 1;
+
+					string paddingDerecha = "padding-right: 20px;";
+
+					if (i == noticiasMostrar.Count)
+					{
+						paddingDerecha = string.Empty;
+					}
+
+					string objetivo = "_self";
+
+					if (string.IsNullOrEmpty(noticia.Enlace) == false)
+					{
+						if (noticia.Enlace.Contains("/link/") == true)
+						{
+							objetivo = "_blank";
+						}
+					}
+
+					string enlace = noticia.Enlace;
+
+					if (string.IsNullOrEmpty(enlace) == true)
+					{
+						enlace = "/news/" + noticia.Id + "/";
+					}
+
+					<a style="float: left; width: 33%; flex: 0 0 auto; text-decoration: none; @paddingDerecha" href="@enlace" target="@objetivo">
+						<div style="color: var(--colorTexto); font-size: 14px;">
+							<div style="display: flex; align-items: center;">
+								<div style="background-color: var(--fondoOscuro); padding: 8px 12px 5px 12px; margin-left: auto;">
+									@noticia.Tipo
+								</div>
+							</div>
+							
+							<div style="background-color: var(--fondoOscuro); padding: 3px;">
+								<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
+							</div>
+
+							<div style="background-color: var(--fondoOscuro); padding: 5px 12px 10px 12px; display: flex; align-items: center;">
+								@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
+								{
+									<div>
+										<img src="@CargarIconoNoticia(noticia)" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
+									</div>
+								}
+
+								<div style="margin-left: auto;">
+									@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+								</div>
+							</div>
+						</div>						
+					</a>
+				}
+			</div>
+		}		
+	}
+}
+
 @if (noticiasMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
