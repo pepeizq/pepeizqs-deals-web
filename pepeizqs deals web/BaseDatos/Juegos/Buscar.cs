@@ -285,5 +285,31 @@ namespace BaseDatos.Juegos
 			
 			return dlcs.OrderBy(x => x.Nombre).ToList();
 		}
+
+		public static Juego Aleatorio()
+		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string buscar = "SELECT TOP 1 * FROM seccionMinimos ORDER BY NEWID()";
+
+				using (SqlCommand comando = new SqlCommand(buscar, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read())
+						{
+							Juego juego = JuegoCrear.Generar();
+							juego = Cargar.Ejecutar(juego, lector);
+
+							return juego;
+						}
+					}
+				}
+			}
+
+			return null;
+		}
 	}
 }

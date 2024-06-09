@@ -8,13 +8,14 @@
 @{
     #nullable disable
 
+    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+
     string discord = "https://discord.gg/GBT3FXnrm3";
     string telegram = "https://t.me/pepeizqdeals2";
     string reddit = "https://reddit.com/r/pepeizqdeals/";
     string twitter = "https://twitter.com/pepeizqdeals";
     string steam = "https://steamcommunity.com/groups/pepeizqdeals/";
-
-    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+    string rss = Herramientas.Idiomas.CogerRSS(idioma);
 
     string titulo = string.Empty;
     string descripcion = Herramientas.Idiomas.CogerCadena(idioma, "Index.Subtitle");
@@ -83,7 +84,7 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
             <div class="cabecera-poner cuerpo-ancho">
-                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { idioma = idioma, adminLogeado = adminLogeado, discord = discord, telegram = telegram, reddit = reddit, twitter = twitter, steam = steam }))
+                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { idioma = idioma, adminLogeado = adminLogeado, discord = discord, telegram = telegram, reddit = reddit, twitter = twitter, steam = steam, rss = rss }))
             </div>
         </nav>
     </header>
@@ -114,6 +115,7 @@
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
                     </div>
                 </div>
 

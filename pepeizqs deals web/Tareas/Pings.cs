@@ -33,6 +33,31 @@ namespace Tareas
                 if (piscinaApp == piscinaUsada)
                 {
                     string html = await Decompiladores.Estandar("https://tareas.pepeizqapps.com/");
+
+					//---------------------------------------------------------------------------------------
+
+					string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
+
+					HttpClient httpClient = new HttpClient();
+					string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
+
+                    Juegos.Juego aleatorio = BaseDatos.Juegos.Buscar.Aleatorio();
+
+                    if (aleatorio != null)
+                    {
+                        Juegos.Juego aleatorio2 = BaseDatos.Juegos.Buscar.UnJuego(aleatorio.Id);
+
+						BingApi nuevoAleatorio = new BingApi("https://pepeizqdeals.com/game/" + aleatorio2.Id.ToString() + "/" + EnlaceAdaptador.Nombre(aleatorio2.Nombre) + "/");
+
+						HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, bingEnlace)
+						{
+							Content = JsonContent.Create(nuevoAleatorio)
+						};
+
+						HttpResponseMessage respuesta = await httpClient.SendAsync(peticion);
+
+						respuesta.EnsureSuccessStatusCode();
+					}
 				}                    
             }
         }
@@ -42,4 +67,16 @@ namespace Tareas
             await base.StopAsync(stoppingToken);
         }
     }
+
+	public class BingApi
+	{
+		public string siteUrl { get; set; }
+		public string url { get; set; }
+
+		public BingApi(string newurl)
+		{
+			siteUrl = "https://pepeizqdeals.com";
+			url = newurl;
+		}
+	}
 }

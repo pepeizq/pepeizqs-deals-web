@@ -206,6 +206,7 @@
         <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
         <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
         <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+        <div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
     </div>
 </div>
 
@@ -233,6 +234,9 @@
 
     [Parameter]
     public string steam { get; set; }
+
+    [Parameter]
+    public string rss { get; set; }
 
     SqlConnection conexion = new SqlConnection();
 

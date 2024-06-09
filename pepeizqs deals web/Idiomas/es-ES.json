@@ -104,6 +104,18 @@
     "Valor": "También puedes seguir las noticias en estas redes sociales:"
   },
   {
+    "Id": "Index.News1",
+    "Valor": "Nuevo Bundle"
+  },
+  {
+    "Id": "Index.News2",
+    "Valor": "Nuevo Gratis"
+  },
+  {
+    "Id": "Index.News3",
+    "Valor": "Nueva Suscripción"
+  },
+  {
     "Id": "Index.Title",
     "Valor": "Inicio"
   },

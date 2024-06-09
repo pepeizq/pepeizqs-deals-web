@@ -104,6 +104,18 @@
     "Valor": "You can also follow the news on these social networks:"
   },
   {
+    "Id": "Index.News1",
+    "Valor": "New Bundle"
+  },
+  {
+    "Id": "Index.News2",
+    "Valor": "New Free"
+  },
+  {
+    "Id": "Index.News3",
+    "Valor": "New Subscription"
+  },
+  {
     "Id": "Index.Title",
     "Valor": "Home Page"
   },
