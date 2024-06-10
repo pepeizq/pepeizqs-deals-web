@@ -73,7 +73,7 @@ namespace Tareas
                                                             {
                                                                 TimeSpan actualizado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaActualizacion);
 
-                                                                if (actualizado.Days >= 0 && actualizado.Days <= 1)
+                                                                if (actualizado.Days == 0)
                                                                 {
 																	TimeSpan detectado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaDetectado);
 

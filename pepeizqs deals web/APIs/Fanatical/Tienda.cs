@@ -80,12 +80,20 @@ namespace APIs.Fanatical
 								}
 							}
 
-							//if (juego.Tipo == "bundle")
-							//{
-							//	autorizar = false;
-							//}
+                            if (string.IsNullOrEmpty(juego.Disponible) == false)
+                            {
+                                if (juego.Disponible.ToLower() == "false")
+								{
+									autorizar = false;
+								}
+                            }
 
-							if (autorizar == true)
+                            //if (juego.Tipo == "bundle")
+                            //{
+                            //	autorizar = false;
+                            //}
+
+                            if (autorizar == true)
 							{
 								string descuentoTexto = juego.Descuento;
 
@@ -221,6 +229,9 @@ namespace APIs.Fanatical
 
 		[JsonProperty("type")]
 		public string Tipo { get; set; }
+
+		[JsonProperty("in_stock")]
+		public string Disponible { get; set; }
 	}
 
 	public class FanaticalJuegoPrecio
