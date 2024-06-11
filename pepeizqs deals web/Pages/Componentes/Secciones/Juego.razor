@@ -36,6 +36,32 @@
 	}
 </script>
 
+@{
+	string enlace = "https://pepeizqdeals.com/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+
+	string descripcion = string.Empty;
+
+	if (juego.Caracteristicas != null)
+	{
+		if (string.IsNullOrEmpty(juego.Caracteristicas.Descripcion) == false)
+		{
+			descripcion = juego.Caracteristicas.Descripcion;
+		}
+	}
+
+	string imagen = string.Empty;
+
+	if (juego.Imagenes != null)
+	{
+		if (string.IsNullOrEmpty(juego.Imagenes.Header_460x215) == false)
+		{
+			imagen = juego.Imagenes.Header_460x215;
+		}
+	}
+}
+
+<Seo idioma="@idioma" titulo="@juego.Nombre" enlace="@enlace" canonical="@enlace" descripcion="@descripcion" imagen="@imagen" />
+
 <div>
 	@if (juego.Tipo == JuegoTipo.Game)
 	{

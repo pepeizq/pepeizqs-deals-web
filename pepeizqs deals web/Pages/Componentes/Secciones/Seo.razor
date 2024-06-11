@@ -32,8 +32,22 @@ else
     <Meta Property="og:video" Content="@video" />
 }
 
+@if (string.IsNullOrEmpty(canonical) == false)
+{
+    <Link rel="canonical" href="@canonical" />
+}
+
+@if (string.IsNullOrEmpty(imagen) == false)
+{
+    <Meta Property="og:image" Content="@imagen" />
+}
+else
+{
+    <Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
+}
+
+<Meta Property="og:site_name" Content="pepeizq's deals" />
 <Meta Property="og:type" Content="website" />
-<Meta Property="og:image" Content="https://pepeizqdeals.com/logo/logo6.png" />
 <Meta Property="robots" Content="index, follow, noimageindex" />
 <Meta Property="keywords" Content="deals, games, free, offers, bundles" />
 
@@ -55,4 +69,10 @@ else
 
     [Parameter]
     public string video { get; set; }
+
+    [Parameter]
+    public string canonical { get; set; }
+
+    [Parameter]
+    public string imagen { get; set; }
 }

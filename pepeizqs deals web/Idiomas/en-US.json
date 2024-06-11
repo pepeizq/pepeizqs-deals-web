@@ -505,7 +505,7 @@
   },
   {
     "Id": "News.FreeString1",
-    "Valor": "is free to claim at"
+    "Valor": "is free to claim on"
   },
   {
     "Id": "News.FreeString2",
@@ -513,11 +513,11 @@
   },
   {
     "Id": "News.FreeString3",
-    "Valor": "are free to claim at"
+    "Valor": "are free to claim on"
   },
   {
     "Id": "News.FreeString4",
-    "Valor": "and more games are free to claim"
+    "Valor": "and more games are free to claim on"
   },
   {
     "Id": "News.FreeString5",

@@ -8,7 +8,8 @@ namespace Herramientas
 		{
 			string s2 = Regex.Replace(nombre, @"(?<![a-zA-Z0-9])[^a-zA-Z0-9]|[^a-zA-Z0-9](?![a-zA-Z0-9])", "_");
 			s2 = s2.Replace("'", string.Empty);
-			s2 = s2.Replace(" ", "_");
+            s2 = s2.Replace(".", string.Empty);
+            s2 = s2.Replace(" ", "_");
 
 			int i = 0;
 			while (i < 10)

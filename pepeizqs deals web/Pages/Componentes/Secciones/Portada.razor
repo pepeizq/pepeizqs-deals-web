@@ -375,7 +375,14 @@
 				enlace = "/news/" + noticia.Id + "/";
 			}
 
-			<div class="tooltip-juego noticia-ancho" style="float: left; flex: 0 0 auto;" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
+			string marginExtra = string.Empty;
+
+			if (noticiasMostrar.Count == 1)
+			{
+				marginExtra = "margin-left: auto; margin-right: auto;";
+			}
+
+			<div class="tooltip-juego noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
 				<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">
 					@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
 				</div>
