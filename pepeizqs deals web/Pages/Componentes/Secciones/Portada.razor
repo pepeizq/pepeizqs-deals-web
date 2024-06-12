@@ -10,7 +10,7 @@
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Admin
 
-@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor

@@ -55,9 +55,6 @@
 
     <title>@titulo</title>
 
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, 
-        new { idioma = idioma, titulo = titulo, descripcion = descripcion }))
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/maestro.css" asp-append-version="true" type="text/css" />
     <link rel="stylesheet" href="~/css/cabecera_cuerpo_pie.css" asp-append-version="true" type="text/css" />
@@ -76,8 +73,7 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
-    <base href="~/" />
-    <component type="typeof(Juegos.Juego)" render-mode="ServerPrerendered" />
+    <base href="/" />
 </head>
 
 <body class="cuerpo" id="cuerpazo">

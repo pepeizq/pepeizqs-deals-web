@@ -668,6 +668,14 @@
     "Valor": "game"
   },
   {
+    "Id": "Bundles.String22",
+    "Valor": "Bundle divided into several tiers and available from"
+  },
+  {
+    "Id": "Bundles.String23",
+    "Valor": "Bundle where you can choose the games and available from"
+  },
+  {
     "Id": "Free.Title",
     "Valor": "Free"
   },

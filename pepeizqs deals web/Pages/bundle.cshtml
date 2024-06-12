@@ -13,7 +13,9 @@
 @{
 	#nullable disable
 
-	ViewData["Title"] = Model.bundle.NombreBundle + " • " + Model.bundle.NombreTienda;
+	string titulo = Model.bundle.NombreBundle + " • " + Model.bundle.NombreTienda;
+
+	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -30,14 +32,61 @@
 			adminLogeado = true;
 		}
 	}
+
+	string enlace = "https://pepeizqdeals.com/bundle/" + Model.bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.bundle.NombreBundle) + "/";
+
+	string descripcion = string.Empty;
+
+	if (Model.bundle.Tiers != null)
+	{
+		string precio = Model.bundle.Tiers[0].Precio.ToString();
+		precio = precio.Replace(".", ",");
+		precio = precio.Trim() + "€";
+
+		if (Model.bundle.Pick == false)
+		{
+			descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String22") + " " + precio;
+		}
+		else
+		{
+			descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String23") + " " + precio;
+		}		
+	}
+
+	string imagen = string.Empty;
+
+	if (string.IsNullOrEmpty(Model.bundle.ImagenNoticia) == false)
+	{
+		if (Model.bundle.ImagenNoticia.Contains("https://") == true)
+		{
+			imagen = Model.bundle.ImagenNoticia;
+		}
+	}
 }
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma,
+	titulo = titulo,
+	enlace = enlace,
+	canonical = enlace,
+	descripcion = descripcion,
+	imagen = imagen
+}))
 
 @if (usuarioLogeado == true)
 {
 	@if (adminLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id }))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new { 
+			idioma = Model.idioma, 
+			bundleId = Model.bundle.Id 
+		}))
 	}
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, bundleId = Model.bundle.Id, modulo = false }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.Server, new { 
+	idioma = Model.idioma, 
+	bundleId = Model.bundle.Id, 
+	modulo = false 
+}))

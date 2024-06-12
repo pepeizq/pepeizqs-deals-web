@@ -9,7 +9,7 @@
 				Tipo = Bundles2.BundleTipo.IndieGala,
 				NombreTienda = "IndieGala",
 				ImagenTienda = "/imagenes/tiendas/indiegala_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/indiegala_icono.webp",
+				ImagenIcono = "/imagenes/tiendas/indiegala_icono.ico",
 				EnlaceBase = "indiegala.com",
 				Pick = false
 			};

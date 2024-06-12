@@ -645,7 +645,7 @@
   },
   {
     "Id": "Bundles.String17",
-    "Valor": "{0} bundles disponible para comprar"
+    "Valor": "{0} bundles disponibles para comprar"
   },
   {
     "Id": "Bundles.String18",
@@ -662,6 +662,14 @@
   {
     "Id": "Bundles.String21",
     "Valor": "juego"
+  },
+  {
+    "Id": "Bundles.String22",
+    "Valor": "Bundle dividido en varios tiers y disponible desde"
+  },
+  {
+    "Id": "Bundles.String23",
+    "Valor": "Bundle donde puedes elegir los juegos y disponible desde"
   },
   {
     "Id": "Free.Title",

@@ -2,8 +2,57 @@
 @model pepeizqs_deals_web.Pages.BundlesModel
 
 @{
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.Title");
+	#nullable disable
+
+	string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.Title");
+
+	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
+	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
+
+	if (bundles.Count > 0)
+	{
+		foreach (var bundle in bundles)
+		{
+			if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+			{
+				bundlesActuales.Add(bundle);
+			}
+		}
+
+		if (bundlesActuales.Count > 0)
+		{
+			if (bundlesActuales.Count == 1)
+			{
+				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String16"), bundlesActuales.Count.ToString());
+			}
+			else if (bundlesActuales.Count > 1)
+			{
+				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String17"), bundlesActuales.Count.ToString());
+			}
+		}
+		else if (bundlesActuales.Count == 0)
+		{
+			titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String18");
+		}
+	}
+
+	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	string enlace = "https://pepeizqdeals.com/bundles/";
+
+	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String19");
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma,
+	titulo = titulo,
+	enlace = enlace,
+	canonical = enlace,
+	descripcion = descripcion
+}))
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.Server, new { 
+	idioma = Model.idioma
+}))

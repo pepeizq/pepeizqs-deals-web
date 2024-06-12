@@ -19,8 +19,6 @@
 	}
 </script>
 
-<Seo idioma="@idioma" titulo="@titulo" enlace="https://pepeizqdeals.com/bundles/" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String19")" />
-
 @if (bundlesActuales.Count > 0)
 {
 	@if (mostrarBundleSeleccionado == false)
@@ -79,7 +77,7 @@
 								@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
 							</a>
 
-							<a href="/bundle/@bundleSeleccionado.Id" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
+							<a href="/bundle/@bundleSeleccionado.Id/@Herramientas.EnlaceAdaptador.Nombre(bundleSeleccionado.NombreBundle)/" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
 								<i class="fa-solid fa-link"></i>
 							</a>
 
@@ -213,11 +211,6 @@
 	[Parameter]
 	public string idioma { get; set; }
 
-	[Parameter]
-	public string dominio { get; set; }
-
-	private string titulo = string.Empty;
-
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 	private Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
@@ -309,19 +302,6 @@
 				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
 
 				bundleSeleccionado = bundlesActuales[0];
-
-				if (bundlesActuales.Count == 1)
-				{
-					titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String16"), bundlesActuales.Count.ToString());
-				}
-				else if (bundlesActuales.Count > 1)
-				{
-					titulo = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String17"), bundlesActuales.Count.ToString());
-				}
-			}
-			else if (bundlesActuales.Count == 0)
-			{
-				titulo = Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String18");
 			}
 		}
 	}
