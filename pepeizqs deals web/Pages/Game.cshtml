@@ -31,7 +31,7 @@
 		}
 	}
 
-	string enlace = "https://pepeizqdeals.com/" + Model.juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.juego.Nombre) + "/";
+	string enlace = "https://pepeizqdeals.com/game/" + Model.juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.juego.Nombre) + "/";
 
 	string descripcion = string.Empty;
 
@@ -74,7 +74,8 @@
 	}
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new { 
+@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new
+{
 	idioma = Model.idioma, 
 	juego = Model.juego 
 }))

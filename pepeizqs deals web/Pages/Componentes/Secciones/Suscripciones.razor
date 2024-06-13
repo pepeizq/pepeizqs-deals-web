@@ -224,9 +224,6 @@
     [Parameter]
     public string idioma { get; set; }
 
-    [Parameter]
-    public string dominio { get; set; }
-
     List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
 
     List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
@@ -312,11 +309,11 @@
 
                     if (juego2.Tipo == Juegos.JuegoTipo.Game)
                     {
-                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Library_600x900, "juegos", juego2.Id.ToString(), "library_600x900", dominio);
+                        juego.Imagen = juego2.Imagenes.Library_600x900;
                     }
                     else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
                     {
-                        juego.Imagen = await Herramientas.Imagenes.DescargarYGuardar(juego2.Imagenes.Capsule_231x87, "juegos", juego2.Id.ToString(), "capsule_231x87", dominio);
+                        juego.Imagen = juego2.Imagenes.Capsule_231x87;
                     }
 
                     juego.Juego = juego2;

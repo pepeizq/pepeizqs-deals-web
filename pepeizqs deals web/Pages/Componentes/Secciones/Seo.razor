@@ -6,7 +6,16 @@
 @if (string.IsNullOrEmpty(titulo) == false)
 {
     <Title>
-        @titulo • pepeizq's deals
+        @{
+            string tituloFinal = titulo;
+
+            @if (titulo.Contains("pepeizq's deals") == false)
+            {
+                tituloFinal = tituloFinal + " • pepeizq's deals";
+            }
+        }
+
+        @tituloFinal
     </Title>
 
     <Meta Property="og:title" Content="@titulo" />

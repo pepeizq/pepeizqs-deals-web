@@ -13,7 +13,9 @@
 @{
 	#nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.MirarTexto(Model.idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
+	string titulo = Herramientas.Idiomas.MirarTexto(Model.idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
+
+	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -30,14 +32,33 @@
 			adminLogeado = true;
 		}
 	}
+
+	string enlace = "https://pepeizqdeals.com/news/" + Model.noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/";
+
+	string imagen = Model.noticia.Imagen;
 }
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma,
+	titulo = titulo,
+	enlace = enlace,
+	canonical = enlace,
+	imagen = imagen
+}))
 
 @if (usuarioLogeado == true)
 {
 	@if (adminLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, noticiaId = Model.noticia.Id }))
+		@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new { 
+			idioma = Model.idioma, 
+			noticiaId = Model.noticia.Id 
+		}))
 	}
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, noticiaId = Model.noticia.Id }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.ServerPrerendered, new { 
+	idioma = Model.idioma, 
+	noticiaId = Model.noticia.Id 
+}))

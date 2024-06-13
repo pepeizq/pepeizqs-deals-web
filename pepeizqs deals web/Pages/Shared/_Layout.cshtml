@@ -13,12 +13,11 @@
     string discord = "https://discord.gg/GBT3FXnrm3";
     string telegram = "https://t.me/pepeizqdeals2";
     string reddit = "https://reddit.com/r/pepeizqdeals/";
-    string twitter = "https://twitter.com/pepeizqdeals";
+    string twitter = "https://x.com/pepeizqdeals";
     string steam = "https://steamcommunity.com/groups/pepeizqdeals/";
     string rss = Herramientas.Idiomas.CogerRSS(idioma);
 
     string titulo = string.Empty;
-    string descripcion = Herramientas.Idiomas.CogerCadena(idioma, "Index.Subtitle");
 
     if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
     {
@@ -50,8 +49,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="@descripcion"/>
-    <meta name="keywords" content="deals, games, free, offers, bundles" />
 
     <title>@titulo</title>
 
@@ -80,7 +77,16 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
             <div class="cabecera-poner cuerpo-ancho">
-                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { idioma = idioma, adminLogeado = adminLogeado, discord = discord, telegram = telegram, reddit = reddit, twitter = twitter, steam = steam, rss = rss }))
+                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { 
+                    idioma = idioma, 
+                    adminLogeado = adminLogeado, 
+                    discord = discord, 
+                    telegram = telegram, 
+                    reddit = reddit, 
+                    twitter = twitter, 
+                    steam = steam, 
+                    rss = rss 
+                }))
             </div>
         </nav>
     </header>
