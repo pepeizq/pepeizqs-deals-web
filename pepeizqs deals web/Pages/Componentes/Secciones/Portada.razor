@@ -263,95 +263,98 @@
 	}
 }
 
-<div style="margin-bottom: 60px; position: relative;">
-	@if (juegoSeleccionado != null)
-	{
-		string colorSeleccionado = "var(--fondoOscuro)";
-
-		if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+@if (juegosDestacadosMostrar.Count > 0)
+{
+	<div style="margin-bottom: 60px; position: relative;">
+		@if (juegoSeleccionado != null)
 		{
-			colorSeleccionado = "var(--fondoAlerta)";
-		}
+			string colorSeleccionado = "var(--fondoOscuro)";
 
-		<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
-			<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
-				<div class="destacado-mostrar">
-					@if (string.IsNullOrEmpty(CargarVideo(juegoSeleccionado)) == false)
-					{
-						<div class="destacado-fondo">
-							<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
-						</div>
+			if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+			{
+				colorSeleccionado = "var(--fondoAlerta)";
+			}
 
-						<div class="destacado-video">
-							<video src="@CargarVideo(juegoSeleccionado)" autoplay="autoplay" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
-						</div>
-					}
-					else
-					{
-						<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
-					}
+			<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
+				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
+					<div class="destacado-mostrar">
+						@if (string.IsNullOrEmpty(CargarVideo(juegoSeleccionado)) == false)
+						{
+							<div class="destacado-fondo">
+								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+							</div>
 
-					<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
+							<div class="destacado-video">
+								<video src="@CargarVideo(juegoSeleccionado)" autoplay="autoplay" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+							</div>
+						}
+						else
+						{
+							<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
+						}
+
+						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
 								display: flex; align-items: end;" class="destacado-hueco">
 
-						<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
-							<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-ancho" alt="@juegoSeleccionado.Nombre">
+							<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
+								<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-ancho" alt="@juegoSeleccionado.Nombre">
+							</div>
+
+							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
+								<img class="destacado-icono" src="@CargarDRM(juegoSeleccionado)" style="margin-right: 20px;" alt="DRM" />
+								<img class="destacado-icono" src="@CargarIconoTienda(juegoSeleccionado)" style="margin-right: 40px;" alt="Store" />
+
+								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+									@CargarDescuento(juegoSeleccionado)
+								</div>
+								<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
+									@CargarPrecio(juegoSeleccionado)
+								</div>
+							</div>
 						</div>
-
-						<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-							<img class="destacado-icono" src="@CargarDRM(juegoSeleccionado)" style="margin-right: 20px;" alt="DRM" />
-							<img class="destacado-icono" src="@CargarIconoTienda(juegoSeleccionado)" style="margin-right: 40px;" alt="Store" />
-
-							<div class="destacado-precio-descuento" style="background-color: darkgreen;">
-								@CargarDescuento(juegoSeleccionado)
-							</div>
-							<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
-								@CargarPrecio(juegoSeleccionado)
-							</div>
-						</div>						
 					</div>
 				</div>
-			</div>
-		</a>
-	}
-
-	<div class="destacados-galeria-fila">
-		@foreach (var destacado in juegosDestacadosMostrar)
-		{
-			bool mostrarBarra = false;
-			string opacidad = string.Empty;
-
-			if (juegoSeleccionado != null)
-			{
-				if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
-				{
-					opacidad = "opacity: 1;";
-					mostrarBarra = true;
-				}
-			}
-			
-			string fondoDestacado = "background-color: var(--fondoOscuro);";
-
-			if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
-			{
-				fondoDestacado = "background-color: var(--fondoAlerta);";
-			}
-
-			<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
-				<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
-
-				@if (mostrarBarra == true)
-				{
-					int porcentaje = (cronometroContador * 100) / cronometroLimite;
-
-					<div style="height: 3px; width: 100%; background-color: transparent;">
-						<div style="height: 3px; background-color: var(--fondoCodigo); width: @porcentaje%;" />
-					</div>
-				}
-			</div>
+			</a>
 		}
+
+		<div class="destacados-galeria-fila">
+			@foreach (var destacado in juegosDestacadosMostrar)
+			{
+				bool mostrarBarra = false;
+				string opacidad = string.Empty;
+
+				if (juegoSeleccionado != null)
+				{
+					if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
+					{
+						opacidad = "opacity: 1;";
+						mostrarBarra = true;
+					}
+				}
+
+				string fondoDestacado = "background-color: var(--fondoOscuro);";
+
+				if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+				{
+					fondoDestacado = "background-color: var(--fondoAlerta);";
+				}
+
+				<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
+					<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
+
+					@if (mostrarBarra == true)
+					{
+						int porcentaje = (cronometroContador * 100) / cronometroLimite;
+
+						<div style="height: 3px; width: 100%; background-color: transparent;">
+							<div style="height: 3px; background-color: var(--fondoCodigo); width: @porcentaje%;" />
+						</div>
+					}
+				</div>
+			}
+		</div>
 	</div>
-</div>
+}
 
 @if (noticiasMostrar.Count > 0)
 {

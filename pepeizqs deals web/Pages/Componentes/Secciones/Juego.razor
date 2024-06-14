@@ -1039,9 +1039,9 @@
 				{
 					if (precio.DRM == drm && precio.Descuento > 0)
 					{
-						bool fechaEncaja = Calculadora.CalcularAntiguedad(precio);
+						TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-						if (fechaEncaja == true)
+						if (actualizado.Days == 0)
 						{
 							JuegoPrecio nuevoPrecio = precio;
 
