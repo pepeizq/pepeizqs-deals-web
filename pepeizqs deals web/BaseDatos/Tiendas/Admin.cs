@@ -191,7 +191,7 @@ namespace BaseDatos.Tiendas
 					}
 					else if (tienda.Id == APIs.Humble.Tienda.Generar().Id)
 					{
-						if (ahora - tienda.Fecha > TimeSpan.FromHours(2))
+						if (ahora - tienda.Fecha > TimeSpan.FromMinutes(20))
 						{
                             tienda.MinimoHoras = false;
 

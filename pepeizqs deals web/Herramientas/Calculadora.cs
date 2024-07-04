@@ -126,7 +126,7 @@ namespace Herramientas
 					mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer" + modo.ToString() + ".String4"), diferenciaTiempo.Hours);
 				}
 			}
-			else if (diferenciaTiempo <= TimeSpan.FromDays(30))
+			else if (diferenciaTiempo < TimeSpan.FromDays(31))
 			{
 				if (diferenciaTiempo.Days == 1)
 				{

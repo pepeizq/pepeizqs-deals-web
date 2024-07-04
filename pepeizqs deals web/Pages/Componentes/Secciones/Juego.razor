@@ -1,4 +1,6 @@
-﻿@using Bundles2
+﻿@using Blazored.Video
+@using Blazored.Video.Support
+@using Bundles2
 @using Gratis2
 @using Herramientas
 @using Juegos
@@ -647,7 +649,9 @@
 							<div class="juego-galeria-contenedor">
 								@if (mediaMostrarPosicion == 99999)
 								{
-									<video src="@mediaMostrar" controls autoplay="autoplay" loop muted poster="@juego.Imagenes.Header_460x215" preload="none" style="width: 854px; height: 480px; object-fit: cover;" />
+									<BlazoredVideo style="width: 854px; height: 480px;" controls="controls" poster="@juego.Imagenes.Header_460x215" preload="none">
+										<source src="@mediaMostrar" type="video/mp4"  />
+									</BlazoredVideo>
 								}
 								else
 								{

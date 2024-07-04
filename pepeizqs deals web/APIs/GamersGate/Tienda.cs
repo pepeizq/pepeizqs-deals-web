@@ -31,7 +31,8 @@ namespace APIs.GamersGate
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?aff=6704538";
+			//return enlace + "?aff=6704538";
+			return "https://www.anrdoezrs.net/click-101212497-15785566?url=" + enlace;
 		}
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)

@@ -84,6 +84,9 @@ namespace Herramientas
 
 					if (fechaTemporal > DateTime.Now)
 					{
+						string titulo = noticia.TituloEn;
+						titulo = titulo.Replace("&", "&amp;");
+
 						string texto = "<url>" + Environment.NewLine +
 						"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/</loc>" + Environment.NewLine +
 						"<news:news>" + Environment.NewLine +
@@ -92,7 +95,7 @@ namespace Herramientas
 						"<news:language>en</news:language>" + Environment.NewLine +
 						"</news:publication>" + Environment.NewLine +
 						"<news:publication_date>" + noticia.FechaEmpieza.ToString("yyyy-MM-dd") + "</news:publication_date>" + Environment.NewLine +
-						"<news:title>" + noticia.TituloEn + "</news:title>" + Environment.NewLine +
+						"<news:title>" + titulo + "</news:title>" + Environment.NewLine +
 						"</news:news>" + Environment.NewLine +
 						"</url>";
 

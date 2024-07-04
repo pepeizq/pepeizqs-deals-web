@@ -12,11 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Componentes\Secciones\Portada.razor~RF46b099ac.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.Video" Version="1.0.1" />
     <PackageReference Include="MailKit" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.3" />

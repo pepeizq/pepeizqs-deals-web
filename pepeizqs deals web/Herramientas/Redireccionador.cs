@@ -280,6 +280,7 @@ namespace Herramientas
 			}			
 		}
 
+		[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)]
 		[HttpGet("news-rss")]
         public IActionResult CogerNoticiasRSS()
         {

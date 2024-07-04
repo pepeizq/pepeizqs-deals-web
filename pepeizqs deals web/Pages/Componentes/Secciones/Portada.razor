@@ -358,7 +358,7 @@
 
 @if (noticiasMostrar.Count > 0)
 {
-	<div style="display: flex; overflow: auto; padding-bottom: 20px; margin-left: 5px; margin-right: 5px; margin-bottom: 60px; gap: 30px; display: flex; overflow: auto; padding-bottom: 20px; margin-left: 5px; margin-right: 5px; margin-bottom: 60px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+	<div style="display: flex; overflow: auto; padding-bottom: 20px; margin-left: 5px; margin-right: 5px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 		@foreach (var noticia in noticiasMostrar)
 		{
 			string objetivo = "_self";
@@ -380,7 +380,7 @@
 
 			string marginExtra = string.Empty;
 
-			if (noticiasMostrar.Count == 1)
+			if (noticiasMostrar.Count == 1 || noticiasMostrar.Count == 2)
 			{
 				marginExtra = "margin-left: auto; margin-right: auto;";
 			}
@@ -391,9 +391,9 @@
 				</div>
 
 				<a style="text-decoration: none;" href="@enlace" target="@objetivo">
-					<div class="noticia-expandir" style="color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
-						<div style="display: flex; align-items: center; height: 10%;">
-							<div style="background-color: var(--fondoOscuro); padding: 8px 12px 5px 12px; margin-left: auto;">
+					<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
+						<div style="display: flex; align-items: center;">
+							<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
 								@if (noticia.Tipo == NoticiaTipo.Bundles)
 								{
 									@Herramientas.Idiomas.CogerCadena(idioma, "Index.News1")
@@ -413,11 +413,11 @@
 							</div>
 						</div>
 
-						<div style="background-color: var(--fondoOscuro); padding: 3px; height: 80%;">
-							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: cover;" alt="@noticia.TituloEn" />
+						<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
+							<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
 						</div>
 
-						<div style="background-color: var(--fondoOscuro); padding: 5px 12px 10px 12px; height: 10%; display: flex; align-items: center;">
+						<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
 							@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
 							{
 								<div>
@@ -433,12 +433,12 @@
 				</a>
 			</div>
 		}
+	</div>
 
-		<div style="margin: auto;">
-			<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px;" href="/last-news">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
-			</a>
-		</div>
+	<div style="margin-bottom: 60px; margin-top: 20px; margin-left: auto; margin-right: auto; width: 400px;">
+		<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
+		</a>
 	</div>
 }
 else
@@ -559,7 +559,7 @@ else
 				<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
 			}
 
-			<div style="padding: 12px;">
+			<div style="padding: 12px; max-width: 430px;">
 				<label style="padding-left: 5px; padding-right: 5px;">@tooltipNombre</label>
 				<div style="display: flex; align-items: center; margin-top: 5px; padding: 5px; text-align: left; justify-content: left;">
 					<div style="margin-right: 20px;">

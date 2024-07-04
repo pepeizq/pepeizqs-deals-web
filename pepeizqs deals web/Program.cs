@@ -98,6 +98,12 @@ builder.Services.AddHeadElementHelper();
 
 #endregion
 
+#region Cache
+
+builder.Services.AddResponseCaching();
+
+#endregion
+
 #region Decompilador
 
 builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
@@ -195,6 +201,12 @@ app.Use(async (context, next) =>
 #region Seo
 
 app.UseHeadElementServerPrerendering();
+
+#endregion
+
+#region Cache
+
+app.UseResponseCaching();
 
 #endregion
 

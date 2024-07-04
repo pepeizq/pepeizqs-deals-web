@@ -80,45 +80,55 @@ namespace APIs.Voidu
 												int int1 = enlace.IndexOf("?");
 												enlace = enlace.Remove(int1, enlace.Length - int1);
 											}
-										}
 
-										string imagen = "vacio";
+											bool enlaceCorrecto = true;
 
-										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
+                                            if (enlace.Contains("voidu.com/tr/") == true)
+                                            {
+												enlaceCorrecto = false;
+                                            }
 
-										JuegoPrecio oferta = new JuegoPrecio
-										{
-											Nombre = nombre,
-											Enlace = enlace,
-											Imagen = imagen,
-											Moneda = JuegoMoneda.Euro,
-											Precio = precioRebajado,
-											Descuento = descuento,
-											Tienda = Generar().Id,
-											DRM = drm,
-											FechaDetectado = DateTime.Now,
-											FechaActualizacion = DateTime.Now
-										};
+											if (enlaceCorrecto == true)
+											{
+                                                string imagen = "vacio";
 
-										try
-										{
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-										}
+                                                JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
-										juegos2 += 1;
+                                                JuegoPrecio oferta = new JuegoPrecio
+                                                {
+                                                    Nombre = nombre,
+                                                    Enlace = enlace,
+                                                    Imagen = imagen,
+                                                    Moneda = JuegoMoneda.Euro,
+                                                    Precio = precioRebajado,
+                                                    Descuento = descuento,
+                                                    Tienda = Generar().Id,
+                                                    DRM = drm,
+                                                    FechaDetectado = DateTime.Now,
+                                                    FechaActualizacion = DateTime.Now
+                                                };
 
-										try
-										{
-											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-										}
+                                                try
+                                                {
+                                                    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                                }
+
+                                                juegos2 += 1;
+
+                                                try
+                                                {
+                                                    BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                                }
+                                            }
+                                        }
 									}
 								}
 							}

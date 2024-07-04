@@ -61,6 +61,33 @@
 </style>
 
 <li class="nav-item" style="margin-right: 30px;">
+    @{
+        string nuevosCorreosMensaje = string.Empty;
+
+        if (nuevosCorreosDeals > 0)
+        {
+            if (nuevosCorreosDeals == 1)
+            {
+                nuevosCorreosMensaje = "1 Nuevo Correo";
+            }
+            else if (nuevosCorreosDeals > 1)
+            {
+                nuevosCorreosMensaje = nuevosCorreosDeals.ToString() + " Nuevos Correos";
+            }
+        }
+        else
+        {
+            if (nuevosCorreosApps > 0)
+            {
+                nuevosCorreosMensaje = "1 Nuevos Correo (Apps)";
+            }
+            else if (nuevosCorreosApps > 1)
+            {
+                nuevosCorreosMensaje = nuevosCorreosApps.ToString() + " Nuevos Correos (Apps)";
+            }
+        }
+    }
+
     <button class="admin-boton-hover" @onmouseenter="(e => MostrarAdmin(e))" @onclick="(e => MostrarAdmin(e))">Admin @nuevosCorreosMensaje</button>
 </li>
 
@@ -89,12 +116,16 @@
 
                     @if (nuevosCorreosDeals > 0)
                     {
-                        <button class="admin-lateral" @onclick="(e => MostrarCerrarCorreos(e))">Correos @nuevosCorreosMensaje2</button>                        
+                        string mensajeCorreosDeals = "(" + nuevosCorreosDeals.ToString() + ")";
+
+                        <button class="admin-lateral" @onclick="(e => MostrarCerrarEnlaces(e))">Correos Deals @mensajeCorreosDeals</button>
                     }
 
                     @if (nuevosCorreosApps > 0)
                     {
-                        <a class="admin-lateral" target="_blank" href="https://mail5017.site4now.net/interface/root">Nuevo Correo Apps</a>
+                        string mensajeCorreosApps = "(" + nuevosCorreosApps.ToString() + ")";
+
+                        <button class="admin-lateral" @onclick="(e => MostrarCerrarEnlaces(e))">Correos Apps @mensajeCorreosApps</button>
                     }
 
                     @if (nuevosPendientesCantidad > 0)
@@ -107,7 +138,7 @@
                         <button class="admin-lateral" @onclick="(e => MostrarCerrarSolicitudes(e))">Solicitudes @nuevasSolicitudesMensaje</button>                        
                     }
 
-                    <button class="admin-lateral" @onclick="(e => MostrarCerrarVisitas(e))">Visitas</button>
+                    <button class="admin-lateral" @onclick="(e => MostrarCerrarEnlaces(e))">Enlaces</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarTiendas(e))">Tiendas</button>
                     <button class="admin-lateral" @onclick="(e => MostrarCerrarDivisas(e))">Divisas</button>                
@@ -126,9 +157,9 @@
             </div>
 
             <div style="width: 85%; padding-left: 40px; padding-right: 20px;">
-                @if (mostrarVisitas == true)
+                @if (mostrarEnlaces == true)
                 {
-                    <Visitas/>
+                    <Enlaces correosDeals="nuevosCorreosDeals" correosApps="nuevosCorreosApps"/>
                 }
 
                 @if (mostrarErrores == true)
@@ -232,62 +263,6 @@
                                 </div>
                             }
                         </div>
-                    }
-                }
-
-                @if (mostrarCorreos == true)
-                {
-                    <div style="display: flex; align-items: center; padding-bottom: 15px;">
-                        @if (correos.Count > 1)
-                        {
-                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto; margin-right: 15px;" @onclick="@(e => CambiarPosicionCorreo(e, -1))">
-                                <i class="fa-solid fa-minus"></i>
-                            </button>
-                            <button class="boton-pequeño" style="padding: 10px 15px; width: auto;" @onclick="@(e => CambiarPosicionCorreo(e, 1))">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        }
-                    </div>
-
-                    @if (correos.Count > 0)
-                    {
-                        if (correos[posicionCorreosMostrar] != null)
-                        {
-                            <div class="perfil" style="padding: 10px; border: 1px solid var(--fondoBoton);">
-                                <div style="padding: 10px;">
-                                    <div>@correos[posicionCorreosMostrar].Correo.Date.ToString() - @correos[posicionCorreosMostrar].Correo.Subject</div>
-                                    <hr />
-
-                                    @if (string.IsNullOrEmpty(correos[posicionCorreosMostrar].Correo.HtmlBody) == false)
-                                    {
-                                        string correoString = correos[posicionCorreosMostrar].Correo.HtmlBody;
-                                        correoString = correoString.Replace("rgb(0,0,0)", "var(--colorTexto)");
-                                        correoString = correoString.Replace("rgb(0, 0, 0)", "var(--colorTexto)");
-                                        correoString = correoString.Replace("#000000", "var(--colorTexto)");
-                                        correoString = correoString.Replace("#26282a", "var(--colorTexto)");
-
-                                        MarkupString correoHtml = new MarkupString(correoString);
-
-                                        <div style="margin-top: 10px;">@correoHtml</div>
-                                    }
-
-                                </div>
-                            </div>
-
-                            <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                                <textarea @oninput="@(e => TextoRespuestaCorreo(e))" class="entrada-texto" style="height: 35px;" />
-
-                                <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-top: 20px;" @onclick="@(e => ResponderCorreo(e, correos[posicionCorreosMostrar].Correo, correos[posicionCorreosMostrar].Id))">
-                                    Responder
-                                </button>
-                            </div>
-
-                            <div style="margin-top: 40px; padding-left: 20px;">
-                                <button class="boton-pequeño" style="padding: 10px 15px; width: auto;" @onclick="@(e => BorrarCorreo(e, correos[posicionCorreosMostrar].Id))">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        }
                     }
                 }
 
@@ -1578,10 +1553,9 @@
     {
         titulo = null;
 
-        mostrarVisitas = false;
+        mostrarEnlaces = false;
         mostrarAvisos = false;
         mostrarSolicitudes = false;
-        mostrarCorreos = false;
         mostrarErrores = false;
         mostrarTiendas = false;
         mostrarDivisas = false;
@@ -1595,23 +1569,23 @@
         mostrarSorteos = false;
     }
 
-    #region Visitas
+    #region Enlaces
 
-    private bool mostrarVisitas = false;
+    private bool mostrarEnlaces = false;
 
-    private void MostrarCerrarVisitas(MouseEventArgs e)
+    private void MostrarCerrarEnlaces(MouseEventArgs e)
     {
         CerrarPestañas();
 
-        if (mostrarVisitas == true)
+        if (mostrarEnlaces == true)
         {
-            mostrarVisitas = false;
+            mostrarEnlaces = false;
         }
-        else if (mostrarVisitas == false)
+        else if (mostrarEnlaces == false)
         {
-            mostrarVisitas = true;
+            mostrarEnlaces = true;
 
-            titulo = "Visitas";
+            titulo = "Enlaces";
         }
     }
 
@@ -1853,147 +1827,14 @@
 
     #region Correos
 
-    private bool mostrarCorreos = false;
-
     private List<Herramientas.CorreoConId> correos = new List<Herramientas.CorreoConId>();
     private int nuevosCorreosDeals = 0;
     private int nuevosCorreosApps = 0;
-    private string nuevosCorreosMensaje = string.Empty;
-    private string nuevosCorreosMensaje2 = string.Empty;
-    private int posicionCorreosMostrar = 0;
-    private string textoRespuestaCorreos = string.Empty;
 
     private void ActualizarMensajeCorreos(int correosDeals, int correosApps)
     {
         nuevosCorreosDeals = correosDeals;
-
-        if (nuevosCorreosDeals > 0)
-        {
-            nuevosCorreosMensaje2 = "(" + nuevosCorreosDeals.ToString() + ")";
-
-            if (nuevosCorreosDeals == 1)
-            {
-                nuevosCorreosMensaje = "• 1 Nuevo Correo";
-            }
-            else if (nuevosCorreosDeals > 1)
-            {
-                nuevosCorreosMensaje = "• " + nuevosCorreosDeals.ToString() + " Nuevos Correos";
-            }
-        }
-
         nuevosCorreosApps = correosApps;
-    }
-
-    private void MostrarCerrarCorreos(MouseEventArgs e)
-    {
-        CerrarPestañas();
-
-        if (mostrarCorreos == true)
-        {
-            mostrarCorreos = false;
-        }
-        else if (mostrarCorreos == false)
-        {
-            mostrarCorreos = true;
-
-            titulo = "Correos";
-
-            correos = Herramientas.Correos.ComprobarNuevosCorreos(0);
-
-            ActualizarMensajeCorreos(correos.Count, Herramientas.Correos.ComprobarNuevosCorreos(1).Count);
-        }
-    }
-
-    private void CambiarPosicionCorreo(MouseEventArgs e, int nuevaPosicion)
-    {
-        posicionCorreosMostrar = posicionCorreosMostrar + nuevaPosicion;
-
-        if (posicionCorreosMostrar < 0)
-        {
-            posicionCorreosMostrar = correos.Count - 1;
-        }
-        else if (posicionCorreosMostrar == correos.Count - 1)
-        {
-            posicionCorreosMostrar = 0;
-        }
-    }
-
-    private void TextoRespuestaCorreo(ChangeEventArgs texto)
-    {
-        textoRespuestaCorreos = texto.Value.ToString();
-    }
-
-    private void ResponderCorreo(MouseEventArgs e, MimeMessage correo, UniqueId id)
-    {
-        MimeMessage respuesta = new MimeMessage();
-
-        if (correo.ReplyTo.Count > 0)
-        {
-            respuesta.To.AddRange(correo.ReplyTo);
-        }
-        if (correo.From.Count > 0)
-        {
-            respuesta.To.AddRange(correo.From);
-        }
-        else if (correo.Sender != null)
-        {
-            respuesta.To.Add(correo.Sender);
-        }
-
-        if (correo.Subject.StartsWith("Re:", StringComparison.OrdinalIgnoreCase) == false)
-        {
-            respuesta.Subject = "Re:" + correo.Subject;
-        }        
-        else
-        {
-            respuesta.Subject = correo.Subject;
-        }       
-
-        if (string.IsNullOrEmpty(correo.MessageId) == false)
-        {
-            respuesta.InReplyTo = correo.MessageId;
-
-            foreach (var id2 in correo.References)
-            {
-                respuesta.References.Add(id2);
-            }
-
-            respuesta.References.Add(correo.MessageId);
-        }
-
-        using (StringWriter cita = new StringWriter())
-        {
-            var destinatario = correo.Sender ?? correo.From.Mailboxes.FirstOrDefault();
-
-            cita.WriteLine("{0}, {1}:", correo.Date.ToString("f"), !string.IsNullOrEmpty(destinatario.Name) ? destinatario.Name : destinatario.Address);
-
-            using (var reader = new StringReader(correo.TextBody))
-            {
-                string linea;
-
-                while ((linea = reader.ReadLine()) != null)
-                {
-                    cita.Write("> ");
-                    cita.WriteLine(linea);
-                }
-            }
-
-            respuesta.Body = new TextPart("plain")
-            {
-                Text = cita.ToString() + Environment.NewLine + Environment.NewLine + textoRespuestaCorreos
-            };
-        }
-
-        Herramientas.Correos.EnviarCorreo(respuesta, correo, id);
-    }
-
-    private void BorrarCorreo(MouseEventArgs e, UniqueId id)
-    {
-        Herramientas.Correos.BorrarCorreo(id);
-
-        correos = Herramientas.Correos.ComprobarNuevosCorreos(0);
-
-        ActualizarMensajeCorreos(correos.Count, Herramientas.Correos.ComprobarNuevosCorreos(1).Count);
     }
 
     #endregion
