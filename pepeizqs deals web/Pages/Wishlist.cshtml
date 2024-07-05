@@ -6,4 +6,11 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
+<div id="cargando" style="width: 100%; display: flex; justify-content: center;">
+	<span class="cargando"></span>
+</div>
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new { 
+	idioma = Model.idioma,
+	cargando = "cargando"
+}))

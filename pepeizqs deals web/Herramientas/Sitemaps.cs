@@ -88,7 +88,7 @@ namespace Herramientas
 						titulo = titulo.Replace("&", "&amp;");
 
 						string texto = "<url>" + Environment.NewLine +
-						"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/</loc>" + Environment.NewLine +
+						"<loc>https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + EnlaceAdaptador.Nombre(noticia.TituloEn) + "/</loc>" + Environment.NewLine +
 						"<news:news>" + Environment.NewLine +
 						"<news:publication>" + Environment.NewLine +
 						"<news:name>pepeizq's deals</news:name>" + Environment.NewLine +
@@ -198,6 +198,53 @@ namespace Herramientas
 						 "</url>";
 
 					sb.Append(textoBundles);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-news.xml")]
+		public IActionResult SitemapNoticias()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			string textoIndex = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoIndex);
+
+			List<Noticia> noticias = new List<Noticia>();
+
+			SqlConnection conexion = BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				noticias = global::BaseDatos.Noticias.Buscar.Ultimas("20");
+			}
+
+			if (noticias.Count > 0)
+			{
+				foreach (var noticia in noticias)
+				{
+					string textoNoticias = "<url>" + Environment.NewLine +
+						 "<loc>https://pepeizqdeals.com/news/" + noticia.Id + "/" + EnlaceAdaptador.Nombre(noticia.TituloEn) + "/</loc>" + Environment.NewLine +
+						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
+						 "<priority>0.9</priority> " + Environment.NewLine +
+						 "</url>";
+
+					sb.Append(textoNoticias);
 				}
 			}
 

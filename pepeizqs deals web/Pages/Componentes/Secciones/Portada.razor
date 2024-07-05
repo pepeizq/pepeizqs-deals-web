@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient;
 @using Microsoft.Extensions.Caching.Distributed;
+@using Microsoft.JSInterop
 @using Microsoft.VisualBasic;
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -14,6 +15,7 @@
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IJSRuntime JavaScript
 
 <style>
 	.noticia-fuente {
@@ -649,6 +651,9 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public string cargando { get; set; }
+
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 
@@ -794,6 +799,8 @@ else
 
 			#endregion
 		}
+
+		await JavaScript.InvokeVoidAsync("ocultar", cargando);
 	}
 
 	protected override void OnAfterRender(bool primerRender)

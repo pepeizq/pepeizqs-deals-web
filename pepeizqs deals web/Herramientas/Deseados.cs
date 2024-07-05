@@ -9,14 +9,12 @@ namespace Herramientas
 {
 	public static class Deseados
 	{
-		public static void ActualizarJuegoConUsuarios(Juego juego, JuegoDRM drm, Usuario usuario, bool estado)
+		public static void ActualizarJuegoConUsuarios(int idJuego, List<JuegoUsuariosInteresados> usuariosInteresados, JuegoDRM drm, Usuario usuario, bool estado)
 		{
 			SqlConnection conexion = BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				List<JuegoUsuariosInteresados> usuariosInteresados = juego.UsuariosInteresados;
-
 				if (usuariosInteresados == null)
 				{
 					usuariosInteresados = new List<JuegoUsuariosInteresados>();
@@ -72,7 +70,7 @@ namespace Herramientas
 					usuariosInteresados.Add(nuevo);
 				}
 
-				global::BaseDatos.Juegos.Actualizar.UsuariosInteresados(juego, conexion, usuariosInteresados);
+				global::BaseDatos.Juegos.Actualizar.UsuariosInteresados(idJuego, conexion, usuariosInteresados);
 			}
 		}
 

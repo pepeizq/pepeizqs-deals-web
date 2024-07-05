@@ -957,7 +957,14 @@
 							{
 								if (actual.DRM == drm)
 								{
-									if (actual.Precio == historicosOrdenados[0].Precio)
+									decimal actualPrecio = actual.Precio;
+
+									if (actual.Moneda != JuegoMoneda.Euro)
+									{
+										actualPrecio = Divisas.Cambio(actual.Precio, actual.Moneda);
+									}
+
+									if (actualPrecio == historicosOrdenados[0].Precio)
 									{
 										incluirTiempo = false;
 									}
@@ -1221,7 +1228,7 @@
 			deseados = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
 		}
 
-		Herramientas.Deseados.ActualizarJuegoConUsuarios(juego, drm, usuario, estado);
+		Herramientas.Deseados.ActualizarJuegoConUsuarios(juego.Id, juego.UsuariosInteresados, drm, usuario, estado);
 
 		if (estado == true)
 		{

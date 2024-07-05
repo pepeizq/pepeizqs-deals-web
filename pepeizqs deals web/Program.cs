@@ -1,6 +1,4 @@
 using Herramientas;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
@@ -143,11 +141,11 @@ builder.Services.ConfigureApplicationCookie(opciones =>
     opciones.SlidingExpiration = true;
 });
 
-builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
-{
-    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
-    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-});
+//builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
+//{
+//    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+//    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+//});
 
 builder.Services.Configure<HubOptions>(options =>
 {
@@ -221,8 +219,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 //app.UseRateLimiter();
-
-//app.UseResponseCaching();
 
 //app.Use(async (context, next) =>
 //{

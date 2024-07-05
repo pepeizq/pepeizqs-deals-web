@@ -86,14 +86,14 @@ namespace BaseDatos.Juegos
 			}		
 		}
 
-		public static void UsuariosInteresados(Juego juego, SqlConnection conexion, List<JuegoUsuariosInteresados> usuariosInteresados)
+		public static void UsuariosInteresados(int idJuego, SqlConnection conexion, List<JuegoUsuariosInteresados> usuariosInteresados)
 		{
 			string sqlActualizar = "UPDATE juegos " +
 					"SET usuariosInteresados=@usuariosInteresados WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
-				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@id", idJuego);
 				comando.Parameters.AddWithValue("@usuariosInteresados", JsonConvert.SerializeObject(usuariosInteresados));
 
 				try
