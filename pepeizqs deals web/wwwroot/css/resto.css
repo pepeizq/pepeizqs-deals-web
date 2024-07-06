@@ -769,7 +769,7 @@ select {
 .cargando {
     width: 48px;
     height: 48px;
-    border: 5px solid var(--colorTexto);
+    border: 5px solid var(--fondoCodigo);
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;
