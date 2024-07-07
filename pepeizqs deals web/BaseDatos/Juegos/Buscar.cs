@@ -72,6 +72,60 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
+		public static List<Juego> MultiplesJuegosSteam(List<string> ids)
+		{
+			List<Juego> juegos = new List<Juego>();
+			string sqlBuscar = string.Empty;
+
+			if (ids != null)
+			{
+				if (ids.Count > 0)
+				{
+					int i = 0;
+					while (i < ids.Count)
+					{
+						if (i == 0)
+						{
+							sqlBuscar = "(SELECT * FROM juegos WHERE idSteam=" + ids[i] + ")";
+						}
+						else
+						{
+							sqlBuscar = sqlBuscar + Environment.NewLine + "UNION" + Environment.NewLine + "(SELECT * FROM juegos WHERE idSteam=" + ids[i] + ")";
+						}
+
+						i += 1;
+					}
+				}
+			}
+
+			if (string.IsNullOrEmpty(sqlBuscar) == false)
+			{
+				sqlBuscar = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + sqlBuscar;
+
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
+					{
+						comando.CommandTimeout = 0;
+
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							while (lector.Read())
+							{
+								Juego juego = new Juego();
+								juego = Cargar.Ejecutar(juego, lector);
+								juegos.Add(juego);
+							}
+						}
+					}
+				}					
+			}
+
+			return juegos;
+		}
+
 		public static List<Juego> Nombre(string nombre, int cantidad = 30)
         {
             List<Juego> juegos = new List<Juego>();
