@@ -19,7 +19,7 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
-@inject IJSRuntime JS
+@inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
 <script>
@@ -364,10 +364,8 @@
 									{
 										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 											<div class="perfil-flexible-centrado">
-												<div>
-													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store"/>
-													<span style="margin-left: 15px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
-												</div>
+												<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store" />
+												<span style="margin-left: 15px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
 												
 												<div class="juego-descuento-precio">
 													<div style="font-size: 14px; margin: 20px;">
@@ -864,7 +862,7 @@
 		{
 			if (juego != null)
 			{
-				await JS.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
 			}
 		}
 	}

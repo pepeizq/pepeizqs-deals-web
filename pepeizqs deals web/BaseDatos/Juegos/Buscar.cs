@@ -86,11 +86,11 @@ namespace BaseDatos.Juegos
 					{
 						if (i == 0)
 						{
-							sqlBuscar = "(SELECT * FROM juegos WHERE idSteam=" + ids[i] + ")";
+							sqlBuscar = "SELECT * FROM juegos WHERE idSteam=" + ids[i];
 						}
 						else
 						{
-							sqlBuscar = sqlBuscar + Environment.NewLine + "UNION" + Environment.NewLine + "(SELECT * FROM juegos WHERE idSteam=" + ids[i] + ")";
+							sqlBuscar = sqlBuscar + " OR idSteam=" + ids[i];
 						}
 
 						i += 1;

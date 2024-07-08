@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Componentes\Secciones\Deseados.razor~RF12f15e0c.TMP" />
     <None Remove="Pages\Componentes\Secciones\Portada.razor~RF46b099ac.TMP" />
   </ItemGroup>
 
@@ -104,6 +105,7 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Keys.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Manage\Notifications.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Bundles.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Deseados.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juego.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tareas.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\api.cshtml" />
@@ -165,6 +167,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Secciones\Seo.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Admin\Deseados.razor" />
   </ItemGroup>
 
 </Project>

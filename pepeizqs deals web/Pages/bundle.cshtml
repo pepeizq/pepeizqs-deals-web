@@ -27,7 +27,7 @@
 	{
 		usuario = await UserManager.GetUserAsync(User);
 
-		if (await UsuarioCoger.RolDios(UserManager, User) == true)
+		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
 		{
 			adminLogeado = true;
 		}
@@ -76,7 +76,7 @@
 
 @if (usuarioLogeado == true)
 {
-	@if (adminLogeado == true)
+	if (adminLogeado == true)
 	{
 		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new { 
 			idioma = Model.idioma, 
