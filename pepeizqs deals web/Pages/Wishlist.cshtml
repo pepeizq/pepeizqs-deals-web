@@ -35,7 +35,7 @@
 	<label id="cargandoMensaje" style="margin-left: 20px;"></label>	
 </div>
 
-@if (usuarioLogeado == true)
+@* @if (usuarioLogeado == true)
 {
 	if (adminLogeado == true)
 	{
@@ -44,7 +44,7 @@
 			idioma = Model.idioma
 		}))
 	}
-}
+} *@
 
 @(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new { 
 	idioma = Model.idioma,

@@ -457,9 +457,9 @@
 
                 if (drmAdecuado == true)
                 {
-                    bool fechaEncaja = Herramientas.Calculadora.CalcularAntiguedad(oferta);
+                    TimeSpan actualizado = DateTime.Now.Subtract(oferta.FechaActualizacion);
 
-                    if (fechaEncaja == true)
+                    if (actualizado.Days == 0)
                     {
                         decimal tempPrecio = oferta.Precio;
 

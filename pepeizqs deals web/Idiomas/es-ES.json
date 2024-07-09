@@ -1073,7 +1073,7 @@
   },
   {
     "Id": "Wishlist.String3",
-    "Valor": "Reseñas"
+    "Valor": "Reseñas (Porcentaje)"
   },
   {
     "Id": "Wishlist.String4",
@@ -1086,6 +1086,22 @@
   {
     "Id": "Wishlist.String6",
     "Valor": "Mínimo Histórico"
+  },
+  {
+    "Id": "Wishlist.String7",
+    "Valor": "Busca por nombre"
+  },
+  {
+    "Id": "Wishlist.String8",
+    "Valor": "juegos con ofertas"
+  },
+  {
+    "Id": "Wishlist.String9",
+    "Valor": "Reseñas (Cantidad)"
+  },
+  {
+    "Id": "Wishlist.String10",
+    "Valor": "Nombre"
   },
   {
     "Id": "LastAdded.Title",

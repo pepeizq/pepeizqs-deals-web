@@ -1077,7 +1077,7 @@
   },
   {
     "Id": "Wishlist.String3",
-    "Valor": "Reviews"
+    "Valor": "Reviews (Percentage)"
   },
   {
     "Id": "Wishlist.String4",
@@ -1090,6 +1090,22 @@
   {
     "Id": "Wishlist.String6",
     "Valor": "Historical Low"
+  },
+  {
+    "Id": "Wishlist.String7",
+    "Valor": "Search by name"
+  },
+  {
+    "Id": "Wishlist.String8",
+    "Valor": "games with deals"
+  },
+  {
+    "Id": "Wishlist.String9",
+    "Valor": "Reviews (Quantity)"
+  },
+  {
+    "Id": "Wishlist.String10",
+    "Valor": "Name"
   },
   {
     "Id": "LastAdded.Title",
