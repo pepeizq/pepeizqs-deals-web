@@ -1037,7 +1037,7 @@
   },
   {
     "Id": "HistoricalLow.String1",
-    "Valor": "Mínimos Históricos en Juegos y DLCs"
+    "Valor": "Mínimos Históricos"
   },
   {
     "Id": "HistoricalLow.String2",
@@ -1093,7 +1093,7 @@
   },
   {
     "Id": "Wishlist.String8",
-    "Valor": "juegos con ofertas"
+    "Valor": "ofertas"
   },
   {
     "Id": "Wishlist.String9",
@@ -1102,6 +1102,18 @@
   {
     "Id": "Wishlist.String10",
     "Valor": "Nombre"
+  },
+  {
+    "Id": "Wishlist.String11",
+    "Valor": "mínimos históricos"
+  },
+  {
+    "Id": "Wishlist.String12",
+    "Valor": "Opciones"
+  },
+  {
+    "Id": "Wishlist.String13",
+    "Valor": "Mostrar solo las ofertas con mínimos históricos"
   },
   {
     "Id": "LastAdded.Title",

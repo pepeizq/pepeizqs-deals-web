@@ -45,7 +45,7 @@ namespace Tareas
                     {
                         try
                         {
-                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(5);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(15);
 
                             if (Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
                             {
@@ -69,20 +69,20 @@ namespace Tareas
                                                     {
                                                         if (juego.PrecioMinimosHistoricos != null && juego.Analisis.Cantidad.Length > 2)
                                                         {
-                                                            for (int i = 0; i < juego.PrecioMinimosHistoricos.Count; i += 1)
+                                                            foreach (var historico in juego.PrecioMinimosHistoricos)
                                                             {
-                                                                TimeSpan actualizado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaActualizacion);
+                                                                TimeSpan actualizado = DateTime.Now.Subtract(historico.FechaActualizacion);
 
                                                                 if (actualizado.Days == 0)
                                                                 {
-																	TimeSpan detectado = DateTime.Now.Subtract(juego.PrecioMinimosHistoricos[i].FechaDetectado);
+																	TimeSpan detectado = DateTime.Now.Subtract(historico.FechaDetectado);
 
 																	if (actualizado.Days >= 0 && actualizado.Days <= 14)
 																	{
 																		Juego nuevoHistorico = juego;
-																		nuevoHistorico.PrecioMinimosHistoricos = [juego.PrecioMinimosHistoricos[i]];
+																		nuevoHistorico.PrecioMinimosHistoricos = new List<JuegoPrecio>() { historico };
 																		nuevoHistorico.IdMaestra = juego.Id;
-
+																	
 																		bool añadir = true;
 
 																		if (nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA && nuevoHistorico.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft)
@@ -331,10 +331,10 @@ namespace Tareas
                                                 {
                                                     BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
 
-                                                    foreach (var minimo in juegosConMinimos)
-                                                    {
+													foreach (var minimo in juegosConMinimos)
+													{
 														Insertar.Ejecutar(minimo, conexion, "seccionMinimos");
-													}                                                  
+													}
 												}
 
                                                 #endregion

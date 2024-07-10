@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BaseDatos.Juegos
 {

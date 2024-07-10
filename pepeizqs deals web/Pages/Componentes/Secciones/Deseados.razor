@@ -13,6 +13,21 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 
+<style>
+	.opciones-panel {
+		height: calc(100% - var(--alturaCabecera));
+		width: 100%;
+		left: 0;
+		top: 0;
+		overflow-x: auto;
+		position: fixed;
+		z-index: 1001;
+		margin-top: var(--alturaCabecera);
+		padding: 10px;
+		backdrop-filter: blur(20px);
+	}
+</style>
+
 @if (usuario != null)
 {
     if (deseadosMostrar.Count > 0)
@@ -26,13 +41,17 @@
 
 					<div style="display: flex; align-items: center; justify-content: right; width: 100%;">
 						<div style="font-size: 14px;">
-							@deseadosMostrar.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String8")
+							@deseadosMostrar.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String8") • @cantidadMinimos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String11")
 						</div>
 					</div>
 				</div>
 
 				<div style="display: flex; align-items: center; width: 100%; margin: 15px 0px;">
 					<input type="text" @bind-value="@textoBuscador" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String7")" />
+
+					<button class="boton-pequeño" @onclick="EnseñarOpciones" style="width: auto; padding: 10px 15px; margin-right: 30px; border: 0px; color: var(--colorTextoVisitado);">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String12")
+					</button>
 
 					<div class="menu-dropdown" style="width: auto;">
 						<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
@@ -73,98 +92,149 @@
 
 			<hr />
 
-			<Virtualize Context="juego" Items="deseadosMostrar">
+			<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="87" OverscanCount="6">
 				<ItemContent>
 					@{
-						bool mostrar = false;
+						bool mostrarBuscador = false;
 
 						if (string.IsNullOrEmpty(textoBuscador) == false)
 						{
 							if (Herramientas.Buscador.LimpiarNombre(juego.Nombre).Contains(Herramientas.Buscador.LimpiarNombre(textoBuscador)))
 							{
-								mostrar = true;
+								mostrarBuscador = true;
 							}
 							else
 							{
-								mostrar = false;
+								mostrarBuscador = false;
 							}
 						}
 						else
 						{
-							mostrar = true;
+							mostrarBuscador = true;
 						}
 
-						if (mostrar == true)
+						if (mostrarBuscador == true)
 						{
-							<div style="margin: 20px 0px;">
-								<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
-									<div style="display: flex; align-items: center;">
-										<div style="min-width: 223px;">
-											<img src="@juego.Imagen" style="height: 100%; width: 100%;" />
-										</div>
+							bool mostrarSoloMinimos = false;
 
-										<div style="width: 100%; padding: 5px 20px;">
-											<div>@juego.Nombre</div>
+							if (usuario.WishlistOption1 == true)
+							{
+								if (juego.Historico == true)
+								{
+									mostrarSoloMinimos = true;
+								}
+								else
+								{
+									mostrarSoloMinimos = false;
+								}
+							}
+							else
+							{
+								mostrarSoloMinimos = true;
+							}
 
-											<div style="display: flex; align-items: center; margin-top: 5px;">
-												<div style="width: 20px; height: 20px;">
-													<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 100%; height: 100%;" />
-												</div>
+							if (mostrarSoloMinimos == true)
+							{
+								<div style="margin: 20px 0px;">
+									<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
+										<div style="display: flex; align-items: center;">
+											<div style="min-width: 223px;">
+												<img src="@juego.Imagen" style="height: 100%; width: 100%;" />
+											</div>
 
-												@{
-													if (juego.Precio.Precio > 0)
-													{
-														List<Tiendas2.Tienda> tiendas = TiendasCargar.GenerarListado();
+											<div style="width: 100%; padding: 5px 20px;">
+												<div>@juego.Nombre</div>
 
-														foreach (var tienda in tiendas)
+												<div style="display: flex; align-items: center; margin-top: 5px;">
+													<div style="width: 20px; height: 20px;">
+														<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 100%; height: 100%;" />
+													</div>
+
+													@{
+														if (juego.Precio.Precio > 0)
 														{
-															if (tienda.Id == juego.Precio.Tienda)
-															{
-																<div style="width: 20px; height: 20px; margin-left: 10px;">
-																	<img src="@tienda.ImagenIcono" style="width: 100%; height: 100%;" />
-																</div>
+															List<Tiendas2.Tienda> tiendas = TiendasCargar.GenerarListado();
 
-																break;
+															foreach (var tienda in tiendas)
+															{
+																if (tienda.Id == juego.Precio.Tienda)
+																{
+																	<div style="width: 20px; height: 20px; margin-left: 10px;">
+																		<img src="@tienda.ImagenIcono" style="width: 100%; height: 100%;" />
+																	</div>
+
+																	break;
+																}
 															}
 														}
 													}
+												</div>
+											</div>
+
+											<div>
+												<div style="display: flex; align-items: center;">
+													<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
+														@juego.Precio.Descuento.ToString()%
+													</div>
+
+													<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
+														@MensajeMinimo(juego.Precio, false)
+													</div>
+												</div>
+
+												@if (juego.Historico == true)
+												{
+													<div style="text-align: center; font-size: 14px; padding: 5px 15px; background-color: var(--fondoAlerta); margin-right: 3px;">
+														@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String6")
+													</div>
+												}
+												else
+												{
+													<div style="text-align: center; font-size: 14px; padding: 5px; background-color: var(--fondoOscuro); margin-right: 3px;">
+														@juego.HistoricoPrecio
+													</div>
 												}
 											</div>
 										</div>
-
-										<div>
-											<div style="display: flex; align-items: center;">
-												<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
-													@juego.Precio.Descuento.ToString()%
-												</div>
-
-												<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
-													@MensajeMinimo(juego.Precio, true)
-												</div>
-											</div>
-
-											@if (juego.Historico == true)
-											{
-												<div style="text-align: center; font-size: 14px; padding: 5px 15px; background-color: var(--fondoAlerta); margin-right: 3px;">
-													@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String6")
-												</div>
-											}
-											else
-											{
-												<div style="text-align: center; font-size: 14px; padding: 5px; background-color: var(--fondoOscuro); margin-right: 3px;">
-													@juego.HistoricoPrecio
-												</div>
-											}
-										</div>
-									</div>
-								</a>
-							</div>
+									</a>
+								</div>
+							}							
 						}
 					}
 				</ItemContent>
 			</Virtualize>		
 		</div>
-    }  
+	}  
+
+	if (mostrarOpciones == true)
+	{
+		<div class="opciones-panel">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto;">
+				<div style="display: flex; align-items: center;">
+					<button class="boton-pequeño" @onclick="OcultarOpciones" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
+						<i class="fa-solid fa-caret-left"></i>
+					</button>
+
+					<div style="font-size: 20px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String12")
+					</div>
+				</div>
+
+				<hr/>
+
+				<div style="display: flex; align-items: center; margin-top: 30px;">
+					<div class="checkbox-caja">
+						<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarSoloMinimos" @onchange="EnseñarSoloMinimos">
+					</div>
+
+					<div style="margin-left: 20px; padding-bottom: 5px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String13")
+					</div>
+				</div>
+
+			</div>
+		</div>
+	}
 }
 
 @code {
@@ -181,9 +251,12 @@
 	private List<string> deseadosSteam = new List<string>();
 	private List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
 
+	private int cantidadMinimos = 0;
 	private string ordenamientoElegido = string.Empty;
 
 	private string textoBuscador { get; set; }
+
+	private bool mostrarOpciones = false;
 
 	private Usuario usuario = new Usuario();
 
@@ -223,6 +296,19 @@
 
 					await UserManager.UpdateAsync(usuario);
 				}				
+			}
+
+			#endregion
+
+			#region Opciones
+
+			if (usuario.WishlistOption1 == true)
+			{
+				estadoEnseñarSoloMinimos = "checked";
+			}			
+			else
+			{
+				estadoEnseñarSoloMinimos = null;
 			}
 
 			#endregion
@@ -291,7 +377,34 @@
 			{
 				if (deseadosMostrar.Count > 0)
 				{
-					OrdenarPrecio();
+					if (usuario != null)
+					{
+						if (usuario.WishlistSort == null)
+						{
+							usuario.WishlistSort = 3;
+						}
+
+						if (usuario.WishlistSort == 0)
+						{
+							OrdenarReseñasPorcentaje();
+						}
+						else if (usuario.WishlistSort == 1)
+						{
+							OrdenarReseñasCantidad();
+						}
+						else if (usuario.WishlistSort == 2)
+						{
+							OrdenarNombre();
+						}
+						else if (usuario.WishlistSort == 3)
+						{
+							OrdenarPrecio();
+						}
+						else if (usuario.WishlistSort == 4)
+						{
+							OrdenarDescuento();
+						}
+					}				
 				}
 			}
 		}   
@@ -336,7 +449,8 @@
 								nuevoDeseado.ReseñasCantidad = "0";
 							}
 
-							deseadosMostrar.Add(nuevoDeseado);							
+							deseadosMostrar.Add(nuevoDeseado);
+							cantidadMinimos = cantidadMinimos + 1;
 							añadido = true;
 						}
 
@@ -374,6 +488,7 @@
 								{
 									precioReferencia = tempPrecio;
 									precioFinal = actual;
+									precioFinal.Precio = precioReferencia;
 									break;
 								}
 							}
@@ -455,7 +570,7 @@
 
 	#region Ordenar
 
-	private void OrdenarReseñasPorcentaje()
+	private async void OrdenarReseñasPorcentaje()
 	{
 		if (deseadosMostrar != null)
 		{
@@ -465,10 +580,16 @@
 			{
 				deseadosMostrar = deseadosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
 			}
+
+			if (usuario != null)
+			{
+				usuario.WishlistSort = 0;
+				await UserManager.UpdateAsync(usuario);
+			}
 		}
 	}
 
-	private void OrdenarReseñasCantidad()
+	private async void OrdenarReseñasCantidad()
 	{
 		if (deseadosMostrar != null)
 		{
@@ -478,10 +599,16 @@
 			{
 				deseadosMostrar = deseadosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
 			}
+
+			if (usuario != null)
+			{
+				usuario.WishlistSort = 1;
+				await UserManager.UpdateAsync(usuario);
+			}
 		}
 	}
 
-	private void OrdenarNombre()
+	private async void OrdenarNombre()
 	{
 		if (deseadosMostrar != null)
 		{
@@ -491,10 +618,16 @@
 			{
 				deseadosMostrar = deseadosMostrar.AsParallel().OrderBy(x => x.Nombre).ToList();
 			}
+
+			if (usuario != null)
+			{
+				usuario.WishlistSort = 2;
+				await UserManager.UpdateAsync(usuario);
+			}
 		}
 	}
 
-	private void OrdenarPrecio()
+	private async void OrdenarPrecio()
 	{
 		if (deseadosMostrar != null)
 		{
@@ -504,10 +637,16 @@
 			{
 				deseadosMostrar = deseadosMostrar.AsParallel().OrderBy(x => x.Precio.Precio).ThenBy(x => x.Nombre).ToList();
 			}
+
+			if (usuario != null)
+			{
+				usuario.WishlistSort = 3;
+				await UserManager.UpdateAsync(usuario);
+			}
 		}
 	}
 
-	private void OrdenarDescuento()
+	private async void OrdenarDescuento()
 	{
 		if (deseadosMostrar != null)
 		{
@@ -517,6 +656,47 @@
 			{
 				deseadosMostrar = deseadosMostrar.AsParallel().OrderByDescending(x => x.Precio.Descuento).ThenBy(x => x.Nombre).ToList();
 			}
+
+			if (usuario != null)
+			{
+				usuario.WishlistSort = 4;
+				await UserManager.UpdateAsync(usuario);
+			}
+		}
+	}
+
+	#endregion
+
+	#region Opciones
+
+	private void EnseñarOpciones()
+	{
+		mostrarOpciones = true;
+	}
+
+	private void OcultarOpciones()
+	{
+		mostrarOpciones = false;
+	}
+
+	private string estadoEnseñarSoloMinimos = string.Empty;
+
+	private async void EnseñarSoloMinimos()
+	{
+		if (usuario != null)
+		{
+			if (usuario.WishlistOption1 == true)
+			{
+				usuario.WishlistOption1 = false;
+				estadoEnseñarSoloMinimos = null;
+			}
+			else
+			{
+				usuario.WishlistOption1 = true;
+				estadoEnseñarSoloMinimos = "checked";
+			}
+
+			await UserManager.UpdateAsync(usuario);
 		}
 	}
 

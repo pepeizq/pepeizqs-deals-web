@@ -1041,7 +1041,7 @@
   },
   {
     "Id": "HistoricalLow.String1",
-    "Valor": "Historical Lows in Games and DLCs"
+    "Valor": "Historical Lows"
   },
   {
     "Id": "HistoricalLow.String2",
@@ -1097,7 +1097,7 @@
   },
   {
     "Id": "Wishlist.String8",
-    "Valor": "games with deals"
+    "Valor": "deals"
   },
   {
     "Id": "Wishlist.String9",
@@ -1106,6 +1106,18 @@
   {
     "Id": "Wishlist.String10",
     "Valor": "Name"
+  },
+  {
+    "Id": "Wishlist.String11",
+    "Valor": "historical lows"
+  },
+  {
+    "Id": "Wishlist.String12",
+    "Valor": "Options"
+  },
+  {
+    "Id": "Wishlist.String13",
+    "Valor": "Show only deals with historical lows"
   },
   {
     "Id": "LastAdded.Title",

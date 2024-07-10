@@ -64,5 +64,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(100)")]
 	public string? SteamId { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "int(4)")]
+	public int? WishlistSort { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? WishlistOption1 { get; set; }
 }
 

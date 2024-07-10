@@ -2,9 +2,11 @@
 @using BaseDatos.Juegos;
 @using Juegos;
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.Data.SqlClient;
 @using Microsoft.JSInterop
+@using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
@@ -13,182 +15,162 @@
 
 @if (juegosMostrar.Count > 0)
 {
-	<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
-		<div style="display: flex; align-items: center; width: 100%;">
-			<div style="width: 70%; font-size: 23px; text-align: left;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String1")
-			</div>
+	<div style="max-width: 1000px; margin: auto;">
+		<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
+			<div style="display: flex; align-items: center; width: 100%;">
+				<div style="width: 70%; font-size: 23px; text-align: left;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String1")
+				</div>
 
-			<div style="display: flex; align-items: center; width: 30%; justify-content: right;">
-				<div class="menu-dropdown" style="margin-right: 30px;">
-					<button class="boton-pequeño" style="padding: 9px 12px; margin: 0; border: 0px; color: var(--colorTextoVisitado);"><i class="fa-solid fa-sort" style="margin-right: 10px; font-size: 19px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String2")</button>
-					<div class="menu-dropdown-contenido" style="right: 0;">
-						<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarUltimosAñadidos">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String3")</button>
-						<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarReseñas">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String4")</button>
-						<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarPrecio">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String5")</button>
-						<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarDescuento">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String6")</button>
+				<div style="display: flex; align-items: center; width: 30%; justify-content: right;">
+					<div class="menu-dropdown" style="margin-right: 30px;">
+						<button class="boton-pequeño" style="padding: 9px 12px; margin: 0; border: 0px; color: var(--colorTextoVisitado);"><i class="fa-solid fa-sort" style="margin-right: 10px; font-size: 19px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String2")</button>
+						<div class="menu-dropdown-contenido" style="right: 0;">
+							<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarUltimosAñadidos">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String3")</button>
+							<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarReseñas">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String4")</button>
+							<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarPrecio">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String5")</button>
+							<button class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;" @onclick="OrdenarDescuento">@Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLow.String6")</button>
+						</div>
+					</div>
+
+					<div style="font-size: 16px; text-align: right;">
+						@juegosMostrar.Count.ToString()
 					</div>
 				</div>
-
-				<div style="font-size: 16px; text-align: right;">
-					@minimo.ToString()/@juegosConMinimos.Count.ToString()
-				</div>
-				
-				@if (minimo >= 50)
-				{
-					<a @onclick="ClickearAtras" class="boton-pequeño" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px; cursor: pointer;">
-						<i class="fa-solid fa-chevron-left"></i>
-					</a>
-				}
-
-				<a @onclick="ClickearAdelante" class="boton-pequeño" style="width: 50px; font-size: 20px; text-align: center; margin-left: 20px; cursor: pointer;">
-					<i class="fa-solid fa-chevron-right"></i>
-				</a>
 			</div>
 		</div>
-	</div>
 
-	<hr />
+		<hr />
 
-	<div>
-		@foreach (var juego in juegosMostrar)
-		{
-			<div style="margin-top: 25px; margin-bottom: 25px;">
-				@{
-					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
-					bool usuarioTieneDeseado = false;
+		<div>
+			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107" OverscanCount="6">
+				<ItemContent>
+					<div style="margin-top: 25px; margin-bottom: 25px;">
+						@{
+							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
+							bool usuarioTieneDeseado = false;
 
-					string fondoColor = string.Empty;
-					string fondoDescuento = "background-color: darkgreen;";
+							string fondoColor = string.Empty;
 
-					if (usuarioTieneJuego == true)
-					{
-						fondoColor = "background-color: var(--fondoBien);";
-						fondoDescuento = "backdrop-filter: brightness(70%);";
-					}
-					else
-					{
-						usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
-
-						if (usuarioTieneDeseado == true)
-						{
-							fondoColor = "background-color: var(--fondoAlerta);";
-							fondoDescuento = "backdrop-filter: brightness(70%);";
-						}
-					}
-
-					bool usuarioConectado = false;
-
-					if (usuario != null)
-					{
-						usuarioConectado = true;
-					}
-
-					Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
-
-					<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.IdMaestra.ToString()')">
-						<div id="tooltip-@juego.IdMaestra.ToString()" class="tooltip-relleno">
-							@if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
+							if (usuarioTieneJuego == true)
 							{
-								<video src="@tooltipDatos.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+								fondoColor = "background-color: var(--fondoBien);";
+							}
+							else
+							{
+								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+
+								if (usuarioTieneDeseado == true)
+								{
+									fondoColor = "background-color: var(--fondoAlerta);";
+								}
 							}
 
-							<div style="padding: 15px; text-align: center;">
-								<div style="text-align: center;">
-									@tooltipDatos.Nombre
-								</div>
+							bool usuarioConectado = false;
 
-								@if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
-								{
-									<div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
-										<img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
-										<label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
-									</div>
-								}
+							if (usuario != null)
+							{
+								usuarioConectado = true;
+							}
 
-								@if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
-								{
-									<div style="text-align: center;">
-										@tooltipDatos.UsuarioMensaje
-									</div>
-								}
-							</div>
-						</div>
+							Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
 
-						<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@CargarEnlace(juego)" target="_blank">
-							<div class="perfil-flexible-centrado">
-								<div>
-									<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-								</div>
+							<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.IdMaestra.ToString()')">
+								<div id="tooltip-@juego.IdMaestra.ToString()" class="tooltip-relleno">
+									@if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
+									{
+										<video src="@tooltipDatos.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+									}
 
-								<div style="padding: 5px 20px; text-align: left; width: 65%;">
-									<div>@juego.Nombre</div>
+									<div style="padding: 15px; text-align: center;">
+										<div style="text-align: center;">
+											@tooltipDatos.Nombre
+										</div>
 
-									<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
-										<img src="@CargarImagenDRM(juego)" style="width: 20px; height: 20px;" />
-
-										@if (juego.Analisis != null)
+										@if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
 										{
-											if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
-											{
-												if (int.Parse(@juego.Analisis.Porcentaje) > 74)
-												{
-													<img src="/imagenes/analisis/positive.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
-												}
-
-												if (int.Parse(@juego.Analisis.Porcentaje) > 49 && int.Parse(@juego.Analisis.Porcentaje) < 75)
-												{
-													<img src="/imagenes/analisis/mixed.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
-												}
-
-												if (int.Parse(@juego.Analisis.Porcentaje) < 50)
-												{
-													<img src="/imagenes/analisis/negative.webp" style="width: 20px; height: 20px; margin-left: 10px;" />
-												}
-											}
+											<div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
+												<img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
+												<label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
+											</div>
 										}
 
-										@if (BaseDatos.Usuarios.Buscar.RolDios(UserManager.GetUserName(HttpContextAccessor.HttpContext!.User)) == true)
+										@if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
 										{
-											<div style="margin-left: 20px; font-size: 13px;">@juego.PrecioMinimosHistoricos[0].FechaActualizacion</div>
-
-											<div style="margin-left: 20px; font-size: 13px;">@juego.PrecioMinimosHistoricos[0].FechaDetectado</div>
-
-											<div style="margin-left: 20px; font-size: 13px;">@juego.IdMaestra</div>
-
-											<div style="margin-left: 20px; font-size: 13px;">@juego.IdSteam</div>
-
-											@if (juego.Analisis != null)
-											{
-												if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
-												{
-													<div style="margin-left: 20px; font-size: 13px;">@int.Parse(juego.Analisis.Cantidad.Replace(",", null))</div>
-												}
-											}
+											<div style="text-align: center;">
+												@tooltipDatos.UsuarioMensaje
+											</div>
 										}
 									</div>
 								</div>
 
-								<div style="width: 35%; display: flex; align-items: center; justify-content: right; text-align: right; padding-right: 20px;">
-									<div style="margin-right: 40px; width: 35%;">
-										<img src="@CargarImagenTienda(juego)" style="width: 100%;" />
-									</div>
+								<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@CargarEnlace(juego)" target="_blank">
+									<div class="perfil-flexible-centrado">
+										<div style="max-width: 230px;">
+											<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+										</div>
 
-									<div style="padding: 10px 15px; margin-right: 10px; font-size: 18px; @fondoDescuento">
-										@CargarDescuento(juego)
-									</div>
+										<div style="padding: 5px 20px; text-align: left; width: 100%;">
+											<div>@juego.Nombre</div>
 
-									<div style="width: 100px; padding: 20px; font-size: 18px;">
-										@CargarPrecio(juego)
+											<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
+												<div style="width: 20px; height: 20px;">
+													<img src="@CargarImagenDRM(juego)" style="width: 100%; height: 100%;" />
+												</div>
+
+												<div style="width: 20px; height: 20px; margin-left: 10px;">
+													<img src="@CargarImagenTienda(juego)" style="width: 100%; height: 100%;" />
+												</div>
+
+												@if (juego.Analisis != null)
+												{
+													if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+													{
+														if (int.Parse(@juego.Analisis.Porcentaje) > 74)
+														{
+															<div style="width: 20px; height: 20px; margin-left: 10px;">
+																<img src="/imagenes/analisis/positive.webp" style="width: 100%; height: 100%;" />
+															</div>
+														}
+
+														if (int.Parse(@juego.Analisis.Porcentaje) > 49 && int.Parse(@juego.Analisis.Porcentaje) < 75)
+														{
+															<div style="width: 20px; height: 20px; margin-left: 10px;">
+																<img src="/imagenes/analisis/mixed.webp" style="width: 100%; height: 100%;" />
+															</div>
+														}
+
+														if (int.Parse(@juego.Analisis.Porcentaje) < 50)
+														{
+															<div style="width: 20px; height: 20px; margin-left: 10px;">
+																<img src="/imagenes/analisis/negative.webp" style="width: 100%; height: 100%;" />
+															</div>
+														}
+													}
+												}
+
+												@juego.PrecioMinimosHistoricos.Count.ToString()
+											</div>
+										</div>
+
+										<div style="display: flex; align-items: center;">
+											<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
+												@CargarDescuento(juego)
+											</div>
+
+											<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
+												@CargarPrecio(juego)
+											</div>
+										</div>
 									</div>
-								</div>
+								</a>
 							</div>
-						</a>
+						}
 					</div>
-				}
-			</div>
-		}
-	</div>
+				</ItemContent>
+			</Virtualize>
+		</div>
+	</div>	
 }
 
 @code {
@@ -199,9 +181,8 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public string modo { get; set; }
+	public string cargando { get; set; }
 
-	private List<global::Juegos.Juego> juegosConMinimos = new List<global::Juegos.Juego>();
 	private List<global::Juegos.Juego> juegosMostrar = new List<global::Juegos.Juego>();
 
 	private Usuario usuario = new Usuario();
@@ -256,51 +237,58 @@
 
 		using (conexion)
 		{
-			juegosConMinimos = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
+			juegosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
 		}
 
-		if (juegosConMinimos.Count > 0)
+		if (juegosMostrar.Count > 0)
 		{
-			if (modo == "last")
-			{
-				OrdenarUltimosAñadidos();
-			}
-			else
-			{
-				OrdenarReseñas();
-			}
-		}		
+			OrdenarReseñasCantidad();
+		}
 
-		CargarJuegos(minimo, maximo);
+		await JavaScript.InvokeVoidAsync("ocultar", cargando);
+
+		// if (juegosConMinimos.Count > 0)
+		// {
+		// 	if (modo == "last")
+		// 	{
+		// 		OrdenarUltimosAñadidos();
+		// 	}
+		// 	else
+		// 	{
+		// 		OrdenarReseñas();
+		// 	}
+		// }		
+
+		// CargarJuegos(minimo, maximo);
 	}
 
 	private void CargarJuegos(int minimo2, int maximo2)
 	{
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosMostrar = new List<Juegos.Juego>();
+		// if (juegosConMinimos != null)
+		// {
+		// 	if (juegosConMinimos.Count > 0)
+		// 	{
+		// 		juegosMostrar = new List<Juegos.Juego>();
 
-				for (int i = minimo2; i < maximo2; i += 1)
-				{
-					juegosMostrar.Add(juegosConMinimos[i]);
-				}
-			}
-		}
+		// 		for (int i = minimo2; i < maximo2; i += 1)
+		// 		{
+		// 			juegosMostrar.Add(juegosConMinimos[i]);
+		// 		}
+		// 	}
+		// }
 	}
 
 	private async void ClickearAdelante()
 	{
-		if (minimo + 50 <= juegosConMinimos.Count && maximo + 50 <= juegosConMinimos.Count)
-		{
-			minimo = minimo + 50;
-			maximo = maximo + 50;
-		}
+		// if (minimo + 50 <= juegosConMinimos.Count && maximo + 50 <= juegosConMinimos.Count)
+		// {
+		// 	minimo = minimo + 50;
+		// 	maximo = maximo + 50;
+		// }
 
-		CargarJuegos(minimo, maximo);
+		// CargarJuegos(minimo, maximo);
 
-		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
+		// await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 
 	private async void ClickearAtras()
@@ -340,7 +328,7 @@
 			{
 				if (tienda.Id == oferta.Tienda)
 				{
-					return tienda.Imagen300x80;
+					return tienda.ImagenIcono;
 				}
 			}
 		}
@@ -376,6 +364,11 @@
 			if (int1 == precioMensaje.Length - 2)
 			{
 				precioMensaje = precioMensaje + "0";
+			}
+
+			if (precioMensaje.Length > int1 + 3)
+			{
+				precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
 			}
 
 			precioMensaje = precioMensaje + "€";
@@ -423,86 +416,105 @@
 		minimo = 0;
 		maximo = 50;
 
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
-				{
-					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+		// if (juegosConMinimos != null)
+		// {
+		// 	if (juegosConMinimos.Count > 0)
+		// 	{
+		// 		juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+		// 		{
+		// 			List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
-					if (j1.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j1.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j1.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j1.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j1Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j1Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+		// 			List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
-					if (j2.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j2.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j2.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j2.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j2Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j2Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
-					{
-						return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
-					}
-					else
-					{
-						if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
-						{
-							return 1;
-						}
-						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
-						{
-							return -1;
-						}
-					}
+		// 			if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+		// 			{
+		// 				return j2Ofertas[0].FechaDetectado.CompareTo(j1Ofertas[0].FechaDetectado);
+		// 			}
+		// 			else
+		// 			{
+		// 				if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
+		// 				{
+		// 					return 1;
+		// 				}
+		// 				else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
+		// 				{
+		// 					return -1;
+		// 				}
+		// 			}
 
-					return 0;
-				});
-			}
-		}
+		// 			return 0;
+		// 		});
+		// 	}
+		// }
 
 		CargarJuegos(minimo, maximo);
+	}
+
+	private async void OrdenarReseñasCantidad()
+	{
+		if (juegosMostrar != null)
+		{
+			// ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "Wishlist.String9");
+
+			if (juegosMostrar.Count > 0)
+			{
+				juegosMostrar = juegosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Nombre).ToList();
+			}
+
+			// if (usuario != null)
+			// {
+			// 	usuario.WishlistSort = 1;
+			// 	await UserManager.UpdateAsync(usuario);
+			// }
+		}
 	}
 
 	private void OrdenarReseñas()
@@ -510,37 +522,37 @@
 		minimo = 0;
 		maximo = 50;
 
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
-				{
-					if (j1.Analisis != null && j2.Analisis != null)
-					{
-						if (string.IsNullOrEmpty(j1.Analisis.Cantidad) == false && string.IsNullOrEmpty(j2.Analisis.Cantidad) == false)
-						{
-							int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
-							int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
+		// if (juegosConMinimos != null)
+		// {
+		// 	if (juegosConMinimos.Count > 0)
+		// 	{
+		// 		juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+		// 		{
+		// 			if (j1.Analisis != null && j2.Analisis != null)
+		// 			{
+		// 				if (string.IsNullOrEmpty(j1.Analisis.Cantidad) == false && string.IsNullOrEmpty(j2.Analisis.Cantidad) == false)
+		// 				{
+		// 					int j1Analisis = int.Parse(j1.Analisis.Cantidad.Replace(",", null));
+		// 					int j2Analisis = int.Parse(j2.Analisis.Cantidad.Replace(",", null));
 
-							return j2Analisis.CompareTo(j1Analisis);
-						}
-					}
+		// 					return j2Analisis.CompareTo(j1Analisis);
+		// 				}
+		// 			}
 
-					if (j1.Analisis != null)
-					{
-						return 0;
-					}
+		// 			if (j1.Analisis != null)
+		// 			{
+		// 				return 0;
+		// 			}
 
-					if (j2.Analisis != null)
-					{
-						return 1;
-					}
+		// 			if (j2.Analisis != null)
+		// 			{
+		// 				return 1;
+		// 			}
 
-					return 0;
-				});
-			}
-		}
+		// 			return 0;
+		// 		});
+		// 	}
+		// }
 
 		CargarJuegos(minimo, maximo);
 	}
@@ -550,84 +562,84 @@
 		minimo = 0;
 		maximo = 50;
 
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
-				{
-					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+		// if (juegosConMinimos != null)
+		// {
+		// 	if (juegosConMinimos.Count > 0)
+		// 	{
+		// 		juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+		// 		{
+		// 			List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
-					if (j1.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j1.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j1.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j1.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j1Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j1Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+		// 			List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
-					if (j2.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j2.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j2.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j2.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j2Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j2Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
-					{
-						return j1Ofertas[0].Precio.CompareTo(j2Ofertas[0].Precio);
-					}
-					else
-					{
-						if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
-						{
-							return 1;
-						}
-						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
-						{
-							return -1;
-						}
-					}
+		// 			if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+		// 			{
+		// 				return j1Ofertas[0].Precio.CompareTo(j2Ofertas[0].Precio);
+		// 			}
+		// 			else
+		// 			{
+		// 				if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
+		// 				{
+		// 					return 1;
+		// 				}
+		// 				else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
+		// 				{
+		// 					return -1;
+		// 				}
+		// 			}
 
-					return 0;
-				});
-			}
-		}
+		// 			return 0;
+		// 		});
+		// 	}
+		// }
 
 		CargarJuegos(minimo, maximo);
 	}
@@ -637,84 +649,84 @@
 		minimo = 0;
 		maximo = 50;
 
-		if (juegosConMinimos != null)
-		{
-			if (juegosConMinimos.Count > 0)
-			{
-				juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
-				{
-					List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
+		// if (juegosConMinimos != null)
+		// {
+		// 	if (juegosConMinimos.Count > 0)
+		// 	{
+		// 		juegosConMinimos.Sort(delegate (global::Juegos.Juego j1, global::Juegos.Juego j2)
+		// 		{
+		// 			List<JuegoPrecio> j1Ofertas = new List<JuegoPrecio>();
 
-					if (j1.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j1.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j1.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j1.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j1Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j1Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
+		// 			List<JuegoPrecio> j2Ofertas = new List<JuegoPrecio>();
 
-					if (j2.PrecioMinimosHistoricos.Count > 0)
-					{
-						decimal precio = 10000000;
-						JuegoPrecio minimo = null;
+		// 			if (j2.PrecioMinimosHistoricos.Count > 0)
+		// 			{
+		// 				decimal precio = 10000000;
+		// 				JuegoPrecio minimo = null;
 
-						foreach (var minimo2 in j2.PrecioMinimosHistoricos)
-						{
-							if (minimo2.Precio < precio)
-							{
-								if (minimo2.DRM != JuegoDRM.NoEspecificado)
-								{
-									precio = minimo2.Precio;
+		// 				foreach (var minimo2 in j2.PrecioMinimosHistoricos)
+		// 				{
+		// 					if (minimo2.Precio < precio)
+		// 					{
+		// 						if (minimo2.DRM != JuegoDRM.NoEspecificado)
+		// 						{
+		// 							precio = minimo2.Precio;
 
-									minimo = minimo2;
-								}
-							}
-						}
+		// 							minimo = minimo2;
+		// 						}
+		// 					}
+		// 				}
 
-						if (minimo != null)
-						{
-							j2Ofertas.Add(minimo);
-						}
-					}
+		// 				if (minimo != null)
+		// 				{
+		// 					j2Ofertas.Add(minimo);
+		// 				}
+		// 			}
 
-					if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
-					{
-						return j2Ofertas[0].Descuento.CompareTo(j1Ofertas[0].Descuento);
-					}
-					else
-					{
-						if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
-						{
-							return 1;
-						}
-						else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
-						{
-							return -1;
-						}
-					}
+		// 			if (j1Ofertas.Count > 0 && j2Ofertas.Count > 0)
+		// 			{
+		// 				return j2Ofertas[0].Descuento.CompareTo(j1Ofertas[0].Descuento);
+		// 			}
+		// 			else
+		// 			{
+		// 				if (j1Ofertas.Count == 0 && j2Ofertas.Count > 0)
+		// 				{
+		// 					return 1;
+		// 				}
+		// 				else if (j1Ofertas.Count > 0 && j2Ofertas.Count == 0)
+		// 				{
+		// 					return -1;
+		// 				}
+		// 			}
 
-					return 0;
-				});
-			}
-		}
+		// 			return 0;
+		// 		});
+		// 	}
+		// }
 
 		CargarJuegos(minimo, maximo);
 	}
