@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Mínimos Históricos"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Mínimos Históricos"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Ordenar Por"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Reseñas (Porcentaje)"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Reseñas (Cantidad)"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Nombre (A-Z)"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Nombre (Z-A)"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Precio"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Descuento"
+  }
+]

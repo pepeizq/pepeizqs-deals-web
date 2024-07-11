@@ -29,14 +29,18 @@ namespace BaseDatos.Avisos
                     {
                         if (lector.IsDBNull(1) == false)
                         {
-                            Aviso aviso = new Aviso
+                            try
                             {
-                                Mensaje = lector.GetString(1),
-                                Fecha = DateTime.Parse(lector.GetString(2)),
-                                Enlace = lector.GetString(3)
-                            };
+								Aviso aviso = new Aviso
+								{
+									Mensaje = lector.GetString(1),
+									Fecha = DateTime.Parse(lector.GetString(2)),
+									Enlace = lector.GetString(3)
+								};
 
-                            return aviso;
+								return aviso;
+							}
+                            catch { }                           
                         }
                     }
                 }

@@ -1,0 +1,62 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Wishlist"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Wishlist"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Order By"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Reviews (Percentage)"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Price"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Discount"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Historical Low"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Search by name"
+  },
+  {
+    "Id": "String8",
+    "Valor": "deals"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Reviews (Quantity)"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Name (A-Z)"
+  },
+  {
+    "Id": "String11",
+    "Valor": "historical lows"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Options"
+  },
+  {
+    "Id": "String13",
+    "Valor": "Show only deals with historical lows"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Name (Z-A)"
+  }
+]

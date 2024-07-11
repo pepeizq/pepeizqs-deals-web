@@ -12,68 +12,77 @@ namespace Herramientas
 
 	public static class Idiomas
 	{
-        public static string CogerCadena(string idiomaUsuario, string cadena)
+        public static string CogerCadena(string idiomaUsuario, string cadena, string nombreFichero = null)
 		{
-			if (idiomaUsuario != null)
+			if (string.IsNullOrEmpty(idiomaUsuario) == true)
+			{
+				idiomaUsuario = "en-US";
+			}
+			else
 			{
 				if (idiomaUsuario == "es")
 				{
 					idiomaUsuario = "es-ES";
 				}
-            }		
-
-			if (string.IsNullOrEmpty(idiomaUsuario) == true)
-			{
-                idiomaUsuario = "en-US";
-            }
-				
-			if (File.Exists("Idiomas/" + idiomaUsuario + ".json") == false)
-			{
-				idiomaUsuario = "en-US";
 			}
 
-			string devolver = null;
+			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
-			using (StreamReader r = new StreamReader("Idiomas/" + idiomaUsuario + ".json"))
+			if (string.IsNullOrEmpty(nombreFichero) == false)
 			{
-				List<Idioma> items = new List<Idioma>();
-				
-				try
+				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
+			}
+
+			if (File.Exists(rutaFichero) == true)
+			{
+				string devolver = null;
+
+				using (StreamReader r = new StreamReader(rutaFichero))
 				{
-					string json = r.ReadToEnd();
-					items = JsonConvert.DeserializeObject<List<Idioma>>(json);
-				}
-				catch { }
-				
-				if (items != null)
-				{
-					if (items.Count > 0) 
+					List<Idioma> items = new List<Idioma>();
+
+					try
 					{
-						foreach (var item in items)
+						string json = r.ReadToEnd();
+						items = JsonConvert.DeserializeObject<List<Idioma>>(json);
+					}
+					catch { }
+
+					if (items != null)
+					{
+						if (items.Count > 0)
 						{
-							if (item.Id == cadena)
+							foreach (var item in items)
 							{
-								devolver = item.Valor;
+								if (item.Id == cadena)
+								{
+									devolver = item.Valor;
+									break;
+								}
 							}
 						}
 					}
-				}							
-			}
+				}
 
-			if (devolver != null)
-			{
-				return devolver;
+				if (string.IsNullOrEmpty(devolver) == false)
+				{
+					return devolver;
+				}
+				else
+				{
+					if (string.IsNullOrEmpty(cadena) == false)
+					{
+						return CogerCadena("en-US", cadena, nombreFichero);
+					}
+					else
+					{
+						return null;
+					}
+				}
 			}
 			else
 			{
-				if (cadena != null)
-				{
-                    return CogerCadena("en-US", cadena);
-                }
-				else
-				{
-					return null;
-				}
+				return rutaFichero;
 			}
 		}
 

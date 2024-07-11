@@ -148,8 +148,12 @@ namespace BaseDatos.Sorteos
                             }
                         }
 
-                        sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
-
+						try
+                        {
+							sorteo.FechaTermina = DateTime.Parse(lector.GetString(5));
+						}
+                        catch { }
+						
                         if (lector.IsDBNull(6) == false)
                         {
                             if (string.IsNullOrEmpty(lector.GetString(6)) == false)
@@ -158,7 +162,7 @@ namespace BaseDatos.Sorteos
                             }
                         }
 
-                        if (DateTime.Now < sorteo.FechaTermina)
+                        if (DateTime.Now.ToUniversalTime() < sorteo.FechaTermina.ToUniversalTime())
                         {
                             sorteos.Add(sorteo);
                         }                            

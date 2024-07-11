@@ -1,0 +1,62 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Lista de Deseados"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Lista de Deseados"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Ordenar Por"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Reseñas (Porcentaje)"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Precio"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Descuento"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Mínimo Histórico"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Busca por nombre"
+  },
+  {
+    "Id": "String8",
+    "Valor": "ofertas"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Reseñas (Cantidad)"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Nombre (A-Z)"
+  },
+  {
+    "Id": "String11",
+    "Valor": "mínimos históricos"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Opciones"
+  },
+  {
+    "Id": "String13",
+    "Valor": "Mostrar solo las ofertas con mínimos históricos"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Nombre (Z-A)"
+  }
+]

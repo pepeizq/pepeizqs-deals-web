@@ -37,12 +37,11 @@ namespace BaseDatos.Tiendas
 
 				if (numeroId > 0)
 				{
-					string buscarJuego = "SELECT * FROM juegos WHERE (idSteam=@idSteam OR nombre=@nombre)";
+					string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
 						comando.Parameters.AddWithValue("@idSteam", idSteam);
-						comando.Parameters.AddWithValue("@nombre", oferta.Nombre);
 
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{

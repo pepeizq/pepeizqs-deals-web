@@ -2,49 +2,18 @@
 @model pepeizqs_deals_web.Pages.WishlistModel
 
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Identity
-@using pepeizqs_deals_web.Areas.Identity.Data
-
-@inject SignInManager<Usuario> SignInManager
-@inject UserManager<Usuario> UserManager
 
 @{
 	#nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Wishlist.Title");
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Wishlist");
 	Layout = "/Pages/Shared/_Layout.cshtml";
-
-	bool usuarioLogeado = SignInManager.IsSignedIn(User);
-	Usuario usuario = new Usuario();
-
-	bool adminLogeado = false;
-
-	if (usuarioLogeado == true)
-	{
-		usuario = await UserManager.GetUserAsync(User);
-
-		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
-		{
-			adminLogeado = true;
-		}
-	}
 }
 
 <div id="cargando" style="width: 100%; display: flex; align-items: center; justify-content: center;">
 	<span class="cargando"></span>
 	<label id="cargandoMensaje" style="margin-left: 20px;"></label>	
 </div>
-
-@* @if (usuarioLogeado == true)
-{
-	if (adminLogeado == true)
-	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Deseados>(RenderMode.ServerPrerendered, new
-		{
-			idioma = Model.idioma
-		}))
-	}
-} *@
 
 @(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new { 
 	idioma = Model.idioma,
