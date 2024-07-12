@@ -1,0 +1,70 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Home Page"
+  },
+  {
+    "Id": "Subtitle",
+    "Valor": "Website of PC video game deals from official stores"
+  },
+  {
+    "Id": "News1",
+    "Valor": "New Bundle"
+  },
+  {
+    "Id": "News2",
+    "Valor": "New Free"
+  },
+  {
+    "Id": "News3",
+    "Valor": "New Subscription"
+  },
+  {
+    "Id": "LastNewsMore",
+    "Valor": "Last all news"
+  },
+  {
+    "Id": "LastNewsNo",
+    "Valor": "There has been no news in the last 72 hours, but you can check all current news here."
+  },
+  {
+    "Id": "LastLows",
+    "Valor": "Last Historical Lows"
+  },
+  {
+    "Id": "LastLowsInfo",
+    "Valor": "These deals are historical lows that games have for the first time."
+  },
+  {
+    "Id": "LastLowsMore",
+    "Valor": "Load more historical lows"
+  },
+  {
+    "Id": "Tooltip1",
+    "Valor": "Has been in:"
+  },
+  {
+    "Id": "Tooltip2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Tooltip3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Tooltip4",
+    "Valor": "1 free"
+  },
+  {
+    "Id": "Tooltip5",
+    "Valor": "{0} free"
+  },
+  {
+    "Id": "Tooltip6",
+    "Valor": "1 subscription"
+  },
+  {
+    "Id": "Tooltip7",
+    "Valor": "{0} subscriptions"
+  }
+]

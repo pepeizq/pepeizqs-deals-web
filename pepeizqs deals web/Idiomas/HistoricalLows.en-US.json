@@ -34,5 +34,17 @@
   {
     "Id": "String8",
     "Valor": "Discount"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Search by name"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Filter"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Hide the games you have on Steam"
   }
 ]

@@ -1,0 +1,226 @@
+[
+  {
+    "Id": "0.String0",
+    "Valor": "1 second ago"
+  },
+  {
+    "Id": "0.String1",
+    "Valor": "{0} seconds ago"
+  },
+  {
+    "Id": "0.String2",
+    "Valor": "{0} minutes ago"
+  },
+  {
+    "Id": "0.String3",
+    "Valor": "about a minute ago"
+  },
+  {
+    "Id": "0.String4",
+    "Valor": "{0} hours ago"
+  },
+  {
+    "Id": "0.String5",
+    "Valor": "about an hour ago"
+  },
+  {
+    "Id": "0.String6",
+    "Valor": "{0} days ago"
+  },
+  {
+    "Id": "0.String7",
+    "Valor": "1 day and {0} hours ago"
+  },
+  {
+    "Id": "0.String8",
+    "Valor": "{0} months ago"
+  },
+  {
+    "Id": "0.String9",
+    "Valor": "1 month and {0} days ago"
+  },
+  {
+    "Id": "0.String10",
+    "Valor": "{0} years ago"
+  },
+  {
+    "Id": "0.String11",
+    "Valor": "1 year and {0} months ago"
+  },
+  {
+    "Id": "0.String12",
+    "Valor": "1 year and 1 month ago"
+  },
+  {
+    "Id": "0.String13",
+    "Valor": "1 year ago"
+  },
+  {
+    "Id": "0.String14",
+    "Valor": "1 month and 1 day ago"
+  },
+  {
+    "Id": "0.String15",
+    "Valor": "1 month ago"
+  },
+  {
+    "Id": "0.String16",
+    "Valor": "1 day and 1 hour ago"
+  },
+  {
+    "Id": "0.String17",
+    "Valor": "1 day ago"
+  },
+  {
+    "Id": "1.String0",
+    "Valor": "ends in 1 second"
+  },
+  {
+    "Id": "1.String1",
+    "Valor": "ends in {0} seconds"
+  },
+  {
+    "Id": "1.String2",
+    "Valor": "ends in {0} minutes"
+  },
+  {
+    "Id": "1.String3",
+    "Valor": "ends in 1 minute"
+  },
+  {
+    "Id": "1.String4",
+    "Valor": "ends in {0} hours"
+  },
+  {
+    "Id": "1.String5",
+    "Valor": "ends in 1 hour"
+  },
+  {
+    "Id": "1.String6",
+    "Valor": "ends in {0} days"
+  },
+  {
+    "Id": "1.String7",
+    "Valor": "ends in 1 day and {0} hours"
+  },
+  {
+    "Id": "1.String8",
+    "Valor": "ends in {0} months"
+  },
+  {
+    "Id": "1.String9",
+    "Valor": "ends in 1 month and {0} days"
+  },
+  {
+    "Id": "1.String10",
+    "Valor": "ends in {0} years"
+  },
+  {
+    "Id": "1.String11",
+    "Valor": "ends in 1 year and {0} months"
+  },
+  {
+    "Id": "1.String12",
+    "Valor": "ends in 1 year and 1 month"
+  },
+  {
+    "Id": "1.String13",
+    "Valor": "ends in 1 year"
+  },
+  {
+    "Id": "1.String14",
+    "Valor": "ends in 1 month and 1 day"
+  },
+  {
+    "Id": "1.String15",
+    "Valor": "ends in 1 month"
+  },
+  {
+    "Id": "1.String16",
+    "Valor": "ends in 1 day and 1 hour"
+  },
+  {
+    "Id": "1.String17",
+    "Valor": "ends in 1 day"
+  },
+  {
+    "Id": "2.String0",
+    "Valor": "end in 1 second"
+  },
+  {
+    "Id": "2.String1",
+    "Valor": "end in {0} seconds"
+  },
+  {
+    "Id": "2.String2",
+    "Valor": "end in {0} minutes"
+  },
+  {
+    "Id": "2.String3",
+    "Valor": "end in 1 minute"
+  },
+  {
+    "Id": "2.String4",
+    "Valor": "end in {0} hours"
+  },
+  {
+    "Id": "2.String5",
+    "Valor": "end in 1 hour"
+  },
+  {
+    "Id": "2.String6",
+    "Valor": "end in {0} days"
+  },
+  {
+    "Id": "2.String7",
+    "Valor": "end in 1 day and {0} hours"
+  },
+  {
+    "Id": "2.String8",
+    "Valor": "end in {0} months"
+  },
+  {
+    "Id": "2.String9",
+    "Valor": "end in 1 month and {0} days"
+  },
+  {
+    "Id": "2.String10",
+    "Valor": "end in {0} years"
+  },
+  {
+    "Id": "2.String11",
+    "Valor": "end in 1 year and {0} months"
+  },
+  {
+    "Id": "2.String12",
+    "Valor": "end in 1 year and 1 month"
+  },
+  {
+    "Id": "2.String13",
+    "Valor": "end in 1 year"
+  },
+  {
+    "Id": "2.String14",
+    "Valor": "end in 1 month and 1 day"
+  },
+  {
+    "Id": "2.String15",
+    "Valor": "end in 1 month"
+  },
+  {
+    "Id": "2.String16",
+    "Valor": "end in 1 day and 1 hour"
+  },
+  {
+    "Id": "2.String17",
+    "Valor": "end in 1 day"
+  },
+  {
+    "Id": "3.String1",
+    "Valor": "for 1 day"
+  },
+  {
+    "Id": "3.String2",
+    "Valor": "for {0} days"
+  }
+]

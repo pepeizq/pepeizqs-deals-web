@@ -19,9 +19,9 @@
 
     string titulo = string.Empty;
 
-    if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Index.Title"))
+    if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Title", "Index"))
     {
-        titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(idioma, "Index.Subtitle");
+        titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(idioma, "Subtitle", "Index");
     }
     else
     {
@@ -144,9 +144,9 @@
         });
     </script>
     <script>
-        _reconnectCallback = function (d) {
-            document.location.reload();
-        }
+        // _reconnectCallback = function (d) {
+        //     document.location.reload();
+        // }
     </script>
 
     <script>

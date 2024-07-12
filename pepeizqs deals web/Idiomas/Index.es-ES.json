@@ -1,0 +1,70 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Inicio"
+  },
+  {
+    "Id": "Subtitle",
+    "Valor": "Web de ofertas de videojuegos para PC procedentes de tiendas oficiales"
+  },
+  {
+    "Id": "News1",
+    "Valor": "Nuevo Bundle"
+  },
+  {
+    "Id": "News2",
+    "Valor": "Nuevo Gratis"
+  },
+  {
+    "Id": "News3",
+    "Valor": "Nueva Suscripción"
+  },
+  {
+    "Id": "LastNewsMore",
+    "Valor": "Cargar todas las noticias"
+  },
+  {
+    "Id": "LastNewsNo",
+    "Valor": "No han ocurrido noticias en las últimas 72 horas, pero puedes consultar todas las noticias vigentes aquí."
+  },
+  {
+    "Id": "LastLowsMore",
+    "Valor": "Cargar más mínimos históricos"
+  },
+  {
+    "Id": "LastLows",
+    "Valor": "Últimos Mínimos Históricos"
+  },
+  {
+    "Id": "LastLowsInfo",
+    "Valor": "Estas ofertas son mínimos históricos que tienen por primera vez los juegos."
+  },
+  {
+    "Id": "Tooltip1",
+    "Valor": "Ha estado en:"
+  },
+  {
+    "Id": "Tooltip2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Tooltip3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Tooltip4",
+    "Valor": "1 vez gratis"
+  },
+  {
+    "Id": "Tooltip5",
+    "Valor": "{0} veces gratis"
+  },
+  {
+    "Id": "Tooltip6",
+    "Valor": "1 suscripción"
+  },
+  {
+    "Id": "Tooltip7",
+    "Valor": "{0} suscripciones"
+  }
+]

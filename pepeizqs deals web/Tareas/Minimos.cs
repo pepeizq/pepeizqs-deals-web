@@ -124,6 +124,20 @@ namespace Tareas
 																				}
 																			}
 
+																			if (nuevoJuego.Gratis != null)
+																			{
+																				if (nuevoJuego.Gratis.Count > 0)
+																				{
+																					foreach (var gratis in nuevoJuego.Gratis)
+																					{
+																						if (gratis.DRM == historicosFinales[i].DRM)
+																						{
+																							añadir = false;
+																						}
+																					}
+																				}
+																			}
+
 																			if (añadir == true)
 																			{
 																				MinimoListado minimoListado = new MinimoListado();
@@ -310,7 +324,14 @@ namespace Tareas
 														Juego minimoFinal = minimo.Juego;
 														minimoFinal.PrecioMinimosHistoricos = [minimo.Historico];
 
-														Insertar.Ejecutar(minimoFinal, conexion, "seccionMinimos");
+														try
+														{
+															Insertar.Ejecutar(minimoFinal, conexion, "seccionMinimos");
+														}
+														catch 
+														{
+															BaseDatos.Errores.Insertar.Mensaje("Tarea - Minimos Insertar", minimo.Juego.Nombre, conexion);
+														}														
 													}
 												}
 

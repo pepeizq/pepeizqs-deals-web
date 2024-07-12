@@ -1,0 +1,226 @@
+[
+  {
+    "Id": "0.String0",
+    "Valor": "hace 1 segundo"
+  },
+  {
+    "Id": "0.String1",
+    "Valor": "hace {0} segundos"
+  },
+  {
+    "Id": "0.String2",
+    "Valor": "hace {0} minutos"
+  },
+  {
+    "Id": "0.String3",
+    "Valor": "hace 1 minuto"
+  },
+  {
+    "Id": "0.String4",
+    "Valor": "hace {0} horas"
+  },
+  {
+    "Id": "0.String5",
+    "Valor": "hace 1 hora"
+  },
+  {
+    "Id": "0.String6",
+    "Valor": "hace {0} días"
+  },
+  {
+    "Id": "0.String7",
+    "Valor": "hace 1 día y {0} horas"
+  },
+  {
+    "Id": "0.String8",
+    "Valor": "hace {0} meses"
+  },
+  {
+    "Id": "0.String9",
+    "Valor": "hace 1 mes y {0} días"
+  },
+  {
+    "Id": "0.String10",
+    "Valor": "hace {0} años"
+  },
+  {
+    "Id": "0.String11",
+    "Valor": "hace 1 año y {0} meses"
+  },
+  {
+    "Id": "0.String12",
+    "Valor": "hace 1 año y 1 mes"
+  },
+  {
+    "Id": "0.String13",
+    "Valor": "hace 1 año"
+  },
+  {
+    "Id": "0.String14",
+    "Valor": "hace 1 mes y 1 día"
+  },
+  {
+    "Id": "0.String15",
+    "Valor": "hace 1 mes"
+  },
+  {
+    "Id": "0.String16",
+    "Valor": "hace 1 día y 1 hora"
+  },
+  {
+    "Id": "0.String17",
+    "Valor": "hace 1 día"
+  },
+  {
+    "Id": "1.String0",
+    "Valor": "termina en 1 segundo"
+  },
+  {
+    "Id": "1.String1",
+    "Valor": "termina en {0} segundos"
+  },
+  {
+    "Id": "1.String2",
+    "Valor": "termina en {0} minutos"
+  },
+  {
+    "Id": "1.String3",
+    "Valor": "termina en 1 minuto"
+  },
+  {
+    "Id": "1.String4",
+    "Valor": "termina en {0} horas"
+  },
+  {
+    "Id": "1.String5",
+    "Valor": "termina en 1 hora"
+  },
+  {
+    "Id": "1.String6",
+    "Valor": "termina en {0} días"
+  },
+  {
+    "Id": "1.String7",
+    "Valor": "termina en 1 día y {0} horas"
+  },
+  {
+    "Id": "1.String8",
+    "Valor": "termina en {0} meses"
+  },
+  {
+    "Id": "1.String9",
+    "Valor": "termina en 1 mes y {0} días"
+  },
+  {
+    "Id": "1.String10",
+    "Valor": "termina en {0} años"
+  },
+  {
+    "Id": "1.String11",
+    "Valor": "termina en 1 año y {0} meses"
+  },
+  {
+    "Id": "1.String12",
+    "Valor": "termina en 1 año y 1 mes"
+  },
+  {
+    "Id": "1.String13",
+    "Valor": "termina en 1 año"
+  },
+  {
+    "Id": "1.String14",
+    "Valor": "termina en 1 mes y 1 día"
+  },
+  {
+    "Id": "1.String15",
+    "Valor": "termina en 1 mes"
+  },
+  {
+    "Id": "1.String16",
+    "Valor": "termina en 1 día y 1 hora"
+  },
+  {
+    "Id": "1.String17",
+    "Valor": "termina en 1 día"
+  },
+  {
+    "Id": "2.String0",
+    "Valor": "terminan en 1 segundo"
+  },
+  {
+    "Id": "2.String1",
+    "Valor": "terminan en {0} segundos"
+  },
+  {
+    "Id": "2.String2",
+    "Valor": "terminan en {0} minutos"
+  },
+  {
+    "Id": "2.String3",
+    "Valor": "terminan en 1 minuto"
+  },
+  {
+    "Id": "2.String4",
+    "Valor": "terminan en {0} horas"
+  },
+  {
+    "Id": "2.String5",
+    "Valor": "terminan en 1 hora"
+  },
+  {
+    "Id": "2.String6",
+    "Valor": "terminan en {0} días"
+  },
+  {
+    "Id": "2.String7",
+    "Valor": "terminan en 1 día y {0} horas"
+  },
+  {
+    "Id": "2.String8",
+    "Valor": "terminan en {0} meses"
+  },
+  {
+    "Id": "2.String9",
+    "Valor": "terminan en 1 mes y {0} días"
+  },
+  {
+    "Id": "2.String10",
+    "Valor": "terminan en {0} años"
+  },
+  {
+    "Id": "2.String11",
+    "Valor": "terminan en 1 año y {0} meses"
+  },
+  {
+    "Id": "2.String12",
+    "Valor": "terminan en 1 año y 1 mes"
+  },
+  {
+    "Id": "2.String13",
+    "Valor": "terminan en 1 año"
+  },
+  {
+    "Id": "2.String14",
+    "Valor": "terminan en 1 mes y 1 día"
+  },
+  {
+    "Id": "2.String15",
+    "Valor": "terminan en 1 mes"
+  },
+  {
+    "Id": "2.String16",
+    "Valor": "terminan en 1 día y 1 hora"
+  },
+  {
+    "Id": "2.String17",
+    "Valor": "terminan en 1 día"
+  },
+  {
+    "Id": "3.String1",
+    "Valor": "durante 1 día"
+  },
+  {
+    "Id": "3.String2",
+    "Valor": "durante {0} días"
+  }
+]

@@ -398,15 +398,15 @@
 							<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
 								@if (noticia.Tipo == NoticiaTipo.Bundles)
 								{
-									@Herramientas.Idiomas.CogerCadena(idioma, "Index.News1")
+									@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
 								}
 								else if (noticia.Tipo == NoticiaTipo.Gratis)
 								{
-									@Herramientas.Idiomas.CogerCadena(idioma, "Index.News2")
+									@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
 								}
 								else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 								{
-									@Herramientas.Idiomas.CogerCadena(idioma, "Index.News3")
+									@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
 								}
 								else
 								{
@@ -439,7 +439,7 @@
 
 	<div style="margin-bottom: 60px; margin-top: 20px; text-align: center;">
 		<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsMore")
+			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
 		</a>
 	</div>
 }
@@ -447,12 +447,12 @@ else
 {
 	<div style="margin-bottom: 60px; margin-left: auto; margin-right: auto; width: 700px;">
 		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastNewsNo")
+			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
 		</a>
 	</div>
 }
 
-@if (sorteosActivos.Count > 2)
+@* @if (sorteosActivos.Count > 2)
 {
 	<div style="margin-bottom: 50px; height: 200px;">
 		<a href="/giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
@@ -485,17 +485,17 @@ else
 			</div>
 		</a>
 	</div>
-}
+} *@
 
 @if (juegosMinimosMostrar.Count > 0)
 {
 	<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
-		<a href="/historical-lows" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLows")</a>
+		<a href="/historical-lows" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "LastLows", "Index")</a>
 
 		<div class="tooltip2" style="margin-left: 20px;">
 			<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
 			<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsInfo")
+				@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsInfo", "Index")
 			</div>
 		</div>
 	</div>
@@ -590,7 +590,7 @@ else
 				{
 					<div style="font-size: 14px; margin-top: 5px; padding: 5px;">
 						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip1")
+							@Herramientas.Idiomas.CogerCadena(idioma, "Tooltip1", "Index")
 						</div>
 
 						@if (string.IsNullOrEmpty(tooltipBundles) == false)
@@ -621,7 +621,7 @@ else
 
 	<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
 		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/historical-lows?mode=last">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Index.LastLowsMore")
+			@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsMore", "Index")
 		</a>
 	</div>
 }
@@ -943,11 +943,11 @@ else
 		{
 			if (juego.Bundles.Count == 1)
 			{
-				tooltipBundles = Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip2");
+				tooltipBundles = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip2", "Index");
 			}
 			else if (juego.Bundles.Count > 1)
 			{
-				tooltipBundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip3"), juego.Bundles.Count.ToString());
+				tooltipBundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip3", "Index"), juego.Bundles.Count.ToString());
 			}			
 		}
 
@@ -955,11 +955,11 @@ else
 		{
 			if (juego.Gratis.Count == 1)
 			{
-				tooltipGratis = Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip4");
+				tooltipGratis = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip4", "Index");
 			}
 			else if (juego.Gratis.Count > 1)
 			{
-				tooltipGratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip5"), juego.Gratis.Count.ToString());
+				tooltipGratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip5", "Index"), juego.Gratis.Count.ToString());
 			}
 		}
 
@@ -967,11 +967,11 @@ else
 		{
 			if (juego.Suscripciones.Count == 1)
 			{
-				tooltipSuscripciones = Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip6");
+				tooltipSuscripciones = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip6", "Index");
 			}
 			else if (juego.Suscripciones.Count > 1)
 			{
-				tooltipSuscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Index.Tooltip7"), juego.Suscripciones.Count.ToString());
+				tooltipSuscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip7", "Index"), juego.Suscripciones.Count.ToString());
 			}
 		}
 	}

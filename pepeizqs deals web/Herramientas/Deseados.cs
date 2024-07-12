@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Juegos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using pepeizqs_deals_web.Areas.Identity.Data;
@@ -138,6 +139,71 @@ namespace Herramientas
 			}
 			
 			return false;
+		}
+
+		public static async void CambiarEstado(UserManager<Usuario> UserManager, Usuario usuario, Juego juego, bool estado, JuegoDRM drm)
+		{
+			List<JuegoDeseado> deseados = new List<JuegoDeseado>();
+
+			if (usuario.Wishlist != null)
+			{
+				deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+			}
+
+			ActualizarJuegoConUsuarios(juego.Id, juego.UsuariosInteresados, drm, usuario, estado);
+
+			if (estado == true)
+			{
+				bool añadir = true;
+
+				if (deseados.Count > 0)
+				{
+					foreach (var deseado in deseados)
+					{
+						if (int.Parse(deseado.IdBaseDatos) == juego.Id && deseado.DRM == drm)
+						{
+							añadir = false;
+						}
+					}
+				}
+
+				if (añadir == true)
+				{
+					JuegoDeseado deseado = new JuegoDeseado();
+					deseado.IdBaseDatos = juego.Id.ToString();
+					deseado.DRM = drm;
+
+					deseados.Add(deseado);
+				}
+
+				usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+				await UserManager.UpdateAsync(usuario);
+			}
+			else
+			{
+				int posicion = -1;
+
+				if (deseados.Count > 0)
+				{
+					for (int i = 0; i < deseados.Count; i += 1)
+					{
+						if (int.Parse(deseados[i].IdBaseDatos) == juego.Id && deseados[i].DRM == drm)
+						{
+							posicion = i;
+						}
+					}
+				}
+
+				if (posicion >= 0)
+				{
+					deseados.RemoveAt(posicion);
+				}
+
+				usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+
+				await UserManager.UpdateAsync(usuario);
+			}
 		}
 	}
 }
