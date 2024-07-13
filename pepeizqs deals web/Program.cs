@@ -13,24 +13,33 @@ var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseD
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
 
-builder.Services.AddDbContext<pepeizqs_deals_webContext>(options => options.UseSqlServer(conexionTexto));
-builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opt =>
-    opt.UseSqlite(Herramientas.BaseDatos.cadenaConexion));
+builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
+builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
 
-builder.Services.AddDefaultIdentity<Usuario>(options =>
+builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
+    opciones.SignIn.RequireConfirmedAccount = false;
+	opciones.Lockout.MaxFailedAccessAttempts = 15;
+	opciones.Lockout.AllowedForNewUsers = true;
+	opciones.User.RequireUniqueEmail = true;
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddServerSideBlazor(opciones =>
-{
-    opciones.DetailedErrors = true;
-});
-
 //----------------------------------------------------------------------------------
+
+#region Redireccionador
+
+builder.Services.AddControllersWithViews();
+
+#endregion
+
+#region Seo
+
+builder.Services.AddHeadElementHelper();
+
+#endregion
 
 #region Detallado en Componentes Razor
 
@@ -69,7 +78,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 
 #endregion
 
-#region Acceder Usuario en Codigo
+#region Acceder Usuario en Codigo y RSS
 
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson();
@@ -79,20 +88,13 @@ builder.Services.AddHttpContextAccessor();
 
 #region Tiempo Token Enlaces Correos 
 
-builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-       options.TokenLifespan = TimeSpan.FromHours(3));
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opciones => opciones.TokenLifespan = TimeSpan.FromHours(3));
 
 #endregion
 
 #region Estado Middlewares
 
 builder.Services.AddHealthChecks();
-
-#endregion
-
-#region Seo
-
-builder.Services.AddHeadElementHelper();
 
 #endregion
 
@@ -116,30 +118,50 @@ builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
 #endregion
 
-//builder.Services.AddSignalR(opciones =>
+#region Captcha
+
+builder.Services.AddreCAPTCHAV3(x =>
+{
+	x.SiteKey = "6Lfxf4AUAAAAAKK-pxZOeWCZOeyx9OVrEvn1Fu2-";
+	x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
+});
+
+#endregion
+
+#region Blazor
+
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+#endregion
+
+builder.Services.AddSignalR(opciones =>
+{
+    opciones.EnableDetailedErrors = true;
+	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+	opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+});
+
+builder.Services.Configure<HubOptions>(options =>
+{
+	options.MaximumReceiveMessageSize = null;
+});
+
+//builder.Services.Configure<IdentityOptions>(opciones =>
 //{
-//    opciones.EnableDetailedErrors = true;
-//    opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//    opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-//    opciones.MaximumReceiveMessageSize = 1000;
+//    //opciones.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+//    opciones.Lockout.MaxFailedAccessAttempts = 15;
+//    opciones.Lockout.AllowedForNewUsers = true;
+//    opciones.User.RequireUniqueEmail = true;
 //});
 
-builder.Services.Configure<IdentityOptions>(opciones =>
-{
-    opciones.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    opciones.Lockout.MaxFailedAccessAttempts = 15;
-    opciones.Lockout.AllowedForNewUsers = true;
-    opciones.User.RequireUniqueEmail = true;
-});
-
-builder.Services.ConfigureApplicationCookie(opciones =>
-{
-    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    opciones.Cookie.Name = "cookiePepeizq";
-    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
-    opciones.LoginPath = "/Identity/Account/Login";
-    opciones.SlidingExpiration = true;
-});
+//builder.Services.ConfigureApplicationCookie(opciones =>
+//{
+//    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//    opciones.Cookie.Name = "cookiePepeizq";
+//    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
+//    opciones.LoginPath = "/Identity/Account/Login";
+//    opciones.SlidingExpiration = true;
+//});
 
 //builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 //{
@@ -147,18 +169,9 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 //});
 
-builder.Services.Configure<HubOptions>(options =>
-{
-	options.MaximumReceiveMessageSize = null;
-});
 
-builder.Services.AddreCAPTCHAV3(x =>
-{
-    x.SiteKey = "6Lfxf4AUAAAAAKK-pxZOeWCZOeyx9OVrEvn1Fu2-";
-    x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
-});
 
-builder.Services.AddControllersWithViews();
+
 
 //builder.Services.AddRateLimiter(_ => _
 //    .AddFixedWindowLimiter(policyName: "fixed", options =>
@@ -169,12 +182,12 @@ builder.Services.AddControllersWithViews();
 //        options.QueueLimit = 5;
 //    }));
 
-builder.WebHost.ConfigureKestrel(opciones =>
-{
-    //serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-    //serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-    opciones.AllowSynchronousIO = true;
-});
+//builder.WebHost.ConfigureKestrel(opciones =>
+//{
+//    //serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+//    //serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+//    opciones.AllowSynchronousIO = true;
+//});
 
 var app = builder.Build();
 
@@ -202,6 +215,9 @@ app.UseHeadElementServerPrerendering();
 
 #endregion
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 #region Cache
 
 app.UseResponseCaching();
@@ -220,26 +236,8 @@ app.UseAuthorization();
 
 //app.UseRateLimiter();
 
-//app.Use(async (context, next) =>
-//{
-//	await next();
-//	if (context.Response.StatusCode == 404)
-//	{
-//		context.Request.Path = "/Index";
-//		await next();
-//	}
-//});
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-
-//app.MapHealthChecks("/estado");
-
-//app.UseRequestLocalization();
-
 app.MapRazorPages();
 
-app.MapBlazorHub(/*options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)*/);
+app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
 
 app.Run();

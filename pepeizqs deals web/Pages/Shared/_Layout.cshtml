@@ -138,8 +138,16 @@
     <script>
         Blazor.start({
             reconnectionOptions: {
-                maxRetries: 4,
-                retryIntervalMilliseconds: 3000
+                maxRetries: 100,
+                retryIntervalMilliseconds: 2000
+            },
+            configureSignalR: function (builder) {
+                let c = builder.build();
+                c.serverTimeoutInMilliseconds = 30000;
+                c.keepAliveIntervalInMilliseconds = 10000;
+                builder.build = () => {
+                    return c;
+                };
             }
         });
     </script>
@@ -147,6 +155,7 @@
         // _reconnectCallback = function (d) {
         //     document.location.reload();
         // }
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
     </script>
 
     <script>
@@ -175,10 +184,6 @@
 
         function ocultar(id) {
             document.getElementById(id).style.display = 'none';
-        }
-
-        function cargandoMensaje(mensaje) {
-            document.getElementById('cargandoMensaje').innerHTML = mensaje;
         }
     </script>
 

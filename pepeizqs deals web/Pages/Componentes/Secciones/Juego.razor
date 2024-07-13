@@ -14,8 +14,6 @@
 @using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@rendermode @(new InteractiveServerRenderMode(prerender: true))
-
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
@@ -364,8 +362,10 @@
 									{
 										<a class="juego-boton-pequeño juego-imagen-boton-espacio" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 											<div class="perfil-flexible-centrado">
-												<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store" />
-												<span style="margin-left: 15px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
+												<div>
+													<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store" />
+													<span style="margin-left: 20px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
+												</div>
 												
 												<div class="juego-descuento-precio">
 													<div style="font-size: 14px; margin: 20px;">
@@ -820,15 +820,18 @@
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
-
-		if (usuario != null)
+		if (HttpContextAccessor.HttpContext.User != null)
 		{
-			usuarioLogeado = true;
+			usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 
-			juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+			if (usuario != null)
+			{
+				usuarioLogeado = true;
+
+				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
 		}
 
 		//-------------------------------------------

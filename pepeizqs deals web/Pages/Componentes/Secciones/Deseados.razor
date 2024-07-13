@@ -28,74 +28,74 @@
 	}
 </style>
 
-@if (usuario != null)
+@if (usuario != null && deseadosGestor.Count > 0)
 {
-    if (deseadosMostrar.Count > 0)
-    {
-		<div style="max-width: 1000px; margin: auto;">
-			<div style="background-color: var(--fondoCuerpo);">
-				<div style="display: flex; align-items: center; width: 100%;">
-					<div style="width: 100%; font-size: 23px; text-align: left;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Wishlist")
-					</div>
-
-					<div style="display: flex; align-items: center; justify-content: right; width: 100%;">
-						<div style="font-size: 14px;">
-							@deseadosGestor.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String8", "Wishlist") • @cantidadMinimos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String11", "Wishlist")
-						</div>
-					</div>
+	<div style="max-width: 1000px; margin: auto;">
+		<div style="background-color: var(--fondoCuerpo);">
+			<div style="display: flex; align-items: center; width: 100%;">
+				<div style="width: 100%; font-size: 23px; text-align: left;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Wishlist")
 				</div>
 
-				<div style="display: flex; align-items: center; width: 100%; margin: 15px 0px;">
-					<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Wishlist")" />
-
-					<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-right: 30px; border: 0px; color: var(--colorTextoVisitado);">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String12", "Wishlist")
-					</button>
-
-					<div class="menu-dropdown" style="width: auto;">
-						<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
-							<div style="padding-right: 5px;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Wishlist"):
-							</div>
-
-							<div style="color: var(--colorEnlace); padding-right: 15px;">
-								@ordenamientoElegido
-							</div>
-
-							<div>
-								<i class="fa-solid fa-caret-down"></i>
-							</div>
-						</button>
-
-						<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Wishlist")
-							</button>
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Wishlist")
-							</button>
-							<hr/>
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String10", "Wishlist")
-							</button>
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String14", "Wishlist")
-							</button>
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Wishlist")
-							</button>
-							<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String5", "Wishlist")
-							</button>
-						</div>
+				<div style="display: flex; align-items: center; justify-content: right; width: 100%;">
+					<div style="font-size: 14px;">
+						@deseadosGestor.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String8", "Wishlist") • @cantidadMinimos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String11", "Wishlist")
 					</div>
 				</div>
 			</div>
 
-			<hr />
+			<div style="display: flex; align-items: center; width: 100%; margin: 15px 0px;">
+				<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Wishlist")" />
 
-			<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="87" OverscanCount="6">
+				<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-right: 30px; border: 0px; color: var(--colorTextoVisitado);">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String12", "Wishlist")
+				</button>
+
+				<div class="menu-dropdown" style="width: auto;">
+					<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+						<div style="padding-right: 5px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Wishlist"):
+						</div>
+
+						<div style="color: var(--colorEnlace); padding-right: 15px;">
+							@ordenamientoElegido
+						</div>
+
+						<div>
+							<i class="fa-solid fa-caret-down"></i>
+						</div>
+					</button>
+
+					<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Wishlist")
+						</button>
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Wishlist")
+						</button>
+						<hr/>
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String10", "Wishlist")
+						</button>
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String14", "Wishlist")
+						</button>
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Wishlist")
+						</button>
+						<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String5", "Wishlist")
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		@if (deseadosMostrar.Count > 0)
+		{
+			<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="@alturaFila" OverscanCount="6">
 				<ItemContent>
 					<div style="margin: 20px 0px;">
 						<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
@@ -159,12 +159,17 @@
 								</div>
 							</div>
 						</a>
+					
+						@if (usuario.WishlistOption2 == true)
+						{
+							<div style="font-size: 14px; margin-top: 5px; text-align: right">@Herramientas.Idiomas.CogerCadena(idioma, "String15", "Wishlist"): @juego.CantidadBundles.ToString() • @Herramientas.Idiomas.CogerCadena(idioma, "String16", "Wishlist"): @juego.CantidadGratis • @Herramientas.Idiomas.CogerCadena(idioma, "String17", "Wishlist"): @juego.CantidadSuscripciones</div>
+						}
 					</div>
 				</ItemContent>
-			</Virtualize>		
-		</div>
-	}  
-
+			</Virtualize>
+		}
+	</div>
+  
 	if (mostrarFiltrado == true)
 	{
 		<div class="opciones-panel">
@@ -191,6 +196,15 @@
 					</div>
 				</div>
 
+				<div style="display: flex; align-items: center; margin-top: 30px;">
+					<div class="checkbox-caja">
+						<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarHistorial" @onchange="EnseñarHistorial">
+					</div>
+
+					<div style="margin-left: 20px; padding-bottom: 5px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String18", "Wishlist")
+					</div>
+				</div>
 			</div>
 		</div>
 	}
@@ -213,6 +227,8 @@
 
 	private int cantidadMinimos = 0;
 	private string ordenamientoElegido = string.Empty;
+
+	private int alturaFila = 88;
 
 	private string textoBuscador { get; set; }
 
@@ -269,6 +285,17 @@
 				estadoEnseñarSoloMinimos = null;
 			}
 
+			if (usuario.WishlistOption2 == true)
+			{
+				estadoEnseñarHistorial = "checked";
+				alturaFila = 114;
+			}
+			else
+			{
+				estadoEnseñarHistorial = null;
+				alturaFila = 88;
+			}
+
 			#endregion
 
 			#region Deseados Steam
@@ -292,7 +319,6 @@
 
 						if (juego != null)
 						{
-							await JavaScript.InvokeVoidAsync("cargandoMensaje", i.ToString() + "/" + juegos.Count.ToString() + " (Steam)");
 							AñadirJuegoMostrar(juego, JuegoDRM.Steam);
 						}
 					}
@@ -322,7 +348,6 @@
 
 						if (juego != null)
 						{
-							await JavaScript.InvokeVoidAsync("cargandoMensaje", i.ToString() + "/" + deseadosWeb.Count.ToString() + " (Web)");
 							AñadirJuegoMostrar(juego, deseadoWeb.DRM);
 						}
 					}
@@ -371,6 +396,7 @@
 						if (actualizado.Days == 0)
 						{
 							JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
+							nuevoDeseado.Id = juego.Id;
 							nuevoDeseado.Nombre = juego.Nombre;
 							nuevoDeseado.Imagen = juego.Imagenes.Capsule_231x87;
 							nuevoDeseado.DRM = drm;
@@ -386,6 +412,21 @@
 							{
 								nuevoDeseado.ReseñasPorcentaje = "0";
 								nuevoDeseado.ReseñasCantidad = "0";
+							}
+
+							if (juego.Bundles != null)
+							{
+								nuevoDeseado.CantidadBundles = juego.Bundles.Count;
+							}
+
+							if (juego.Gratis != null)
+							{
+								nuevoDeseado.CantidadGratis = juego.Gratis.Count;
+							}
+
+							if (juego.Suscripciones != null)
+							{
+								nuevoDeseado.CantidadSuscripciones = juego.Suscripciones.Count;
 							}
 
 							deseadosGestor.Add(nuevoDeseado);
@@ -437,6 +478,7 @@
 					if (precioFinal != null)
 					{
 						JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
+						nuevoDeseado.Id = juego.Id;
 						nuevoDeseado.Nombre = juego.Nombre;
 						nuevoDeseado.Imagen = juego.Imagenes.Capsule_231x87;
 						nuevoDeseado.DRM = drm;
@@ -453,6 +495,21 @@
 						{
 							nuevoDeseado.ReseñasPorcentaje = "0";
 							nuevoDeseado.ReseñasCantidad = "0";
+						}
+
+						if (juego.Bundles != null)
+						{
+							nuevoDeseado.CantidadBundles = juego.Bundles.Count;
+						}
+
+						if (juego.Gratis != null)
+						{
+							nuevoDeseado.CantidadGratis = juego.Gratis.Count;
+						}
+
+						if (juego.Suscripciones != null)
+						{
+							nuevoDeseado.CantidadSuscripciones = juego.Suscripciones.Count;
 						}
 
 						deseadosGestor.Add(nuevoDeseado);
@@ -759,6 +816,31 @@
 			{
 				usuario.WishlistOption1 = true;
 				estadoEnseñarSoloMinimos = "checked";
+			}
+
+			await UserManager.UpdateAsync(usuario);
+
+			ElegirOrdenamiento();
+		}
+	}
+
+	private string estadoEnseñarHistorial = null;
+
+	private async void EnseñarHistorial()
+	{
+		if (usuario != null)
+		{
+			if (usuario.WishlistOption2 == true)
+			{
+				usuario.WishlistOption2 = false;
+				estadoEnseñarHistorial = null;
+				alturaFila = 88;
+			}
+			else
+			{
+				usuario.WishlistOption2 = true;
+				estadoEnseñarHistorial = "checked";
+				alturaFila = 114;
 			}
 
 			await UserManager.UpdateAsync(usuario);

@@ -11,7 +11,7 @@ namespace Juegos
 	}
 
 	public class JuegoDeseadoMostrar
-	{
+    {
 		public string Nombre { get; set; }
 		public string Imagen { get; set; }
 		public JuegoPrecio Precio { get; set; }
@@ -20,5 +20,9 @@ namespace Juegos
 		public string HistoricoPrecio { get; set; }
 		public string ReseñasPorcentaje { get; set; }
 		public string ReseñasCantidad { get; set; }
+        public int Id { get; set; }
+		public int CantidadBundles { get; set; }
+		public int CantidadGratis { get; set; }
+		public int CantidadSuscripciones { get; set; }
 	}
 }

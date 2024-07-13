@@ -25,7 +25,7 @@
 	{
 		usuario = await UserManager.GetUserAsync(User);
 
-		if (await UsuarioCoger.RolDios(UserManager, User) == true)
+		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
 		{
 			adminLogeado = true;
 		}
@@ -67,7 +67,7 @@
 {
 	@if (adminLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new { 
+		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { 
 			idioma = Model.idioma, 
 			juego = Model.juego 
 		}))

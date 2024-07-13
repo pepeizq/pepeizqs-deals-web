@@ -58,5 +58,21 @@
   {
     "Id": "String14",
     "Valor": "Nombre (Z-A)"
+  },
+  {
+    "Id": "String15",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "String16",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Enseñar historial (bundles, gratis y suscripciones)"
   }
 ]

@@ -254,9 +254,12 @@
 
     private Task<List<Juegos.Juego>> tarea;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+        if (HttpContextAccessor.HttpContext.User != null)
+        {
+            usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+        }        
     }
 
     private void Inicio(MouseEventArgs e)

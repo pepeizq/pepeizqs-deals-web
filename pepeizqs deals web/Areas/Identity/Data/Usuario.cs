@@ -74,6 +74,10 @@ public class Usuario : IdentityUser
 	public bool? WishlistOption1 { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? WishlistOption2 { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "int(4)")]
 	public int? HistoricalLowsSort { get; set; }
 
