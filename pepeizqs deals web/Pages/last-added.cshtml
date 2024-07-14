@@ -2,8 +2,10 @@
 @model pepeizqs_deals_web.Pages.LastAddedModel
 
 @{
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "LastAdded.Title");
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "LastAdded");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosAnadidos>(RenderMode.ServerPrerendered, new { idioma = @Model.idioma, dominio = HttpContext.Request.Host.Value }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosAnadidos>(RenderMode.ServerPrerendered, new { 
+	idioma = Model.idioma
+}))

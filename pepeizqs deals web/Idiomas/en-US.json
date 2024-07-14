@@ -1,53 +1,5 @@
 [
   {
-    "Id": "Layout.Account",
-    "Valor": "Account"
-  },
-  {
-    "Id": "Layout.Wishlist",
-    "Valor": "Wishlist"
-  },
-  {
-    "Id": "Layout.HistoricalLows",
-    "Valor": "Historical Lows"
-  },
-  {
-    "Id": "Layout.Bundles",
-    "Valor": "Bundles"
-  },
-  {
-    "Id": "Layout.Free",
-    "Valor": "Free"
-  },
-  {
-    "Id": "Layout.Subscriptions",
-    "Valor": "Subscriptions"
-  },
-  {
-    "Id": "Layout.LastNews",
-    "Valor": "Last News"
-  },
-  {
-    "Id": "Layout.LastAdded",
-    "Valor": "Last Added"
-  },
-  {
-    "Id": "Layout.Giveaways",
-    "Valor": "Giveaways"
-  },
-  {
-    "Id": "Layout.Login",
-    "Valor": "Login"
-  },
-  {
-    "Id": "Layout.Logout",
-    "Valor": "Logout"
-  },
-  {
-    "Id": "Layout.Register",
-    "Valor": "Register"
-  },
-  {
     "Id": "Layout.PersonalData",
     "Valor": "Personal Data"
   },
@@ -682,54 +634,6 @@
   {
     "Id": "Privacy.String8",
     "Valor": "In fact, on this website I am not going to use services like Google Analytics, although Google will surely punish me in its search engine for it."
-  },
-  {
-    "Id": "Search.String1",
-    "Valor": "From {0}"
-  },
-  {
-    "Id": "Search.String2",
-    "Valor": "Not in Sale"
-  },
-  {
-    "Id": "Search.String3",
-    "Valor": "In a Subscription"
-  },
-  {
-    "Id": "Search.String4",
-    "Valor": "In a Bundle"
-  },
-  {
-    "Id": "Search.String5",
-    "Valor": "Free to Claim"
-  },
-  {
-    "Id": "Search.String6",
-    "Valor": "Free to Play"
-  },
-  {
-    "Id": "Search.String7",
-    "Valor": "Games"
-  },
-  {
-    "Id": "Search.String8",
-    "Valor": "DLCs"
-  },
-  {
-    "Id": "Search.String9",
-    "Valor": "Soundtracks"
-  },
-  {
-    "Id": "Search.String10",
-    "Valor": "Software"
-  },
-  {
-    "Id": "LastAdded.Title",
-    "Valor": "Latest Games Added"
-  },
-  {
-    "Id": "LastAdded.String1",
-    "Valor": "Latest Games and DLCs Added to the Database"
   },
   {
     "Id": "SettingsLayout.String1",

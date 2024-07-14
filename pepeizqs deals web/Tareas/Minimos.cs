@@ -97,8 +97,7 @@ namespace Tareas
 
 																	if (historicosFinales.Count > 0)
 																	{
-																		int i = 0;
-																		while (i < historicosFinales.Count)
+																		foreach (var historicoFinal in historicosFinales)
 																		{
 																			Juego nuevoJuego = new Juego();
 																			nuevoJuego = juego;
@@ -130,7 +129,7 @@ namespace Tareas
 																				{
 																					foreach (var gratis in nuevoJuego.Gratis)
 																					{
-																						if (gratis.DRM == historicosFinales[i].DRM)
+																						if (gratis.DRM == historicoFinal.DRM)
 																						{
 																							añadir = false;
 																						}
@@ -142,13 +141,11 @@ namespace Tareas
 																			{
 																				MinimoListado minimoListado = new MinimoListado();
 																				minimoListado.Juego = nuevoJuego;
-																				minimoListado.Historico = historicosFinales[i];
+																				minimoListado.Historico = historicoFinal;
 
 																				juegosConMinimos.Add(minimoListado);
 																			}
-
-																			i += 1;
-																		}																	
+																		}																
 																	}
 																}
 															}

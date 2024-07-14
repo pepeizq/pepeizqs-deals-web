@@ -134,6 +134,12 @@ namespace BaseDatos.Juegos
                                         }
                                         else if (tempPrecio == minimo.Precio)
 										{
+											minimo.Imagen = precio.Imagen;
+											minimo.Enlace = precio.Enlace;
+											minimo.Tienda = precio.Tienda;
+											minimo.Moneda = precio.Moneda;
+											minimo.Descuento = precio.Descuento;
+
 											minimo.FechaActualizacion = precio.FechaActualizacion;
 
 											DateTime tempFecha = precio.FechaDetectado;

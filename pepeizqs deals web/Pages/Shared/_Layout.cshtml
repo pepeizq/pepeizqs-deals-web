@@ -79,7 +79,10 @@
             <div class="cabecera-poner cuerpo-ancho">
                 @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { 
                     idioma = idioma, 
+                    usuarioLogeado = usuarioLogeado,
                     adminLogeado = adminLogeado, 
+                    usuarioAvatar = usuario?.Avatar,
+                    usuarioEmail = usuario?.Email,
                     discord = discord, 
                     telegram = telegram, 
                     reddit = reddit, 
@@ -140,22 +143,22 @@
             reconnectionOptions: {
                 maxRetries: 100,
                 retryIntervalMilliseconds: 2000
-            },
-            configureSignalR: function (builder) {
-                let c = builder.build();
-                c.serverTimeoutInMilliseconds = 30000;
-                c.keepAliveIntervalInMilliseconds = 10000;
-                builder.build = () => {
-                    return c;
-                };
             }
+            // configureSignalR: function (builder) {
+            //     let c = builder.build();
+            //     c.serverTimeoutInMilliseconds = 30000;
+            //     c.keepAliveIntervalInMilliseconds = 10000;
+            //     builder.build = () => {
+            //         return c;
+            //     };
+            // }
         });
     </script>
     <script>
         // _reconnectCallback = function (d) {
         //     document.location.reload();
         // }
-        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
+        // Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
     </script>
 
     <script>

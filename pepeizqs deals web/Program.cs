@@ -1,5 +1,6 @@
 using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -134,16 +135,17 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-builder.Services.AddSignalR(opciones =>
-{
-    opciones.EnableDetailedErrors = true;
-	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-	opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//    opciones.EnableDetailedErrors = true;
+//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//	opciones.KeepAliveInterval = TimeSpan.FromMinutes(5);
+//});
 
-builder.Services.Configure<HubOptions>(options =>
+builder.Services.Configure<HubOptions>(opciones =>
 {
-	options.MaximumReceiveMessageSize = null;
+	opciones.MaximumReceiveMessageSize = null;
+	opciones.EnableDetailedErrors = true;
 });
 
 //builder.Services.Configure<IdentityOptions>(opciones =>
@@ -184,9 +186,9 @@ builder.Services.Configure<HubOptions>(options =>
 
 //builder.WebHost.ConfigureKestrel(opciones =>
 //{
-//    //serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-//    //serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-//    opciones.AllowSynchronousIO = true;
+//    opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+//	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+//	opciones.AllowSynchronousIO = true;
 //});
 
 var app = builder.Build();
@@ -238,6 +240,9 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
+app.MapBlazorHub(opciones =>
+{
+	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+});
 
 app.Run();

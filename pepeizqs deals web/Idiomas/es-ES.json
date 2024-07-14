@@ -1,53 +1,5 @@
 [
   {
-    "Id": "Layout.Account",
-    "Valor": "Cuenta"
-  },
-  {
-    "Id": "Layout.Wishlist",
-    "Valor": "Lista de Deseados"
-  },
-  {
-    "Id": "Layout.HistoricalLows",
-    "Valor": "Mínimos Históricos"
-  },
-  {
-    "Id": "Layout.Bundles",
-    "Valor": "Bundles"
-  },
-  {
-    "Id": "Layout.Free",
-    "Valor": "Gratis"
-  },
-  {
-    "Id": "Layout.Subscriptions",
-    "Valor": "Suscripciones"
-  },
-  {
-    "Id": "Layout.LastNews",
-    "Valor": "Últimas Noticias"
-  },
-  {
-    "Id": "Layout.LastAdded",
-    "Valor": "Últimos Añadidos"
-  },
-  {
-    "Id": "Layout.Giveaways",
-    "Valor": "Sorteos"
-  },
-  {
-    "Id": "Layout.Login",
-    "Valor": "Iniciar Sesión"
-  },
-  {
-    "Id": "Layout.Logout",
-    "Valor": "Cerrar Sesión"
-  },
-  {
-    "Id": "Layout.Register",
-    "Valor": "Registrar Cuenta"
-  },
-  {
     "Id": "Layout.Privacy",
     "Valor": "Privacidad y Vuestros Datos"
   },
@@ -678,54 +630,6 @@
   {
     "Id": "Privacy.String8",
     "Valor": "De hecho, en esta web no voy a usar servicios como Google Analytics, aunque seguramente Google me castigará en su buscador por ello."
-  },
-  {
-    "Id": "Search.String1",
-    "Valor": "Desde {0}"
-  },
-  {
-    "Id": "Search.String2",
-    "Valor": "No hay Ofertas"
-  },
-  {
-    "Id": "Search.String3",
-    "Valor": "En una Suscripción"
-  },
-  {
-    "Id": "Search.String4",
-    "Valor": "En un Bundle"
-  },
-  {
-    "Id": "Search.String5",
-    "Valor": "Gratis para Reclamar"
-  },
-  {
-    "Id": "Search.String6",
-    "Valor": "Gratis para Jugar"
-  },
-  {
-    "Id": "Search.String7",
-    "Valor": "Juegos"
-  },
-  {
-    "Id": "Search.String8",
-    "Valor": "DLCs"
-  },
-  {
-    "Id": "Search.String9",
-    "Valor": "Bandas Sonoras"
-  },
-  {
-    "Id": "Search.String10",
-    "Valor": "Software"
-  },
-  {
-    "Id": "LastAdded.Title",
-    "Valor": "Últimos Juegos Añadidos"
-  },
-  {
-    "Id": "LastAdded.String1",
-    "Valor": "Últimos Juegos y DLCs Añadidos a la Base de Datos"
   },
   {
     "Id": "SettingsLayout.String1",

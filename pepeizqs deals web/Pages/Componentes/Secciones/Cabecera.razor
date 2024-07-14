@@ -1,17 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc;
 @using Microsoft.AspNetCore.Mvc.Razor;
 @using Microsoft.Data.SqlClient;
-@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inherits Juegos.Juego
 
-@inject UserManager<Usuario> UserManager
-@inject SignInManager<Usuario> SignInManager
-@inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavManager
 
 <style>
@@ -37,71 +32,71 @@
     @if (resultados.Count == 0)
     {
         <div class="menu-dropdown-contenido">
-            @if (usuario != null)
+            @if (usuarioLogeado == true)
             {
                 <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Manage/Email">
                     <div style="display: flex; align-items: center;">
-                        @if (string.IsNullOrEmpty(usuario!.Avatar) == true)
+                        @if (string.IsNullOrEmpty(usuarioAvatar) == true)
                         {
-                            <div>@usuario.Email</div>
+                            <div>@usuarioEmail</div>
                         }
                         else
                         {
-                            @if (usuario.Avatar.ToLower().Contains(".jpg") == true || usuario.Avatar.ToLower().Contains(".jpeg") == true || usuario.Avatar.ToLower().Contains(".png") == true || usuario.Avatar.ToLower().Contains(".webp") == true)
+                            @if (usuarioAvatar.ToLower().Contains(".jpg") == true || usuarioAvatar.ToLower().Contains(".jpeg") == true || usuarioAvatar.ToLower().Contains(".png") == true || usuarioAvatar.ToLower().Contains(".webp") == true)
                             {
-                                <img src="@usuario.Avatar" style="max-height: 32px; max-width: 32px;" />
-                                <div style="margin-left: 15px;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Account")</div>
+                                <img src="@usuarioAvatar" style="max-height: 32px; max-width: 32px;" />
+                                <div style="margin-left: 15px;">@Herramientas.Idiomas.CogerCadena(idioma, "Account", "Header")</div>
                             }
                             else
                             {
-                                <div>@usuario.Email</div>
+                                <div>@usuarioEmail</div>
                             }
                         }
                     </div>
                 </a>
 
                 <a class="texto-cabecera menu-dropdown-item" href="/wishlist">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Wishlist")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
                 </a>
 
                 <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Logout")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Logout", "Header")
                 </button>
             }
             else
             {
                 <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Login">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Login")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Login", "Header")
                 </a>
                 <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Register">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Register")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Register", "Header")
                 </a>
             }
 
             <hr>
 
             <a class="texto-cabecera menu-dropdown-item" href="/historical-lows">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.HistoricalLows")
+                @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
             </a>
             <a class="texto-cabecera menu-dropdown-item" href="/bundles">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Bundles")
+                @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
             </a>
             <a class="texto-cabecera menu-dropdown-item" href="/free">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Free")
+                @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
             </a>
             <a class="texto-cabecera menu-dropdown-item" href="/subscriptions">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Subscriptions")
+                @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
             </a>
             <hr>
             <a class="texto-cabecera menu-dropdown-item" href="/giveaways">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.Giveaways")
+                @Herramientas.Idiomas.CogerCadena(idioma, "Giveaways", "Header")
             </a>
             <hr>
             <a class="texto-cabecera menu-dropdown-item" href="/last-news">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.LastNews")
+                @Herramientas.Idiomas.CogerCadena(idioma, "LastNews", "Header")
             </a>
             <a class="texto-cabecera menu-dropdown-item" href="/last-added">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Layout.LastAdded")
+                @Herramientas.Idiomas.CogerCadena(idioma, "LastAdded", "Header")
             </a>
         </div>
     }   
@@ -132,21 +127,28 @@
                                 @if (resultadosJuegos.Count > 0)
                                 {
                                     <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Game))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
-                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String7") (@resultadosJuegos.Count)
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
                                     </button>
                                 }
 
                                 @if (resultadosDLCs.Count > 0)
                                 {
                                     <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.DLC))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
-                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String8") (@resultadosDLCs.Count)
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
                                     </button>
                                 }
 
                                 @if (resultadosBandasSonoras.Count > 0)
                                 {
                                     <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Music))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
-                                        @Herramientas.Idiomas.CogerCadena(idioma, "Search.String9") (@resultadosBandasSonoras.Count)
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
+                                    </button>
+                                }
+
+                                @if (resultadosSoftware.Count > 0)
+                                {
+                                    <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Software))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                                        @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
                                     </button>
                                 }
                             </div>
@@ -172,9 +174,9 @@
                                         resultadosFinal = resultadosSoftware;
                                     }
 
-                                    <Virtualize Context="juego" Items="resultadosFinal">
+                                    <Virtualize Context="juego" Items="resultadosFinal" ItemSize="117" OverscanCount="6">
 				                        <ItemContent>
-                                            <div class="perfil-flexible-centrado" style="margin-top: 10px;">
+                                            <div class="perfil-flexible-centrado" style="padding-top: 10px;">
                                                 <a class="boton-pequeño" href="/game/@juego.Id/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" style="padding: 0px;">
                                                     <div class="perfil-flexible-centrado">
                                                         <div>
@@ -222,7 +224,16 @@
     public string idioma { get; set; }
 
     [Parameter]
+    public bool usuarioLogeado { get; set; }
+
+    [Parameter]
     public bool adminLogeado { get; set; }
+
+    [Parameter]
+    public string usuarioAvatar { get; set; }
+
+    [Parameter]
+    public string usuarioEmail { get; set; }
 
     [Parameter]
     public string discord { get; set; }
@@ -244,8 +255,6 @@
 
     SqlConnection conexion = new SqlConnection();
 
-    private Usuario usuario = new Usuario();
-
     private List<Juegos.Juego> resultados = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
@@ -253,14 +262,6 @@
     private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
 
     private Task<List<Juegos.Juego>> tarea;
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (HttpContextAccessor.HttpContext.User != null)
-        {
-            usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
-        }        
-    }
 
     private void Inicio(MouseEventArgs e)
     {
@@ -398,7 +399,7 @@
         {
             if (juego.FreeToPlay.ToLower() == "true")
             {
-                return Herramientas.Idiomas.CogerCadena(idioma, "Search.String6");
+                return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage6", "Header");
             }
         }
 
@@ -410,7 +411,7 @@
                 {
                     if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
                     {
-                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String5");
+                        return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header");
                     }
                 }
             }
@@ -424,7 +425,7 @@
                 {
                     if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
                     {
-                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String4");
+                        return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header");
                     }
                 }
             }
@@ -438,7 +439,7 @@
                 {
                     if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
                     {
-                        return Herramientas.Idiomas.CogerCadena(idioma, "Search.String3");
+                        return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header");
                     }
                 }
             }
@@ -500,11 +501,11 @@
 
             precioTexto = precioTexto + "€";
 
-            return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+            return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
         }
         else
         {
-            return Herramientas.Idiomas.CogerCadena(idioma, "Search.String2");
+            return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
         }
     }
 

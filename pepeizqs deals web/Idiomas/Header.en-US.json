@@ -1,0 +1,90 @@
+[
+  {
+    "Id": "Account",
+    "Valor": "Account"
+  },
+  {
+    "Id": "Wishlist",
+    "Valor": "Wishlist"
+  },
+  {
+    "Id": "Logout",
+    "Valor": "Logout"
+  },
+  {
+    "Id": "Login",
+    "Valor": "Login"
+  },
+  {
+    "Id": "Register",
+    "Valor": "Register"
+  },
+  {
+    "Id": "HistoricalLows",
+    "Valor": "Historical Lows"
+  },
+  {
+    "Id": "Bundles",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Free",
+    "Valor": "Free"
+  },
+  {
+    "Id": "Subscriptions",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "LastNews",
+    "Valor": "Last News"
+  },
+  {
+    "Id": "LastAdded",
+    "Valor": "Last Added"
+  },
+  {
+    "Id": "Giveaways",
+    "Valor": "Giveaways"
+  },
+  {
+    "Id": "SearchFilter1",
+    "Valor": "Games"
+  },
+  {
+    "Id": "SearchFilter2",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "SearchFilter3",
+    "Valor": "Soundtracks"
+  },
+  {
+    "Id": "SearchFilter4",
+    "Valor": "Software"
+  },
+  {
+    "Id": "SearchMessage1",
+    "Valor": "From {0}"
+  },
+  {
+    "Id": "SearchMessage2",
+    "Valor": "Not in Sale"
+  },
+  {
+    "Id": "SearchMessage3",
+    "Valor": "In a Subscription"
+  },
+  {
+    "Id": "SearchMessage4",
+    "Valor": "In a Bundle"
+  },
+  {
+    "Id": "SearchMessage5",
+    "Valor": "Free to Claim"
+  },
+  {
+    "Id": "SearchMessage6",
+    "Valor": "Free to Play"
+  }
+]
