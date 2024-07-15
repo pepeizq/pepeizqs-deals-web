@@ -49,11 +49,6 @@
 		margin-right: 15px;
 	}
 
-	.minimo-espacio3 {
-		margin-left: 30px;
-		margin-right: 30px;
-	}
-
 	@@media (max-width: 800px) {
 		.noticia-fuente {
 			font-size: 13px;
@@ -82,11 +77,6 @@
 
 		.minimo-espacio2 {
 			padding: 5px 10px;
-			margin-right: 0px;
-		}
-
-		.minimo-espacio3 {
-			margin-left: 0px;
 			margin-right: 0px;
 		}
 	}
@@ -529,7 +519,7 @@ else
 						}
 					}
 					
-					<div class="perfil-flexible-centrado minimo-espacio3" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
+					<div class="perfil-flexible-centrado" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
 						<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/">
 							<div class="perfil-flexible-centrado">
 								<div style="max-width: 230px;">
@@ -657,9 +647,6 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
-	[Parameter]
-	public string cargando { get; set; }
-
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 
@@ -718,21 +705,6 @@ else
 			#region Aviso
 
 			aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
-
-			#endregion
-
-			#region Destacados
-
-			try
-			{
-				juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
-			}
-			catch (Exception ex)
-			{
-				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);			
-			}
-
-			CargarJuegosDestacados();
 
 			#endregion
 
@@ -805,14 +777,32 @@ else
 
 			#endregion
 		}
-
-		await JavaScript.InvokeVoidAsync("ocultar", cargando);
 	}
 
 	protected override void OnAfterRender(bool primerRender)
 	{
 		if (primerRender == true)
 		{
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				#region Destacados
+
+				try
+				{
+					juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
+				}
+
+				CargarJuegosDestacados();
+
+				#endregion
+			}
+
 			CronometroDestacados();
 		}
 	}

@@ -11,20 +11,7 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
-
-builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
-
-builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
-builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
-
-builder.Services.AddDefaultIdentity<Usuario>(opciones =>
-{
-    opciones.SignIn.RequireConfirmedAccount = false;
-	opciones.Lockout.MaxFailedAccessAttempts = 15;
-	opciones.Lockout.AllowedForNewUsers = true;
-	opciones.User.RequireUniqueEmail = true;
-}
-).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
+//builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
 
 builder.Services.AddRazorPages();
 
@@ -93,17 +80,17 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(opciones => opcio
 
 #endregion
 
-#region Estado Middlewares
+//#region Estado Middlewares
 
-builder.Services.AddHealthChecks();
+//builder.Services.AddHealthChecks();
 
-#endregion
+//#endregion
 
-#region Cache
+//#region Cache
 
-builder.Services.AddResponseCaching();
+//builder.Services.AddResponseCaching();
 
-#endregion
+//#endregion
 
 #region Decompilador
 
@@ -129,24 +116,24 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 #endregion
 
-#region Blazor
+//#region Blazor
 
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+//builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-#endregion
+//#endregion
 
 //builder.Services.AddSignalR(opciones =>
 //{
-//    opciones.EnableDetailedErrors = true;
-//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//	opciones.EnableDetailedErrors = true;
+//	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
 //	opciones.KeepAliveInterval = TimeSpan.FromMinutes(5);
 //});
 
-builder.Services.Configure<HubOptions>(opciones =>
-{
-	opciones.MaximumReceiveMessageSize = null;
-	opciones.EnableDetailedErrors = true;
-});
+//builder.Services.Configure<HubOptions>(opciones =>
+//{
+//	opciones.MaximumReceiveMessageSize = null;
+//	opciones.EnableDetailedErrors = true;
+//});
 
 //builder.Services.Configure<IdentityOptions>(opciones =>
 //{
@@ -156,14 +143,14 @@ builder.Services.Configure<HubOptions>(opciones =>
 //    opciones.User.RequireUniqueEmail = true;
 //});
 
-//builder.Services.ConfigureApplicationCookie(opciones =>
-//{
-//    opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
-//    opciones.Cookie.Name = "cookiePepeizq";
-//    opciones.ExpireTimeSpan = TimeSpan.FromDays(90);
-//    opciones.LoginPath = "/Identity/Account/Login";
-//    opciones.SlidingExpiration = true;
-//});
+builder.Services.ConfigureApplicationCookie(opciones =>
+{
+	opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+	opciones.Cookie.Name = "cookiePepeizq";
+	opciones.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+	opciones.LoginPath = "/Identity/Account/Login";
+	opciones.SlidingExpiration = true;
+});
 
 //builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 //{
@@ -186,10 +173,25 @@ builder.Services.Configure<HubOptions>(opciones =>
 
 //builder.WebHost.ConfigureKestrel(opciones =>
 //{
-//    opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+//	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
 //	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
 //	opciones.AllowSynchronousIO = true;
 //});
+
+
+builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
+builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
+
+builder.Services.AddDefaultIdentity<Usuario>(opciones =>
+{
+	opciones.SignIn.RequireConfirmedAccount = false;
+	opciones.Lockout.MaxFailedAccessAttempts = 15;
+	opciones.Lockout.AllowedForNewUsers = true;
+	opciones.User.RequireUniqueEmail = true;
+}
+).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
+
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 var app = builder.Build();
 
@@ -220,11 +222,11 @@ app.UseHeadElementServerPrerendering();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-#region Cache
+//#region Cache
 
-app.UseResponseCaching();
+//app.UseResponseCaching();
 
-#endregion
+//#endregion
 
 #region Redireccionador
 

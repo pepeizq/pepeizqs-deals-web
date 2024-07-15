@@ -143,15 +143,15 @@
             reconnectionOptions: {
                 maxRetries: 100,
                 retryIntervalMilliseconds: 2000
+            },
+            configureSignalR: function (builder) {
+                let c = builder.build();
+                c.serverTimeoutInMilliseconds = 30000;
+                c.keepAliveIntervalInMilliseconds = 10000;
+                builder.build = () => {
+                    return c;
+                };
             }
-            // configureSignalR: function (builder) {
-            //     let c = builder.build();
-            //     c.serverTimeoutInMilliseconds = 30000;
-            //     c.keepAliveIntervalInMilliseconds = 10000;
-            //     builder.build = () => {
-            //         return c;
-            //     };
-            // }
         });
     </script>
     <script>

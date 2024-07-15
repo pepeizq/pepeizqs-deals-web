@@ -36,12 +36,15 @@
 								<div style="width: 100%; padding: 5px 20px;">
 									<div style="font-size: 18px;">@juego.Nombre</div>
 
-									@if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+									@if (usuario != null)
 									{
-										<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
-											<div style="font-size: 13px;">@juego.Id</div>
-										</div>
-									}
+										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+										{
+											<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
+												<div style="font-size: 13px;">@juego.Id</div>
+											</div>
+										}
+									}									
 								</div>
 
 								<div style="width: 250px; padding: 5px 15px; text-align: center; font-size: 17px;">

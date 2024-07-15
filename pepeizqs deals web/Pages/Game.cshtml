@@ -18,12 +18,14 @@
 
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
 	Usuario usuario = new Usuario();
+	List<string> juegosUsuario = new List<string>();
 
 	bool adminLogeado = false;
 
 	if (usuarioLogeado == true)
 	{
 		usuario = await UserManager.GetUserAsync(User);
+		juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 
 		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
 		{
@@ -77,5 +79,7 @@
 @(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new
 {
 	idioma = Model.idioma, 
-	juego = Model.juego 
+	juego = Model.juego,
+	usuarioLogeado = usuarioLogeado,
+	juegosUsuario = juegosUsuario
 }))

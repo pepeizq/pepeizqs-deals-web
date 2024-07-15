@@ -815,24 +815,18 @@
 	public Juegos.Juego juego { get; set; }
 
 	private Usuario usuario = new Usuario();
-	private List<string> juegosUsuario = new List<string>();
-	private bool usuarioLogeado = false;
+
+	[Parameter]
+	public List<string> juegosUsuario { get; set; }
+
+	[Parameter]
+	public bool usuarioLogeado { get; set; }
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (HttpContextAccessor.HttpContext.User != null)
-		{
-			usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
-
-			if (usuario != null)
-			{
-				usuarioLogeado = true;
-
-				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-			}
-		}
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 
 		//-------------------------------------------
 

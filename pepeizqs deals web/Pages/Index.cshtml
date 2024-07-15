@@ -12,10 +12,6 @@
 	string enlace = "https://pepeizqdeals.com";
 }
 
-<div id="cargando" style="width: 100%; display: flex; justify-content: center;">
-	<span class="cargando"></span>
-</div>
-
 @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 {
 	idioma = Model.idioma,
@@ -25,7 +21,7 @@
 	canonical = enlace
 }))
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.Server, new { 
-	idioma = Model.idioma,
-	cargando = "cargando"
+@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma
 }))
