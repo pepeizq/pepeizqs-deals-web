@@ -208,15 +208,15 @@ namespace Herramientas
 
 			if (diferenciaTiempo.Days == 1)
 			{
-                mensaje = Idiomas.CogerCadena(idioma, "Timer3.String1");
+                mensaje = Idiomas.CogerCadena(idioma, "3.String1", "Calculator");
             }
 			else if (diferenciaTiempo.Days > 1)
 			{
-                mensaje = string.Format(Idiomas.CogerCadena(idioma, "Timer3.String2"), diferenciaTiempo.Days);
+                mensaje = string.Format(Idiomas.CogerCadena(idioma, "3.String2", "Calculator"), diferenciaTiempo.Days);
             }
 			else
 			{
-				mensaje = Idiomas.CogerCadena(idioma, "Timer3.String1");
+				mensaje = Idiomas.CogerCadena(idioma, "3.String1", "Calculator");
 			}
 
 			return mensaje;

@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\bootstrap\**" />
+    <Content Remove="wwwroot\bootstrap\**" />
+    <EmbeddedResource Remove="wwwroot\bootstrap\**" />
+    <None Remove="wwwroot\bootstrap\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Idiomas\HistoricalLows.es-ES.json~RF3f6add0.TMP" />
   </ItemGroup>
 

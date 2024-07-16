@@ -80,21 +80,21 @@
 						@if (juego.Bundles != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
-								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Bundles")</a>
+								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Bundles", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Gratis != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
-								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Free")</a>
+								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Free", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Suscripciones != null)
 						{
 							<div style="margin-right: 15px; font-size: 16px;">
-								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Layout.Subscriptions")</a>
+								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Subscriptions", "Header")</a>
 							</div>
 						}
 
@@ -447,7 +447,7 @@
 
 				@if (BundlesAntiguos(juego.Bundles).Count > 0)
 				{
-					@if (BundlesDisponibles(juego.Bundles).Count > 0)
+					if (BundlesDisponibles(juego.Bundles).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
 							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String23")</label>
@@ -460,7 +460,7 @@
 						</div>
 					}
 
-					@foreach (var bundle2 in BundlesAntiguos(juego.Bundles))
+					foreach (var bundle2 in BundlesAntiguos(juego.Bundles))
 					{
 						var bundle3 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle2.BundleId);
 
@@ -524,7 +524,7 @@
 
 				@if (GratisAntiguos(juego.Gratis).Count > 0)
 				{
-					@if (GratisDisponibles(juego.Gratis).Count > 0)
+					if (GratisDisponibles(juego.Gratis).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
 							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String31")</label>
@@ -537,7 +537,7 @@
 						</div>
 					}
 
-					@foreach (var gratis2 in GratisAntiguos(juego.Gratis))
+					foreach (var gratis2 in GratisAntiguos(juego.Gratis))
 					{
 						<hr/>
 						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
@@ -549,7 +549,7 @@
 								<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
 							</div>
 
-							<div style="padding-right: 20px; width: 15%;">
+							 <div style="padding-right: 20px; width: 15%;">
 								<label>@GratisCargar.DevolverGratis(gratis2.Tipo).Nombre</label><br />
 								<label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(gratis2.FechaTermina, idioma)</label>
 							</div>
@@ -557,7 +557,7 @@
 							<div style="padding-right: 20px; width: 85%;">
 								<label>@Idiomas.CogerCadena(idioma, "Game.String37") @Calculadora.DiferenciaDuranteDias(gratis2.FechaEmpieza, gratis2.FechaTermina, idioma)</label><br />
 								<label style="font-size: 13px;">@gratis2.FechaEmpieza.Day.ToString()/@gratis2.FechaEmpieza.Month.ToString()/@gratis2.FechaEmpieza.Year.ToString() • @gratis2.FechaTermina.Day.ToString()/@gratis2.FechaTermina.Month.ToString()/@gratis2.FechaTermina.Year.ToString()</label>
-							</div>
+							</div> 
 						</div>
 					}
 				}
@@ -596,7 +596,7 @@
 
 				@if (SuscripcionesAntiguos(juego.Suscripciones).Count > 0)
 				{
-					@if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
+					if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
 							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String27")</label>
@@ -609,7 +609,7 @@
 						</div>
 					}
 
-					@foreach (var suscripcion2 in SuscripcionesAntiguos(juego.Suscripciones))
+					foreach (var suscripcion2 in SuscripcionesAntiguos(juego.Suscripciones))
 					{
 						<hr />
 						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
@@ -640,9 +640,9 @@
 			<div style="width: 70%;">
 				@if (juego.Media != null)
 				{
-					@if (juego.Media.Capturas != null)
+					if (juego.Media.Capturas != null)
 					{
-						@if (juego.Media.Capturas.Count > 0)
+						if (juego.Media.Capturas.Count > 0)
 						{
 							<div class="juego-galeria-contenedor">
 								@if (mediaMostrarPosicion == 99999)
@@ -1324,27 +1324,29 @@
 
 		if (bundlesAntiguos.Count > 0)
 		{
-			bundlesAntiguos.Sort(delegate (JuegoBundle j1, JuegoBundle j2)
-			{
-				if (j1 != null && j2 != null)
-				{
-					return j2.FechaTermina.CompareTo(j1.FechaTermina);
-				}
-				else
-				{
-					if (j1 != null)
-					{
-						return 0;
-					}
+			bundlesAntiguos = bundlesAntiguos.OrderBy(x => x.FechaTermina).ToList();
 
-					if (j2 != null)
-					{
-						return 1;
-					}
+			// bundlesAntiguos.Sort(delegate (JuegoBundle j1, JuegoBundle j2)
+			// {
+			// 	if (j1 != null && j2 != null)
+			// 	{
+			// 		return j2.FechaTermina.CompareTo(j1.FechaTermina);
+			// 	}
+			// 	else
+			// 	{
+			// 		if (j1 != null)
+			// 		{
+			// 			return 0;
+			// 		}
 
-					return 0;
-				}
-			});
+			// 		if (j2 != null)
+			// 		{
+			// 			return 1;
+			// 		}
+
+			// 		return 0;
+			// 	}
+			// });
 		}
 
 		return bundlesAntiguos;
@@ -1758,10 +1760,10 @@
 
 			precioTexto = precioTexto + "€";
 
-			return string.Format(Idiomas.CogerCadena(idioma, "Search.String1"), precioTexto);
+			return string.Format(Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
 		}
 
-		return Idiomas.CogerCadena(idioma, "Search.String2");
+		return Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
 	}
 
 	#endregion

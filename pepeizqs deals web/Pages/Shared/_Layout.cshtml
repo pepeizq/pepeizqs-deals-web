@@ -137,7 +137,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
+    @* <script src="_framework/blazor.server.js"></script> *@
+@*     <script src="_framework/blazor.server.js" autostart="false"></script>
     <script>
         Blazor.start({
             reconnectionOptions: {
@@ -159,6 +160,23 @@
         //     document.location.reload();
         // }
         // Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
+    </script> *@
+
+
+    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script>
+        async function boot() {
+            await Blazor.start()
+
+            while (Blazor.defaultReconnectionHandler === undefined) {
+                await delay(100)
+            }
+            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                document.location.reload()
+            }
+        }
+
+        boot()
     </script>
 
     <script>

@@ -217,9 +217,6 @@
 	[Parameter]
 	public string idioma { get; set; }
 
-	[Parameter]
-	public string cargando { get; set; }
-
 	private List<JuegoDeseadoMostrar> deseadosGestor = new List<JuegoDeseadoMostrar>();
 	private List<JuegoDeseadoMostrar> deseadosMostrar = new List<JuegoDeseadoMostrar>();
 	private List<string> deseadosSteam = new List<string>();
@@ -372,8 +369,6 @@
 				}
 			}
 		}   
-
-		await JavaScript.InvokeVoidAsync("ocultar", cargando);
 
 		deseadosSteam.Clear();
 		deseadosWeb.Clear();

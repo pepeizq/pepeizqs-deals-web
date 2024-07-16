@@ -264,9 +264,6 @@
 	[Parameter]
 	public string idioma { get; set; }
 
-	[Parameter]
-	public string cargando { get; set; }
-
 	private List<Juegos.Juego> juegosGestor = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosMostrar = new List<Juegos.Juego>();
 
@@ -373,8 +370,6 @@
 				}
 			}			
 		}
-
-		await JavaScript.InvokeVoidAsync("ocultar", cargando);
 	}
 
 	private string CargarImagenDRM(global::Juegos.Juego juego)

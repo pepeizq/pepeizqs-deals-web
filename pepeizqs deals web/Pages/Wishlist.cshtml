@@ -10,11 +10,6 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div id="cargando" style="width: 100%; display: flex; align-items: center; justify-content: center;">
-	<span class="cargando"></span>
-</div>
-
-@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new { 
-	idioma = Model.idioma,
-	cargando = "cargando"
+@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { 
+	idioma = Model.idioma
 }))

@@ -11,7 +11,22 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
-//builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(900));
+
+builder.Services.AddDefaultIdentity<Usuario>(opciones =>
+{
+	opciones.SignIn.RequireConfirmedAccount = false;
+	opciones.Lockout.MaxFailedAccessAttempts = 15;
+	opciones.Lockout.AllowedForNewUsers = true;
+    opciones.User.RequireUniqueEmail = true;
+}
+).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
+
+builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
+builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
+
+builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
+
+//builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 builder.Services.AddRazorPages();
 
@@ -80,11 +95,11 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(opciones => opcio
 
 #endregion
 
-//#region Estado Middlewares
+#region Estado Middlewares
 
-//builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks();
 
-//#endregion
+#endregion
 
 //#region Cache
 
@@ -99,7 +114,7 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
         new HttpClientHandler
         {
             AutomaticDecompression = System.Net.DecompressionMethods.GZip,
-			MaxConnectionsPerServer = 2,
+			MaxConnectionsPerServer = 2
 		});
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
@@ -116,18 +131,19 @@ builder.Services.AddreCAPTCHAV3(x =>
 
 #endregion
 
-//#region Blazor
+#region Blazor
 
-//builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-//#endregion
+#endregion
 
-//builder.Services.AddSignalR(opciones =>
-//{
-//	opciones.EnableDetailedErrors = true;
-//	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//	opciones.KeepAliveInterval = TimeSpan.FromMinutes(5);
-//});
+builder.Services.AddSignalR(opciones =>
+{
+	opciones.EnableDetailedErrors = true;
+	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+	opciones.MaximumReceiveMessageSize = 102400000;
+});
 
 //builder.Services.Configure<HubOptions>(opciones =>
 //{
@@ -178,21 +194,6 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //	opciones.AllowSynchronousIO = true;
 //});
 
-
-builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
-builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
-
-builder.Services.AddDefaultIdentity<Usuario>(opciones =>
-{
-	opciones.SignIn.RequireConfirmedAccount = false;
-	opciones.Lockout.MaxFailedAccessAttempts = 15;
-	opciones.Lockout.AllowedForNewUsers = true;
-	opciones.User.RequireUniqueEmail = true;
-}
-).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
-
-builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
-
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
@@ -234,6 +235,8 @@ app.MapControllers();
 
 #endregion
 
+app.MapHealthChecks("/vida");
+
 app.UseRouting();
 
 app.UseAuthorization();
@@ -245,6 +248,14 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+	//opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
+
+//var webSocketOptions = new Microsoft.AspNetCore.Builder.WebSocketOptions()
+//{
+//	KeepAliveInterval = TimeSpan.FromSeconds(60),
+//};
+
+//app.UseWebSockets(webSocketOptions);
 
 app.Run();
