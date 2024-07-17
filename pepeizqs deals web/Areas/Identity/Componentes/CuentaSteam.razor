@@ -127,9 +127,9 @@
 
 	private bool errorCuentaUsada = false;
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
 
 		if (usuario != null)
 		{

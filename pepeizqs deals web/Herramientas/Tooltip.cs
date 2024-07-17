@@ -84,18 +84,24 @@ namespace Herramientas
 
         public static bool ComprobarUsuarioTieneJuego(Usuario usuario, List<string> juegosUsuario, Juego juego, JuegoDRM drm)
         {
-            if (usuario != null && juego != null && juegosUsuario.Count > 0 && drm == JuegoDRM.Steam)
+            if (usuario != null)
             {
-                if (juego.Tipo == JuegoTipo.Game)
+                if (juego != null)
                 {
-					foreach (var juegoUsuario in juegosUsuario)
+					if (juegosUsuario.Count > 0)
 					{
-						if (juegoUsuario == juego.IdSteam.ToString())
+						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
 						{
-							return true;
+							foreach (var juegoUsuario in juegosUsuario)
+							{
+								if (juegoUsuario == juego.IdSteam.ToString())
+								{
+									return true;
+								}
+							}
 						}
 					}
-				}
+				}                      
             }
 
             return false;

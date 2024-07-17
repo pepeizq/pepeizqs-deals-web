@@ -30,6 +30,16 @@
 				<textarea @onchange="(e => TextoCambiaEnlace(e))" class="entrada-texto" rows="1">@textoEnlace</textarea>
 			</div>
 		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Fecha Termina
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaFechaTermina(e))" class="entrada-texto" rows="1">@textoFechaTermina</textarea>
+			</div>
+		</div>
 	</div>
 }
 
@@ -54,6 +64,8 @@
 		if (noticia != null)
 		{
 			textoImagen = noticia.Imagen;
+			textoEnlace = noticia.Enlace;
+			textoFechaTermina = noticia.FechaTermina.ToString();
 		}
 	}
 
@@ -89,6 +101,24 @@
 			using (conexion)
 			{
 				BaseDatos.Noticias.Actualizar.Enlace(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoFechaTermina = string.Empty;
+
+	private void TextoCambiaFechaTermina(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoFechaTermina = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.FechaTermina(noticiaId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

@@ -340,10 +340,6 @@
     "Valor": "DLCs en la base de datos:"
   },
   {
-    "Id": "News.String11",
-    "Valor": "Comprueba las últimas noticias de la web pepeizqdeals.com"
-  },
-  {
     "Id": "News.BundleString1",
     "Valor": "El bundle {0} ha sido lanzado en {1}"
   },

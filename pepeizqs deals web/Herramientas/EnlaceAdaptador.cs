@@ -10,7 +10,8 @@ namespace Herramientas
 			s2 = s2.Replace("'", string.Empty);
             s2 = s2.Replace(".", string.Empty);
             s2 = s2.Replace("+", string.Empty);
-            s2 = s2.Replace(" ", "_");
+			s2 = s2.Replace("/", string.Empty);
+			s2 = s2.Replace(" ", "_");
 
 			int i = 0;
 			while (i < 10)

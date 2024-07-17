@@ -1,10 +1,12 @@
 ﻿@using Bundles2
 @using Gratis2
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 @using Noticias
 @using Suscripciones2
 
-@inject IJSRuntime JS
+@inject IJSRuntime JavaScript
+@inject NavigationManager NavManager
 
 <script>
 	window.ChangeUrl = function (url) {
@@ -12,171 +14,180 @@
 	}
 </script>
 
-<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "News.String11")" video="@video" />
+@if (cambiarEnlace == true)
+{
+	<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "SEO", "News")" video="@video" />
 
-<div class="juego-wrap">
+	<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px; margin-bottom: 40px;" @onclick="(e => VolverNoticias(e))">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Back", "News")
+	</button>
+}
+
+<div class="perfil" style="padding: 0px; overflow-x: hidden; overflow-y: scroll;">
 	@if (juegos != null)
 	{
 		if (juegos.Count > 0)
 		{
-			<img class="juego-fondo" src="@juegos[0].Imagenes.Library_1920x620" onerror="this.parentNode.removeChild(this)" alt="Background"/>
+			<div style="display: flex; justify-content: center; align-items: center; overflow: hidden;">
+				<img style="height: 150px; flex-shrink: 0; min-width: 100%; object-fit: cover;" src="@juegos[0].Imagenes.Library_1920x620" alt="@juegos[0].Nombre" />
+			</div>
 		}
 	}
 
-	<div class="juego-contenido">
-		<div class="juego-cabecera" style="padding: 40px; flex-direction: row; align-items: center;">
-			@{
-				string imagenCabecera = string.Empty;
+	<div style="padding: 40px 40px 30px 40px; display: flex; flex-direction: row; align-items: center;">
+		@{
+			string imagenCabecera = string.Empty;
 
-				if (noticia.Tipo == NoticiaTipo.Bundles)
+			if (noticia.Tipo == NoticiaTipo.Bundles)
+			{
+				imagenCabecera = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
+			}
+			else if (noticia.Tipo == NoticiaTipo.Gratis)
+			{
+				imagenCabecera = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
+			}
+			else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+			{
+				imagenCabecera = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
+			}
+
+			if (string.IsNullOrEmpty(imagenCabecera) == false)
+			{
+				<div>
+					<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo" />
+				</div>
+			}
+		}
+
+		<div style="padding-left: 40px;">
+			<h1 style="font-size: 22px;">
+				@titulo
+			</h1>
+
+			<div style="display: flex; font-size: 14px; margin-top: 20px;">
+				<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
+
+				@{
+					string fechaTermina = string.Empty;
+					TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
+
+					if (diferenciaTiempo.Days > 1)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+					}
+					else if (diferenciaTiempo.Days == 1)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+					}
+					else if (diferenciaTiempo.Days == 0)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+					}
+					else if (diferenciaTiempo.Days < 0)
+					{
+						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+					}
+
+					if (string.IsNullOrEmpty(fechaTermina) == false)
+					{
+						<div style="margin-left: 30px;">
+							@fechaTermina
+						</div>
+					}
+				}
+			</div>
+		</div>
+	</div>
+
+	@if (string.IsNullOrEmpty(noticia.Enlace) == false)
+	{
+		<a href="@noticia.Enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
+			<div>
+				@if (noticia.Tipo == NoticiaTipo.Bundles)
 				{
-					imagenCabecera = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
+					<label style="cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "News.String7")</label>
 				}
 				else if (noticia.Tipo == NoticiaTipo.Gratis)
 				{
-					imagenCabecera = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
+					<label style="cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "News.String8")</label>
 				}
 				else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 				{
-					imagenCabecera = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
+					<label style="cursor: pointer;">@Herramientas.Idiomas.CogerCadena(idioma, "News.String9")</label>
 				}
-
-				if (string.IsNullOrEmpty(imagenCabecera) == false)
-				{
-					<div>
-						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo"/>
-					</div>
-				}
-			}
-
-			<div style="padding-left: 40px; padding-right: 40px;">
-				<h1 style="font-size: 22px;">
-					@titulo
-				</h1>
-
-				<div style="display: flex; font-size: 14px; margin-top: 20px;">
-					<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
-
-					@{
-						string fechaTermina = string.Empty;
-						TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
-
-						if (diferenciaTiempo.Days > 1)
-						{
-							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
-						}
-						else if (diferenciaTiempo.Days == 1)
-						{
-							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
-						}
-						else if (diferenciaTiempo.Days == 0)
-						{
-							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
-						}
-						else if (diferenciaTiempo.Days < 0)
-						{
-							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
-						}
-
-						if (string.IsNullOrEmpty(fechaTermina) == false)
-						{
-							<div style="margin-left: 30px;">
-								@fechaTermina
-							</div>
-						}
-					}
-				</div>
 			</div>
+		</a>
+	}
+
+	<hr/>
+
+	@if (noticia.Tipo == NoticiaTipo.Bundles)
+	{
+		if (noticia.BundleId > 0)
+		{
+			<div>
+				<Bundle bundleId="@noticia.BundleId" idioma="@idioma" modulo="true" />
+			</div>
+		}
+	}
+	else
+	{
+		<div style="padding: 30px 40px 40px 40px;">
+			@((MarkupString)Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs))
 		</div>
+	}
 
-		@if (string.IsNullOrEmpty(noticia.Enlace) == false)
-		{
-			<a href="@noticia.Enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
-				<div>
-					@if (noticia.Tipo == NoticiaTipo.Bundles)
-					{
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String7")</label>
-					}
-					else if (noticia.Tipo == NoticiaTipo.Gratis)
-					{
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String8")</label>
-					}
-					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-					{
-						<label>@Herramientas.Idiomas.CogerCadena(idioma, "News.String9")</label>
-					}
-				</div>
-			</a>
-		}
-
-		@if (noticia.Tipo == NoticiaTipo.Bundles)
-		{
-			if (noticia.BundleId > 0)
-			{
-				<div class="perfil" style="margin-top: 40px; padding-bottom: 20px;">
-					<Bundle bundleId="@noticia.BundleId" idioma="@idioma" modulo="true" />
-				</div>				
-			}
-		}
-		else
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				@((MarkupString)Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs))
-			</div>
-		}
-
-		@if (string.IsNullOrEmpty(video) == false)
-		{
-			<div style="display: flex; height: 100%;">
-				<video controls autoplay muted src="@video" style="width: 100%; height: auto;" />
-			</div>
-		}
+	@if (string.IsNullOrEmpty(video) == false)
+	{
+		<div style="display: flex; height: 100%;">
+			<video controls autoplay muted src="@video" style="width: 100%; height: auto;" />
+		</div>
+	}
 
 
-@* 		@if (Model.juegos.Count > 0)
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				<div style="margin-bottom: 20px;">
-					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String5")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-					@foreach (var juego in Model.juegos)
-					{
-						<div style="min-width: 150px; max-width: 200px;">
-							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
-								<div>
-									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='@juego.Imagenes.Capsule_231x87';" />
-								</div>
-							</a>
-						</div>
-					}
-				</div>
-			</div>
-		} *@
-
-@* 		@if (Model.dlcs.Count > 0)
-		{
-			<div class="perfil" style="margin-top: 40px;">
-				<div style="margin-bottom: 20px;">
-					@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String10")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-					@foreach (var juego in Model.dlcs)
-					{
-						<div style="min-width: 200px; max-width: 250px;">
-							<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
-								<div>
-									<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" />
-								</div>
-							</a>
-						</div>
-					}
-				</div>
-			</div>
-		} *@
+	@* 		@if (Model.juegos.Count > 0)
+	{
+	<div class="perfil" style="margin-top: 40px;">
+	<div style="margin-bottom: 20px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String5")
 	</div>
+
+	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+	@foreach (var juego in Model.juegos)
+	{
+	<div style="min-width: 150px; max-width: 200px;">
+	<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
+	<div>
+	<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Library_600x900, "juegos", juego.Id.ToString(), "library_600x900", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='@juego.Imagenes.Capsule_231x87';" />
+	</div>
+	</a>
+	</div>
+	}
+	</div>
+	</div>
+	} *@
+
+	@* 		@if (Model.dlcs.Count > 0)
+	{
+	<div class="perfil" style="margin-top: 40px;">
+	<div style="margin-bottom: 20px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "News.String10")
+	</div>
+
+	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+	@foreach (var juego in Model.dlcs)
+	{
+	<div style="min-width: 200px; max-width: 250px;">
+	<a href="game/@juego.Id" class="boton-pequeño" style="padding: 5px;">
+	<div>
+	<img src="@await Herramientas.Imagenes.DescargarYGuardar(juego.Imagenes.Capsule_231x87, "juegos", juego.Id.ToString(), "capsule_231x87", HttpContext.Request.Host.Value)" style="max-width: 100%; max-height: 100%;" />
+	</div>
+	</a>
+	</div>
+	}
+	</div>
+	</div>
+	} *@
 </div>
 
 @code {
@@ -188,6 +199,9 @@
 
 	[Parameter]
 	public int noticiaId { get; set; }
+
+	[Parameter]
+	public bool cambiarEnlace { get; set; } = true;
 
 	public Noticias.Noticia noticia = new Noticias.Noticia();
 
@@ -238,8 +252,16 @@
 		{
 			if (noticia != null)
 			{
-				await JS.InvokeVoidAsync("ChangeUrl", "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/");
+				if (cambiarEnlace == true)
+				{
+					await JavaScript.InvokeVoidAsync("ChangeUrl", "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/");
+				}				
 			}
 		}
+	}
+
+	private void VolverNoticias(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/last-news", true);
 	}
 }

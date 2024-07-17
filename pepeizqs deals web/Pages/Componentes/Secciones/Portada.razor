@@ -10,7 +10,6 @@
 @using Microsoft.VisualBasic;
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
-@using pepeizqs_deals_web.Pages.Componentes.Admin
 
 @* @rendermode @(new InteractiveServerRenderMode(prerender: true)) *@
 
@@ -215,12 +214,12 @@
 		}
 
 	.noticia-ancho {
-		width: calc(33% - 30px);
+		width: calc(33% - 16px);
 	}
 
 	@@media (max-width: 800px) {
 		.noticia-ancho {
-			width: calc(50% - 30px);
+			width: calc(50% - 16px);
 		}
 	}
 </style>
@@ -351,26 +350,9 @@
 
 @if (noticiasMostrar.Count > 0)
 {
-	<div style="display: flex; overflow: auto; padding-bottom: 20px; margin-left: 5px; margin-right: 5px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+	<div style="display: flex; overflow: auto; padding-bottom: 20px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 		@foreach (var noticia in noticiasMostrar)
 		{
-			string objetivo = "_self";
-
-			if (string.IsNullOrEmpty(noticia.Enlace) == false)
-			{
-				if (noticia.Enlace.Contains("/link/") == true)
-				{
-					objetivo = "_blank";
-				}
-			}
-
-			string enlace = noticia.Enlace;
-
-			if (string.IsNullOrEmpty(enlace) == true)
-			{
-				enlace = "/news/" + noticia.Id + "/";
-			}
-
 			string marginExtra = string.Empty;
 
 			if (noticiasMostrar.Count == 1 || noticiasMostrar.Count == 2)
@@ -383,7 +365,7 @@
 					@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
 				</div>
 
-				<a style="text-decoration: none;" href="@enlace" target="@objetivo">
+				<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, noticia.Tipo))" style="height: 100%; cursor: pointer;">
 					<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
 						<div style="display: flex; align-items: center;">
 							<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
@@ -411,11 +393,28 @@
 						</div>
 
 						<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
-							@if (string.IsNullOrEmpty(CargarIconoNoticia(noticia)) == false)
-							{
-								<div>
-									<img src="@CargarIconoNoticia(noticia)" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
-								</div>
+							@{
+								string icono = string.Empty;
+
+								if (noticia.Tipo == NoticiaTipo.Bundles)
+								{
+									icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+								}
+								else if (noticia.Tipo == NoticiaTipo.Gratis)
+								{
+									icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
+								}
+								else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+								{
+									icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
+								}
+
+								if (string.IsNullOrEmpty(icono) == false)
+								{
+									<div>
+										<img src="@icono" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
+									</div>
+								}
 							}
 
 							<div style="margin-left: auto;">
@@ -423,7 +422,7 @@
 							</div>
 						</div>
 					</div>
-				</a>
+				</div>
 			</div>
 		}
 	</div>
@@ -440,6 +439,36 @@ else
 		<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
 			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
 		</a>
+	</div>
+}
+
+<style>
+	.noticia-panel {
+		height: calc(100% - var(--alturaCabecera));
+		width: 100%;
+		left: 0;
+		top: 0;
+		overflow-x: auto;
+		position: fixed;
+		z-index: 1001;
+		margin-top: var(--alturaCabecera);
+		padding: 10px;
+		backdrop-filter: blur(10px);
+	}
+</style>
+
+@if (noticiaMostrarId > 0)
+{
+	<div class="noticia-panel">
+		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+			<div style="position: absolute; top: 0; right: -80px;">
+				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => CerrarNoticia(e))">
+					<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
+				</button>
+			</div>
+			
+			<Noticia idioma="@idioma" noticiaId="@noticiaMostrarId" cambiarEnlace="false"/>
+		</div>		
 	</div>
 }
 
@@ -654,9 +683,6 @@ else
 
 	private List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
 
-	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
-	private List<Noticias.Noticia> noticiasGestor = new List<Noticias.Noticia>();
-
 	private List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
 
 	protected override async Task OnInitializedAsync()
@@ -748,6 +774,11 @@ else
 						if (fechaTemporal > DateTime.Now)
 						{
 							bool añadir = true;
+
+							if (DateTime.Now > noticia.FechaTermina)
+							{
+								añadir = false;
+							}
 
 							if (noticiasMostrar.Count > 0)
 							{
@@ -1103,108 +1134,41 @@ else
 		return video;
 	}
 
-	private string CargarEnlaceNoticia(Noticias.Noticia noticia)
-	{
-		string enlace = string.Empty;
+	#region Noticias
 
-		if (noticia.Enlace != null)
+	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
+	private List<Noticias.Noticia> noticiasGestor = new List<Noticias.Noticia>();
+	private int noticiaMostrarId = 0;
+	private string noticiaMostrarAncho = "1000px";
+
+	private async void GestionarNoticia(MouseEventArgs e, string noticiaEnlace, int noticiaId, NoticiaTipo noticiaTipo)
+	{
+		if (string.IsNullOrEmpty(noticiaEnlace) == false)
 		{
-			enlace = noticia.Enlace;
+			await JavaScript.InvokeVoidAsync("open", noticiaEnlace, "_blank");
 		}
 		else
 		{
-			enlace = "/news/" + noticia.IdMaestra.ToString();
+			if (noticiaId > 0)
+			{
+				noticiaMostrarId = noticiaId;
+			}
 		}
 
-		return enlace;
+		if (noticiaTipo == NoticiaTipo.Bundles)
+		{
+			noticiaMostrarAncho = "1200px";
+		}
+		else
+		{
+			noticiaMostrarAncho = "1000px";
+		}
 	}
 
-	private string CargarIconoNoticia(Noticias.Noticia noticia)
+	private void CerrarNoticia(MouseEventArgs e)
 	{
-		string icono = string.Empty;
-
-		if (noticia.Tipo == NoticiaTipo.Bundles)
-		{
-			icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
-		}
-		else if (noticia.Tipo == NoticiaTipo.Gratis)
-		{
-			icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
-		}
-		else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-		{
-			icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
-		}
-
-		return icono;
+		noticiaMostrarId = 0;
 	}
 
-	private string CargarFondoNoticia(Noticias.Noticia noticia)
-	{
-		string imagen = null;
-
-		if (noticia != null)
-		{
-			if (noticia.Imagen != null)
-			{
-				imagen = noticia.Imagen;
-			}
-
-			if (imagen == null)
-			{
-				if (noticia.Juegos != null)
-				{
-					List<string> juegos = Herramientas.Listados.Generar(noticia.Juegos);
-
-					if (juegos != null)
-					{
-						Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegos[0]);
-
-						if (juego != null)
-						{
-							imagen = juego.Imagenes.Library_1920x620;
-						}
-					}
-				}
-			}
-
-			if (imagen == null)
-			{
-				if (noticia.ContenidoEn != null)
-				{
-					if (noticia.ContenidoEn.Contains(".png") == true || noticia.ContenidoEn.Contains(".webp") == true || noticia.ContenidoEn.Contains(".jpg") == true)
-					{
-						int contador = 4;
-						int int1 = noticia.ContenidoEn.IndexOf(".png");
-
-						if (int1 == -1)
-						{
-							contador = 5;
-							int1 = noticia.ContenidoEn.IndexOf(".webp");
-						}
-
-						if (int1 == -1)
-						{
-							contador = 4;
-							int1 = noticia.ContenidoEn.IndexOf(".jpg");
-						}
-
-						if (int1 > - 1)
-						{
-							string temp1 = noticia.ContenidoEn.Remove(int1 + contador, noticia.ContenidoEn.Length - int1 - contador);
-
-							int int2 = temp1.LastIndexOf("https://");
-							string temp2 = temp1.Remove(0, int2);
-
-							temp2 = temp2.Replace(Strings.ChrW(34).ToString(), null);
-
-							imagen = temp2.Trim();
-						}
-					}
-				}
-			}
-		}
-
-		return imagen;
-	}
+	#endregion
 }

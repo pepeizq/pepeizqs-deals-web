@@ -49,5 +49,28 @@ namespace BaseDatos.Noticias
                 }
             }
         }
-    }
+
+		public static void FechaTermina(string id, string nuevaFecha, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET fechaTermina=@fechaTermina " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@fechaTermina", nuevaFecha);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+	}
 }

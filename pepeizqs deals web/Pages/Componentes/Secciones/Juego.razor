@@ -225,9 +225,30 @@
 				if (VerificarMostrarDRM(idioma, drm, juego) == true)
 				{
 					<div id="@drm">
-						@if (usuarioLogeado == true)
+						@if (usuario != null)
 						{
-							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, drm);
+							bool usuarioTieneJuego = false;
+
+							if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+							{
+								List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+
+								if (juegosSteam.Count > 0)
+								{
+									if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
+									{
+										foreach (var juegoUsuario in juegosSteam)
+										{
+											if (juegoUsuario == juego.IdSteam.ToString())
+											{
+												usuarioTieneJuego = true;
+												break;
+											}
+										}
+									}
+								}
+							}
+							
 							bool usuarioTieneDeseado = false;
 
 							string mensaje = string.Empty;
@@ -664,7 +685,7 @@
 
 								@if (juego.Media.Miniaturas != null)
 								{
-									<div class="juego-galeria-fila">
+									<div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 										@{
 											if (juego.Media.Video != null)
 											{
@@ -815,12 +836,6 @@
 	public Juegos.Juego juego { get; set; }
 
 	private Usuario usuario = new Usuario();
-
-	[Parameter]
-	public List<string> juegosUsuario { get; set; }
-
-	[Parameter]
-	public bool usuarioLogeado { get; set; }
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
@@ -1325,28 +1340,6 @@
 		if (bundlesAntiguos.Count > 0)
 		{
 			bundlesAntiguos = bundlesAntiguos.OrderBy(x => x.FechaTermina).ToList();
-
-			// bundlesAntiguos.Sort(delegate (JuegoBundle j1, JuegoBundle j2)
-			// {
-			// 	if (j1 != null && j2 != null)
-			// 	{
-			// 		return j2.FechaTermina.CompareTo(j1.FechaTermina);
-			// 	}
-			// 	else
-			// 	{
-			// 		if (j1 != null)
-			// 		{
-			// 			return 0;
-			// 		}
-
-			// 		if (j2 != null)
-			// 		{
-			// 			return 1;
-			// 		}
-
-			// 		return 0;
-			// 	}
-			// });
 		}
 
 		return bundlesAntiguos;

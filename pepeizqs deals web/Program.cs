@@ -163,7 +163,7 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 {
 	opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
 	opciones.Cookie.Name = "cookiePepeizq";
-	opciones.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+	opciones.ExpireTimeSpan = TimeSpan.FromDays(30);
 	opciones.LoginPath = "/Identity/Account/Login";
 	opciones.SlidingExpiration = true;
 });
