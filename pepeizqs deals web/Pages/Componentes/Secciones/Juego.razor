@@ -1339,7 +1339,7 @@
 
 		if (bundlesAntiguos.Count > 0)
 		{
-			bundlesAntiguos = bundlesAntiguos.OrderBy(x => x.FechaTermina).ToList();
+			bundlesAntiguos = bundlesAntiguos.OrderByDescending(x => x.FechaTermina).ToList();
 		}
 
 		return bundlesAntiguos;
@@ -1516,27 +1516,7 @@
 
 		if (gratisAntiguos.Count > 0)
 		{
-			gratisAntiguos.Sort(delegate (JuegoGratis j1, JuegoGratis j2)
-			{
-				if (j1 != null && j2 != null)
-				{
-					return j2.FechaEmpieza.CompareTo(j1.FechaEmpieza);
-				}
-				else
-				{
-					if (j1 != null)
-					{
-						return 0;
-					}
-
-					if (j2 != null)
-					{
-						return 1;
-					}
-
-					return 0;
-				}
-			});
+			gratisAntiguos = gratisAntiguos.OrderByDescending(x => x.FechaEmpieza).ToList();
 		}
 
 		return gratisAntiguos;
@@ -1647,27 +1627,7 @@
 
 		if (suscripcionesAntiguas.Count > 0)
 		{
-			suscripcionesAntiguas.Sort(delegate (JuegoSuscripcion j1, JuegoSuscripcion j2)
-			{
-				if (j1 != null && j2 != null)
-				{
-					return j2.FechaEmpieza.CompareTo(j1.FechaEmpieza);
-				}
-				else
-				{
-					if (j1 != null)
-					{
-						return 0;
-					}
-
-					if (j2 != null)
-					{
-						return 1;
-					}
-
-					return 0;
-				}
-			});
+			suscripcionesAntiguas = suscripcionesAntiguas.OrderByDescending(x => x.FechaEmpieza).ToList();
 		}
 
 		return suscripcionesAntiguas;

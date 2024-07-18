@@ -12,6 +12,7 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
+@inject NavigationManager NavManager
 
 <style>
 	.opciones-panel {
@@ -25,6 +26,18 @@
 		margin-top: var(--alturaCabecera);
 		padding: 10px;
 		backdrop-filter: blur(20px);
+	}
+</style>
+
+<style>
+	.deseado-imagen {
+		min-width: 223px;
+	}
+
+	@@media (max-width: 800px) {
+		.deseado-imagen {
+			display: none;
+		}
 	}
 </style>
 
@@ -100,7 +113,7 @@
 					<div style="margin: 20px 0px;">
 						<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
 							<div style="display: flex; align-items: center;">
-								<div style="min-width: 223px;">
+								<div class="deseado-imagen">
 									<img src="@juego.Imagen" style="height: 100%; width: 100%;" />
 								</div>
 
@@ -205,6 +218,32 @@
 						@Herramientas.Idiomas.CogerCadena(idioma, "String18", "Wishlist")
 					</div>
 				</div>
+
+				<hr style="margin-top: 30px;">
+
+				<div style="margin-top: 30px;">
+					<div style="padding-bottom: 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String19", "Wishlist")
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
+
+						<label style="padding-left: 30px; min-width: 65px;">@minimoDescuento%</label>
+					</div>
+				</div>
+
+				<div style="margin-top: 30px;">
+					<div style="padding-bottom: 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String20", "Wishlist")
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
+
+						<label style="padding-left: 30px; min-width: 65px;">@maximoPrecio€</label>
+					</div>
+				</div>
 			</div>
 		</div>
 	}
@@ -293,6 +332,38 @@
 				alturaFila = 88;
 			}
 
+			if (usuario.WishlistOption3 == null)
+			{
+				minimoDescuento = 1;
+			}
+			else
+			{
+				if (usuario.WishlistOption3 == 0 || usuario.WishlistOption3 == null)
+				{
+					minimoDescuento = 1;
+				}
+				else if (usuario.WishlistOption3 > 0)
+				{
+					minimoDescuento = usuario.WishlistOption3;
+				}
+			}
+
+			if (usuario.WishlistOption4 == null)
+			{
+				maximoPrecio = 90;
+			}
+			else
+			{
+				if (usuario.WishlistOption4 == 0 || usuario.WishlistOption4 == null)
+				{
+					maximoPrecio = 90;
+				}
+				else if (usuario.WishlistOption4 > 0)
+				{
+					maximoPrecio = usuario.WishlistOption4;
+				}
+			}
+
 			#endregion
 
 			#region Deseados Steam
@@ -369,6 +440,10 @@
 				}
 			}
 		}   
+		else
+		{
+			NavManager.NavigateTo("/", true);
+		}
 
 		deseadosSteam.Clear();
 		deseadosWeb.Clear();
@@ -715,25 +790,46 @@
 				buscador = true;
 			}
 
-			bool mostrarSoloMinimos = false;
+			bool soloMinimos = false;
 
-			if (usuario.WishlistOption1 == true)
+			if (usuario != null)
 			{
-				if (juego.Historico == true)
+				if (usuario.WishlistOption1 == true)
 				{
-					mostrarSoloMinimos = true;
+					if (juego.Historico == true)
+					{
+						soloMinimos = true;
+					}
+					else
+					{
+						soloMinimos = false;
+					}
 				}
 				else
 				{
-					mostrarSoloMinimos = false;
+					soloMinimos = true;
 				}
 			}
 			else
 			{
-				mostrarSoloMinimos = true;
+				soloMinimos = true;
 			}
 
-			if (buscador == true && mostrarSoloMinimos == true)
+			bool minimoDescuento2 = false;
+
+			if (juego.Precio.Descuento >= minimoDescuento)
+			{
+				minimoDescuento2 = true;
+			}
+
+			bool maximoPrecio2 = false;
+
+			if (juego.Precio.Precio <= maximoPrecio)
+			{
+				maximoPrecio2 = true;
+			}
+
+			if (buscador == true && soloMinimos == true && minimoDescuento2 == true && maximoPrecio2 == true)
 			{
 				juegosFiltrados.Add(juego);
 			}
@@ -842,6 +938,37 @@
 
 			ElegirOrdenamiento();
 		}
+	}
+
+	private int? minimoDescuento = 1;
+
+	private async void CambiarMinimoDescuento(ChangeEventArgs e)
+	{
+		minimoDescuento = int.Parse(e.Value.ToString());
+
+		if (minimoDescuento != 1)
+		{
+			minimoDescuento = minimoDescuento - 1;
+		}
+
+		usuario.WishlistOption3 = minimoDescuento;
+
+		await UserManager.UpdateAsync(usuario);
+
+		ElegirOrdenamiento();
+	}
+
+	private decimal? maximoPrecio = 90;
+
+	private async void CambiarMaximoPrecio(ChangeEventArgs e)
+	{
+		maximoPrecio = decimal.Parse(e.Value.ToString());
+
+		usuario.WishlistOption4 = maximoPrecio;
+
+		await UserManager.UpdateAsync(usuario);
+
+		ElegirOrdenamiento();
 	}
 
 	#endregion

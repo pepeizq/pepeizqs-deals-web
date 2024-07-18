@@ -79,7 +79,7 @@ namespace BaseDatos.Tiendas
 							}
 							else
 							{
-								juego = Juegos.Cargar.Ejecutar(juego, lector);
+								juego = Juegos.Buscar.Cargar(juego, lector);
 
 								actualizar = true;
 							}
@@ -278,7 +278,7 @@ namespace BaseDatos.Tiendas
 								{
                                     Juego juego = JuegoCrear.Generar();
 
-									juego = Juegos.Cargar.Ejecutar(juego, lector);
+									juego = Juegos.Buscar.Cargar(juego, lector);
 
 									if (juego.PrecioActualesTiendas == null)
 									{

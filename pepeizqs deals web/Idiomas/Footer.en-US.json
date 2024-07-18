@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "SourceCode",
+    "Valor": "Source Code"
+  },
+  {
+    "Id": "Api",
+    "Valor": "API"
+  },
+  {
+    "Id": "Contact",
+    "Valor": "Contact"
+  },
+  {
+    "Id": "Visits",
+    "Valor": "Visit Statistics"
+  },
+  {
+    "Id": "Privacy",
+    "Valor": "Privacy and Your Data"
+  }
+]

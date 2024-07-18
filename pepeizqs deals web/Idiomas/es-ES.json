@@ -1,21 +1,5 @@
 [
   {
-    "Id": "Layout.Privacy",
-    "Valor": "Privacidad y Vuestros Datos"
-  },
-  {
-    "Id": "Layout.SourceCode",
-    "Valor": "Código Fuente"
-  },
-  {
-    "Id": "Layout.Api",
-    "Valor": "API"
-  },
-  {
-    "Id": "Layout.Contact",
-    "Valor": "Contacto"
-  },
-  {
     "Id": "Login.Title",
     "Valor": "Iniciar Sesión"
   },

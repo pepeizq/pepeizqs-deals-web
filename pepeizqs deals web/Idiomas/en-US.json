@@ -1,25 +1,5 @@
 [
   {
-    "Id": "Layout.PersonalData",
-    "Valor": "Personal Data"
-  },
-  {
-    "Id": "Layout.Privacy",
-    "Valor": "Privacy and Your Data"
-  },
-  {
-    "Id": "Layout.SourceCode",
-    "Valor": "Source Code"
-  },
-  {
-    "Id": "Layout.Api",
-    "Valor": "API"
-  },
-  {
-    "Id": "Layout.Contact",
-    "Valor": "Contact"
-  },
-  {
     "Id": "Login.Title",
     "Valor": "Log in"
   },

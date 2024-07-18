@@ -17,6 +17,9 @@
     string steam = "https://steamcommunity.com/groups/pepeizqdeals/";
     string rss = Herramientas.Idiomas.CogerRSS(idioma);
 
+    string codigoFuente = "https://github.com/pepeizq/pepeizqs-deals-web/";
+    string visitas = "https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da";
+
     string titulo = string.Empty;
 
     if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Title", "Index"))
@@ -103,17 +106,17 @@
     <footer class="pie">
         <div class="cuerpo-ancho" style="padding: 30px 10px;">
             <div style="display: flex; align-items: center; font-size: 17px;">
-                <div style="width: 65%; text-align: left;">
+                <div style="width: 100%; text-align: left;">
                     <div>
                         &copy; @DateTime.Now.Year.ToString() • <a href="https://pepeizqapps.com/" style="text-decoration: none;" target="_blank">pepeizq's apps</a> • <a href="https://pepeizqdeals.com/" style="text-decoration: none;" target="_blank">pepeizq's deals</a>
                     </div>
                     
                     <div style="font-size: 16px; margin-top: 30px;">
-                        <a href="https://github.com/pepeizq/pepeizqs-deals-web/" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "Layout.SourceCode")</a> • <a href="/api" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Api")</a> • <a href="/Contact" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Contact")</a> • <a href="/Privacy" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Layout.Privacy")</a>
+                        <a href="@codigoFuente" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "SourceCode", "Footer")</a> • <a href="/api" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Api", "Footer")</a> • <a href="/contact" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Contact", "Footer")</a> • <a href="@visitas" style="text-decoration: none;" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Visits", "Footer")</a> • <a href="/privacy" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Privacy", "Footer")</a>
                     </div>
                 </div>
 
-                <div style="width: 25%; text-align: right;">
+                <div style="padding: 0px 80px;">
                     <div style="display: flex; align-items: center; justify-content: center; font-size: 24px; text-align: center;">
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
@@ -124,7 +127,7 @@
                     </div>
                 </div>
 
-                <div style="width: 10%; text-align: right;">
+                <div>
                     <a onclick="moverScroll('cuerpazo')" style="color: var(--colorTextoOscuro); text-decoration: none; cursor: pointer;">
                         <i class="fa-solid fa-chevron-up subir-arriba" style="font-size: 22px;"></i>
                     </a>

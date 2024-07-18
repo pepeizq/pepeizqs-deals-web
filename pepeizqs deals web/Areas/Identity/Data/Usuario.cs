@@ -79,10 +79,26 @@ public class Usuario : IdentityUser
 
 	[PersonalData]
 	[Column(TypeName = "int(4)")]
+	public int? WishlistOption3 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "decimal(9)")]
+	public decimal? WishlistOption4 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "int(4)")]
 	public int? HistoricalLowsSort { get; set; }
 
 	[PersonalData]
 	[Column(TypeName = "bit(1)")]
 	public bool? HistoricalLowsOption1 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "int(4)")]
+	public int? HistoricalLowsOption2 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "decimal(9)")]
+	public decimal? HistoricalLowsOption3 { get; set; }
 }
 

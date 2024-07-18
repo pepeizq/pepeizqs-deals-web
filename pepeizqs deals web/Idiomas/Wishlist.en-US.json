@@ -74,5 +74,13 @@
   {
     "Id": "String18",
     "Valor": "Show history (bundles, free and subscriptions)"
+  },
+  {
+    "Id": "String19",
+    "Valor": "Minimum Discount"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Maximum Price"
   }
 ]
