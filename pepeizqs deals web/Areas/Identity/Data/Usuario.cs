@@ -100,5 +100,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "decimal(9)")]
 	public decimal? HistoricalLowsOption3 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? HistoricalLowsStores { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? HistoricalLowsDRMs { get; set; }
 }
 

@@ -263,7 +263,7 @@
 				<div style="display: flex; align-items: center;">
 					<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
 
-					<label style="padding-left: 30px; min-width: 65px;">@minimoDescuento%</label>
+					<label style="padding-left: 30px; min-width: 65px; text-align: center;">@minimoDescuento%</label>
 				</div>
 			</div>
 
@@ -275,7 +275,86 @@
 				<div style="display: flex; align-items: center;">
 					<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
 
-					<label style="padding-left: 30px; min-width: 65px;">@maximoPrecio€</label>
+					<label style="padding-left: 30px; min-width: 65px; text-align: center;">@maximoPrecio€</label>
+				</div>
+			</div>
+
+			<hr style="margin-top: 30px;">
+
+			<div style="margin-top: 30px;">
+				<div style="padding-bottom: 15px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String14", "HistoricalLows")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+					@foreach (var drm in drms)
+					{
+						string iconoDRM = string.Empty;
+						string nombreDRM = string.Empty;
+
+						foreach (var drm2 in JuegoDRM2.GenerarListado())
+						{
+							if (drm2.Id == drm.DRMId)
+							{
+								iconoDRM = drm2.Imagen;
+								nombreDRM = drm2.Nombre;
+							}
+						}
+
+						<div style="display: flex; align-items: center;" title="@nombreDRM">
+							<div class="checkbox-caja">
+								<input type="checkbox" class="checkbox-interior" checked="@drm.Checkbox" @onchange="@(e => EnseñarJuegosDRM(e, drm.DRMId))">
+							</div>
+
+							@if (drm.DRMId != JuegoDRM.DRMFree)
+							{
+								<div style="margin-left: 20px; padding-bottom: 10px;">
+									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" />
+								</div>
+							}
+							else
+							{
+								<div style="margin-left: 20px; padding-bottom: 5px;">
+									<label style="font-size: 10px; max-width: 24px; text-align: center;">@nombreDRM</label>
+								</div>
+							}
+						</div>
+					}
+				</div>
+			</div>
+
+			<hr style="margin-top: 30px;">
+
+			<div style="margin-top: 30px;">
+				<div style="padding-bottom: 15px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String15", "HistoricalLows")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+					@foreach (var tienda in tiendas)
+					{
+						string iconoTienda = string.Empty;
+						string nombreTienda = string.Empty;
+
+						foreach (var tienda2 in Tiendas2.TiendasCargar.GenerarListado())
+						{
+							if (tienda2.Id == tienda.TiendaId)
+							{
+								iconoTienda = tienda2.ImagenIcono;
+								nombreTienda = tienda2.Nombre;
+							}
+						}
+
+						<div style="display: flex; align-items: center;" title="@nombreTienda">
+							<div class="checkbox-caja">
+								<input type="checkbox" class="checkbox-interior" checked="@tienda.Checkbox" @onchange="@(e => EnseñarJuegosTienda(e, tienda.TiendaId))">
+							</div>
+
+							<div style="margin-left: 20px; padding-bottom: 10px;">
+								<img src="@iconoTienda" style="width: 24px; height: 24px;" title="@nombreTienda" />
+							</div>
+						</div>
+					}
 				</div>
 			</div>
 		</div>
@@ -380,6 +459,16 @@
 					maximoPrecio = usuario.HistoricalLowsOption3;
 				}
 			}
+
+			if (string.IsNullOrEmpty(usuario.HistoricalLowsDRMs) == false)
+			{
+				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.HistoricalLowsDRMs);
+			}
+
+			if (string.IsNullOrEmpty(usuario.HistoricalLowsStores) == false)
+			{
+				tiendas = JsonConvert.DeserializeObject<List<MostrarJuegoTienda>>(usuario.HistoricalLowsStores);
+			}	
 
 			#endregion
 		}
@@ -710,7 +799,29 @@
 				maximoPrecio2 = true;
 			}
 
-			if (buscador == true && ocultable == false && minimoDescuento2 == true && maximoPrecio2 == true)
+			bool drm2 = false;
+
+			foreach (var drm in drms)
+			{
+				if (juego.PrecioMinimosHistoricos[0].DRM == drm.DRMId && drm.Estado == true)
+				{
+					drm2 = true;
+				}
+			}
+
+			bool tienda2 = false;
+
+			foreach (var tienda in tiendas)
+			{
+				if (juego.PrecioMinimosHistoricos[0].Tienda == tienda.TiendaId && tienda.Estado == true)
+				{
+					tienda2 = true;
+					break;
+				}
+			}
+
+			if (buscador == true && ocultable == false && minimoDescuento2 == true && maximoPrecio2 == true && 
+				drm2 == true && tienda2 == true)
 			{
 				juegosFiltrados.Add(juego);
 			}
@@ -836,6 +947,120 @@
 		}
 
 		ElegirOrdenamiento();
+	}
+
+	private async void EnseñarJuegosDRM(ChangeEventArgs e, JuegoDRM drmElegido)
+	{
+		foreach (var drm in drms)
+		{
+			if (drm.DRMId == drmElegido)
+			{
+				if (drm.Checkbox == null)
+				{
+					drm.Checkbox = "checked";
+					drm.Estado = true;
+				}
+				else
+				{
+					drm.Checkbox = null;
+					drm.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.HistoricalLowsDRMs = JsonConvert.SerializeObject(drms);
+			await UserManager.UpdateAsync(usuario);
+		}
+
+		ElegirOrdenamiento();
+	}
+
+	private List<MostrarJuegoDRM> drms = CrearListaDRMs();
+
+	public class MostrarJuegoDRM
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public JuegoDRM DRMId { get; set; }
+	}
+
+	private static List<MostrarJuegoDRM> CrearListaDRMs()
+	{
+		List<MostrarJuegoDRM> nuevaLista = new List<MostrarJuegoDRM>();
+
+		foreach (var drm in JuegoDRM2.GenerarListado())
+		{
+			MostrarJuegoDRM nuevoDRM = new MostrarJuegoDRM();
+			nuevoDRM.Estado = false;
+			nuevoDRM.Checkbox = null;
+			nuevoDRM.DRMId = drm.Id;
+
+			if (nuevoDRM.DRMId == JuegoDRM.Steam || nuevoDRM.DRMId == JuegoDRM.GOG || nuevoDRM.DRMId == JuegoDRM.Ubisoft || nuevoDRM.DRMId == JuegoDRM.EA)
+			{
+				nuevoDRM.Estado = true;
+				nuevoDRM.Checkbox = "checked";
+			}
+
+			nuevaLista.Add(nuevoDRM);
+		}
+
+		return nuevaLista;
+	}
+
+	private async void EnseñarJuegosTienda(ChangeEventArgs e, string tiendaElegida)
+	{
+		foreach (var tienda in tiendas)
+		{
+			if (tienda.TiendaId == tiendaElegida)
+			{
+				if (tienda.Checkbox == null)
+				{
+					tienda.Checkbox = "checked";
+					tienda.Estado = true;
+				}
+				else
+				{
+					tienda.Checkbox = null;
+					tienda.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.HistoricalLowsStores = JsonConvert.SerializeObject(tiendas);
+			await UserManager.UpdateAsync(usuario);
+		}
+
+		ElegirOrdenamiento();
+	}
+
+	private List<MostrarJuegoTienda> tiendas = CrearListaTiendas();
+
+	public class MostrarJuegoTienda
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public string TiendaId { get; set; }
+	}
+
+	private static List<MostrarJuegoTienda> CrearListaTiendas()
+	{
+		List<MostrarJuegoTienda> nuevaLista = new List<MostrarJuegoTienda>();
+
+		foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+		{
+			MostrarJuegoTienda nuevaTienda = new MostrarJuegoTienda();
+			nuevaTienda.Estado = true;
+			nuevaTienda.Checkbox = "checked";
+			nuevaTienda.TiendaId = tienda.Id;
+
+			nuevaLista.Add(nuevaTienda);
+		}
+
+		return nuevaLista;
 	}
 
 	#endregion

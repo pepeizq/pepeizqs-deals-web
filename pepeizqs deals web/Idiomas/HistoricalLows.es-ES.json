@@ -54,5 +54,13 @@
   {
     "Id": "String13",
     "Valor": "Precio Máximo"
+  },
+  {
+    "Id": "String14",
+    "Valor": "DRMs"
+  },
+  {
+    "Id": "String15",
+    "Valor": "Tiendas"
   }
 ]
