@@ -62,5 +62,29 @@
   {
     "Id": "String15",
     "Valor": "Tiendas"
+  },
+  {
+    "Id": "String16",
+    "Valor": "resultados"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Categorías"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Juegos"
+  },
+  {
+    "Id": "String19",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Bandas Sonoras"
+  },
+  {
+    "Id": "String21",
+    "Valor": "Software"
   }
 ]

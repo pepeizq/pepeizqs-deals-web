@@ -7,7 +7,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Precios
 	{
-		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion)
+		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion, bool actualizarAPI = false)
 		{
 			bool añadir = true;
 
@@ -177,7 +177,7 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			Juegos.Actualizar.Ejecutar(juego, conexion);
+			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);
 		}
 	}
 }

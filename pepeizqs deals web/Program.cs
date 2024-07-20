@@ -21,8 +21,8 @@ builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
-builder.Services.AddDbContext<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
-builder.Services.AddDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
+builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
+builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 

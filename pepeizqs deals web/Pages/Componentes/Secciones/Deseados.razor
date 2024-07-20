@@ -197,7 +197,7 @@
 					</div>
 				</div>
 
-				<hr/>
+				<hr style="margin-top: 30px;">
 
 				<div style="display: flex; align-items: center; margin-top: 30px;">
 					<div class="checkbox-caja">
@@ -304,7 +304,11 @@
 					usuario.OfficialGroup = datos.GrupoPremium;
 					usuario.OfficialGroup2 = datos.GrupoNormal;
 
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }				
 				}				
 			}
 
@@ -652,7 +656,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 0;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -673,7 +682,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 1;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -694,7 +708,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 2;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -715,7 +734,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 5;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -736,7 +760,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 3;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -757,7 +786,12 @@
 			if (usuario != null)
 			{
 				usuario.WishlistSort = 4;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -909,7 +943,11 @@
 				estadoEnseñarSoloMinimos = "checked";
 			}
 
-			await UserManager.UpdateAsync(usuario);
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 
 			ElegirOrdenamiento();
 		}
@@ -934,7 +972,11 @@
 				alturaFila = 114;
 			}
 
-			await UserManager.UpdateAsync(usuario);
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 
 			ElegirOrdenamiento();
 		}
@@ -953,7 +995,11 @@
 
 		usuario.WishlistOption3 = minimoDescuento;
 
-		await UserManager.UpdateAsync(usuario);
+		try
+		{
+			await UserManager.UpdateAsync(usuario);
+		}
+		catch { }
 
 		ElegirOrdenamiento();
 	}
@@ -966,7 +1012,11 @@
 
 		usuario.WishlistOption4 = maximoPrecio;
 
-		await UserManager.UpdateAsync(usuario);
+		try
+		{
+			await UserManager.UpdateAsync(usuario);
+		}
+		catch { }
 
 		ElegirOrdenamiento();
 	}

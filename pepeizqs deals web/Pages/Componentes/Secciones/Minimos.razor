@@ -39,7 +39,7 @@
 
 			<div style="display: flex; align-items: center; width: 30%; justify-content: right;">
 				<div style="font-size: 14px; text-align: right;">
-					@juegosMostrar.Count.ToString()
+					@juegosMostrar.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String16", "HistoricalLows")
 				</div>
 			</div>
 		</div>
@@ -238,7 +238,7 @@
 				</div>
 			</div>
 
-			<hr />
+			<hr style="margin-top: 30px;">
 
 			@if (usuario != null)
 			{
@@ -357,6 +357,48 @@
 					}
 				</div>
 			</div>
+
+			<hr style="margin-top: 30px;">
+
+			<div style="margin-top: 30px;">
+				<div style="padding-bottom: 15px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String17", "HistoricalLows")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+					@foreach (var categoria in categorias)
+					{
+						string nombreCategoria = string.Empty;
+
+						if (categoria.Categoria == JuegoTipo.Game)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String18", "HistoricalLows");
+						}
+						else if (categoria.Categoria == JuegoTipo.DLC)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String19", "HistoricalLows");
+						}
+						else if (categoria.Categoria == JuegoTipo.Music)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String20", "HistoricalLows");
+						}
+						else if (categoria.Categoria == JuegoTipo.Software)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String21", "HistoricalLows");
+						}
+
+						<div style="display: flex; align-items: center;" title="@nombreCategoria">
+							<div class="checkbox-caja">
+								<input type="checkbox" class="checkbox-interior" checked="@categoria.Checkbox" @onchange="@(e => EnseñarJuegosCategoria(e, categoria.Categoria))">
+							</div>
+
+							<div style="margin-left: 15px; padding-bottom: 8px;">
+								<label style="font-size: 14px;">@nombreCategoria</label>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
 		</div>
 	</div>
 }
@@ -408,7 +450,11 @@
 					usuario.OfficialGroup = datos.GrupoPremium;
 					usuario.OfficialGroup2 = datos.GrupoNormal;
 
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }				
 				}
 			}
 
@@ -469,6 +515,11 @@
 			{
 				tiendas = JsonConvert.DeserializeObject<List<MostrarJuegoTienda>>(usuario.HistoricalLowsStores);
 			}	
+
+			if (string.IsNullOrEmpty(usuario.HistoricalLowsCategories) == false)
+			{
+				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.HistoricalLowsCategories);
+			}
 
 			#endregion
 		}
@@ -627,7 +678,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 0;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -648,7 +704,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 1;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -669,7 +730,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 2;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -690,7 +756,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 3;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -711,7 +782,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 4;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -732,7 +808,12 @@
 			if (usuario != null)
 			{
 				usuario.HistoricalLowsSort = 5;
-				await UserManager.UpdateAsync(usuario);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 		}
 	}
@@ -820,8 +901,18 @@
 				}
 			}
 
+			bool categoria2 = false;
+
+			foreach (var categoria in categorias)
+			{
+				if (juego.Tipo == categoria.Categoria && categoria.Estado == true)
+				{
+					categoria2 = true;
+				}
+			}
+
 			if (buscador == true && ocultable == false && minimoDescuento2 == true && maximoPrecio2 == true && 
-				drm2 == true && tienda2 == true)
+				drm2 == true && tienda2 == true && categoria2 == true)
 			{
 				juegosFiltrados.Add(juego);
 			}
@@ -906,7 +997,11 @@
 				estadoOcultarJuegosUsuario = "checked";
 			}
 
-			await UserManager.UpdateAsync(usuario);
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 
 			ElegirOrdenamiento();
 		}
@@ -927,7 +1022,11 @@
 		{
 			usuario.HistoricalLowsOption2 = minimoDescuento;
 
-			await UserManager.UpdateAsync(usuario);
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 		}
 
 		ElegirOrdenamiento();
@@ -943,7 +1042,11 @@
 		{
 			usuario.HistoricalLowsOption3 = maximoPrecio;
 
-			await UserManager.UpdateAsync(usuario);
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 		}
 
 		ElegirOrdenamiento();
@@ -971,7 +1074,12 @@
 		if (usuario != null)
 		{
 			usuario.HistoricalLowsDRMs = JsonConvert.SerializeObject(drms);
-			await UserManager.UpdateAsync(usuario);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 		}
 
 		ElegirOrdenamiento();
@@ -1031,7 +1139,12 @@
 		if (usuario != null)
 		{
 			usuario.HistoricalLowsStores = JsonConvert.SerializeObject(tiendas);
-			await UserManager.UpdateAsync(usuario);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
 		}
 
 		ElegirOrdenamiento();
@@ -1058,6 +1171,68 @@
 			nuevaTienda.TiendaId = tienda.Id;
 
 			nuevaLista.Add(nuevaTienda);
+		}
+
+		return nuevaLista;
+	}
+
+	private async void EnseñarJuegosCategoria(ChangeEventArgs e, JuegoTipo categoriaElegida)
+	{
+		foreach (var categoria in categorias)
+		{
+			if (categoria.Categoria == categoriaElegida)
+			{
+				if (categoria.Checkbox == null)
+				{
+					categoria.Checkbox = "checked";
+					categoria.Estado = true;
+				}
+				else
+				{
+					categoria.Checkbox = null;
+					categoria.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.HistoricalLowsCategories = JsonConvert.SerializeObject(categorias);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+		}
+
+		ElegirOrdenamiento();
+	}
+
+	private List<MostrarJuegoCategoria> categorias = CrearListaCategorias();
+
+	public class MostrarJuegoCategoria
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public JuegoTipo Categoria { get; set; }
+	}
+
+	private static List<MostrarJuegoCategoria> CrearListaCategorias()
+	{
+		List<MostrarJuegoCategoria> nuevaLista = new List<MostrarJuegoCategoria>();
+
+		foreach (var categoria in JuegoTipos.CargarListado())
+		{
+			if (categoria != JuegoTipo.Bundle)
+			{
+				MostrarJuegoCategoria nuevaTienda = new MostrarJuegoCategoria();
+				nuevaTienda.Estado = true;
+				nuevaTienda.Checkbox = "checked";
+				nuevaTienda.Categoria = categoria;
+
+				nuevaLista.Add(nuevaTienda);
+			}
 		}
 
 		return nuevaLista;

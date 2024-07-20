@@ -90,7 +90,7 @@ namespace APIs.Gamesplanet
 
 			string htmluk = await Decompiladores.Estandar("https://uk.gamesplanet.com/api/v1/products/feed.xml");
 
-			if (htmluk != null)
+			if (string.IsNullOrEmpty(htmluk) == false)
 			{
                 GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
 
@@ -169,7 +169,7 @@ namespace APIs.Gamesplanet
 
 			string htmlfr = await Decompiladores.Estandar("https://fr.gamesplanet.com/api/v1/products/feed.xml");
 
-			if (htmlfr != null)
+			if (string.IsNullOrEmpty(htmlfr) == false)
 			{
                 GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
 
@@ -248,7 +248,7 @@ namespace APIs.Gamesplanet
 
 			string htmlde = await Decompiladores.Estandar("https://de.gamesplanet.com/api/v1/products/feed.xml");
 
-			if (htmlde != null)
+			if (string.IsNullOrEmpty(htmlde) == false)
 			{
                 GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
 
@@ -327,7 +327,7 @@ namespace APIs.Gamesplanet
 
 			string htmlus = await Decompiladores.Estandar("https://us.gamesplanet.com/api/v1/products/feed.xml");
 
-			if (htmlus != null)
+			if (string.IsNullOrEmpty(htmlus) == false)
 			{
                 GamesplanetJuegos listaJuegos = new GamesplanetJuegos();
 

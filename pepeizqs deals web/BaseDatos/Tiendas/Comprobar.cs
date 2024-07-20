@@ -129,6 +129,8 @@ namespace BaseDatos.Tiendas
 
 					if (actualizar == true && insertar == false)
 					{
+						bool actualizarAPI = false;
+
 						DateTime fechaComprobacion = Convert.ToDateTime(juego.FechaSteamAPIComprobacion);
 						fechaComprobacion = fechaComprobacion.AddDays(35);
 
@@ -137,7 +139,7 @@ namespace BaseDatos.Tiendas
 							juego = await ActualizarDatosAPI(juego);
 						}
 
-						Juegos.Precios.Actualizar(juego, oferta, conexion);
+						Juegos.Precios.Actualizar(juego, oferta, conexion, actualizarAPI);
 					}
 				}
 			}
@@ -308,7 +310,7 @@ namespace BaseDatos.Tiendas
 										}
 									}
 
-									Juegos.Precios.Actualizar(juego, oferta, conexion);
+									Juegos.Precios.Actualizar(juego, oferta, conexion, false);
 								}
 							}
 						}

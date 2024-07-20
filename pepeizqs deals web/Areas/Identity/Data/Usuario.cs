@@ -108,5 +108,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? HistoricalLowsDRMs { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? HistoricalLowsCategories { get; set; }
 }
 

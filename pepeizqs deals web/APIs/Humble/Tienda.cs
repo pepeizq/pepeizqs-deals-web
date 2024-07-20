@@ -67,7 +67,7 @@ namespace APIs.Humble
 
 		public static void RecopilarOfertas(string html)
 		{
-			if (html != null)
+			if (string.IsNullOrEmpty(html) == false)
 			{
 				if (html != "null")
 				{
@@ -82,13 +82,14 @@ namespace APIs.Humble
 							foreach (HumbleJuego juego in juegos.Resultados)
 							{
 								string sqlAñadir = "INSERT INTO temporalhumble " +
-										"(contenido, fecha) VALUES " +
-										"(@contenido, @fecha) ";
+										"(contenido, fecha, enlace) VALUES " +
+										"(@contenido, @fecha, @enlace) ";
 
 								using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 								{
 									comando.Parameters.AddWithValue("@contenido", JsonConvert.SerializeObject(juego));
 									comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
+									comando.Parameters.AddWithValue("@enlace", juego.Enlace);
 
 									try
 									{
@@ -147,21 +148,6 @@ namespace APIs.Humble
 
 			if (juegos.Count > 0) 
 			{
-				try
-				{
-					string limpieza = "TRUNCATE TABLE temporalhumble";
-
-					using (SqlCommand comando = new SqlCommand(limpieza, conexion))
-					{
-						comando.ExecuteNonQuery();
-					}
-				}
-				catch (Exception ex)
-				{
-					BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-				}
-
-
 				int juegos2 = 0;
 
 				foreach (var juego in juegos)
@@ -273,6 +259,15 @@ namespace APIs.Humble
 									try
 									{
 										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+
+										string limpieza = "DELETE FROM temporalhumble WHERE enlace=@enlace";
+
+										using (SqlCommand comando = new SqlCommand(limpieza, conexion))
+										{
+											comando.Parameters.AddWithValue("@enlace", juego.Enlace);
+
+											comando.ExecuteNonQuery();
+										}
 									}
 									catch (Exception ex)
 									{
@@ -293,6 +288,20 @@ namespace APIs.Humble
 							}
 						}
 					}
+				}
+
+				try
+				{
+					//string limpieza = "TRUNCATE TABLE temporalhumble";
+
+					//using (SqlCommand comando = new SqlCommand(limpieza, conexion))
+					//{
+					//	comando.ExecuteNonQuery();
+					//}
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
 				}
 			}
 		}

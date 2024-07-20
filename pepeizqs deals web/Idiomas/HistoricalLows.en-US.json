@@ -62,5 +62,29 @@
   {
     "Id": "String15",
     "Valor": "Stores"
+  },
+  {
+    "Id": "String16",
+    "Valor": "results"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Categories"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Games"
+  },
+  {
+    "Id": "String19",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Soundtracks"
+  },
+  {
+    "Id": "String21",
+    "Valor": "Software"
   }
 ]

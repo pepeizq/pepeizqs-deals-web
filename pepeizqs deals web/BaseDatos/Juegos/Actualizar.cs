@@ -8,7 +8,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Actualizar
 	{
-		public static void Ejecutar(Juego juego, SqlConnection conexion)
+		public static void Ejecutar(Juego juego, SqlConnection conexion, bool actualizarAPI = false)
 		{
             string añadirSlugGog = null;
 
@@ -17,34 +17,42 @@ namespace BaseDatos.Juegos
 				añadirSlugGog = ", slugGOG=@slugGOG";
 			}
 
-			if (string.IsNullOrEmpty(juego.Maestro) == true)
+			if (actualizarAPI == true)
 			{
-				juego.Maestro = "no";
-            }
+				if (string.IsNullOrEmpty(juego.Maestro) == true)
+				{
+					juego.Maestro = "no";
+				}
 
-			if (string.IsNullOrEmpty(juego.FreeToPlay) == true)
-			{
-				juego.FreeToPlay = "false";
+				if (string.IsNullOrEmpty(juego.FreeToPlay) == true)
+				{
+					juego.FreeToPlay = "false";
+				}
 			}
 
 			string sqlActualizar = "UPDATE juegos " +
-					"SET idSteam=@idSteam, idGog=@idGog, nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, " +
-						"imagenes=@imagenes, precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"analisis=@analisis, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo" + añadirSlugGog + ", maestro=@maestro, freeToPlay=@freeToPlay ";
+					"SET idSteam=@idSteam, idGog=@idGog, " +
+						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
+						"nombreCodigo=@nombreCodigo" + añadirSlugGog;
+
+			if (actualizarAPI == true)
+			{
+				sqlActualizar = sqlActualizar + ", nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, analisis=@analisis, maestro=@maestro, freeToPlay=@freeToPlay";
+			}
 
 			if (juego.IdSteam > 0)
 			{
-				sqlActualizar = sqlActualizar + "WHERE idSteam=@idSteam";
+				sqlActualizar = sqlActualizar + " WHERE idSteam=@idSteam";
 			}
 			else
 			{
 				if (juego.IdGog > 0)
 				{
-					sqlActualizar = sqlActualizar + "WHERE idGog=@idGog";
+					sqlActualizar = sqlActualizar + " WHERE idGog=@idGog";
 				}
 				else
 				{
-					sqlActualizar = sqlActualizar + "WHERE id=@id";
+					sqlActualizar = sqlActualizar + " WHERE id=@id";
 				}
 			}
 
@@ -55,32 +63,35 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@id", juego.Id);
 					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
-					comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-					comando.Parameters.AddWithValue("@tipo", juego.Tipo);
-					comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
-					comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
 					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
 					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
-					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
-					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-					comando.Parameters.AddWithValue("@maestro", juego.Maestro);
-					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+
+					if (actualizarAPI == true)
+					{
+						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+						comando.Parameters.AddWithValue("@tipo", juego.Tipo);
+						comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+						comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
+						comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
+						comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+						comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+					}
 
 					if (string.IsNullOrEmpty(juego.SlugGOG) == false)
 					{
 						comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
 					}
-
-					comando.ExecuteNonQuery();
+					
 					try
 					{
-						
+						comando.ExecuteNonQuery();
 					}
-					catch
+					catch (Exception ex)
 					{
-
+						Errores.Insertar.Ejecutar("Actualizar Datos " + juego.Nombre, ex);
 					}
 				}
 			}		

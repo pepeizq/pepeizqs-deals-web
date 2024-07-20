@@ -190,7 +190,8 @@ namespace Tareas
 															}
 														}
 													}
-													else if (minimo.Juego.Gratis != null)
+													
+													if (minimo.Juego.Gratis != null)
 													{
 														foreach (var gratis in minimo.Juego.Gratis)
 														{
@@ -201,7 +202,8 @@ namespace Tareas
 															}
 														}
 													}
-													else if (minimo.Juego.Suscripciones != null)
+													
+													if (minimo.Juego.Suscripciones != null)
 													{
 														foreach (var suscripcion in minimo.Juego.Suscripciones)
 														{
@@ -267,21 +269,7 @@ namespace Tareas
 													if (Convert.ToInt32(tempCantidad) < 500)
 													{
 														descarte2 = true;
-													}
-
-													if (juegoConMinimo.Juego != null)
-													{
-														if (juegoConMinimo.Juego.PrecioMinimosHistoricos != null)
-														{
-															if (juegoConMinimo.Juego.PrecioMinimosHistoricos.Count > 0)
-															{
-																if (juegoConMinimo.Juego.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Steam && juegoConMinimo.Juego.PrecioMinimosHistoricos[0].DRM != JuegoDRM.GOG && juegoConMinimo.Juego.PrecioMinimosHistoricos[0].DRM != JuegoDRM.Ubisoft && juegoConMinimo.Juego.PrecioMinimosHistoricos[0].DRM != JuegoDRM.EA)
-																{
-																	descarte2 = true;
-																}
-															}
-														}
-													}													
+													}											
 
 													if (descarte2 == false)
 													{
