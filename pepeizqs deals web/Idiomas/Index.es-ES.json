@@ -66,5 +66,13 @@
   {
     "Id": "Tooltip7",
     "Valor": "{0} suscripciones"
+  },
+  {
+    "Id": "Filter",
+    "Valor": "Filtro"
+  },
+  {
+    "Id": "FilterOption1",
+    "Valor": "Ocultar los juegos que tienes en Steam"
   }
 ]

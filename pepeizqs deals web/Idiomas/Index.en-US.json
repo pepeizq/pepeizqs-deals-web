@@ -66,5 +66,13 @@
   {
     "Id": "Tooltip7",
     "Valor": "{0} subscriptions"
+  },
+  {
+    "Id": "Filter",
+    "Valor": "Filter"
+  },
+  {
+    "Id": "FilterOption1",
+    "Valor": "Hide the games you have on Steam"
   }
 ]

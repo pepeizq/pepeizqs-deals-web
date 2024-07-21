@@ -112,5 +112,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? HistoricalLowsCategories { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? IndexOption1 { get; set; }
 }
 

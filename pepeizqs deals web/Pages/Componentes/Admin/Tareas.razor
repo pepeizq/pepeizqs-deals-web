@@ -44,6 +44,8 @@
                         try
                         {
                             await Tiendas2.TiendasCargar.TareasGestionador(conexion, tiendaComprobar.Id);
+
+                            Environment.Exit(1);
                         }
                         catch (Exception ex)
                         {

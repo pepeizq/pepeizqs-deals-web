@@ -11,8 +11,6 @@
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@* @rendermode @(new InteractiveServerRenderMode(prerender: true)) *@
-
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
@@ -513,21 +511,27 @@ else
 {
 	<div style="max-width: 1000px; margin: auto;">
 		<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
-			<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.CogerCadena(idioma, "LastLows", "Index")</a>
+			<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+				<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.CogerCadena(idioma, "LastLows", "Index")</a>
 
-			<div class="tooltip2" style="margin-left: 20px;">
-				<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
-				<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsInfo", "Index")
+				<div class="tooltip2" style="margin-left: 20px;">
+					<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
+					<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsInfo", "Index")
+					</div>
 				</div>
 			</div>
+
+			<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-left: 30px; border: 0px; color: var(--colorTextoVisitado);">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Filter", "Index")
+			</button>
 		</div>
 
 		<div class="tooltip4" onmousemove="hover(event, 'tooltip-minimos')" style="margin-bottom: 25px;">
 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="117" OverscanCount="6">
 				<ItemContent>
 					@{
-						bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
+						bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
 						bool usuarioTieneDeseado = false;
 
 						string fondoColor = string.Empty;
@@ -653,6 +657,42 @@ else
 	</div>	
 }
 
+@if (mostrarFiltrado == true)
+{
+	<div class="opciones-panel">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto;">
+			<div style="display: flex; align-items: center;">
+				<button class="boton-pequeño" @onclick="OcultarFiltrado" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
+					<i class="fa-solid fa-caret-left"></i>
+				</button>
+
+				<div style="font-size: 20px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Filter", "Index")
+				</div>
+			</div>
+
+			<hr style="margin-top: 30px;">
+
+			@if (usuario != null)
+			{
+				<div style="display: flex; align-items: center; margin-top: 30px;">
+					<div class="checkbox-caja">
+						<input type="checkbox" class="checkbox-interior" checked="@estadoOcultarJuegosUsuario" @onchange="OcultarJuegosUsuario">
+					</div>
+
+					<div style="margin-left: 20px; padding-bottom: 5px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption1", "Index")
+					</div>
+				</div>
+
+				<hr style="margin-top: 30px;">
+			}
+
+
+		</div>
+	</div>
+}
+
 <script>
 	function hover(e, id) {
 		var x = e.clientX,
@@ -679,11 +719,9 @@ else
 	public string idioma { get; set; }
 
 	private Usuario usuario = new Usuario();
-	private List<string> juegosUsuario = new List<string>();
+	private List<string> usuarioJuegosSteam = new List<string>();
 
 	private BaseDatos.Avisos.Aviso aviso = null;
-
-	private List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
 
 	private List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
 
@@ -721,7 +759,20 @@ else
 				}
 			}
 
-			juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+			usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+
+			#region Filtrado
+
+			if (usuario.IndexOption1 == true)
+			{
+				estadoOcultarJuegosUsuario = "checked";
+			}
+			else
+			{
+				estadoOcultarJuegosUsuario = null;
+			}
+
+			#endregion
 		}
 
 		//------------------------------------------------
@@ -740,15 +791,15 @@ else
 
 			try
 			{
-				juegosMinimosMostrar = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
+				juegosMinimosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
 			}
 			catch { }
 
-			if (juegosMinimosMostrar != null)
+			if (juegosMinimosGestor != null)
 			{
-				if (juegosMinimosMostrar.Count > 0)
+				if (juegosMinimosGestor.Count > 0)
 				{
-					juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
+					Filtros();
 				}
 			}			
 
@@ -840,6 +891,8 @@ else
 		}
 	}
 
+	#region Destacados
+
 	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
 	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
@@ -868,7 +921,7 @@ else
 
 				foreach (var destacadoGestor in juegosDestacadosGestor)
 				{
-					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, destacadoGestor, destacadoGestor.PrecioMinimosHistoricos[0].DRM);
+					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacadoGestor, destacadoGestor.PrecioMinimosHistoricos[0].DRM);
 
 					if (usuarioTieneJuego == false)
 					{
@@ -925,6 +978,100 @@ else
 			await InvokeAsync(StateHasChanged);
 		}
 	}
+
+	#endregion
+
+	#region Minimos Filtrado
+
+	private List<Juegos.Juego> juegosMinimosGestor = new List<Juegos.Juego>();
+	private List<Juegos.Juego> juegosMinimosMostrar = new List<Juegos.Juego>();
+
+	private void Filtros()
+	{
+		if (juegosMinimosGestor != null)
+		{
+			if (juegosMinimosGestor.Count > 0)
+			{
+				juegosMinimosMostrar.Clear();
+
+				foreach (var juego in juegosMinimosGestor)
+				{
+					bool ocultar = false;
+
+					if (string.IsNullOrEmpty(estadoOcultarJuegosUsuario) == false)
+					{
+						if (estadoOcultarJuegosUsuario == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
+						{
+							foreach (var juegoUsuario in usuarioJuegosSteam)
+							{
+								if (juego.IdSteam.ToString() == juegoUsuario)
+								{
+									ocultar = true;
+									break;
+								}
+							}
+						}
+					}
+
+					if (ocultar == false)
+					{
+						juegosMinimosMostrar.Add(juego);
+					}
+				}
+			}
+		}
+		
+		if (juegosMinimosMostrar != null)
+		{
+			if (juegosMinimosMostrar.Count > 0)
+			{
+				juegosMinimosMostrar = juegosMinimosMostrar.OrderBy(j => j.PrecioMinimosHistoricos[0].FechaDetectado).Reverse().ToList();
+			}
+		}
+	}
+
+	private bool mostrarFiltrado = false;
+
+	private void EnseñarFiltrado()
+	{
+		mostrarFiltrado = true;
+	}
+
+	private void OcultarFiltrado()
+	{
+		mostrarFiltrado = false;
+	}
+
+	private string estadoOcultarJuegosUsuario = null;
+
+	private async void OcultarJuegosUsuario()
+	{
+		if (usuario != null)
+		{
+			if (usuario.IndexOption1 == true)
+			{
+				usuario.IndexOption1 = false;
+				estadoOcultarJuegosUsuario = null;
+			}
+			else
+			{
+				usuario.IndexOption1 = true;
+				estadoOcultarJuegosUsuario = "checked";
+			}
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+
+			Filtros();
+		}
+	}
+
+	#endregion
+
+	#region Tooltip
 
 	private string tooltipNombre = string.Empty;
 	private string tooltipDescuento = string.Empty;
@@ -1135,6 +1282,8 @@ else
 
 		return video;
 	}
+
+	#endregion
 
 	#region Noticias
 

@@ -289,20 +289,6 @@ namespace APIs.Humble
 						}
 					}
 				}
-
-				try
-				{
-					//string limpieza = "TRUNCATE TABLE temporalhumble";
-
-					//using (SqlCommand comando = new SqlCommand(limpieza, conexion))
-					//{
-					//	comando.ExecuteNonQuery();
-					//}
-				}
-				catch (Exception ex)
-				{
-					BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-				}
 			}
 		}
 

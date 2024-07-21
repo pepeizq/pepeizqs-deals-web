@@ -14,22 +14,6 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 
-<style>
-	.opciones-panel {
-		height: calc(100% - var(--alturaCabecera));
-		width: 100%;
-		left: 0;
-		top: 0;
-		overflow-x: auto;
-		position: fixed;
-		z-index: 1001;
-		margin-top: var(--alturaCabecera);
-		padding: 10px;
-		backdrop-filter: blur(20px);
-	}
-</style>
-
-
 <div style="max-width: 1000px; margin: auto;">
 	<div style="background-color: var(--fondoCuerpo);">
 		<div style="display: flex; align-items: center; width: 100%;">
@@ -846,7 +830,7 @@
 				buscador = true;
 			}
 
-			bool ocultable = false;
+			bool ocultar = false;
 
 			if (string.IsNullOrEmpty(estadoOcultarJuegosUsuario) == false)
 			{
@@ -856,7 +840,7 @@
 					{
 						if (juego.IdSteam.ToString() == juegoUsuario)
 						{
-							ocultable = true;
+							ocultar = true;
 							break;
 						}
 					}
@@ -911,7 +895,7 @@
 				}
 			}
 
-			if (buscador == true && ocultable == false && minimoDescuento2 == true && maximoPrecio2 == true && 
+			if (buscador == true && ocultar == false && minimoDescuento2 == true && maximoPrecio2 == true && 
 				drm2 == true && tienda2 == true && categoria2 == true)
 			{
 				juegosFiltrados.Add(juego);

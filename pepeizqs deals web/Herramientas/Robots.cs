@@ -10,8 +10,6 @@ namespace Herramientas
 		[HttpGet("robots.txt")]
 		public IActionResult Ejecutar()
 		{
-			var baseUri = $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}";
-
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
 			string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
