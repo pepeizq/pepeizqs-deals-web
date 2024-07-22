@@ -74,5 +74,9 @@
   {
     "Id": "FilterOption1",
     "Valor": "Hide the games you have on Steam"
+  },
+  {
+    "Id": "FilterOption2",
+    "Valor": "DRMs"
   }
 ]

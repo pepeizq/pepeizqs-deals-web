@@ -116,5 +116,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "bit(1)")]
 	public bool? IndexOption1 { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? IndexDRMs { get; set; }
 }
 

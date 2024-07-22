@@ -688,7 +688,49 @@ else
 				<hr style="margin-top: 30px;">
 			}
 
+			<hr style="margin-top: 30px;">
 
+			<div style="margin-top: 30px;">
+				<div style="padding-bottom: 15px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption2", "Index")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+					@foreach (var drm in drms)
+					{
+						string iconoDRM = string.Empty;
+						string nombreDRM = string.Empty;
+
+						foreach (var drm2 in JuegoDRM2.GenerarListado())
+						{
+							if (drm2.Id == drm.DRMId)
+							{
+								iconoDRM = drm2.Imagen;
+								nombreDRM = drm2.Nombre;
+							}
+						}
+
+						<div style="display: flex; align-items: center;" title="@nombreDRM">
+							<div class="checkbox-caja">
+								<input type="checkbox" class="checkbox-interior" checked="@drm.Checkbox" @onchange="@(e => EnseñarJuegosDRM(e, drm.DRMId))">
+							</div>
+
+							@if (drm.DRMId != JuegoDRM.DRMFree)
+							{
+								<div style="margin-left: 20px; padding-bottom: 10px;">
+									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" />
+								</div>
+							}
+							else
+							{
+								<div style="margin-left: 20px; padding-bottom: 5px;">
+									<label style="font-size: 10px; max-width: 24px; text-align: center;">@nombreDRM</label>
+								</div>
+							}
+						</div>
+					}
+				</div>
+			</div>
 		</div>
 	</div>
 }
