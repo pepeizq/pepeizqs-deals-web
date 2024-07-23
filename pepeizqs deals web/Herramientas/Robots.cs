@@ -18,7 +18,7 @@ namespace Herramientas
 
 			if (piscinaApp == piscinaUsada)
 			{
-				sb.Append("User-agent: *\r\nAllow: /");
+				sb.Append("User-agent: googlebot-image\r\nDisallow: /\r\nUser-agent: *\r\nDisallow: \r\nDisallow: /link/\r\nDisallow: /imagenes/\r\nDisallow: /lib/\r\nDisallow: /js/\r\nDisallow: /logo/\r\nSitemap: https://pepeizqdeals.com/sitemap.xml");
 			}
             else
             {

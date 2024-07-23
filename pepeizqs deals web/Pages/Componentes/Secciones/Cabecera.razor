@@ -1,13 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc;
 @using Microsoft.AspNetCore.Mvc.Razor;
 @using Microsoft.Data.SqlClient;
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inherits Juegos.Juego
 
 @inject NavigationManager NavManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor _httpContextAccessor;
 
 <style>
     .buscador-panel {
@@ -115,8 +119,8 @@
 
         <li class="nav-item">
             <div style="display: flex; flex-direction: row; align-items: center;">
-                <i class="fa-solid fa-magnifying-glass" style="margin-right: 15px;"></i>
-                <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" />
+                <i class="fa-solid fa-magnifying-glass" style="margin-right: 20px;"></i>
+                <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
 
                 @if (resultados != null)
                 {
@@ -272,6 +276,8 @@
     {
         NavManager.NavigateTo("/Identity/Account/Logout", true, false);
     }
+
+    #region Buscador
 
     private string buscando = string.Empty;
 
@@ -515,5 +521,7 @@
     {
         pestañaSeleccionada = pestaña;
     }
+
+    #endregion
 }
 

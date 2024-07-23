@@ -49,7 +49,8 @@
     font-size: 22px;
     color: var(--colorTexto);
     text-decoration: none;
-    margin-right: 30px;
+    padding-right: 30px;
+    min-width: 200px;
 }
 
 .texto-logo:hover {

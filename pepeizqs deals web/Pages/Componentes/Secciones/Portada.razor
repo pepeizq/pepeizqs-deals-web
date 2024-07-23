@@ -8,6 +8,7 @@
 @using Microsoft.Extensions.Caching.Distributed;
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic;
+@using Newtonsoft.Json
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
@@ -688,8 +689,6 @@ else
 				<hr style="margin-top: 30px;">
 			}
 
-			<hr style="margin-top: 30px;">
-
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption2", "Index")
@@ -727,6 +726,48 @@ else
 									<label style="font-size: 10px; max-width: 24px; text-align: center;">@nombreDRM</label>
 								</div>
 							}
+						</div>
+					}
+				</div>
+			</div>
+
+			<hr style="margin-top: 30px;">
+
+			<div style="margin-top: 30px;">
+				<div style="padding-bottom: 15px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3", "Index")
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+					@foreach (var categoria in categorias)
+					{
+						string nombreCategoria = string.Empty;
+
+						if (categoria.Categoria == JuegoTipo.Game)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.1", "Index");
+						}
+						else if (categoria.Categoria == JuegoTipo.DLC)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.2", "Index");
+						}
+						else if (categoria.Categoria == JuegoTipo.Music)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.3", "Index");
+						}
+						else if (categoria.Categoria == JuegoTipo.Software)
+						{
+							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.4", "Index");
+						}
+
+						<div style="display: flex; align-items: center;" title="@nombreCategoria">
+							<div class="checkbox-caja">
+								<input type="checkbox" class="checkbox-interior" checked="@categoria.Checkbox" @onchange="@(e => EnseñarJuegosCategoria(e, categoria.Categoria))">
+							</div>
+
+							<div style="margin-left: 15px; padding-bottom: 8px;">
+								<label style="font-size: 14px;">@nombreCategoria</label>
+							</div>
 						</div>
 					}
 				</div>
@@ -812,6 +853,16 @@ else
 			else
 			{
 				estadoOcultarJuegosUsuario = null;
+			}
+
+			if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
+			{
+				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
+			}
+
+			if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
+			{
+				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
 			}
 
 			#endregion
@@ -1055,14 +1106,34 @@ else
 						}
 					}
 
-					if (ocultar == false)
+					bool drm2 = false;
+
+					foreach (var drm in drms)
+					{
+						if (juego.PrecioMinimosHistoricos[0].DRM == drm.DRMId && drm.Estado == true)
+						{
+							drm2 = true;
+						}
+					}
+
+					bool categoria2 = false;
+
+					foreach (var categoria in categorias)
+					{
+						if (juego.Tipo == categoria.Categoria && categoria.Estado == true)
+						{
+							categoria2 = true;
+						}
+					}
+
+					if (ocultar == false && drm2 == true && categoria2 == true)
 					{
 						juegosMinimosMostrar.Add(juego);
 					}
 				}
 			}
 		}
-		
+
 		if (juegosMinimosMostrar != null)
 		{
 			if (juegosMinimosMostrar.Count > 0)
@@ -1109,6 +1180,133 @@ else
 
 			Filtros();
 		}
+	}
+
+	private async void EnseñarJuegosDRM(ChangeEventArgs e, JuegoDRM drmElegido)
+	{
+		foreach (var drm in drms)
+		{
+			if (drm.DRMId == drmElegido)
+			{
+				if (drm.Checkbox == null)
+				{
+					drm.Checkbox = "checked";
+					drm.Estado = true;
+				}
+				else
+				{
+					drm.Checkbox = null;
+					drm.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.IndexDRMs = JsonConvert.SerializeObject(drms);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+		}
+
+		Filtros();
+	}
+
+	private List<MostrarJuegoDRM> drms = CrearListaDRMs();
+
+	public class MostrarJuegoDRM
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public JuegoDRM DRMId { get; set; }
+	}
+
+	private static List<MostrarJuegoDRM> CrearListaDRMs()
+	{
+		List<MostrarJuegoDRM> nuevaLista = new List<MostrarJuegoDRM>();
+
+		foreach (var drm in JuegoDRM2.GenerarListado())
+		{
+			MostrarJuegoDRM nuevoDRM = new MostrarJuegoDRM();
+			nuevoDRM.Estado = false;
+			nuevoDRM.Checkbox = null;
+			nuevoDRM.DRMId = drm.Id;
+
+			if (nuevoDRM.DRMId == JuegoDRM.Steam || nuevoDRM.DRMId == JuegoDRM.GOG || nuevoDRM.DRMId == JuegoDRM.Ubisoft || nuevoDRM.DRMId == JuegoDRM.EA)
+			{
+				nuevoDRM.Estado = true;
+				nuevoDRM.Checkbox = "checked";
+			}
+
+			nuevaLista.Add(nuevoDRM);
+		}
+
+		return nuevaLista;
+	}
+
+	private async void EnseñarJuegosCategoria(ChangeEventArgs e, JuegoTipo categoriaElegida)
+	{
+		foreach (var categoria in categorias)
+		{
+			if (categoria.Categoria == categoriaElegida)
+			{
+				if (categoria.Checkbox == null)
+				{
+					categoria.Checkbox = "checked";
+					categoria.Estado = true;
+				}
+				else
+				{
+					categoria.Checkbox = null;
+					categoria.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.IndexCategories = JsonConvert.SerializeObject(categorias);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+		}
+
+		Filtros();
+	}
+
+	private List<MostrarJuegoCategoria> categorias = CrearListaCategorias();
+
+	public class MostrarJuegoCategoria
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public JuegoTipo Categoria { get; set; }
+	}
+
+	private static List<MostrarJuegoCategoria> CrearListaCategorias()
+	{
+		List<MostrarJuegoCategoria> nuevaLista = new List<MostrarJuegoCategoria>();
+
+		foreach (var categoria in JuegoTipos.CargarListado())
+		{
+			if (categoria != JuegoTipo.Bundle)
+			{
+				MostrarJuegoCategoria nuevaTienda = new MostrarJuegoCategoria();
+				nuevaTienda.Estado = true;
+				nuevaTienda.Checkbox = "checked";
+				nuevaTienda.Categoria = categoria;
+
+				nuevaLista.Add(nuevaTienda);
+			}
+		}
+
+		return nuevaLista;
 	}
 
 	#endregion

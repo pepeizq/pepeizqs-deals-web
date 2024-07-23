@@ -21,6 +21,7 @@
     .admin-boton-hover {
         margin: 0px;
         border: 0px;
+        padding: 6px 12px;
         color: var(--colorTextoVisitado);
         background-color: transparent;
         line-height: 20px;
@@ -60,7 +61,7 @@
          }
 </style>
 
-<li class="nav-item" style="margin-right: 30px;">
+<div style="padding-right: 30px;">
     @{
         string nuevosCorreosMensaje = string.Empty;
 
@@ -89,7 +90,7 @@
     }
 
     <button class="admin-boton-hover" @onmouseenter="(e => MostrarAdmin(e))" @onclick="(e => MostrarAdmin(e))">Admin @nuevosCorreosMensaje</button>
-</li>
+</div>
 
 @if (mostrarAdmin == true)
 {

@@ -78,5 +78,25 @@
   {
     "Id": "FilterOption2",
     "Valor": "DRMs"
+  },
+  {
+    "Id": "FilterOption3",
+    "Valor": "Categorías"
+  },
+  {
+    "Id": "FilterOption3.1",
+    "Valor": "Juegos"
+  },
+  {
+    "Id": "FilterOption3.2",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "FilterOption3.3",
+    "Valor": "Bandas Sonoras"
+  },
+  {
+    "Id": "FilterOption3.4",
+    "Valor": "Software"
   }
 ]

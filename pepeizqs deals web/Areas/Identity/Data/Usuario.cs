@@ -120,5 +120,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? IndexDRMs { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? IndexCategories { get; set; }
 }
 
