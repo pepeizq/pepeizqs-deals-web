@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+<style>
+    .boton-pestañas {
+        color: var(--colorTexto);
+        background: transparent;
+        text-align: center;
+        border: 0;
+        width: 100%;
+        transition: transform .2s;
+        font-size: 17px;
+        padding: 10px;
+    }
+
+        .boton-pestañas:hover {
+            color: var(--colorTextoHover);
+            transform: scale(1.01);
+        }
+</style>
+
+<div style="max-width: 1000px; margin: auto;">
+    <label style="font-size: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Account")</label>
+    <hr/>
+
+    <div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
+        <div style="width: 50%;">
+            <div style="display: flex; align-items: center; flex-direction: column; gap: 15px;">
+                <button @onclick="@(e => AbrirPestañaCorreo(e))" class="boton-pestañas" style="@estiloCorreo">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Account")
+                </button>
+
+                <button @onclick="@(e => AbrirPestañaContraseña(e))" class="boton-pestañas" style="@estiloContraseña">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String4", "Account")
+                </button>
+
+                <button @onclick="@(e => AbrirPestañaNotificaciones(e))" class="boton-pestañas" style="@estiloNotificaciones">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Account")
+                </button>
+
+                <button @onclick="@(e => AbrirPestañaSteam(e))" class="boton-pestañas" style="@estiloSteam">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Account")
+                </button>
+            </div>
+        </div>
+
+        <div style="width: 100%;">
+            @if (pestañaCorreo == true)
+            {
+                <Correo idioma="@idioma" />
+            }
+
+            @if (pestañaContraseña == true)
+            {
+                <CambioContrasena idioma="@idioma" />
+            }
+
+            @if (pestañaNotificaciones == true)
+            {
+                <NotificacionesCorreo idioma="@idioma" />
+            }
+
+            @if (pestañaSteam == true)
+            {
+                <CuentaSteam idioma="@idioma" />
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    protected override void OnInitialized()
+    {
+        pestañaCorreo = true;
+        estiloCorreo = fondo;
+    }
+
+    private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); ";
+
+    private void CerrarPestañas()
+    {
+        pestañaCorreo = false;
+        pestañaContraseña = false;
+        pestañaNotificaciones = false;
+        pestañaSteam = false;
+
+        estiloCorreo = null;
+        estiloContraseña = null;
+        estiloNotificaciones = null;
+        estiloSteam = null;
+    }
+
+    private bool pestañaCorreo = false;
+    private string estiloCorreo = null;
+
+    private void AbrirPestañaCorreo(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaCorreo = true;
+        estiloCorreo = fondo;
+    }
+
+    private bool pestañaContraseña = false;
+    private string estiloContraseña = null;
+
+    private void AbrirPestañaContraseña(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaContraseña = true;
+        estiloContraseña = fondo;
+    }
+
+    private bool pestañaNotificaciones = false;
+    private string estiloNotificaciones = null;
+
+    private void AbrirPestañaNotificaciones(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaNotificaciones = true;
+        estiloNotificaciones = fondo;
+    }
+
+    private bool pestañaSteam = false;
+    private string estiloSteam = null;
+
+    private void AbrirPestañaSteam(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaSteam = true;
+        estiloSteam = fondo;
+    }
+}

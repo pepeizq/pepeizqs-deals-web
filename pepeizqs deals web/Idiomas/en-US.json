@@ -1,85 +1,5 @@
 [
   {
-    "Id": "Login.Title",
-    "Valor": "Log in"
-  },
-  {
-    "Id": "Login.String1",
-    "Valor": "Log in with an account"
-  },
-  {
-    "Id": "Login.String2",
-    "Valor": "Email"
-  },
-  {
-    "Id": "Login.String3",
-    "Valor": "Password"
-  },
-  {
-    "Id": "Login.String4",
-    "Valor": "name@example.com"
-  },
-  {
-    "Id": "Login.String5",
-    "Valor": "password"
-  },
-  {
-    "Id": "Login.String6",
-    "Valor": "Remember me?"
-  },
-  {
-    "Id": "Login.String7",
-    "Valor": "Log in"
-  },
-  {
-    "Id": "Login.String8",
-    "Valor": "Forgot your password?"
-  },
-  {
-    "Id": "Login.String9",
-    "Valor": "Register as a new user"
-  },
-  {
-    "Id": "Login.String10",
-    "Valor": "Resend email confirmation"
-  },
-  {
-    "Id": "Register.Title",
-    "Valor": "Register"
-  },
-  {
-    "Id": "Register.String1",
-    "Valor": "Create a new account"
-  },
-  {
-    "Id": "Register.String2",
-    "Valor": "Email"
-  },
-  {
-    "Id": "Register.String3",
-    "Valor": "name@example.com"
-  },
-  {
-    "Id": "Register.String4",
-    "Valor": "Password"
-  },
-  {
-    "Id": "Register.String5",
-    "Valor": "password"
-  },
-  {
-    "Id": "Register.String6",
-    "Valor": "Confirm Password"
-  },
-  {
-    "Id": "Register.String7",
-    "Valor": "Register"
-  },
-  {
-    "Id": "Register.String8",
-    "Valor": "The password and confirmation password do not match."
-  },
-  {
     "Id": "Game.String1",
     "Valor": "Open in:"
   },
@@ -640,46 +560,6 @@
     "Valor": "Groups for Giveaways"
   },
   {
-    "Id": "Account.Title",
-    "Valor": "Change your account settings"
-  },
-  {
-    "Id": "Settings.String1",
-    "Valor": "Change your account settings"
-  },
-  {
-    "Id": "Settings.String2",
-    "Valor": "Manage Email"
-  },
-  {
-    "Id": "Settings.String3",
-    "Valor": "Email"
-  },
-  {
-    "Id": "Settings.String4",
-    "Valor": "Please enter your email"
-  },
-  {
-    "Id": "Settings.String5",
-    "Valor": "Send verification email"
-  },
-  {
-    "Id": "Settings.String6",
-    "Valor": "New Email"
-  },
-  {
-    "Id": "Settings.String7",
-    "Valor": "Change Email"
-  },
-  {
-    "Id": "Settings.String8",
-    "Valor": "Verification email sent. Please check your email."
-  },
-  {
-    "Id": "Settings.String9",
-    "Valor": "Confirmation link to change email sent. Please check your email."
-  },
-  {
     "Id": "Settings.String10",
     "Valor": "Your email change has not been registered."
   },
@@ -706,70 +586,6 @@
   {
     "Id": "Settings.String16",
     "Valor": "Error changing your email. Contact with admin@pepeizqdeals.com."
-  },
-  {
-    "Id": "Settings.String17",
-    "Valor": "Change Password"
-  },
-  {
-    "Id": "Settings.String18",
-    "Valor": "Current password"
-  },
-  {
-    "Id": "Settings.String19",
-    "Valor": "New password"
-  },
-  {
-    "Id": "Settings.String20",
-    "Valor": "Confirm new password"
-  },
-  {
-    "Id": "Settings.String21",
-    "Valor": "Enter your current password"
-  },
-  {
-    "Id": "Settings.String22",
-    "Valor": "Enter your new password"
-  },
-  {
-    "Id": "Settings.String23",
-    "Valor": "Confirm your new password"
-  },
-  {
-    "Id": "Settings.String24",
-    "Valor": "Change Password"
-  },
-  {
-    "Id": "Settings.String25",
-    "Valor": "The password must be a minimum of 6 characters"
-  },
-  {
-    "Id": "Settings.String26",
-    "Valor": "The password must have at least one number"
-  },
-  {
-    "Id": "Settings.String27",
-    "Valor": "The confirmation password does not match new password"
-  },
-  {
-    "Id": "Settings.String28",
-    "Valor": "The password change was successful"
-  },
-  {
-    "Id": "Settings.String29",
-    "Valor": "An error occurred while changing the password. Contact admin@pepeizqdeals.com"
-  },
-  {
-    "Id": "Settings.String30",
-    "Valor": "The password must have at least one uppercase letter"
-  },
-  {
-    "Id": "Settings.String31",
-    "Valor": "The password must have at least one non alphanumeric character"
-  },
-  {
-    "Id": "Settings.String32",
-    "Valor": "The current password is not correct"
   },
   {
     "Id": "Settings.String33",
@@ -844,20 +660,8 @@
     "Valor": "Games on the wishlist:"
   },
   {
-    "Id": "Settings.String53",
-    "Valor": "Email Notifications"
-  },
-  {
-    "Id": "Settings.String54",
-    "Valor": "Wishlist. Notify me by email when a game reaches a minimum price regardless of whether it has already been in a bundle, free promotion or a subscription service."
-  },
-  {
     "Id": "Settings.String55",
     "Valor": "Keys"
-  },
-  {
-    "Id": "Settings.String56",
-    "Valor": "News. Notify me with an email when new news appears."
   },
   {
     "Id": "Settings.String57",
@@ -1002,22 +806,6 @@
   {
     "Id": "Settings.String92",
     "Valor": "Example."
-  },
-  {
-    "Id": "ForgotPassword.String1",
-    "Valor": "Forgot your password?"
-  },
-  {
-    "Id": "ForgotPassword.String2",
-    "Valor": "Enter your email"
-  },
-  {
-    "Id": "ForgotPassword.String3",
-    "Valor": "Reset Password"
-  },
-  {
-    "Id": "ForgotPassword.String4",
-    "Valor": "Email sent to reset password"
   },
   {
     "Id": "ResetPassword.String1",

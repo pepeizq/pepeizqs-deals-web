@@ -14,13 +14,13 @@ using Owl.reCAPTCHA;
 using Owl.reCAPTCHA.v3;
 using pepeizqs_deals_web.Areas.Identity.Data;
 
-namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
+namespace pepeizqs_deals_web.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-		public string idioma = string.Empty;
+        public string idioma = string.Empty;
 
-		private readonly SignInManager<Usuario> _signInManager;
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
         private readonly IUserStore<Usuario> _userStore;
         private readonly IUserEmailStore<Usuario> _emailStore;
@@ -70,13 +70,13 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-			try
-			{
-				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
-			}
-			catch { }
+            try
+            {
+                idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+            }
+            catch { }
 
-			ReturnUrl = returnUrl;
+            ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -116,7 +116,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",
                                 pageHandler: null,
-                                values: new { area = "Identity", userId = usuarioId, code = codigo, returnUrl = returnUrl },
+                                values: new { area = "Identity", userId = usuarioId, code = codigo, returnUrl },
                                 protocol: Request.Scheme);
 
                             await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -124,14 +124,14 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                             }
                             else
                             {
                                 await _signInManager.SignInAsync(usuario, isPersistent: false);
-								//return LocalRedirect(returnUrl);
-								return Redirect("./Manage");
-							}
+                                //return LocalRedirect(returnUrl);
+                                return Redirect("./Manage");
+                            }
                         }
 
                         foreach (var error in resultado.Errors)
@@ -144,7 +144,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
                         errorMensaje = ex.Message;
                     }
                 }
-            }                
+            }
 
             return Page();
         }
@@ -155,7 +155,7 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
             {
                 return Activator.CreateInstance<Usuario>();
             }
-            catch 
+            catch
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(Usuario)}'. " +
                     $"Ensure that '{nameof(Usuario)}' is not an abstract class and has a parameterless constructor, or alternatively " +

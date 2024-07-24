@@ -1,0 +1,154 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Cuenta"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Cambia la configuración de tu cuenta"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Cambiar Correo"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Notificaciones por Correo"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Cambiar Contraseña"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Cuenta de Steam"
+  },
+  {
+    "Id": "Mail1",
+    "Valor": "Correo Actual"
+  },
+  {
+    "Id": "Mail2",
+    "Valor": "Por favor introduce tu correo"
+  },
+  {
+    "Id": "Mail3",
+    "Valor": "Enviar correo de confirmación"
+  },
+  {
+    "Id": "Mail4",
+    "Valor": "Nuevo Correo"
+  },
+  {
+    "Id": "Mail5",
+    "Valor": "Cambiar Correo"
+  },
+  {
+    "Id": "Mail6",
+    "Valor": "Correo de confirmación enviado. Por favor comprueba tu correo."
+  },
+  {
+    "Id": "Mail7",
+    "Valor": "Correo de confirmación para cambiar de correo enviado. Por favor comprueba tu correo."
+  },
+  {
+    "Id": "Notifications1",
+    "Valor": "Lista de Deseados"
+  },
+  {
+    "Id": "Notifications2",
+    "Valor": "Se te notificará por correo cuando un juego de tu lista de deseados alcance un nuevo precio mínimo histórico."
+  },
+  {
+    "Id": "Notifications3",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Notifications4",
+    "Valor": "Se te notificará por correo cuando un nuevo bundle aparezca."
+  },
+  {
+    "Id": "Notifications5",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "Notifications6",
+    "Valor": "Se te notificará por correo cuando un nuevo juego de pago se pueda adquirir gratis temporalmente."
+  },
+  {
+    "Id": "Notifications7",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "Notifications8",
+    "Valor": "Se te notificará por correo cuando nuevos juegos aparezcan en servicios de suscripción que se puedan canjear en plataformas como Steam o GOG."
+  },
+  {
+    "Id": "Notifications9",
+    "Valor": "Otros"
+  },
+  {
+    "Id": "Notifications10",
+    "Valor": "Se te notificará por correo cuando noticias relevantes aparezcan en la web y estas no sean de las categorías anteriores."
+  },
+  {
+    "Id": "ChangePassword1",
+    "Valor": "Actual contraseña"
+  },
+  {
+    "Id": "ChangePassword2",
+    "Valor": "Introduce tu actual contraseña"
+  },
+  {
+    "Id": "ChangePassword3",
+    "Valor": "Nueva contraseña"
+  },
+  {
+    "Id": "ChangePassword4",
+    "Valor": "Introduce tu nueva contraseña"
+  },
+  {
+    "Id": "ChangePassword5",
+    "Valor": "Confirmar nueva contraseña"
+  },
+  {
+    "Id": "ChangePassword6",
+    "Valor": "Confirma tu nueva contraseña"
+  },
+  {
+    "Id": "ChangePassword7",
+    "Valor": "Cambiar Contraseña"
+  },
+  {
+    "Id": "ChangePassword8",
+    "Valor": "La contraseña debe tener un mínimo de 6 caracteres"
+  },
+  {
+    "Id": "ChangePassword9",
+    "Valor": "La contraseña debe tener al menos un número"
+  },
+  {
+    "Id": "ChangePassword10",
+    "Valor": "La contraseña debe tener al menos una letra mayúscula"
+  },
+  {
+    "Id": "ChangePassword11",
+    "Valor": "La contraseña debe tener al menos un carácter que no sea ni letra ni número"
+  },
+  {
+    "Id": "ChangePassword12",
+    "Valor": "La contraseña de confirmación no coincide con la nueva contraseña"
+  },
+  {
+    "Id": "ChangePassword13",
+    "Valor": "La contraseña actual no es la correcta"
+  },
+  {
+    "Id": "ChangePassword14",
+    "Valor": "El cambio de contraseña se ha realizado con éxito"
+  },
+  {
+    "Id": "ChangePassword15",
+    "Valor": "Se ha producido un error en el cambio de contraseña. Contacta con admin@pepeizqdeals.com"
+  }
+]

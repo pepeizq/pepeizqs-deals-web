@@ -55,7 +55,19 @@ public class Usuario : IdentityUser
 
 	[PersonalData]
 	[Column(TypeName = "bit(1)")]
-	public bool? NotificationNews { get; set; }
+	public bool? NotificationBundles { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationFree { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationSubscriptions { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationOthers { get; set; }
 
 	[PersonalData]
 	[Column(TypeName = "nvarchar(100)")]

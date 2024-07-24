@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 
-namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
+namespace pepeizqs_deals_web.Pages.Account
 {
     public class LoginModel : PageModel
     {
@@ -26,8 +26,6 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -79,13 +77,20 @@ namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
 
                 if (resultado.Succeeded)
                 {
-                    return LocalRedirect(returnUrl);
-					//return Redirect("./Manage");
-				}
+                    if (string.IsNullOrEmpty(returnUrl) == false)
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToPage("./");
+                    }
+                    //return Redirect("./Manage");
+                }
 
                 if (resultado.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
 
                 if (resultado.IsLockedOut)

@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+@inject NavigationManager NavManager
+
+<style>
+    .boton-accesos {
+        color: var(--colorEnlace);
+        background: transparent;
+        text-align: center;
+        border: 0;
+        width: 100%;
+        text-decoration: underline;
+        transition: transform .2s;
+    }
+
+        .boton-accesos:hover {
+            color: var(--colorEnlaceHover);
+            transform: scale(1.01);
+        }
+</style>
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto; margin-top: 50px;">
+    <div style="display: flex; align-items: center;">
+
+        @if (mostrarLogin == true)
+        {
+            <button @onclick="@(e => AbrirLogin(e))" class="boton-accesos">
+                @Herramientas.Idiomas.CogerCadena(idioma, "String3", "AccountLinks")
+            </button>
+        }
+
+        @if (mostrarRegistro == true)
+        {
+            <button @onclick="@(e => AbrirRegistro(e))" class="boton-accesos">
+                @Herramientas.Idiomas.CogerCadena(idioma, "String2", "AccountLinks")
+            </button>
+        }
+
+        @if (mostrarContraseñaOlvidada == true)
+        {
+            <button @onclick="@(e => AbrirContraseñaOlvidada(e))" class="boton-accesos">
+                @Herramientas.Idiomas.CogerCadena(idioma, "String1", "AccountLinks")
+            </button>
+        }
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    [Parameter]
+    public bool mostrarLogin { get; set; } = true;
+
+    [Parameter]
+    public bool mostrarRegistro { get; set; } = true;
+
+    [Parameter]
+    public bool mostrarContraseñaOlvidada { get; set; } = true;
+
+    private void AbrirLogin(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/login", true, false);
+    }
+
+    private void AbrirRegistro(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/register", true, false);
+    }
+
+    private void AbrirContraseñaOlvidada(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/forgotpassword", true, false);
+    }
+}

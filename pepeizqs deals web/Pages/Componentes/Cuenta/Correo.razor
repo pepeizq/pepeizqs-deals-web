@@ -10,48 +10,51 @@
 
 @if (usuario != null)
 {
-    <div class="row" style="margin-top: 10px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
         @if (correoConfirmado == true)
         {
             <div class="input-group" style="margin-bottom: 25px;">
-                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String3")</label>
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Mail1", "Account")</label>
                 <input value="@correoDefecto" class="entrada-texto" disabled />
             </div>
         }
         else
         {
             <div style="margin-bottom: 25px;">
-                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String3")</label>
-                <input value="@correoDefecto" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String4")" disabled />
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Mail1", "Account")</label>
+                <input value="@correoDefecto" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Mail2", "Account")" disabled />
+
                 <button @onclick="ClickearConfirmacionCorreo" class="btn btn-link" style="outline: none; border: 0; color: var(--colorTextoOscuro);">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String5")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Mail3", "Account")
                 </button>
 
                 @if (correoConfirmadoEnviado == true)
                 {
                     <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 10px;" role="alert">
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String8")
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Mail6", "Account")
                     </div>
                 }
             </div>
         }
 
-        <div style="margin-bottom: 20px;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String6")</label>
-            <input @onchange="@(e => CambiarNuevoCorreo(e))" value="@correoNuevo" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String4")" />
+        <div style="margin-bottom: 30px;">
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "Mail4", "Account")</label>
+            <input @onchange="@(e => CambiarNuevoCorreo(e))" value="@correoNuevo" class="entrada-texto" autocomplete="email" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Mail2", "Account")" />
         </div>
 
         <div style="display: flex; flex-direction: column;">
             <div class="perfil-flexible-izquierda">
-                <button @onclick="ClickearCambioCorreo" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String7")</button>  
+                <button @onclick="ClickearCambioCorreo" class="boton" style="font-size: 18px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Mail5", "Account")
+                </button>  
             </div>
 
             @if (correoCambioEnviado == true)
             {
                 <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Settings.String9")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Mail7", "Account")
                 </div>
             }
         </div>
@@ -95,7 +98,7 @@
             string codigo = await UserManager.GenerateEmailConfirmationTokenAsync(usuario);
             codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
 
-            string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmail?userId=" + usuarioId + "&code=" + codigo;
+            string enlaceFinal = "https://pepeizqdeals.com/Account/ConfirmEmail?userId=" + usuarioId + "&code=" + codigo;
 
             Herramientas.Correos.EnviarConfirmacionCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
             correoConfirmadoEnviado = true;
@@ -119,7 +122,7 @@
                 string codigo = await UserManager.GenerateChangeEmailTokenAsync(usuario, correoNuevo);
                 codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
 
-                string enlaceFinal = "https://pepeizqdeals.com/Identity/Account/ConfirmEmailChange?userId=" + usuarioId + "&email=" + correoNuevo + "&code=" + codigo;
+                string enlaceFinal = "https://pepeizqdeals.com/Account/ConfirmEmailChange?userId=" + usuarioId + "&email=" + correoNuevo + "&code=" + codigo;
 
                 Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correoNuevo);
                 correoCambioEnviado = true;

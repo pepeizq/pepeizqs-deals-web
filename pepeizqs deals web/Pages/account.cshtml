@@ -1,0 +1,23 @@
+﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@model AccountModel
+
+@inject SignInManager<Usuario> SignInManager
+
+@{
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Account");
+    Layout = "/Pages/Shared/_Layout.cshtml";
+
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+}
+
+@if (usuarioLogeado == true)
+{
+    @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.ServerPrerendered, new
+    {
+        idioma = Model.idioma
+    }))
+}

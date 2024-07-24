@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Iniciar Sesión"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Iniciar sesión con una cuenta"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "String4",
+    "Valor": "nombre@ejemplo.com"
+  },
+  {
+    "Id": "String5",
+    "Valor": "contraseña"
+  },
+  {
+    "Id": "String6",
+    "Valor": "¿Recordar sesión?"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Iniciar sesión"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Register"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Create a new account"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Email"
+  },
+  {
+    "Id": "String3",
+    "Valor": "name@example.com"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Password"
+  },
+  {
+    "Id": "String5",
+    "Valor": "password"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Confirm Password"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Register"
+  },
+  {
+    "Id": "String8",
+    "Valor": "The password and confirmation password do not match."
+  }
+]

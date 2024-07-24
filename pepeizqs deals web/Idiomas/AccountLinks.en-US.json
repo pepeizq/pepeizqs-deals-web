@@ -1,0 +1,14 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Forgot your password?"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Register a new account"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Sign in with an account"
+  }
+]

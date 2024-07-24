@@ -44,20 +44,6 @@
     vertical-align: middle;
 }
 
-.caja-confirmacion {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    margin-top: 0px;
-    margin-right: 3px;
-    margin-bottom: 4px;
-    accent-color: var(--fondoEntrada);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    border: 0px;
-}
-
 .boton {
     color: var(--colorTexto);
     background-color: var(--fondoBoton);
@@ -138,16 +124,6 @@
         color: var(--colorTexto);
         background-color: var(--colorTextoPeligroHover);
     }
-
-.cuerpo-login {
-    margin-top: 30px;
-    margin-bottom: 40px;
-}
-
-.cuerpo-registro {
-    margin-top: 30px;
-    margin-bottom: 50px;
-}
 
 .perfil {
     position: relative;

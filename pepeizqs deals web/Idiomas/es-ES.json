@@ -1,85 +1,5 @@
 [
   {
-    "Id": "Login.Title",
-    "Valor": "Iniciar Sesión"
-  },
-  {
-    "Id": "Login.String1",
-    "Valor": "Iniciar sesión con una cuenta"
-  },
-  {
-    "Id": "Login.String2",
-    "Valor": "Correo"
-  },
-  {
-    "Id": "Login.String3",
-    "Valor": "Contraseña"
-  },
-  {
-    "Id": "Login.String4",
-    "Valor": "nombre@ejemplo.com"
-  },
-  {
-    "Id": "Login.String5",
-    "Valor": "contraseña"
-  },
-  {
-    "Id": "Login.String6",
-    "Valor": "¿Recordar sesión?"
-  },
-  {
-    "Id": "Login.String7",
-    "Valor": "Iniciar sesión"
-  },
-  {
-    "Id": "Login.String8",
-    "Valor": "¿Olvidaste tu contraseña?"
-  },
-  {
-    "Id": "Login.String9",
-    "Valor": "Registrar un nuevo usuario"
-  },
-  {
-    "Id": "Login.String10",
-    "Valor": "Reenviar confirmación por correo"
-  },
-  {
-    "Id": "Register.Title",
-    "Valor": "Registrar Cuenta"
-  },
-  {
-    "Id": "Register.String1",
-    "Valor": "Crear una nueva cuenta"
-  },
-  {
-    "Id": "Register.String2",
-    "Valor": "Correo"
-  },
-  {
-    "Id": "Register.String3",
-    "Valor": "nombre@ejemplo.com"
-  },
-  {
-    "Id": "Register.String4",
-    "Valor": "Contraseña"
-  },
-  {
-    "Id": "Register.String5",
-    "Valor": "contraseña"
-  },
-  {
-    "Id": "Register.String6",
-    "Valor": "Confirmar Contraseña"
-  },
-  {
-    "Id": "Register.String7",
-    "Valor": "Registrar Cuenta"
-  },
-  {
-    "Id": "Register.String8",
-    "Valor": "La contraseña y la contraseña de confirmación no coinciden."
-  },
-  {
     "Id": "Game.String1",
     "Valor": "Abrir en:"
   },
@@ -640,46 +560,6 @@
     "Valor": "Grupos para Sorteos"
   },
   {
-    "Id": "Account.Title",
-    "Valor": "Cuenta"
-  },
-  {
-    "Id": "Settings.String1",
-    "Valor": "Cambia la configuración de tu cuenta"
-  },
-  {
-    "Id": "Settings.String2",
-    "Valor": "Gestionar Correo"
-  },
-  {
-    "Id": "Settings.String3",
-    "Valor": "Correo"
-  },
-  {
-    "Id": "Settings.String4",
-    "Valor": "Por favor introduce tu correo"
-  },
-  {
-    "Id": "Settings.String5",
-    "Valor": "Enviar correo de confirmación"
-  },
-  {
-    "Id": "Settings.String6",
-    "Valor": "Nuevo Correo"
-  },
-  {
-    "Id": "Settings.String7",
-    "Valor": "Cambiar Correo"
-  },
-  {
-    "Id": "Settings.String8",
-    "Valor": "Correo de confirmación enviado. Por favor comprueba tu correo."
-  },
-  {
-    "Id": "Settings.String9",
-    "Valor": "Correo de confirmación para cambiar de correo enviado. Por favor comprueba tu correo."
-  },
-  {
     "Id": "Settings.String10",
     "Valor": "Tu cambio de correo no se ha registrado."
   },
@@ -706,70 +586,6 @@
   {
     "Id": "Settings.String16",
     "Valor": "Error cambiando tu correo. Contacta con admin@pepeizqdeals.com."
-  },
-  {
-    "Id": "Settings.String17",
-    "Valor": "Cambiar Contraseña"
-  },
-  {
-    "Id": "Settings.String18",
-    "Valor": "Actual contraseña"
-  },
-  {
-    "Id": "Settings.String19",
-    "Valor": "Nueva contraseña"
-  },
-  {
-    "Id": "Settings.String20",
-    "Valor": "Confirmar nueva contraseña"
-  },
-  {
-    "Id": "Settings.String21",
-    "Valor": "Introduce tu actual contraseña"
-  },
-  {
-    "Id": "Settings.String22",
-    "Valor": "Introduce tu nueva contraseña"
-  },
-  {
-    "Id": "Settings.String23",
-    "Valor": "Confirma tu nueva contraseña"
-  },
-  {
-    "Id": "Settings.String24",
-    "Valor": "Cambiar Contraseña"
-  },
-  {
-    "Id": "Settings.String25",
-    "Valor": "La contraseña debe tener un mínimo de 6 caracteres"
-  },
-  {
-    "Id": "Settings.String26",
-    "Valor": "La contraseña debe tener al menos un número"
-  },
-  {
-    "Id": "Settings.String27",
-    "Valor": "La contraseña de confirmación no coincide con la nueva contraseña"
-  },
-  {
-    "Id": "Settings.String28",
-    "Valor": "El cambio de contraseña se ha realizado con éxito"
-  },
-  {
-    "Id": "Settings.String29",
-    "Valor": "Se ha producido un error en el cambio de contraseña. Contacta con admin@pepeizqdeals.com"
-  },
-  {
-    "Id": "Settings.String30",
-    "Valor": "La contraseña debe tener al menos una letra mayúscula"
-  },
-  {
-    "Id": "Settings.String31",
-    "Valor": "La contraseña debe tener al menos un carácter que no sea ni letra ni número"
-  },
-  {
-    "Id": "Settings.String32",
-    "Valor": "La contraseña actual no es la correcta"
   },
   {
     "Id": "Settings.String33",
@@ -844,20 +660,8 @@
     "Valor": "Juegos en la lista de deseados:"
   },
   {
-    "Id": "Settings.String53",
-    "Valor": "Notificaciones por Correo"
-  },
-  {
-    "Id": "Settings.String54",
-    "Valor": "Lista de Deseados. Notificarme por correo cuando un juego alcance un precio mínimo sin importar que ya haya estado en un bundle, promoción gratuita o un servicio de suscripción."
-  },
-  {
     "Id": "Settings.String55",
     "Valor": "Claves"
-  },
-  {
-    "Id": "Settings.String56",
-    "Valor": "Noticias. Notificarme con un correo cuando una nueva noticia aparezca."
   },
   {
     "Id": "Settings.String57",
@@ -1002,22 +806,6 @@
   {
     "Id": "Settings.String92",
     "Valor": "Ejemplo."
-  },
-  {
-    "Id": "ForgotPassword.String1",
-    "Valor": "¿Olvidaste tu contraseña?"
-  },
-  {
-    "Id": "ForgotPassword.String2",
-    "Valor": "Introduce tu correo"
-  },
-  {
-    "Id": "ForgotPassword.String3",
-    "Valor": "Resetear Contraseña"
-  },
-  {
-    "Id": "ForgotPassword.String4",
-    "Valor": "Correo enviado para resetear la contraseña"
   },
   {
     "Id": "ResetPassword.String1",

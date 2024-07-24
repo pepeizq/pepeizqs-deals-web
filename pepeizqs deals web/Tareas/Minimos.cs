@@ -45,7 +45,7 @@ namespace Tareas
                     {
                         try
                         {
-                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(10);
+                            TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(15);
 
                             if (Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
                             {

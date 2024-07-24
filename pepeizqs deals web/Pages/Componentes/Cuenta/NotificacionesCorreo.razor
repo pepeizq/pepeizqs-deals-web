@@ -1,0 +1,308 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div>
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+		<div class="checkbox-caja">
+			<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos">
+		</div>
+
+		<div style="padding-left: 30px;">
+			<div style="margin-bottom: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications1", "Account")
+			</div>
+
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications2", "Account")
+			</div>			
+		</div>
+	</div>
+
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+		<div class="checkbox-caja">
+			<input type="checkbox" class="checkbox-interior" checked="@estadoBundles" @onchange="ClickearCambioBundles">
+		</div>
+
+		<div style="padding-left: 30px;">
+			<div style="margin-bottom: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications3", "Account")
+			</div>
+
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications4", "Account")
+			</div>
+		</div>
+	</div>
+
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+		<div class="checkbox-caja">
+			<input type="checkbox" class="checkbox-interior" checked="@estadoGratis" @onchange="ClickearCambioGratis">
+		</div>
+
+		<div style="padding-left: 30px;">
+			<div style="margin-bottom: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications5", "Account")
+			</div>
+
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications6", "Account")
+			</div>
+		</div>
+	</div>
+
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+		<div class="checkbox-caja">
+			<input type="checkbox" class="checkbox-interior" checked="@estadoSuscripciones" @onchange="ClickearCambioSuscripciones">
+		</div>
+
+		<div style="padding-left: 30px;">
+			<div style="margin-bottom: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications7", "Account")
+			</div>
+
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications8", "Account")
+			</div>
+		</div>
+	</div>
+
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="checkbox-caja">
+			<input type="checkbox" class="checkbox-interior" checked="@estadoOtros" @onchange="ClickearCambioOtros">
+		</div>
+
+		<div style="padding-left: 30px;">
+			<div style="margin-bottom: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications9", "Account")
+			</div>
+
+			<div>
+				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications10", "Account")
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private string estadoMinimos = null;
+
+	private string estadoBundles = null;
+	private string estadoGratis = null;
+	private string estadoSuscripciones = null;
+	private string estadoOtros = null;
+
+	protected override async void OnInitialized()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			if (usuario.NotificationLows == null)
+			{
+				estadoMinimos = null;
+			}
+			else
+			{
+				if (usuario.NotificationLows == true)
+				{
+					estadoMinimos = "checked";
+				}
+				else
+				{
+					estadoMinimos = null;
+				}
+			}
+
+			if (usuario.NotificationBundles == null)
+			{
+				estadoBundles = null;
+			}
+			else
+			{
+				if (usuario.NotificationBundles == true)
+				{
+					estadoBundles = "checked";
+				}
+				else
+				{
+					estadoBundles = null;
+				}
+			}
+
+			if (usuario.NotificationFree == null)
+			{
+				estadoGratis = null;
+			}
+			else
+			{
+				if (usuario.NotificationFree == true)
+				{
+					estadoGratis = "checked";
+				}
+				else
+				{
+					estadoGratis = null;
+				}
+			}
+
+			if (usuario.NotificationSubscriptions == null)
+			{
+				estadoSuscripciones = null;
+			}
+			else
+			{
+				if (usuario.NotificationSubscriptions == true)
+				{
+					estadoSuscripciones = "checked";
+				}
+				else
+				{
+					estadoSuscripciones = null;
+				}
+			}
+
+			if (usuario.NotificationOthers == null)
+			{
+				estadoOtros = null;
+			}
+			else
+			{
+				if (usuario.NotificationOthers == true)
+				{
+					estadoOtros = "checked";
+				}
+				else
+				{
+					estadoOtros = null;
+				}
+			}
+		}
+	}
+
+	private async void ClickearCambioMinimos()
+	{
+		if (usuario != null)
+		{
+			bool boolMinimos = false;
+
+			if (estadoMinimos == null)
+			{
+				estadoMinimos = "checked";
+				boolMinimos = true;
+			}
+			else
+			{
+				estadoMinimos = null;
+				boolMinimos = false;
+			}
+
+			usuario.NotificationLows = boolMinimos;
+
+			await UserManager.UpdateAsync(usuario);
+		}	
+	}
+
+	private async void ClickearCambioBundles()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoBundles == null)
+			{
+				estadoBundles = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoBundles = null;
+				estado = false;
+			}
+
+			usuario.NotificationBundles = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioGratis()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoGratis == null)
+			{
+				estadoGratis = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoGratis = null;
+				estado = false;
+			}
+
+			usuario.NotificationFree = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioSuscripciones()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoSuscripciones == null)
+			{
+				estadoSuscripciones = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoSuscripciones = null;
+				estado = false;
+			}
+
+			usuario.NotificationSubscriptions = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioOtros()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoOtros == null)
+			{
+				estadoOtros = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoOtros = null;
+				estado = false;
+			}
+
+			usuario.NotificationOthers = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+}

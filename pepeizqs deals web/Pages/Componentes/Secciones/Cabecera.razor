@@ -10,8 +10,6 @@
 @inherits Juegos.Juego
 
 @inject NavigationManager NavManager
-@inject SignInManager<Usuario> SignInManager
-@inject IHttpContextAccessor _httpContextAccessor;
 
 <style>
     .buscador-panel {
@@ -38,7 +36,7 @@
         <div class="menu-dropdown-contenido">
             @if (usuarioLogeado == true)
             {
-                <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Manage/Email">
+                <button class="texto-cabecera menu-dropdown-item" @onclick="@(e => AbrirCuenta(e))" style="text-align: left; border: 0; width: 100%;">
                     <div style="display: flex; align-items: center;">
                         @if (string.IsNullOrEmpty(usuarioAvatar) == true)
                         {
@@ -57,7 +55,7 @@
                             }
                         }
                     </div>
-                </a>
+                </button>
 
                 <a class="texto-cabecera menu-dropdown-item" href="/wishlist">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
@@ -69,12 +67,13 @@
             }
             else
             {
-                <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Login">
+                <button class="texto-cabecera menu-dropdown-item" @onclick="@(e => AbrirLogin(e))" style="text-align: left; border: 0; width: 100%;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Login", "Header")
-                </a>
-                <a class="texto-cabecera menu-dropdown-item" href="/Identity/Account/Register">
+                </button>
+
+                <button class="texto-cabecera menu-dropdown-item" @onclick="@(e => AbrirRegistro(e))" style="text-align: left; border: 0; width: 100%;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Register", "Header")
-                </a>
+                </button>
             }
 
             <hr>
@@ -274,7 +273,7 @@
 
     private void Desconectar(MouseEventArgs e)
     {
-        NavManager.NavigateTo("/Identity/Account/Logout", true, false);
+        NavManager.NavigateTo("/account/logout", true, false);
     }
 
     #region Buscador
@@ -523,5 +522,20 @@
     }
 
     #endregion
+
+    private void AbrirLogin(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/login", true);
+    }
+
+    private void AbrirRegistro(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/register", true);
+    }
+
+    private void AbrirCuenta(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account", true);
+    }
 }
 

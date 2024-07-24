@@ -1,10 +1,10 @@
-﻿#nullable disable
+#nullable disable
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace pepeizqs_deals_web.Areas.Identity.Pages.Account.Manage
+namespace pepeizqs_deals_web.Pages
 {
-    public class ChangePasswordModel : PageModel
+    public class AccountModel : PageModel
     {
         public string idioma = string.Empty;
 

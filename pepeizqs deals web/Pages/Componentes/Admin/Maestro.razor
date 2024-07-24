@@ -2771,7 +2771,22 @@
 
                 foreach (var usuario in UserManager.Users)
                 {
-                    if (usuario.NotificationNews == true)
+                    if (usuario.NotificationBundles == true && noticia.Tipo == NoticiaTipo.Bundles)
+                    {
+                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                    }
+
+                    if (usuario.NotificationFree == true && noticia.Tipo == NoticiaTipo.Gratis)
+                    {
+                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                    }
+
+                    if (usuario.NotificationSubscriptions == true && noticia.Tipo == NoticiaTipo.Suscripciones)
+                    {
+                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                    }
+
+                    if (usuario.NotificationOthers == true && noticia.Tipo != NoticiaTipo.Bundles && noticia.Tipo != NoticiaTipo.Gratis && noticia.Tipo != NoticiaTipo.Suscripciones)
                     {
                         Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
                     }

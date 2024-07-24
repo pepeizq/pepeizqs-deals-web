@@ -1,0 +1,154 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Account"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Change your account settings"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Change Email"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Email Notifications"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Change Password"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Steam Account"
+  },
+  {
+    "Id": "Mail1",
+    "Valor": "Current Email"
+  },
+  {
+    "Id": "Mail2",
+    "Valor": "Please enter your email"
+  },
+  {
+    "Id": "Mail3",
+    "Valor": "Send verification email"
+  },
+  {
+    "Id": "Mail4",
+    "Valor": "New Email"
+  },
+  {
+    "Id": "Mail5",
+    "Valor": "Change Email"
+  },
+  {
+    "Id": "Mail6",
+    "Valor": "Verification email sent. Please check your email."
+  },
+  {
+    "Id": "Mail7",
+    "Valor": "Confirmation link to change email sent. Please check your email."
+  },
+  {
+    "Id": "Notifications1",
+    "Valor": "Wishlist"
+  },
+  {
+    "Id": "Notifications2",
+    "Valor": "You will be notified by email when a game on your wishlist reaches a new historical low price."
+  },
+  {
+    "Id": "Notifications3",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Notifications4",
+    "Valor": "You will be notified by email when a new bundle appears."
+  },
+  {
+    "Id": "Notifications5",
+    "Valor": "Free"
+  },
+  {
+    "Id": "Notifications6",
+    "Valor": "You will be notified by email when a new paid game is temporarily available for free."
+  },
+  {
+    "Id": "Notifications7",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "Notifications8",
+    "Valor": "You will be notified by email when new games appear on subscription services that can be redeemed on platforms such as Steam or GOG."
+  },
+  {
+    "Id": "Notifications9",
+    "Valor": "Others"
+  },
+  {
+    "Id": "Notifications10",
+    "Valor": "You will be notified by email when relevant news appears on the website and these are not from the previous categories."
+  },
+  {
+    "Id": "ChangePassword1",
+    "Valor": "Current password"
+  },
+  {
+    "Id": "ChangePassword2",
+    "Valor": "Enter your current password"
+  },
+  {
+    "Id": "ChangePassword3",
+    "Valor": "New password"
+  },
+  {
+    "Id": "ChangePassword4",
+    "Valor": "Enter your new password"
+  },
+  {
+    "Id": "ChangePassword5",
+    "Valor": "Confirm new password"
+  },
+  {
+    "Id": "ChangePassword6",
+    "Valor": "Confirm your new password"
+  },
+  {
+    "Id": "ChangePassword7",
+    "Valor": "Change Password"
+  },
+  {
+    "Id": "ChangePassword8",
+    "Valor": "The password must be a minimum of 6 characters"
+  },
+  {
+    "Id": "ChangePassword9",
+    "Valor": "The password must have at least one number"
+  },
+  {
+    "Id": "ChangePassword10",
+    "Valor": "The password must have at least one uppercase letter"
+  },
+  {
+    "Id": "ChangePassword11",
+    "Valor": "The password must have at least one non alphanumeric character"
+  },
+  {
+    "Id": "ChangePassword12",
+    "Valor": "The confirmation password does not match new password"
+  },
+  {
+    "Id": "ChangePassword13",
+    "Valor": "The current password is not correct"
+  },
+  {
+    "Id": "ChangePassword14",
+    "Valor": "The password change was successful"
+  },
+  {
+    "Id": "ChangePassword15",
+    "Valor": "An error occurred while changing the password. Contact admin@pepeizqdeals.com"
+  }
+]

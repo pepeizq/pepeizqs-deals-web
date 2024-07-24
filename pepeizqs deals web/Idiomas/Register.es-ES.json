@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Registrar Cuenta"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Crear una nueva cuenta"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Correo"
+  },
+  {
+    "Id": "String3",
+    "Valor": "nombre@ejemplo.com"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Contraseña"
+  },
+  {
+    "Id": "String5",
+    "Valor": "contraseña"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Confirmar Contraseña"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Registrar Cuenta"
+  },
+  {
+    "Id": "String8",
+    "Valor": "La contraseña y la contraseña de confirmación no coinciden."
+  }
+]

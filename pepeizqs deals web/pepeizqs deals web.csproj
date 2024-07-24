@@ -70,6 +70,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Idiomas\Index.en-US.json" />
+    <_ContentIncludedByDefault Remove="Pages\Account\Account.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,6 +105,10 @@
     <Content Include="Plantillas\NuevoMinimo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Account\Account.cshtml" />
   </ItemGroup>
 
 </Project>
