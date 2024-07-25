@@ -82,5 +82,9 @@
   {
     "Id": "String20",
     "Valor": "Maximum Price"
+  },
+  {
+    "Id": "String21",
+    "Valor": "You must add a game to your wishlist, you also have the option to import your Steam wishlist if you link an account."
   }
 ]

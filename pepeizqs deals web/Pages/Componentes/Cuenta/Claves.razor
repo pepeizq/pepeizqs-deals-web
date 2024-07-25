@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Identity;
+@using Newtonsoft.Json
+@using pepeizqs_deals_web.Areas.Identity.Data;
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+	@if (usuario.EmailConfirmed == true)
+	{
+		bool enseñarMensaje = true;
+
+		if (string.IsNullOrEmpty(usuario.Keys) == false)
+		{
+			List<BaseDatos.Usuarios.Clave>? claves = JsonConvert.DeserializeObject<List<BaseDatos.Usuarios.Clave>>(usuario.Keys);
+
+			if (claves != null)
+			{
+				if (claves.Count > 0)
+				{
+					enseñarMensaje = false;
+
+					foreach (var clave in claves)
+					{
+						<div style="margin-bottom: 10px;">
+							<label>@clave.Nombre: @clave.Codigo</label>
+						</div>
+					}
+				}
+			}
+		}
+
+		if (enseñarMensaje == true)
+		{
+			<div>
+				<label>@Herramientas.Idiomas.CogerCadena(idioma, "Keys1", "Account")</label>
+			</div>
+		}
+	}
+	else
+	{
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Keys2", "Account")
+		</div>
+	}
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	protected override async void OnInitialized()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+	}
+}

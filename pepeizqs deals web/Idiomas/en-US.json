@@ -588,108 +588,12 @@
     "Valor": "Error changing your email. Contact with admin@pepeizqdeals.com."
   },
   {
-    "Id": "Settings.String33",
-    "Valor": "Personal Data"
-  },
-  {
-    "Id": "Settings.String34",
-    "Valor": "Your account contains personal data that you have given me. This section allows you to download or delete that data."
-  },
-  {
-    "Id": "Settings.String35",
-    "Valor": "Deleting this data will permanently remove your account, and this cannot be recovered."
-  },
-  {
-    "Id": "Settings.String36",
-    "Valor": "Download"
-  },
-  {
-    "Id": "Settings.String37",
-    "Valor": "Delete"
-  },
-  {
-    "Id": "Settings.String38",
-    "Valor": "Delete Personal Data"
-  },
-  {
-    "Id": "Settings.String39",
-    "Valor": "Deleting this data will permanently remove your account, and this cannot be recovered."
-  },
-  {
-    "Id": "Settings.String40",
-    "Valor": "Password"
-  },
-  {
-    "Id": "Settings.String41",
-    "Valor": "Enter your password"
-  },
-  {
-    "Id": "Settings.String42",
-    "Valor": "Delete data and close my account"
-  },
-  {
-    "Id": "Settings.String43",
-    "Valor": "Steam Account"
-  },
-  {
-    "Id": "Settings.String44",
-    "Valor": "You must have your email account confirmed to be able to use this section."
-  },
-  {
-    "Id": "Settings.String45",
-    "Valor": "https://steamcommunity.com/id/yourname/"
-  },
-  {
-    "Id": "Settings.String46",
-    "Valor": "This website will only need your Steam account information if you want to save time creating your wishlist or if you want to access the game giveaways."
-  },
-  {
-    "Id": "Settings.String47",
-    "Valor": "In order for it to work correctly, your Steam account permissions must be like this."
-  },
-  {
-    "Id": "Settings.String48",
-    "Valor": "Name:"
-  },
-  {
-    "Id": "Settings.String49",
-    "Valor": "Games on the account:"
-  },
-  {
-    "Id": "Settings.String50",
-    "Valor": "Games on the wishlist:"
-  },
-  {
-    "Id": "Settings.String55",
-    "Valor": "Keys"
-  },
-  {
     "Id": "Settings.String57",
     "Valor": "You are in the Steam Group for the giveaways."
   },
   {
     "Id": "Settings.String58",
     "Valor": "You are not in the Steam Group for the giveaways."
-  },
-  {
-    "Id": "Settings.String59",
-    "Valor": "You haven't won any giveaway, sorry."
-  },
-  {
-    "Id": "Settings.String60",
-    "Valor": "Last check"
-  },
-  {
-    "Id": "Settings.String61",
-    "Valor": "That Steam user is already associated with another registered account."
-  },
-  {
-    "Id": "Settings.String62",
-    "Valor": "ID64:"
-  },
-  {
-    "Id": "Settings.String63",
-    "Valor": "Refresh"
   },
   {
     "Id": "Settings.String64",
@@ -806,30 +710,6 @@
   {
     "Id": "Settings.String92",
     "Valor": "Example."
-  },
-  {
-    "Id": "ResetPassword.String1",
-    "Valor": "Reset Password"
-  },
-  {
-    "Id": "ResetPassword.String2",
-    "Valor": "Enter your email"
-  },
-  {
-    "Id": "ResetPassword.String3",
-    "Valor": "Enter your new password"
-  },
-  {
-    "Id": "ResetPassword.String4",
-    "Valor": "Confirm your new password"
-  },
-  {
-    "Id": "ResetPassword.String5",
-    "Valor": "Reset Password"
-  },
-  {
-    "Id": "ResetPassword.String6",
-    "Valor": "The password has been reset successfully"
   },
   {
     "Id": "Contact.Title",

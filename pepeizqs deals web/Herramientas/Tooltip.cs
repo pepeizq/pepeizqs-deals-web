@@ -88,19 +88,22 @@ namespace Herramientas
             {
                 if (juego != null)
                 {
-					if (juegosUsuario.Count > 0)
-					{
-						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
-						{
-							foreach (var juegoUsuario in juegosUsuario)
-							{
-								if (juegoUsuario == juego.IdSteam.ToString())
-								{
-									return true;
-								}
-							}
-						}
-					}
+                    if (juegosUsuario != null)
+                    {
+                        if (juegosUsuario.Count > 0)
+                        {
+                            if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
+                            {
+                                foreach (var juegoUsuario in juegosUsuario)
+                                {
+                                    if (juegoUsuario == juego.IdSteam.ToString())
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }					
 				}                      
             }
 

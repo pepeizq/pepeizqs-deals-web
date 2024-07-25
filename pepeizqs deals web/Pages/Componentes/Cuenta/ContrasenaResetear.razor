@@ -8,18 +8,18 @@
 
 @if (codigo != null)
 {
-    <div class="perfil">
-        <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String1")</div>
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
+        <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "String1", "ResetPassword")</div>
 
         <hr>
 
         <div class="row">
             <div style="display: flex; flex-direction: column;">
-                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String2")</label>
-                <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+                <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "String2", "ResetPassword")</label>
+                <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); width: 100%;" />
 
-                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String3")</label>
-                <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "String3", "ResetPassword")</label>
+                <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); width: 100%;" />
 
                 @if (string.IsNullOrEmpty(mensajeAviso1) == false)
                 {
@@ -28,8 +28,8 @@
                     </div>
                 }
 
-                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String4")</label>
-                <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block; max-width: 500px;" />
+                <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "String4", "ResetPassword")</label>
+                <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); width: 100%;" />
 
                 @if (string.IsNullOrEmpty(mensajeAviso2) == false)
                 {
@@ -39,7 +39,7 @@
                 }
 
                 <div class="perfil-flexible-izquierda" style="margin-top: 30px;">
-                    <button @onclick="ResetearContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ResetPassword.String5")</button>
+                    <button @onclick="ResetearContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "String5", "ResetPassword")</button>
                 </div>
 
                 @if (string.IsNullOrEmpty(mensajeExito) == false)

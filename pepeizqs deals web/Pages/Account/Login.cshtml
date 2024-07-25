@@ -47,7 +47,7 @@
                             <input type="checkbox" class="checkbox-interior" asp-for="Input.RememberMe">
                         </div>
 
-                        <div style="margin-left: 15px; margin-bottom: 8px;">
+                        <div style="margin-left: 15px; margin-bottom: 8px; cursor: pointer;">
                             @Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "Login")
                         </div>
                     </div>
@@ -58,16 +58,6 @@
                 <button id="login-submit" type="submit" class="boton">
                     @Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Login")
                 </button>
-            </div>
-
-            <div>
-                @* 
-
-            <p>
-            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">
-            @Herramientas.Idiomas.CogerCadena(Model.idioma, "String10", "Login")
-            </a>
-            </p> *@
             </div>
         </form>
     </div>

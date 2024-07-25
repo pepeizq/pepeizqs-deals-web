@@ -24,6 +24,14 @@
     "Valor": "Steam Account"
   },
   {
+    "Id": "String6",
+    "Valor": "Keys"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Personal Data"
+  },
+  {
     "Id": "Mail1",
     "Valor": "Current Email"
   },
@@ -150,5 +158,93 @@
   {
     "Id": "ChangePassword15",
     "Valor": "An error occurred while changing the password. Contact admin@pepeizqdeals.com"
+  },
+  {
+    "Id": "Steam1",
+    "Valor": "https://steamcommunity.com/id/yourname/"
+  },
+  {
+    "Id": "Steam2",
+    "Valor": "This website will only need your Steam account information if you want to save time creating your wishlist or if you want to access the giveaways and rewards."
+  },
+  {
+    "Id": "Steam3",
+    "Valor": "In order for it to work correctly, your Steam account permissions must be like this."
+  },
+  {
+    "Id": "Steam4",
+    "Valor": "That Steam user is already associated with another registered account."
+  },
+  {
+    "Id": "Steam5",
+    "Valor": "Refresh"
+  },
+  {
+    "Id": "Steam6",
+    "Valor": "ID64:"
+  },
+  {
+    "Id": "Steam7",
+    "Valor": "Name:"
+  },
+  {
+    "Id": "Steam8",
+    "Valor": "Games on the account:"
+  },
+  {
+    "Id": "Steam9",
+    "Valor": "Games on the wishlist:"
+  },
+  {
+    "Id": "Steam10",
+    "Valor": "Last check"
+  },
+  {
+    "Id": "Steam11",
+    "Valor": "You must have your email account confirmed to be able to use this section."
+  },
+  {
+    "Id": "Keys1",
+    "Valor": "There is no key in your account."
+  },
+  {
+    "Id": "Keys2",
+    "Valor": "You must have your email account confirmed to be able to use this section."
+  },
+  {
+    "Id": "PersonalData1",
+    "Valor": "Data from your account"
+  },
+  {
+    "Id": "PersonalData2",
+    "Valor": "Below you can download all the data linked to your account that the website uses."
+  },
+  {
+    "Id": "PersonalData3",
+    "Valor": "Download data"
+  },
+  {
+    "Id": "PersonalData4",
+    "Valor": "Delete your account"
+  },
+  {
+    "Id": "PersonalData5",
+    "Valor": "You can delete your account from the website if you consider it necessary, but there is no going back on this action, if you delete your account I will not be able to recover it."
+  },
+  {
+    "Id": "PersonalData6",
+    "Valor": "Delete account"
+  },
+  {
+    "Id": "PersonalData7",
+    "Valor": "Before deleting the account I need you to enter your password again:"
+  },
+  {
+    "Id": "PersonalData8",
+    "Valor": "Remember, if you delete your account I will not be able to recover it."
+  },
+  {
+    "Id": "PersonalData9",
+    "Valor": "Delete account"
   }
 ]

@@ -11,7 +11,7 @@
 	if (usuario.EmailConfirmed == true)
 	{
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String45")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
+			<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Steam1", "Account")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
 
 			<div style="display: flex; align-items: start; margin: 20px 0px;">
 				<div style="padding-top: 10px; padding-right: 20px;">
@@ -19,10 +19,10 @@
 				</div>
 
 				<div style="width: 100%;">
-					<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String46")</label>
+					<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam2", "Account")</label>
 
 					<button @onclick="ClickearEnseñarImagen" style="outline: none; border: 0; background-color: transparent; color: var(--colorTextoOscuro); margin-top: 20px; padding: 0px; text-align: left;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String47")
+						@Herramientas.Idiomas.CogerCadena(idioma, "Steam3", "Account")
 					</button>
 				</div>
 			</div>
@@ -30,19 +30,19 @@
 			@if (errorCuentaUsada == true)
 			{
 				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String61")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Steam4", "Account")
 				</div>
 			}
 
 			@if (string.IsNullOrEmpty(enlaceCuenta) == false)
 			{
 				<button class="boton" style="font-size: 18px; max-width: 250px; margin-top: 20px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String63")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Steam5", "Account")
 				</button>
 			}
 		</div>
 
-		@if (usuario.SteamId != null || usuario.Nickname != null || usuario.SteamGames != null || usuario.SteamWishlist != null || usuario.OfficialGroup != null)
+		@if (string.IsNullOrEmpty(usuario.SteamId) == false && string.IsNullOrEmpty(usuario.Nickname) == false)
 		{
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; align-items: start;">
 				@if (string.IsNullOrEmpty(usuario.Avatar) == false)
@@ -56,35 +56,35 @@
 					@if (string.IsNullOrEmpty(usuario.SteamId) == false)
 					{
 						<div>
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String62") @usuario.SteamId</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam6", "Account") @usuario.SteamId</label>
 						</div>
 					}
 
 					@if (string.IsNullOrEmpty(usuario.Nickname) == false)
 					{
 						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String48") @usuario.Nickname</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam7", "Account") @usuario.Nickname</label>
 						</div>
 					}
 
 					@if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 					{
 						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String49") @MensajeCantidad(usuario.SteamGames)</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam8", "Account") @MensajeCantidad(usuario.SteamGames)</label>
 						</div>
 					}
 
 					@if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
 					{
 						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String50") @MensajeCantidad(usuario.SteamWishlist)</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam9", "Account") @MensajeCantidad(usuario.SteamWishlist)</label>
 						</div>
 					}
 
 					@if (usuario.SteamAccountLastCheck != null)
 					{
 						<div style="margin-top: 15px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String60"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
 						</div>
 					}
 				</div>
@@ -95,7 +95,7 @@
 	{
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 			<div class="alert alert-danger alert-dismissible" style="margin: 0px;" role="alert">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Settings.String44")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Steam11", "Account")
 			</div>
 		</div>
 	}

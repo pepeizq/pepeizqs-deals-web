@@ -71,6 +71,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Idiomas\Index.en-US.json" />
     <_ContentIncludedByDefault Remove="Pages\Account\Account.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Account\ResetPassword.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,6 +110,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Account\Account.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Account\ResetPassword.cshtml" />
   </ItemGroup>
 
 </Project>

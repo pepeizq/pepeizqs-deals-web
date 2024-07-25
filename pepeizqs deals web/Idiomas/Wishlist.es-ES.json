@@ -82,5 +82,9 @@
   {
     "Id": "String20",
     "Valor": "Precio Máximo"
+  },
+  {
+    "Id": "String21",
+    "Valor": "Debes añadir algún juego a tu lista de deseados, también tienes la opción de importar tu lista de deseados de Steam si vinculas una cuenta."
   }
 ]

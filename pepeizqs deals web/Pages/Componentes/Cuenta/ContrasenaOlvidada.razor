@@ -9,18 +9,18 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
-    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "String1", "AccountForgotPassword")</div>
+    <div class="texto-info">@Herramientas.Idiomas.CogerCadena(idioma, "String1", "ForgotPassword")</div>
 
     <hr>
 
     <div class="row">
         <div style="display: flex; flex-direction: column;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "String2", "AccountForgotPassword")</label>
+            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "String2", "ForgotPassword")</label>
             <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block;" />
 
             <div style="margin-top: 30px;">
                 <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "String3", "AccountForgotPassword")
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String3", "ForgotPassword")
                 </button>
             </div>
 
@@ -68,10 +68,10 @@
                     string codigo = await UserManager.GeneratePasswordResetTokenAsync(usuario);
                     codigo = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(codigo));
 
-                    string enlaceFinal = "https://pepeizqdeals.com/Account/ResetPassword?code=" + codigo;
+                    string enlaceFinal = "https://pepeizqdeals.com/account/resetpassword?code=" + codigo;
 
                     Herramientas.Correos.EnviarContraseñaOlvidada(enlaceFinal, correo);
-                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "String4", "AccountForgotPassword");
+                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "String4", "ForgotPassword");
                 }
             }
         }

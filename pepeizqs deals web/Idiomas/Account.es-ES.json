@@ -24,6 +24,14 @@
     "Valor": "Cuenta de Steam"
   },
   {
+    "Id": "String6",
+    "Valor": "Claves"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Datos Personales"
+  },
+  {
     "Id": "Mail1",
     "Valor": "Correo Actual"
   },
@@ -150,5 +158,93 @@
   {
     "Id": "ChangePassword15",
     "Valor": "Se ha producido un error en el cambio de contraseña. Contacta con admin@pepeizqdeals.com"
+  },
+  {
+    "Id": "Steam1",
+    "Valor": "https://steamcommunity.com/id/tunombre/"
+  },
+  {
+    "Id": "Steam2",
+    "Valor": "Esta web solo necesita información de tu cuenta de Steam en los casos de que quieras ahorrar tiempo importando tu lista de deseados o de que quieras acceder a los sorteos y recompensas."
+  },
+  {
+    "Id": "Steam3",
+    "Valor": "Para que funcione correctamente, los permisos de tu cuenta de Steam deben ser así."
+  },
+  {
+    "Id": "Steam4",
+    "Valor": "Ese usuario de Steam ya está asociado a otra cuenta registrada."
+  },
+  {
+    "Id": "Steam5",
+    "Valor": "Actualizar"
+  },
+  {
+    "Id": "Steam6",
+    "Valor": "ID64:"
+  },
+  {
+    "Id": "Steam7",
+    "Valor": "Nombre:"
+  },
+  {
+    "Id": "Steam8",
+    "Valor": "Juegos en la cuenta:"
+  },
+  {
+    "Id": "Steam9",
+    "Valor": "Juegos en la lista de deseados:"
+  },
+  {
+    "Id": "Steam10",
+    "Valor": "Última comprobación"
+  },
+  {
+    "Id": "Steam11",
+    "Valor": "Debes de tener tu cuenta de correo confirmada para poder usar esta sección."
+  },
+  {
+    "Id": "Keys1",
+    "Valor": "No hay ninguna clave asociada a tu cuenta."
+  },
+  {
+    "Id": "Keys2",
+    "Valor": "Debes de tener tu cuenta de correo confirmada para poder usar esta sección."
+  },
+  {
+    "Id": "PersonalData1",
+    "Valor": "Datos de tu cuenta"
+  },
+  {
+    "Id": "PersonalData2",
+    "Valor": "A continuación puedes descargar todos los datos vinculados a tu cuenta de los que hace uso la web."
+  },
+  {
+    "Id": "PersonalData3",
+    "Valor": "Descargar datos"
+  },
+  {
+    "Id": "PersonalData4",
+    "Valor": "Borrar tu cuenta"
+  },
+  {
+    "Id": "PersonalData5",
+    "Valor": "Puedes borrar tu cuenta de la web si lo consideras necesario, pero esta acción no tiene vuelta atrás, si borras tu cuenta no podré recuperarla."
+  },
+  {
+    "Id": "PersonalData6",
+    "Valor": "Borrar cuenta"
+  },
+  {
+    "Id": "PersonalData7",
+    "Valor": "Antes de borrar la cuenta necesito que introduzcas tu contraseña de nuevo:"
+  },
+  {
+    "Id": "PersonalData8",
+    "Valor": "Recuerda, si borras tu cuenta no podré recuperarla."
+  },
+  {
+    "Id": "PersonalData9",
+    "Valor": "Borrar cuenta"
   }
 ]

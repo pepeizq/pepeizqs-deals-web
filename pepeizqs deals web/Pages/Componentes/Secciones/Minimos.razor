@@ -525,6 +525,11 @@
 			}
 			else
 			{
+				if (usuario.HistoricalLowsSort == null)
+				{
+					usuario.HistoricalLowsSort = 1;
+				}
+
 				if (usuario.HistoricalLowsSort == 0)
 				{
 					OrdenarReseñasPorcentaje();
@@ -836,14 +841,20 @@
 			{
 				if (estadoOcultarJuegosUsuario == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
 				{
-					foreach (var juegoUsuario in usuarioJuegosSteam)
+					if (usuarioJuegosSteam != null)
 					{
-						if (juego.IdSteam.ToString() == juegoUsuario)
+						if (usuarioJuegosSteam.Count > 0)
 						{
-							ocultar = true;
-							break;
+							foreach (var juegoUsuario in usuarioJuegosSteam)
+							{
+								if (juego.IdSteam.ToString() == juegoUsuario)
+								{
+									ocultar = true;
+									break;
+								}
+							}
 						}
-					}
+					}					
 				}
 			}
 

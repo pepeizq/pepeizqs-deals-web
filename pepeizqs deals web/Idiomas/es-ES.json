@@ -588,108 +588,12 @@
     "Valor": "Error cambiando tu correo. Contacta con admin@pepeizqdeals.com."
   },
   {
-    "Id": "Settings.String33",
-    "Valor": "Datos Personales"
-  },
-  {
-    "Id": "Settings.String34",
-    "Valor": "Tu cuenta contiene información personal que me has facilitado. Esta sección te permite descargar o borrar esos datos."
-  },
-  {
-    "Id": "Settings.String35",
-    "Valor": "Borrar los datos implica borrar tu cuenta de forma permanente, y el administrador no podrá recuperar tu cuenta."
-  },
-  {
-    "Id": "Settings.String36",
-    "Valor": "Descargar"
-  },
-  {
-    "Id": "Settings.String37",
-    "Valor": "Borrar"
-  },
-  {
-    "Id": "Settings.String38",
-    "Valor": "Borrar Datos Personales"
-  },
-  {
-    "Id": "Settings.String39",
-    "Valor": "Borrar los datos implica borrar tu cuenta de forma permanente, y el administrador no podrá recuperar tu cuenta."
-  },
-  {
-    "Id": "Settings.String40",
-    "Valor": "Contraseña"
-  },
-  {
-    "Id": "Settings.String41",
-    "Valor": "Introduce tu contraseña"
-  },
-  {
-    "Id": "Settings.String42",
-    "Valor": "Borrar datos y cerrar mi cuenta"
-  },
-  {
-    "Id": "Settings.String43",
-    "Valor": "Cuenta de Steam"
-  },
-  {
-    "Id": "Settings.String44",
-    "Valor": "Debes de tener tu cuenta de correo confirmada para poder usar esta sección."
-  },
-  {
-    "Id": "Settings.String45",
-    "Valor": "https://steamcommunity.com/id/tunombre/"
-  },
-  {
-    "Id": "Settings.String46",
-    "Valor": "Esta web solo necesita información de tu cuenta de Steam en los casos de que quieras ahorrar tiempo importando tu lista de deseados o de que quieras acceder a los sorteos."
-  },
-  {
-    "Id": "Settings.String47",
-    "Valor": "Para que funcione correctamente, los permisos de tu cuenta de Steam deben ser así."
-  },
-  {
-    "Id": "Settings.String48",
-    "Valor": "Nombre:"
-  },
-  {
-    "Id": "Settings.String49",
-    "Valor": "Juegos en la cuenta:"
-  },
-  {
-    "Id": "Settings.String50",
-    "Valor": "Juegos en la lista de deseados:"
-  },
-  {
-    "Id": "Settings.String55",
-    "Valor": "Claves"
-  },
-  {
     "Id": "Settings.String57",
     "Valor": "Estás dentro del grupo de Steam para los sorteos."
   },
   {
     "Id": "Settings.String58",
     "Valor": "No estás dentro del grupo de Steam para los sorteos."
-  },
-  {
-    "Id": "Settings.String59",
-    "Valor": "No has ganado ningún sorteo, lo siento."
-  },
-  {
-    "Id": "Settings.String60",
-    "Valor": "Última comprobación"
-  },
-  {
-    "Id": "Settings.String61",
-    "Valor": "Ese usuario de Steam ya está asociado a otra cuenta registrada."
-  },
-  {
-    "Id": "Settings.String62",
-    "Valor": "ID64:"
-  },
-  {
-    "Id": "Settings.String63",
-    "Valor": "Actualizar"
   },
   {
     "Id": "Settings.String64",
@@ -806,30 +710,6 @@
   {
     "Id": "Settings.String92",
     "Valor": "Ejemplo."
-  },
-  {
-    "Id": "ResetPassword.String1",
-    "Valor": "Resetear Contraseña"
-  },
-  {
-    "Id": "ResetPassword.String2",
-    "Valor": "Introduce tu correo"
-  },
-  {
-    "Id": "ResetPassword.String3",
-    "Valor": "Introduce tu nueva contraseña"
-  },
-  {
-    "Id": "ResetPassword.String4",
-    "Valor": "Confirma tu nueva contraseña"
-  },
-  {
-    "Id": "ResetPassword.String5",
-    "Valor": "Resetear Contraseña"
-  },
-  {
-    "Id": "ResetPassword.String6",
-    "Valor": "La contraseña se ha reseteado con éxito"
   },
   {
     "Id": "Contact.Title",

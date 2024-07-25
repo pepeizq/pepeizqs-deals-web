@@ -24,7 +24,7 @@
 
     <div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
         <div style="width: 50%;">
-            <div style="display: flex; align-items: center; flex-direction: column; gap: 15px;">
+            <div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
                 <button @onclick="@(e => AbrirPestañaCorreo(e))" class="boton-pestañas" style="@estiloCorreo">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Account")
                 </button>
@@ -37,8 +37,18 @@
                     @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Account")
                 </button>
 
+                <button @onclick="@(e => AbrirPestañaDatosPersonales(e))" class="boton-pestañas" style="@estiloDatosPersonales">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String7", "Account")
+                </button>
+
+                <hr style="width: 100%;" />
+
                 <button @onclick="@(e => AbrirPestañaSteam(e))" class="boton-pestañas" style="@estiloSteam">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Account")
+                </button>
+
+                <button @onclick="@(e => AbrirPestañaClaves(e))" class="boton-pestañas" style="@estiloClaves">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String6", "Account")
                 </button>
             </div>
         </div>
@@ -59,9 +69,19 @@
                 <NotificacionesCorreo idioma="@idioma" />
             }
 
+            @if (pestañaDatosPersonales == true)
+            {
+                <DatosPersonales idioma="@idioma" />
+            }
+
             @if (pestañaSteam == true)
             {
                 <CuentaSteam idioma="@idioma" />
+            }
+
+            @if (pestañaClaves == true)
+            {
+                <Claves idioma="@idioma"/>
             }
         </div>
     </div>
@@ -88,12 +108,16 @@
         pestañaCorreo = false;
         pestañaContraseña = false;
         pestañaNotificaciones = false;
+        pestañaDatosPersonales = false;
         pestañaSteam = false;
+        pestañaClaves = false;
 
         estiloCorreo = null;
         estiloContraseña = null;
         estiloNotificaciones = null;
+        estiloDatosPersonales = null;
         estiloSteam = null;
+        estiloClaves = null;
     }
 
     private bool pestañaCorreo = false;
@@ -126,6 +150,16 @@
         estiloNotificaciones = fondo;
     }
 
+    private bool pestañaDatosPersonales = false;
+    private string estiloDatosPersonales = null;
+
+    private void AbrirPestañaDatosPersonales(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaDatosPersonales = true;
+        estiloDatosPersonales = fondo;
+    }
+
     private bool pestañaSteam = false;
     private string estiloSteam = null;
 
@@ -134,5 +168,15 @@
         CerrarPestañas();
         pestañaSteam = true;
         estiloSteam = fondo;
+    }
+
+    private bool pestañaClaves = false;
+    private string estiloClaves = null;
+
+    private void AbrirPestañaClaves(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        pestañaClaves = true;
+        estiloClaves = fondo;
     }
 }
