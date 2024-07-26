@@ -205,15 +205,15 @@ var app = builder.Build();
     app.UseHsts();
 //}
 
-app.Use(async (context, next) =>
-{
-	await next();
-	if (context.Response.StatusCode == 404)
-	{
-		context.Request.Path = "/";
-		await next();
-	}
-});
+//app.Use(async (context, next) =>
+//{
+//	await next();
+//	if (context.Response.StatusCode == 404)
+//	{
+//		context.Request.Path = "/";
+//		await next();
+//	}
+//});
 
 #region Seo
 
