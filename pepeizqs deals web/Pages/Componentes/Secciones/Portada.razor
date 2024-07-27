@@ -806,8 +806,6 @@ else
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
-	private List<Sorteos2.Sorteo> sorteosActivos = new List<Sorteos2.Sorteo>();
-
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
@@ -874,6 +872,19 @@ else
 
 		using (conexion)
 		{
+			#region Destacados
+
+			try
+			{
+				juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+			}
+			catch (Exception ex)
+			{
+				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
+			}
+
+			#endregion
+
 			#region Aviso
 
 			aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
@@ -947,38 +958,23 @@ else
 			}
 
 			#endregion
-
-			#region Sorteos
-
-			sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
-
-			#endregion
 		}
 	}
 
-	protected override void OnAfterRender(bool primerRender)
+	protected override async Task OnAfterRenderAsync(bool primerRender)
 	{
 		if (primerRender == true)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+			if (juegosDestacadosCarga != null)
 			{
-				#region Destacados
-
-				try
+				if (juegosDestacadosCarga.Count > 0)
 				{
-					juegosDestacadosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+					juegosDestacadosGestor = juegosDestacadosCarga;
 				}
-				catch (Exception ex)
-				{
-					BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
-				}
-
-				CargarJuegosDestacados();
-
-				#endregion
 			}
+
+
+			CargarJuegosDestacados();
 
 			CronometroDestacados();
 		}
@@ -986,6 +982,7 @@ else
 
 	#region Destacados
 
+	private List<Juegos.Juego> juegosDestacadosCarga = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
 	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();

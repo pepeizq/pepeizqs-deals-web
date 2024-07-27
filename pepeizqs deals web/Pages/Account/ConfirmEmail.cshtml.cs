@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using pepeizqs_deals_web.Areas.Identity.Data;
 
-namespace pepeizqs_deals_web.Areas.Identity.Pages.Account
+namespace pepeizqs_deals_web.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {

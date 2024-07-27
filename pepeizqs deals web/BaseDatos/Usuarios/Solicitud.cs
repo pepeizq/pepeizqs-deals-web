@@ -1,9 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
-using pepeizqs_deals_web.Areas.Identity.Componentes;
-using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace BaseDatos.Usuarios
 {
