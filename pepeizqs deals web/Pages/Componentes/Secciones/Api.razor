@@ -1,213 +1,235 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 
-<h1 style="font-size: 23px; text-align: left; margin-bottom: 30px;">
-	@Herramientas.Idiomas.CogerCadena(idioma, "Api.Title")
-</h1>
+<style>
+	.boton-pestañas {
+		color: var(--colorTexto);
+		background: transparent;
+		text-align: center;
+		border: 0;
+		width: 100%;
+		transition: transform .2s;
+		font-size: 17px;
+		padding: 10px;
+	}
 
-<div class="perfil" style="align-items: start; flex-direction: row;">
-	<div style="width: 20%; border-right: solid 3px; border-color: var(--fondoCodigo);">
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoJuegos1;" @onclick="(e => MostrarJuegos1(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String1")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles1;" @onclick="(e => MostrarBundles1(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String10")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoBundles2;" @onclick="(e => MostrarBundles2(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String17")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoGratis1;" @onclick="(e => MostrarGratis1(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String23")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoSuscripciones1;" @onclick="(e => MostrarSuscripciones1(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String26")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias1;" @onclick="(e => MostrarNoticias1(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String14")
-		</button>
-
-		<button class="boton-pequeño" style="padding: 10px 15px; background-color: @fondoNoticias2;" @onclick="(e => MostrarNoticias2(e))">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Api.String20")
-		</button>
-	</div>
-
-	<div style="width: 80%; padding: 20px 0px 20px 30px;">
-		@if (mostrarJuegos1 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String2")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/game/<label style="text-decoration: underline;">6391</label>/Cyberpunk_2077/</label>
-				</div>
-
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String3")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/game/6391</label>
-				</div>
-			</div>
-
-			<hr/>
-
-			<div style="margin-top: 20px; margin-bottom: 20px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String4")
-			</div>
-			
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String5")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/steam/<label style="text-decoration: underline;">1091500</label></label>
-				</div>
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 5px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://store.steampowered.com/app/<label style="text-decoration: underline;">1091500</label>/Cyberpunk_2077/</label>
-				</div>
-
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String6")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/steam/1091500</label>
-				</div>
-			</div>
-
-			<hr/>
-
-			<div style="margin-top: 20px; margin-bottom: 20px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String7")
-			</div>
-			
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String8")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/gog/<label style="text-decoration: underline;">cyberpunk_2077</label></label>
-				</div>
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 5px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://www.gog.com/game/<label style="text-decoration: underline;">cyberpunk_2077</label></label>
-				</div>
-
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String9")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/gog/cyberpunk_2077</label>
-				</div>
-			</div>
+		.boton-pestañas:hover {
+			color: var(--colorTextoHover);
+			transform: scale(1.01);
 		}
+</style>
 
-		@if (mostrarBundles1 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String11")
+<div style="max-width: 1200px; margin: auto;">
+	<h1 style="font-size: 23px;">@Herramientas.Idiomas.CogerCadena(idioma, "Title", "Api")</h1>
+	<hr />
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/bundle/<label style="text-decoration: underline;">199</label>/Brutal_Beat_Em_Ups/</label>
-				</div>
+	<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
+		<div style="width: 33%;">
+			<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
+				<button @onclick="(e => MostrarJuegos1(e))" class="boton-pestañas" style="@estiloJuegos1;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Api")
+				</button>
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String12")
+				<button @onclick="(e => MostrarBundles1(e))" class="boton-pestañas" style="@estiloBundles1;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String10", "Api")
+				</button>
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/bundle/199/</label>
-				</div>
+				<button @onclick="(e => MostrarBundles2(e))" class="boton-pestañas" style="@estiloBundles2;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String17", "Api")
+				</button>
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String13")
+				<button @onclick="(e => MostrarGratis1(e))" class="boton-pestañas" style="@estiloGratis1;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String23", "Api")
+				</button>
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/bundle/199/games/</label>
-				</div>
+				<button @onclick="(e => MostrarSuscripciones1(e))" class="boton-pestañas" style="@estiloSuscripciones1;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String26", "Api")
+				</button>
+
+				<button @onclick="(e => MostrarNoticias1(e))" class="boton-pestañas" style="@estiloNoticias1;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String14", "Api")
+				</button>
+
+				<button @onclick="(e => MostrarNoticias2(e))" class="boton-pestañas" style="@fondoNoticias2;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String20", "Api")
+				</button>				
 			</div>
-		}
+		</div>
 
-		@if (mostrarBundles2 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String18")
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/</label>
+		<div style="width: 100%;">
+			@if (mostrarJuegos1 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/game/<label style="text-decoration: underline;">6391</label>/Cyberpunk_2077/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/game/6391</label>
+					</div>
 				</div>
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String19")
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+					<div style="margin-bottom: 20px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Api")
+					</div>
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/<label style="text-decoration: underline;">25</label>/</label>
-				</div>
-			</div>
-		}
+					<div>
+						@Herramientas.Idiomas.CogerCadena(idioma, "String5", "Api")
+					</div>
+					
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/steam/<label style="text-decoration: underline;">1091500</label></label>
+					</div>
 
-		@if (mostrarGratis1 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String24")
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 5px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://store.steampowered.com/app/<label style="text-decoration: underline;">1091500</label>/Cyberpunk_2077/</label>
+					</div>
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/</label>
-				</div>
+					@Herramientas.Idiomas.CogerCadena(idioma, "String6", "Api")
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String25")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/<label style="text-decoration: underline;">25</label>/</label>
-				</div>
-			</div>
-		}
-
-		@if (mostrarSuscripciones1 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String27")
-
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/</label>
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/steam/1091500</label>
+					</div>
 				</div>
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String28")
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+					<div style="margin-bottom: 20px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Api")
+					</div>
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/<label style="text-decoration: underline;">25</label>/</label>
+					<div>
+						@Herramientas.Idiomas.CogerCadena(idioma, "String8", "Api")
+					</div>
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/gog/<label style="text-decoration: underline;">cyberpunk_2077</label></label>
+					</div>
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 5px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://www.gog.com/game/<label style="text-decoration: underline;">cyberpunk_2077</label></label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/gog/cyberpunk_2077</label>
+					</div>
 				</div>
-			</div>
-		}
+			}
 
-		@if (mostrarNoticias1 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String15")
+			@if (mostrarBundles1 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String11", "Api")
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/news/<label style="text-decoration: underline;">293</label></label>
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/bundle/<label style="text-decoration: underline;">199</label>/Brutal_Beat_Em_Ups/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String12", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/bundle/199/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String13", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/bundle/199/games/</label>
+					</div>
 				</div>
+			}
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String16")
+			@if (mostrarBundles2 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String18", "Api")
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/news/293/</label>
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String19", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-bundles/<label style="text-decoration: underline;">25</label>/</label>
+					</div>
 				</div>
-			</div>
-		}
+			}
 
-		@if (mostrarNoticias2 == true)
-		{
-			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String21")
+			@if (mostrarGratis1 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String24", "Api")
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/</label>
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String25", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-free/<label style="text-decoration: underline;">25</label>/</label>
+					</div>
 				</div>
+			}
 
-				@Herramientas.Idiomas.CogerCadena(idioma, "Api.String22")
+			@if (mostrarSuscripciones1 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String27", "Api")
 
-				<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
-					<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/<label style="text-decoration: underline;">25</label>/</label>
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String28", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-subscriptions/<label style="text-decoration: underline;">25</label>/</label>
+					</div>
 				</div>
-			</div>
-		}
+			}
+
+			@if (mostrarNoticias1 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String15", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/news/<label style="text-decoration: underline;">293</label></label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String16", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/news/293/</label>
+					</div>
+				</div>
+			}
+
+			@if (estiloNoticias2 == true)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String21", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/</label>
+					</div>
+
+					@Herramientas.Idiomas.CogerCadena(idioma, "String22", "Api")
+
+					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px;">
+						<label style="text-decoration: none;">https://pepeizqdeals.com/api/last-news/<label style="text-decoration: underline;">25</label>/</label>
+					</div>
+				</div>
+			}
+		</div>
 	</div>
 </div>
 
@@ -220,103 +242,98 @@
 
 	protected override void OnInitialized()
 	{
-		fondoJuegos1 = "var(--fondoCodigo)";
+		estiloJuegos1 = fondo;
 		mostrarJuegos1 = true;
 	}
 
+	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
+
 	private void CerrarPestañas()
 	{
-		fondoJuegos1 = "transparent";
-		fondoBundles1 = "transparent";
-		fondoBundles2 = "transparent";
-		fondoGratis1 = "transparent";
-		fondoSuscripciones1 = "transparent";
-		fondoNoticias1 = "transparent";
-		fondoNoticias2 = "transparent";
-
 		mostrarJuegos1 = false;
 		mostrarBundles1 = false;
 		mostrarBundles2 = false;
 		mostrarGratis1 = false;
 		mostrarSuscripciones1 = false;
 		mostrarNoticias1 = false;
-		mostrarNoticias2 = false;
+		estiloNoticias2 = false;
+
+		estiloJuegos1 = null;
+		estiloBundles1 = null;
+		estiloBundles2 = null;
+		estiloGratis1 = null;
+		estiloSuscripciones1 = null;
+		estiloNoticias1 = null;
+		fondoNoticias2 = null;
 	}
 
 	private bool mostrarJuegos1 = false;
-	private string fondoJuegos1 = "transparent";
+	private string estiloJuegos1 = null;
 
 	private void MostrarJuegos1(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoJuegos1 = "var(--fondoCodigo)";
 		mostrarJuegos1 = true;
+		estiloJuegos1 = fondo;		
 	}
 
 	private bool mostrarBundles1 = false;
-	private string fondoBundles1 = "transparent";
+	private string estiloBundles1 = null;
 
 	private void MostrarBundles1(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoBundles1 = "var(--fondoCodigo)";
 		mostrarBundles1 = true;
+		estiloBundles1 = fondo;		
 	}
 
 	private bool mostrarBundles2 = false;
-	private string fondoBundles2 = "transparent";
+	private string estiloBundles2 = null;
 
 	private void MostrarBundles2(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoBundles2 = "var(--fondoCodigo)";
 		mostrarBundles2 = true;
+		estiloBundles2 = fondo;		
 	}
 
 	private bool mostrarGratis1 = false;
-	private string fondoGratis1 = "transparent";
+	private string estiloGratis1 = null;
 
 	private void MostrarGratis1(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoGratis1 = "var(--fondoCodigo)";
 		mostrarGratis1 = true;
+		estiloGratis1 = fondo;		
 	}
 
 	private bool mostrarSuscripciones1 = false;
-	private string fondoSuscripciones1 = "transparent";
+	private string estiloSuscripciones1 = null;
 
 	private void MostrarSuscripciones1(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoSuscripciones1 = "var(--fondoCodigo)";
 		mostrarSuscripciones1 = true;
+		estiloSuscripciones1 = fondo;		
 	}
 
 	private bool mostrarNoticias1 = false;
-	private string fondoNoticias1 = "transparent";
+	private string estiloNoticias1 = null;
 
 	private void MostrarNoticias1(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoNoticias1 = "var(--fondoCodigo)";
 		mostrarNoticias1 = true;
+		estiloNoticias1 = fondo;		
 	}
 
-	private bool mostrarNoticias2 = false;
-	private string fondoNoticias2 = "transparent";
+	private bool estiloNoticias2 = false;
+	private string fondoNoticias2 = null;
 
 	private void MostrarNoticias2(MouseEventArgs e)
 	{
 		CerrarPestañas();
-
-		fondoNoticias2 = "var(--fondoCodigo)";
-		mostrarNoticias2 = true;
+		estiloNoticias2 = true;
+		fondoNoticias2 = fondo;		
 	}
 }

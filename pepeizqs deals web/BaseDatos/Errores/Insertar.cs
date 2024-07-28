@@ -28,18 +28,18 @@ namespace BaseDatos.Errores
                 comando.Parameters.AddWithValue("@mensaje", ex.Message);
                 comando.Parameters.AddWithValue("@stacktrace", ex.StackTrace);
                 comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
-
-                comando.ExecuteNonQuery();
-                
+  
                 try
                 {
-
+                    comando.ExecuteNonQuery();
                 }
                 catch
                 {
 
                 }
             }
+
+            Environment.Exit(1);
         }
 
         public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)

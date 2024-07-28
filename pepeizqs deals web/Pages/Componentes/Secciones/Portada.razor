@@ -428,10 +428,23 @@
 		}
 	</div>
 
-	<div style="margin-bottom: 60px; margin-top: 20px; text-align: center;">
+	<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 50px auto; gap: 60px;">
 		<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
 			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
 		</a>
+
+		<div>
+			<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+
+			<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+				<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+			</div>
+		</div>		
 	</div>
 }
 else
@@ -801,6 +814,13 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
+	private string discord = string.Empty;
+	private string telegram = string.Empty;
+	private string reddit = string.Empty;
+	private string twitter = string.Empty;
+	private string steam = string.Empty;
+	private string rss = string.Empty;
+
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
 
@@ -959,9 +979,19 @@ else
 
 			#endregion
 		}
+
+		//------------------------------------------------
+
+		WebApplicationBuilder builder = WebApplication.CreateBuilder();
+		discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
+		telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
+		reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
+		twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
+		steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
+		rss = Herramientas.Idiomas.CogerRSS(idioma);
 	}
 
-	protected override async Task OnAfterRenderAsync(bool primerRender)
+	protected override void OnAfterRender(bool primerRender)
 	{
 		if (primerRender == true)
 		{
@@ -972,7 +1002,6 @@ else
 					juegosDestacadosGestor = juegosDestacadosCarga;
 				}
 			}
-
 
 			CargarJuegosDestacados();
 

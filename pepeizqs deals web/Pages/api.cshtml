@@ -4,8 +4,10 @@
 @{
 	#nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Api.Title");
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Api");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Api>(RenderMode.ServerPrerendered, new { idioma = Model.idioma }))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Api>(RenderMode.ServerPrerendered, new { 
+	idioma = Model.idioma 
+}))

@@ -24,6 +24,10 @@
     "Valor": "Cargar todas las noticias"
   },
   {
+    "Id": "LastNewsSocial",
+    "Valor": "Redes sociales para seguir las noticias"
+  },
+  {
     "Id": "LastNewsNo",
     "Valor": "No han ocurrido noticias en las últimas 72 horas, pero puedes consultar todas las noticias vigentes aquí."
   },

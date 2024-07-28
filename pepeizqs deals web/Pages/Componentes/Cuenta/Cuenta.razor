@@ -25,61 +25,61 @@
     <div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
         <div style="width: 50%;">
             <div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
-                <button @onclick="@(e => AbrirPestañaCorreo(e))" class="boton-pestañas" style="@estiloCorreo">
+                <button @onclick="@(e => MostrarCorreo(e))" class="boton-pestañas" style="@estiloCorreo;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Account")
                 </button>
 
-                <button @onclick="@(e => AbrirPestañaContraseña(e))" class="boton-pestañas" style="@estiloContraseña">
+                <button @onclick="@(e => MostrarContraseña(e))" class="boton-pestañas" style="@estiloContraseña;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String4", "Account")
                 </button>
 
-                <button @onclick="@(e => AbrirPestañaNotificaciones(e))" class="boton-pestañas" style="@estiloNotificaciones">
+                <button @onclick="@(e => MostrarNotificaciones(e))" class="boton-pestañas" style="@estiloNotificaciones;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Account")
                 </button>
 
-                <button @onclick="@(e => AbrirPestañaDatosPersonales(e))" class="boton-pestañas" style="@estiloDatosPersonales">
+                <button @onclick="@(e => MostrarDatosPersonales(e))" class="boton-pestañas" style="@estiloDatosPersonales;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String7", "Account")
                 </button>
 
                 <hr style="width: 100%;" />
 
-                <button @onclick="@(e => AbrirPestañaSteam(e))" class="boton-pestañas" style="@estiloSteam">
+                <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas" style="@estiloSteam;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Account")
                 </button>
 
-                <button @onclick="@(e => AbrirPestañaClaves(e))" class="boton-pestañas" style="@estiloClaves">
+                <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas" style="@estiloClaves;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String6", "Account")
                 </button>
             </div>
         </div>
 
         <div style="width: 100%;">
-            @if (pestañaCorreo == true)
+            @if (mostrarCorreo == true)
             {
                 <Correo idioma="@idioma" />
             }
 
-            @if (pestañaContraseña == true)
+            @if (mostrarContraseña == true)
             {
                 <CambioContrasena idioma="@idioma" />
             }
 
-            @if (pestañaNotificaciones == true)
+            @if (mostrarNotificaciones == true)
             {
                 <NotificacionesCorreo idioma="@idioma" />
             }
 
-            @if (pestañaDatosPersonales == true)
+            @if (mostrarDatosPersonales == true)
             {
                 <DatosPersonales idioma="@idioma" />
             }
 
-            @if (pestañaSteam == true)
+            @if (mostrarSteam == true)
             {
                 <CuentaSteam idioma="@idioma" />
             }
 
-            @if (pestañaClaves == true)
+            @if (mostrarClaves == true)
             {
                 <Claves idioma="@idioma"/>
             }
@@ -97,20 +97,20 @@
 
     protected override void OnInitialized()
     {
-        pestañaCorreo = true;
+        mostrarCorreo = true;
         estiloCorreo = fondo;
     }
 
-    private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); ";
+    private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
 
     private void CerrarPestañas()
     {
-        pestañaCorreo = false;
-        pestañaContraseña = false;
-        pestañaNotificaciones = false;
-        pestañaDatosPersonales = false;
-        pestañaSteam = false;
-        pestañaClaves = false;
+        mostrarCorreo = false;
+        mostrarContraseña = false;
+        mostrarNotificaciones = false;
+        mostrarDatosPersonales = false;
+        mostrarSteam = false;
+        mostrarClaves = false;
 
         estiloCorreo = null;
         estiloContraseña = null;
@@ -120,63 +120,63 @@
         estiloClaves = null;
     }
 
-    private bool pestañaCorreo = false;
+    private bool mostrarCorreo = false;
     private string estiloCorreo = null;
 
-    private void AbrirPestañaCorreo(MouseEventArgs e)
+    private void MostrarCorreo(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaCorreo = true;
+        mostrarCorreo = true;
         estiloCorreo = fondo;
     }
 
-    private bool pestañaContraseña = false;
+    private bool mostrarContraseña = false;
     private string estiloContraseña = null;
 
-    private void AbrirPestañaContraseña(MouseEventArgs e)
+    private void MostrarContraseña(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaContraseña = true;
+        mostrarContraseña = true;
         estiloContraseña = fondo;
     }
 
-    private bool pestañaNotificaciones = false;
+    private bool mostrarNotificaciones = false;
     private string estiloNotificaciones = null;
 
-    private void AbrirPestañaNotificaciones(MouseEventArgs e)
+    private void MostrarNotificaciones(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaNotificaciones = true;
+        mostrarNotificaciones = true;
         estiloNotificaciones = fondo;
     }
 
-    private bool pestañaDatosPersonales = false;
+    private bool mostrarDatosPersonales = false;
     private string estiloDatosPersonales = null;
 
-    private void AbrirPestañaDatosPersonales(MouseEventArgs e)
+    private void MostrarDatosPersonales(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaDatosPersonales = true;
+        mostrarDatosPersonales = true;
         estiloDatosPersonales = fondo;
     }
 
-    private bool pestañaSteam = false;
+    private bool mostrarSteam = false;
     private string estiloSteam = null;
 
-    private void AbrirPestañaSteam(MouseEventArgs e)
+    private void MostrarSteam(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaSteam = true;
+        mostrarSteam = true;
         estiloSteam = fondo;
     }
 
-    private bool pestañaClaves = false;
+    private bool mostrarClaves = false;
     private string estiloClaves = null;
 
-    private void AbrirPestañaClaves(MouseEventArgs e)
+    private void MostrarClaves(MouseEventArgs e)
     {
         CerrarPestañas();
-        pestañaClaves = true;
+        mostrarClaves = true;
         estiloClaves = fondo;
     }
 }

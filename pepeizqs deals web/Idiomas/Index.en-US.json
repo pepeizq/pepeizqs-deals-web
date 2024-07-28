@@ -21,7 +21,11 @@
   },
   {
     "Id": "LastNewsMore",
-    "Valor": "Last all news"
+    "Valor": "Load all news"
+  },
+  {
+    "Id": "LastNewsSocial",
+    "Valor": "Social networks to follow the news"
   },
   {
     "Id": "LastNewsNo",

@@ -1,0 +1,118 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "API"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Juego"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Podéis acceder a la API del juego usando la ID que se puede sacar directamente del enlace del juego (la ID es los números subrayados):"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Con el número de la ID podéis cargar la API del juego usando este enlace:"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Steam"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Para esta manera de acceder a la API del juego es necesario saber la ID del juego en Steam, tenéis dos opciones para conocer la ID (la ID es los números subrayados):"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Con el número de la ID de Steam podéis cargar la API del juego usando este enlace:"
+  },
+  {
+    "Id": "String7",
+    "Valor": "GOG"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Para esta manera de acceder a la API del juego es necesario saber el Slug del juego en GOG, tenéis dos opciones para conocer el Slug (el Slug son las letras subrayadas):"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Con las letras del Slug de GOG podéis cargar la API del juego usando este enlace:"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Bundle"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Podéis acceder a la API del bundle usando la ID que se puede sacar directamente del enlace del bundle (la ID son los números subrayados):"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Con el número de la ID podéis cargar la API del bundle usando este enlace:"
+  },
+  {
+    "Id": "String13",
+    "Valor": "Nota: Si queréis cargar directamente la API de los juegos del bundle, basta con añadir el campo 'games' al enlace para cargar la API de cada juego:"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Noticia"
+  },
+  {
+    "Id": "String15",
+    "Valor": "Podéis acceder a la API de la noticia usando la ID que se puede sacar directamente del enlace de la noticia (la ID son los números subrayados):"
+  },
+  {
+    "Id": "String16",
+    "Valor": "Con el número de la ID podéis cargar la API de la noticia usando este enlace:"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Bundles (Últimos)"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Para conocer los últimos bundles que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "String19",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 bundles cargados añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Noticias (Últimas)"
+  },
+  {
+    "Id": "String21",
+    "Valor": "Para conocer las últimas noticias que han sido añadidas a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "String22",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 noticias cargadas añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "String23",
+    "Valor": "Gratis (Últimos)"
+  },
+  {
+    "Id": "String24",
+    "Valor": "Para conocer los últimos juegos gratuitos que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "String25",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 juegos gratuitos cargados añadiendo un número al final (esta subrayado):"
+  },
+  {
+    "Id": "String26",
+    "Valor": "Suscripciones (Últimas)"
+  },
+  {
+    "Id": "String27",
+    "Valor": "Para conocer los últimos juegos de suscripciones que han sido añadidos a la web basta con acceder a este enlace de la API:"
+  },
+  {
+    "Id": "String28",
+    "Valor": "Nota: Se puede ampliar hasta un máximo de 25 juegos de suscripciones cargados añadiendo un número al final (esta subrayado):"
+  }
+]

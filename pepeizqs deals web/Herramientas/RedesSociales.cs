@@ -1,14 +1,18 @@
 ﻿#nullable disable
 
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Tweetinvi;
+using Tweetinvi.Core.Web;
+using Tweetinvi.Models;
 
 namespace Herramientas
 {
-	public class RedesSociales : Controller
+	public class Rss : Controller
 	{
 		public string dominio = "https://pepeizqdeals.com";
 
@@ -161,6 +165,47 @@ namespace Herramientas
 			}
 
 			return null;
+		}
+	}
+
+	public static class Twitter
+	{
+		public static async void Twitear(Noticias.Noticia noticia)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+			TwitterClient cliente = new TwitterClient(builder.Configuration.GetValue<string>("Twitter:ConsumerKey"),
+				builder.Configuration.GetValue<string>("Twitter:ConsumerSecret"),
+				builder.Configuration.GetValue<string>("Twitter:AccessToken"),
+				builder.Configuration.GetValue<string>("Twitter:AccessSecret"));
+
+			ITwitterResult resultado = await PonerTweet(cliente,
+				new TweetV2PostRequest
+				{
+					Text = noticia.TituloEn + " " + Environment.NewLine + Environment.NewLine + noticia.Enlace
+				}
+			);
+		}
+
+		public static Task<ITwitterResult> PonerTweet(TwitterClient cliente, TweetV2PostRequest parametros)
+		{
+			return cliente.Execute.AdvanceRequestAsync(
+				(ITwitterRequest peticion) =>
+				{
+					string json = cliente.Json.Serialize(parametros);
+					StringContent contenido = new StringContent(json, Encoding.UTF8, "application/json");
+
+					peticion.Query.Url = "https://api.twitter.com/2/tweets";
+					peticion.Query.HttpMethod = Tweetinvi.Models.HttpMethod.POST;
+					peticion.Query.HttpContent = contenido;
+				}
+			);
+		}
+
+		public class TweetV2PostRequest
+		{
+			[JsonProperty("text")]
+			public string Text { get; set; } = string.Empty;
 		}
 	}
 }
