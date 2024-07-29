@@ -44,6 +44,10 @@
     vertical-align: middle;
 }
 
+.entrada-texto::placeholder {
+    font-size: 14px;
+}
+
 .boton {
     color: var(--colorTexto);
     background-color: var(--fondoBoton);

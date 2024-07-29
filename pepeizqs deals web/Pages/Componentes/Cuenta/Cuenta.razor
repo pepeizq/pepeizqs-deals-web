@@ -95,10 +95,46 @@
     [Parameter]
     public string idioma { get; set; }
 
+    [Parameter]
+    public int? seccion { get; set; }
+
     protected override void OnInitialized()
     {
-        mostrarCorreo = true;
-        estiloCorreo = fondo;
+        if (seccion == null)
+        {
+            mostrarCorreo = true;
+            estiloCorreo = fondo;
+        }
+        else if (seccion == 0)
+        {
+            mostrarCorreo = true;
+            estiloCorreo = fondo;
+        }
+        else if (seccion == 1)
+        {
+            mostrarContraseña = true;
+            estiloContraseña = fondo;
+        }
+        else if (seccion == 2)
+        {
+            mostrarNotificaciones = true;
+            estiloNotificaciones = fondo;
+        }
+        else if (seccion == 3)
+        {
+            mostrarDatosPersonales = true;
+            estiloDatosPersonales = fondo;
+        }
+        else if (seccion == 4)
+        {
+            mostrarSteam = true;
+            estiloSteam = fondo;
+        }
+        else if (seccion == 5)
+        {
+            mostrarClaves = true;
+            estiloClaves = fondo;
+        }
     }
 
     private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";

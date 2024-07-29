@@ -13,6 +13,8 @@
     flex-wrap: inherit;
     align-items: center;
     justify-content: space-between;
+    line-height: 30px;
+    gap: 20px;
 }
 
 .cuerpo {
@@ -49,8 +51,7 @@
     font-size: 22px;
     color: var(--colorTexto);
     text-decoration: none;
-    padding-right: 30px;
-    min-width: 200px;
+    padding-right: 20px;
 }
 
 .texto-logo:hover {

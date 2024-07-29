@@ -45,6 +45,8 @@
             adminLogeado = true;
         }
     }
+
+    string ubicacionEnlace = Context.Request.Path;
 }
 
 <!DOCTYPE html>
@@ -85,7 +87,9 @@
                     usuarioLogeado = usuarioLogeado,
                     adminLogeado = adminLogeado, 
                     usuarioAvatar = usuario?.Avatar,
-                    usuarioEmail = usuario?.Email
+                    usuarioNombre = usuario?.Nickname,
+                    usuarioEmail = usuario?.Email,
+                    ubicacionEnlace = ubicacionEnlace
                 }))
             </div>
         </nav>

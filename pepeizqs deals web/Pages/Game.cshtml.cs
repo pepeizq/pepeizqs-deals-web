@@ -15,9 +15,6 @@ namespace pepeizqs_deals_web.Pages
 		[BindProperty(SupportsGet = true)]
 		public int id { get; set; }
 
-		[BindProperty(SupportsGet = true)]
-		public string nombre { get; set; }
-
 		public void OnGet()
         {
 			try
