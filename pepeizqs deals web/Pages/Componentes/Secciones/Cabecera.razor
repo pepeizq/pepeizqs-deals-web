@@ -24,6 +24,17 @@
         padding: 10px;
         backdrop-filter: blur(20px);
     }
+
+    .boton-superior {
+        display: block;
+        padding: 8px 15px;
+        margin: 0px;
+        transition: transform .2s;
+    }
+
+        .boton-superior:hover {
+            transform: scale(1.01);
+        }
 </style>
 
 <a href="/" class="texto-logo" style="background-color: transparent; border: 0; flex: 1 auto 1;">
@@ -33,7 +44,7 @@
 <div style="display: flex; align-items: center; gap: 10px; flex: 1 1 auto;">
     @if (enseñarBuscador == false)
     {
-        <button class="texto-cabecera menu-dropdown-item" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
+        <button class="texto-cabecera boton-superior" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
@@ -41,7 +52,7 @@
         {
             if (ubicacionEnlace.Contains("/wishlist") == false)
             {
-                <a class="texto-cabecera menu-dropdown-item" href="/wishlist" style="font-size: 15px;">
+                <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
                 </a>
             }
@@ -49,35 +60,35 @@
 
         if (ubicacionEnlace.Contains("/historical-lows") == false)
         {
-            <a class="texto-cabecera menu-dropdown-item" href="/historical-lows" style="font-size: 15px;">
+            <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
                 @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
             </a>
         }
 
         if (ubicacionEnlace.Contains("/bundles") == false)
         {
-            <a class="texto-cabecera menu-dropdown-item" href="/bundles" style="font-size: 15px;">
+            <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
                 @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
             </a>
         }
 
         if (ubicacionEnlace.Contains("/free") == false)
         {
-            <a class="texto-cabecera menu-dropdown-item" href="/free" style="font-size: 15px;">
+            <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
                 @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
             </a>
         }
 
         if (ubicacionEnlace.Contains("/subscriptions") == false)
         {
-            <a class="texto-cabecera menu-dropdown-item" href="/subscriptions" style="font-size: 15px;">
+            <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
                 @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
             </a>
         }       
     }
     else
     {
-        <button class="texto-cabecera menu-dropdown-item" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
+        <button class="texto-cabecera boton-superior" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
@@ -172,7 +183,7 @@
 {
     <div style="display: flex; align-items: center; flex: 1 auto 1;">
         <div class="menu-dropdown">
-            <div style="display: flex; align-items: center; font-size: 14px;">
+            <div style="display: flex; align-items: center; font-size: 14px; cursor: pointer;">
                 @if (string.IsNullOrEmpty(usuarioAvatar) == true)
                 {
                     <div>@usuarioEmail</div>
@@ -201,33 +212,9 @@
             </div>
 
             <div class="menu-dropdown-contenido" style="right: -10px;">
-                <button @onclick="@(e => AbrirCuenta(e, 0))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account1", "Header")
+                <button @onclick="@(e => AbrirCuenta(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Account", "Header")
                 </button>
-
-                <button @onclick="@(e => AbrirCuenta(e, 1))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account2", "Header")
-                </button>
-
-                <button @onclick="@(e => AbrirCuenta(e, 2))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account3", "Header")
-                </button>
-
-                <button @onclick="@(e => AbrirCuenta(e, 3))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account4", "Header")
-                </button>
-
-                <hr style="margin: 5px 0;" />
-
-                <button @onclick="@(e => AbrirCuenta(e, 4))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account5", "Header")
-                </button>
-
-                <button @onclick="@(e => AbrirCuenta(e, 5))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account6", "Header")
-                </button>
-
-                <hr style="margin: 5px 0;" />
 
                 <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Logout", "Header")
@@ -573,9 +560,9 @@ else
         NavManager.NavigateTo("/account/register", true);
     }
 
-    private void AbrirCuenta(MouseEventArgs e, int seccion)
+    private void AbrirCuenta(MouseEventArgs e)
     {
-        NavManager.NavigateTo("/account/" + seccion.ToString() + "/", true, false);
+        NavManager.NavigateTo("/account/", true);
     }
 }
 

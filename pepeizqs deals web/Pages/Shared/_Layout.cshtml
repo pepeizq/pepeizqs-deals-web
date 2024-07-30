@@ -38,12 +38,21 @@
 
     if (usuarioLogeado == true)
     {
-        usuario = await UserManager.GetUserAsync(User);
-
-        if (await UsuarioCoger.RolDios(UserManager, User) == true)
+        try
         {
-            adminLogeado = true;
+            
         }
+        catch { }
+
+        usuario = await UserManager.GetUserAsync(User);
+        
+        if (usuario != null)
+        {
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+            {
+                adminLogeado = true;
+            }
+        }    
     }
 
     string ubicacionEnlace = Context.Request.Path;

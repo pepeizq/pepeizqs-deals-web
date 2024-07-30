@@ -90,29 +90,5 @@
   {
     "Id": "SearchPlaceholder",
     "Valor": "buscar"
-  },
-  {
-    "Id": "Account1",
-    "Valor": "Cambiar Correo"
-  },
-  {
-    "Id": "Account2",
-    "Valor": "Cambiar Contraseña"
-  },
-  {
-    "Id": "Account3",
-    "Valor": "Notificaciones por Correo"
-  },
-  {
-    "Id": "Account4",
-    "Valor": "Datos Personales"
-  },
-  {
-    "Id": "Account5",
-    "Valor": "Cuenta de Steam"
-  },
-  {
-    "Id": "Account6",
-    "Valor": "Claves"
   }
 ]

@@ -1,4 +1,4 @@
-﻿@page "/account/{seccion:int?}/"
+﻿@page
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -18,7 +18,6 @@
 {
     @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.ServerPrerendered, new
     {
-        idioma = Model.idioma,
-        seccion = Model.seccion
+        idioma = Model.idioma
     }))
 }

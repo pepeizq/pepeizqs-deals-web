@@ -90,29 +90,5 @@
   {
     "Id": "SearchPlaceholder",
     "Valor": "search"
-  },
-  {
-    "Id": "Account1",
-    "Valor": "Change Email"
-  },
-  {
-    "Id": "Account2",
-    "Valor": "Change Password"
-  },
-  {
-    "Id": "Account3",
-    "Valor": "Email Notifications"
-  },
-  {
-    "Id": "Account4",
-    "Valor": "Personal Data"
-  },
-  {
-    "Id": "Account5",
-    "Valor": "Steam Account"
-  },
-  {
-    "Id": "Account6",
-    "Valor": "Keys"
   }
 ]
