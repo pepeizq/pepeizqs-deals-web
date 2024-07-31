@@ -1,0 +1,39 @@
+﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@model pepeizqs_deals_web.Pages.adminModel
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+    #nullable disable
+
+    ViewData["Title"] = "Admin";
+    Layout = "/Pages/Shared/_Layout.cshtml";
+
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+    Usuario usuario = new Usuario();
+
+    bool adminLogeado = false;
+
+    if (usuarioLogeado == true)
+    {
+        usuario = await UserManager.GetUserAsync(User);
+
+        if (usuario != null)
+        {
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+            {
+                adminLogeado = true;
+            }
+        }
+    }
+
+    if (adminLogeado == true)
+    {
+        @(await Html.RenderComponentAsync<pepeizqs_deals_web.Pages.Componentes.Admin.Maestro>(RenderMode.ServerPrerendered))
+    }
+}

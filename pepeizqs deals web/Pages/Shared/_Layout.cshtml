@@ -38,12 +38,6 @@
 
     if (usuarioLogeado == true)
     {
-        try
-        {
-            
-        }
-        catch { }
-
         usuario = await UserManager.GetUserAsync(User);
         
         if (usuario != null)

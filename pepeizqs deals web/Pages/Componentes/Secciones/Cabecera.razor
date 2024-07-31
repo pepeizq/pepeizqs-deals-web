@@ -42,6 +42,14 @@
 </a>
 
 <div style="display: flex; align-items: center; gap: 10px; flex: 1 1 auto;">
+
+    @if (adminLogeado == true && ubicacionEnlace.Contains("/admin") == false)
+    {
+        <a class="texto-cabecera boton-superior" href="/admin" style="font-size: 15px;">
+            @adminMensaje
+        </a>
+    }
+
     @if (enseñarBuscador == false)
     {
         <button class="texto-cabecera boton-superior" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
@@ -221,14 +229,6 @@
                 </button>
             </div>
         </div>
-
-        @if (resultados != null)
-        {
-            if (adminLogeado == true && resultados.Count == 0)
-            {
-                <pepeizqs_deals_web.Pages.Componentes.Admin.Maestro />
-            }
-        }
     </div>
 }
 else
@@ -271,11 +271,31 @@ else
 
     private SqlConnection conexion = new SqlConnection();
 
-    private List<Juegos.Juego> resultados = new List<Juegos.Juego>();
-    private List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
-    private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
-    private List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
-    private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
+    private string adminMensaje = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (adminLogeado == true)
+        {
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                adminMensaje = "Admin";
+
+                int nuevosCorreosDeals = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos"));
+                int nuevosCorreosApps = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2"));
+
+                if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
+                {
+                    adminMensaje = adminMensaje + " - Correo Nuevo";
+                }
+            }
+        }
+    }
 
     private Task<List<Juegos.Juego>> tarea;
 
@@ -290,6 +310,12 @@ else
     }
 
     #region Buscador
+
+    private List<Juegos.Juego> resultados = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
 
     private bool enseñarBuscador = false;
 
