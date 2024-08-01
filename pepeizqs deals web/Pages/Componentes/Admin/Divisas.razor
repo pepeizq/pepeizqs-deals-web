@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <div>
+        <button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Actualizar</button>
+    </div>
+    <div style="padding-top: 20px;">
+        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
+        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    private SqlConnection conexion = new SqlConnection();
+
+    private async Task ActualizarDivisas(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            await Herramientas.Divisas.ActualizarDatos(conexion);
+        }
+    }
+}

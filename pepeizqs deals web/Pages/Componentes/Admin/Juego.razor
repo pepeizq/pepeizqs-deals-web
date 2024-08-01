@@ -1,5 +1,4 @@
-﻿@using Juegos
-@using Microsoft.AspNetCore.Components.Web;
+﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.Data.SqlClient
 @using Newtonsoft.Json
@@ -136,7 +135,7 @@
 		}
 		else if (pestañaMostrar == 6)
 		{
-			@if (juego.Tipo == JuegoTipo.DLC)
+			@if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
 			{
 				<div style="display: flex; align-items: center; margin-top: 20px;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
@@ -221,7 +220,7 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Juegos.Juego juego { get; set; }
+	public global::Juegos.Juego juego { get; set; }
 
 	private string idSteam = string.Empty;
 	private string slugGOG = string.Empty;
@@ -243,7 +242,7 @@
 			textoSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
 		}
 
-		if (juego.Tipo == JuegoTipo.DLC)
+		if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
 		{
 			textoDlcMaestro = juego.Maestro;
 		}
@@ -270,7 +269,7 @@
 
 		tipo = juego.Tipo.ToString();
 
-		var tipos = JuegoTipos.CargarListado();
+		var tipos = global::Juegos.JuegoTipos.CargarListado();
 
 		int i = 0;
 		foreach (var tipo2 in tipos)
@@ -406,12 +405,12 @@
 			{
 				if (pestañaMostrarPrecios == 1)
 				{
-					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoPrecios);
+					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<global::Juegos.JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosActuales(juego, conexion);
 				}
 				else if (pestañaMostrarPrecios == 2)
 				{
-					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(textoPrecios);
+					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<global::Juegos.JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
 				}				
 			}
@@ -436,7 +435,7 @@
 
 			using (conexion)
 			{
-				juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(textoBundles);
+				juego.Bundles = JsonConvert.DeserializeObject<List<global::Juegos.JuegoBundle>>(textoBundles);
 				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
 			}
 		}
@@ -470,7 +469,7 @@
 
 			using (conexion)
 			{
-				juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(textoGratis);
+				juego.Gratis = JsonConvert.DeserializeObject<List<global::Juegos.JuegoGratis>>(textoGratis);
 				BaseDatos.Juegos.Actualizar.Gratis(juego, conexion);
 			}
 		}
@@ -504,7 +503,7 @@
 
 			using (conexion)
 			{
-				juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(textoSuscripciones);
+				juego.Suscripciones = JsonConvert.DeserializeObject<List<global::Juegos.JuegoSuscripcion>>(textoSuscripciones);
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
 		}
@@ -528,7 +527,7 @@
 
 	private async Task BuscarDlcMaestro()
 	{
-		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+		global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
 		if (nuevoJuego != null)
 		{
@@ -644,7 +643,7 @@
 
 	private async Task ActualizarDatosSteamApi()
 	{
-		Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+		global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
 		if (nuevoJuego != null)
 		{
@@ -678,23 +677,23 @@
 			{
 				if (nuevoTexto == "0")
 				{
-					juego.Tipo = JuegoTipo.Game;
+					juego.Tipo = global::Juegos.JuegoTipo.Game;
 				}
 				else if (nuevoTexto == "1")
 				{
-					juego.Tipo = JuegoTipo.DLC;
+					juego.Tipo = global::Juegos.JuegoTipo.DLC;
 				}
 				else if (nuevoTexto == "2")
 				{
-					juego.Tipo = JuegoTipo.Bundle;
+					juego.Tipo = global::Juegos.JuegoTipo.Bundle;
 				}
 				else if (nuevoTexto == "3")
 				{
-					juego.Tipo = JuegoTipo.Music;
+					juego.Tipo = global::Juegos.JuegoTipo.Music;
 				}
 				else if (nuevoTexto == "4")
 				{
-					juego.Tipo = JuegoTipo.Software;
+					juego.Tipo = global::Juegos.JuegoTipo.Software;
 				}
 
 				BaseDatos.Juegos.Actualizar.Tipo(juego, conexion);

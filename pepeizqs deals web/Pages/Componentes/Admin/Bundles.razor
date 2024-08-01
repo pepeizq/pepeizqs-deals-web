@@ -175,7 +175,7 @@
                                             <label style="margin-right: 10px;">DRM:</label>
                                             <div class="opciones-combobox" style="min-width: 100px;">
                                                 <select @onchange="@(e => CambiarDRMJuego(e, juego))" value="@juego.DRM">
-                                                    @foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+                                                    @foreach (global::Juegos.DRM drm in global::Juegos.JuegoDRM2.GenerarListado())
                                                     {
                                                         <option value="@drm.Id">@drm.Nombre</option>
                                                     }
@@ -208,7 +208,7 @@
 
     private string juegosIds = null;
     private string cadenaBusqueda = null;
-    private List<Juegos.Juego> juegosBuscador = new List<Juegos.Juego>();
+    private List<global::Juegos.Juego> juegosBuscador = new List<global::Juegos.Juego>();
 
     private void TextoCambiaEnlace(ChangeEventArgs texto)
     {
@@ -404,7 +404,7 @@
 
             foreach (var id in ids)
             {
-                Juegos.Juego juegoBuscado = BaseDatos.Juegos.Buscar.UnJuego(id);
+                global::Juegos.Juego juegoBuscado = BaseDatos.Juegos.Buscar.UnJuego(id);
 
                 if (juegoBuscado != null)
                 {
@@ -412,7 +412,7 @@
                     juegoBundle.JuegoId = id;
                     juegoBundle.Nombre = juegoBuscado.Nombre;
                     juegoBundle.Imagen = juegoBuscado.Imagenes.Capsule_231x87;
-                    juegoBundle.DRM = Juegos.JuegoDRM.Steam;
+                    juegoBundle.DRM = global::Juegos.JuegoDRM.Steam;
 
                     if (bundle.Tiers == null)
                     {
@@ -444,14 +444,14 @@
         }
         else
         {
-            juegosBuscador = new List<Juegos.Juego>();
+            juegosBuscador = new List<global::Juegos.Juego>();
         }
     }
 
     private void SeleccionarJuegoBuscador(MouseEventArgs e, string id, string imagen, string nombre)
     {
         cadenaBusqueda = null;
-        juegosBuscador = new List<Juegos.Juego>();
+        juegosBuscador = new List<global::Juegos.Juego>();
 
         if (bundle.Juegos == null)
         {
@@ -462,7 +462,7 @@
         juegoBundle.JuegoId = id;
         juegoBundle.Nombre = nombre;
         juegoBundle.Imagen = imagen;
-        juegoBundle.DRM = Juegos.JuegoDRM.Steam;
+        juegoBundle.DRM = global::Juegos.JuegoDRM.Steam;
 
         if (bundle.Tiers == null)
         {
@@ -524,7 +524,7 @@
             {
                 if (juegob.JuegoId == juego.JuegoId)
                 {
-                    juegob.DRM = Juegos.JuegoDRM2.DevolverDRM(texto.Value.ToString());
+                    juegob.DRM = global::Juegos.JuegoDRM2.DevolverDRM(texto.Value.ToString());
                 }
             }
         }

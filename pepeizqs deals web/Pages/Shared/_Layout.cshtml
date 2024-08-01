@@ -172,11 +172,13 @@
         async function boot() {
             await Blazor.start()
 
-            while (Blazor.defaultReconnectionHandler === undefined) {
-                await delay(100)
-            }
-            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                document.location.reload()
+            if (document.location.href != "https://pepeizqdeals.com/admin") {
+                while (Blazor.defaultReconnectionHandler === undefined) {
+                    await delay(100)
+                }
+                Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                    document.location.reload()
+                }
             }
         }
 

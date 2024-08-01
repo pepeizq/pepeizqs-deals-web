@@ -2,237 +2,245 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Data.SqlClient
 
-<div class="perfil" style="display: flex; justify-content: space-between; padding: 20px; border: 1px solid var(--fondoBoton); flex-direction: row;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; justify-content: space-between; flex-direction: row; gap: 40px;">
     <div style="min-width: 300px; margin: -10px 0px;">
         @foreach (var pendiente in pendientes)
         {
             if (pendiente.Pendientes.Count > 0)
             {
-                <button @onclick="@(e => ClickearTiendaPendientes(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block;">
+                string fondo = string.Empty;
+
+                if (idTiendaPendiente != pendiente.Tienda.Id)
+                {
+                    fondo = "background-color: transparent;";
+                }
+
+                <button @onclick="@(e => ClickearTiendaPendientes(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block; @fondo">
                     <img src="@pendiente.Tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Tienda.Nombre (@pendiente.Pendientes.Count)
                 </button>
             }
         }
     </div>
 
-    <div style="width: 100%; padding-left: 50px;">
-        <div style="margin-bottom: 20px;">
-            Tienda: @tiendaElegidaPendiente
-        </div>
-
-        <div style="display: flex; justify-content: space-between;">
-            <div style="width: 30%;">
-                <a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
-            </div>
-
-            <div style="width: 70%; margin-left: 20px;">
-                <div style="margin-bottom: 20px;">
-                    <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+    @if (string.IsNullOrEmpty(idTiendaPendiente) == false)
+    {
+        <div style="width: 100%;">
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width: 30%;">
+                    <a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
                 </div>
 
-                <div>
-                    <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
-                </div>
-
-                <div style="display: flex; align-items: center; margin: 20px 0px;">
-                    <div>
-                        <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+                <div style="width: 70%; margin-left: 20px;">
+                    <div style="margin-bottom: 20px;">
+                        <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
                     </div>
 
                     <div>
-                        <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
+                        <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
                     </div>
 
-                    <div>
-                        <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <div>
+                            <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+                        </div>
+
+                        <div>
+                            <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
+                        </div>
+
+                        <div>
+                            <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    }  
+</div>
 
-        <div style="margin-top: 40px;">
-            <input type="text" @oninput="TextoCambiarBuscadorPendientes" class="entrada-texto" />
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+    <input type="text" @oninput="TextoCambiarBuscadorPendientes" class="entrada-texto" />
 
-            <div style="display: flex; align-items: center; margin: 20px 0px;">
-                <button @onclick="@(e => CambiarPestañas(e, 0))" class="boton-pequeño" style="width: 130px; text-align: center;">Juegos (@buscadorPendientesJuegos.Count.ToString())</button>
+    @if (string.IsNullOrEmpty(cadenaBusquedaPendiente) == false)
+    {
+        <div style="display: flex; align-items: center; margin: 20px 0px;">
+            <button @onclick="@(e => CambiarPestañas(e, 0))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloJuegos">Juegos (@buscadorPendientesJuegos.Count.ToString())</button>
 
-                <button @onclick="@(e => CambiarPestañas(e, 1))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">DLCs (@buscadorPendientesDLCs.Count.ToString())</button>
+            <button @onclick="@(e => CambiarPestañas(e, 1))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloDLCs">DLCs (@buscadorPendientesDLCs.Count.ToString())</button>
 
-                <button @onclick="@(e => CambiarPestañas(e, 2))" class="boton-pequeño" style="margin-left: 20px; width: 180px; text-align: center;">Bandas Sonoras (@buscadorPendientesBandasSonoras.Count.ToString())</button>
+            <button @onclick="@(e => CambiarPestañas(e, 2))" class="boton-pequeño" style="margin-right: 20px; width: 180px; text-align: center; @estiloBandasSonoras">Bandas Sonoras (@buscadorPendientesBandasSonoras.Count.ToString())</button>
 
-                <button @onclick="@(e => CambiarPestañas(e, 3))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Software (@buscadorPendientesSoftware.Count.ToString())</button>
-            </div>
-
-            @if (pestañaJuegos == true)
-            {
-                if (buscadorPendientesJuegos != null)
-                {
-                    if (buscadorPendientesJuegos.Count > 0)
-                    {
-                        <div>
-                            @foreach (var juego in buscadorPendientesJuegos)
-                            {
-                                <hr />
-
-                                <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
-                                    <div style="width: 150px; min-width: 150px;">
-                                        <button @onclick="@(e => ClickearIdPendientes(e, juego.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
-                                            Añadir ID
-
-                                            <div style="font-size: 13px;">
-                                                @juego.Id
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <div style="padding-left: 15px;">
-                                        <a href="/game/@juego.Id.ToString()" target="_blank">
-                                            <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
-                                        </a>
-                                    </div>
-
-                                    <div style="width: 100%; padding: 5px 10px; flex: 1;">
-                                        @juego.Nombre
-                                    </div>
-
-                                    <div class="admin-busqueda-juego-derecha">
-                                        <button @onclick="@(e => ClickearBorrarPendientes(e, juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-            }
-
-            @if (pestañaDLCs == true)
-            {
-                if (buscadorPendientesDLCs != null)
-                {
-                    if (buscadorPendientesDLCs.Count > 0)
-                    {
-                        <div>
-                            @foreach (var dlc in buscadorPendientesDLCs)
-                            {
-                                <hr />
-
-                                <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
-                                    <div style="width: 150px; min-width: 150px;">
-                                        <button @onclick="@(e => ClickearIdPendientes(e, dlc.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
-                                            Añadir ID
-
-                                            <div style="font-size: 13px;">
-                                                @dlc.Id
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <div style="padding-left: 15px;">
-                                        <a href="/game/@dlc.Id.ToString()" target="_blank">
-                                            <img src="@dlc.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
-                                        </a>
-                                    </div>
-
-                                    <div style="width: 100%; padding: 5px 10px; flex: 1;">
-                                        @dlc.Nombre
-                                    </div>
-
-                                    <div class="admin-busqueda-juego-derecha">
-                                        <button @onclick="@(e => ClickearBorrarPendientes(e, dlc.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-            }
-
-            @if (pestañaBandasSonoras == true)
-            {
-                if (buscadorPendientesBandasSonoras != null)
-                {
-                    if (buscadorPendientesBandasSonoras.Count > 0)
-                    {
-                        <div>
-                            @foreach (var bandaSonora in buscadorPendientesBandasSonoras)
-                            {
-                                <hr />
-
-                                <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
-                                    <div style="width: 150px; min-width: 150px;">
-                                        <button @onclick="@(e => ClickearIdPendientes(e, bandaSonora.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
-                                            Añadir ID
-
-                                            <div style="font-size: 13px;">
-                                                @bandaSonora.Id
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <div style="padding-left: 15px;">
-                                        <a href="/game/@bandaSonora.Id.ToString()" target="_blank">
-                                            <img src="@bandaSonora.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
-                                        </a>
-                                    </div>
-
-                                    <div style="width: 100%; padding: 5px 10px; flex: 1;">
-                                        @bandaSonora.Nombre
-                                    </div>
-
-                                    <div class="admin-busqueda-juego-derecha">
-                                        <button @onclick="@(e => ClickearBorrarPendientes(e, bandaSonora.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-            }
-
-            @if (pestañaSoftware == true)
-            {
-                if (buscadorPendientesSoftware != null)
-                {
-                    if (buscadorPendientesSoftware.Count > 0)
-                    {
-                        <div>
-                            @foreach (var software in buscadorPendientesSoftware)
-                            {
-                                <hr />
-
-                                <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
-                                    <div style="width: 150px; min-width: 150px;">
-                                        <button @onclick="@(e => ClickearIdPendientes(e, software.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
-                                            Añadir ID
-
-                                            <div style="font-size: 13px;">
-                                                @software.Id
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <div style="padding-left: 15px;">
-                                        <a href="/game/@software.Id.ToString()" target="_blank">
-                                            <img src="@software.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
-                                        </a>
-                                    </div>
-
-                                    <div style="width: 100%; padding: 5px 10px; flex: 1;">
-                                        @software.Nombre
-                                    </div>
-
-                                    <div class="admin-busqueda-juego-derecha">
-                                        <button @onclick="@(e => ClickearBorrarPendientes(e, software.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-            }
-
+            <button @onclick="@(e => CambiarPestañas(e, 3))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloSoftware">Software (@buscadorPendientesSoftware.Count.ToString())</button>
         </div>
-    </div>
+
+        @if (pestañaJuegos == true)
+        {
+            if (buscadorPendientesJuegos != null)
+            {
+                if (buscadorPendientesJuegos.Count > 0)
+                {
+                    <div>
+                        @foreach (var juego in buscadorPendientesJuegos)
+                        {
+                            <hr />
+
+                            <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+                                <div style="width: 150px; min-width: 150px;">
+                                    <button @onclick="@(e => ClickearIdPendientes(e, juego.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
+                                        Añadir ID
+
+                                        <div style="font-size: 13px;">
+                                            @juego.Id
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div style="padding-left: 15px;">
+                                    <a href="/game/@juego.Id.ToString()" target="_blank">
+                                        <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+                                    </a>
+                                </div>
+
+                                <div style="width: 100%; padding: 5px 10px; flex: 1;">
+                                    @juego.Nombre
+                                </div>
+
+                                <div class="admin-busqueda-juego-derecha">
+                                    <button @onclick="@(e => ClickearBorrarPendientes(e, juego.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+
+        @if (pestañaDLCs == true)
+        {
+            if (buscadorPendientesDLCs != null)
+            {
+                if (buscadorPendientesDLCs.Count > 0)
+                {
+                    <div>
+                        @foreach (var dlc in buscadorPendientesDLCs)
+                        {
+                            <hr />
+
+                            <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+                                <div style="width: 150px; min-width: 150px;">
+                                    <button @onclick="@(e => ClickearIdPendientes(e, dlc.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
+                                        Añadir ID
+
+                                        <div style="font-size: 13px;">
+                                            @dlc.Id
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div style="padding-left: 15px;">
+                                    <a href="/game/@dlc.Id.ToString()" target="_blank">
+                                        <img src="@dlc.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+                                    </a>
+                                </div>
+
+                                <div style="width: 100%; padding: 5px 10px; flex: 1;">
+                                    @dlc.Nombre
+                                </div>
+
+                                <div class="admin-busqueda-juego-derecha">
+                                    <button @onclick="@(e => ClickearBorrarPendientes(e, dlc.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+
+        @if (pestañaBandasSonoras == true)
+        {
+            if (buscadorPendientesBandasSonoras != null)
+            {
+                if (buscadorPendientesBandasSonoras.Count > 0)
+                {
+                    <div>
+                        @foreach (var bandaSonora in buscadorPendientesBandasSonoras)
+                        {
+                            <hr />
+
+                            <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+                                <div style="width: 150px; min-width: 150px;">
+                                    <button @onclick="@(e => ClickearIdPendientes(e, bandaSonora.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
+                                        Añadir ID
+
+                                        <div style="font-size: 13px;">
+                                            @bandaSonora.Id
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div style="padding-left: 15px;">
+                                    <a href="/game/@bandaSonora.Id.ToString()" target="_blank">
+                                        <img src="@bandaSonora.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+                                    </a>
+                                </div>
+
+                                <div style="width: 100%; padding: 5px 10px; flex: 1;">
+                                    @bandaSonora.Nombre
+                                </div>
+
+                                <div class="admin-busqueda-juego-derecha">
+                                    <button @onclick="@(e => ClickearBorrarPendientes(e, bandaSonora.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+
+        @if (pestañaSoftware == true)
+        {
+            if (buscadorPendientesSoftware != null)
+            {
+                if (buscadorPendientesSoftware.Count > 0)
+                {
+                    <div>
+                        @foreach (var software in buscadorPendientesSoftware)
+                        {
+                            <hr />
+
+                            <div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+                                <div style="width: 150px; min-width: 150px;">
+                                    <button @onclick="@(e => ClickearIdPendientes(e, software.Id.ToString()))" class="boton-pequeño" style="text-align: center;">
+                                        Añadir ID
+
+                                        <div style="font-size: 13px;">
+                                            @software.Id
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div style="padding-left: 15px;">
+                                    <a href="/game/@software.Id.ToString()" target="_blank">
+                                        <img src="@software.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+                                    </a>
+                                </div>
+
+                                <div style="width: 100%; padding: 5px 10px; flex: 1;">
+                                    @software.Nombre
+                                </div>
+
+                                <div class="admin-busqueda-juego-derecha">
+                                    <button @onclick="@(e => ClickearBorrarPendientes(e, software.Id.ToString()))" class="boton-pequeño-peligro">Borrar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+    }
 </div>
 
 @code {
@@ -249,7 +257,6 @@
     private string enlacePendiente = null;
     private string idsPendiente = "0";
     private string cadenaBusquedaPendiente = null;
-    private string tiendaElegidaPendiente = null;
 
     protected override void OnInitialized()
     {
@@ -279,7 +286,6 @@
     private void ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
     {
         idTiendaPendiente = id;
-        tiendaElegidaPendiente = nombre;
 
         ClickearTiendaPendientes(idTiendaPendiente);
     }
@@ -389,6 +395,11 @@
     private bool pestañaBandasSonoras = false;
     private bool pestañaSoftware = false;
 
+    private string estiloJuegos = null;
+    private string estiloDLCs = null;
+    private string estiloBandasSonoras = null;
+    private string estiloSoftware = null;
+
     private void CambiarPestañas(MouseEventArgs e, int id)
     {
         pestañaJuegos = false;
@@ -396,28 +407,52 @@
         pestañaBandasSonoras = false;
         pestañaSoftware = false;
 
+        if (estiloJuegos != "display: none;")
+        {
+            estiloJuegos = "background-color: transparent;";
+        }
+
+        if (estiloDLCs != "display: none;")
+        {
+            estiloDLCs = "background-color: transparent;";
+        }
+
+        if (estiloBandasSonoras != "display: none;")
+        {
+            estiloBandasSonoras = "background-color: transparent;";
+        }
+
+        if (estiloSoftware != "display: none;")
+        {
+            estiloSoftware = "background-color: transparent;";
+        }
+
         if (id == 0)
         {
             pestañaJuegos = true;
+            estiloJuegos = "background-color: var(--fondoBotonPequeño);";
         }
         else if (id == 1)
         {
             pestañaDLCs = true;
+            estiloDLCs = "background-color: var(--fondoBotonPequeño);";
         }
         else if (id == 2)
         {
             pestañaBandasSonoras = true;
+            estiloBandasSonoras = "background-color: var(--fondoBotonPequeño);";
         }
         else if (id == 3)
         {
             pestañaSoftware = true;
+            estiloSoftware = "background-color: var(--fondoBotonPequeño);";
         }
     }
 
-    private List<Juegos.Juego> buscadorPendientesJuegos = new List<Juegos.Juego>();
-    private List<Juegos.Juego> buscadorPendientesDLCs = new List<Juegos.Juego>();
-    private List<Juegos.Juego> buscadorPendientesBandasSonoras = new List<Juegos.Juego>();
-    private List<Juegos.Juego> buscadorPendientesSoftware = new List<Juegos.Juego>();
+    private List<global::Juegos.Juego> buscadorPendientesJuegos = new List<global::Juegos.Juego>();
+    private List<global::Juegos.Juego> buscadorPendientesDLCs = new List<global::Juegos.Juego>();
+    private List<global::Juegos.Juego> buscadorPendientesBandasSonoras = new List<global::Juegos.Juego>();
+    private List<global::Juegos.Juego> buscadorPendientesSoftware = new List<global::Juegos.Juego>();
 
     private void TextoCambiarBuscadorPendientes(ChangeEventArgs texto)
     {
@@ -432,7 +467,7 @@
             {
                 cadenaBusquedaPendiente = texto.Value.ToString().Trim();
 
-                List<Juegos.Juego> resultados = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
+                List<global::Juegos.Juego> resultados = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
 
                 if (resultados.Count > 0)
                 {
@@ -443,22 +478,58 @@
 
                     foreach (var resultado in resultados)
                     {
-                        if (resultado.Tipo == Juegos.JuegoTipo.Game)
+                        if (resultado.Tipo == global::Juegos.JuegoTipo.Game)
                         {
                             buscadorPendientesJuegos.Add(resultado);
                         }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.DLC)
+                        else if (resultado.Tipo == global::Juegos.JuegoTipo.DLC)
                         {
                             buscadorPendientesDLCs.Add(resultado);
                         }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.Music)
+                        else if (resultado.Tipo == global::Juegos.JuegoTipo.Music)
                         {
                             buscadorPendientesBandasSonoras.Add(resultado);
                         }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.Software)
+                        else if (resultado.Tipo == global::Juegos.JuegoTipo.Software)
                         {
                             buscadorPendientesSoftware.Add(resultado);
                         }
+                    }
+
+                    if (buscadorPendientesJuegos.Count == 0)
+                    {
+                        estiloJuegos = "display: none;";
+                    }
+                    else
+                    {
+                        estiloJuegos = "background-color: transparent;";
+                    }
+
+                    if (buscadorPendientesDLCs.Count == 0)
+                    {
+                        estiloDLCs = "display: none;";
+                    }
+                    else
+                    {
+                        estiloDLCs = "background-color: transparent;";
+                    }
+
+                    if (buscadorPendientesBandasSonoras.Count == 0)
+                    {
+                        estiloBandasSonoras = "display: none;";
+                    }
+                    else
+                    {
+                        estiloBandasSonoras = "background-color: transparent;";
+                    }
+
+                    if (buscadorPendientesSoftware.Count == 0)
+                    {
+                        estiloSoftware = "display: none;";
+                    }
+                    else
+                    {
+                        estiloSoftware = "background-color: transparent;";
                     }
 
                     pestañaJuegos = false;
@@ -469,24 +540,28 @@
                     if (buscadorPendientesJuegos.Count > 0)
                     {
                         pestañaJuegos = true;
+                        estiloJuegos = "background-color: var(--fondoBotonPequeño);";
                     }
                     else if (buscadorPendientesJuegos.Count == 0)
                     {
                         if (buscadorPendientesDLCs.Count > 0)
                         {
                             pestañaDLCs = true;
+                            estiloDLCs = "background-color: var(--fondoBotonPequeño);";
                         }
                         else if (buscadorPendientesDLCs.Count == 0)
                         {
                             if (buscadorPendientesBandasSonoras.Count > 0)
                             {
                                 pestañaBandasSonoras = true;
+                                estiloBandasSonoras = "background-color: var(--fondoBotonPequeño);";
                             }
                             else if (buscadorPendientesBandasSonoras.Count == 0)
                             {
                                 if (buscadorPendientesSoftware.Count > 0)
                                 {
                                     pestañaSoftware = true;
+                                    estiloSoftware = "background-color: var(--fondoBotonPequeño);";
                                 }
                             }
                         }
@@ -495,10 +570,10 @@
             }
             else
             {
-                buscadorPendientesJuegos = new List<Juegos.Juego>();
-                buscadorPendientesDLCs = new List<Juegos.Juego>();
-                buscadorPendientesBandasSonoras = new List<Juegos.Juego>();
-                buscadorPendientesSoftware = new List<Juegos.Juego>();
+                buscadorPendientesJuegos = new List<global::Juegos.Juego>();
+                buscadorPendientesDLCs = new List<global::Juegos.Juego>();
+                buscadorPendientesBandasSonoras = new List<global::Juegos.Juego>();
+                buscadorPendientesSoftware = new List<global::Juegos.Juego>();
             }
         }
     }

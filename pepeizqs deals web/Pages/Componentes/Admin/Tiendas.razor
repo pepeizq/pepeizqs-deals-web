@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+@using Tiendas2
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <label>@TiendasInfo()</label>
+    <hr />
+    <div>
+        @foreach (Tienda tienda in TiendasCargar.GenerarListado())
+        {
+            @if (tienda.AdminEnseñar == true)
+            {
+                <div style="margin-top: 15px; margin-bottom: 15px;">
+                    @if (tienda.AdminInteractuar == true)
+                    {
+                        <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 40px;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 40%;">
+                                    <img src="@tienda.Imagen300x80" style="height: 40px;" />
+                                </div>
+
+                                <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                            </div>
+                        </button>
+                    }
+                    else
+                    {
+                        <div style="display: flex; align-items: center; height: fit-content; padding: 20px 40px;">
+                            <div style="width: 40%;">
+                                <img src="@tienda.Imagen300x80" style="height: 40px;" />
+                            </div>
+
+                            <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Inject]
+    protected Herramientas.IDecompiladores decompilador { get; set; }
+
+    private SqlConnection conexion = new SqlConnection();
+
+    private string tiendaElegida = null;
+
+    private async Task ClickearTienda(MouseEventArgs e, string id)
+    {
+        tiendaElegida = id;
+
+        if (id != null)
+        {
+            await TiendasCargar.AdminTiendas(id, decompilador);
+        }
+    }
+
+    private string TiendasInfo()
+    {
+        string info = String.Empty;
+
+        BaseDatos.Tiendas.AdminTarea siguiente = new BaseDatos.Tiendas.AdminTarea();
+        BaseDatos.Tiendas.AdminTarea enUso = new BaseDatos.Tiendas.AdminTarea();
+
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            siguiente = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
+            enUso = BaseDatos.Tiendas.Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60));
+        }
+
+        if (siguiente != null)
+        {
+            info = info + "Siguiente: " + siguiente.Id;
+        }
+
+        if (enUso != null)
+        {
+            info = info + " - Comprobando: " + enUso.Id;
+        }
+
+        return info;
+    }
+}

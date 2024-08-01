@@ -31,7 +31,7 @@ namespace Noticias
                     }
                 }
 
-                plantilla.Fecha = bundle.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+                plantilla.Fecha = bundle.FechaTermina;
                 plantilla.Enlace = EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
 
                 #region Titulo
@@ -270,7 +270,7 @@ namespace Noticias
                     plantilla.Imagen = juegoGratis1.Juego.Imagenes.Library_1920x620;
                 }
 
-                plantilla.Fecha = juegoGratis1.FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+                plantilla.Fecha = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina;
             }
             else
             {
@@ -416,7 +416,7 @@ namespace Noticias
 
                 #region Fecha
 
-                plantilla.Fecha = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+                plantilla.Fecha = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina;
 
                 #endregion
             }
@@ -437,7 +437,7 @@ namespace Noticias
 
             plantilla.Imagen = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[0].JuegoId.ToString()).Imagenes.Header_460x215;
 
-            plantilla.Fecha = sorteosActivos[0].FechaTermina.ToString("yyyy-MM-ddTHH:mm:ss");
+            plantilla.Fecha = sorteosActivos[0].FechaTermina;
 
             plantilla.Enlace = "https://pepeizqdeals.com/Giveaways";
 
@@ -531,7 +531,7 @@ namespace Noticias
         public string ContenidoEn;
         public string ContenidoEs;
         public string Juegos;
-        public string Fecha;
+        public DateTime Fecha;
         public string Enlace;
         public string Imagen;
         public string BundleId;

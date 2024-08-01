@@ -9,7 +9,7 @@
 
 @inject UserManager<Usuario> UserManager
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="opciones-combobox" style="width: 33%;">
         <select @onchange="@(e => CambiarNoticiaTipo(e))">
             @foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
@@ -22,7 +22,7 @@
 
 @if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
 {
-    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="width: 33%;">
             <select @onchange="@(e => CambiarBundleNoticias(e))">
                 @foreach (Bundles2.Bundle bundle in BundlesCargar.GenerarListado())
@@ -50,15 +50,15 @@
 
     @if (bundleSeleccionadoNoticias != null)
     {
-        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
             <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
         </div>
     }
 }
 else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
 {
-    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
             <select @onchange="@(e => CambiarGratisNoticias(e))">
                 @foreach (Gratis gratis in GratisCargar.GenerarListado())
@@ -75,9 +75,9 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString
                 {
                     <button @onclick="@(e => ClickearGratisJuegoNoticias(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
                         <div style="display: flex; align-items: center;">
-                            @if (plantillaNoticias.Juegos != null)
+                            @if (noticia.Juegos != null)
                             {
-                                @if (plantillaNoticias.Juegos.Contains(gratis.JuegoId.ToString()) == true)
+                                @if (noticia.Juegos.Contains(gratis.JuegoId.ToString()) == true)
                                 {
                                     <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
                                 }
@@ -94,15 +94,15 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString
 
     @if (gratisSeleccionadoNoticias != null)
     {
-        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
             <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
         </div>
     }
 }
 else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
 {
-    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
             <select @onchange="@(e => CambiarSuscripcion(e))">
                 @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
@@ -122,9 +122,9 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.T
                 {
                     <button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
                         <div style="display: flex; align-items: center;">
-                            @if (plantillaNoticias.Juegos != null)
+                            @if (noticia.Juegos != null)
                             {
-                                @if (plantillaNoticias.Juegos.Contains(suscripcion.JuegoId.ToString()) == true)
+                                @if (noticia.Juegos.Contains(suscripcion.JuegoId.ToString()) == true)
                                 {
                                     <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
                                 }
@@ -141,18 +141,18 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.T
 
     @if (suscripcionSeleccionadaNoticias != null)
     {
-        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
             <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
         </div>
     }
 }
 else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
 {
-    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div style="margin-bottom: 10px;">
             <label style="margin: 10px;">Juegos IDs:</label>
-            <input type="text" class="entrada-texto" value="@plantillaNoticias.Juegos" />
+            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -187,71 +187,71 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
     </div>
 }
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
         <label style="margin-left: 10px; margin-bottom: 10px;">Título EN:</label>
-        <input type="text" @onchange="@(e => CambiarTituloEnNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEn" />
+        <input type="text" @onchange="@(e => CambiarTituloEnNoticias(e))" class="entrada-texto" value="@noticia.TituloEn" />
     </div>
 
     <div style="margin-top: 20px;">
         <label style="margin-left: 10px; margin-bottom: 10px;">Título ES:</label>
-        <input type="text" @onchange="@(e => CambiarTituloEsNoticias(e))" class="entrada-texto" value="@plantillaNoticias.TituloEs" />
+        <input type="text" @onchange="@(e => CambiarTituloEsNoticias(e))" class="entrada-texto" value="@noticia.TituloEs" />
     </div>
 </div>
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
         <label style="margin-left: 10px; margin-bottom: 10px;">Imagen Noticia:</label>
-        <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@plantillaNoticias.Imagen">
+        <input @onchange="@(e => CambiarImagenNoticia(e))" class="entrada-texto" value="@noticia.Imagen">
 
-        @if (string.IsNullOrEmpty(plantillaNoticias.Imagen) == false)
+        @if (string.IsNullOrEmpty(noticia.Imagen) == false)
         {
-            <img src="@plantillaNoticias.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            <img src="@noticia.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
         }
     </div>
 </div>
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
         <label style="margin-left: 10px; margin-bottom: 10px;">Fecha Termina:</label>
-        <input type="datetime-local" @onchange="@(e => CambiarFechaNoticias(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@plantillaNoticias.Fecha">
+        <input type="datetime-local" @onchange="@(e => CambiarFechaNoticias(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@noticia.Fecha.ToString("yyyy-MM-dd HH:mm:ss")">
     </div>
 
     <div style="margin-top: 20px;">
         <label style="margin-left: 10px; margin-bottom: 10px;">Enlace:</label>
-        <input type="text" class="entrada-texto" value="@plantillaNoticias.Enlace" />
+        <input type="text" class="entrada-texto" value="@noticia.Enlace" />
     </div>
 </div>
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
         <label style="margin-left: 10px; margin-bottom: 10px;">Contenido EN:</label>
-        <textarea @onchange="@(e => CambiarContenidoEnNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEn</textarea>
+        <textarea @onchange="@(e => CambiarContenidoEnNoticias(e))" class="entrada-texto" rows="8">@noticia.ContenidoEn</textarea>
     </div>
 
-    @if (string.IsNullOrEmpty(plantillaNoticias.ContenidoEn) == false)
+    @if (string.IsNullOrEmpty(noticia.ContenidoEn) == false)
     {
         <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
-            @((MarkupString)plantillaNoticias.ContenidoEn)
+            @((MarkupString)noticia.ContenidoEn)
         </div>
     }
 </div>
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
         <label style="margin-left: 10px; margin-bottom: 10px;">Contenido ES:</label>
-        <textarea @onchange="@(e => CambiarContenidoEsNoticias(e))" class="entrada-texto" rows="8">@plantillaNoticias.ContenidoEs</textarea>
+        <textarea @onchange="@(e => CambiarContenidoEsNoticias(e))" class="entrada-texto" rows="8">@noticia.ContenidoEs</textarea>
     </div>
 
-    @if (string.IsNullOrEmpty(plantillaNoticias.ContenidoEs) == false)
+    @if (string.IsNullOrEmpty(noticia.ContenidoEs) == false)
     {
         <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
-            @((MarkupString)plantillaNoticias.ContenidoEs)
+            @((MarkupString)noticia.ContenidoEs)
         </div>
     }
 </div>
 
-<div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div style="display: flex; width: 33%;">
         <button @onclick="@(e => AñadirNoticia(e))" class="boton" style="text-align: center;">Añadir Noticia</button>
     </div>
@@ -265,13 +265,13 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private string noticiaTipoSeleccionada = null;
 
-    private List<Juegos.Juego> juegosBuscadorNoticias = new List<Juegos.Juego>();
+    private List<global::Juegos.Juego> juegosBuscadorNoticias = new List<global::Juegos.Juego>();
 
     private string bundleSeleccionadoNoticias = null;
     private string gratisSeleccionadoNoticias = null;
     private string suscripcionSeleccionadaNoticias = null;
 
-    private global::Noticias.Plantilla plantillaNoticias = new global::Noticias.Plantilla();
+    private Plantilla noticia = new Plantilla();
 
     private void CambiarNoticiaTipo(ChangeEventArgs texto)
     {
@@ -282,7 +282,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
         using (conexion)
         {
-            plantillaNoticias = new global::Noticias.Plantilla();
+            noticia = new Plantilla();
 
             noticiaTipoSeleccionada = texto.Value.ToString();
 
@@ -309,32 +309,32 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private void CambiarTituloEnNoticias(ChangeEventArgs texto)
     {
-        plantillaNoticias.TituloEn = texto.Value.ToString();
+        noticia.TituloEn = texto.Value.ToString();
     }
 
     private void CambiarTituloEsNoticias(ChangeEventArgs texto)
     {
-        plantillaNoticias.TituloEs = texto.Value.ToString();
+        noticia.TituloEs = texto.Value.ToString();
     }
 
     private void CambiarImagenNoticia(ChangeEventArgs texto)
     {
-        plantillaNoticias.Imagen = texto.Value.ToString();
+        noticia.Imagen = texto.Value.ToString();
     }
 
     private void CambiarContenidoEnNoticias(ChangeEventArgs texto)
     {
-        plantillaNoticias.ContenidoEn = texto.Value.ToString();
+        noticia.ContenidoEn = texto.Value.ToString();
     }
 
     private void CambiarContenidoEsNoticias(ChangeEventArgs texto)
     {
-        plantillaNoticias.ContenidoEs = texto.Value.ToString();
+        noticia.ContenidoEs = texto.Value.ToString();
     }
 
     private void CambiarFechaNoticias(ChangeEventArgs texto)
     {
-        plantillaNoticias.Fecha = texto.Value.ToString();
+        noticia.Fecha = Convert.ToDateTime(texto.Value.ToString());
     }
 
     private void AñadirNoticia(MouseEventArgs e)
@@ -348,63 +348,63 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
         {
             using (conexion)
             {
-                global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+                global::Noticias.Noticia noticiaAñadir = new global::Noticias.Noticia();
 
-                noticia.TituloEn = plantillaNoticias.TituloEn;
-                noticia.TituloEs = plantillaNoticias.TituloEs;
-                noticia.Imagen = plantillaNoticias.Imagen;
-                noticia.ContenidoEn = plantillaNoticias.ContenidoEn;
-                noticia.ContenidoEs = plantillaNoticias.ContenidoEs;
-                noticia.Juegos = plantillaNoticias.Juegos;
-                noticia.FechaEmpieza = DateTime.Now;
-                noticia.FechaTermina = Convert.ToDateTime(plantillaNoticias.Fecha);
-                noticia.Enlace = plantillaNoticias.Enlace;
+                noticiaAñadir.TituloEn = noticia.TituloEn;
+                noticiaAñadir.TituloEs = noticia.TituloEs;
+                noticiaAñadir.Imagen = noticia.Imagen;
+                noticiaAñadir.ContenidoEn = noticia.ContenidoEn;
+                noticiaAñadir.ContenidoEs = noticia.ContenidoEs;
+                noticiaAñadir.Juegos = noticia.Juegos;
+                noticiaAñadir.FechaEmpieza = DateTime.Now;
+                noticiaAñadir.FechaTermina = noticia.Fecha;
+                noticiaAñadir.Enlace = noticia.Enlace;
 
                 if (noticiaTipoSeleccionada == NoticiaTipo.Bundles.ToString())
                 {
-                    noticia.Tipo = NoticiaTipo.Bundles;
-                    noticia.BundleTipo = BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
-                    noticia.BundleId = int.Parse(plantillaNoticias.BundleId);
+                    noticiaAñadir.Tipo = NoticiaTipo.Bundles;
+                    noticiaAñadir.BundleTipo = BundlesCargar.DevolverBundle(bundleSeleccionadoNoticias).Tipo;
+                    noticiaAñadir.BundleId = int.Parse(noticia.BundleId);
                 }
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
                 {
-                    noticia.Tipo = NoticiaTipo.Gratis;
-                    noticia.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
+                    noticiaAñadir.Tipo = NoticiaTipo.Gratis;
+                    noticiaAñadir.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
                 }
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
-                    noticia.Tipo = NoticiaTipo.Suscripciones;
-                    noticia.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
+                    noticiaAñadir.Tipo = NoticiaTipo.Suscripciones;
+                    noticiaAñadir.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
                 }
 
-                BaseDatos.Noticias.Insertar.Ejecutar(noticia);
+                BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
 
                 foreach (var usuario in UserManager.Users)
                 {
-                    if (usuario.NotificationBundles == true && noticia.Tipo == NoticiaTipo.Bundles)
+                    if (usuario.NotificationBundles == true && noticiaAñadir.Tipo == NoticiaTipo.Bundles)
                     {
-                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                        Herramientas.Correos.EnviarNuevaNoticia(noticiaAñadir, usuario.Email, conexion);
                     }
 
-                    if (usuario.NotificationFree == true && noticia.Tipo == NoticiaTipo.Gratis)
+                    if (usuario.NotificationFree == true && noticiaAñadir.Tipo == NoticiaTipo.Gratis)
                     {
-                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                        Herramientas.Correos.EnviarNuevaNoticia(noticiaAñadir, usuario.Email, conexion);
                     }
 
-                    if (usuario.NotificationSubscriptions == true && noticia.Tipo == NoticiaTipo.Suscripciones)
+                    if (usuario.NotificationSubscriptions == true && noticiaAñadir.Tipo == NoticiaTipo.Suscripciones)
                     {
-                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                        Herramientas.Correos.EnviarNuevaNoticia(noticiaAñadir, usuario.Email, conexion);
                     }
 
-                    if (usuario.NotificationOthers == true && noticia.Tipo != NoticiaTipo.Bundles && noticia.Tipo != NoticiaTipo.Gratis && noticia.Tipo != NoticiaTipo.Suscripciones)
+                    if (usuario.NotificationOthers == true && noticiaAñadir.Tipo != NoticiaTipo.Bundles && noticiaAñadir.Tipo != NoticiaTipo.Gratis && noticiaAñadir.Tipo != NoticiaTipo.Suscripciones)
                     {
-                        Herramientas.Correos.EnviarNuevaNoticia(noticia, usuario.Email, conexion);
+                        Herramientas.Correos.EnviarNuevaNoticia(noticiaAñadir, usuario.Email, conexion);
                     }
                 }
 
-                Herramientas.Twitter.Twitear(noticia);
+                Herramientas.Twitter.Twitear(noticiaAñadir);
 
-                plantillaNoticias = new Plantilla();
+                noticia = new Plantilla();
 
                 bundleSeleccionadoNoticias = null;
                 gratisSeleccionadoNoticias = null;
@@ -421,15 +421,15 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
         }
         else
         {
-            juegosBuscadorNoticias = new List<Juegos.Juego>();
+            juegosBuscadorNoticias = new List<global::Juegos.Juego>();
         }
     }
 
     private void SeleccionarJuegoNoticias(MouseEventArgs e, string id)
     {
-        plantillaNoticias = Plantillas.Rumores(plantillaNoticias, id);
+        noticia = Plantillas.Rumores(noticia, id);
 
-        juegosBuscadorNoticias = new List<Juegos.Juego>();
+        juegosBuscadorNoticias = new List<global::Juegos.Juego>();
     }
 
     private void CambiarBundleNoticias(ChangeEventArgs texto)
@@ -439,7 +439,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private void ClickearBundleNoticias(MouseEventArgs e, int bundleId)
     {
-        plantillaNoticias = Plantillas.Bundles(bundleId);
+        noticia = Plantillas.Bundles(bundleId);
     }
 
     private void CambiarGratisNoticias(ChangeEventArgs texto)
@@ -449,7 +449,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private void ClickearGratisJuegoNoticias(MouseEventArgs e, int juegoId)
     {
-        plantillaNoticias = global::Noticias.Plantillas.Gratis(plantillaNoticias, juegoId, gratisSeleccionadoNoticias);
+        noticia = Plantillas.Gratis(noticia, juegoId, gratisSeleccionadoNoticias);
     }
 
     private void CambiarSuscripcion(ChangeEventArgs texto)
@@ -459,7 +459,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId)
     {
-        plantillaNoticias = global::Noticias.Plantillas.Suscripciones(plantillaNoticias, juegoId, suscripcionSeleccionadaNoticias);
+        noticia = global::Noticias.Plantillas.Suscripciones(noticia, juegoId, suscripcionSeleccionadaNoticias);
     }
 
     private void GenerarSorteos(SqlConnection conexion)
@@ -468,7 +468,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
         if (sorteosActivos.Count > 0)
         {
-            plantillaNoticias = global::Noticias.Plantillas.Sorteos(sorteosActivos);
+            noticia = global::Noticias.Plantillas.Sorteos(sorteosActivos);
         }
     }
 }

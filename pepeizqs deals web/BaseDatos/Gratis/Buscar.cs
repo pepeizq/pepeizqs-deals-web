@@ -107,7 +107,7 @@ namespace BaseDatos.Gratis
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM gratis WHERE juegoId=(SELECT max(@juegoId) FROM gratis)";
+				string busqueda = "SELECT TOP 1 * FROM gratis WHERE juegoId=@juegoId ORDER BY fechaTermina DESC";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

@@ -1,0 +1,112 @@
+﻿@using BaseDatos.Avisos
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <div style="display: flex; align-items: center;">
+        <textarea @oninput="@(e => CambiarAvisoEn(e))" class="entrada-texto" style="height: 35px;" placeholder="EN">@avisoEn</textarea>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-top: 20px;">
+        <textarea @oninput="@(e => CambiarAvisoEs(e))" class="entrada-texto" style="height: 35px;" placeholder="ES">@avisoEs</textarea>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-top: 20px;">
+        <textarea @oninput="@(e => CambiarAvisoEnlace(e))" class="entrada-texto" style="height: 35px;" placeholder="Enlace">@avisoEnlace</textarea>
+    </div>
+
+    <div style="display: flex; align-items: center; margin-top: 30px;">
+        <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-right: 30px;" @onclick="@(e => ActualizarAviso(e))">
+            Actualizar
+        </button>
+
+        <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => BorrarAviso(e))">
+            Borrar
+        </button>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    private SqlConnection conexion = new SqlConnection();
+
+    private string avisoEn = string.Empty;
+    private string avisoEs = string.Empty;
+    private string avisoEnlace = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        Aviso aviso1 = BaseDatos.Avisos.Buscar.Ejecutar("en", conexion);
+
+        if (aviso1 != null)
+        {
+            avisoEn = aviso1.Mensaje.Trim();
+            avisoEnlace = aviso1.Enlace.Trim();
+        }
+
+        Aviso aviso2 = BaseDatos.Avisos.Buscar.Ejecutar("es", conexion);
+
+        if (aviso2 != null)
+        {
+            avisoEs = aviso2.Mensaje.Trim();
+        }
+    }
+
+    private void CambiarAvisoEn(ChangeEventArgs texto)
+    {
+        avisoEn = texto.Value.ToString();
+    }
+
+    private void CambiarAvisoEs(ChangeEventArgs texto)
+    {
+        avisoEs = texto.Value.ToString();
+    }
+
+    private void CambiarAvisoEnlace(ChangeEventArgs texto)
+    {
+        avisoEnlace = texto.Value.ToString();
+    }
+
+    private void ActualizarAviso(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar(avisoEn, "en", avisoEnlace, conexion);
+            BaseDatos.Avisos.Actualizar.Ejecutar(avisoEs, "es", avisoEnlace, conexion);
+
+            avisoEn = null;
+            avisoEs = null;
+            avisoEnlace = null;
+        }
+    }
+
+    private void BorrarAviso(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "en", "", conexion);
+            BaseDatos.Avisos.Actualizar.Ejecutar("", "es", "", conexion);
+
+            avisoEn = null;
+            avisoEs = null;
+            avisoEnlace = null;
+        }
+    }
+}

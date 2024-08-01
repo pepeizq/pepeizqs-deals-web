@@ -1,0 +1,885 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <div class="perfil-flexible-centrado">
+        <label>Precarga</label>
+
+        <div class="admin-busqueda">
+            <input class="entrada-texto" value="@enlacePrecargaAñadir" @onchange="@(e => CambiarEnlacePrecarga(e))" />
+        </div>
+    </div>
+</div>
+
+@if (juegoAñadir == null)
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <label class="texto-info-entrada">Datos</label>
+        <hr />
+
+        <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Nombre</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" @onchange="@(e => CambiarVacioNombre(e))" />
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <label class="texto-info-entrada">Imágenes</label>
+        <hr />
+
+        <div style="display: flex; align-items: start; margin-top: 20px;  gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Header (460x215)</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" value="@vacioHeader_460x215" @onchange="@(e => CambiarVacioHeader_460x215(e))" />
+                <img src="@vacioHeader_460x215" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Capsule (231x87)</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" value="@vacioCapsule_231x87" @onchange="@(e => CambiarVacioCapsule_231x87(e))" />
+                <img src="@vacioCapsule_231x87" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Logo</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" value="@vacioLogo" @onchange="@(e => CambiarVacioLogo(e))" />
+                <img src="@vacioLogo" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Library (600x900)</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" value="@vacioLibrary_600x900" @onchange="@(e => CambiarVacioLibrary_600x900(e))" />
+                <img src="@vacioLibrary_600x900" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 5px; text-align: right;">
+                <label>Library (1920x620)</label>
+            </div>
+            <div style="width: 80%;">
+                <input class="entrada-texto" value="@vacioLibrary_1920x620" @onchange="@(e => CambiarVacioLibrary_1920x620(e))" />
+                <img src="@vacioLibrary_1920x620" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <label class="texto-info-entrada">Datos</label>
+        <hr />
+
+        @if (string.IsNullOrEmpty(juegoAñadir.Nombre) == false)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>Nombre</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.Nombre" @onchange="@(e => CambiarNombre(e))" />
+                </div>
+            </div>
+        }
+
+        @if (juegoAñadir.IdSteam > 0)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>ID Steam</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.IdSteam" @onchange="@(e => CambiarIdSteam(e))" />
+                </div>
+            </div>
+        }
+
+        @if (juegoAñadir.IdGog > 0)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>ID GOG</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.IdGog" @onchange="@(e => CambiarIdGog(e))" />
+                </div>
+            </div>
+        }
+
+        <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+            <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                <label>Tipo</label>
+            </div>
+            <div style="width: 80%;">
+                <div class="opciones-combobox">
+                    <select @onchange="@(e => CambiarTipo(e))" value="@juegoAñadir.Tipo">
+                        @foreach (var tipo in global::Juegos.JuegoTipos.CargarListado())
+                        {
+                            <option value="@tipo">@tipo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        @if (string.IsNullOrEmpty(juegoAñadir.FechaSteamAPIComprobacion.ToString()) == false)
+        {
+            if (juegoAñadir.FechaSteamAPIComprobacion.Year > 2022)
+            {
+                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                        <label style="font-size: 12px;">Fecha Comprobación API Steam</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.FechaSteamAPIComprobacion" @onchange="@(e => CambiarFechaSteamAPIComprobacion(e))" />
+                    </div>
+                </div>
+            }
+        }
+
+        @if (juegoAñadir.IdSteam > 0 && juegoAñadir.Tipo == global::Juegos.JuegoTipo.DLC)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>Maestro</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.Maestro" @onchange="@(e => CambiarMaestro(e))" />
+                </div>
+            </div>
+        }
+
+        @if (juegoAñadir.IdSteam > 0 && juegoAñadir.Tipo == global::Juegos.JuegoTipo.Game)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>FreeToPlay</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.FreeToPlay" @onchange="@(e => CambiarFreeToPlay(e))" />
+                </div>
+            </div>
+        }
+
+        @if (string.IsNullOrEmpty(juegoAñadir.Nombre) == false)
+        {
+            <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                    <label>Mayor Edad</label>
+                </div>
+                <div style="width: 80%;">
+                    <input class="entrada-texto" value="@juegoAñadir.MayorEdad" @onchange="@(e => CambiarMayorEdad(e))" />
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (juegoAñadir.PrecioActualesTiendas != null)
+    {
+        if (juegoAñadir.PrecioActualesTiendas.Count > 0)
+        {
+            int i = 0;
+
+            foreach (global::Juegos.JuegoPrecio precio in juegoAñadir.PrecioActualesTiendas)
+            {
+                i += 1;
+
+                <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+                    <label class="texto-info-entrada">Precio @i.ToString()</label>
+                    <hr />
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Descuento</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.Descuento" @onchange="@(e => CambiarDescuento(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>DRM</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.DRM" @onchange="@(e => CambiarDRM(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Precio</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.Precio" @onchange="@(e => CambiarPrecio(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Moneda</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.Moneda" @onchange="@(e => CambiarMoneda(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Fecha Detectado</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.FechaDetectado" @onchange="@(e => CambiarFechaDetectado(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Enlace</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.Enlace" @onchange="@(e => CambiarEnlace(e, precio))" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                            <label>Tienda</label>
+                        </div>
+                        <div style="width: 80%;">
+                            <input class="entrada-texto" value="@precio.Tienda" @onchange="@(e => CambiarTienda(e, precio))" />
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    @if (juegoAñadir.Imagenes != null)
+    {
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+            <label class="texto-info-entrada">Imágenes</label>
+            <hr />
+
+            @if (juegoAñadir.Imagenes.Header_460x215 != null)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Header (460x215)</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Header_460x215" @onchange="@(e => CambiarHeader_460x215(e))" />
+                        <img src="@juegoAñadir.Imagenes.Header_460x215" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Imagenes.Capsule_231x87 != null)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Capsule (231x87)</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Capsule_231x87" @onchange="@(e => CambiarCapsule_231x87(e))" />
+                        <img src="@juegoAñadir.Imagenes.Capsule_231x87" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Imagenes.Logo != null)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Logo</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Logo" @onchange="@(e => CambiarLogo(e))" />
+                        <img src="@juegoAñadir.Imagenes.Logo" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Imagenes.Library_600x900 != null)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Library (600x900)</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Library_600x900" @onchange="@(e => CambiarLibrary_600x900(e))" />
+                        <img src="@juegoAñadir.Imagenes.Library_600x900" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Imagenes.Library_1920x620 != null)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Library (1920x620)</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Library_1920x620" @onchange="@(e => CambiarLibrary_1920x620(e))" />
+                        <img src="@juegoAñadir.Imagenes.Library_1920x620" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (juegoAñadir.Caracteristicas != null)
+    {
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+            <label class="texto-info-entrada">Características</label>
+            <hr />
+
+            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Windows.ToString()) == false)
+            {
+                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                        <label>Windows</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Windows.ToString()" @onchange="@(e => CambiarWindows(e))" />
+                    </div>
+                </div>
+            }
+
+            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Mac.ToString()) == false)
+            {
+                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                        <label>Mac</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Mac.ToString()" @onchange="@(e => CambiarMac(e))" />
+                    </div>
+                </div>
+            }
+
+            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Linux.ToString()) == false)
+            {
+                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                        <label>Linux</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Linux.ToString()" @onchange="@(e => CambiarLinux(e))" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Caracteristicas.Desarrolladores != null)
+            {
+                if (juegoAñadir.Caracteristicas.Desarrolladores.Count > 0)
+                {
+                    <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 5px; text-align: right;">
+                            <label>Desarrolladores</label>
+                        </div>
+                        <div style="width: 80%;">
+                            @{
+                                int i = 0;
+
+                                foreach (var desarrollador in juegoAñadir.Caracteristicas.Desarrolladores)
+                                {
+                                    <input class="entrada-texto" value="@desarrollador" @onchange="@(e => CambiarDesarrollador(e, i))" />
+                                    i += 1;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+
+            @if (juegoAñadir.Caracteristicas.Publishers != null)
+            {
+                if (juegoAñadir.Caracteristicas.Publishers.Count > 0)
+                {
+                    <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                        <div style="width: 20%; padding: 5px; text-align: right;">
+                            <label>Publishers</label>
+                        </div>
+                        <div style="width: 80%;">
+                            @{
+                                int i = 0;
+
+                                foreach (var publisher in juegoAñadir.Caracteristicas.Publishers)
+                                {
+                                    <input class="entrada-texto" value="@publisher" @onchange="@(e => CambiarPublisher(e, i))" />
+                                    i += 1;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+
+            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Descripcion) == false)
+            {
+                <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 5px; text-align: right;">
+                        <label>Descripción</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <textarea class="entrada-texto" style="height: 4em;" value="@juegoAñadir.Caracteristicas.Descripcion" @onchange="@(e => CambiarDescripcion(e))" />
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (juegoAñadir.Media != null)
+    {
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+            <label class="texto-info-entrada">Media</label>
+            <hr />
+
+            @if (string.IsNullOrEmpty(juegoAñadir.Media.Video) == false)
+            {
+                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
+                        <label>Video</label>
+                    </div>
+                    <div style="width: 80%;">
+                        <input class="entrada-texto" value="@juegoAñadir.Media.Video" @onchange="@(e => CambiarVideo(e))" />
+                    </div>
+                </div>
+            }
+
+            @if (juegoAñadir.Media.Capturas != null)
+            {
+                if (juegoAñadir.Media.Capturas.Count > 0)
+                {
+                    int i = 0;
+                    foreach (var captura in juegoAñadir.Media.Capturas)
+                    {
+                        i += 1;
+
+                        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                            <div style="width: 20%; padding: 5px; text-align: right;">
+                                <label>Captura @i.ToString()</label>
+                            </div>
+                            <div style="width: 80%;">
+                                <input class="entrada-texto" value="@captura" @onchange="@(e => CambiarCaptura(e, i))" />
+                                <img src="@captura" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                            </div>
+                        </div>
+                    }
+                }
+            }
+
+            @if (juegoAñadir.Media.Miniaturas != null)
+            {
+                if (juegoAñadir.Media.Miniaturas.Count > 0)
+                {
+                    int i = 0;
+                    foreach (var miniatura in juegoAñadir.Media.Miniaturas)
+                    {
+                        i += 1;
+
+                        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                            <div style="width: 20%; padding: 5px; text-align: right;">
+                                <label>Miniatura @i.ToString()</label>
+                            </div>
+                            <div style="width: 80%;">
+                                <input class="entrada-texto" value="@miniatura" @onchange="@(e => CambiarMiniatura(e, i))" />
+                                <img src="@miniatura" style="max-width: 200px; max-height: 200px; margin-top: 10px;" />
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    }
+}
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+    <div style="width: 25%;">
+        <button class="boton" @onclick="@(e => ClickearAñadir(e))">Añadir</button>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    private SqlConnection conexion = new SqlConnection();
+
+    #region Añadir Precarga
+
+    private string enlacePrecargaAñadir = null;
+
+    private global::Juegos.Juego juegoAñadir = null;
+
+    private async Task CambiarEnlacePrecarga(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            enlacePrecargaAñadir = texto.Value.ToString();
+
+            if (APIs.Steam.Juego.Detectar(enlacePrecargaAñadir) == true)
+            {
+                juegoAñadir = await APIs.Steam.Juego.CargarDatos(APIs.Steam.Juego.LimpiarID(enlacePrecargaAñadir));
+            }
+            else if (APIs.GOG.Juego.Detectar(enlacePrecargaAñadir) == true)
+            {
+                juegoAñadir = await APIs.GOG.Juego.CargarDatos(APIs.GOG.Juego.LimpiarSlug(enlacePrecargaAñadir));
+            }
+            else if (APIs.EpicGames.Juego.Detectar(enlacePrecargaAñadir) == true)
+            {
+                juegoAñadir = await APIs.EpicGames.Juego.CargarDatos(APIs.EpicGames.Juego.LimpiarSlug(enlacePrecargaAñadir));
+            }
+
+            if (juegoAñadir != null)
+            {
+                enlacePrecargaAñadir = null;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Añadir Vacio
+
+    private string vacioNombre = null;
+    private string vacioHeader_460x215 = null;
+    private string vacioCapsule_231x87 = null;
+    private string vacioLogo = null;
+    private string vacioLibrary_600x900 = null;
+    private string vacioLibrary_1920x620 = null;
+
+    private void CambiarVacioNombre(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioNombre = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVacioHeader_460x215(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioHeader_460x215 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVacioCapsule_231x87(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioCapsule_231x87 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVacioLogo(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioLogo = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVacioLibrary_600x900(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioLibrary_600x900 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVacioLibrary_1920x620(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            vacioLibrary_1920x620 = texto.Value.ToString();
+        }
+    }
+
+    #endregion
+
+    #region Añadir Propiedades
+
+    private void CambiarNombre(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Nombre = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarIdSteam(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.IdSteam = int.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarIdGog(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.IdGog = int.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarTipo(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Tipo = Enum.Parse<global::Juegos.JuegoTipo>(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarFechaSteamAPIComprobacion(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.FechaSteamAPIComprobacion = DateTime.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarMaestro(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Maestro = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarFreeToPlay(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.FreeToPlay = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarMayorEdad(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.MayorEdad = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarDescuento(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.Descuento = int.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarDRM(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.DRM = Enum.Parse<global::Juegos.JuegoDRM>(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarPrecio(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.Precio = Decimal.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarMoneda(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.Moneda = Enum.Parse<Herramientas.JuegoMoneda>(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarFechaDetectado(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.FechaDetectado = DateTime.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarEnlace(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.Enlace = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarTienda(ChangeEventArgs texto, global::Juegos.JuegoPrecio precio)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            precio.Tienda = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarHeader_460x215(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Imagenes.Header_460x215 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarCapsule_231x87(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Imagenes.Capsule_231x87 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarLogo(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Imagenes.Logo = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarLibrary_600x900(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Imagenes.Library_600x900 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarLibrary_1920x620(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Imagenes.Library_1920x620 = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarWindows(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Windows = bool.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarMac(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Mac = bool.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarLinux(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Linux = bool.Parse(texto.Value.ToString());
+        }
+    }
+
+    private void CambiarDesarrollador(ChangeEventArgs texto, int posicion)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Desarrolladores[posicion] = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarPublisher(ChangeEventArgs texto, int posicion)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Publishers[posicion] = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarDescripcion(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Caracteristicas.Descripcion = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarVideo(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Media.Video = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarCaptura(ChangeEventArgs texto, int posicion)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Media.Capturas[posicion] = texto.Value.ToString();
+        }
+    }
+
+    private void CambiarMiniatura(ChangeEventArgs texto, int posicion)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegoAñadir.Media.Miniaturas[posicion] = texto.Value.ToString();
+        }
+    }
+
+    #endregion
+
+    private void ClickearAñadir(MouseEventArgs e)
+    {
+        if (juegoAñadir == null)
+        {
+            juegoAñadir = global::Juegos.JuegoCrear.Generar();
+
+            juegoAñadir.Nombre = vacioNombre;
+
+            juegoAñadir.Imagenes.Header_460x215 = vacioHeader_460x215;
+            juegoAñadir.Imagenes.Capsule_231x87 = vacioCapsule_231x87;
+            juegoAñadir.Imagenes.Logo = vacioLogo;
+            juegoAñadir.Imagenes.Library_600x900 = vacioLibrary_600x900;
+            juegoAñadir.Imagenes.Library_1920x620 = vacioLibrary_1920x620;
+        }
+
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir, conexion);
+        }
+
+        juegoAñadir = null;
+    }
+
+}

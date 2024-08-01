@@ -1,0 +1,72 @@
+﻿@using BaseDatos.Errores
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <button @onclick="@(e => LimpiarErrores(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
+
+    @if (listaErrores != null)
+    {
+        if (listaErrores.Count > 0)
+        {
+            <hr />
+
+            foreach (var error in listaErrores)
+            {
+                <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
+                    <div style="padding-left: 10px; padding-right: 10px;">
+                        <div>
+                            @error.Seccion
+                        </div>
+                        <div style="margin-top: 15px;">
+                            @error.Fecha
+                        </div>
+                    </div>
+                    <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
+                        @error.Mensaje
+                    </div>
+                    <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
+                        @error.Stacktrace
+                    </div>
+                </div>
+
+                <hr />
+            }
+        }
+    }
+</div>
+
+@code {
+
+    #nullable disable
+
+    private SqlConnection conexion = new SqlConnection();
+
+    List<Error> listaErrores = new List<Error>();
+
+    protected override void OnInitialized()
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
+    }
+
+    private void LimpiarErrores(MouseEventArgs e)
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+
+        using (conexion)
+        {
+            BaseDatos.Errores.Limpiar.Ejecutar(conexion);
+
+            listaErrores = new List<Error>();
+        }
+    }
+
+}

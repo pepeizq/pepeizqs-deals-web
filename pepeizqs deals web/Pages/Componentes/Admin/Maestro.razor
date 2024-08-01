@@ -40,26 +40,26 @@
             <div>
                 @if (nuevosErroresCantidad > 0)
                 {
-                    <button class="boton-pestañas" @onclick="(e => MostrarCerrarErrores(e))">Errores @nuevosErroresMensaje</button>
+                    <button class="boton-pestañas" @onclick="(e => MostrarErrores(e))" style="@estiloErrores;">Errores @nuevosErroresMensaje</button>
                 }
 
                 @if (nuevosCorreosDeals > 0)
                 {
                     string mensajeCorreosDeals = "(" + nuevosCorreosDeals.ToString() + ")";
 
-                    <button class="boton-pestañas" @onclick="(e => MostrarCerrarEnlaces(e))">Correos Deals @mensajeCorreosDeals</button>
+                    <button class="boton-pestañas" @onclick="(e => MostrarEnlaces(e))">Correos Deals @mensajeCorreosDeals</button>
                 }
 
                 @if (nuevosCorreosApps > 0)
                 {
                     string mensajeCorreosApps = "(" + nuevosCorreosApps.ToString() + ")";
 
-                    <button class="boton-pestañas" @onclick="(e => MostrarCerrarEnlaces(e))">Correos Apps @mensajeCorreosApps</button>
+                    <button class="boton-pestañas" @onclick="(e => MostrarEnlaces(e))">Correos Apps @mensajeCorreosApps</button>
                 }
 
                 @if (nuevosPendientesCantidad > 0)
                 {
-                    <button class="boton-pestañas" @onclick="(e => MostrarCerrarPendientes(e))">Pendientes @nuevosPendientesMensaje</button>
+                    <button class="boton-pestañas" @onclick="(e => MostrarPendientes(e))" style="@estiloPendientes;">Pendientes @nuevosPendientesMensaje</button>
                 }
 
                 @if (nuevasSolicitudesCantidad > 0)
@@ -67,18 +67,18 @@
                     <button class="boton-pestañas" @onclick="(e => MostrarCerrarSolicitudes(e))">Solicitudes @nuevasSolicitudesMensaje</button>
                 }
 
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarEnlaces(e))">Enlaces</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarAvisos(e))">Avisos</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarTiendas(e))">Tiendas</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarDivisas(e))">Divisas</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarEnlaces(e))" style="@estiloEnlaces;">Enlaces</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarAvisos(e))" style="@estiloAvisos;">Avisos</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarTiendas(e))" style="@estiloTiendas;">Tiendas</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarDivisas(e))" style="@estiloDivisas">Divisas</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarDLCs(e))">DLCs @nuevosDLCsMensaje</button>
             </div>
 
             <hr/>
-            <label style="padding-left: 20px; padding-bottom: 15px; font-size: 14px; text-align: center;">Añadir</label>
+
             <div>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarAñadir(e))">Juego</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarNoticias(e))">Noticias</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarJuegos(e))" style="@estiloJuegos;">Juegos</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarNoticias(e))" style="@estiloNoticias">Noticias</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarBundles(e))">Bundles</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarGratis(e))">Gratis</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarSuscripciones(e))">Suscripciones</button>
@@ -94,66 +94,12 @@
 
             @if (mostrarErrores == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <button @onclick="@(e => LimpiarErrores(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Limpiar</button>
-
-                    @if (listaErrores != null)
-                    {
-                        if (listaErrores.Count > 0)
-                        {
-                            <hr />
-
-                            foreach (var error in listaErrores)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
-                                    <div style="padding-left: 10px; padding-right: 10px;">
-                                        <div>
-                                            @error.Seccion
-                                        </div>
-                                        <div style="margin-top: 15px;">
-                                            @error.Fecha
-                                        </div>
-                                    </div>
-                                    <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
-                                        @error.Mensaje
-                                    </div>
-                                    <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
-                                        @error.Stacktrace
-                                    </div>
-                                </div>
-
-                                <hr />
-                            }
-                        }
-                    }
-                </div>
+                <Errores/>
             }
 
             @if (mostrarAvisos == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <div style="display: flex; align-items: center;">
-                        <textarea @oninput="@(e => CambiarAvisoEn(e))" class="entrada-texto" style="height: 35px;" placeholder="EN">@avisoEn</textarea>
-                    </div>
-
-                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                        <textarea @oninput="@(e => CambiarAvisoEs(e))" class="entrada-texto" style="height: 35px;" placeholder="ES">@avisoEs</textarea>
-                    </div>
-
-                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                        <textarea @oninput="@(e => CambiarAvisoEnlace(e))" class="entrada-texto" style="height: 35px;" placeholder="Enlace">@avisoEnlace</textarea>
-                    </div>
-
-                    <div style="display: flex; align-items: center; margin-top: 30px;">
-                        <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px; margin-right: 30px;" @onclick="@(e => ActualizarAviso(e))">
-                            Actualizar
-                        </button>
-
-                        <button class="boton-pequeño" style="padding: 10px 15px; max-width: 250px;" @onclick="@(e => BorrarAviso(e))">
-                            Borrar
-                        </button>
-                    </div>
-                </div>
+                <Avisos/>
             }
 
             @if (mostrarSolicitudes == true)
@@ -198,56 +144,12 @@
 
             @if (mostrarTiendas == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <label>@TiendasInfo()</label>
-                    <hr />
-                    <div>
-                        @foreach (Tienda tienda in TiendasCargar.GenerarListado())
-                        {
-                            @if (tienda.AdminEnseñar == true)
-                            {
-                                <div style="margin-top: 15px; margin-bottom: 15px;">
-                                    @if (tienda.AdminInteractuar == true)
-                                    {
-                                        <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 40px;">
-                                            <div style="display: flex; align-items: center;">
-                                                <div style="width: 40%;">
-                                                    <img src="@tienda.Imagen300x80" style="height: 40px;" />
-                                                </div>
-
-                                                <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
-                                            </div>
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <div style="display: flex; align-items: center; height: fit-content; padding: 20px 40px;">
-                                            <div style="width: 40%;">
-                                                <img src="@tienda.Imagen300x80" style="height: 40px;" />
-                                            </div>
-
-                                            <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                        }
-                    </div>
-
-                </div>
+               <Tiendas/>
             }
 
             @if (mostrarDivisas == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <div>
-                        <button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Actualizar</button>
-                    </div>
-                    <div style="padding-top: 20px;">
-                        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
-                        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
-                    </div>
-                </div>
+                <Divisas/>
             }
 
             @if (mostrarDLCs == true)
@@ -275,525 +177,9 @@
                 <Pendientes />
             }
 
-            @if (mostrarAñadir == true)
+            @if (mostrarJuegos == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <div class="perfil-flexible-centrado">
-                        <label>Precarga</label>
-
-                        <div class="admin-busqueda">
-                            <input class="entrada-texto" value="@enlacePrecargaAñadir" @onchange="@(e => CambiarEnlacePrecarga(e))" />
-                        </div>
-                    </div>
-                </div>
-
-                @if (juegoAñadir == null)
-                {
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                        <label class="texto-info-entrada">Datos</label>
-                        <hr />
-
-                        <div style="display: flex; align-items: center; margin-top: 20px;">
-                            <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                <label>Nombre</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" @onchange="@(e => CambiarVacioNombre(e))" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                        <label class="texto-info-entrada">Imágenes</label>
-                        <hr />
-
-                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                <label>Header (460x215)</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@vacioHeader_460x215" @onchange="@(e => CambiarVacioHeader_460x215(e))" />
-                                <img src="@vacioHeader_460x215" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-
-                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                <label>Capsule (231x87)</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@vacioCapsule_231x87" @onchange="@(e => CambiarVacioCapsule_231x87(e))" />
-                                <img src="@vacioCapsule_231x87" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-
-                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                <label>Logo</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@vacioLogo" @onchange="@(e => CambiarVacioLogo(e))" />
-                                <img src="@vacioLogo" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-
-                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                <label>Library (600x900)</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@vacioLibrary_600x900" @onchange="@(e => CambiarVacioLibrary_600x900(e))" />
-                                <img src="@vacioLibrary_600x900" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-
-                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                <label>Library (1920x620)</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@vacioLibrary_1920x620" @onchange="@(e => CambiarVacioLibrary_1920x620(e))" />
-                                <img src="@vacioLibrary_1920x620" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                        <label class="texto-info-entrada">Datos</label>
-                        <hr />
-
-                        @if (string.IsNullOrEmpty(juegoAñadir.Nombre) == false)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>Nombre</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.Nombre" @onchange="@(e => CambiarNombre(e))" />
-                                </div>
-                            </div>
-                        }
-
-                        @if (juegoAñadir.IdSteam > 0)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>ID Steam</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.IdSteam" @onchange="@(e => CambiarIdSteam(e))" />
-                                </div>
-                            </div>
-                        }
-
-                        @if (juegoAñadir.IdGog > 0)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>ID GOG</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.IdGog" @onchange="@(e => CambiarIdGog(e))" />
-                                </div>
-                            </div>
-                        }
-
-                        <div style="display: flex; align-items: center; margin-top: 20px;">
-                            <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                <label>Tipo</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <div class="opciones-combobox">
-                                    <select @onchange="@(e => CambiarTipo(e))" value="@juegoAñadir.Tipo">
-                                        @foreach (var tipo in Juegos.JuegoTipos.CargarListado())
-                                        {
-                                            <option value="@tipo">@tipo</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        @if (string.IsNullOrEmpty(juegoAñadir.FechaSteamAPIComprobacion.ToString()) == false)
-                        {
-                            if (juegoAñadir.FechaSteamAPIComprobacion.Year > 2022)
-                            {
-                                <div style="display: flex; align-items: center; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                        <label style="font-size: 12px;">Fecha Comprobación API Steam</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.FechaSteamAPIComprobacion" @onchange="@(e => CambiarFechaSteamAPIComprobacion(e))" />
-                                    </div>
-                                </div>
-                            }
-                        }
-
-                        @if (juegoAñadir.IdSteam > 0 && juegoAñadir.Tipo == Juegos.JuegoTipo.DLC)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>Maestro</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.Maestro" @onchange="@(e => CambiarMaestro(e))" />
-                                </div>
-                            </div>
-                        }
-
-                        @if (juegoAñadir.IdSteam > 0 && juegoAñadir.Tipo == Juegos.JuegoTipo.Game)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>FreeToPlay</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.FreeToPlay" @onchange="@(e => CambiarFreeToPlay(e))" />
-                                </div>
-                            </div>
-                        }
-
-                        @if (string.IsNullOrEmpty(juegoAñadir.Nombre) == false)
-                        {
-                            <div style="display: flex; align-items: center; margin-top: 20px;">
-                                <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                    <label>Mayor Edad</label>
-                                </div>
-                                <div style="width: 80%;">
-                                    <input class="entrada-texto" value="@juegoAñadir.MayorEdad" @onchange="@(e => CambiarMayorEdad(e))" />
-                                </div>
-                            </div>
-                        }
-                    </div>
-
-                    @if (juegoAñadir.PrecioActualesTiendas != null)
-                    {
-                        if (juegoAñadir.PrecioActualesTiendas.Count > 0)
-                        {
-                            int i = 0;
-
-                            foreach (Juegos.JuegoPrecio precio in juegoAñadir.PrecioActualesTiendas)
-                            {
-                                i += 1;
-
-                                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                                    <label class="texto-info-entrada">Precio @i.ToString()</label>
-                                    <hr />
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Descuento</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.Descuento" @onchange="@(e => CambiarDescuento(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>DRM</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.DRM" @onchange="@(e => CambiarDRM(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Precio</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.Precio" @onchange="@(e => CambiarPrecio(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Moneda</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.Moneda" @onchange="@(e => CambiarMoneda(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Fecha Detectado</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.FechaDetectado" @onchange="@(e => CambiarFechaDetectado(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Enlace</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.Enlace" @onchange="@(e => CambiarEnlace(e, precio))" />
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                            <label>Tienda</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            <input class="entrada-texto" value="@precio.Tienda" @onchange="@(e => CambiarTienda(e, precio))" />
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    }
-
-                    @if (juegoAñadir.Imagenes != null)
-                    {
-                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                            <label class="texto-info-entrada">Imágenes</label>
-                            <hr />
-
-                            @if (juegoAñadir.Imagenes.Header_460x215 != null)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Header (460x215)</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Header_460x215" @onchange="@(e => CambiarHeader_460x215(e))" />
-                                        <img src="@juegoAñadir.Imagenes.Header_460x215" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Imagenes.Capsule_231x87 != null)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Capsule (231x87)</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Capsule_231x87" @onchange="@(e => CambiarCapsule_231x87(e))" />
-                                        <img src="@juegoAñadir.Imagenes.Capsule_231x87" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Imagenes.Logo != null)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Logo</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Logo" @onchange="@(e => CambiarLogo(e))" />
-                                        <img src="@juegoAñadir.Imagenes.Logo" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Imagenes.Library_600x900 != null)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Library (600x900)</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Library_600x900" @onchange="@(e => CambiarLibrary_600x900(e))" />
-                                        <img src="@juegoAñadir.Imagenes.Library_600x900" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Imagenes.Library_1920x620 != null)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Library (1920x620)</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Imagenes.Library_1920x620" @onchange="@(e => CambiarLibrary_1920x620(e))" />
-                                        <img src="@juegoAñadir.Imagenes.Library_1920x620" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-
-                    @if (juegoAñadir.Caracteristicas != null)
-                    {
-                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                            <label class="texto-info-entrada">Características</label>
-                            <hr />
-
-                            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Windows.ToString()) == false)
-                            {
-                                <div style="display: flex; align-items: center; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                        <label>Windows</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Windows.ToString()" @onchange="@(e => CambiarWindows(e))" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Mac.ToString()) == false)
-                            {
-                                <div style="display: flex; align-items: center; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                        <label>Mac</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Mac.ToString()" @onchange="@(e => CambiarMac(e))" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Linux.ToString()) == false)
-                            {
-                                <div style="display: flex; align-items: center; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                        <label>Linux</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Caracteristicas.Linux.ToString()" @onchange="@(e => CambiarLinux(e))" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Caracteristicas.Desarrolladores != null)
-                            {
-                                if (juegoAñadir.Caracteristicas.Desarrolladores.Count > 0)
-                                {
-                                    <div style="display: flex; align-items: start; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                            <label>Desarrolladores</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            @{
-                                                int i = 0;
-
-                                                foreach (var desarrollador in juegoAñadir.Caracteristicas.Desarrolladores)
-                                                {
-                                                    <input class="entrada-texto" value="@desarrollador" @onchange="@(e => CambiarDesarrollador(e, i))" />
-                                                    i += 1;
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            }
-
-                            @if (juegoAñadir.Caracteristicas.Publishers != null)
-                            {
-                                if (juegoAñadir.Caracteristicas.Publishers.Count > 0)
-                                {
-                                    <div style="display: flex; align-items: start; margin-top: 20px;">
-                                        <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                            <label>Publishers</label>
-                                        </div>
-                                        <div style="width: 80%;">
-                                            @{
-                                                int i = 0;
-
-                                                foreach (var publisher in juegoAñadir.Caracteristicas.Publishers)
-                                                {
-                                                    <input class="entrada-texto" value="@publisher" @onchange="@(e => CambiarPublisher(e, i))" />
-                                                    i += 1;
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            }
-
-                            @if (string.IsNullOrEmpty(juegoAñadir.Caracteristicas.Descripcion) == false)
-                            {
-                                <div style="display: flex; align-items: start; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                        <label>Descripción</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <textarea class="entrada-texto" style="height: 4em;" value="@juegoAñadir.Caracteristicas.Descripcion" @onchange="@(e => CambiarDescripcion(e))" />
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-
-                    @if (juegoAñadir.Media != null)
-                    {
-                        <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                            <label class="texto-info-entrada">Media</label>
-                            <hr />
-
-                            @if (string.IsNullOrEmpty(juegoAñadir.Media.Video) == false)
-                            {
-                                <div style="display: flex; align-items: center; margin-top: 20px;">
-                                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                                        <label>Video</label>
-                                    </div>
-                                    <div style="width: 80%;">
-                                        <input class="entrada-texto" value="@juegoAñadir.Media.Video" @onchange="@(e => CambiarVideo(e))" />
-                                    </div>
-                                </div>
-                            }
-
-                            @if (juegoAñadir.Media.Capturas != null)
-                            {
-                                if (juegoAñadir.Media.Capturas.Count > 0)
-                                {
-                                    int i = 0;
-                                    foreach (var captura in juegoAñadir.Media.Capturas)
-                                    {
-                                        i += 1;
-
-                                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                                <label>Captura @i.ToString()</label>
-                                            </div>
-                                            <div style="width: 80%;">
-                                                <input class="entrada-texto" value="@captura" @onchange="@(e => CambiarCaptura(e, i))" />
-                                                <img src="@captura" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-
-                            @if (juegoAñadir.Media.Miniaturas != null)
-                            {
-                                if (juegoAñadir.Media.Miniaturas.Count > 0)
-                                {
-                                    int i = 0;
-                                    foreach (var miniatura in juegoAñadir.Media.Miniaturas)
-                                    {
-                                        i += 1;
-
-                                        <div style="display: flex; align-items: start; margin-top: 20px;">
-                                            <div style="width: 20%; padding: 5px 30px; text-align: right;">
-                                                <label>Miniatura @i.ToString()</label>
-                                            </div>
-                                            <div style="width: 80%;">
-                                                <input class="entrada-texto" value="@miniatura" @onchange="@(e => CambiarMiniatura(e, i))" />
-                                                <img src="@miniatura" style="max-width: 200px; max-height: 200px; margin-top: 10px;" />
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-                        </div>
-                    }
-                }
-
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton); margin-top: 40px;">
-                    <div style="width: 25%;">
-                        <button class="boton" @onclick="@(e => ClickearAñadir(e))">Añadir</button>
-                    </div>
-                </div>
+                <Juegos />
             }
 
             @if (mostrarNoticias == true)
@@ -867,7 +253,7 @@
                                     <label style="margin-bottom: 10px;">DRM:</label>
                                     <div class="opciones-combobox">
                                         <select @onchange="@(e => CambiarDRMGratis(e))" value="@drmSeleccionadoGratis">
-                                            @foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+                                            @foreach (global::Juegos.DRM drm in global::Juegos.JuegoDRM2.GenerarListado())
                                             {
                                                 <option value="@drm.Id">@drm.Nombre</option>
                                             }
@@ -972,7 +358,7 @@
                                     <label style="margin-bottom: 10px;">DRM:</label>
                                     <div class="opciones-combobox">
                                         <select @onchange="@(e => CambiarDRMSuscripciones(e))" value="@drmSeleccionadoSuscripciones">
-                                            @foreach (Juegos.DRM drm in Juegos.JuegoDRM2.GenerarListado())
+                                            @foreach (global::Juegos.DRM drm in global::Juegos.JuegoDRM2.GenerarListado())
                                             {
                                                 <option value="@drm.Id">@drm.Nombre</option>
                                             }
@@ -1097,14 +483,7 @@
 
     #nullable disable
 
-    [Inject]
-    protected Herramientas.IDecompiladores decompilador { get; set; }
-
     private SqlConnection conexion = new SqlConnection();
-
-    private string titulo = string.Empty;
-
-    private bool mostrarAdmin = false;
 
     protected override void OnInitialized()
     {
@@ -1121,12 +500,16 @@
             ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
             ActualizarMensajeSolicitudes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "solicitudes")));
         }
+
+        CerrarPestañas();
+        mostrarEnlaces = true;
+        estiloEnlaces = fondo;
     }
+
+    private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
 
     private void CerrarPestañas()
     {
-        titulo = null;
-
         mostrarEnlaces = false;
         mostrarAvisos = false;
         mostrarSolicitudes = false;
@@ -1135,32 +518,33 @@
         mostrarDivisas = false;
         mostrarDLCs = false;
         mostrarPendientes = false;
-        mostrarAñadir = false;
+        mostrarJuegos = false;
         mostrarNoticias = false;
         mostrarBundles = false;
         mostrarGratis = false;
         mostrarSuscripciones = false;
         mostrarSorteos = false;
+
+        estiloEnlaces = null;
+        estiloAvisos = null;
+        estiloErrores = null;
+        estiloTiendas = null;
+        estiloDivisas = null;
+        estiloPendientes = null;
+        estiloJuegos = null;
+        estiloNoticias = null;
     }
 
     #region Enlaces
 
     private bool mostrarEnlaces = false;
+    private string estiloEnlaces = null;
 
-    private void MostrarCerrarEnlaces(MouseEventArgs e)
+    private void MostrarEnlaces(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarEnlaces == true)
-        {
-            mostrarEnlaces = false;
-        }
-        else if (mostrarEnlaces == false)
-        {
-            mostrarEnlaces = true;
-
-            titulo = "Enlaces";
-        }
+        mostrarEnlaces = true;
+        estiloEnlaces = fondo;
     }
 
     #endregion
@@ -1168,8 +552,8 @@
     #region Errores
 
     private bool mostrarErrores = false;
+    private string estiloErrores = null;
 
-    List<Error> listaErrores = new List<Error>();
     private int nuevosErroresCantidad = 0;
     private string nuevosErroresMensaje = string.Empty;
 
@@ -1183,7 +567,7 @@
         }
     }
 
-    private void MostrarCerrarErrores(MouseEventArgs e)
+    private void MostrarErrores(MouseEventArgs e)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -1191,38 +575,10 @@
         }
 
         CerrarPestañas();
+        mostrarErrores = true;
+        estiloErrores = fondo;
 
-        if (mostrarErrores == true)
-        {
-            mostrarErrores = false;
-        }
-        else if (mostrarErrores == false)
-        {
-            mostrarErrores = true;
-
-            titulo = "Errores";
-
-            listaErrores = BaseDatos.Errores.Buscar.Todos(conexion);
-
-            ActualizarMensajeErrores(listaErrores.Count);
-        }
-    }
-
-    private void LimpiarErrores(MouseEventArgs e)
-    {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        using (conexion)
-        {
-            BaseDatos.Errores.Limpiar.Ejecutar(conexion);
-
-            listaErrores = new List<Error>();
-
-            ActualizarMensajeErrores(0);
-        }
+        ActualizarMensajeErrores(BaseDatos.Errores.Buscar.Todos(conexion).Count);
     }
 
     #endregion
@@ -1230,95 +586,13 @@
     #region Avisos
 
     private bool mostrarAvisos = false;
-    private string avisoEn = string.Empty;
-    private string avisoEs = string.Empty;
-    private string avisoEnlace = string.Empty;
+    private string estiloAvisos = null;
 
-    private void MostrarCerrarAvisos(MouseEventArgs e)
+    private void MostrarAvisos(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarAvisos == true)
-        {
-            mostrarAvisos = false;
-        }
-        else if (mostrarAvisos == false)
-        {
-            mostrarAvisos = true;
-
-            titulo = "Avisos";
-
-            if (conexion.State != System.Data.ConnectionState.Open)
-            {
-                conexion = Herramientas.BaseDatos.Conectar();
-            }
-
-            Aviso aviso1 = BaseDatos.Avisos.Buscar.Ejecutar("en", conexion);
-
-            if (aviso1 != null)
-            {
-                avisoEn = aviso1.Mensaje.Trim();
-                avisoEnlace = aviso1.Enlace.Trim();
-            }
-
-            Aviso aviso2 = BaseDatos.Avisos.Buscar.Ejecutar("es", conexion);
-
-            if (aviso2 != null)
-            {
-                avisoEs = aviso2.Mensaje.Trim();
-            }
-        }
-    }
-
-    private void CambiarAvisoEn(ChangeEventArgs texto)
-    {
-        avisoEn = texto.Value.ToString();
-    }
-
-    private void CambiarAvisoEs(ChangeEventArgs texto)
-    {
-        avisoEs = texto.Value.ToString();
-    }
-
-    private void CambiarAvisoEnlace(ChangeEventArgs texto)
-    {
-        avisoEnlace = texto.Value.ToString();
-    }
-
-    private void ActualizarAviso(MouseEventArgs e)
-    {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        using (conexion)
-        {
-            BaseDatos.Avisos.Actualizar.Ejecutar(avisoEn, "en", avisoEnlace, conexion);
-            BaseDatos.Avisos.Actualizar.Ejecutar(avisoEs, "es", avisoEnlace, conexion);
-
-            avisoEn = null;
-            avisoEs = null;
-            avisoEnlace = null;
-        }       
-    }
-
-    private void BorrarAviso(MouseEventArgs e)
-    {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        using (conexion)
-        {
-            BaseDatos.Avisos.Actualizar.Ejecutar("", "en", "", conexion);
-            BaseDatos.Avisos.Actualizar.Ejecutar("", "es", "", conexion);
-
-            avisoEn = null;
-            avisoEs = null;
-            avisoEnlace = null;
-        }
+        mostrarAvisos = true;
+        estiloAvisos = fondo;
     }
 
     #endregion
@@ -1352,8 +626,6 @@
         else if (mostrarSolicitudes == false)
         {
             mostrarSolicitudes = true;
-
-            titulo = "Solicitudes Grupo Premium";
 
             if (conexion.State != System.Data.ConnectionState.Open)
             {
@@ -1416,64 +688,13 @@
     #region Tiendas
 
     private bool mostrarTiendas = false;
+    private string estiloTiendas = null;
 
-    private string tiendaElegida = null;
-
-    private void MostrarCerrarTiendas(MouseEventArgs e)
+    private void MostrarTiendas(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarTiendas == true)
-        {
-            mostrarTiendas = false;
-        }
-        else if (mostrarTiendas == false)
-        {
-            mostrarTiendas = true;
-
-            titulo = "Tiendas";
-        }
-    }
-
-    private async Task ClickearTienda(MouseEventArgs e, string id)
-    {
-        tiendaElegida = id;
-
-        if (id != null)
-        {
-            await TiendasCargar.AdminTiendas(id, decompilador);
-        }
-    }
-
-    private string TiendasInfo()
-    {
-        string info = String.Empty;
-
-        BaseDatos.Tiendas.AdminTarea siguiente = new BaseDatos.Tiendas.AdminTarea();
-        BaseDatos.Tiendas.AdminTarea enUso = new BaseDatos.Tiendas.AdminTarea();
-
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        using (conexion)
-        {
-            siguiente = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
-            enUso = BaseDatos.Tiendas.Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60));
-        }
-
-        if (siguiente != null)
-        {
-            info = info + "Siguiente: " + siguiente.Id;
-        }
-
-        if (enUso != null)
-        {
-            info = info + " - Comprobando: " + enUso.Id;
-        }
-
-        return info;
+        mostrarTiendas = true;
+        estiloTiendas = fondo;
     }
 
     #endregion
@@ -1481,34 +702,13 @@
     #region Divisas
 
     private bool mostrarDivisas = false;
+    private string estiloDivisas = null;
 
-    private void MostrarCerrarDivisas(MouseEventArgs e)
+    private void MostrarDivisas(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarDivisas == true)
-        {
-            mostrarDivisas = false;
-        }
-        else if (mostrarDivisas == false)
-        {
-            mostrarDivisas = true;
-
-            titulo = "Divisas";
-        }
-    }
-
-    private async Task ActualizarDivisas(MouseEventArgs e)
-    {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        using (conexion)
-        {
-            await Herramientas.Divisas.ActualizarDatos(conexion);
-        }
+        mostrarDivisas = true;
+        estiloDivisas = fondo;
     }
 
     #endregion
@@ -1517,7 +717,7 @@
 
     private bool mostrarDLCs = false;
 
-    private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
+    private List<global::Juegos.Juego> DLCs = new List<global::Juegos.Juego>();
     private int nuevosDLCsCantidad = 0;
     private string nuevosDLCsMensaje = string.Empty;
     private int posicionDLC = 0;
@@ -1545,8 +745,6 @@
         {
             mostrarDLCs = true;
 
-            titulo = "DLCs";
-
             DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
 
             ActualizarMensajeDLCs(DLCs.Count);
@@ -1560,7 +758,7 @@
             conexion = Herramientas.BaseDatos.Conectar();
         }
 
-        Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
+        global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
 
         if (nuevoJuego != null)
         {
@@ -1584,6 +782,7 @@
     #region Pendientes
 
     private bool mostrarPendientes = false;
+    private string estiloPendientes = null;
 
     private int nuevosPendientesCantidad = 0;
     private string nuevosPendientesMensaje = string.Empty;
@@ -1598,406 +797,32 @@
         }
     }
 
-    private void MostrarCerrarPendientes(MouseEventArgs e)
+    private void MostrarPendientes(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarPendientes == true)
-        {
-            mostrarPendientes = false;
-        }
-        else if (mostrarPendientes == false)
-        {
-            mostrarPendientes = true;
-
-            titulo = "Pendientes";
-
-            if (conexion.State != System.Data.ConnectionState.Open)
-            {
-                conexion = Herramientas.BaseDatos.Conectar();
-            }
-
-            ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(conexion).Count);
-        }
-    }
-
-    #endregion
-
-    #region Añadir
-
-    private bool mostrarAñadir = false;
-
-    private void MostrarCerrarAñadir(MouseEventArgs e)
-    {
-        CerrarPestañas();
-
-        if (mostrarAñadir == true)
-        {
-            mostrarAñadir = false;
-        }
-        else if (mostrarAñadir == false)
-        {
-            mostrarAñadir = true;
-
-            titulo = "Añadir";
-        }
-    }
-
-    #region Añadir Precarga
-
-    private string enlacePrecargaAñadir = null;
-
-    private Juegos.Juego juegoAñadir = null;
-
-    private async Task CambiarEnlacePrecarga(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            enlacePrecargaAñadir = texto.Value.ToString();
-
-            if (APIs.Steam.Juego.Detectar(enlacePrecargaAñadir) == true)
-            {
-                juegoAñadir = await APIs.Steam.Juego.CargarDatos(APIs.Steam.Juego.LimpiarID(enlacePrecargaAñadir));
-            }
-            else if (APIs.GOG.Juego.Detectar(enlacePrecargaAñadir) == true)
-            {
-                juegoAñadir = await APIs.GOG.Juego.CargarDatos(APIs.GOG.Juego.LimpiarSlug(enlacePrecargaAñadir));
-            }
-            else if (APIs.EpicGames.Juego.Detectar(enlacePrecargaAñadir) == true)
-            {
-                juegoAñadir = await APIs.EpicGames.Juego.CargarDatos(APIs.EpicGames.Juego.LimpiarSlug(enlacePrecargaAñadir));
-            }
-
-            if (juegoAñadir != null)
-            {
-                enlacePrecargaAñadir = null;
-            }
-        }
-    }
-
-    #endregion
-
-    #region Añadir Vacio
-
-    private string vacioNombre = null;
-    private string vacioHeader_460x215 = null;
-    private string vacioCapsule_231x87 = null;
-    private string vacioLogo = null;
-    private string vacioLibrary_600x900 = null;
-    private string vacioLibrary_1920x620 = null;
-
-    private void CambiarVacioNombre(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioNombre = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVacioHeader_460x215(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioHeader_460x215 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVacioCapsule_231x87(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioCapsule_231x87 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVacioLogo(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioLogo = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVacioLibrary_600x900(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioLibrary_600x900 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVacioLibrary_1920x620(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            vacioLibrary_1920x620 = texto.Value.ToString();
-        }
-    }
-
-    #endregion
-
-    #region Añadir Propiedades
-
-    private void CambiarNombre(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Nombre = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarIdSteam(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.IdSteam = int.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarIdGog(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.IdGog = int.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarTipo(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Tipo = Enum.Parse<Juegos.JuegoTipo>(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarFechaSteamAPIComprobacion(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.FechaSteamAPIComprobacion = DateTime.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarMaestro(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Maestro = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarFreeToPlay(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.FreeToPlay = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarMayorEdad(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.MayorEdad = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarDescuento(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.Descuento = int.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarDRM(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.DRM = Enum.Parse<Juegos.JuegoDRM>(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarPrecio(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.Precio = Decimal.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarMoneda(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.Moneda = Enum.Parse<Herramientas.JuegoMoneda>(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarFechaDetectado(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.FechaDetectado = DateTime.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarEnlace(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.Enlace = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarTienda(ChangeEventArgs texto, Juegos.JuegoPrecio precio)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            precio.Tienda = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarHeader_460x215(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Imagenes.Header_460x215 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarCapsule_231x87(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Imagenes.Capsule_231x87 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarLogo(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Imagenes.Logo = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarLibrary_600x900(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Imagenes.Library_600x900 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarLibrary_1920x620(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Imagenes.Library_1920x620 = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarWindows(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Windows = bool.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarMac(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Mac = bool.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarLinux(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Linux = bool.Parse(texto.Value.ToString());
-        }
-    }
-
-    private void CambiarDesarrollador(ChangeEventArgs texto, int posicion)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Desarrolladores[posicion] = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarPublisher(ChangeEventArgs texto, int posicion)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Publishers[posicion] = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarDescripcion(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Caracteristicas.Descripcion = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarVideo(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Media.Video = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarCaptura(ChangeEventArgs texto, int posicion)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Media.Capturas[posicion] = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarMiniatura(ChangeEventArgs texto, int posicion)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Media.Miniaturas[posicion] = texto.Value.ToString();
-        }
-    }
-
-    #endregion
-
-    private void ClickearAñadir(MouseEventArgs e)
-    {
-        if (juegoAñadir == null)
-        {
-            juegoAñadir = Juegos.JuegoCrear.Generar();
-
-            juegoAñadir.Nombre = vacioNombre;
-
-            juegoAñadir.Imagenes.Header_460x215 = vacioHeader_460x215;
-            juegoAñadir.Imagenes.Capsule_231x87 = vacioCapsule_231x87;
-            juegoAñadir.Imagenes.Logo = vacioLogo;
-            juegoAñadir.Imagenes.Library_600x900 = vacioLibrary_600x900;
-            juegoAñadir.Imagenes.Library_1920x620 = vacioLibrary_1920x620;
-        }
+        mostrarPendientes = true;
+        estiloPendientes = fondo;
 
         if (conexion.State != System.Data.ConnectionState.Open)
         {
             conexion = Herramientas.BaseDatos.Conectar();
         }
 
-        using (conexion)
-        {
-            BaseDatos.Juegos.Insertar.Ejecutar(juegoAñadir, conexion);
-        }
+        ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(conexion).Count);
+    }
 
-        juegoAñadir = null;
+    #endregion
+
+    #region Juegos
+
+    private bool mostrarJuegos = false;
+    private string estiloJuegos = null;
+
+    private void MostrarJuegos(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarJuegos = true;
+        estiloJuegos = fondo;
     }
 
     #endregion
@@ -2005,21 +830,13 @@
     #region Noticias
 
     private bool mostrarNoticias = false;
+    private string estiloNoticias = null;
 
-    private void MostrarCerrarNoticias(MouseEventArgs e)
+    private void MostrarNoticias(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarNoticias == true)
-        {
-            mostrarNoticias = false;
-        }
-        else if (mostrarNoticias == false)
-        {
-            mostrarNoticias = true;
-
-            titulo = "Noticias";
-        }
+        mostrarNoticias = true;
+        estiloNoticias = fondo;
     }
 
     #endregion
@@ -2039,8 +856,6 @@
         else if (mostrarBundles == false)
         {
             mostrarBundles = true;
-
-            titulo = "Bundles";
         }
     }
 
@@ -2061,12 +876,10 @@
         else if (mostrarGratis == false)
         {
             mostrarGratis = true;
-
-            titulo = "Gratis";
         }
     }
 
-    List<Juegos.Juego> juegosBuscadorGratis = new List<Juegos.Juego>();
+    List<global::Juegos.Juego> juegosBuscadorGratis = new List<global::Juegos.Juego>();
 
     private string idSeleccionadaGratis = null;
     private string nombreSeleccionadoGratis = null;
@@ -2086,13 +899,13 @@
         }
         else
         {
-            juegosBuscadorGratis = new List<Juegos.Juego>();
+            juegosBuscadorGratis = new List<global::Juegos.Juego>();
         }
     }
 
     private void ClickearJuegoGratis(MouseEventArgs e, string id, string nombre, string imagenVertical, string imagenNoticia2)
     {
-        juegosBuscadorGratis = new List<Juegos.Juego>();
+        juegosBuscadorGratis = new List<global::Juegos.Juego>();
 
         idSeleccionadaGratis = id;
         nombreSeleccionadoGratis = nombre;
@@ -2138,16 +951,16 @@
 
     private void AñadirJuegoGratis(MouseEventArgs e)
     {
-        Juegos.Juego juegoGratis = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaGratis);
+        global::Juegos.Juego juegoGratis = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaGratis);
 
         if (juegoGratis != null)
         {
-            Juegos.JuegoGratis gratis = new Juegos.JuegoGratis();
+            global::Juegos.JuegoGratis gratis = new global::Juegos.JuegoGratis();
             gratis.Tipo = GratisCargar.DevolverGratis(tipoGratis).Tipo;
             gratis.JuegoId = int.Parse(idSeleccionadaGratis);
             gratis.Nombre = nombreSeleccionadoGratis;
             gratis.Imagen = imagenSeleccionadaGratis;
-            gratis.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoGratis);
+            gratis.DRM = global::Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoGratis);
 
             if (string.IsNullOrEmpty(enlaceSeleccionadoGratis) == true)
             {
@@ -2161,7 +974,7 @@
 
             if (juegoGratis.Gratis == null)
             {
-                juegoGratis.Gratis = new List<Juegos.JuegoGratis>();
+                juegoGratis.Gratis = new List<global::Juegos.JuegoGratis>();
             }
 
             juegoGratis.Gratis.Add(gratis);
@@ -2189,12 +1002,10 @@
         else if (mostrarSuscripciones == false)
         {
             mostrarSuscripciones = true;
-
-            titulo = "Suscripciones";
         }
     }
 
-    List<Juegos.Juego> juegosBuscadorSuscripciones = new List<Juegos.Juego>();
+    List<global::Juegos.Juego> juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
 
     private string cadenaBusquedaSuscripciones = null;
 
@@ -2219,19 +1030,19 @@
             }
             catch
             {
-                juegosBuscadorSuscripciones = new List<Juegos.Juego>();
+                juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
             }
         }
         else
         {
-            juegosBuscadorSuscripciones = new List<Juegos.Juego>();
+            juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
         }
     }
 
     private void SeleccionarJuegoSuscripciones(MouseEventArgs e, string id, string imagenVertical, string nombre, string imagenNoticia2)
     {
         cadenaBusquedaSuscripciones = null;
-        juegosBuscadorSuscripciones = new List<Juegos.Juego>();
+        juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
 
         idSeleccionadaSuscripciones = id;
         imagenSeleccionadaSuscripciones = imagenVertical;
@@ -2253,7 +1064,7 @@
 
         if (drmSeleccionadoSuscripciones == null)
         {
-            drmSeleccionadoSuscripciones = Juegos.JuegoDRM2.GenerarListado()[0].Id.ToString();
+            drmSeleccionadoSuscripciones = global::Juegos.JuegoDRM2.GenerarListado()[0].Id.ToString();
         }
 
         if (enlaceSeleccionadoSuscripciones == null)
@@ -2304,16 +1115,16 @@
 
     private void AñadirJuegoSuscripciones(MouseEventArgs e)
     {
-        Juegos.Juego juegoSuscripciones = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaSuscripciones);
+        global::Juegos.Juego juegoSuscripciones = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaSuscripciones);
 
         if (juegoSuscripciones != null)
         {
-            Juegos.JuegoSuscripcion suscripcion = new Juegos.JuegoSuscripcion();
+            global::Juegos.JuegoSuscripcion suscripcion = new global::Juegos.JuegoSuscripcion();
             suscripcion.Tipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Id;
             suscripcion.JuegoId = int.Parse(idSeleccionadaSuscripciones);
             suscripcion.Nombre = nombreSeleccionadoSuscripciones;
             suscripcion.Imagen = imagenSeleccionadaSuscripciones;
-            suscripcion.DRM = Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoSuscripciones);
+            suscripcion.DRM = global::Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoSuscripciones);
             suscripcion.Enlace = enlaceSeleccionadoSuscripciones;
             suscripcion.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionadaSuscripciones);
             suscripcion.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionadaSuscripciones);
@@ -2321,7 +1132,7 @@
 
             if (juegoSuscripciones.Suscripciones == null)
             {
-                juegoSuscripciones.Suscripciones = new List<Juegos.JuegoSuscripcion>();
+                juegoSuscripciones.Suscripciones = new List<global::Juegos.JuegoSuscripcion>();
             }
 
             juegoSuscripciones.Suscripciones.Add(suscripcion);
@@ -2357,8 +1168,6 @@
         else if (mostrarSorteos == false)
         {
             mostrarSorteos = true;
-
-            titulo = "Sorteos";
 
             gruposSorteos = new List<Sorteos2.GrupoSorteo>();
 
@@ -2400,7 +1209,7 @@
         }
     }
 
-    List<Juegos.Juego> juegosBuscadorSorteos = new List<Juegos.Juego>();
+    List<global::Juegos.Juego> juegosBuscadorSorteos = new List<global::Juegos.Juego>();
 
     List<Sorteos2.GrupoSorteo> gruposSorteos = new List<Sorteos2.GrupoSorteo>();
 
@@ -2419,13 +1228,13 @@
         }
         else
         {
-            juegosBuscadorSorteos = new List<Juegos.Juego>();
+            juegosBuscadorSorteos = new List<global::Juegos.Juego>();
         }
     }
 
     private void ClickearJuegoSorteos(MouseEventArgs e, string id, string nombre, string imagenVertical, string imagenNoticia2)
     {
-        juegosBuscadorSorteos = new List<Juegos.Juego>();
+        juegosBuscadorSorteos = new List<global::Juegos.Juego>();
 
         idSeleccionadaSorteos = id;
         nombreSeleccionadoSorteos = nombre;

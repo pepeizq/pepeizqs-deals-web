@@ -143,7 +143,7 @@ builder.Services.AddSignalR(opciones =>
 	opciones.EnableDetailedErrors = true;
 	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
 	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-	opciones.MaximumReceiveMessageSize = 102400000;
+	//opciones.MaximumReceiveMessageSize = 102400000;
 });
 
 //builder.Services.Configure<HubOptions>(opciones =>
@@ -249,7 +249,7 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	//opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
 
 //var webSocketOptions = new Microsoft.AspNetCore.Builder.WebSocketOptions()

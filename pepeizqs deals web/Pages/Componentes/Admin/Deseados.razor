@@ -47,7 +47,7 @@
 
 					if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 					{
-						List<Juegos.JuegoDeseado> lista = JsonConvert.DeserializeObject<List<Juegos.JuegoDeseado>>(usuario.Wishlist);
+						List<global::Juegos.JuegoDeseado> lista = JsonConvert.DeserializeObject<List<global::Juegos.JuegoDeseado>>(usuario.Wishlist);
 
 						if (lista != null)
 						{
