@@ -185,11 +185,13 @@
 
 		@if (juego.Tipo == JuegoTipo.DLC)
 		{
-			@if (string.IsNullOrEmpty(juego.Maestro) == false)
+			if (string.IsNullOrEmpty(juego.Maestro) == false)
 			{
-				@if (juego.Maestro != "no")
+				if (juego.Maestro != "no")
 				{
-					<a href="/game/@juego.Maestro" style="text-decoration: none;">
+					Juegos.Juego juegoMaestro = global::BaseDatos.Juegos.Buscar.UnJuego(juego.Maestro);
+
+					<a href="/game/@juego.Maestro/@Herramientas.EnlaceAdaptador.Nombre(juegoMaestro.Nombre)/" style="text-decoration: none;">
 						<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; align-items: center; background-color: var(--fondoDlc); color: var(--colorTextoDlc);">
 							<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
 

@@ -66,7 +66,6 @@ builder.Services.AddSingleton<Tareas.CorreosDeals>();
 builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
-builder.Services.AddSingleton<Tareas.DLCs>();
 builder.Services.AddSingleton<Tareas.Solicitudes>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
@@ -77,7 +76,6 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.DLCs>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Solicitudes>());
 
 #endregion
@@ -146,11 +144,11 @@ builder.Services.AddSignalR(opciones =>
 	//opciones.MaximumReceiveMessageSize = 102400000;
 });
 
-//builder.Services.Configure<HubOptions>(opciones =>
-//{
-//	opciones.MaximumReceiveMessageSize = null;
-//	opciones.EnableDetailedErrors = true;
-//});
+builder.Services.Configure<HubOptions>(opciones =>
+{
+	opciones.MaximumReceiveMessageSize = null;
+	opciones.EnableDetailedErrors = true;
+});
 
 //builder.Services.Configure<IdentityOptions>(opciones =>
 //{

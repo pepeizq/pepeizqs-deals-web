@@ -62,6 +62,11 @@
                     <button class="boton-pestañas" @onclick="(e => MostrarPendientes(e))" style="@estiloPendientes;">Pendientes @nuevosPendientesMensaje</button>
                 }
 
+                @if (nuevosDLCsCantidad > 0)
+                {
+                    <button class="boton-pestañas" @onclick="(e => MostrarDLCs(e))" style="@estiloDLCs;">DLCs @nuevosDLCsMensaje</button>
+                }
+
                 @if (nuevasSolicitudesCantidad > 0)
                 {
                     <button class="boton-pestañas" @onclick="(e => MostrarCerrarSolicitudes(e))">Solicitudes @nuevasSolicitudesMensaje</button>
@@ -70,16 +75,15 @@
                 <button class="boton-pestañas" @onclick="(e => MostrarEnlaces(e))" style="@estiloEnlaces;">Enlaces</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarAvisos(e))" style="@estiloAvisos;">Avisos</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarTiendas(e))" style="@estiloTiendas;">Tiendas</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarDivisas(e))" style="@estiloDivisas">Divisas</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarDLCs(e))">DLCs @nuevosDLCsMensaje</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarDivisas(e))" style="@estiloDivisas;">Divisas</button>          
             </div>
 
             <hr/>
 
             <div>
                 <button class="boton-pestañas" @onclick="(e => MostrarJuegos(e))" style="@estiloJuegos;">Juegos</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarNoticias(e))" style="@estiloNoticias">Noticias</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarCerrarBundles(e))">Bundles</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarNoticias(e))" style="@estiloNoticias;">Noticias</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarBundles(e))" style="@estiloBundles;">Bundles</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarGratis(e))">Gratis</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarSuscripciones(e))">Suscripciones</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarCerrarSorteos(e))">Sorteos</button>
@@ -154,22 +158,7 @@
 
             @if (mostrarDLCs == true)
             {
-                <div class="perfil" style="padding: 20px; border: 1px solid var(--fondoBoton);">
-                    <button @onclick="(async () => await BuscarDlcMaestro())" class="boton-pequeño" style="padding: 10px 15px; width: 250px;">
-                        Buscar Maestro
-                    </button>
-
-                    @if (DLCs.Count > 0)
-                    {
-                        <div style="margin-top: 30px;">
-                            <a href="/game/@DLCs[posicionDLC].Id.ToString()" target="_blank">
-                                <img src="@DLCs[posicionDLC].Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                            </a>
-
-                            <label style="margin-left: 20px;">@DLCs[posicionDLC].Nombre</label>
-                        </div>
-                    }
-                </div>
+                <DLCs/>
             }
 
             @if (mostrarPendientes == true)
@@ -495,10 +484,12 @@
         using (conexion)
         {
             ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
-            ActualizarMensajeDLCs(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "dlcs")));
             ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
             ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
             ActualizarMensajeSolicitudes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "solicitudes")));
+
+            DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
+            ActualizarMensajeDLCs(DLCs.Count);
         }
 
         CerrarPestañas();
@@ -530,9 +521,11 @@
         estiloErrores = null;
         estiloTiendas = null;
         estiloDivisas = null;
+        estiloDLCs = null;
         estiloPendientes = null;
         estiloJuegos = null;
         estiloNoticias = null;
+        estiloBundles = null;
     }
 
     #region Enlaces
@@ -716,12 +709,11 @@
     #region DLCs
 
     private bool mostrarDLCs = false;
+    private string estiloDLCs = null;
 
     private List<global::Juegos.Juego> DLCs = new List<global::Juegos.Juego>();
     private int nuevosDLCsCantidad = 0;
     private string nuevosDLCsMensaje = string.Empty;
-    private int posicionDLC = 0;
-    private string textoDlcMaestro = string.Empty;
 
     private void ActualizarMensajeDLCs(int i)
     {
@@ -733,48 +725,11 @@
         }
     }
 
-    private void MostrarCerrarDLCs(MouseEventArgs e)
+    private void MostrarDLCs(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarDLCs == true)
-        {
-            mostrarDLCs = false;
-        }
-        else if (mostrarDLCs == false)
-        {
-            mostrarDLCs = true;
-
-            DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
-
-            ActualizarMensajeDLCs(DLCs.Count);
-        }
-    }
-
-    private async Task BuscarDlcMaestro()
-    {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
-        global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(DLCs[posicionDLC].IdSteam.ToString());
-
-        if (nuevoJuego != null)
-        {
-            textoDlcMaestro = nuevoJuego.Maestro;
-
-            if (string.IsNullOrEmpty(textoDlcMaestro) == false)
-            {
-                using (conexion)
-                {
-                    DLCs[posicionDLC].Maestro = textoDlcMaestro;
-                    BaseDatos.Juegos.Actualizar.DlcMaestro(DLCs[posicionDLC], conexion);
-                }
-
-                posicionDLC += 1;
-            }
-        }
+        mostrarDLCs = true;
+        estiloDLCs = fondo;
     }
 
     #endregion
@@ -844,19 +799,13 @@
     #region Bundles
 
     private bool mostrarBundles = false;
+    private string estiloBundles = null;
 
-    private void MostrarCerrarBundles(MouseEventArgs e)
+    private void MostrarBundles(MouseEventArgs e)
     {
         CerrarPestañas();
-
-        if (mostrarBundles == true)
-        {
-            mostrarBundles = false;
-        }
-        else if (mostrarBundles == false)
-        {
-            mostrarBundles = true;
-        }
+        mostrarBundles = true;
+        estiloBundles = fondo;
     }
 
     #endregion

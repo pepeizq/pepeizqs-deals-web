@@ -74,6 +74,7 @@
     <_ContentIncludedByDefault Remove="Pages\Account\Account.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Account\ResetPassword.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Avisos.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\DLCs.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juegos.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Pendientes.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tiendas.razor" />
@@ -135,6 +136,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Tiendas.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Componentes\Admin\DLCs.razor" />
   </ItemGroup>
 
 </Project>

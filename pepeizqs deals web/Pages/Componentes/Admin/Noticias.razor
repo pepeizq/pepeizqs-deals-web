@@ -12,7 +12,7 @@
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="opciones-combobox" style="width: 33%;">
         <select @onchange="@(e => CambiarNoticiaTipo(e))">
-            @foreach (global::Noticias.NoticiaTipo tipo in global::Noticias.NoticiasCargar.CargarNoticiasTipo())
+            @foreach (NoticiaTipo tipo in NoticiasCargar.CargarNoticiasTipo())
             {
                 <option value="@tipo">@tipo</option>
             }
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-@if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+@if (noticiaTipoSeleccionada == NoticiaTipo.Bundles.ToString())
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="width: 33%;">
@@ -56,7 +56,7 @@
         </div>
     }
 }
-else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
@@ -100,7 +100,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString
         </div>
     }
 }
-else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
@@ -147,7 +147,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.T
         </div>
     }
 }
-else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToString())
+else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div style="margin-bottom: 10px;">
@@ -288,19 +288,19 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
             //-------------------------------------------------------
 
-            if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Bundles.ToString())
+            if (noticiaTipoSeleccionada == NoticiaTipo.Bundles.ToString())
             {
                 bundleSeleccionadoNoticias = BundlesCargar.GenerarListado()[1].Id.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Gratis.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
             {
                 gratisSeleccionadoNoticias = GratisCargar.GenerarListado()[0].Tipo.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Suscripciones.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             {
                 suscripcionSeleccionadaNoticias = SuscripcionesCargar.GenerarListado()[0].Id.ToString();
             }
-            else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Sorteos.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Sorteos.ToString())
             {
                 GenerarSorteos(conexion);
             }
@@ -459,7 +459,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
     private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId)
     {
-        noticia = global::Noticias.Plantillas.Suscripciones(noticia, juegoId, suscripcionSeleccionadaNoticias);
+        noticia = Plantillas.Suscripciones(noticia, juegoId, suscripcionSeleccionadaNoticias);
     }
 
     private void GenerarSorteos(SqlConnection conexion)
@@ -468,7 +468,7 @@ else if (noticiaTipoSeleccionada == global::Noticias.NoticiaTipo.Rumores.ToStrin
 
         if (sorteosActivos.Count > 0)
         {
-            noticia = global::Noticias.Plantillas.Sorteos(sorteosActivos);
+            noticia = Plantillas.Sorteos(sorteosActivos);
         }
     }
 }

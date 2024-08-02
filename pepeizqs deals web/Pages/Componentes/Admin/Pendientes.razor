@@ -10,11 +10,20 @@
             {
                 string fondo = string.Empty;
 
-                if (idTiendaPendiente != pendiente.Tienda.Id)
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true)
                 {
-                    fondo = "background-color: transparent;";
-                }
+                    idTiendaPendiente = pendiente.Tienda.Id;
 
+                    ClickearTiendaPendientes(idTiendaPendiente);
+                }
+                else
+                {
+                    if (idTiendaPendiente != pendiente.Tienda.Id)
+                    {
+                        fondo = "background-color: transparent;";
+                    }
+                }
+                
                 <button @onclick="@(e => ClickearTiendaPendientes(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block; @fondo">
                     <img src="@pendiente.Tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Tienda.Nombre (@pendiente.Pendientes.Count)
                 </button>
