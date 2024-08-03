@@ -10,6 +10,11 @@ namespace BaseDatos.Juegos
 	{
 		public static void Ejecutar(Juego juego, SqlConnection conexion, bool actualizarAPI = false)
 		{
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
             string añadirSlugGog = null;
 
 			if (string.IsNullOrEmpty(juego.SlugGOG) == false)

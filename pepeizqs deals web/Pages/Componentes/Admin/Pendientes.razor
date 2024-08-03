@@ -249,6 +249,16 @@
                 }
             }
         }
+
+        @if (buscadorPendientesJuegos != null && buscadorPendientesDLCs != null && buscadorPendientesBandasSonoras != null && buscadorPendientesSoftware != null)
+        {
+            if (buscadorPendientesJuegos.Count == 0 && buscadorPendientesDLCs.Count == 0 && buscadorPendientesBandasSonoras.Count == 0 && buscadorPendientesSoftware.Count == 0)
+            {
+                <div>
+                    <label>No hay resultados</label>    
+                </div>
+            }
+        }
     }
 </div>
 

@@ -61,7 +61,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
         <div class="opciones-combobox" style="margin-top: 10px; width: 33%;">
             <select @onchange="@(e => CambiarGratisNoticias(e))">
-                @foreach (Gratis gratis in GratisCargar.GenerarListado())
+                @foreach (Gratis2.Gratis gratis in GratisCargar.GenerarListado())
                 {
                     <option value="@gratis.Tipo">@gratis.Nombre</option>
                 }

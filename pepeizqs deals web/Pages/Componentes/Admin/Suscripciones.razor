@@ -1,0 +1,267 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+@using Suscripciones2
+
+@if (idSeleccionadaSuscripciones == null)
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        <label style="margin-bottom: 10px;">Juego:</label>
+        <input type="text" @oninput="TextoCambiaBuscadorSuscripciones" class="entrada-texto" />
+
+        @if (juegosBuscadorSuscripciones != null)
+        {
+            @if (juegosBuscadorSuscripciones.Count > 0)
+            {
+                <div>
+                    @foreach (var juego in juegosBuscadorSuscripciones)
+                    {
+                        <div class="perfil-flexible-centrado perfil-espacio-top">
+                            <button @onclick="@(e => SeleccionarJuegoSuscripciones(e, juego.Id.ToString(), juego.Imagenes.Library_600x900, juego.Nombre, juego.Imagenes.Header_460x215))" class="boton-pequeño">
+                                <div class="perfil-flexible-centrado">
+                                    <div style="width: 12%;">
+                                        <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                                    </div>
+
+                                    <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+                                        @juego.Nombre<br />
+                                        <span style="font-size: 13px;">@juego.Id.ToString()</span>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+else
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        <div style="display: flex;">
+            <div style="width: 15%;">
+                <img src="@imagenSeleccionadaSuscripciones" style="max-height: 100%; max-width: 100%;" />
+            </div>
+
+            <div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+                @nombreSeleccionadoSuscripciones
+
+                <div style="width: 33%; margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Suscripcion:</label>
+                    <div class="opciones-combobox">
+                        <select @onchange="@(e => CambiarTipoSuscripcion(e))">
+                            @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
+                            {
+                                @if (suscripcion.AdminInteracturar == true)
+                                {
+                                    <option value="@suscripcion.Id">@suscripcion.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div style="width: 33%; margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">DRM:</label>
+                    <div class="opciones-combobox">
+                        <select @onchange="@(e => CambiarDRMSuscripciones(e))" value="@drmSeleccionadoSuscripciones">
+                            @foreach (global::Juegos.DRM drm in global::Juegos.JuegoDRM2.GenerarListado())
+                            {
+                                <option value="@drm.Id">@drm.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Enlace:</label>
+                    <input @onchange="@(e => CambiarEnlaceSuscripciones(e))" class="entrada-texto" value="@enlaceSeleccionadoSuscripciones">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Fecha Empieza:</label>
+                    <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionadaSuscripciones">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Fecha Termina:</label>
+                    <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaSuscripciones(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaSuscripciones">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <label style="margin-bottom: 10px;">Imagen Noticia:</label>
+        <input @onchange="@(e => CambiarImagenNoticiaSuscripciones(e))" class="entrada-texto" value="@imagenNoticiaSuscripciones">
+        <img src="@imagenNoticiaSuscripciones" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <div style="display: flex; width: 33%;">
+            <button @onclick="@(e => AñadirJuegoSuscripciones(e))" class="boton" style="text-align: center;">Añadir Suscripción</button>
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    private SqlConnection conexion = new SqlConnection();
+
+    protected override void OnInitialized()
+    {
+        if (conexion.State != System.Data.ConnectionState.Open)
+        {
+            conexion = Herramientas.BaseDatos.Conectar();
+        }
+    }
+
+    List<global::Juegos.Juego> juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
+
+    private string cadenaBusquedaSuscripciones = null;
+
+    private string idSeleccionadaSuscripciones = null;
+    private string imagenSeleccionadaSuscripciones = null;
+    private string nombreSeleccionadoSuscripciones = null;
+    private string suscripcionSeleccionadaSuscripciones = null;
+    private string drmSeleccionadoSuscripciones = null;
+    private string fechaEmpiezaSeleccionadaSuscripciones = null;
+    private string fechaTerminaSeleccionadaSuscripciones = null;
+    private string enlaceSeleccionadoSuscripciones = null;
+    private string imagenNoticiaSuscripciones = null;
+
+    private void TextoCambiaBuscadorSuscripciones(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            try
+            {
+                cadenaBusquedaSuscripciones = texto.Value.ToString().Trim();
+                juegosBuscadorSuscripciones = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaSuscripciones, 250);
+            }
+            catch
+            {
+                juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
+            }
+        }
+        else
+        {
+            juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
+        }
+    }
+
+    private void SeleccionarJuegoSuscripciones(MouseEventArgs e, string id, string imagenVertical, string nombre, string imagenNoticia2)
+    {
+        cadenaBusquedaSuscripciones = null;
+        juegosBuscadorSuscripciones = new List<global::Juegos.Juego>();
+
+        idSeleccionadaSuscripciones = id;
+        imagenSeleccionadaSuscripciones = imagenVertical;
+        nombreSeleccionadoSuscripciones = nombre;
+        imagenNoticiaSuscripciones = imagenNoticia2;
+
+        // ----------------------------------
+
+        if (suscripcionSeleccionadaSuscripciones == null)
+        {
+            suscripcionSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].Id.ToString();
+        }
+
+        if (suscripcionSeleccionadaSuscripciones == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
+        {
+            fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        }
+
+        if (drmSeleccionadoSuscripciones == null)
+        {
+            drmSeleccionadoSuscripciones = global::Juegos.JuegoDRM2.GenerarListado()[0].Id.ToString();
+        }
+
+        if (enlaceSeleccionadoSuscripciones == null)
+        {
+            enlaceSeleccionadoSuscripciones = SuscripcionesCargar.GenerarListado()[0].Enlace;
+        }
+    }
+
+    private void CambiarTipoSuscripcion(ChangeEventArgs texto)
+    {
+        suscripcionSeleccionadaSuscripciones = texto.Value.ToString();
+
+        fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        drmSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).DRMDefecto.ToString();
+        enlaceSeleccionadoSuscripciones = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Enlace;
+    }
+
+    private void CambiarDRMSuscripciones(ChangeEventArgs texto)
+    {
+        drmSeleccionadoSuscripciones = texto.Value.ToString();
+    }
+
+    private void CambiarFechaEmpiezaSuscripciones(ChangeEventArgs texto)
+    {
+        fechaEmpiezaSeleccionadaSuscripciones = texto.Value.ToString();
+    }
+
+    private void CambiarFechaTerminaSuscripciones(ChangeEventArgs texto)
+    {
+        fechaTerminaSeleccionadaSuscripciones = texto.Value.ToString();
+    }
+
+    private void CambiarEnlaceSuscripciones(ChangeEventArgs texto)
+    {
+        enlaceSeleccionadoSuscripciones = texto.Value.ToString();
+
+        if (enlaceSeleccionadoSuscripciones.Contains("?") == true)
+        {
+            int int1 = enlaceSeleccionadoSuscripciones.IndexOf("?");
+            enlaceSeleccionadoSuscripciones = enlaceSeleccionadoSuscripciones.Remove(int1, enlaceSeleccionadoSuscripciones.Length - int1);
+        }
+    }
+
+    private void CambiarImagenNoticiaSuscripciones(ChangeEventArgs texto)
+    {
+        imagenNoticiaSuscripciones = texto.Value.ToString();
+    }
+
+    private void AñadirJuegoSuscripciones(MouseEventArgs e)
+    {
+        global::Juegos.Juego juegoSuscripciones = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaSuscripciones);
+
+        if (juegoSuscripciones != null)
+        {
+            global::Juegos.JuegoSuscripcion suscripcion = new global::Juegos.JuegoSuscripcion();
+            suscripcion.Tipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaSuscripciones).Id;
+            suscripcion.JuegoId = int.Parse(idSeleccionadaSuscripciones);
+            suscripcion.Nombre = nombreSeleccionadoSuscripciones;
+            suscripcion.Imagen = imagenSeleccionadaSuscripciones;
+            suscripcion.DRM = global::Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoSuscripciones);
+            suscripcion.Enlace = enlaceSeleccionadoSuscripciones;
+            suscripcion.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionadaSuscripciones);
+            suscripcion.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionadaSuscripciones);
+            suscripcion.ImagenNoticia = imagenNoticiaSuscripciones;
+
+            if (juegoSuscripciones.Suscripciones == null)
+            {
+                juegoSuscripciones.Suscripciones = new List<global::Juegos.JuegoSuscripcion>();
+            }
+
+            juegoSuscripciones.Suscripciones.Add(suscripcion);
+
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Suscripciones.Insertar.Ejecutar(int.Parse(idSeleccionadaSuscripciones), juegoSuscripciones.Suscripciones, suscripcion, conexion);
+            }
+        }
+
+        idSeleccionadaSuscripciones = null;
+    }
+
+}

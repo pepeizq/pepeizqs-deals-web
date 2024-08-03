@@ -1,0 +1,211 @@
+﻿@using Gratis2
+@using Microsoft.AspNetCore.Components.Web
+
+@if (idSeleccionadaGratis == null)
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        <label style="margin-bottom: 10px;">Juego:</label>
+        <input type="text" @oninput="TextoCambiaBuscadorGratis" class="entrada-texto" />
+
+        @if (juegosBuscadorGratis != null)
+        {
+            @if (juegosBuscadorGratis.Count > 0)
+            {
+                <div>
+                    @foreach (var juego in juegosBuscadorGratis)
+                    {
+                        <div class="perfil-flexible-centrado perfil-espacio-top">
+                            <button @onclick="@(e => ClickearJuegoGratis(e, juego.Id.ToString(), juego.Nombre, juego.Imagenes.Library_600x900, juego.Imagenes.Header_460x215))" class="boton-pequeño" style="text-align:center;">
+                                <div class="perfil-flexible-centrado">
+                                    <div style="width: 12%;">
+                                        <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                                    </div>
+
+                                    <div style="width: 88%; padding-left: 15px; padding-right: 15px; text-align: left;">
+                                        @juego.Nombre<br />
+                                        <span style="font-size: 13px;">@juego.Id.ToString()</span>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+else
+{
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        <div style="display: flex;">
+            <div style="width: 15%;">
+                <img src="@imagenSeleccionadaGratis" style="max-height: 100%; max-width: 100%;" />
+            </div>
+
+            <div style="width: 85%; padding-left: 20px; padding-right: 20px;">
+                <div>
+                    @nombreSeleccionadoGratis
+                </div>
+
+                <div class="opciones-combobox" style="width: 33%; margin-top: 20px;">
+                    <select @onchange="@(e => CambiarTipoGratis(e))">
+                        @foreach (Gratis2.Gratis gratis in GratisCargar.GenerarListado())
+                        {
+                            <option value="@gratis.Tipo">@gratis.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div style="width: 33%; margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">DRM:</label>
+                    <div class="opciones-combobox">
+                        <select @onchange="@(e => CambiarDRMGratis(e))" value="@drmSeleccionadoGratis">
+                            @foreach (global::Juegos.DRM drm in global::Juegos.JuegoDRM2.GenerarListado())
+                            {
+                                <option value="@drm.Id">@drm.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Enlace:</label>
+                    <input @onchange="@(e => CambiarEnlaceGratis(e))" class="entrada-texto" value="@enlaceSeleccionadoGratis">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Fecha Empieza:</label>
+                    <input type="datetime-local" @onchange="@(e => CambiarFechaEmpiezaGratis(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaEmpiezaSeleccionadaGratis">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="margin-bottom: 10px;">Fecha Termina:</label>
+                    <input type="datetime-local" @onchange="@(e => CambiarFechaTerminaGratis(e))" class="entrada-texto" style="width: 33%; min-width: 100px;" value="@fechaTerminaSeleccionadaGratis">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <label style="margin-bottom: 10px;">Imagen Noticia:</label>
+        <input @onchange="@(e => CambiarImagenNoticiaGratis(e))" class="entrada-texto" value="@imagenNoticiaGratis">
+        <img src="@imagenNoticiaGratis" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        <div style="display: flex; width: 33%;">
+            <button @onclick="@(e => AñadirJuegoGratis(e))" class="boton" style="text-align: center;">Añadir Gratis</button>
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    List<global::Juegos.Juego> juegosBuscadorGratis = new List<global::Juegos.Juego>();
+
+    private string idSeleccionadaGratis = null;
+    private string nombreSeleccionadoGratis = null;
+    private string imagenSeleccionadaGratis = null;
+    private string tipoGratis = null;
+    private string drmSeleccionadoGratis = null;
+    private string enlaceSeleccionadoGratis = null;
+    private string fechaEmpiezaSeleccionadaGratis = null;
+    private string fechaTerminaSeleccionadaGratis = null;
+    private string imagenNoticiaGratis = null;
+
+    private void TextoCambiaBuscadorGratis(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegosBuscadorGratis = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), 250);
+        }
+        else
+        {
+            juegosBuscadorGratis = new List<global::Juegos.Juego>();
+        }
+    }
+
+    private void ClickearJuegoGratis(MouseEventArgs e, string id, string nombre, string imagenVertical, string imagenNoticia2)
+    {
+        juegosBuscadorGratis = new List<global::Juegos.Juego>();
+
+        idSeleccionadaGratis = id;
+        nombreSeleccionadoGratis = nombre;
+        imagenSeleccionadaGratis = imagenVertical;
+        imagenNoticiaGratis = imagenNoticia2;
+    }
+
+    private void CambiarTipoGratis(ChangeEventArgs texto)
+    {
+        tipoGratis = texto.Value.ToString();
+        enlaceSeleccionadoGratis = null;
+        fechaEmpiezaSeleccionadaGratis = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+        fechaTerminaSeleccionadaGratis = GratisCargar.DevolverGratis(tipoGratis).FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
+        drmSeleccionadoGratis = GratisCargar.DevolverGratis(tipoGratis).DRMDefecto.ToString();
+    }
+
+    private void CambiarDRMGratis(ChangeEventArgs texto)
+    {
+        drmSeleccionadoGratis = texto.Value.ToString();
+    }
+
+    private void CambiarEnlaceGratis(ChangeEventArgs texto)
+    {
+        enlaceSeleccionadoGratis = texto.Value.ToString();
+
+        enlaceSeleccionadoGratis = GratisCargar.LimpiarEnlace(enlaceSeleccionadoGratis);
+    }
+
+    private void CambiarFechaEmpiezaGratis(ChangeEventArgs texto)
+    {
+        fechaEmpiezaSeleccionadaGratis = texto.Value.ToString();
+    }
+
+    private void CambiarFechaTerminaGratis(ChangeEventArgs texto)
+    {
+        fechaTerminaSeleccionadaGratis = texto.Value.ToString();
+    }
+
+    private void CambiarImagenNoticiaGratis(ChangeEventArgs texto)
+    {
+        imagenNoticiaGratis = texto.Value.ToString();
+    }
+
+    private void AñadirJuegoGratis(MouseEventArgs e)
+    {
+        global::Juegos.Juego juegoGratis = BaseDatos.Juegos.Buscar.UnJuego(idSeleccionadaGratis);
+
+        if (juegoGratis != null)
+        {
+            global::Juegos.JuegoGratis gratis = new global::Juegos.JuegoGratis();
+            gratis.Tipo = GratisCargar.DevolverGratis(tipoGratis).Tipo;
+            gratis.JuegoId = int.Parse(idSeleccionadaGratis);
+            gratis.Nombre = nombreSeleccionadoGratis;
+            gratis.Imagen = imagenSeleccionadaGratis;
+            gratis.DRM = global::Juegos.JuegoDRM2.DevolverDRM(drmSeleccionadoGratis);
+
+            if (string.IsNullOrEmpty(enlaceSeleccionadoGratis) == true)
+            {
+                enlaceSeleccionadoGratis = "nada";
+            }
+
+            gratis.Enlace = enlaceSeleccionadoGratis;
+            gratis.FechaEmpieza = Convert.ToDateTime(fechaEmpiezaSeleccionadaGratis);
+            gratis.FechaTermina = Convert.ToDateTime(fechaTerminaSeleccionadaGratis);
+            gratis.ImagenNoticia = imagenNoticiaGratis;
+
+            if (juegoGratis.Gratis == null)
+            {
+                juegoGratis.Gratis = new List<global::Juegos.JuegoGratis>();
+            }
+
+            juegoGratis.Gratis.Add(gratis);
+
+            BaseDatos.Gratis.Insertar.Ejecutar(int.Parse(idSeleccionadaGratis), juegoGratis.Gratis, gratis);
+        }
+
+        idSeleccionadaGratis = null;
+    }
+}

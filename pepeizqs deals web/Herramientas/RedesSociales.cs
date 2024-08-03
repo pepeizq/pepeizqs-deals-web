@@ -187,7 +187,14 @@ namespace Herramientas
 			}
 			else
 			{
-				enlace = "/news/" + noticia.Id.ToString() + "/";
+				if (noticia.Id == 0)
+				{
+                    enlace = "/news/" + noticia.IdMaestra.ToString() + "/";
+                }
+				else
+				{
+                    enlace = "/news/" + noticia.Id.ToString() + "/";
+                }			
 			}
 
 			if (string.IsNullOrEmpty(enlace) == false)
@@ -255,7 +262,8 @@ namespace Herramientas
 
 		public class TweetV2PostRequest
 		{
-			[JsonProperty("text")]
+			#nullable enable
+            [JsonProperty("text")]
 			public string Text { get; set; } = string.Empty;
 
             [JsonProperty("media", NullValueHandling = NullValueHandling.Ignore)]
@@ -264,6 +272,7 @@ namespace Herramientas
 
         public class TweetV2Media
         {
+			#nullable enable
             [JsonIgnore]
             public List<long>? MediaIds { get; set; }
 
