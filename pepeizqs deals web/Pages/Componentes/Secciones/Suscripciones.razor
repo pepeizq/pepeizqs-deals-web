@@ -235,41 +235,16 @@
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override async void OnInitialized()
     {
-        usuario = UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User).Result;
+        usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
         if (usuario != null)
         {
-            if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {
-                bool tiempo = true;
-
-                if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
-                {
-                    if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
-                    {
-                        tiempo = false;
-                    }
-                }
-
-                if (tiempo == true)
-                {
-                    SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
-
-                    usuario.SteamGames = datos.Juegos;
-                    usuario.SteamWishlist = datos.Deseados;
-                    usuario.Avatar = datos.Avatar;
-                    usuario.Nickname = datos.Nombre;
-                    usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-                    usuario.OfficialGroup = datos.GrupoPremium;
-                    usuario.OfficialGroup2 = datos.GrupoNormal;
-
-                    await UserManager.UpdateAsync(usuario);
-                }
-            }
-
-            juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+                juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+            }           
         }
 
         //--------------------------------------------------------------------

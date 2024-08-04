@@ -841,9 +841,9 @@
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
-	protected override async Task OnInitializedAsync()
+	protected override async void OnInitialized()
 	{
-		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
 		//-------------------------------------------
 

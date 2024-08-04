@@ -136,5 +136,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? IndexCategories { get; set; }
+
+    [PersonalData]
+    [Column(TypeName = "int(4)")]
+    public int? RewardsCoins { get; set; }
+
+    [PersonalData]
+    [Column(TypeName = "nvarchar(100)")]
+    public string? RewardsLastLogin { get; set; }
 }
 

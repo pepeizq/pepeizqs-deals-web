@@ -208,7 +208,7 @@
                             usuarioNombre = usuarioNombre + "...";
                         }
 
-                        <div style="margin-left: 15px;">@usuarioNombre</div>
+                        <div style="margin-left: 15px;">@usuarioNombre (@usuarioCoins.ToString())</div>
                     }
                     else
                     {
@@ -265,6 +265,9 @@ else
 
     [Parameter]
     public string usuarioEmail { get; set; }
+
+    [Parameter]
+    public int usuarioCoins { get; set; }
 
     [Parameter]
     public string ubicacionEnlace { get; set; }

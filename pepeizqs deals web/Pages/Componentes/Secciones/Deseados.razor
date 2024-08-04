@@ -266,47 +266,11 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
 		if (usuario != null)
 		{
 			deseadosGestor = new List<JuegoDeseadoMostrar>();
-
-			#region Leer Cuenta Steam
-
-			bool tiempo = true;
-
-			if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
-			{
-				if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(2) > DateTime.Now)
-				{
-					tiempo = false;
-				}
-			}
-
-			if (tiempo == true)
-			{
-				if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
-				{
-					SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
-
-					usuario.SteamGames = datos.Juegos;
-					usuario.SteamWishlist = datos.Deseados;
-					usuario.Avatar = datos.Avatar;
-					usuario.Nickname = datos.Nombre;
-					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-					usuario.OfficialGroup = datos.GrupoPremium;
-					usuario.OfficialGroup2 = datos.GrupoNormal;
-
-					try
-					{
-						await UserManager.UpdateAsync(usuario);
-					}
-					catch { }				
-				}				
-			}
-
-			#endregion
 
 			#region Filtrado
 

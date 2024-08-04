@@ -12,6 +12,8 @@
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
+@rendermode @(new InteractiveServerRenderMode(false))
+
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
@@ -843,39 +845,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
 		if (usuario != null)
 		{
-			if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				bool tiempo = true;
-
-				if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
-				{
-					if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
-					{
-						tiempo = false;
-					}
-				}
-
-				if (tiempo == true)
-				{
-					SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
-
-					usuario.SteamGames = datos.Juegos;
-					usuario.SteamWishlist = datos.Deseados;
-					usuario.Avatar = datos.Avatar;
-					usuario.Nickname = datos.Nombre;
-					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-					usuario.OfficialGroup = datos.GrupoPremium;
-					usuario.OfficialGroup2 = datos.GrupoNormal;
-
-					await UserManager.UpdateAsync(usuario);
-				}
+				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
-
-			usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 
 			#region Filtrado
 
@@ -912,6 +889,18 @@
 			try
 			{
 				juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+
+				if (juegosDestacadosCarga != null)
+				{
+					if (juegosDestacadosCarga.Count > 0)
+					{
+						juegosDestacadosGestor = juegosDestacadosCarga;
+					}
+				}
+
+				CargarJuegosDestacados();
+
+				CronometroDestacados();
 			}
 			catch (Exception ex)
 			{
@@ -1010,17 +999,7 @@
 	{
 		if (primerRender == true)
 		{
-			if (juegosDestacadosCarga != null)
-			{
-				if (juegosDestacadosCarga.Count > 0)
-				{
-					juegosDestacadosGestor = juegosDestacadosCarga;
-				}
-			}
-
-			CargarJuegosDestacados();
-
-			CronometroDestacados();
+			
 		}
 	}
 
