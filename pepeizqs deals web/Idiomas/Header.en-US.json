@@ -8,6 +8,10 @@
     "Valor": "Wishlist"
   },
   {
+    "Id": "Rewards",
+    "Valor": "Rewards"
+  },
+  {
     "Id": "Logout",
     "Valor": "Logout"
   },

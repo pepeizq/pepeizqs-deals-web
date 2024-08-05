@@ -404,7 +404,7 @@
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
 
-	protected override async void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 

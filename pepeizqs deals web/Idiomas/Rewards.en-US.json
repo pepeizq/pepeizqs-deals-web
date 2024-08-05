@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Rewards"
+  },
+  {
+    "Id": "String1",
+    "Valor": "You have {0} pepecoins to spend"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Available Games"
+  },
+  {
+    "Id": "String3",
+    "Valor": "pepecoins History"
+  },
+  {
+    "Id": "Daily",
+    "Valor": "Daily Entry"
+  },
+  {
+    "Id": "Denied",
+    "Valor": "Sorry but you do not have access. To access the rewards you must have an account with a confirmed email address and a Steam account associated with at least 50 games."
+  }
+]

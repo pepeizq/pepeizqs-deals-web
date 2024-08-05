@@ -11,7 +11,7 @@ namespace Herramientas
     {
         public static async Task<Usuario> Actualizar(ClaimsPrincipal User, Usuario usuario, UserManager<Usuario> UserManager)
         {
-            usuario = UserManager.GetUserAsync(User).Result;
+			usuario = UserManager.GetUserAsync(User).Result;
 
             if (usuario != null)
             {
@@ -39,28 +39,33 @@ namespace Herramientas
                         usuario.OfficialGroup = datos.GrupoPremium;
                         usuario.OfficialGroup2 = datos.GrupoNormal;                     
                     }
-
-                    if (Listados.Generar(usuario.SteamGames).Count() > 50)
+                    else
                     {
-                        if (string.IsNullOrEmpty(usuario.RewardsLastLogin) == true)
-                        {
-                            usuario.RewardsLastLogin = DateTime.Now.ToString();
-                            usuario.RewardsCoins = 1;
+						if (string.IsNullOrEmpty(usuario.RewardsLastLogin) == true)
+						{
+							if (Listados.Generar(usuario.SteamGames).Count() > 50)
+							{
+								usuario.RewardsLastLogin = DateTime.Now.ToString();
+								usuario.RewardsCoins = 1;
 
-                            global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-                        }
-                        else
-                        {
-                            if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
-                            {
-                                usuario.RewardsLastLogin = DateTime.Now.ToString();
-                                usuario.RewardsCoins = usuario.RewardsCoins + 1;
+								global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+							}
+						}
+						else
+						{
+							if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
+							{
+								if (Listados.Generar(usuario.SteamGames).Count() > 50)
+								{
+									usuario.RewardsLastLogin = DateTime.Now.ToString();
+									usuario.RewardsCoins = usuario.RewardsCoins + 1;
 
-                                global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-                            }
-                        }
-                    }
-                    
+									global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+								}
+							}
+						}
+					}
+					       
                     try
                     {
                         await UserManager.UpdateAsync(usuario);

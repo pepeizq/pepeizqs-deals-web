@@ -8,6 +8,10 @@
     "Valor": "Lista de Deseados"
   },
   {
+    "Id": "Rewards",
+    "Valor": "Recompensas"
+  },
+  {
     "Id": "Logout",
     "Valor": "Cerrar Sesión"
   },

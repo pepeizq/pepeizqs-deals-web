@@ -2,9 +2,9 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace pepeizqs_deals_web.Pages
+namespace pepeizqs_deals_web.Pages.Account
 {
-    public class AccountModel : PageModel
+    public class RewardsModel : PageModel
     {
         public string idioma = string.Empty;
 

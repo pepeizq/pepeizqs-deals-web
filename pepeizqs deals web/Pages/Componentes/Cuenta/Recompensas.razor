@@ -1,0 +1,162 @@
+﻿@using BaseDatos.Recompensas
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<style>
+	.boton-pestañas {
+		color: var(--colorTexto);
+		background: transparent;
+		text-align: center;
+		border: 0;
+		width: 100%;
+		transition: transform .2s;
+		font-size: 17px;
+		padding: 10px;
+	}
+
+		.boton-pestañas:hover {
+			color: var(--colorTextoHover);
+			transform: scale(1.01);
+		}
+</style>
+
+@if (usuario.RewardsCoins != null)
+{
+	<div style="max-width: 1200px; margin: auto;">
+		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.RewardsCoins.ToString())</label>
+		<hr />
+
+		<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
+			<div style="width: 33%;">
+				<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
+					<button @onclick="@(e => MostrarJuegos(e))" class="boton-pestañas" style="@estiloJuegos;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Rewards")
+					</button>
+
+					<button @onclick="@(e => MostrarHistorial(e))" class="boton-pestañas" style="@estiloHistorial;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Rewards")
+					</button>
+				</div>
+			</div>
+
+			<div style="width: 100%;">
+				@if (mostrarJuegos == true)
+				{
+					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+						<label>Soon, before Half Life 3</label>
+					</div>
+				}
+
+				@if (mostrarHistorial == true)
+				{
+					@if (entradas != null)
+					{
+						if (entradas.Count > 0)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+								<hr />
+								@foreach (var entrada in entradas)
+								{
+									<div style="display: flex; align-items: center; gap: 20px;">
+										<div>
+											@if (entrada.Coins >= 0)
+											{
+												<label>+@entrada.Coins</label>
+											}
+											else
+											{
+												<label>-@entrada.Coins</label>
+											}
+
+										</div>
+
+										<div>
+											@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
+										</div>
+
+										<div>
+											@Herramientas.Idiomas.CogerCadena(idioma, entrada.Razon, "Rewards")
+										</div>
+									</div>
+
+									<hr />
+								}
+							</div>
+
+						}
+					}
+				}
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<div style="max-width: 800px; margin: auto;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Denied", "Rewards")
+		</div>
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
+
+	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
+
+	protected override async Task OnInitializedAsync()
+	{
+		mostrarJuegos = true;
+		estiloJuegos = fondo;
+
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			entradas = BaseDatos.Recompensas.Historial.LeerUsuario(usuario.Id);
+		}
+
+
+	}
+
+	private void CerrarPestañas()
+	{
+		mostrarJuegos = false;
+		mostrarHistorial = false;
+
+		estiloJuegos = null;
+		estiloHistorial = null;
+	}
+
+	private bool mostrarJuegos = false;
+	private string estiloJuegos = null;
+
+	private void MostrarJuegos(MouseEventArgs e)
+	{
+		CerrarPestañas();
+		mostrarJuegos = true;
+		estiloJuegos = fondo;
+	}
+
+	private bool mostrarHistorial = false;
+	private string estiloHistorial = null;
+
+	private void MostrarHistorial(MouseEventArgs e)
+	{
+		CerrarPestañas();
+		mostrarHistorial = true;
+		estiloHistorial = fondo;
+	}
+}

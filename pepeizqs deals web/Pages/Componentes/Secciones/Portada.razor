@@ -12,8 +12,6 @@
 @using Noticias;
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@rendermode @(new InteractiveServerRenderMode(false))
-
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
@@ -351,127 +349,136 @@
 	</div>
 }
 
-<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
-	@if (noticiasMostrar.Count > 0)
-	{
-		<div style="display: flex; overflow: auto; padding-bottom: 20px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
-			@foreach (var noticia in noticiasMostrar)
-			{
-				string marginExtra = string.Empty;
-
-				if (noticiasMostrar.Count == 1 || noticiasMostrar.Count == 2)
+@if (renderizado == true)
+{
+	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
+		@if (noticiasMostrar.Count > 0)
+		{
+			<div style="display: flex; overflow: auto; padding-bottom: 20px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+				@foreach (var noticia in noticiasMostrar)
 				{
-					marginExtra = "margin-left: auto; margin-right: auto;";
-				}
+					string marginExtra = string.Empty;
 
-				<div class="tooltip-juego noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
-					<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">
-						@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
-					</div>
+					if (noticiasMostrar.Count == 1 || noticiasMostrar.Count == 2)
+					{
+						marginExtra = "margin-left: auto; margin-right: auto;";
+					}
 
-					<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, noticia.Tipo))" style="height: 100%; cursor: pointer;">
-						<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
-							<div style="display: flex; align-items: center;">
-								<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
-									@if (noticia.Tipo == NoticiaTipo.Bundles)
-									{
-										@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
-									}
-									else if (noticia.Tipo == NoticiaTipo.Gratis)
-									{
-										@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
-									}
-									else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-									{
-										@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
-									}
-									else
-									{
-										@noticia.Tipo
-									}
+					<div class="tooltip-juego noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
+						<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">
+							@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
+						</div>
+
+						<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, noticia.Tipo))" style="height: 100%; cursor: pointer;">
+							<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
+								<div style="display: flex; align-items: center;">
+									<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
+										@if (noticia.Tipo == NoticiaTipo.Bundles)
+										{
+											@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
+										}
+										else if (noticia.Tipo == NoticiaTipo.Gratis)
+										{
+											@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
+										}
+										else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+										{
+											@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
+										}
+										else
+										{
+											@noticia.Tipo
+										}
+									</div>
 								</div>
-							</div>
 
-							<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
-								<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
-							</div>
+								<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
+									<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
+								</div>
 
-							<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
-								@{
-									string icono = string.Empty;
+								<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
+									@{
+										string icono = string.Empty;
 
-									if (noticia.Tipo == NoticiaTipo.Bundles)
-									{
-										icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+										if (noticia.Tipo == NoticiaTipo.Bundles)
+										{
+											icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+										}
+										else if (noticia.Tipo == NoticiaTipo.Gratis)
+										{
+											icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
+										}
+										else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+										{
+											icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
+										}
+
+										if (string.IsNullOrEmpty(icono) == false)
+										{
+											<div>
+												<img src="@icono" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
+											</div>
+										}
 									}
-									else if (noticia.Tipo == NoticiaTipo.Gratis)
-									{
-										icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
-									}
-									else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-									{
-										icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
-									}
 
-									if (string.IsNullOrEmpty(icono) == false)
-									{
-										<div>
-											<img src="@icono" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
-										</div>
-									}
-								}
-
-								<div style="margin-left: auto;">
-									@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+									<div style="margin-left: auto;">
+										@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			}
-		</div>
+				}
+			</div>
 
-		<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 60px;">
-			<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
-				@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
-			</a>
+			<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 60px;">
+				<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
+					@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
+				</a>
 
-			<div>
-				<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+				<div>
+					<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
 
-				<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+					<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+					</div>
 				</div>
 			</div>
-		</div>
-	}
-	else
-	{
-		<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 60px;">
-			<a class="boton-pequeño" style="max-width: 700px; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
-				@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
-			</a>
+		}
+		else
+		{
+			<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 60px;">
+				<a class="boton-pequeño" style="max-width: 700px; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
+					@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
+				</a>
 
-			<div>
-				<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+				<div>
+					<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
 
-				<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
-					<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+					<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+					</div>
 				</div>
 			</div>
-		</div>
-	}
-</div>
+		}
+	</div>
+}
+else
+{
+	<div style="padding: 40px; margin-left: auto; margin-right: auto; display: flex; justify-content: center;">
+		<label>@Herramientas.Idiomas.CogerCadena(idioma, "Loading", "Index")</label>
+	</div>
+}
 
 <style>
 	.noticia-panel {
@@ -831,6 +838,8 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	private bool renderizado = false;
+
 	private string discord = string.Empty;
 	private string telegram = string.Empty;
 	private string reddit = string.Empty;
@@ -843,149 +852,8 @@
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-		if (usuario != null)
-		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-			{
-				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-			}
-
-			#region Filtrado
-
-			if (usuario.IndexOption1 == true)
-			{
-				estadoOcultarJuegosUsuario = "checked";
-			}
-			else
-			{
-				estadoOcultarJuegosUsuario = null;
-			}
-
-			if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
-			{
-				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
-			}
-
-			if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
-			{
-				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
-			}
-
-			#endregion
-		}
-
-		//------------------------------------------------
-
-		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-		using (conexion)
-		{
-			#region Destacados
-
-			try
-			{
-				juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
-
-				if (juegosDestacadosCarga != null)
-				{
-					if (juegosDestacadosCarga.Count > 0)
-					{
-						juegosDestacadosGestor = juegosDestacadosCarga;
-					}
-				}
-
-				CargarJuegosDestacados();
-
-				CronometroDestacados();
-			}
-			catch (Exception ex)
-			{
-				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
-			}
-
-			#endregion
-
-			#region Aviso
-
-			aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
-
-			#endregion
-
-			#region Minimos
-
-			try
-			{
-				juegosMinimosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
-			}
-			catch { }
-
-			if (juegosMinimosGestor != null)
-			{
-				if (juegosMinimosGestor.Count > 0)
-				{
-					Filtros();
-				}
-			}			
-
-			#endregion
-
-			#region Noticias
-
-			try
-			{
-				noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas(conexion, "30");
-			}
-			catch { }
-
-			if (noticiasGestor != null)
-			{
-				if (noticiasGestor.Count > 0)
-				{
-					noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-					foreach (Noticias.Noticia noticia in noticiasGestor)
-					{
-						DateTime fechaTemporal = noticia.FechaEmpieza;
-						fechaTemporal = fechaTemporal.AddDays(3);
-
-						if (fechaTemporal > DateTime.Now)
-						{
-							bool añadir = true;
-
-							if (DateTime.Now > noticia.FechaTermina)
-							{
-								añadir = false;
-							}
-
-							if (noticiasMostrar.Count > 0)
-							{
-								foreach (var noticiaMostrar in noticiasMostrar)
-								{
-									if (noticiaMostrar.Id == noticia.Id)
-									{
-										añadir = false;
-									}
-								}
-							}
-
-							if (añadir == true)
-							{
-								noticiasMostrar.Add(noticia);
-							}							
-						}
-					}
-				}
-			}
-
-			#endregion
-		}
-
-		//------------------------------------------------
-
 		WebApplicationBuilder builder = WebApplication.CreateBuilder();
 		discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
 		telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
@@ -995,11 +863,150 @@
 		rss = Herramientas.Idiomas.CogerRSS(idioma);
 	}
 
-	protected override void OnAfterRender(bool primerRender)
+	protected override async void OnAfterRender(bool primerRender)
 	{
 		if (primerRender == true)
 		{
-			
+			renderizado = true;
+
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+			if (usuario != null)
+			{
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
+
+				#region Filtrado
+
+				if (usuario.IndexOption1 == true)
+				{
+					estadoOcultarJuegosUsuario = "checked";
+				}
+				else
+				{
+					estadoOcultarJuegosUsuario = null;
+				}
+
+				if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
+				{
+					drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
+				}
+
+				if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
+				{
+					categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
+				}
+
+				#endregion
+			}
+
+			//------------------------------------------------
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				#region Destacados
+
+				try
+				{
+					juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+
+					if (juegosDestacadosCarga != null)
+					{
+						if (juegosDestacadosCarga.Count > 0)
+						{
+							juegosDestacadosGestor = juegosDestacadosCarga;
+
+							CargarJuegosDestacados();
+
+							CronometroDestacados();
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
+				}
+
+				#endregion
+
+				#region Aviso
+
+				aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
+
+				#endregion
+
+				#region Minimos
+
+				try
+				{
+					juegosMinimosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
+				}
+				catch { }
+
+				if (juegosMinimosGestor != null)
+				{
+					if (juegosMinimosGestor.Count > 0)
+					{
+						Filtros();
+					}
+				}
+
+				#endregion
+
+				#region Noticias
+
+				try
+				{
+					noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas(conexion, "30");
+				}
+				catch { }
+
+				if (noticiasGestor != null)
+				{
+					if (noticiasGestor.Count > 0)
+					{
+						noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+						foreach (Noticias.Noticia noticia in noticiasGestor)
+						{
+							DateTime fechaTemporal = noticia.FechaEmpieza;
+							fechaTemporal = fechaTemporal.AddDays(3);
+
+							if (fechaTemporal > DateTime.Now)
+							{
+								bool añadir = true;
+
+								if (DateTime.Now > noticia.FechaTermina)
+								{
+									añadir = false;
+								}
+
+								if (noticiasMostrar.Count > 0)
+								{
+									foreach (var noticiaMostrar in noticiasMostrar)
+									{
+										if (noticiaMostrar.Id == noticia.Id)
+										{
+											añadir = false;
+										}
+									}
+								}
+
+								if (añadir == true)
+								{
+									noticiasMostrar.Add(noticia);
+								}
+							}
+						}
+					}
+				}
+
+				#endregion
+			}
 		}
 	}
 

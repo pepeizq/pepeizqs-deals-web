@@ -316,7 +316,7 @@
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
