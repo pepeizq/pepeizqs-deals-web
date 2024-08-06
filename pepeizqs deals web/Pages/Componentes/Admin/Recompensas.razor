@@ -1,5 +1,218 @@
-﻿<h3>Recompensas</h3>
+﻿@using BaseDatos.Recompensas
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+@if (string.IsNullOrEmpty(idSeleccionada) == false)
+{
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+		<div style="display: flex; align-items: center; gap: 15px;">
+			<label>@juegoSeleccionado (@idSeleccionada)</label>
+		</div>
+
+		<hr/>
+		
+		<div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+			<div style="width: 20%; padding: 5px; text-align: right;">
+				<label>Clave</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" @onchange="@(e => CambiarClave(e))" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+			<div style="width: 20%; padding: 5px; text-align: right;">
+				<label>Coins</label>
+			</div>
+			<div style="width: 80%;">
+				<input class="entrada-texto" @onchange="@(e => CambiarCoins(e))" />
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
+			<div style="width: 20%; padding: 5px; text-align: right;">
+				<label>Fecha Empieza</label>
+			</div>
+			<div style="width: 80%;">
+				<input type="datetime-local" class="entrada-texto" @onchange="@(e => CambiarFecha(e))" value="@fecha" />
+			</div>
+		</div>
+	</div>
+
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+		<div style="display: flex; width: 33%;">
+			<button @onclick="@(e => AñadirRecompensa(e))" class="boton" style="text-align: center;">Añadir Recompensa</button>
+		</div>
+	</div>
+}
+else
+{
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+		<div style="padding: 5px; text-align: left;">
+			<label>Buscar Juego</label>
+		</div>
+		<div style="width: 100%;">
+			<input type="text" @oninput="CambiarBuscador" class="entrada-texto" />
+
+			@if (string.IsNullOrEmpty(cadenaBusqueda) == false)
+			{
+				if (resultadosBusqueda != null)
+				{
+					if (resultadosBusqueda.Count > 0)
+					{
+						<div>
+							@foreach (var juego in resultadosBusqueda)
+							{
+								<hr />
+
+								<div class="perfil-flexible-centrado" style="flex-wrap: wrap;">
+									<div style="width: 150px; min-width: 150px;">
+										<button @onclick="@(e => ClickearId(e, juego.Id.ToString(), @juego.Nombre))" class="boton-pequeño" style="text-align: center;">
+											Seleccionar
+
+											<div style="font-size: 13px;">
+												@juego.Id
+											</div>
+										</button>
+									</div>
+
+									<div style="padding-left: 15px;">
+										<a href="/game/@juego.Id.ToString()" target="_blank">
+											<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+										</a>
+									</div>
+
+									<div style="width: 100%; padding: 5px 10px; flex: 1;">
+										@juego.Nombre
+									</div>
+								</div>
+							}
+						</div>
+					}
+				}
+			}
+		</div>
+	</div>
+
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+		@if (entradas != null)
+		{
+			if (entradas.Count > 0)
+			{
+				<hr />
+				@foreach (var entrada in entradas)
+				{
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							@if (entrada.Coins >= 0)
+							{
+								<label>+@entrada.Coins</label>
+							}
+							else
+							{
+								<label>-@entrada.Coins</label>
+							}
+
+						</div>
+
+						<div>
+							@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
+						</div>
+
+						<div>
+							@entrada.UsuarioId
+						</div>
+
+						<div>
+							@Herramientas.Idiomas.CogerCadena("es-ES", entrada.Razon, "Rewards")
+						</div>
+					</div>
+
+					<hr />
+				}
+			}
+		}
+	</div>
+}
 
 @code {
 
+	#nullable disable
+
+	private SqlConnection conexion = new SqlConnection();
+
+	private string cadenaBusqueda = null;
+	private List<global::Juegos.Juego> resultadosBusqueda = new List<global::Juegos.Juego>();
+	private string juegoSeleccionado = null;
+	private string idSeleccionada = null;
+	private string clave = null;
+	private string coins = null;
+	private string fecha = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+
+	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
+
+	protected override void OnInitialized()
+	{
+		entradas = BaseDatos.Recompensas.Historial.Leer();
+	}
+
+	private void CambiarBuscador(ChangeEventArgs texto)
+	{
+		if (conexion.State != System.Data.ConnectionState.Open)
+		{
+			conexion = Herramientas.BaseDatos.Conectar();
+		}
+
+		using (conexion)
+		{
+			resultadosBusqueda.Clear();
+
+			if (texto.Value.ToString().Trim().Length > 2)
+			{
+				cadenaBusqueda = texto.Value.ToString().Trim();
+
+				resultadosBusqueda = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 250);
+			}
+		}
+	}
+
+	private void ClickearId(MouseEventArgs e, string id, string nombre)
+	{
+		juegoSeleccionado = nombre;
+		idSeleccionada = id;
+
+		resultadosBusqueda.Clear();
+	}
+
+	private void CambiarClave(ChangeEventArgs texto)
+	{
+		clave = texto.Value.ToString();
+	}
+
+	private void CambiarCoins(ChangeEventArgs texto)
+	{
+		coins = texto.Value.ToString();
+	}
+
+	private void CambiarFecha(ChangeEventArgs texto)
+	{
+		fecha = texto.Value.ToString();
+	}
+
+	private void AñadirRecompensa(MouseEventArgs e)
+	{
+		RecompensaJuego recompensa = new RecompensaJuego();
+		recompensa.JuegoId = int.Parse(idSeleccionada);
+		recompensa.Clave = clave;
+		recompensa.Coins = int.Parse(coins);
+		recompensa.FechaEmpieza = Convert.ToDateTime(fecha);
+
+		BaseDatos.Recompensas.Juegos.Insertar(recompensa);
+
+		idSeleccionada = null;
+		juegoSeleccionado = null;
+		clave = null;
+		coins = null;
+		fecha = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+	}
 }

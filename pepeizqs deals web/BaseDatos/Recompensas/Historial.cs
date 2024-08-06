@@ -56,7 +56,7 @@ namespace BaseDatos.Recompensas
             }
         }
 
-        public static List<RecompensaHistorial> LeerUsuario(string usuarioId)
+        public static List<RecompensaHistorial> Leer(string usuarioId = null)
         {
             List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
 
@@ -64,12 +64,22 @@ namespace BaseDatos.Recompensas
 
             using (conexion)
             {
-                string busqueda = "SELECT TOP 30 * FROM recompensasHistorial WHERE usuarioId=@usuarioId ORDER BY fecha DESC";
+                string busqueda = "SELECT TOP 30 * FROM recompensasHistorial";
+
+                if (string.IsNullOrEmpty(usuarioId) == false)
+                {
+                    busqueda = busqueda + " WHERE usuarioId=@usuarioId";
+                }
+
+                busqueda = busqueda + " ORDER BY fecha DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
-                    comando.Parameters.AddWithValue("@usuarioId", usuarioId);
-
+                    if (string.IsNullOrEmpty(usuarioId) == false)
+                    {
+                        comando.Parameters.AddWithValue("@usuarioId", usuarioId);
+                    }
+                        
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
                         while (lector.Read())

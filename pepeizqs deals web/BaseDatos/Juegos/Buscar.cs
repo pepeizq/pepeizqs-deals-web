@@ -381,7 +381,7 @@ namespace BaseDatos.Juegos
 				int i = 0;
 				foreach (var palabra in palabras) 
 				{
-					string palabraLimpia = Herramientas.Buscador.LimpiarNombre(palabra, false);
+					string palabraLimpia = Herramientas.Buscador.LimpiarNombre(palabra, true);
 					
 					if (palabraLimpia.Length > 0)
 					{

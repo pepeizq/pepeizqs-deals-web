@@ -304,8 +304,6 @@ else
         }
     }
 
-    private Task<List<Juegos.Juego>> tarea;
-
     private void Inicio(MouseEventArgs e)
     {
         NavManager.NavigateTo("/", true);
@@ -353,27 +351,7 @@ else
 
             using (conexion)
             {
-                if ((tarea != null) && (tarea.IsCompleted == false ||
-                                               tarea.Status == TaskStatus.Running ||
-                                               tarea.Status == TaskStatus.WaitingToRun ||
-                                               tarea.Status == TaskStatus.WaitingForActivation))
-                {
-                    tarea.Dispose();
-                    resultadosBuscador = new List<Juegos.Juego>();
-                }
-                else
-                {
-                    tarea = Task.Factory.StartNew(() =>
-                    {
-                        List<Juegos.Juego> resultados2 = new List<Juegos.Juego>();
-
-                        resultados2 = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 100);
-
-                        return resultados2;
-                    });
-
-                    resultadosBuscador = tarea.Result;
-                }
+                resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 200);
             }
 
             if (resultadosBuscador != null)
@@ -414,7 +392,8 @@ else
                     {
                         pestañaSeleccionada = Juegos.JuegoTipo.Game;
 
-                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
+                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
                     }
 
                     if (resultadosDLCs.Count > 0)
@@ -424,7 +403,8 @@ else
                             pestañaSeleccionada = Juegos.JuegoTipo.DLC;
                         }
 
-                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
+                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
                     }
 
                     if (resultadosBandasSonoras.Count > 0)
@@ -434,7 +414,8 @@ else
                             pestañaSeleccionada = Juegos.JuegoTipo.Music;
                         }
 
-                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
+                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
                     }
 
                     if (resultadosSoftware.Count > 0)
@@ -444,7 +425,8 @@ else
                             pestañaSeleccionada = Juegos.JuegoTipo.Software;
                         }
 
-                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
                     }
                 }
             }

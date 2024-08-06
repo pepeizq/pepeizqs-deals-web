@@ -70,6 +70,7 @@
                 <button class="boton-pestañas" @onclick="(e => MostrarBundles(e))" style="@estiloBundles;">Bundles</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarGratis(e))" style="@estiloGratis;">Gratis</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarSuscripciones(e))" style="@estiloSuscripciones;">Suscripciones</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarRecompensas(e))" style="@estiloRecompensas;">Recompensas</button>
             </div>
         </div>
 
@@ -133,6 +134,11 @@
             {
                 <Suscripciones/>
             }
+
+            @if (mostrarRecompensas == true)
+            {
+                <Recompensas/>
+            }
         </div>
     </div>
 </div>
@@ -181,6 +187,7 @@
         mostrarBundles = false;
         mostrarGratis = false;
         mostrarSuscripciones = false;
+        mostrarRecompensas = false;
 
         estiloEnlaces = null;
         estiloAvisos = null;
@@ -194,6 +201,7 @@
         estiloBundles = null;
         estiloGratis = null;
         estiloSuscripciones = null;
+        estiloRecompensas = null;
     }
 
     #region Enlaces
@@ -427,7 +435,21 @@
     {
         CerrarPestañas();
         mostrarSuscripciones = true;
-        estiloSuscripciones = null;
+        estiloSuscripciones = fondo;
+    }
+
+    #endregion
+
+    #region Recompensas
+
+    private bool mostrarRecompensas = false;
+    private string estiloRecompensas = null;
+
+    private void MostrarRecompensas(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarRecompensas = true;
+        estiloRecompensas = fondo;
     }
 
     #endregion

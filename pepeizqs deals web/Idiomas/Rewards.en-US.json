@@ -22,5 +22,17 @@
   {
     "Id": "Denied",
     "Valor": "Sorry but you do not have access. To access the rewards you must have an account with a confirmed email address and a Steam account associated with at least 50 games."
+  },
+  {
+    "Id": "Buy",
+    "Valor": "Are you sure you want to get {0}?"
+  },
+  {
+    "Id": "Yes",
+    "Valor": "Yes"
+  },
+  {
+    "Id": "No",
+    "Valor": "No"
   }
 ]

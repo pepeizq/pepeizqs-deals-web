@@ -47,7 +47,49 @@
 				@if (mostrarJuegos == true)
 				{
 					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-						<label>Soon, before Half Life 3</label>
+						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; justify-items: center;">
+							@if (juegos != null)
+							{
+								if (juegos.Count > 0)
+								{
+									foreach (var recompensaJuego in juegos)
+									{
+										if (string.IsNullOrEmpty(recompensaJuego.UsuarioId) == true)
+										{
+											global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensaJuego.JuegoId);
+
+											if (juego != null)
+											{
+												if (recompensaJuego.Coins > usuario.RewardsCoins)
+												{
+													<div>
+														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;"/>
+													</div>
+												}
+												else
+												{
+													<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
+														<div style="background-color: var(--fondoBotonPequeño); display: flex; flex-direction: column;">
+															<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+
+															<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
+																@{
+																	string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
+																}
+																
+																<img src="@imagen" style="width: 20px; height: 20px;"/>
+
+																<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() pepecoins</div>
+															</div>
+														</div>
+													</button>
+												}												
+											}
+										}
+									}
+								}
+							}
+						</div>
 					</div>
 				}
 
@@ -103,6 +145,40 @@ else
 	</div>
 }
 
+<style>
+	.aviso-panel {
+		height: calc(100% - var(--alturaCabecera));
+		width: 100%;
+		left: 0;
+		top: 0;
+		overflow-x: auto;
+		position: fixed;
+		z-index: 1001;
+		margin-top: var(--alturaCabecera);
+		padding: 10px;
+		backdrop-filter: blur(10px);
+	}
+</style>
+
+@if (mostrarAvisoCompra == true)
+{
+	<div class="aviso-panel">
+		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 20px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Buy", "Rewards"), nombreJuegoSeleccionado)
+
+			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
+				<button @onclick="@(e => ComprarJuegoSi(e, juegoSeleccionado))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Yes", "Rewards")
+				</button>
+
+				<button @onclick="@(e => ComprarJuegoNo(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "No", "Rewards")
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
 @code {
 
 	#nullable disable
@@ -111,6 +187,11 @@ else
 	public string idioma { get; set; }
 
 	private Usuario usuario = new Usuario();
+
+	private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
+	private bool mostrarAvisoCompra = false;
+	private RecompensaJuego juegoSeleccionado = new RecompensaJuego();
+	private string nombreJuegoSeleccionado = null;
 
 	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
 
@@ -125,10 +206,9 @@ else
 
 		if (usuario != null)
 		{
-			entradas = BaseDatos.Recompensas.Historial.LeerUsuario(usuario.Id);
+			juegos = BaseDatos.Recompensas.Juegos.Todo();
+			entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
 		}
-
-
 	}
 
 	private void CerrarPestañas()
@@ -158,5 +238,24 @@ else
 		CerrarPestañas();
 		mostrarHistorial = true;
 		estiloHistorial = fondo;
+	}
+
+	private void ComprarJuego(MouseEventArgs e, RecompensaJuego juego, string nombre)
+	{
+		mostrarAvisoCompra = true;
+		juegoSeleccionado = juego;
+		nombreJuegoSeleccionado = nombre;
+	}
+
+	private void ComprarJuegoSi(MouseEventArgs e, RecompensaJuego juego)
+	{
+		mostrarAvisoCompra = false;
+
+
+	}
+
+	private void ComprarJuegoNo(MouseEventArgs e)
+	{
+		mostrarAvisoCompra = false;
 	}
 }
