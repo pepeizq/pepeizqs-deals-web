@@ -20,6 +20,10 @@
     "Valor": "Daily Entry"
   },
   {
+    "Id": "Buy2",
+    "Valor": "Got"
+  },
+  {
     "Id": "Denied",
     "Valor": "Sorry but you do not have access. To access the rewards you must have an account with a confirmed email address and a Steam account associated with at least 50 games."
   },
@@ -34,5 +38,45 @@
   {
     "Id": "No",
     "Valor": "No"
+  },
+  {
+    "Id": "Close",
+    "Valor": "Close"
+  },
+  {
+    "Id": "Redeem",
+    "Valor": "Redeem on Steam"
+  },
+  {
+    "Id": "Poor",
+    "Valor": "You do not have enough pepecoins to get {0}."
+  },
+  {
+    "Id": "Web1",
+    "Valor": "You can get games by visiting the website every day, to do so you must meet the following points:"
+  },
+  {
+    "Id": "Web2",
+    "Valor": "Register an account on the website."
+  },
+  {
+    "Id": "Web3",
+    "Valor": "Confirm account via email."
+  },
+  {
+    "Id": "Web4",
+    "Valor": "Link a Steam account with at least 50 games to the web account."
+  },
+  {
+    "Id": "Web5",
+    "Valor": "If you meet these requirements, 1 pepecoin will automatically be added to your account every day you log in."
+  },
+  {
+    "Id": "Web6",
+    "Valor": "Open the rewards section in your account"
+  },
+  {
+    "Id": "Web7",
+    "Valor": "Examples of games to get with pepecoins:"
   }
 ]

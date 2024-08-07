@@ -53,16 +53,19 @@ namespace Herramientas
 						}
 						else
 						{
-							if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
-							{
-								if (Listados.Generar(usuario.SteamGames).Count() > 50)
+                            if (usuario.RewardsCoins < 31)
+                            {
+								if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
 								{
-									usuario.RewardsLastLogin = DateTime.Now.ToString();
-									usuario.RewardsCoins = usuario.RewardsCoins + 1;
+									if (Listados.Generar(usuario.SteamGames).Count() > 50)
+									{
+										usuario.RewardsLastLogin = DateTime.Now.ToString();
+										usuario.RewardsCoins = usuario.RewardsCoins + 1;
 
-									global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+										global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+									}
 								}
-							}
+							}							
 						}
 					}
 					       

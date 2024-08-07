@@ -1,6 +1,7 @@
 ﻿@using BaseDatos.Recompensas
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
+@using Newtonsoft.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -60,30 +61,21 @@
 
 											if (juego != null)
 											{
-												if (recompensaJuego.Coins > usuario.RewardsCoins)
-												{
-													<div>
-														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;"/>
-													</div>
-												}
-												else
-												{
-													<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
-														<div style="background-color: var(--fondoBotonPequeño); display: flex; flex-direction: column;">
-															<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
+													<div style="background-color: var(--fondoBotonPequeño); display: flex; flex-direction: column;">
+														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
 
-															<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
-																@{
-																	string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
-																}
-																
-																<img src="@imagen" style="width: 20px; height: 20px;"/>
+														<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
+															@{
+																string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
+															}
 
-																<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() pepecoins</div>
-															</div>
+															<img src="@imagen" style="width: 20px; height: 20px;" />
+
+															<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() pepecoins</div>
 														</div>
-													</button>
-												}												
+													</div>
+												</button>
 											}
 										}
 									}
@@ -111,7 +103,7 @@
 											}
 											else
 											{
-												<label>-@entrada.Coins</label>
+												<label>@entrada.Coins</label>
 											}
 
 										</div>
@@ -121,7 +113,19 @@
 										</div>
 
 										<div>
-											@Herramientas.Idiomas.CogerCadena(idioma, entrada.Razon, "Rewards")
+											@if (string.IsNullOrEmpty(entrada.Razon) == false)
+											{
+												string cadena = entrada.Razon;
+												string juego = string.Empty;
+
+												if (cadena.Contains("Buy") == true)
+												{
+													juego = cadena.Remove(0, 4);
+													cadena = "Buy2";
+												}
+
+												<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "Rewards") @juego</label>
+											}											
 										</div>
 									</div>
 
@@ -162,8 +166,8 @@ else
 
 @if (mostrarAvisoCompra == true)
 {
-	<div class="aviso-panel">
-		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 20px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
 			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Buy", "Rewards"), nombreJuegoSeleccionado)
 
 			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
@@ -173,6 +177,38 @@ else
 
 				<button @onclick="@(e => ComprarJuegoNo(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "No", "Rewards")
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
+@if (mostrarAvisoClave == true)
+{
+	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+			@nombreJuegoSeleccionado
+			<div style="margin-top: 10px;">@claveJuegoSeleccionado</div>
+			<div style="margin-top: 10px;"><a href="https://store.steampowered.com/account/registerkey?key=@claveJuegoSeleccionado" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Redeem", "Rewards")</a></div>
+
+			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
+				<button @onclick="@(e => CerrarAvisoClave(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
+@if (mostrarAvisoPobre == true)
+{
+	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Poor", "Rewards"), nombreJuegoSeleccionado)
+
+			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
+				<button @onclick="@(e => CerrarAvisoPobre(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
 				</button>
 			</div>
 		</div>
@@ -189,9 +225,14 @@ else
 	private Usuario usuario = new Usuario();
 
 	private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
+
 	private bool mostrarAvisoCompra = false;
+	private bool mostrarAvisoClave = false;
+	private bool mostrarAvisoPobre = false;
+
 	private RecompensaJuego juegoSeleccionado = new RecompensaJuego();
 	private string nombreJuegoSeleccionado = null;
+	private string claveJuegoSeleccionado = null;
 
 	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
 
@@ -242,20 +283,75 @@ else
 
 	private void ComprarJuego(MouseEventArgs e, RecompensaJuego juego, string nombre)
 	{
-		mostrarAvisoCompra = true;
-		juegoSeleccionado = juego;
 		nombreJuegoSeleccionado = nombre;
+
+		if (juego.Coins <= usuario.RewardsCoins)
+		{
+			mostrarAvisoCompra = true;
+			juegoSeleccionado = juego;			
+		}
+		else
+		{
+			mostrarAvisoPobre = true;
+		}
 	}
 
 	private void ComprarJuegoSi(MouseEventArgs e, RecompensaJuego juego)
 	{
 		mostrarAvisoCompra = false;
 
+		BaseDatos.Recompensas.Juegos.Actualizar(juegoSeleccionado.Id, usuario.Id);
+		BaseDatos.Recompensas.Historial.Insertar(usuario.Id, -juegoSeleccionado.Coins, "Buy " + juegoSeleccionado.JuegoNombre, DateTime.Now);
 
+		usuario.RewardsCoins = usuario.RewardsCoins - juegoSeleccionado.Coins;
+
+		List<BaseDatos.Usuarios.Clave> claves = new List<BaseDatos.Usuarios.Clave>();
+
+		if (string.IsNullOrEmpty(usuario.Keys) == false)
+		{
+			claves = JsonConvert.DeserializeObject<List<BaseDatos.Usuarios.Clave>>(usuario.Keys);
+		}
+
+		BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave();
+		nuevaClave.Nombre = juegoSeleccionado.JuegoNombre;
+		nuevaClave.Codigo = juegoSeleccionado.Clave;
+		nuevaClave.JuegoId = juegoSeleccionado.JuegoId.ToString();
+
+		if (claves == null)
+		{
+			claves = new List<BaseDatos.Usuarios.Clave>();
+		}
+
+		claves.Add(nuevaClave);
+
+		usuario.Keys = JsonConvert.SerializeObject(claves);
+
+		claveJuegoSeleccionado = juegoSeleccionado.Clave;
+
+		try
+		{
+			UserManager.UpdateAsync(usuario);
+		}
+		catch { }
+
+		juegos.Clear();
+		juegos = BaseDatos.Recompensas.Juegos.Todo();
+
+		mostrarAvisoClave = true;
 	}
 
 	private void ComprarJuegoNo(MouseEventArgs e)
 	{
 		mostrarAvisoCompra = false;
+	}
+
+	private void CerrarAvisoClave(MouseEventArgs e)
+	{
+		mostrarAvisoClave = false;
+	}
+
+	private void CerrarAvisoPobre(MouseEventArgs e)
+	{
+		mostrarAvisoPobre = false;
 	}
 }

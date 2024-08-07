@@ -84,6 +84,7 @@
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Pendientes.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Recompensas.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Tiendas.razor" />
+    <_ContentIncludedByDefault Remove="Pages\rewards.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -154,6 +155,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Recompensas.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\rewards.cshtml" />
   </ItemGroup>
 
 </Project>

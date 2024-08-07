@@ -351,9 +351,9 @@
 
 @if (renderizado == true)
 {
-	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
-		@if (noticiasMostrar.Count > 0)
-		{
+	@if (noticiasMostrar.Count > 0)
+	{
+		<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
 			<div style="display: flex; overflow: auto; padding-bottom: 20px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 				@foreach (var noticia in noticiasMostrar)
 				{
@@ -449,29 +449,29 @@
 					</div>
 				</div>
 			</div>
-		}
-		else
-		{
-			<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 60px;">
-				<a class="boton-pequeño" style="max-width: 700px; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
-					@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
-				</a>
+		</div>
+	}
+	else
+	{
+		<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto; display: flex; align-items: center; justify-content: center; gap: 60px;">
+			<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/last-news">
+				@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsNo", "Index")
+			</a>
 
-				<div>
-					<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+			<div style="width: 75%; text-align: center;">
+				<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
 
-					<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
-						<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
-					</div>
+				<div style="display: flex; align-items: center; justify-content: center; font-size: 22px; text-align: center; color: var(--colorEnlace); margin-top: 10px;">
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
 				</div>
 			</div>
-		}
-	</div>
+		</div>
+	}
 }
 else
 {

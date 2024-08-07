@@ -1,0 +1,84 @@
+﻿@using BaseDatos.Recompensas
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div style="max-width: 1000px; margin: auto;">
+    <label style="font-size: 20px;">@Herramientas.Idiomas.CogerCadena(idioma, "Title", "Rewards")</label>
+    <hr />
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        @Herramientas.Idiomas.CogerCadena(idioma, "Web1", "Rewards")
+        <ul>
+            <li><a href="https://pepeizqdeals.com/account/register" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Web2", "Rewards")</a></li>
+            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Web3", "Rewards")</li>
+            <li>@Herramientas.Idiomas.CogerCadena(idioma, "Web4", "Rewards")</li>
+        </ul>
+        @Herramientas.Idiomas.CogerCadena(idioma, "Web5", "Rewards")
+    </div>
+
+    @if (usuario != null)
+    {
+        <a class="boton-pequeño" style="width: 100%; padding: 15px 20px; text-align: center; margin-top: 20px;" href="/account/rewards">
+            @Herramientas.Idiomas.CogerCadena(idioma, "Web6", "Rewards")
+        </a>
+    }
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+        @Herramientas.Idiomas.CogerCadena(idioma, "Web7", "Rewards")
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; justify-items: center; margin-top: 30px;">
+            @{
+                int i = 0;
+                foreach (var recompensa in juegos)
+                {
+                    if (i < 5)
+                    {
+                        global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensa.JuegoId);
+
+                        <div>
+                            <img src="@juego.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
+                        </div>
+
+                        i += 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+        juegos = BaseDatos.Recompensas.Juegos.Todo();
+
+        if (juegos != null)
+        {
+            if (juegos.Count > 0)
+            {
+                juegos = juegos.OrderByDescending(x => x.Coins).ToList();
+            }
+        }
+    }
+}

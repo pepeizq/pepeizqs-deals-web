@@ -13,7 +13,8 @@ namespace BaseDatos.Recompensas
 		public int Coins;
 		public DateTime FechaEmpieza;
 		public string UsuarioId;
-		public global::Juegos.JuegoDRM DRM;
+		public JuegoDRM DRM;
+		public string JuegoNombre;
 	}
 
 	public static class Juegos
@@ -22,6 +23,7 @@ namespace BaseDatos.Recompensas
 		{
 			RecompensaJuego juego = new RecompensaJuego
 			{
+				Id = lector.GetInt32(0),
 				JuegoId = lector.GetInt32(1),
 				Clave = lector.GetString(2),
 				Coins = lector.GetInt32(3),
@@ -42,6 +44,11 @@ namespace BaseDatos.Recompensas
 				juego.DRM = JuegoDRM.Steam;
 			}
 
+			if (lector.IsDBNull(7) == false)
+			{
+				juego.JuegoNombre = lector.GetString(7);
+			}
+
 			return juego;
 		}
 
@@ -52,8 +59,8 @@ namespace BaseDatos.Recompensas
 			using (conexion)
 			{
 				string sqlInsertar = "INSERT INTO recompensasJuegos " +
-					"(juegoId, clave, coins, fecha) VALUES " +
-					"(@juegoId, @clave, @coins, @fecha) ";
+					"(juegoId, clave, coins, fecha, juegoNombre) VALUES " +
+					"(@juegoId, @clave, @coins, @fecha, @juegoNombre) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
@@ -61,6 +68,7 @@ namespace BaseDatos.Recompensas
 					comando.Parameters.AddWithValue("@clave", recompensa.Clave);
 					comando.Parameters.AddWithValue("@coins", recompensa.Coins);
 					comando.Parameters.AddWithValue("@fecha", recompensa.FechaEmpieza.ToString());
+					comando.Parameters.AddWithValue("@juegoNombre", recompensa.JuegoNombre);
 
 					comando.ExecuteNonQuery();
 					try
@@ -77,7 +85,7 @@ namespace BaseDatos.Recompensas
 
 		public static List<RecompensaJuego> Todo()
 		{
-			List<RecompensaJuego> entradas = new List<RecompensaJuego>();
+			List<RecompensaJuego> juegos = new List<RecompensaJuego>();
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -91,13 +99,44 @@ namespace BaseDatos.Recompensas
 					{
 						while (lector.Read())
 						{
-							entradas.Add(Cargar(lector));
+							juegos.Add(Cargar(lector));
 						}
 					}
 				}
 			}
 
-			return entradas;
+			if (juegos.Count > 0)
+			{
+				return juegos.OrderBy(x => x.JuegoNombre).ToList();
+			}
+
+			return juegos;
+		}
+
+		public static void Actualizar(int id, string usuarioId)
+		{
+			string sqlActualizar = "UPDATE recompensasJuegos " +
+					"SET usuarioId=@usuarioId WHERE id=@id";
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@usuarioId", usuarioId);
+					comando.Parameters.AddWithValue("@id", id);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}				
 		}
 	}
 }

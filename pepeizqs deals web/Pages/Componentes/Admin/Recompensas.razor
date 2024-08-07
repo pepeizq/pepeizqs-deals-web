@@ -110,7 +110,7 @@ else
 							}
 							else
 							{
-								<label>-@entrada.Coins</label>
+								<label>@entrada.Coins</label>
 							}
 
 						</div>
@@ -124,7 +124,19 @@ else
 						</div>
 
 						<div>
-							@Herramientas.Idiomas.CogerCadena("es-ES", entrada.Razon, "Rewards")
+							@if (string.IsNullOrEmpty(entrada.Razon) == false)
+							{
+								string cadena = entrada.Razon;
+								string juego = string.Empty;
+
+								if (cadena.Contains("Buy") == true)
+								{
+									juego = cadena.Remove(0, 4);
+									cadena = "Buy2";
+								}
+
+								<label>@Herramientas.Idiomas.CogerCadena("es-ES", cadena, "Rewards") @juego</label>
+							}
 						</div>
 					</div>
 
@@ -206,6 +218,8 @@ else
 		recompensa.Clave = clave;
 		recompensa.Coins = int.Parse(coins);
 		recompensa.FechaEmpieza = Convert.ToDateTime(fecha);
+		recompensa.DRM = global::Juegos.JuegoDRM.Steam;
+		recompensa.JuegoNombre = juegoSeleccionado;
 
 		BaseDatos.Recompensas.Juegos.Insertar(recompensa);
 

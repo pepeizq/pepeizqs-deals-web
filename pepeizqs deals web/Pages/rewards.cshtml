@@ -1,0 +1,12 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.rewardsModel
+
+@{
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Rewards");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.Recompensas>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma
+}))

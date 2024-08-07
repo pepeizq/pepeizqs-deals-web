@@ -20,6 +20,10 @@
     "Valor": "Entrada diaria"
   },
   {
+    "Id": "Buy2",
+    "Valor": "Adquirido"
+  },
+  {
     "Id": "Denied",
     "Valor": "Lo siento pero no tienes acceso, para poder acceder a las recompensas debes tener la cuenta con el correo confirmado y una cuenta de Steam asociada con al menos 50 juegos."
   },
@@ -34,5 +38,45 @@
   {
     "Id": "No",
     "Valor": "No"
+  },
+  {
+    "Id": "Close",
+    "Valor": "Cerrar"
+  },
+  {
+    "Id": "Redeem",
+    "Valor": "Canjear en Steam"
+  },
+  {
+    "Id": "Poor",
+    "Valor": "No tienes las suficientes pepecoins para adquirir {0}."
+  },
+  {
+    "Id": "Web1",
+    "Valor": "Puedes obtener juegos visitando la web cada día, para ello debes cumplir los siguientes puntos:"
+  },
+  {
+    "Id": "Web2",
+    "Valor": "Registrar una cuenta en la web."
+  },
+  {
+    "Id": "Web3",
+    "Valor": "Confirmar la cuenta vía correo."
+  },
+  {
+    "Id": "Web4",
+    "Valor": "Asociar una cuenta de Steam con al menos 50 juegos a la cuenta de la web."
+  },
+  {
+    "Id": "Web5",
+    "Valor": "Si cumples con estos requisitos, automáticamente cada día que entres se te añadirá a tu cuenta 1 pepecoin."
+  },
+  {
+    "Id": "Web6",
+    "Valor": "Abre la sección de recompensas en tu cuenta"
+  },
+  {
+    "Id": "Web7",
+    "Valor": "Ejemplos de juegos para reclamar con pepecoins:"
   }
 ]

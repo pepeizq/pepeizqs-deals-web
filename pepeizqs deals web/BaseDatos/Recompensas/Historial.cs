@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using pepeizqs_deals_web.Pages.Componentes.Admin;
 
 namespace BaseDatos.Recompensas
 {
@@ -89,6 +90,11 @@ namespace BaseDatos.Recompensas
                     }
                 }
             }
+
+			if (entradas.Count > 0)
+            {
+				return entradas.OrderByDescending(x => x.Fecha).ToList();
+			}
 
             return entradas;
         }

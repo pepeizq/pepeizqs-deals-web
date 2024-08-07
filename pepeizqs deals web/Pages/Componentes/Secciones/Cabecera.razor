@@ -22,12 +22,12 @@
         z-index: 1000;
         margin-top: var(--alturaCabecera);
         padding: 10px;
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(50px);
     }
 
     .boton-superior {
         display: block;
-        padding: 8px 15px;
+        padding: 6px 12px;
         margin: 0px;
         transition: transform .2s;
     }
@@ -35,6 +35,32 @@
         .boton-superior:hover {
             transform: scale(1.01);
         }
+
+    @@media (max-width: 800px) {
+        .boton-superior {
+            float: none;
+        }
+    }
+
+    .botones-superiores {
+        display: flex;
+    }
+
+    @@media (max-width: 1000px) {
+        .botones-superiores {
+            display: none;
+        }
+    }
+
+    .botones-superiores2 {
+        display: none;
+    }
+
+    @@media (max-width: 1000px) {
+        .botones-superiores2 {
+            display: flex;
+        }
+    }
 </style>
 
 <a href="/" class="texto-logo" style="background-color: transparent; border: 0; flex: 1 auto 1;">
@@ -56,43 +82,105 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        if (usuarioLogeado == true)
-        {
-            if (ubicacionEnlace.Contains("/wishlist") == false)
+        <div class="botones-superiores">
+            @if (usuarioLogeado == true)
             {
-                <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
+                if (ubicacionEnlace.Contains("/wishlist") == false)
+                {
+                    <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
+                    </a>
+                }
+            }
+
+            @if (ubicacionEnlace.Contains("/historical-lows") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
                 </a>
             }
-        }
 
-        if (ubicacionEnlace.Contains("/historical-lows") == false)
-        {
-            <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
-                @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
-            </a>
-        }
+            @if (ubicacionEnlace.Contains("/bundles") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
+                </a>
+            }
 
-        if (ubicacionEnlace.Contains("/bundles") == false)
-        {
-            <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
-            </a>
-        }
+            @if (ubicacionEnlace.Contains("/free") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
+                </a>
+            }
 
-        if (ubicacionEnlace.Contains("/free") == false)
-        {
-            <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
-            </a>
-        }
+            @if (ubicacionEnlace.Contains("/subscriptions") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
+                </a>
+            }
 
-        if (ubicacionEnlace.Contains("/subscriptions") == false)
-        {
-            <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
-            </a>
-        }       
+            @if (ubicacionEnlace.Contains("/rewards") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/rewards" style="font-size: 15px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "Rewards", "Header")
+                </a>
+            }
+        </div>
+
+        <div class="botones-superiores2" style="cursor: pointer;">
+            <div class="menu-dropdown">
+                <i class="fa-solid fa-bars"></i>
+
+                <div class="menu-dropdown-contenido">
+                    @if (usuarioLogeado == true)
+                    {
+                        if (ubicacionEnlace.Contains("/wishlist") == false)
+                        {
+                            <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
+                                @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
+                            </a>
+                        }
+                    }
+
+                    @if (ubicacionEnlace.Contains("/historical-lows") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
+                        </a>
+                    }
+
+                    @if (ubicacionEnlace.Contains("/bundles") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
+                        </a>
+                    }
+
+                    @if (ubicacionEnlace.Contains("/free") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
+                        </a>
+                    }
+
+                    @if (ubicacionEnlace.Contains("/subscriptions") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
+                        </a>
+                    }
+
+                    @if (ubicacionEnlace.Contains("/rewards") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/rewards" style="font-size: 15px;">
+                            @Herramientas.Idiomas.CogerCadena(idioma, "Rewards", "Header")
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
     }
     else
     {
