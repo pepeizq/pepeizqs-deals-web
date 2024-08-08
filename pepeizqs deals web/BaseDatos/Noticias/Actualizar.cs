@@ -72,5 +72,74 @@ namespace BaseDatos.Noticias
 				}
 			}
 		}
+
+		public static void Tipo(string id, string nuevoTipo, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET noticiaTipo=@noticiaTipo " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@noticiaTipo", nuevoTipo);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void ContenidoEn(string id, string nuevoContenido, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET contenidoEn=@contenidoEn " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@contenidoEn", nuevoContenido);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void ContenidoEs(string id, string nuevoContenido, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET contenidoEs=@contenidoEs " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@contenidoEs", nuevoContenido);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }

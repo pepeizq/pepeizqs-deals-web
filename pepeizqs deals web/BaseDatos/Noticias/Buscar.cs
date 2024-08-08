@@ -122,7 +122,25 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-        public static List<global::Noticias.Noticia> Todas()
+		public static global::Noticias.Noticia Ultimo(SqlConnection conexion)
+		{
+			string busqueda = "SELECT TOP 1 * FROM noticias ORDER BY id DESC";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						return Cargar(lector, conexion);
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public static List<global::Noticias.Noticia> Todas()
         {
 			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
 

@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Tweetinvi;
 using Tweetinvi.Core.Web;
 using Tweetinvi.Models;
+using X.Bluesky;
 
 namespace Herramientas
 {
@@ -284,4 +285,52 @@ namespace Herramientas
             }
         }
     }
+
+	public static class Bluesky
+	{
+		#nullable disable
+
+        public static async void Postear(Noticias.Noticia noticia)
+		{
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+            string correo = builder.Configuration.GetValue<string>("Bluesky:Correo");
+			string contraseña = builder.Configuration.GetValue<string>("Bluesky:Contraseña");
+
+			if (string.IsNullOrEmpty(correo) == false && string.IsNullOrEmpty(contraseña) == false)
+			{
+                IBlueskyClient cliente = new BlueskyClient(correo, contraseña);
+
+                string enlace = string.Empty;
+
+                if (string.IsNullOrEmpty(noticia.Enlace) == false)
+                {
+                    enlace = noticia.Enlace;
+                }
+                else
+                {
+                    if (noticia.Id == 0)
+                    {
+                        enlace = "/news/" + noticia.IdMaestra.ToString() + "/";
+                    }
+                    else
+                    {
+                        enlace = "/news/" + noticia.Id.ToString() + "/";
+                    }
+                }
+
+                if (string.IsNullOrEmpty(enlace) == false)
+                {
+                    if (enlace.Contains("https://pepeizqdeals.com") == false)
+                    {
+                        enlace = "https://pepeizqdeals.com" + enlace;
+                    }
+                }
+
+                Uri enlaceFinal = new Uri(enlace);
+
+                await cliente.Post(noticia.TituloEn, enlaceFinal);
+            }           
+		}
+	}
 }

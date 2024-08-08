@@ -23,16 +23,24 @@
 			color: var(--colorTextoHover);
 			transform: scale(1.01);
 		}
+
+	.recompensa-expandir {
+		transition: transform .2s;
+	}
+
+		.recompensa-expandir:hover {
+			transform: scale(1.01);
+		}
 </style>
 
 @if (usuario.RewardsCoins != null)
 {
-	<div style="max-width: 1200px; margin: auto;">
+	<div style="margin: auto;">
 		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.RewardsCoins.ToString())</label>
 		<hr />
 
 		<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
-			<div style="width: 33%;">
+			<div style="width: 25%;">
 				<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
 					<button @onclick="@(e => MostrarJuegos(e))" class="boton-pestañas" style="@estiloJuegos;">
 						@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Rewards")
@@ -48,6 +56,10 @@
 				@if (mostrarJuegos == true)
 				{
 					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "Rewards")
+					</div>
+
+					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
 						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; justify-items: center;">
 							@if (juegos != null)
 							{
@@ -61,8 +73,29 @@
 
 											if (juego != null)
 											{
-												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
-													<div style="background-color: var(--fondoBotonPequeño); display: flex; flex-direction: column;">
+												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
+													@{
+														bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, recompensaJuego.DRM);
+														bool usuarioTieneDeseado = false;
+
+														string fondoColor = "background-color: var(--fondoBotonPequeño)";
+
+														if (usuarioTieneJuego == true)
+														{
+															fondoColor = "background-color: var(--fondoBien);";
+														}
+														else
+														{
+															usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, recompensaJuego.DRM);
+
+															if (usuarioTieneDeseado == true)
+															{
+																fondoColor = "background-color: var(--fondoAlerta);";
+															}
+														}
+													}
+													
+													<div style="@fondoColor; display: flex; flex-direction: column;">
 														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
 
 														<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
@@ -96,7 +129,7 @@
 								@foreach (var entrada in entradas)
 								{
 									<div style="display: flex; align-items: center; gap: 20px;">
-										<div>
+										<div style="width: 5%;">
 											@if (entrada.Coins >= 0)
 											{
 												<label>+@entrada.Coins</label>
@@ -108,11 +141,7 @@
 
 										</div>
 
-										<div>
-											@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
-										</div>
-
-										<div>
+										<div style="width: 100%;">
 											@if (string.IsNullOrEmpty(entrada.Razon) == false)
 											{
 												string cadena = entrada.Razon;
@@ -126,6 +155,10 @@
 
 												<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "Rewards") @juego</label>
 											}											
+										</div>
+
+										<div style="width: 20%; text-align: right;">
+											@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
 										</div>
 									</div>
 
@@ -223,6 +256,7 @@ else
 	public string idioma { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private List<string> juegosUsuario = new List<string>();
 
 	private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
 
@@ -249,6 +283,11 @@ else
 		{
 			juegos = BaseDatos.Recompensas.Juegos.Todo();
 			entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
+
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+			{
+				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
 		}
 	}
 

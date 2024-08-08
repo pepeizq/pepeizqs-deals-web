@@ -8,7 +8,7 @@ namespace BaseDatos.Noticias
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(Noticia noticia)
+		public static int Ejecutar(Noticia noticia)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -144,13 +144,17 @@ namespace BaseDatos.Noticias
 					
 					try
 					{
-                        comando.ExecuteNonQuery();
+						comando.ExecuteNonQuery();
+
+						return Buscar.Ultimo(conexion).Id;
                     }
 					catch (Exception ex)
                     {
                         Errores.Insertar.Ejecutar("Portada Noticias", ex, conexion);
                     }
 				}
+
+				return 0;
 			}
 		}
 	}

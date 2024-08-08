@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "font-awesome@6.4.2",
-      "destination": "wwwroot/lib/font-awesome/"
-    },
-    {
       "library": "bootstrap@5.3.3",
       "destination": "wwwroot/bootstrap/",
       "files": [
@@ -55,6 +51,11 @@
         "js/bootstrap.min.js",
         "js/bootstrap.min.js.map"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@6.6.0",
+      "destination": "wwwroot/lib/font-awesome/"
     }
   ]
 }

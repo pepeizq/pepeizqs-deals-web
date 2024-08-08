@@ -15,6 +15,7 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
+@inject NavigationManager NavManager
 
 <style>
 	.noticia-fuente {
@@ -364,70 +365,94 @@
 						marginExtra = "margin-left: auto; margin-right: auto;";
 					}
 
-					<div class="tooltip-juego noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
-						<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">
-							@Herramientas.Idiomas.MirarTexto(idioma, @noticia.TituloEn, @noticia.TituloEs)
-						</div>
+					<div class="noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra">
+						@if (usuario != null)
+						{
+							if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+							{
+								<div style="margin-bottom: 10px;">
+									<a href="/news/@noticia.Id">Editar</a>
+								</div>
+							}
+						}
 
-						<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, noticia.Tipo))" style="height: 100%; cursor: pointer;">
-							<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
-								<div style="display: flex; align-items: center;">
-									<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
-										@if (noticia.Tipo == NoticiaTipo.Bundles)
-										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
-										}
-										else if (noticia.Tipo == NoticiaTipo.Gratis)
-										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
-										}
-										else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
-										}
-										else
-										{
-											@noticia.Tipo
-										}
+						<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
+							@{
+								string titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+							}
+
+							<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">
+								@titulo
+							</div>
+
+							<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, titulo, noticia.Tipo))" style="height: 100%; cursor: pointer;">
+								<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
+									<div style="display: flex; align-items: center;">
+										<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
+											@if (noticia.Tipo == NoticiaTipo.Bundles)
+											{
+												@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
+											}
+											else if (noticia.Tipo == NoticiaTipo.Gratis)
+											{
+												@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
+											}
+											else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+											{
+												@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
+											}
+											else if (noticia.Tipo == NoticiaTipo.Rumores)
+											{
+												@Herramientas.Idiomas.CogerCadena(idioma, "News4", "Index")
+											}
+											else if (noticia.Tipo == NoticiaTipo.Web)
+											{
+												@Herramientas.Idiomas.CogerCadena(idioma, "News5", "Index")
+											}
+											else
+											{
+												@noticia.Tipo
+											}
+										</div>
 									</div>
-								</div>
 
-								<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
-									<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
-								</div>
+									<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
+										<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
+									</div>
 
-								<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
-									@{
-										string icono = string.Empty;
+									<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">
+										@{
+											string icono = string.Empty;
 
-										if (noticia.Tipo == NoticiaTipo.Bundles)
-										{
-											icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+											if (noticia.Tipo == NoticiaTipo.Bundles)
+											{
+												icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+											}
+											else if (noticia.Tipo == NoticiaTipo.Gratis)
+											{
+												icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
+											}
+											else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+											{
+												icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
+											}
+
+											if (string.IsNullOrEmpty(icono) == false)
+											{
+												<div>
+													<img src="@icono" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
+												</div>
+											}
 										}
-										else if (noticia.Tipo == NoticiaTipo.Gratis)
-										{
-											icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
-										}
-										else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-										{
-											icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
-										}
 
-										if (string.IsNullOrEmpty(icono) == false)
-										{
-											<div>
-												<img src="@icono" style="width: 18px; height: 18px; margin-right: 20px;" alt="Store" />
-											</div>
-										}
-									}
-
-									<div style="margin-left: auto;">
-										@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+										<div style="margin-left: auto;">
+											@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>					
 				}
 			</div>
 
@@ -446,6 +471,7 @@
 						<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
 						<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
 						<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+						<div style="margin-left: 6px; margin-right: 6px;"><a href="@bluesky" target="_blank"><i class="fa-brands fa-bluesky"></i></a></div>
 					</div>
 				</div>
 			</div>
@@ -468,6 +494,7 @@
 					<div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
 					<div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
 					<div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+					<div style="margin-left: 6px; margin-right: 6px;"><a href="@bluesky" target="_blank"><i class="fa-brands fa-bluesky"></i></a></div>
 				</div>
 			</div>
 		</div>
@@ -491,7 +518,7 @@ else
 		z-index: 1001;
 		margin-top: var(--alturaCabecera);
 		padding: 10px;
-		backdrop-filter: blur(10px);
+		backdrop-filter: blur(30px);
 	}
 </style>
 
@@ -499,9 +526,13 @@ else
 {
 	<div class="noticia-panel">
 		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
-			<div style="position: absolute; top: 0; right: -80px;">
+			<div style="position: absolute; top: 0; right: -80px; display: flex; flex-direction: column; gap: 20px;">
 				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => CerrarNoticia(e))">
 					<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
+				</button>
+
+				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => AbrirNoticia(e))">
+					<i class="fa-solid fa-plus" style="font-size: 30px;"></i>
 				</button>
 			</div>
 			
@@ -509,41 +540,6 @@ else
 		</div>		
 	</div>
 }
-
-@* @if (sorteosActivos.Count > 2)
-{
-	<div style="margin-bottom: 50px; height: 200px;">
-		<a href="/giveaways" class="boton-pequeño" style="text-decoration: none; padding: 1px;">
-			<div style="overflow: hidden; position: relative; height: 150px; display: flex; align-items: center;">
-				<div style="position: absolute; right: 0; top: 0;">
-					@{
-						int i = 0;
-						while (i < 3)
-						{
-							if (sorteosActivos[i] != null)
-							{
-								Juegos.Juego sorteoJuego = BaseDatos.Juegos.Buscar.UnJuego(sorteosActivos[i].JuegoId.ToString());
-
-								if (sorteoJuego != null)
-								{
-									<img src="@sorteoJuego.Imagenes.Library_600x900" style="opacity: 0.3; width: 200px; height: 300px; margin-left: 20px; margin-top: 20px; margin-right: 20px;" alt="@sorteoJuego.Nombre">
-								}
-							}
-
-							i += 1;
-						}
-					}
-				</div>
-
-				<div style="position: relative; left: 15%; transform: translateX(-50%);">
-					<div style="font-size: 24px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Index.Giveaways")
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-} *@
 
 @if (juegosMinimosMostrar.Count > 0)
 {
@@ -846,6 +842,7 @@ else
 	private string twitter = string.Empty;
 	private string steam = string.Empty;
 	private string rss = string.Empty;
+	private string bluesky = string.Empty;
 
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
@@ -861,6 +858,7 @@ else
 		twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
 		steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
 		rss = Herramientas.Idiomas.CogerRSS(idioma);
+		bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
 	}
 
 	protected override async void OnAfterRender(bool primerRender)
@@ -1557,9 +1555,10 @@ else
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasGestor = new List<Noticias.Noticia>();
 	private int noticiaMostrarId = 0;
+	private string noticiaMostrarTitulo = null;
 	private string noticiaMostrarAncho = "1000px";
 
-	private async void GestionarNoticia(MouseEventArgs e, string noticiaEnlace, int noticiaId, NoticiaTipo noticiaTipo)
+	private async void GestionarNoticia(MouseEventArgs e, string noticiaEnlace, int noticiaId, string noticiaTitulo, NoticiaTipo noticiaTipo)
 	{
 		if (string.IsNullOrEmpty(noticiaEnlace) == false)
 		{
@@ -1581,11 +1580,18 @@ else
 		{
 			noticiaMostrarAncho = "1000px";
 		}
+
+		noticiaMostrarTitulo = noticiaTitulo;
 	}
 
 	private void CerrarNoticia(MouseEventArgs e)
 	{
 		noticiaMostrarId = 0;
+	}
+
+	private void AbrirNoticia(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/news/" + noticiaMostrarId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticiaMostrarTitulo) + "/", true);
 	}
 
 	#endregion

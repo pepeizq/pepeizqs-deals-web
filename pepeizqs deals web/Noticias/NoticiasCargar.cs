@@ -11,7 +11,8 @@ namespace Noticias
 		Eventos,
 		Sorteos,
 		Rumores,
-		Otros
+		Otros,
+		Web
 	}
 
 	public static class NoticiasCargar

@@ -21,6 +21,16 @@
 			</div>
 		</div>
 
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Tipo
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaTipo(e))" class="entrada-texto" rows="1">@textoTipo</textarea>
+			</div>
+		</div>
+
 		<div style="display: flex; align-items: center; margin-bottom: 20px;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Enlace
@@ -38,6 +48,26 @@
 
 			<div style="width: 85%;">
 				<textarea @onchange="(e => TextoCambiaFechaTermina(e))" class="entrada-texto" rows="1">@textoFechaTermina</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Contenido EN
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaContenidoEn(e))" class="entrada-texto" rows="10">@textoContenidoEn</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Contenido ES
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaContenidoEs(e))" class="entrada-texto" rows="10">@textoContenidoEs</textarea>
 			</div>
 		</div>
 	</div>
@@ -64,8 +94,11 @@
 		if (noticia != null)
 		{
 			textoImagen = noticia.Imagen;
+			textoTipo = (int)noticia.Tipo;
 			textoEnlace = noticia.Enlace;
 			textoFechaTermina = noticia.FechaTermina.ToString();
+			textoContenidoEn = noticia.ContenidoEn;
+			textoContenidoEs = noticia.ContenidoEs;
 		}
 	}
 
@@ -84,6 +117,21 @@
 			{
 				BaseDatos.Noticias.Actualizar.Imagen(noticiaId.ToString(), nuevoTexto, conexion);
 			}
+		}
+	}
+
+	private int textoTipo = 0;
+
+	private void TextoCambiaTipo(ChangeEventArgs texto)
+	{
+		string nuevoTexto = texto.Value.ToString().Trim();
+		textoTipo = int.Parse(nuevoTexto);
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Noticias.Actualizar.Tipo(noticiaId.ToString(), nuevoTexto, conexion);
 		}
 	}
 
@@ -119,6 +167,42 @@
 			using (conexion)
 			{
 				BaseDatos.Noticias.Actualizar.FechaTermina(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoContenidoEn = string.Empty;
+
+	private void TextoCambiaContenidoEn(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoContenidoEn = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.ContenidoEs(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoContenidoEs = string.Empty;
+
+	private void TextoCambiaContenidoEs(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoContenidoEs = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.ContenidoEs(noticiaId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

@@ -376,8 +376,13 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
                     noticiaAñadir.Tipo = NoticiaTipo.Suscripciones;
                     noticiaAñadir.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
                 }
+                else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
+                {
+                    noticiaAñadir.Tipo = NoticiaTipo.Rumores;
+                }
 
-                BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
+                int id = BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
+                noticiaAñadir.Id = id;
 
                 foreach (var usuario in UserManager.Users)
                 {
@@ -403,6 +408,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
                 }
 
                 Herramientas.Twitter.Twitear(noticiaAñadir);
+                Herramientas.Bluesky.Postear(noticiaAñadir);
 
                 noticia = new Plantilla();
 

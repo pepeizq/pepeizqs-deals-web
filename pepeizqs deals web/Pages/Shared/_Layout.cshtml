@@ -10,12 +10,14 @@
 
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
-    string discord = "https://discord.gg/GBT3FXnrm3";
-    string telegram = "https://t.me/pepeizqdeals2";
-    string reddit = "https://reddit.com/r/pepeizqdeals/";
-    string twitter = "https://x.com/pepeizqdeals";
-    string steam = "https://steamcommunity.com/groups/pepeizqdeals/";
+    WebApplicationBuilder builder = WebApplication.CreateBuilder();
+    string discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
+    string telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
+    string reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
+    string twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
+    string steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
     string rss = Herramientas.Idiomas.CogerRSS(idioma);
+    string bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
 
     string codigoFuente = "https://github.com/pepeizq/pepeizqs-deals-web/";
     string visitas = "https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da";
@@ -126,6 +128,7 @@
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
                         <div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
+                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@bluesky" target="_blank"><i class="fa-brands fa-bluesky"></i></a></div>
                     </div>
                 </div>
 

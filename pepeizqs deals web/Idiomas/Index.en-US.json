@@ -20,6 +20,14 @@
     "Valor": "New Subscription"
   },
   {
+    "Id": "News4",
+    "Valor": "New Rumor"
+  },
+  {
+    "Id": "News5",
+    "Valor": "New Web"
+  },
+  {
     "Id": "LastNewsMore",
     "Valor": "Load all news"
   },

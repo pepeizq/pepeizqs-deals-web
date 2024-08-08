@@ -20,6 +20,14 @@
     "Valor": "Nueva Suscripción"
   },
   {
+    "Id": "News4",
+    "Valor": "Nuevo Rumor"
+  },
+  {
+    "Id": "News5",
+    "Valor": "Nuevo Web"
+  },
+  {
     "Id": "LastNewsMore",
     "Valor": "Cargar todas las noticias"
   },
