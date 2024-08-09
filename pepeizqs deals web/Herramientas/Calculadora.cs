@@ -68,7 +68,7 @@ namespace Herramientas
 
 				numCantidad = (int)(Math.Round(double.Parse(cantidad.Replace(",", null)) / divisor, 0) * divisor);
 
-				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.CogerCadena(idioma, "Game.String9");
+				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.CogerCadena(idioma, "String9", "Game");
 			}
 
 			return cantidadFinal;

@@ -1,0 +1,166 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Open in:"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Rating on Steam"
+  },
+  {
+    "Id": "String3",
+    "Valor": "It's already on your Wishlist"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Add to Wishlist"
+  },
+  {
+    "Id": "String5",
+    "Valor": "You already have this game on the linked Steam account"
+  },
+  {
+    "Id": "String6",
+    "Valor": "You already have this DLC on the linked Steam account"
+  },
+  {
+    "Id": "String7",
+    "Valor": "This game was automatically added to your wishlist when your Steam account was linked"
+  },
+  {
+    "Id": "String8",
+    "Valor": "This DLC was automatically added to your wishlist when your Steam account was linked"
+  },
+  {
+    "Id": "String9",
+    "Valor": "reviews"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Historical low for"
+  },
+  {
+    "Id": "String11",
+    "Valor": "On sale now"
+  },
+  {
+    "Id": "String12",
+    "Valor": "There are currently no deals for this platform"
+  },
+  {
+    "Id": "String13",
+    "Valor": "on"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Available on subscription"
+  },
+  {
+    "Id": "String15",
+    "Valor": "It was available on subscription"
+  },
+  {
+    "Id": "String16",
+    "Valor": "Free on"
+  },
+  {
+    "Id": "String17",
+    "Valor": "It was free on"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Has been free {0} times"
+  },
+  {
+    "Id": "String19",
+    "Valor": "Available in the bundle:"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Available in bundles"
+  },
+  {
+    "Id": "String21",
+    "Valor": "It was in these bundles"
+  },
+  {
+    "Id": "String22",
+    "Valor": "Available Bundles"
+  },
+  {
+    "Id": "String23",
+    "Valor": "Old Bundles"
+  },
+  {
+    "Id": "String24",
+    "Valor": "Available in subscriptions"
+  },
+  {
+    "Id": "String25",
+    "Valor": "It was in these subscriptions"
+  },
+  {
+    "Id": "String26",
+    "Valor": "Available Subscriptions"
+  },
+  {
+    "Id": "String27",
+    "Valor": "Old Subscriptions"
+  },
+  {
+    "Id": "String28",
+    "Valor": "Available free"
+  },
+  {
+    "Id": "String29",
+    "Valor": "It was free to claim"
+  },
+  {
+    "Id": "String30",
+    "Valor": "Available Free"
+  },
+  {
+    "Id": "String31",
+    "Valor": "Old Free Promotions"
+  },
+  {
+    "Id": "String32",
+    "Valor": "Warning, this is a DLC and requires the base game to work (click to open the game)."
+  },
+  {
+    "Id": "String33",
+    "Valor": "This game is Free To Play, this means that it can be played for free but to fully enjoy it it will be necessary to purchase one or more content downloads (or DLCs for short)."
+  },
+  {
+    "Id": "String34",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "String35",
+    "Valor": "Developed by:"
+  },
+  {
+    "Id": "String36",
+    "Valor": "Published by:"
+  },
+  {
+    "Id": "String37",
+    "Valor": "It was free"
+  },
+  {
+    "Id": "String38",
+    "Valor": "It was in the subscription"
+  },
+  {
+    "Id": "String39",
+    "Valor": "Tier"
+  },
+  {
+    "Id": "String40",
+    "Valor": "Choosing 1 game"
+  },
+  {
+    "Id": "String41",
+    "Valor": "Choosing {0} games"
+  }
+]

@@ -101,7 +101,7 @@
 						@if (DLCs.Count > 0)
 						{
 							<div style="margin-right: 15px; font-size: 16px; background: var(--fondoDlc); height: 40px;">
-								<a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.CogerCadena(idioma, "Game.String34") (@DLCs.Count.ToString())</a>
+								<a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</a>
 							</div>
 						}
 					</div>
@@ -134,7 +134,7 @@
 									</div>
 
 									<div id="tooltip-reviews" class="tooltip-relleno">
-										<div style="margin: 8px;">@Idiomas.CogerCadena(idioma, "Game.String2")</div>
+										<div style="margin: 8px;">@Idiomas.CogerCadena(idioma, "String2", "Game")</div>
 									</div>
 								</div>
 							</div>
@@ -165,7 +165,7 @@
 						@if (juego.IdSteam > 0 || string.IsNullOrEmpty(juego.SlugGOG) == false)
 						{
 							<div style="margin-left: 20px;">
-								<label>@Idiomas.CogerCadena(idioma, "Game.String1")</label>
+								<label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
 
 								@if (juego.IdSteam > 0)
 								{
@@ -196,7 +196,7 @@
 							<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
 
 							<div style="width: 100%;">
-								@Idiomas.CogerCadena(idioma, "Game.String32")
+								@Idiomas.CogerCadena(idioma, "String32", "Game")
 							</div>
 						</div>
 					</a>
@@ -213,7 +213,7 @@
 						<i class="fa-solid fa-circle-info" style="font-size: 22px; margin-right: 30px;"></i>
 
 						<div style="width: 100%;">
-							@Idiomas.CogerCadena(idioma, "Game.String33")
+							@Idiomas.CogerCadena(idioma, "String33", "Game")
 						</div>
 					</div>
 				}
@@ -259,11 +259,11 @@
 							{
 								if (juego.Tipo == Juegos.JuegoTipo.Game)
 								{
-									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String5");
+									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Game");
 								}
 								else if (juego.Tipo == Juegos.JuegoTipo.DLC)
 								{
-									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String6");
+									mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
 								}
 
 								<div class="perfil" style="padding: 20px 40px; background-color: var(--fondoBien);">
@@ -290,11 +290,11 @@
 												{
 													if (juego.Tipo == Juegos.JuegoTipo.Game)
 													{
-														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String7");
+														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String7", "Game");
 													}
 													else if (juego.Tipo == Juegos.JuegoTipo.DLC)
 													{
-														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "Game.String8");
+														mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Game");
 													}
 
 													break;
@@ -324,14 +324,14 @@
 											<div class="perfil-flexible-centrado">
 												<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
-												<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Game.String3")</div>
+												<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Game")</div>
 											</div>
 										</button>
 									}
 									else
 									{
 										<button @onclick="(e => CambiarEstadoDeseado(e, true, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
-											@Herramientas.Idiomas.CogerCadena(idioma, "Game.String4")
+											@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Game")
 										</button>
 									}
 								}								
@@ -416,7 +416,7 @@
 								}
 								else
 								{
-									<div>@Idiomas.CogerCadena(idioma, "Game.String12")</div>
+									<div>@Idiomas.CogerCadena(idioma, "String12", "Game")</div>
 								}
 							</div>
 						</div>
@@ -431,7 +431,7 @@
 				@if (BundlesDisponibles(juego.Bundles).Count > 0)
 				{
 					<div style="margin-bottom: 10px;">
-						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String22")</label>
+						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String22", "Game")</label>
 					</div>
 
 					@foreach (var bundle2 in BundlesDisponibles(juego.Bundles))
@@ -473,13 +473,13 @@
 					if (BundlesDisponibles(juego.Bundles).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String23")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String23", "Game")</label>
 						</div>
 					}
 					else
 					{
 						<div style="margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String23")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String23", "Game")</label>
 						</div>
 					}
 
@@ -500,13 +500,13 @@
 									</div>
 
 									<div style="margin-right: 20px; width: 100%;">
-										<label style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</label><br />
-										<label style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(bundle3.FechaTermina, idioma)</label>
+										<div style="cursor: pointer;">@bundle3.NombreBundle • @bundle3.NombreTienda</div>
+										<div style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(bundle3.FechaTermina, idioma)</div>
 									</div>
 
 									<div style="text-align: right;">
-										<label style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</label>
-										<label style="font-size: 13px; cursor: pointer;">@BundlesPrepararInfo(bundle3, juego.Id)</label>
+										<div style="cursor: pointer;">@BundlesPrepararPrecio(bundle3, juego.Id)</div>
+										<div style="font-size: 13px; cursor: pointer;">@BundlesPrepararInfo(bundle3, juego.Id)</div>
 									</div>
 								</div>
 							</button>
@@ -522,7 +522,7 @@
 				@if (GratisDisponibles(juego.Gratis).Count > 0)
 				{
 					<div style="margin-bottom: 10px;">
-						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String30")</label>
+						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String30", "Game")</label>
 					</div>
 
 					@foreach (var gratis2 in GratisDisponibles(juego.Gratis))
@@ -550,13 +550,13 @@
 					if (GratisDisponibles(juego.Gratis).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String31")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String31", "Game")</label>
 						</div>
 					}
 					else
 					{
 						<div style="margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String31")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String31", "Game")</label>
 						</div>
 					}
 
@@ -578,7 +578,7 @@
 							</div>
 
 							<div style="padding-right: 20px; width: 85%;">
-								<label>@Idiomas.CogerCadena(idioma, "Game.String37") @Calculadora.DiferenciaDuranteDias(gratis2.FechaEmpieza, gratis2.FechaTermina, idioma)</label><br />
+								<label>@Idiomas.CogerCadena(idioma, "String37", "Game") @Calculadora.DiferenciaDuranteDias(gratis2.FechaEmpieza, gratis2.FechaTermina, idioma)</label><br />
 								<label style="font-size: 13px;">@gratis2.FechaEmpieza.Day.ToString()/@gratis2.FechaEmpieza.Month.ToString()/@gratis2.FechaEmpieza.Year.ToString() • @gratis2.FechaTermina.Day.ToString()/@gratis2.FechaTermina.Month.ToString()/@gratis2.FechaTermina.Year.ToString()</label>
 							</div> 
 						</div>
@@ -593,7 +593,7 @@
 				@if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 				{
 					<div style="margin-bottom: 10px;">
-						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String26")</label>
+						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String26", "Game")</label>
 					</div>
 
 					@foreach (var suscripcion2 in SuscripcionesDisponibles(juego.Suscripciones))
@@ -622,13 +622,13 @@
 					if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 					{
 						<div style="margin-top: 40px; margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String27")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String27", "Game")</label>
 						</div>
 					}
 					else
 					{
 						<div style="margin-bottom: 10px;">
-							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String27")</label>
+							<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String27", "Game")</label>
 						</div>
 					}
 
@@ -650,7 +650,7 @@
 							</div>
 
 							<div style="padding-right: 20px; width: 85%;">
-								<label>@Idiomas.CogerCadena(idioma, "Game.String38") @Calculadora.DiferenciaDuranteDias(suscripcion2.FechaEmpieza, suscripcion2.FechaTermina, idioma)</label><br />
+								<label>@Idiomas.CogerCadena(idioma, "String38", "Game") @Calculadora.DiferenciaDuranteDias(suscripcion2.FechaEmpieza, suscripcion2.FechaTermina, idioma)</label><br />
 								<label style="font-size: 13px;">@suscripcion2.FechaEmpieza.Day.ToString()/@suscripcion2.FechaEmpieza.Month.ToString()/@suscripcion2.FechaEmpieza.Year.ToString() • @suscripcion2.FechaTermina.Day.ToString()/@suscripcion2.FechaTermina.Month.ToString()/@suscripcion2.FechaTermina.Year.ToString()</label>
 							</div>
 						</div>
@@ -670,7 +670,7 @@
 							<div class="juego-galeria-contenedor">
 								@if (mediaMostrarPosicion == 99999)
 								{
-									<BlazoredVideo style="width: 854px; height: 480px;" controls="controls" poster="@juego.Imagenes.Header_460x215" preload="none">
+									<BlazoredVideo style="width: 854px; height: 100%;" controls="controls" poster="@juego.Imagenes.Header_460x215" preload="none">
 										<source src="@mediaMostrar" type="video/mp4"  />
 									</BlazoredVideo>
 								}
@@ -752,7 +752,7 @@
 
 										if (listaDesarrolladores.Count > 0)
 										{
-											<div>@Idiomas.CogerCadena(idioma, "Game.String35")</div>
+											<div>@Idiomas.CogerCadena(idioma, "String35", "Game")</div>
 											<ul>
 												@foreach (var desarrollador in listaDesarrolladores)
 												{
@@ -783,7 +783,7 @@
 
 										if (listaPublishers.Count > 0)
 										{
-											<div>@Idiomas.CogerCadena(idioma, "Game.String36")</div>
+											<div>@Idiomas.CogerCadena(idioma, "String36", "Game")</div>
 											<ul>
 												@foreach (var publisher in listaPublishers)
 												{
@@ -804,7 +804,7 @@
 		{
 			<div id="dlcs" class="perfil" style="margin-top: 50px;">
 				<div style="margin-bottom: 10px;">
-					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "Game.String34") (@DLCs.Count.ToString())</label>
+					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</label>
 				</div>
 
 				@foreach (var dlc in DLCs)
@@ -863,7 +863,10 @@
 				{
 					if (juego.Media.Capturas != null)
 					{
-						mediaMostrar = juego.Media.Capturas[0];
+						if (juego.Media.Capturas.Count > 0)
+						{
+							mediaMostrar = juego.Media.Capturas[0];
+						}						
 					}
 				}
 			}			
@@ -953,7 +956,7 @@
 		{
 			if (historicosOrdenados[0] != null)
 			{
-				drmPreparado = Idiomas.CogerCadena(idioma, "Game.String10") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(historicosOrdenados[0], true);
+				drmPreparado = Idiomas.CogerCadena(idioma, "String10", "Game") + " " + JuegoDRM2.DevolverDRM(drm) + ": " + PrepararPrecio(historicosOrdenados[0], true);
 
 				bool incluirTiempo = true;
 
@@ -999,11 +1002,11 @@
 						}
 					}
 
-					drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "Game.String13") + " " + tiendaFinal + ")";
+					drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
 				}
 				else
 				{
-					drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "Game.String11") + ")";
+					drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "String11", "Game") + ")";
 				}
 			}		
 		}
@@ -1265,7 +1268,7 @@
 		{
 			if (BundlesDisponibles(juego.Bundles, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String20");
+				return Idiomas.CogerCadena(idioma, "String20", "Game");
 			}
 		}
 
@@ -1273,7 +1276,7 @@
 		{
 			if (BundlesAntiguos(juego.Bundles, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String21");
+				return Idiomas.CogerCadena(idioma, "String21", "Game");
 			}
 		}
 
@@ -1393,17 +1396,17 @@
 				}
 			}
 
-			return Herramientas.Idiomas.CogerCadena(idioma, "Game.String39") + " " + tier.ToString();
+			return Herramientas.Idiomas.CogerCadena(idioma, "String39", "Game") + " " + tier.ToString();
 		}
 		else
 		{
 			if (bundle.Tiers[0].CantidadJuegos == 1)
 			{
-				return Herramientas.Idiomas.CogerCadena(idioma, "Game.String40");
+				return Herramientas.Idiomas.CogerCadena(idioma, "String40", "Game");
 			}
 			else
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Game.String41"), bundle.Tiers[0].CantidadJuegos.ToString());
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String41", "Game"), bundle.Tiers[0].CantidadJuegos.ToString());
 			}
 		}
 	}
@@ -1442,7 +1445,7 @@
 		{
 			if (GratisDisponibles(juego.Gratis, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String28");
+				return Idiomas.CogerCadena(idioma, "String28", "Game");
 			}
 		}
 
@@ -1450,7 +1453,7 @@
 		{
 			if (GratisAntiguos(juego.Gratis, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String29");
+				return Idiomas.CogerCadena(idioma, "String29", "Game");
 			}
 		}
 
@@ -1553,7 +1556,7 @@
 		{
 			if (SuscripcionesDisponibles(juego.Suscripciones, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String24");
+				return Idiomas.CogerCadena(idioma, "String24", "Game");
 			}
 		}
 
@@ -1561,7 +1564,7 @@
 		{
 			if (SuscripcionesAntiguos(juego.Suscripciones, drm).Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "Game.String25");
+				return Idiomas.CogerCadena(idioma, "String25", "Game");
 			}
 		}
 

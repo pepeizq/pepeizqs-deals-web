@@ -380,6 +380,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
                 {
                     noticiaAñadir.Tipo = NoticiaTipo.Rumores;
                 }
+                else if (noticiaTipoSeleccionada == NoticiaTipo.Web.ToString())
+                {
+                    noticiaAñadir.Tipo = NoticiaTipo.Web;
+                }
 
                 int id = BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
                 noticiaAñadir.Id = id;

@@ -1,0 +1,166 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Abrir en:"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Reseñas en Steam"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Ya está en tu Lista de Deseados"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Añade a tu Lista de Deseados"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Ya tienes este juego en la cuenta de Steam vinculada"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Ya tienes este DLC en la cuenta de Steam vinculada"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Este juego se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de Steam"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Este DLC se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de Steam"
+  },
+  {
+    "Id": "String9",
+    "Valor": "reseñas"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Mínimo histórico para"
+  },
+  {
+    "Id": "String11",
+    "Valor": "En oferta actualmente"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Actualmente no hay ofertas para esta plataforma"
+  },
+  {
+    "Id": "String13",
+    "Valor": "en"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Disponible en la suscripción"
+  },
+  {
+    "Id": "String15",
+    "Valor": "Estuvo disponible en la suscripción"
+  },
+  {
+    "Id": "String16",
+    "Valor": "Gratis en"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Estuvo gratis en"
+  },
+  {
+    "Id": "String18",
+    "Valor": "Ha estado gratis {0} veces"
+  },
+  {
+    "Id": "String19",
+    "Valor": "Disponible en el bundle:"
+  },
+  {
+    "Id": "String20",
+    "Valor": "Disponible en bundles"
+  },
+  {
+    "Id": "String21",
+    "Valor": "Estuvo en estos bundles"
+  },
+  {
+    "Id": "String22",
+    "Valor": "Bundles Disponibles"
+  },
+  {
+    "Id": "String23",
+    "Valor": "Bundles Historial"
+  },
+  {
+    "Id": "String24",
+    "Valor": "Disponible en suscripciones"
+  },
+  {
+    "Id": "String25",
+    "Valor": "Estuvo en estas suscripciones"
+  },
+  {
+    "Id": "String26",
+    "Valor": "Suscripciones Disponibles"
+  },
+  {
+    "Id": "String27",
+    "Valor": "Suscripciones Historial"
+  },
+  {
+    "Id": "String28",
+    "Valor": "Disponible gratis"
+  },
+  {
+    "Id": "String29",
+    "Valor": "Estuvo gratis para reclamar"
+  },
+  {
+    "Id": "String30",
+    "Valor": "Gratis Disponibles"
+  },
+  {
+    "Id": "String31",
+    "Valor": "Gratis Historial"
+  },
+  {
+    "Id": "String32",
+    "Valor": "Aviso, esto es un DLC y requiere del juego base para hacerlo funcionar (clickea para abrir el juego)."
+  },
+  {
+    "Id": "String33",
+    "Valor": "Este juego es Free To Play, esto quiere decir que se puede jugar gratuitamente pero para disfrutarlo completamente será necesario la adquisición de uno o varios descargas de contenido (o DLCs para abreviar)."
+  },
+  {
+    "Id": "String34",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "String35",
+    "Valor": "Desarrollado por:"
+  },
+  {
+    "Id": "String36",
+    "Valor": "Publicado por:"
+  },
+  {
+    "Id": "String37",
+    "Valor": "Estuvo gratis"
+  },
+  {
+    "Id": "String38",
+    "Valor": "Estuvo en la suscripción"
+  },
+  {
+    "Id": "String39",
+    "Valor": "Tier"
+  },
+  {
+    "Id": "String40",
+    "Valor": "Eligiendo 1 juego"
+  },
+  {
+    "Id": "String41",
+    "Valor": "Eligiendo {0} juegos"
+  }
+]

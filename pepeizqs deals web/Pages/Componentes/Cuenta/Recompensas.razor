@@ -39,6 +39,13 @@
 		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.RewardsCoins.ToString())</label>
 		<hr />
 
+		@if (usuario.RewardsCoins >= 30)
+		{
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Limit", "Rewards")
+			</div>
+		}
+
 		<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
 			<div style="width: 25%;">
 				<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
@@ -73,28 +80,26 @@
 
 											if (juego != null)
 											{
-												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;">
-													@{
-														bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, recompensaJuego.DRM);
-														bool usuarioTieneDeseado = false;
+												bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, recompensaJuego.DRM);
+												bool usuarioTieneDeseado = false;
 
-														string fondoColor = "background-color: var(--fondoBotonPequeño)";
+												string fondoColor = "background-color: var(--fondoBotonPequeño)";
 
-														if (usuarioTieneJuego == true)
-														{
-															fondoColor = "background-color: var(--fondoBien);";
-														}
-														else
-														{
-															usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, recompensaJuego.DRM);
+												if (usuarioTieneJuego == true)
+												{
+													fondoColor = "background-color: var(--fondoBien);";
+												}
+												else
+												{
+													usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, recompensaJuego.DRM);
 
-															if (usuarioTieneDeseado == true)
-															{
-																fondoColor = "background-color: var(--fondoAlerta);";
-															}
-														}
+													if (usuarioTieneDeseado == true)
+													{
+														fondoColor = "background-color: var(--fondoAlerta);";
 													}
-													
+												}
+
+												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;" title="@juego.Nombre">													
 													<div style="@fondoColor; display: flex; flex-direction: column;">
 														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
 
@@ -103,7 +108,7 @@
 																string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
 															}
 
-															<img src="@imagen" style="width: 20px; height: 20px;" />
+															<img src="@imagen" style="width: 20px; height: 20px;" alt="@juego.Nombre"/>
 
 															<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() pepecoins</div>
 														</div>
@@ -277,7 +282,7 @@ else
 		mostrarJuegos = true;
 		estiloJuegos = fondo;
 
-		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
 		if (usuario != null)
 		{

@@ -72,109 +72,98 @@ namespace BaseDatos.Juegos
 				juego.PrecioActualesTiendas.Add(nuevaOferta);
 			}
 
-			if (juego.PrecioActualesTiendas.Count > 0)
+			if (juego.PrecioMinimosHistoricos != null)
 			{
-				foreach (JuegoPrecio precio in juego.PrecioActualesTiendas)
+				if (juego.PrecioMinimosHistoricos.Count > 0)
 				{
-					if (precio.FechaActualizacion.DayOfYear + 2 > DateTime.Now.DayOfYear)
+					foreach (JuegoPrecio minimo in juego.PrecioMinimosHistoricos)
 					{
-						bool drmEncontrado = false;
-
-						if (juego.PrecioMinimosHistoricos != null)
+						if (nuevaOferta.DRM == minimo.DRM)
 						{
-							if (juego.PrecioMinimosHistoricos.Count > 0)
+							decimal tempPrecio = nuevaOferta.Precio;
+
+							if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
 							{
-								foreach (JuegoPrecio minimo in juego.PrecioMinimosHistoricos)
+								tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, nuevaOferta.Moneda);
+							}
+
+							if (tempPrecio < minimo.Precio)
+							{
+								minimo.Precio = tempPrecio;
+								minimo.Moneda = nuevaOferta.Moneda;
+								minimo.Descuento = nuevaOferta.Descuento;
+								minimo.FechaDetectado = nuevaOferta.FechaDetectado;
+								minimo.FechaUltimoMinimo = nuevaOferta.FechaDetectado;
+								minimo.FechaActualizacion = nuevaOferta.FechaActualizacion;
+								minimo.FechaTermina = nuevaOferta.FechaTermina;
+								minimo.CodigoDescuento = nuevaOferta.CodigoDescuento;
+								minimo.CodigoTexto = nuevaOferta.CodigoTexto;
+								minimo.Nombre = nuevaOferta.Nombre;
+								minimo.Imagen = nuevaOferta.Imagen;
+								minimo.Enlace = nuevaOferta.Enlace;
+								minimo.Tienda = nuevaOferta.Tienda;
+
+								//------------------------------------------
+
+								if (juego.UsuariosInteresados != null)
 								{
-									if (precio.DRM == minimo.DRM)
+									if (juego.UsuariosInteresados.Count > 0)
 									{
-										decimal tempPrecio = precio.Precio;
-
-										if (precio.Moneda != Herramientas.JuegoMoneda.Euro)
+										foreach (var usuarioInteresado in juego.UsuariosInteresados)
 										{
-											tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, precio.Moneda);
-										}
-
-										if (tempPrecio < minimo.Precio)
-										{
-											minimo.Precio = tempPrecio;
-											minimo.Moneda = precio.Moneda;
-											minimo.Descuento = precio.Descuento;
-											minimo.FechaDetectado = precio.FechaDetectado;
-											minimo.FechaUltimoMinimo = precio.FechaDetectado;
-											minimo.FechaActualizacion = precio.FechaActualizacion;
-											minimo.FechaTermina = precio.FechaTermina;
-											minimo.CodigoDescuento = precio.CodigoDescuento;
-											minimo.CodigoTexto = precio.CodigoTexto;
-											minimo.Nombre = precio.Nombre;
-											minimo.Imagen = precio.Imagen;
-											minimo.Enlace = precio.Enlace;
-											minimo.Tienda = precio.Tienda;
-
-											//------------------------------------------
-											
-											if (juego.UsuariosInteresados != null)
+											if (usuarioInteresado.DRM == minimo.DRM)
 											{
-												if (juego.UsuariosInteresados.Count > 0)
-												{
-													foreach (var usuarioInteresado in juego.UsuariosInteresados)
-													{
-														if (usuarioInteresado.DRM == minimo.DRM)
-														{
-															string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
+												string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
 
-															if (correo != null)
-															{
-																Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
-															}
-														}														
-													}
+												if (correo != null)
+												{
+													Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
 												}
 											}
-                                        }
-                                        else if (tempPrecio == minimo.Precio)
-										{
-											minimo.Imagen = precio.Imagen;
-											minimo.Enlace = precio.Enlace;
-											minimo.Tienda = precio.Tienda;
-											minimo.Moneda = precio.Moneda;
-											minimo.Descuento = precio.Descuento;
-
-											minimo.FechaActualizacion = precio.FechaActualizacion;
-
-											DateTime tempFecha = precio.FechaDetectado;
-											tempFecha = tempFecha.AddDays(30);
-
-											bool cambiarFechaDetectado = false;
-
-											if (tempFecha < minimo.FechaDetectado)
-											{
-												cambiarFechaDetectado = true;
-											}
-
-											if (cambiarFechaDetectado == true)
-											{
-												minimo.FechaDetectado = precio.FechaDetectado;
-											}
 										}
-
-										drmEncontrado = true;
-										break;
 									}
 								}
 							}
-						}
-						else
-						{
-							juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
-						}
+							else if (tempPrecio == minimo.Precio)
+							{
+								minimo.Imagen = nuevaOferta.Imagen;
+								minimo.Enlace = nuevaOferta.Enlace;
+								minimo.Tienda = nuevaOferta.Tienda;
+								minimo.Moneda = nuevaOferta.Moneda;
+								minimo.Descuento = nuevaOferta.Descuento;
 
-						if (drmEncontrado == false)
-						{
-							juego.PrecioMinimosHistoricos.Add(precio);
+								minimo.FechaActualizacion = nuevaOferta.FechaActualizacion;
+
+								DateTime tempFecha = nuevaOferta.FechaDetectado;
+								tempFecha = tempFecha.AddDays(30);
+
+								bool cambiarFechaDetectado = false;
+
+								if (tempFecha < minimo.FechaDetectado)
+								{
+									cambiarFechaDetectado = true;
+								}
+
+								if (cambiarFechaDetectado == true)
+								{
+									minimo.FechaDetectado = nuevaOferta.FechaDetectado;
+								}
+							}
+
+							break;
 						}
 					}
 				}
+				else
+				{
+					juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
+					juego.PrecioMinimosHistoricos.Add(nuevaOferta);
+				}
+			}
+			else
+			{
+				juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
+				juego.PrecioMinimosHistoricos.Add(nuevaOferta);
 			}
 
 			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);

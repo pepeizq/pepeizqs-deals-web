@@ -461,6 +461,11 @@ namespace BaseDatos.Juegos
 
 			string busqueda = "SELECT * FROM " + tabla2;
 
+			if (tabla2 == "juegos")
+			{
+                busqueda = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + busqueda;
+            }
+
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
 				using (SqlDataReader lector = comando.ExecuteReader())

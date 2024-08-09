@@ -82,5 +82,9 @@
   {
     "Id": "Problem",
     "Valor": "All of these games come from Humble Bundle and Fanatical bundles, but if you have any problems with the key, send me an email to admin@pepeizqdeals.com so I can return the pepecoins you spend."
+  },
+  {
+    "Id": "Limit",
+    "Valor": "You have reached the limit of 30 pepecoins in the account, if you spend pepecoins in any game you will earn pepecoins again tomorrow."
   }
 ]
