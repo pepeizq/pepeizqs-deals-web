@@ -90,9 +90,9 @@ namespace BaseDatos.Usuarios
 								bool notificaciones = false;
 								bool correo = false;
 								bool steam = true;
-
-								//Enseñar Notificaciones Minimos
-								if (lector.IsDBNull(25) == false)
+                            
+                                //Enseñar Notificaciones Minimos
+                                if (lector.IsDBNull(25) == false)
 								{
 									if (lector.GetBoolean(25) == true)
 									{
@@ -100,8 +100,8 @@ namespace BaseDatos.Usuarios
 									}
 								}
 
-								//Correo Confirmado
-								if (lector.IsDBNull(10) == false)
+                                //Correo Confirmado
+                                if (lector.IsDBNull(10) == false)
 								{
 									if (lector.GetBoolean(10) == true)
 									{
@@ -148,15 +148,42 @@ namespace BaseDatos.Usuarios
 
                                 if (correo == true && notificaciones == true && steam == true)
 								{
-									//Deseados
+									//Deseados Steam
+									if (drm == JuegoDRM.Steam && lector.IsDBNull(5) == false)
+									{
+										if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+										{
+											List<string> deseadosSteam = Listados.Generar(lector.GetString(5));
+
+											if (deseadosSteam.Count > 0)
+											{
+												foreach (var deseadoSteam in deseadosSteam)
+												{
+													if (juegoIdSteam.ToString() == deseadoSteam)
+													{
+														//Correo
+														if (lector.IsDBNull(8) == false)
+														{
+															if (string.IsNullOrEmpty(lector.GetString(8)) == false)
+															{
+																return lector.GetString(8);
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+
+									//Deseados Web
 									if (lector.IsDBNull(20) == false)
 									{
-										if (lector.GetString(20) != null)
+										if (string.IsNullOrEmpty(lector.GetString(20)) == false)
 										{
 											string deseadosTexto = lector.GetString(20);
 											List<JuegoDeseado> deseados = null;
-
-											try
+                                          
+                                            try
 											{
 												deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosTexto);
 											}
@@ -166,14 +193,14 @@ namespace BaseDatos.Usuarios
 											{
 												if (deseados.Count > 0)
 												{
-													foreach (var deseado in deseados)
+                                                    foreach (var deseado in deseados)
 													{
 														if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
 														{
 															//Correo
 															if (lector.IsDBNull(8) == false)
 															{
-																if (lector.GetString(8) != null)
+																if (string.IsNullOrEmpty(lector.GetString(8)) == false)
 																{
 																	return lector.GetString(8);
 																}

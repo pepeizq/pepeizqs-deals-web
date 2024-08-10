@@ -366,17 +366,9 @@
 					}
 
 					<div class="noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra">
-						@if (usuario != null)
-						{
-							if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
-							{
-								<div style="margin-bottom: 10px;">
-									<a href="/news/@noticia.Id">Editar</a>
-								</div>
-							}
-						}
+						
 
-						<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')">
+						<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')" style="height: 100%;">
 							@{
 								string titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
 							}
@@ -388,6 +380,16 @@
 							<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, titulo, noticia.Tipo))" style="height: 100%; cursor: pointer;">
 								<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
 									<div style="display: flex; align-items: center;">
+										@if (usuario != null)
+										{
+											if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+											{
+												<div style="width: auto;">
+													<a href="/news/@noticia.Id">Editar</a>
+												</div>
+											}
+										}
+
 										<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
 											@if (noticia.Tipo == NoticiaTipo.Bundles)
 											{
@@ -416,8 +418,8 @@
 										</div>
 									</div>
 
-									<div style="background-color: var(--fondoBotonPequeño); padding: 1px; flex: 1;">
-										<img src="@noticia.Imagen" style="width: 100%; height: 223px; object-fit: contain;" alt="@noticia.TituloEn" />
+									<div style="background-color: var(--fondoBotonPequeño); padding: 1px; height: 100%;">
+										<img src="@noticia.Imagen" style="width: 100%; height: 100%; object-fit: contain;" alt="@noticia.TituloEn" />
 									</div>
 
 									<div style="background-color: var(--fondoBotonPequeño); padding: 10px 12px; display: flex; align-items: center;">

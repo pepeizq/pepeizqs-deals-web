@@ -42,6 +42,16 @@ namespace BaseDatos.Errores
             Environment.Exit(1);
         }
 
+        public static void Mensaje(string seccion, string mensaje)
+        {
+            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+            using (conexion)
+            {
+                Mensaje(seccion, mensaje, conexion);
+            }
+        }
+
         public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)
         {
             string sqlInsertar = "INSERT INTO errores " +
@@ -54,15 +64,14 @@ namespace BaseDatos.Errores
                 comando.Parameters.AddWithValue("@mensaje", "nada");
                 comando.Parameters.AddWithValue("@stacktrace", mensaje);
                 comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
-
-                comando.ExecuteNonQuery();
+             
                 try
                 {
-
+                    comando.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Ejecutar("Errores", ex);
                 }
             }
         }
