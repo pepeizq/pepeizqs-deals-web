@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "Expanded1",
+    "Valor": "Has been in:"
+  },
+  {
+    "Id": "Expanded2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Expanded3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Expanded4",
+    "Valor": "1 free"
+  },
+  {
+    "Id": "Expanded5",
+    "Valor": "{0} free"
+  },
+  {
+    "Id": "Expanded6",
+    "Valor": "1 subscription"
+  },
+  {
+    "Id": "Expanded7",
+    "Valor": "{0} subscriptions"
+  },
+  {
+    "Id": "Expanded8",
+    "Valor": "Has never previously been in a bundle, free promotion or subscription service."
+  },
+  {
+    "Id": "Expanded9",
+    "Valor": "Click to see details"
+  },
+  {
+    "Id": "Open",
+    "Valor": "Open Bundle"
+  },
+  {
+    "Id": "Open2",
+    "Valor": "Open Game"
+  },
+  {
+    "Id": "Close",
+    "Valor": "Close"
+  }
+]

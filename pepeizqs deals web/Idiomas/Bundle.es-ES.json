@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "Expanded1",
+    "Valor": "Ha estado en:"
+  },
+  {
+    "Id": "Expanded2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "Expanded3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "Expanded4",
+    "Valor": "1 vez gratis"
+  },
+  {
+    "Id": "Expanded5",
+    "Valor": "{0} veces gratis"
+  },
+  {
+    "Id": "Expanded6",
+    "Valor": "1 suscripción"
+  },
+  {
+    "Id": "Expanded7",
+    "Valor": "{0} suscripciones"
+  },
+  {
+    "Id": "Expanded8",
+    "Valor": "Nunca ha estado previamente en un bundle, promoción gratuita o servicio de suscripción."
+  },
+  {
+    "Id": "Expanded9",
+    "Valor": "Clickea para ver los detalles"
+  },
+  {
+    "Id": "Open",
+    "Valor": "Abrir Bundle"
+  },
+  {
+    "Id": "Open2",
+    "Valor": "Abrir Juego"
+  },
+  {
+    "Id": "Close",
+    "Valor": "Cerrar"
+  }
+]
