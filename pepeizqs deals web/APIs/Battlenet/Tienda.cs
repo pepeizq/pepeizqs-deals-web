@@ -30,7 +30,8 @@ namespace APIs.Battlenet
 
         private static List<string> ListaSlugs()
         {
-            List<string> slugs = ["call-of-duty-black-ops-4", 
+            List<string> slugs = ["call-of-duty-black-ops-4",
+				"call-of-duty-black-ops-6",
 				"call-of-duty-black-ops-cold-war",
 				"call-of-duty-modern-warfare",
 				"call-of-duty-modern-warfare-2-campaign-remastered",

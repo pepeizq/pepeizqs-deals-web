@@ -86,6 +86,29 @@ namespace BaseDatos.Bundles
 			}
 		}
 
+		public static void FechaTermina(string id, string fechaTermina, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE bundles " +
+					"SET fechaTermina=@fechaTermina " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@fechaTermina", fechaTermina);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Juegos(string id, string juegos, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE bundles " +

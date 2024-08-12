@@ -20,29 +20,31 @@
 {
 	if (modulo == false)
 	{
-		<div class="perfil" style="margin-bottom: 40px; padding: 20px 40px; display: flex; align-items: center; flex-direction: row; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3;">
-			<div style="display: flex; align-items: center; flex-direction: row;">
-				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
-					<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
-						<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
-					</div>
-				</a>
-
-				<div style="padding-left: 20px; padding-right: 20px;">
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 5px; font-size: 20px; margin-bottom: 5px;" target="_blank">
-						@bundle.NombreBundle
+		<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
+			<div class="perfil" style="padding: 20px 40px; display: flex; align-items: center; flex-direction: row;">
+				<div style="display: flex; align-items: center; flex-direction: row;">
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
+						<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
+							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
+						</div>
 					</a>
 
-					<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-						<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;" target="_blank">
-							@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+					<div style="padding-left: 20px; padding-right: 20px;">
+						<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
+							@bundle.NombreBundle
 						</a>
 
-						@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
+						<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
+							@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="text-align: center; padding: 8px 15px;" target="_blank">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
+			</a>
+		</div>	
 	}
 
 	if (bundle.Tiers != null)
@@ -96,7 +98,7 @@
 									}
 								</div>
 
-								<hr/>
+								<hr style="margin: 30px 0px;" />
 							}
 							else
 							{
@@ -126,7 +128,7 @@
 									</div>
 								</div>
 
-								<hr/>
+								<hr style="margin: 30px 0px;" />
 							}
 
 							<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding-bottom: 20px; grid-gap: 30px;">
