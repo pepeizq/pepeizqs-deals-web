@@ -256,9 +256,9 @@ namespace BaseDatos.Tiendas
 					{
 						comandoInsertar.ExecuteNonQuery();
 					}
-					catch
+					catch (Exception ex)
 					{
-
+						Errores.Insertar.Ejecutar("Insertar Tienda", ex);
 					}
 				}
 			}

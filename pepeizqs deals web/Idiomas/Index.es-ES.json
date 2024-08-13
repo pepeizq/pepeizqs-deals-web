@@ -36,10 +36,6 @@
     "Valor": "Redes sociales para seguir las noticias"
   },
   {
-    "Id": "LastNewsNo",
-    "Valor": "No han ocurrido noticias en las últimas 72 horas, pero puedes consultar todas las noticias vigentes aquí."
-  },
-  {
     "Id": "LastLowsMore",
     "Valor": "Cargar más mínimos históricos"
   },
@@ -110,9 +106,5 @@
   {
     "Id": "FilterOption3.4",
     "Valor": "Software"
-  },
-  {
-    "Id": "Loading",
-    "Valor": "Cargando"
   }
 ]

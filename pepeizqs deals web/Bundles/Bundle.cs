@@ -41,5 +41,6 @@ namespace Bundles2
 		public BundleTier Tier;
 		public JuegoDRM DRM;
 		public Juego Juego;
+		public List<string> DLCs;
 	}
 }

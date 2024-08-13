@@ -7,7 +7,9 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
-@inject IJSRuntime JS
+@inject IJSRuntime JavaScript
+@inject PersistentComponentState ApplicationState
+@implements IDisposable
 
 <script>
 	function moverScroll(id) {
@@ -56,7 +58,7 @@
 		@if (bundleSeleccionado != null)
 		{
 			<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
-				<div class="perfil" style="padding: 20px 40px; display: flex; align-items: center; flex-direction: row;">
+				<div class="perfil" style="padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
 					<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
 						<i class="fa-solid fa-arrow-left"></i>
 					</button>
@@ -84,11 +86,10 @@
 					</div>
 				</div>
 
-				<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="text-align: center; padding: 8px 15px;" target="_blank">
+				<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String3")
 				</a>
-			</div>
-			
+			</div>		
 
 			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" modulo="true" />
 		}
@@ -214,6 +215,9 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	private PersistingComponentStateSubscription guardador;
+
+	private List<Bundles2.Bundle> bundlesGestor = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 	private Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
@@ -259,11 +263,20 @@
 
 		//--------------------------------------------------------------------
 
-		List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
+		guardador = ApplicationState.RegisterOnPersisting(GuardarBundles);
 
-		if (bundles.Count > 0)
+		if (!ApplicationState.TryTakeFromJson<List<Bundles2.Bundle>>("guardarBundles", out var guardado))
 		{
-			foreach (var bundle in bundles)
+			bundlesGestor = BaseDatos.Bundles.Buscar.Todos();
+		}
+		else
+		{
+			bundlesGestor = guardado!;
+		}
+
+		if (bundlesGestor.Count > 0)
+		{
+			foreach (var bundle in bundlesGestor)
 			{
 				if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 				{
@@ -282,6 +295,18 @@
 				bundleSeleccionado = bundlesActuales[0];
 			}
 		}
+	}
+
+	private Task GuardarBundles()
+	{
+		ApplicationState.PersistAsJson("guardarBundles", bundlesGestor);
+
+		return Task.CompletedTask;
+	}
+
+	void IDisposable.Dispose()
+	{
+		guardador.Dispose();
 	}
 
 	private void CambiarAño(MouseEventArgs e, string nuevoAño)
@@ -323,13 +348,13 @@
 
 		mostrarBundleSeleccionado = true;
 
-		await JS.InvokeVoidAsync("moverScroll", "cuerpazo");
+		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 
 	private async void CerrarBundle(MouseEventArgs e)
 	{
 		mostrarBundleSeleccionado = false;
 
-		await JS.InvokeVoidAsync("moverScroll", "cuerpazo");
+		await JavaScript.InvokeVoidAsync("moverScroll", "cuerpazo");
 	}
 }

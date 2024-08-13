@@ -36,10 +36,6 @@
     "Valor": "Social networks to follow the news"
   },
   {
-    "Id": "LastNewsNo",
-    "Valor": "There has been no news in the last 72 hours, but you can check all current news here."
-  },
-  {
     "Id": "LastLows",
     "Valor": "Last Historical Lows"
   },
@@ -110,9 +106,5 @@
   {
     "Id": "FilterOption3.4",
     "Valor": "Software"
-  },
-  {
-    "Id": "Loading",
-    "Valor": "Loading"
   }
 ]

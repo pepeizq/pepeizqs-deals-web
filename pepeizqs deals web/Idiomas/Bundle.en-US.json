@@ -33,7 +33,27 @@
   },
   {
     "Id": "Expanded9",
+    "Valor": "Minimum Price"
+  },
+  {
+    "Id": "Expanded9",
+    "Valor": "It has the following DLC:"
+  },
+  {
+    "Id": "Expanded10",
+    "Valor": "It has the following DLCs:"
+  },
+  {
+    "Id": "Tooltip",
     "Valor": "Click to see details"
+  },
+  {
+    "Id": "Tooltip2",
+    "Valor": "MP -> Minimum Price"
+  },
+  {
+    "Id": "Game1",
+    "Valor": "MP"
   },
   {
     "Id": "Open",
@@ -46,5 +66,13 @@
   {
     "Id": "Close",
     "Valor": "Close"
+  },
+  {
+    "Id": "DLCs1",
+    "Valor": "1 DLC"
+  },
+  {
+    "Id": "DLCs2",
+    "Valor": "{0} DLCs"
   }
 ]
