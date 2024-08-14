@@ -13,7 +13,7 @@ namespace Herramientas
         {
             if (contexto != null)
             {
-				usuario = UserManager.GetUserAsync(contexto).Result;
+				usuario = await UserManager.GetUserAsync(contexto);
 
 				if (usuario != null)
 				{

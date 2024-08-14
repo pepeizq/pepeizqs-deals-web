@@ -9,10 +9,10 @@
     protected override async Task OnInitializedAsync()
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
-        string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+        string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
         string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-        if (piscinaApp != piscinaUsada)
+        if (piscinaTiendas == piscinaUsada)
         {
             SqlConnection conexion = new SqlConnection();
 

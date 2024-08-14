@@ -32,7 +32,8 @@ namespace Tareas
 
                 if (piscinaApp == piscinaUsada)
                 {
-                    string html = await Decompiladores.Estandar("https://tareas.pepeizqapps.com/");
+                    string html = await Decompiladores.Estandar("https://minimos.pepeizqdeals.com/");
+					string html2 = await Decompiladores.Estandar("https://tiendas.pepeizqdeals.com/");
 
 					//---------------------------------------------------------------------------------------
 

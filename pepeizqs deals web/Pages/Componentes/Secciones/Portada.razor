@@ -1,11 +1,12 @@
 ﻿@using APIs.Steam
-@using BaseDatos.Juegos;
+@using BaseDatos.Juegos
+@using Blazored.Video
+@using Blazored.Video.Support
 @using Juegos;
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.Data.SqlClient;
-@using Microsoft.Extensions.Caching.Distributed;
+@using Microsoft.Data.SqlClient
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic;
 @using Newtonsoft.Json
@@ -279,7 +280,7 @@
 							</div>
 
 							<div class="destacado-video">
-								<video src="@CargarVideo(juegoSeleccionado)" autoplay="autoplay" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+								<video src="@CargarVideo(juegoSeleccionado)" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
 							</div>
 						}
 						else
@@ -613,7 +614,7 @@ else
 			<div id="tooltip-minimos" class="tooltip-relleno">
 				@if (string.IsNullOrEmpty(tooltipVideo) == false)
 				{
-					<video src="@tooltipVideo" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+					<video src="@tooltipVideo" autoplay="true" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
 				}
 
 				<div style="padding: 12px; max-width: 430px;">
@@ -893,18 +894,6 @@ else
 			try
 			{
 				juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
-
-				if (juegosDestacadosCarga != null)
-				{
-					if (juegosDestacadosCarga.Count > 0)
-					{
-						juegosDestacadosGestor = juegosDestacadosCarga;
-
-						CargarJuegosDestacados();
-
-						CronometroDestacados();
-					}
-				}
 			}
 			catch (Exception ex)
 			{
@@ -989,6 +978,24 @@ else
 		}
 	}
 
+	protected override void OnAfterRender(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (juegosDestacadosCarga != null)
+			{
+				if (juegosDestacadosCarga.Count > 0)
+				{
+					juegosDestacadosGestor = juegosDestacadosCarga;
+
+					juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
+
+					CronometroDestacados();
+				}
+			}
+		}
+	}
+
 	#region Destacados
 
 	private List<Juegos.Juego> juegosDestacadosCarga = new List<Juegos.Juego>();
@@ -1008,34 +1015,36 @@ else
 		CronometroDestacados();
 	}
 
-	private void CargarJuegosDestacados()
+	private List<Juegos.Juego> CargarJuegosDestacados(List<Juegos.Juego> gestor)
 	{
-		if (juegosDestacadosGestor != null)
+		List<Juegos.Juego> mostrar = new List<Juegos.Juego>();
+
+		if (gestor != null)
 		{
-			if (juegosDestacadosGestor.Count > 0)
+			if (gestor.Count > 0)
 			{
-				juegosDestacadosMostrar.Clear();
+				gestor = gestor.OrderBy(x => Random.Shared.Next()).ToList();
 
-				juegosDestacadosGestor = juegosDestacadosGestor.OrderBy(x => Random.Shared.Next()).ToList();
-
-				foreach (var destacadoGestor in juegosDestacadosGestor)
+				foreach (var destacadoGestor in gestor)
 				{
 					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacadoGestor, destacadoGestor.PrecioMinimosHistoricos[0].DRM);
 
 					if (usuarioTieneJuego == false)
 					{
-						juegosDestacadosMostrar.Add(destacadoGestor);
+						mostrar.Add(destacadoGestor);
 					}
 
-					if (juegosDestacadosMostrar.Count == 6)
+					if (mostrar.Count == 6)
 					{
 						break;
 					}
 				}
 
-				juegoSeleccionado = juegosDestacadosMostrar[0];
+				juegoSeleccionado = mostrar[0];
 			}
 		}
+
+		return mostrar;
 	}
 
 	private async void CronometroDestacados()
@@ -1068,7 +1077,7 @@ else
 
 				if (i == juegosDestacadosMostrar.Count)
 				{
-					CargarJuegosDestacados();
+					juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
 				}
 
 				cronometroContador = 0;
