@@ -15,7 +15,7 @@
 	{
 		await Task.Delay(1);
 		WebApplicationBuilder builder = WebApplication.CreateBuilder();
-		string piscinaMinimos = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+		string piscinaMinimos = builder.Configuration.GetValue<string>("PoolMinimos:Contenido");
 		string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
 		if (piscinaMinimos == piscinaUsada)

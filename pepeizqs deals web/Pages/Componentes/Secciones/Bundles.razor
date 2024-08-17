@@ -1,5 +1,6 @@
 ﻿@using APIs.Steam
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
 @using pepeizqs_deals_web.Areas.Identity.Data;
@@ -8,8 +9,6 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
-@inject PersistentComponentState ApplicationState
-@implements IDisposable
 
 <script>
 	function moverScroll(id) {
@@ -31,14 +30,14 @@
 
 		<hr>
 
-		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
+		<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
 			@foreach (var bundle in bundlesActuales)
 			{
-				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">					
+				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">
 					<div style="width: 100%; text-align: center; padding: 5px;">
 						@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
 						{
-							<img src="@bundle.ImagenNoticia" style="max-width: 100%;" alt="@bundle.NombreBundle"/>
+							<img src="@bundle.ImagenNoticia" style="max-width: 100%;" alt="@bundle.NombreBundle" />
 						}
 						else
 						{
@@ -215,8 +214,6 @@
 	[Parameter]
 	public string idioma { get; set; }
 
-	private PersistingComponentStateSubscription guardador;
-
 	private List<Bundles2.Bundle> bundlesGestor = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
@@ -262,17 +259,8 @@
 		añoSeleccionado = DateTime.Now.Year.ToString();
 
 		//--------------------------------------------------------------------
-
-		guardador = ApplicationState.RegisterOnPersisting(GuardarBundles);
-
-		if (!ApplicationState.TryTakeFromJson<List<Bundles2.Bundle>>("guardarBundles", out var guardado))
-		{
-			bundlesGestor = BaseDatos.Bundles.Buscar.Todos();
-		}
-		else
-		{
-			bundlesGestor = guardado!;
-		}
+		
+		bundlesGestor = BaseDatos.Bundles.Buscar.Todos();
 
 		if (bundlesGestor.Count > 0)
 		{
@@ -295,18 +283,6 @@
 				bundleSeleccionado = bundlesActuales[0];
 			}
 		}
-	}
-
-	private Task GuardarBundles()
-	{
-		ApplicationState.PersistAsJson("guardarBundles", bundlesGestor);
-
-		return Task.CompletedTask;
-	}
-
-	void IDisposable.Dispose()
-	{
-		guardador.Dispose();
 	}
 
 	private void CambiarAño(MouseEventArgs e, string nuevoAño)

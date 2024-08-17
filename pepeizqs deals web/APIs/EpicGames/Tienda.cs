@@ -50,91 +50,100 @@ namespace APIs.EpicGames
 
 					if (principal != null)
 					{
-						if (principal.Datos.Catalogo.Busqueda.Juegos != null)
+						if (principal.Datos != null)
 						{
-							if (principal.Datos.Catalogo.Busqueda.Juegos.Count > 0)
+							if (principal.Datos.Catalogo != null)
 							{
-								foreach (var juego in principal.Datos.Catalogo.Busqueda.Juegos)
+								if (principal.Datos.Catalogo.Busqueda != null)
 								{
-									if (juego.Precio != null)
+									if (principal.Datos.Catalogo.Busqueda.Juegos != null)
 									{
-										if (juego.Precio.PrecioTotal != null)
+										if (principal.Datos.Catalogo.Busqueda.Juegos.Count > 0)
 										{
-											if (juego.Precio.PrecioTotal.PrecioFmt != null)
+											foreach (var juego in principal.Datos.Catalogo.Busqueda.Juegos)
 											{
-												if (string.IsNullOrEmpty(juego.Precio.PrecioTotal.PrecioFmt.PrecioRebajado) == false)
+												if (juego.Precio != null)
 												{
-													string textoPrecioRebajado = juego.Precio.PrecioTotal.PrecioFmt.PrecioRebajado;
-
-													if (string.IsNullOrEmpty(textoPrecioRebajado) == false)
+													if (juego.Precio.PrecioTotal != null)
 													{
-														textoPrecioRebajado = textoPrecioRebajado.Replace("€", null);
-														textoPrecioRebajado = textoPrecioRebajado.Replace(",", ".");
-														textoPrecioRebajado = textoPrecioRebajado.Trim();
-													}
-
-													string textoPrecioBase = juego.Precio.PrecioTotal.PrecioFmt.PrecioBase;
-
-													if (string.IsNullOrEmpty(textoPrecioBase) == false)
-													{
-														textoPrecioBase = textoPrecioBase.Replace("€", null);
-														textoPrecioBase = textoPrecioBase.Replace(",", ".");
-														textoPrecioBase = textoPrecioBase.Trim();
-													}
-
-													if (string.IsNullOrEmpty(textoPrecioRebajado) == false && string.IsNullOrEmpty(textoPrecioBase) == false)
-													{
-														decimal precioRebajado = decimal.Parse(textoPrecioRebajado);
-														decimal precioBase = decimal.Parse(textoPrecioBase);
-
-														int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-														if (descuento > 0 && juego.Enlaces != null && juego.Imagenes != null)
+														if (juego.Precio.PrecioTotal.PrecioFmt != null)
 														{
-															if (juego.Enlaces.Count > 0 && juego.Imagenes.Count > 0)
+															if (string.IsNullOrEmpty(juego.Precio.PrecioTotal.PrecioFmt.PrecioRebajado) == false)
 															{
-																string nombre = juego.Nombre;
-																nombre = WebUtility.HtmlDecode(nombre);
+																string textoPrecioRebajado = juego.Precio.PrecioTotal.PrecioFmt.PrecioRebajado;
 
-																string enlace = "https://store.epicgames.com/p/" + juego.Enlaces[0].Slug;
-
-																string imagen = juego.Imagenes[0].Enlace;
-
-																JuegoDRM drm = JuegoDRM.Epic;
-
-																JuegoPrecio oferta = new JuegoPrecio
+																if (string.IsNullOrEmpty(textoPrecioRebajado) == false)
 																{
-																	Nombre = nombre,
-																	Enlace = enlace,
-																	Imagen = imagen,
-																	Moneda = JuegoMoneda.Euro,
-																	Precio = precioRebajado,
-																	Descuento = descuento,
-																	Tienda = Generar().Id,
-																	DRM = drm,
-																	FechaDetectado = DateTime.Now,
-																	FechaActualizacion = DateTime.Now
-																};
-
-																try
-																{
-																	BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-																}
-																catch (Exception ex)
-																{
-																	BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+																	textoPrecioRebajado = textoPrecioRebajado.Replace("€", null);
+																	textoPrecioRebajado = textoPrecioRebajado.Replace(",", ".");
+																	textoPrecioRebajado = textoPrecioRebajado.Trim();
 																}
 
-																juegos2 += 1;
-																juegos3 += 1;
+																string textoPrecioBase = juego.Precio.PrecioTotal.PrecioFmt.PrecioBase;
 
-																try
+																if (string.IsNullOrEmpty(textoPrecioBase) == false)
 																{
-																	BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+																	textoPrecioBase = textoPrecioBase.Replace("€", null);
+																	textoPrecioBase = textoPrecioBase.Replace(",", ".");
+																	textoPrecioBase = textoPrecioBase.Trim();
 																}
-																catch (Exception ex)
+
+																if (string.IsNullOrEmpty(textoPrecioRebajado) == false && string.IsNullOrEmpty(textoPrecioBase) == false)
 																{
-																	BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+																	decimal precioRebajado = decimal.Parse(textoPrecioRebajado);
+																	decimal precioBase = decimal.Parse(textoPrecioBase);
+
+																	int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+																	if (descuento > 0 && juego.Enlaces != null && juego.Imagenes != null)
+																	{
+																		if (juego.Enlaces.Count > 0 && juego.Imagenes.Count > 0)
+																		{
+																			string nombre = juego.Nombre;
+																			nombre = WebUtility.HtmlDecode(nombre);
+
+																			string enlace = "https://store.epicgames.com/p/" + juego.Enlaces[0].Slug;
+
+																			string imagen = juego.Imagenes[0].Enlace;
+
+																			JuegoDRM drm = JuegoDRM.Epic;
+
+																			JuegoPrecio oferta = new JuegoPrecio
+																			{
+																				Nombre = nombre,
+																				Enlace = enlace,
+																				Imagen = imagen,
+																				Moneda = JuegoMoneda.Euro,
+																				Precio = precioRebajado,
+																				Descuento = descuento,
+																				Tienda = Generar().Id,
+																				DRM = drm,
+																				FechaDetectado = DateTime.Now,
+																				FechaActualizacion = DateTime.Now
+																			};
+
+																			try
+																			{
+																				BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+																			}
+																			catch (Exception ex)
+																			{
+																				BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+																			}
+
+																			juegos2 += 1;
+																			juegos3 += 1;
+
+																			try
+																			{
+																				BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+																			}
+																			catch (Exception ex)
+																			{
+																				BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+																			}
+																		}
+																	}
 																}
 															}
 														}
