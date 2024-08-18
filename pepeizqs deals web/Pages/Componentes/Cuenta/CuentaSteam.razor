@@ -144,7 +144,7 @@
 		}
 	}
 
-	private async void TextoCambiaSteamCuenta(ChangeEventArgs texto)
+	private void TextoCambiaSteamCuenta(ChangeEventArgs texto)
 	{
 		errorCuentaUsada = false;
 
@@ -164,7 +164,7 @@
 			{
 				enlaceCuenta = texto.Value.ToString().Trim();
 
-				await ActualizarDatosCuenta();
+				ActualizarDatosCuenta();
 			}
 		}
 	}
@@ -214,17 +214,28 @@
 		}
 	}
 
-	private async Task ActualizarDatos(MouseEventArgs e)
+	private void ActualizarDatos(MouseEventArgs e)
 	{
-		await ActualizarDatosCuenta();
+		ActualizarDatosCuenta();
 	}
 
-	private async Task ActualizarDatosCuenta()
+	private async void ActualizarDatosCuenta()
 	{
 		desactivar = true;
 
-		if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true)
+		if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true || enlaceCuenta.Contains("http://steamcommunity.com/id/") == true || enlaceCuenta.Contains("http://steamcommunity.com/profiles/") == true)
 		{
+			usuario.SteamAccount = enlaceCuenta;
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch
+			{
+				BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
+			}
+
 			SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(enlaceCuenta);
 
 			if (datos != null)
@@ -243,7 +254,14 @@
 					usuario.OfficialGroup2 = datos.GrupoNormal;
 					usuario.SteamId = datos.SteamId;
 
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch
+					{
+						BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
+					}
 				}
 				else
 				{

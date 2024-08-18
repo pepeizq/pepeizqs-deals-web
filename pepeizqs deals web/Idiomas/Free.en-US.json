@@ -1,0 +1,54 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Free"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Free Available"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Free Archive"
+  },
+  {
+    "Id": "String3",
+    "Valor": "{0} game"
+  },
+  {
+    "Id": "String4",
+    "Valor": "{0} games"
+  },
+  {
+    "Id": "String5",
+    "Valor": "and"
+  },
+  {
+    "Id": "String6",
+    "Valor": "{0} DLC"
+  },
+  {
+    "Id": "String7",
+    "Valor": "{0} DLCs"
+  },
+  {
+    "Id": "String8",
+    "Valor": "is free to claim"
+  },
+  {
+    "Id": "String9",
+    "Valor": "are free to claim"
+  },
+  {
+    "Id": "String10",
+    "Valor": "There is nothing free to claim"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Check out the PC games and DLCs that can be claimed for free"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Has already been in other promotions to claim it for free."
+  }
+]

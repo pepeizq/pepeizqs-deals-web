@@ -244,7 +244,7 @@ app.MapHealthChecks("/vida");
 
 app.UseRouting();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseRateLimiter();
 

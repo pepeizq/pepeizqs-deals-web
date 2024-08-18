@@ -461,10 +461,16 @@ namespace BaseDatos.Juegos
 
 			string busqueda = "SELECT * FROM " + tabla2;
 
-			if (tabla2 == "juegos")
+			//if (tabla2 == "juegos")
+			//{
+   //             busqueda = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + busqueda;
+   //         }
+
+			string limite = "SET QUERY_GOVERNOR_COST_LIMIT 15000;";
+			using (SqlCommand setQueryGovernorCommand = new SqlCommand(limite, conexion))
 			{
-                busqueda = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + busqueda;
-            }
+				setQueryGovernorCommand.ExecuteNonQuery();
+			}
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{

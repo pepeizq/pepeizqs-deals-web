@@ -272,54 +272,6 @@
     "Valor": "Bundle where you can choose the games and available from"
   },
   {
-    "Id": "Free.Title",
-    "Valor": "Free"
-  },
-  {
-    "Id": "Free.String1",
-    "Valor": "Free Available"
-  },
-  {
-    "Id": "Free.String2",
-    "Valor": "Free Archive"
-  },
-  {
-    "Id": "Free.String3",
-    "Valor": "{0} game"
-  },
-  {
-    "Id": "Free.String4",
-    "Valor": "{0} games"
-  },
-  {
-    "Id": "Free.String5",
-    "Valor": "and"
-  },
-  {
-    "Id": "Free.String6",
-    "Valor": "{0} DLC"
-  },
-  {
-    "Id": "Free.String7",
-    "Valor": "{0} DLCs"
-  },
-  {
-    "Id": "Free.String8",
-    "Valor": "is free to claim"
-  },
-  {
-    "Id": "Free.String9",
-    "Valor": "are free to claim"
-  },
-  {
-    "Id": "Free.String10",
-    "Valor": "There is nothing free to claim"
-  },
-  {
-    "Id": "Free.String11",
-    "Valor": "Check out the PC games and DLCs that can be claimed for free"
-  },
-  {
     "Id": "Subscriptions.Title",
     "Valor": "Subscriptions"
   },
