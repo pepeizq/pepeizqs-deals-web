@@ -9,7 +9,7 @@ namespace APIs.Steam
     {
         public static async Task<SteamCuentaID64> CargarID64(string enlace)
         {
-            string id64 = string.Empty;
+			string id64 = string.Empty;
             int cuentaTipo = 0;
             string usuario = string.Empty;
 
@@ -35,9 +35,9 @@ namespace APIs.Steam
 
                 string html = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&vanityurl=" + usuario);
 
-                if (html != null)
+                if (string.IsNullOrEmpty(html) == false)
                 {
-                    SteamSacarID id = JsonConvert.DeserializeObject<SteamSacarID>(html);
+					SteamSacarID id = JsonConvert.DeserializeObject<SteamSacarID>(html);
 
                     if (id != null)
                     {
@@ -90,7 +90,7 @@ namespace APIs.Steam
             {
                 string html = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamids=" + nuevaCuenta.ID64);
 
-                if (html != null)
+                if (string.IsNullOrEmpty(html) == false)
                 {
                     SteamCuentaAPI cuenta = JsonConvert.DeserializeObject<SteamCuentaAPI>(html);
 
@@ -99,35 +99,38 @@ namespace APIs.Steam
                         string juegos = string.Empty;
                         string htmlJuegos = await Decompiladores.Estandar("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador[0].ID64 + "&include_appinfo=1&include_played_free_games=1&include_extended_appinfo=1");
 
-                        if (htmlJuegos != null) 
+                        if (htmlJuegos != null)
                         {
                             SteamJuegosAPI json = JsonConvert.DeserializeObject<SteamJuegosAPI>(htmlJuegos);
 
-                            if (json.Datos != null)
+                            if (json != null)
                             {
-                                if (json.Datos.Juegos != null)
+                                if (json.Datos != null)
                                 {
-                                    if (json.Datos.Juegos.Count > 0)
+                                    if (json.Datos.Juegos != null)
                                     {
-                                        foreach (SteamJuegosAPIJuego juego in json.Datos.Juegos)
+                                        if (json.Datos.Juegos.Count > 0)
                                         {
-                                            if (juegos == string.Empty)
+                                            foreach (SteamJuegosAPIJuego juego in json.Datos.Juegos)
                                             {
-                                                juegos = juego.ID;
+                                                if (juegos == string.Empty)
+                                                {
+                                                    juegos = juego.ID;
+                                                }
+                                                else
+                                                {
+                                                    juegos = juegos + "," + juego.ID;
+                                                }
                                             }
-                                            else
-                                            {
-                                                juegos = juegos + "," + juego.ID;
-                                            }           
                                         }
                                     }
                                 }
                             }
                         }
 
-                        //----------------------------------------------
+						//----------------------------------------------
 
-                        string deseados = string.Empty;
+						string deseados = string.Empty;
 
                         try
                         {
@@ -207,32 +210,32 @@ namespace APIs.Steam
                         }
                         catch { }
 
-                        //----------------------------------------------
+						//----------------------------------------------
 
-                        bool grupoPremium = false;
+						bool grupoPremium = false;
                         bool grupoNormal = false;
                         string htmlGrupos = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetUserGroupList/v0001/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador[0].ID64);
 
                         if (htmlGrupos != null)
                         {
-							SteamGruposAPI json = JsonConvert.DeserializeObject<SteamGruposAPI>(htmlGrupos);
+                            SteamGruposAPI json = JsonConvert.DeserializeObject<SteamGruposAPI>(htmlGrupos);
 
-                            if (json != null) 
-                            { 
-                                foreach (var grupo in json.Datos.Grupos) 
-                                { 
+                            if (json != null)
+                            {
+                                foreach (var grupo in json.Datos.Grupos)
+                                {
                                     if (grupo.Id == "40604285")
                                     {
                                         grupoPremium = true;
                                     }
-                                    
+
                                     if (grupo.Id == "33500256")
-									{
-										grupoNormal = true;
-									}
-								}
+                                    {
+                                        grupoNormal = true;
+                                    }
+                                }
                             }
-						}
+                        }
 
                         //----------------------------------------------
 

@@ -21,7 +21,7 @@
 	if (modulo == false)
 	{
 		<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
-			<div class="perfil" style="padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
 				<div style="display: flex; align-items: center; flex-direction: row;">
 					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
 						<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
@@ -121,7 +121,7 @@
 							}
 						}
 
-						<div class="perfil" style="padding: 30px; margin-bottom: 20px;">
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
 							@if (bundle.Pick == true)
 							{
 								<div style="display: flex; align-items: center; width: 100%; flex-direction: row; padding-bottom: 10px;">
@@ -130,11 +130,11 @@
 										<div style="width: 100%; text-align: center;">
 											@if (tier2.CantidadJuegos == 1)
 											{
-												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String21") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
+												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String21", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
 											}
 											else if (tier2.CantidadJuegos > 1)
 											{
-												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String8") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> <label>/</label> <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String20"))</label>
+												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String8", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> <label>/</label> <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "String20", "Bundle"))</label>
 											}										
 										</div>
 									}
@@ -166,7 +166,7 @@
 									}
 
 									<div style="font-size: 14px;">
-										@Herramientas.Idiomas.CogerCadena(idioma, "Bundles.String14"): @ArreglarPrecio(totalMinimos)
+										@Herramientas.Idiomas.CogerCadena(idioma, "String14", "Bundle"): @ArreglarPrecio(totalMinimos)
 									</div>
 								</div>
 

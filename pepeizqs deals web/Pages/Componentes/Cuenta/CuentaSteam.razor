@@ -6,13 +6,42 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<style>
+	.cargando {
+		width: 48px;
+		height: 48px;
+		border: 5px solid var(--colorTexto);
+		border-bottom-color: transparent;
+		border-radius: 50%;
+		display: inline-block;
+		box-sizing: border-box;
+		animation: rotation 1s linear infinite;
+    }
+
+    @@keyframes rotation {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+    } 
+</style>
+
 @if (usuario != null)
 {
 	if (usuario.EmailConfirmed == true)
 	{
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Steam1", "Account")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" disabled="@desactivar" />
-
+			@if (ocupado == false)
+			{
+				<input class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Steam1", "Account")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
+			}
+			else
+			{
+				<div>@usuario.SteamAccount</div>
+			}
+			
 			<div style="display: flex; align-items: start; margin: 20px 0px;">
 				<div style="padding-top: 10px; padding-right: 20px;">
 					<i class="fa-solid fa-circle-info" style="font-size: 30px;"></i>
@@ -29,16 +58,40 @@
 
 			@if (errorCuentaUsada == true)
 			{
-				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 30px; border-radius: 0px;" role="alert">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Steam4", "Account")
 				</div>
 			}
 
-			@if (string.IsNullOrEmpty(enlaceCuenta) == false)
+			@if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) > DateTime.Now)
 			{
-				<button class="boton" style="font-size: 18px; max-width: 250px; margin-top: 20px;" @onclick="@(e => ActualizarDatos(e))" disabled="@desactivar">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Steam5", "Account")
-				</button>
+				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 30px; border-radius: 0px;" role="alert">
+					<div>
+						@Herramientas.Idiomas.CogerCadena(idioma, "Steam12", "Account")
+					</div>
+
+					<div style="margin-top: 10px;">
+						<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+					</div>
+				</div>
+			}
+			else
+			{
+				if (ocupado == false)
+				{
+					<button class="boton" style="font-size: 18px; max-width: 250px; margin-top: 20px; cursor: pointer;" @onclick="@(e => ActualizarCuenta(e))">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Steam5", "Account")
+					</button>
+				}
+				else
+				{
+					<div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+						<div class="cargando" />
+						<div>
+							@mensajeCargando	
+						</div>
+					</div>					
+				}
 			}
 		</div>
 
@@ -80,13 +133,6 @@
 							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam9", "Account") @MensajeCantidad(usuario.SteamWishlist)</label>
 						</div>
 					}
-
-					@if (usuario.SteamAccountLastCheck != null)
-					{
-						<div style="margin-top: 15px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Steam10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
-						</div>
-					}
 				</div>
 			</div>
 		}
@@ -123,13 +169,15 @@
 
 	private Usuario usuario = new Usuario();
 
-	private bool desactivar = false;
-
 	private string enlaceCuenta = string.Empty;
 
 	private bool enseñarImagen = false;
 
+	private bool ocupado = false;
+	private string mensajeCargando = string.Empty;
 	private bool errorCuentaUsada = false;
+
+	private SteamUsuario datos = new SteamUsuario();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -137,10 +185,19 @@
 
 		if (usuario != null)
 		{
-			if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+			if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) < DateTime.Now)
 			{
-				enlaceCuenta = usuario.SteamAccount;
+				ocupado = false;
+
+				if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+				{
+					enlaceCuenta = usuario.SteamAccount;
+				}
 			}			
+			else
+			{
+				ocupado = true;
+			}
 		}
 	}
 
@@ -148,24 +205,9 @@
 	{
 		errorCuentaUsada = false;
 
-		bool tiempo = true;
-
-		if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+		if (texto.Value.ToString().Trim().Length > 1)
 		{
-			if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
-			{
-				tiempo = false;
-			}
-		}
-
-		if (tiempo == true)
-		{
-			if (texto.Value.ToString().Trim().Length > 1)
-			{
-				enlaceCuenta = texto.Value.ToString().Trim();
-
-				ActualizarDatosCuenta();
-			}
+			enlaceCuenta = texto.Value.ToString().Trim();
 		}
 	}
 
@@ -214,62 +256,75 @@
 		}
 	}
 
-	private void ActualizarDatos(MouseEventArgs e)
+	private async Task ActualizarCuenta(MouseEventArgs args)
 	{
-		ActualizarDatosCuenta();
-	}
+		ocupado = true;
 
-	private async void ActualizarDatosCuenta()
-	{
-		desactivar = true;
-
-		if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true || enlaceCuenta.Contains("http://steamcommunity.com/id/") == true || enlaceCuenta.Contains("http://steamcommunity.com/profiles/") == true)
+		if (string.IsNullOrEmpty(enlaceCuenta) == false)
 		{
-			usuario.SteamAccount = enlaceCuenta;
-
-			try
+			if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true || enlaceCuenta.Contains("http://steamcommunity.com/id/") == true || enlaceCuenta.Contains("http://steamcommunity.com/profiles/") == true)
 			{
-				await UserManager.UpdateAsync(usuario);
-			}
-			catch
-			{
-				BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
-			}
+				mensajeCargando = Herramientas.Idiomas.CogerCadena(idioma, "Steam13", "Account");
 
-			SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(enlaceCuenta);
+				SteamCuentaID64 id64 = await APIs.Steam.Cuenta.CargarID64(enlaceCuenta);
 
-			if (datos != null)
-			{
-				bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(enlaceCuenta, datos.SteamId, usuario.Id);
-
-				if (cuentaUsada == false)
+				if (id64 != null)
 				{
-					usuario.SteamAccount = enlaceCuenta;
-					usuario.SteamGames = datos.Juegos;
-					usuario.SteamWishlist = datos.Deseados;
-					usuario.Avatar = datos.Avatar;
-					usuario.Nickname = datos.Nombre;
-					usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-					usuario.OfficialGroup = datos.GrupoPremium;
-					usuario.OfficialGroup2 = datos.GrupoNormal;
-					usuario.SteamId = datos.SteamId;
+					bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(id64.ID64, usuario.Id);
 
-					try
+					if (cuentaUsada == false)
 					{
-						await UserManager.UpdateAsync(usuario);
+						mensajeCargando = Herramientas.Idiomas.CogerCadena(idioma, "Steam14", "Account");
+
+						datos = await APIs.Steam.Cuenta.CargarDatos(enlaceCuenta);
+
+						if (datos != null)
+						{
+							usuario.SteamAccount = enlaceCuenta;
+							usuario.SteamGames = datos.Juegos;
+							usuario.SteamWishlist = datos.Deseados;
+							usuario.Avatar = datos.Avatar;
+							usuario.Nickname = datos.Nombre;
+							usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+							usuario.OfficialGroup = datos.GrupoPremium;
+							usuario.OfficialGroup2 = datos.GrupoNormal;
+							usuario.SteamId = datos.SteamId;
+
+							try
+							{
+								await UserManager.UpdateAsync(usuario);
+							}
+							catch
+							{
+								BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
+							}
+						}
 					}
-					catch
+					else
 					{
-						BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
-					}
-				}
-				else
-				{
-					errorCuentaUsada = true;
+						errorCuentaUsada = true;
+
+						usuario.SteamAccount = null;
+
+						try
+						{
+							await UserManager.UpdateAsync(usuario);
+						}
+						catch
+						{							
+						}
+					}					
 				}
 			}
 		}
 
-		desactivar = false;
+		if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) > DateTime.Now)
+		{
+			ocupado = true;
+		}
+		else
+		{
+			ocupado = false;
+		}		
 	}
 }

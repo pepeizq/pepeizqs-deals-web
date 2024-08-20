@@ -264,141 +264,147 @@
 
 	private Usuario usuario = new Usuario();
 
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
 		if (usuario != null)
 		{
-			deseadosGestor = new List<JuegoDeseadoMostrar>();
+			if (HttpContext == null)
+			{
+				deseadosGestor = new List<JuegoDeseadoMostrar>();
 
-			#region Filtrado
+				#region Filtrado
 
-			if (usuario.WishlistOption1 == true)
-			{
-				estadoEnseñarSoloMinimos = "checked";
-			}			
-			else
-			{
-				estadoEnseñarSoloMinimos = null;
-			}
+				if (usuario.WishlistOption1 == true)
+				{
+					estadoEnseñarSoloMinimos = "checked";
+				}
+				else
+				{
+					estadoEnseñarSoloMinimos = null;
+				}
 
-			if (usuario.WishlistOption2 == true)
-			{
-				estadoEnseñarHistorial = "checked";
-				alturaFila = 114;
-			}
-			else
-			{
-				estadoEnseñarHistorial = null;
-				alturaFila = 88;
-			}
+				if (usuario.WishlistOption2 == true)
+				{
+					estadoEnseñarHistorial = "checked";
+					alturaFila = 114;
+				}
+				else
+				{
+					estadoEnseñarHistorial = null;
+					alturaFila = 88;
+				}
 
-			if (usuario.WishlistOption3 == null)
-			{
-				minimoDescuento = 1;
-			}
-			else
-			{
-				if (usuario.WishlistOption3 == 0 || usuario.WishlistOption3 == null)
+				if (usuario.WishlistOption3 == null)
 				{
 					minimoDescuento = 1;
 				}
-				else if (usuario.WishlistOption3 > 0)
+				else
 				{
-					minimoDescuento = usuario.WishlistOption3;
+					if (usuario.WishlistOption3 == 0 || usuario.WishlistOption3 == null)
+					{
+						minimoDescuento = 1;
+					}
+					else if (usuario.WishlistOption3 > 0)
+					{
+						minimoDescuento = usuario.WishlistOption3;
+					}
 				}
-			}
 
-			if (usuario.WishlistOption4 == null)
-			{
-				maximoPrecio = 90;
-			}
-			else
-			{
-				if (usuario.WishlistOption4 == 0 || usuario.WishlistOption4 == null)
+				if (usuario.WishlistOption4 == null)
 				{
 					maximoPrecio = 90;
 				}
-				else if (usuario.WishlistOption4 > 0)
+				else
 				{
-					maximoPrecio = usuario.WishlistOption4;
-				}
-			}
-
-			#endregion
-
-			#region Deseados Steam
-
-			if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
-			{
-				deseadosSteam = Herramientas.Listados.Generar(usuario.SteamWishlist);
-			}
-
-			if (deseadosSteam.Count > 0)
-			{
-				List<Juegos.Juego> juegos = BaseDatos.Juegos.Buscar.MultiplesJuegosSteam(deseadosSteam);
-
-				if (juegos != null)
-				{
-					int i = 0;
-
-					foreach (var juego in juegos)
+					if (usuario.WishlistOption4 == 0 || usuario.WishlistOption4 == null)
 					{
-						i += 1;
+						maximoPrecio = 90;
+					}
+					else if (usuario.WishlistOption4 > 0)
+					{
+						maximoPrecio = usuario.WishlistOption4;
+					}
+				}
 
-						if (juego != null)
+				#endregion
+
+				#region Deseados Steam
+
+				if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+				{
+					deseadosSteam = Herramientas.Listados.Generar(usuario.SteamWishlist);
+				}
+
+				if (deseadosSteam.Count > 0)
+				{
+					List<Juegos.Juego> juegos = BaseDatos.Juegos.Buscar.MultiplesJuegosSteam(deseadosSteam);
+
+					if (juegos != null)
+					{
+						int i = 0;
+
+						foreach (var juego in juegos)
 						{
-							AñadirJuegoMostrar(juego, JuegoDRM.Steam);
+							i += 1;
+
+							if (juego != null)
+							{
+								AñadirJuegoMostrar(juego, JuegoDRM.Steam);
+							}
 						}
 					}
 				}
-			}
 
-			#endregion
+				#endregion
 
-			#region Deseados Web
+				#region Deseados Web
 
-			if (string.IsNullOrEmpty(usuario.Wishlist) == false)
-			{
-				deseadosWeb = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
-			}
-
-			if (deseadosWeb != null)
-			{
-				if (deseadosWeb.Count > 0)
+				if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 				{
-					int i = 0;
+					deseadosWeb = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+				}
 
-					foreach (var deseadoWeb in deseadosWeb)
+				if (deseadosWeb != null)
+				{
+					if (deseadosWeb.Count > 0)
 					{
-						i += 1;
+						int i = 0;
 
-						Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(deseadoWeb.IdBaseDatos);
-
-						if (juego != null)
+						foreach (var deseadoWeb in deseadosWeb)
 						{
-							AñadirJuegoMostrar(juego, deseadoWeb.DRM);
+							i += 1;
+
+							Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(deseadoWeb.IdBaseDatos);
+
+							if (juego != null)
+							{
+								AñadirJuegoMostrar(juego, deseadoWeb.DRM);
+							}
 						}
 					}
 				}
-			}
 
-			#endregion
+				#endregion
 
-			if (deseadosGestor != null)
-			{
-				if (deseadosGestor.Count > 0)
+				if (deseadosGestor != null)
 				{
-					if (usuario != null)
+					if (deseadosGestor.Count > 0)
 					{
-						if (usuario.WishlistSort == null)
+						if (usuario != null)
 						{
-							usuario.WishlistSort = 3;
-						}
+							if (usuario.WishlistSort == null)
+							{
+								usuario.WishlistSort = 3;
+							}
 
-						ElegirOrdenamiento();
-					}				
+							ElegirOrdenamiento();
+						}
+					}
 				}
 			}
 		}   

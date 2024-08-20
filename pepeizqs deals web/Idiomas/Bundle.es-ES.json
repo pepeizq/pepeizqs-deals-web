@@ -1,5 +1,97 @@
 [
   {
+    "Id": "Title",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Bundles Disponibles"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Bundles Archivo"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Abrir Bundle"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Este bundle termina en {0} días"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Este bundle termina en {0} día"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Este bundle termina hoy"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Este bundle ha acabado"
+  },
+  {
+    "Id": "String8",
+    "Valor": "juegos"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Precio Mínimo"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "String14",
+    "Valor": "Coste mínimo comprando por separado"
+  },
+  {
+    "Id": "String15",
+    "Valor": "DLC"
+  },
+  {
+    "Id": "String16",
+    "Valor": "{0} bundle disponible para comprar"
+  },
+  {
+    "Id": "String17",
+    "Valor": "{0} bundles disponibles para comprar"
+  },
+  {
+    "Id": "String18",
+    "Valor": "No hay bundles disponibles para comprar"
+  },
+  {
+    "Id": "String19",
+    "Valor": "Comprueba los ultimos bundles de juegos para PC que hay disponibles para comprar"
+  },
+  {
+    "Id": "String20",
+    "Valor": "cada unidad"
+  },
+  {
+    "Id": "String21",
+    "Valor": "juego"
+  },
+  {
+    "Id": "String22",
+    "Valor": "Bundle dividido en varios tiers y disponible desde"
+  },
+  {
+    "Id": "String23",
+    "Valor": "Bundle donde puedes elegir los juegos y disponible desde"
+  },
+  {
     "Id": "Expanded1",
     "Valor": "Ha estado en:"
   },

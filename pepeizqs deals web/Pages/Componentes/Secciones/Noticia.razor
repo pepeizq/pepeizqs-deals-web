@@ -23,7 +23,7 @@
 	</button>
 }
 
-<div class="perfil" style="padding: 0px; overflow-x: hidden; overflow-y: scroll;">
+<div style="padding: 0px; overflow-x: hidden; overflow-y: scroll;">
 	@if (juegos != null)
 	{
 		if (juegos.Count > 0)
@@ -34,7 +34,7 @@
 		}
 	}
 
-	<div style="padding: 40px 40px 30px 40px; display: flex; flex-direction: row; align-items: center;">
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px; display: flex; flex-direction: row; align-items: center;">
 		@{
 			string imagenCabecera = string.Empty;
 
@@ -119,8 +119,6 @@
 		</a>
 	}
 
-	<hr/>
-
 	@if (noticia.Tipo == NoticiaTipo.Bundles)
 	{
 		if (noticia.BundleId > 0)
@@ -132,7 +130,7 @@
 	}
 	else
 	{
-		<div style="padding: 30px 40px 40px 40px;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 			@((MarkupString)Herramientas.Idiomas.MirarTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs))
 		</div>
 	}

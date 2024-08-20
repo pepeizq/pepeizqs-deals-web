@@ -267,6 +267,9 @@
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
@@ -301,56 +304,59 @@
 
         //--------------------------------------------------------------------
 
-        List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
+        if (HttpContext == null)
+        {
+            List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
 
-        if (juegosTodos.Count > 0)
-        {           
-            List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
-
-            foreach (var juego in juegosTodos)
+            if (juegosTodos.Count > 0)
             {
-                if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
+                List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
+
+                foreach (var juego in juegosTodos)
                 {
-                    Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-                    juego.Imagen = juego2.Imagenes.Header_460x215;
-                    juego.Juego = juego2;
-
-                    juegosActuales.Add(juego);
-                }
-                else
-                {
-                    juegosPasados.Add(juego);
-                }
-            }
-
-            if (juegosActuales.Count > 0)
-            {
-                juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
-            }
-
-            if (juegosPasados.Count > 0)
-            {
-                juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
-
-                foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
-                {
-                    List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
-
-                    foreach (var juego in juegosPasados)
+                    if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
                     {
-                        if (juego.Tipo == gratis.Tipo)
-                        {
-                            juegos2.Add(juego);
-                        }
+                        Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+                        juego.Imagen = juego2.Imagenes.Header_460x215;
+                        juego.Juego = juego2;
+
+                        juegosActuales.Add(juego);
                     }
-
-                    if (juegos2.Count > 0)
+                    else
                     {
-                        Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
-                        componente.Juegos = juegos2;
-                        componente.Tipo = gratis;
+                        juegosPasados.Add(juego);
+                    }
+                }
 
-                        gratisPasados.Add(componente);
+                if (juegosActuales.Count > 0)
+                {
+                    juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
+                }
+
+                if (juegosPasados.Count > 0)
+                {
+                    juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
+
+                    foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+                    {
+                        List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
+
+                        foreach (var juego in juegosPasados)
+                        {
+                            if (juego.Tipo == gratis.Tipo)
+                            {
+                                juegos2.Add(juego);
+                            }
+                        }
+
+                        if (juegos2.Count > 0)
+                        {
+                            Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
+                            componente.Juegos = juegos2;
+                            componente.Tipo = gratis;
+
+                            gratisPasados.Add(componente);
+                        }
                     }
                 }
             }

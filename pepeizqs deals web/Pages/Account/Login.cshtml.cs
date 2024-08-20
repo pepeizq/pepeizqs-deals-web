@@ -69,8 +69,6 @@ namespace pepeizqs_deals_web.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid == true)
             {
                 Microsoft.AspNetCore.Identity.SignInResult resultado = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
@@ -79,13 +77,19 @@ namespace pepeizqs_deals_web.Pages.Account
                 {
                     if (string.IsNullOrEmpty(returnUrl) == false)
                     {
-                        return LocalRedirect(returnUrl);
+                        if (returnUrl.Contains("/account/login") == true)
+                        {
+                            return RedirectToPage("./");
+                        }
+                        else
+                        {
+                            return LocalRedirect(returnUrl);
+                        }                       
                     }
                     else
                     {
                         return RedirectToPage("./");
                     }
-                    //return Redirect("./Manage");
                 }
 
                 if (resultado.RequiresTwoFactor)

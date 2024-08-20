@@ -41,7 +41,7 @@
 
 		@if (usuario.RewardsCoins >= 30)
 		{
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px;">
+			<div class="alert alert-danger alert-dismissible" style="padding: 40px; margin-bottom: 20px; border-radius: 0px;">
 				@Herramientas.Idiomas.CogerCadena(idioma, "Limit", "Rewards")
 			</div>
 		}

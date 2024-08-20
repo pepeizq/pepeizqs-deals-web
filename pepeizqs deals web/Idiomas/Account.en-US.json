@@ -204,6 +204,18 @@
     "Valor": "You must have your email account confirmed to be able to use this section."
   },
   {
+    "Id": "Steam12",
+    "Valor": "Your Steam account data can only be updated once every 10 minutes."
+  },
+  {
+    "Id": "Steam13",
+    "Valor": "Checking account ID64"
+  },
+  {
+    "Id": "Steam14",
+    "Valor": "Checking data"
+  },
+  {
     "Id": "Keys1",
     "Valor": "There is no key in your account."
   },

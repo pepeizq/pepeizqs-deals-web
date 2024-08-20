@@ -72,7 +72,7 @@ namespace BaseDatos.Recompensas
                     busqueda = busqueda + " WHERE usuarioId=@usuarioId";
                 }
 
-                busqueda = busqueda + " ORDER BY fecha DESC";
+                busqueda = busqueda + " ORDER BY id DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {

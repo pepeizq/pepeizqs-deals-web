@@ -404,6 +404,9 @@
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
 
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
@@ -482,7 +485,10 @@
 
 		using (conexion)
 		{
-			juegosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
+			if (HttpContext == null)
+			{
+				juegosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
+			}
 		}
 
 		if (juegosGestor.Count > 0)

@@ -4,7 +4,7 @@
 @{
 	#nullable disable
 
-	string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.Title");
+	string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Bundle");
 
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
@@ -23,16 +23,16 @@
 		{
 			if (bundlesActuales.Count == 1)
 			{
-				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String16"), bundlesActuales.Count.ToString());
+				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
 			}
 			else if (bundlesActuales.Count > 1)
 			{
-				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String17"), bundlesActuales.Count.ToString());
+				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
 			}
 		}
 		else if (bundlesActuales.Count == 0)
 		{
-			titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String18");
+			titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "String18", "Bundle");
 		}
 	}
 
@@ -41,7 +41,7 @@
 
 	string enlace = "https://pepeizqdeals.com/bundles/";
 
-	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "Bundles.String19");
+	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "String19", "Bundle");
 }
 
 @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new

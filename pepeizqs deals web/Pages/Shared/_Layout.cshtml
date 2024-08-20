@@ -19,8 +19,8 @@
     string rss = Herramientas.Idiomas.CogerRSS(idioma);
     string bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
 
-    string codigoFuente = "https://github.com/pepeizq/pepeizqs-deals-web/";
-    string visitas = "https://win6052.site4now.net/stats/awstats.pl?config=1112749300&h=8d43503475c9993340908170c2f4b9da";
+    string codigoFuente = builder.Configuration.GetValue<string>("Enlaces:CodigoFuente");
+    string visitas = builder.Configuration.GetValue<string>("Enlaces:Visitas");
 
     string titulo = string.Empty;
 

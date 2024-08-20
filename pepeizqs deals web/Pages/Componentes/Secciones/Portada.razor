@@ -839,9 +839,13 @@ else
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
 		WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
 		discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
 		telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
 		reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
@@ -893,19 +897,22 @@ else
 
 			try
 			{
-				juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
-
-				if (juegosDestacadosCarga != null)
+				if (HttpContext == null)
 				{
-					if (juegosDestacadosCarga.Count > 0)
+					juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+
+					if (juegosDestacadosCarga != null)
 					{
-						juegosDestacadosGestor = juegosDestacadosCarga;
+						if (juegosDestacadosCarga.Count > 0)
+						{
+							juegosDestacadosGestor = juegosDestacadosCarga;
 
-						juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
+							juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
 
-						CronometroDestacados();
+							CronometroDestacados();
+						}
 					}
-				}
+				}				
 			}
 			catch (Exception ex)
 			{
@@ -987,14 +994,6 @@ else
 			}
 
 			#endregion
-		}
-	}
-
-	protected override void OnAfterRender(bool primerRender)
-	{
-		if (primerRender == true)
-		{
-			
 		}
 	}
 

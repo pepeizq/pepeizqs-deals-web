@@ -204,6 +204,18 @@
     "Valor": "Debes de tener tu cuenta de correo confirmada para poder usar esta sección."
   },
   {
+    "Id": "Steam12",
+    "Valor": "Los datos de tu cuenta de Steam solo se pueden actualizar una vez cada 10 minutos."
+  },
+  {
+    "Id": "Steam13",
+    "Valor": "Comprobando ID64 de la cuenta"
+  },
+  {
+    "Id": "Steam14",
+    "Valor": "Comprobando datos"
+  },
+  {
     "Id": "Keys1",
     "Valor": "No hay ninguna clave asociada a tu cuenta."
   },

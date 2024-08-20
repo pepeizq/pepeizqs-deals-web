@@ -4,6 +4,7 @@ using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace BaseDatos.Usuarios
 {
@@ -221,65 +222,33 @@ namespace BaseDatos.Usuarios
 			return null;
 		}
 
-        public static bool CuentaSteamUsada(string enlace, string usuarioSteamId, string usuarioWebId)
+        public static bool CuentaSteamUsada(string id64Steam, string idUsuario)
 		{
-            if (enlace != null)
-            {
-				if (enlace.Contains("?") == true)
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM AspNetUsers WHERE SteamId=@SteamId";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
-					int int1 = enlace.IndexOf("?");
-					enlace = enlace.Remove(int1, enlace.Length - int1);
-				}
+					comando.Parameters.AddWithValue("@SteamId", id64Steam);
 
-				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-				using (conexion)
-				{
-					string busqueda = "SELECT * FROM AspNetUsers";
-
-					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						using (SqlDataReader lector = comando.ExecuteReader())
+						while (lector.Read())
 						{
-							while (lector.Read())
+							if (lector.IsDBNull(0) == false)
 							{
-								if (lector.IsDBNull(0) == false)
+								if (lector.GetString(0) != idUsuario)
 								{
-									if (string.IsNullOrEmpty(lector.GetString(0)) == false)
-									{
-										if (lector.GetString(0) != usuarioWebId)
-										{
-											//ID Steam 64
-											if (lector.IsDBNull(28) == false)
-											{
-												if (string.IsNullOrEmpty(lector.GetString(28)) == false)
-												{
-													if (usuarioSteamId == lector.GetString(28))
-													{
-														return true;
-													}
-												}
-											}
-
-											//Cuenta Steam Community
-											if (lector.IsDBNull(3) == false)
-											{
-												if (string.IsNullOrEmpty(lector.GetString(3)) == false)
-												{
-													if (Buscador.LimpiarNombre(enlace) == Buscador.LimpiarNombre(lector.GetString(3)))
-													{
-														return true;
-													}
-												}
-											}
-										}
-									}
-								}
+									return true;
+								}							
 							}
 						}
 					}
-				}			
-            }
+				}
+			}
 
 			return false;
         }
