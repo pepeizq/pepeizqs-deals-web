@@ -226,45 +226,47 @@
 	private List<string> años = new List<string>();
 	private string añoSeleccionado = string.Empty;
 
+	#nullable enable
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
+	#nullable disable
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-		if (usuario != null)
-		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-			{
-				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-			}
-		}
-
-		//--------------------------------------------------------------------
-
-		DateTime arranque = new DateTime(2010, 1, 1);
-
-		int i = 0;
-		while (i < 100)
-		{
-			if (arranque.Year != DateTime.Now.Year)
-			{
-				años.Add(arranque.Year.ToString());
-				arranque = arranque.AddYears(1);
-			}
-			i += 1;
-		}
-
-		años.Add(DateTime.Now.Year.ToString());
-		años.Reverse();
-
-		añoSeleccionado = DateTime.Now.Year.ToString();
-
-		//--------------------------------------------------------------------
-
 		if (HttpContext == null)
 		{
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+			if (usuario != null)
+			{
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
+			}
+
+			//--------------------------------------------------------------------
+
+			DateTime arranque = new DateTime(2010, 1, 1);
+
+			int i = 0;
+			while (i < 100)
+			{
+				if (arranque.Year != DateTime.Now.Year)
+				{
+					años.Add(arranque.Year.ToString());
+					arranque = arranque.AddYears(1);
+				}
+				i += 1;
+			}
+
+			años.Add(DateTime.Now.Year.ToString());
+			años.Reverse();
+
+			añoSeleccionado = DateTime.Now.Year.ToString();
+
+			//--------------------------------------------------------------------
+
 			bundlesGestor = BaseDatos.Bundles.Buscar.Todos();
 
 			if (bundlesGestor.Count > 0)

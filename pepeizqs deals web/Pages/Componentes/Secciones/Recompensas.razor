@@ -67,17 +67,25 @@
 
     private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
 
+    #nullable enable
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+    #nullable disable
+
     protected override async Task OnInitializedAsync()
     {
-        usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-        juegos = BaseDatos.Recompensas.Juegos.Todo();
-
-        if (juegos != null)
+        if (HttpContext == null)
         {
-            if (juegos.Count > 0)
+            usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+            juegos = BaseDatos.Recompensas.Juegos.Todo();
+
+            if (juegos != null)
             {
-                juegos = juegos.OrderByDescending(x => x.Coins).ToList();
+                if (juegos.Count > 0)
+                {
+                    juegos = juegos.OrderByDescending(x => x.Coins).ToList();
+                }
             }
         }
     }

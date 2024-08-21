@@ -283,6 +283,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
         using (conexion)
         {
             noticia = new Plantilla();
+            noticia.Fecha = DateTime.Now;
 
             noticiaTipoSeleccionada = texto.Value.ToString();
 

@@ -517,14 +517,10 @@ else
 @if (noticiaMostrarId > 0)
 {
 	<div class="noticia-panel">
-		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
+		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative;">
 			<div style="position: absolute; top: 0; right: -80px; display: flex; flex-direction: column; gap: 20px;">
 				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => CerrarNoticia(e))">
 					<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
-				</button>
-
-				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => AbrirNoticia(e))">
-					<i class="fa-solid fa-plus" style="font-size: 30px;"></i>
 				</button>
 			</div>
 			
@@ -614,7 +610,7 @@ else
 			<div id="tooltip-minimos" class="tooltip-relleno">
 				@if (string.IsNullOrEmpty(tooltipVideo) == false)
 				{
-					<video src="@tooltipVideo" autoplay="true" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+					<video src="@tooltipVideo" autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;" />
 				}
 
 				<div style="padding: 12px; max-width: 430px;">
@@ -839,65 +835,67 @@ else
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
+	#nullable enable
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
+	#nullable disable
 
 	protected override async Task OnInitializedAsync()
 	{
-		WebApplicationBuilder builder = WebApplication.CreateBuilder();
-
-		discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
-		telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
-		reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
-		twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
-		steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
-		rss = Herramientas.Idiomas.CogerRSS(idioma);
-		bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
-
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-		if (usuario != null)
+		if (HttpContext == null)
 		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+			discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
+			telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
+			reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
+			twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
+			steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
+			rss = Herramientas.Idiomas.CogerRSS(idioma);
+			bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
+
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+			if (usuario != null)
 			{
-				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
+
+				#region Filtrado
+
+				if (usuario.IndexOption1 == true)
+				{
+					estadoOcultarJuegosUsuario = "checked";
+				}
+				else
+				{
+					estadoOcultarJuegosUsuario = null;
+				}
+
+				if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
+				{
+					drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
+				}
+
+				if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
+				{
+					categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
+				}
+
+				#endregion
 			}
 
-			#region Filtrado
+			//------------------------------------------------
 
-			if (usuario.IndexOption1 == true)
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
 			{
-				estadoOcultarJuegosUsuario = "checked";
-			}
-			else
-			{
-				estadoOcultarJuegosUsuario = null;
-			}
+				#region Destacados
 
-			if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
-			{
-				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
-			}
-
-			if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
-			{
-				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
-			}
-
-			#endregion
-		}
-
-		//------------------------------------------------
-
-		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-		using (conexion)
-		{
-			#region Destacados
-
-			try
-			{
-				if (HttpContext == null)
+				try
 				{
 					juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
 
@@ -912,88 +910,88 @@ else
 							CronometroDestacados();
 						}
 					}
-				}				
-			}
-			catch (Exception ex)
-			{
-				BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
-			}
-
-			#endregion
-
-			#region Aviso
-
-			aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
-
-			#endregion
-
-			#region Minimos
-
-			try
-			{
-				juegosMinimosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
-			}
-			catch { }
-
-			if (juegosMinimosGestor != null)
-			{
-				if (juegosMinimosGestor.Count > 0)
-				{
-					Filtros();
 				}
-			}
-
-			#endregion
-
-			#region Noticias
-
-			try
-			{
-				noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas(conexion, "30");
-			}
-			catch { }
-
-			if (noticiasGestor != null)
-			{
-				if (noticiasGestor.Count > 0)
+				catch (Exception ex)
 				{
-					noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+					BaseDatos.Errores.Insertar.Ejecutar("Portada", ex, conexion);
+				}
 
-					foreach (Noticias.Noticia noticia in noticiasGestor)
+				#endregion
+
+				#region Aviso
+
+				aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma, conexion);
+
+				#endregion
+
+				#region Minimos
+
+				try
+				{
+					juegosMinimosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosMinimos");
+				}
+				catch { }
+
+				if (juegosMinimosGestor != null)
+				{
+					if (juegosMinimosGestor.Count > 0)
 					{
-						DateTime fechaTemporal = noticia.FechaEmpieza;
-						fechaTemporal = fechaTemporal.AddDays(3);
+						Filtros();
+					}
+				}
 
-						if (fechaTemporal > DateTime.Now)
+				#endregion
+
+				#region Noticias
+
+				try
+				{
+					noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas(conexion, "30");
+				}
+				catch { }
+
+				if (noticiasGestor != null)
+				{
+					if (noticiasGestor.Count > 0)
+					{
+						noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
+
+						foreach (Noticias.Noticia noticia in noticiasGestor)
 						{
-							bool añadir = true;
+							DateTime fechaTemporal = noticia.FechaEmpieza;
+							fechaTemporal = fechaTemporal.AddDays(3);
 
-							if (DateTime.Now > noticia.FechaTermina)
+							if (fechaTemporal > DateTime.Now)
 							{
-								añadir = false;
-							}
+								bool añadir = true;
 
-							if (noticiasMostrar.Count > 0)
-							{
-								foreach (var noticiaMostrar in noticiasMostrar)
+								if (DateTime.Now > noticia.FechaTermina)
 								{
-									if (noticiaMostrar.Id == noticia.Id)
+									añadir = false;
+								}
+
+								if (noticiasMostrar.Count > 0)
+								{
+									foreach (var noticiaMostrar in noticiasMostrar)
 									{
-										añadir = false;
+										if (noticiaMostrar.Id == noticia.Id)
+										{
+											añadir = false;
+										}
 									}
 								}
-							}
 
-							if (añadir == true)
-							{
-								noticiasMostrar.Add(noticia);
+								if (añadir == true)
+								{
+									noticiasMostrar.Add(noticia);
+								}
 							}
 						}
 					}
 				}
-			}
 
-			#endregion
+				#endregion
+			}
 		}
 	}
 
@@ -1578,11 +1576,6 @@ else
 	private void CerrarNoticia(MouseEventArgs e)
 	{
 		noticiaMostrarId = 0;
-	}
-
-	private void AbrirNoticia(MouseEventArgs e)
-	{
-		NavManager.NavigateTo("/news/" + noticiaMostrarId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticiaMostrarTitulo) + "/", true);
 	}
 
 	#endregion

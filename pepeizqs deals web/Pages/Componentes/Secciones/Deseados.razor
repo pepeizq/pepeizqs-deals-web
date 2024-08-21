@@ -264,16 +264,18 @@
 
 	private Usuario usuario = new Usuario();
 
+	#nullable enable
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
+	#nullable disable
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-		if (usuario != null)
+		if (HttpContext == null)
 		{
-			if (HttpContext == null)
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+
+			if (usuario != null)
 			{
 				deseadosGestor = new List<JuegoDeseadoMostrar>();
 
@@ -407,14 +409,14 @@
 					}
 				}
 			}
-		}   
-		else
-		{
-			NavManager.NavigateTo("/", true);
-		}
+			else
+			{
+				NavManager.NavigateTo("/", true);
+			}
 
-		deseadosSteam.Clear();
-		deseadosWeb.Clear();
+			deseadosSteam.Clear();
+			deseadosWeb.Clear();
+		}
 	}
 
 	private void AñadirJuegoMostrar(Juegos.Juego juego, JuegoDRM drm)

@@ -841,35 +841,43 @@
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
+	#nullable enable
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+	#nullable disable
+
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
-
-		//-------------------------------------------
-
-		if (juego != null)
+		if (HttpContext == null)
 		{
-			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
 
-			if (juego.Media != null)
+			//-------------------------------------------
+
+			if (juego != null)
 			{
-				if (string.IsNullOrEmpty(juego.Media.Video) == false)
+				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+
+				if (juego.Media != null)
 				{
-					mediaMostrar = juego.Media.Video;
-					mediaMostrar = mediaMostrar.Replace("http://", "https://");
-					mediaMostrarPosicion = 99999;
-				}
-				else
-				{
-					if (juego.Media.Capturas != null)
+					if (string.IsNullOrEmpty(juego.Media.Video) == false)
 					{
-						if (juego.Media.Capturas.Count > 0)
+						mediaMostrar = juego.Media.Video;
+						mediaMostrar = mediaMostrar.Replace("http://", "https://");
+						mediaMostrarPosicion = 99999;
+					}
+					else
+					{
+						if (juego.Media.Capturas != null)
 						{
-							mediaMostrar = juego.Media.Capturas[0];
-						}						
+							if (juego.Media.Capturas.Count > 0)
+							{
+								mediaMostrar = juego.Media.Capturas[0];
+							}
+						}
 					}
 				}
-			}			
+			}
 		}
 	}
 

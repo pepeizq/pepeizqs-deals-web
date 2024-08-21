@@ -4,6 +4,52 @@ namespace BaseDatos.Noticias
 {
 	public static class Actualizar
 	{
+		public static void TituloEn(string id, string titulo, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET tituloEn=@tituloEn " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@tituloEn", titulo);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void TituloEs(string id, string titulo, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET tituloEs=@tituloEs " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@tituloEs", titulo);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Imagen(string id, string imagen, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE noticias " +

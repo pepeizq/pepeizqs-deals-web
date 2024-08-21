@@ -12,6 +12,26 @@
 
 		<div style="display: flex; align-items: start; margin-bottom: 20px;">
 			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Titulo EN
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaTituloEn(e))" class="entrada-texto" rows="1">@textoTituloEn</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Titulo ES
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaTituloEs(e))" class="entrada-texto" rows="1">@textoTituloEs</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
 				Imagen
 			</div>
 
@@ -93,12 +113,50 @@
 
 		if (noticia != null)
 		{
+			textoTituloEn = noticia.TituloEn;
+			textoTituloEs = noticia.TituloEs;
 			textoImagen = noticia.Imagen;
 			textoTipo = (int)noticia.Tipo;
 			textoEnlace = noticia.Enlace;
 			textoFechaTermina = noticia.FechaTermina.ToString();
 			textoContenidoEn = noticia.ContenidoEn;
 			textoContenidoEs = noticia.ContenidoEs;
+		}
+	}
+
+	private string textoTituloEn = string.Empty;
+
+	private void TextoCambiaTituloEn(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoTituloEn = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.TituloEn(noticiaId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoTituloEs = string.Empty;
+
+	private void TextoCambiaTituloEs(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			textoTituloEs = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Noticias.Actualizar.TituloEs(noticiaId.ToString(), nuevoTexto, conexion);
+			}
 		}
 	}
 
