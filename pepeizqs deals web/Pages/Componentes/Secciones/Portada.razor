@@ -854,7 +854,7 @@ else
 			rss = Herramientas.Idiomas.CogerRSS(idioma);
 			bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
 
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
 			if (usuario != null)
 			{

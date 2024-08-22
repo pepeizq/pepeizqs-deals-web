@@ -9,7 +9,7 @@ namespace Herramientas
 {
     public static class UsuarioDatos
     {
-        public static async Task<Usuario> Actualizar(ClaimsPrincipal contexto, Usuario usuario, UserManager<Usuario> UserManager)
+        public static async Task<Usuario> Actualizar(ClaimsPrincipal contexto, Usuario usuario, UserManager<Usuario> UserManager, string idioma)
         {
             if (contexto != null)
             {
@@ -70,13 +70,18 @@ namespace Herramientas
 								}
 							}
 						}
-
-						try
-						{
-							await UserManager.UpdateAsync(usuario);
-						}
-						catch { }
 					}
+
+					if (string.IsNullOrEmpty(idioma) == false)
+					{
+						usuario.Language = idioma;
+					}
+					
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
 			}
 

@@ -289,7 +289,7 @@ else
 			mostrarJuegos = true;
 			estiloJuegos = fondo;
 
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
 			if (usuario != null)
 			{

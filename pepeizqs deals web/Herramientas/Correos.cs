@@ -2,7 +2,6 @@
 
 using Juegos;
 using MailKit.Net.Imap;
-using MailKit.Net.Smtp;
 using MailKit.Search;
 using MailKit.Security;
 using MailKit;
@@ -36,11 +35,19 @@ namespace Herramientas
             }
 		}
 
-		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion)
+		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion, string idioma)
 		{
 			try
 			{
                 string titulo = noticia.TituloEn;
+
+				if (string.IsNullOrEmpty(idioma) == false)
+				{
+					if (idioma == "es-ES" || idioma == "es")
+					{
+						titulo = noticia.TituloEs;
+					}
+				}
 
                 string html = string.Empty;
 
@@ -70,7 +77,15 @@ namespace Herramientas
 
                 string contenido = noticia.ContenidoEn;
 
-                if (contenido.Contains("https://pepeizqdeals.com") == false)
+				if (string.IsNullOrEmpty(idioma) == false)
+				{
+					if (idioma == "es-ES" || idioma == "es")
+					{
+						contenido = noticia.ContenidoEs;
+					}
+				}
+
+				if (contenido.Contains("https://pepeizqdeals.com") == false)
                 {
                     contenido = contenido.Replace("/link/", "https://pepeizqdeals.com/link/");
                 }
@@ -223,63 +238,6 @@ namespace Herramientas
 
 			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
-
-        public static void EnviarCorreo(MimeMessage correo, MimeMessage respuesta, UniqueId id)
-		{
-			if (correo != null)
-			{
-                WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                string host = builder.Configuration.GetValue<string>("Correo:Host");
-                string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
-                using (SmtpClient cliente = new SmtpClient())
-				{
-                    cliente.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
-
-                    correo.From.Add(new MailboxAddress("pepeizq's deals", "admin@pepeizqdeals.com"));
-					
-                    cliente.Connect(host, 25, false);
-                    cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
-					cliente.Send(correo);
-                    cliente.Disconnect(true);
-				}
-
-				if (respuesta != null)
-				{
-                    using (ImapClient cliente = new ImapClient())
-                    {
-                        cliente.Connect(host, 143, SecureSocketOptions.Auto);
-                        cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
-
-                        cliente.Inbox.Open(FolderAccess.ReadWrite);
-                        cliente.Inbox.SetFlags(id, MessageFlags.Deleted, true);
-                        cliente.Inbox.Expunge();
-
-                        cliente.Disconnect(true);
-                    }
-                }
-
-            }
-        }
-
-        public static void BorrarCorreo(UniqueId id)
-		{
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-            string host = builder.Configuration.GetValue<string>("Correo:Host");
-            string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
-            using (ImapClient cliente = new ImapClient())
-            {
-                cliente.Connect(host, 143, SecureSocketOptions.Auto);
-                cliente.Authenticate("admin@pepeizqdeals.com", contraseña);
-
-                cliente.Inbox.Open(FolderAccess.ReadWrite);
-                cliente.Inbox.SetFlags(id, MessageFlags.Deleted, true);
-                cliente.Inbox.Expunge();
-
-                cliente.Disconnect(true);
-            }
-        }
 
         private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
 		{

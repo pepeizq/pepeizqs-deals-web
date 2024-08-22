@@ -144,5 +144,9 @@ public class Usuario : IdentityUser
     [PersonalData]
     [Column(TypeName = "nvarchar(100)")]
     public string? RewardsLastLogin { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(50)")]
+	public string? Language { get; set; }
 }
 

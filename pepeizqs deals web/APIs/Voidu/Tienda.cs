@@ -87,6 +87,10 @@ namespace APIs.Voidu
                                             {
 												enlaceCorrecto = false;
                                             }
+											else if (enlace.Contains("voidu.com/de/") == true)
+											{
+												enlaceCorrecto = false;
+											}
 
 											if (enlaceCorrecto == true)
 											{

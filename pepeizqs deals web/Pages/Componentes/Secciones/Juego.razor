@@ -670,7 +670,7 @@
 							<div class="juego-galeria-contenedor">
 								@if (mediaMostrarPosicion == 99999)
 								{
-									<BlazoredVideo style="width: 854px; height: 100%;" controls="controls" poster="@juego.Imagenes.Header_460x215" preload="none">
+									<BlazoredVideo style="width: 100%; height: 100%;" controls="controls" poster="@juego.Imagenes.Header_460x215" preload="none">
 										<source src="@mediaMostrar" type="video/mp4"  />
 									</BlazoredVideo>
 								}
@@ -850,7 +850,7 @@
 	{
 		if (HttpContext == null)
 		{
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
 			//-------------------------------------------
 

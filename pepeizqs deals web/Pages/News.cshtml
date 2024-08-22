@@ -27,7 +27,7 @@
 	{
 		usuario = await UserManager.GetUserAsync(User);
 
-		if (await UsuarioCoger.RolDios(UserManager, User) == true)
+		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
 		{
 			adminLogeado = true;
 		}

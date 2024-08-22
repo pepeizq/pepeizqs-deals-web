@@ -514,28 +514,36 @@
 	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 
+	#nullable enable
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+	#nullable disable
+
 	protected override async Task OnInitializedAsync()
 	{
-		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
-
-		if (bundle != null)
+		if (HttpContext == null)
 		{
-			foreach (var juego in bundle.Juegos)
+			bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+
+			if (bundle != null)
 			{
-				juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-				juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+				foreach (var juego in bundle.Juegos)
+				{
+					juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+					juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+				}
 			}
-		}
 
-		//------------------------------------------------------------
+			//------------------------------------------------------------
 
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager);
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
-		if (usuario != null)
-		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+			if (usuario != null)
 			{
-				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
 			}
 		}
 	}
