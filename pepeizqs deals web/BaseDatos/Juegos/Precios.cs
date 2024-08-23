@@ -89,6 +89,13 @@ namespace BaseDatos.Juegos
 
 							if (tempPrecio < minimo.Precio)
 							{
+								bool notificar = false;
+
+								if (decimal.Add(tempPrecio, 0.2m) < minimo.Precio)
+								{
+									notificar = true;
+								}
+
 								minimo.Precio = tempPrecio;
 								minimo.Moneda = nuevaOferta.Moneda;
 								minimo.Descuento = nuevaOferta.Descuento;
@@ -105,24 +112,27 @@ namespace BaseDatos.Juegos
 
 								//------------------------------------------
 
-								if (juego.UsuariosInteresados != null)
+								if (notificar == true)
 								{
-									if (juego.UsuariosInteresados.Count > 0)
-									{
-										foreach (var usuarioInteresado in juego.UsuariosInteresados)
-										{
-											if (usuarioInteresado.DRM == minimo.DRM)
-											{
-												string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
+                                    if (juego.UsuariosInteresados != null)
+                                    {
+                                        if (juego.UsuariosInteresados.Count > 0)
+                                        {
+                                            foreach (var usuarioInteresado in juego.UsuariosInteresados)
+                                            {
+                                                if (usuarioInteresado.DRM == minimo.DRM)
+                                                {
+                                                    string correo = Usuarios.Buscar.UnUsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
 
-												if (correo != null)
-												{
-													Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
-												}
-											}
-										}
-									}
-								}
+                                                    if (correo != null)
+                                                    {
+                                                        Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }							
 							}
 							else if (tempPrecio == minimo.Precio)
 							{
