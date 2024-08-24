@@ -1,6 +1,4 @@
-﻿//https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables={%22allowCountries%22:%22ES%22,%22category%22:%22games/edition/base%22,%22comingSoon%22:false,%22count%22:40,%22country%22:%22ES%22,%22effectiveDate%22:%22[,2024-08-11T13:15:18.401Z]%22,%22keywords%22:%22%22,%22locale%22:%22en-GB%22,%22onSale%22:true,%22sortBy%22:%22releaseDate%22,%22sortDir%22:%22DESC%22,%22start%22:0,%22tag%22:%22%22,%22withPrice%22:true}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%227d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437%22}}
-
-#nullable disable
+﻿#nullable disable
 
 using Herramientas;
 using Juegos;
@@ -102,7 +100,8 @@ namespace APIs.EpicGames
 																			string nombre = juego.Nombre;
 																			nombre = WebUtility.HtmlDecode(nombre);
 
-																			string enlace = "https://store.epicgames.com/p/" + juego.Enlaces[0].Slug;
+																			string slug = juego.Enlaces[0].Slug;
+                                                                            string enlace = "https://store.epicgames.com/p/" + slug;
 
 																			string imagen = juego.Imagenes[0].Enlace;
 
@@ -124,7 +123,7 @@ namespace APIs.EpicGames
 
 																			try
 																			{
-																				BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+																				BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, null, null, slug);
 																			}
 																			catch (Exception ex)
 																			{

@@ -36,6 +36,8 @@ namespace Juegos
 		public string Maestro { get; set; }
 		public string FreeToPlay { get; set; }
 		public string MayorEdad { get; set; }
+		public string SlugEpic { get; set; }
+		public DateTime? UltimaModificacion { get; set; }
 	}
 
 	public static class JuegoCrear

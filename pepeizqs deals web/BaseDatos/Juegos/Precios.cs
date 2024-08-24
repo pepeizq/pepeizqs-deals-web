@@ -9,6 +9,8 @@ namespace BaseDatos.Juegos
 	{
 		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion, bool actualizarAPI = false)
 		{
+			bool ultimaMoficacion = false;
+
 			bool añadir = true;
 
 			if (juego.PrecioActualesTiendas != null)
@@ -96,6 +98,8 @@ namespace BaseDatos.Juegos
 									notificar = true;
 								}
 
+								ultimaMoficacion = true;
+
 								minimo.Precio = tempPrecio;
 								minimo.Moneda = nuevaOferta.Moneda;
 								minimo.Descuento = nuevaOferta.Descuento;
@@ -136,7 +140,9 @@ namespace BaseDatos.Juegos
 							}
 							else if (tempPrecio == minimo.Precio)
 							{
-								minimo.Imagen = nuevaOferta.Imagen;
+                                ultimaMoficacion = true;
+
+                                minimo.Imagen = nuevaOferta.Imagen;
 								minimo.Enlace = nuevaOferta.Enlace;
 								minimo.Tienda = nuevaOferta.Tienda;
 								minimo.Moneda = nuevaOferta.Moneda;
@@ -174,6 +180,11 @@ namespace BaseDatos.Juegos
 			{
 				juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
 				juego.PrecioMinimosHistoricos.Add(nuevaOferta);
+			}
+
+			if (ultimaMoficacion == true)
+			{
+				juego.UltimaModificacion = DateTime.Now;
 			}
 
 			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);

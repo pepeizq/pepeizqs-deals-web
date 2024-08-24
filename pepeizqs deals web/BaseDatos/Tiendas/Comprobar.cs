@@ -177,7 +177,7 @@ namespace BaseDatos.Tiendas
 			return juego;
 		}
 
-		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null, string slugGOG = null)
+		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null, string slugGOG = null, string slugEpic = null)
 		{
 			//Buscar en tabla tienda
 			List<int> listaIds = new List<int>();
@@ -296,7 +296,7 @@ namespace BaseDatos.Tiendas
 
 									if (juego.IdGog == 0)
 									{
-										if (idGog != null)
+										if (string.IsNullOrEmpty(idGog) == false)
 										{
 											juego.IdGog = int.Parse(idGog);
 											juego.SlugGOG = slugGOG;
@@ -304,13 +304,18 @@ namespace BaseDatos.Tiendas
 									}
 									else
 									{
-										if (slugGOG != null)
-										{
+                                        if (string.IsNullOrEmpty(slugGOG) == false)
+                                        {
 											juego.SlugGOG = slugGOG;
 										}
 									}
 
-									Juegos.Precios.Actualizar(juego, oferta, conexion, false);
+                                    if (string.IsNullOrEmpty(slugEpic) == false)
+									{
+										juego.SlugEpic = slugEpic;
+									}
+
+                                    Juegos.Precios.Actualizar(juego, oferta, conexion, false);
 								}
 							}
 						}

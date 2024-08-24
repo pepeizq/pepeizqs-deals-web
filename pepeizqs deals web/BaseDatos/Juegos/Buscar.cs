@@ -10,209 +10,268 @@ namespace BaseDatos.Juegos
 	{
 		public static Juego Cargar(Juego juego, SqlDataReader lector)
 		{
-			juego.Id = lector.GetInt32(0);
-			juego.Nombre = lector.GetString(1);
-
-			if (lector.GetString(2) != null)
+            if (lector.IsDBNull(0) == false)
 			{
-				try
-				{
-					juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
-				}
-				catch { }
-			}
+                juego.Id = lector.GetInt32(0);
+            }
 
-			if (lector.GetString(3) != null)
+            try
+            {
+                if (lector.IsDBNull(1) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+                    {
+                        juego.Nombre = lector.GetString(1);
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(2) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+                    {
+                        juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(2));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(3) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+                    {
+                        juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(4) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(4)) == false)
+                    {
+                        juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(5) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+                    {
+                        juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(6) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+                    {
+                        juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(7) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(7)) == false)
+                    {
+                        juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (lector.IsDBNull(8) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(8)) == false)
+                    {
+                        juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+                    }
+                }
+            }
+            catch { }
+
+            if (lector.IsDBNull(9) == false)
 			{
-				try
-				{
-					juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
-				}
-				catch { }
-			}
+                juego.IdSteam = lector.GetInt32(9);
+            }
 
-			if (lector.GetString(4) != null)
+            if (lector.IsDBNull(10) == false)
 			{
-				try
-				{
-					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
-				}
-				catch { }
-			}
+                juego.IdGog = lector.GetInt32(10);
+            }
 
-			if (lector.GetString(5) != null)
-			{
-				try
-				{
-					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
-				}
-				catch { }
-			}
+            try
+            {
+                if (lector.IsDBNull(11) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(11)) == false)
+                    {
+                        juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.GetString(6) != null)
-			{
-				try
-				{
-					juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
-				}
-				catch { }
-			}
+            try
+            {
+                if (lector.IsDBNull(12) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(12)) == false)
+                    {
+                        juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.GetString(7) != null)
-			{
-				try
-				{
-					juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
-				}
-				catch { }
-			}
+            try
+            {
+                if (lector.IsDBNull(13) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(13)) == false)
+                    {
+                        juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(13));
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.GetString(8) != null)
-			{
-				try
-				{
-					juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
-				}
-				catch { }
-			}
+            try
+            {
+                if (lector.IsDBNull(14) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(14)) == false)
+                    {
+                        juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(14));
+                    }
+                }
+            }
+            catch { }
 
-			juego.IdSteam = lector.GetInt32(9);
-			juego.IdGog = lector.GetInt32(10);
+            try
+            {
+                if (lector.IsDBNull(15) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(15)) == false)
+                    {
+                        juego.NombreCodigo = lector.GetString(15);
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(11) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(11)) == false)
-				{
-					try
-					{
-						juego.FechaSteamAPIComprobacion = DateTime.Parse(lector.GetString(11));
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(16) == false)
+                {
+                    juego.IdMaestra = lector.GetInt32(16);
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(12) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(12)) == false)
-				{
-					try
-					{
-						juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(17) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(17)) == false)
+                    {
+                        juego.UsuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(17));
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(13) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(13)) == false)
-				{
-					try
-					{
-						juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(13));
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(18) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(18)) == false)
+                    {
+                        juego.SlugGOG = lector.GetString(18);
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(14) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(14)) == false)
-				{
-					try
-					{
-						juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(14));
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(19) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(19)) == false)
+                    {
+                        juego.Maestro = lector.GetString(19);
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(15) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(15)) == false)
-				{
-					try
-					{
-						juego.NombreCodigo = lector.GetString(15);
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(20) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(20)) == false)
+                    {
+                        juego.FreeToPlay = lector.GetString(20);
+                    }
+                }
+            }
+            catch { }
 
-			try
-			{
-				if (lector.IsDBNull(16) == false)
-				{
-					try
-					{
-						juego.IdMaestra = lector.GetInt32(16);
-					}
-					catch { }
-				}
-			}
-			catch { }
+            try
+            {
+                if (lector.IsDBNull(21) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(21)) == false)
+                    {
+                        juego.MayorEdad = lector.GetString(21);
+                    }
+                }
+            }
+            catch { }
 
-			if (lector.IsDBNull(17) == false)
-			{
-				if (string.IsNullOrEmpty(lector.GetString(17)) == false)
-				{
-					try
-					{
-						juego.UsuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(17));
-					}
-					catch { }
-				}
-			}
+            try
+            {
+                if (lector.IsDBNull(22) == false)
+                {
+                    juego.UltimaModificacion = lector.GetDateTime(22);
+                }
+            }
+            catch { }
 
-			try
-			{
-				if (lector.IsDBNull(18) == false)
-				{
-					if (string.IsNullOrEmpty(lector.GetString(18)) == false)
-					{
-						juego.SlugGOG = lector.GetString(18);
-					}
-				}
-			}
-			catch { }
+            try
+            {
+                if (lector.IsDBNull(23) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(23)) == false)
+                    {
+                        juego.SlugEpic = lector.GetString(23);
+                    }
+                }
+            }
+            catch { }
 
-			try
-			{
-				if (lector.IsDBNull(19) == false)
-				{
-					if (string.IsNullOrEmpty(lector.GetString(19)) == false)
-					{
-						juego.Maestro = lector.GetString(19);
-					}
-				}
-			}
-			catch { }
-
-			try
-			{
-				if (lector.IsDBNull(20) == false)
-				{
-					if (string.IsNullOrEmpty(lector.GetString(20)) == false)
-					{
-						juego.FreeToPlay = lector.GetString(20);
-					}
-				}
-			}
-			catch { }
-
-			try
-			{
-				if (lector.IsDBNull(21) == false)
-				{
-					if (string.IsNullOrEmpty(lector.GetString(21)) == false)
-					{
-						juego.MayorEdad = lector.GetString(21);
-					}
-				}
-			}
-			catch { }
-
-			return juego;
+            return juego;
 		}
 
 		public static Juego UnJuego(int id)

@@ -22,7 +22,14 @@ namespace BaseDatos.Juegos
 				añadirSlugGog = ", slugGOG=@slugGOG";
 			}
 
-			if (actualizarAPI == true)
+            string añadirSlugEpic = null;
+
+            if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+            {
+                añadirSlugEpic = ", slugEpic=@slugEpic";
+            }
+
+            if (actualizarAPI == true)
 			{
 				if (string.IsNullOrEmpty(juego.Maestro) == true)
 				{
@@ -35,10 +42,17 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			string sqlActualizar = "UPDATE juegos " +
+			string añadirUltimaModificacion = null;
+
+            if (juego.UltimaModificacion != null)
+            {
+                añadirUltimaModificacion = ", ultimaModificacion=@ultimaModificacion";
+            }
+
+            string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, " +
 						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-						"nombreCodigo=@nombreCodigo" + añadirSlugGog;
+                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic;
 
 			if (actualizarAPI == true)
 			{
@@ -72,7 +86,12 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 
-					if (actualizarAPI == true)
+                    if (juego.UltimaModificacion != null)
+                    {
+                        comando.Parameters.AddWithValue("@ultimaModificacion", juego.UltimaModificacion);
+                    }
+
+                    if (actualizarAPI == true)
 					{
 						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
 						comando.Parameters.AddWithValue("@tipo", juego.Tipo);
@@ -89,8 +108,13 @@ namespace BaseDatos.Juegos
 					{
 						comando.Parameters.AddWithValue("@slugGOG", juego.SlugGOG);
 					}
-					
-					try
+
+                    if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+                    {
+                        comando.Parameters.AddWithValue("@slugEpic", juego.SlugEpic);
+                    }
+
+                    try
 					{
 						comando.ExecuteNonQuery();
 					}
