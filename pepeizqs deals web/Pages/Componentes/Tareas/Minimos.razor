@@ -32,13 +32,13 @@
 			{
 				try
 				{
-					TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(15);
+					TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(5);
 
 					if (BaseDatos.Tiendas.Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
 					{
 						BaseDatos.Tiendas.Admin.ActualizarTareaUso(conexion, "minimos", DateTime.Now);
 
-						List<Juego> juegos = BaseDatos.Juegos.Buscar.Todos(conexion, "juegos");
+						List<Juego> juegos = BaseDatos.Juegos.Buscar.Todos(conexion, "juegos", 3);
 
 						if (juegos != null)
 						{
@@ -158,15 +158,29 @@
 										{
 											bool añadir = true;
 
+											if (juegosDestacadosMostrar.Count > 0)
+											{
+												foreach (var juegoDestacado in juegosDestacadosMostrar)
+												{
+													if (juegoDestacado.Juego.Id == minimo.Juego.Id)
+													{
+														añadir = false;
+														break;
+													}
+												}
+											}
+
 											if (minimo.Juego.Tipo != JuegoTipo.Game)
 											{
 												añadir = false;
 											}
-											else if (minimo.Historico.DRM != JuegoDRM.Steam)
+
+											if (minimo.Historico.DRM != JuegoDRM.Steam)
 											{
 												añadir = false;
 											}
-											else if (minimo.Juego.Bundles != null)
+
+											if (minimo.Juego.Bundles != null)
 											{
 												foreach (var bundle in minimo.Juego.Bundles)
 												{

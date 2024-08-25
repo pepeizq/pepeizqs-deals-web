@@ -1,9 +1,6 @@
 ﻿#nullable disable
 
 using Herramientas;
-using Microsoft.Data.SqlClient;
-using System.Net.Http;
-using System.Text;
 
 namespace Tareas
 {
@@ -32,14 +29,17 @@ namespace Tareas
 
                 if (piscinaApp == piscinaUsada)
                 {
-                    string html = await Decompiladores.Estandar("https://minimos.pepeizqdeals.com/");
-					string html2 = await Decompiladores.Estandar("https://tiendas.pepeizqdeals.com/");
+					HttpClient httpClient = new HttpClient();
+
+					HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
+					HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
+
+					respuesta2.EnsureSuccessStatusCode();
 
 					//---------------------------------------------------------------------------------------
 
 					string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
 
-					HttpClient httpClient = new HttpClient();
 					string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
 
                     Juegos.Juego aleatorio = BaseDatos.Juegos.Buscar.Aleatorio();

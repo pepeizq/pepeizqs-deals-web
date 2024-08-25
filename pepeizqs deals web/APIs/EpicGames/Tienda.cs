@@ -93,14 +93,31 @@ namespace APIs.EpicGames
 
 																	int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-																	if (descuento > 0 && juego.Enlaces != null && juego.Imagenes != null)
+																	string slug = null;
+
+																	if (string.IsNullOrEmpty(juego.Enlace) == false)
 																	{
-																		if (juego.Enlaces.Count > 0 && juego.Imagenes.Count > 0)
+																		slug = juego.Enlace;
+																	}
+
+																	if (string.IsNullOrEmpty(slug) == false)
+																	{
+																		if (juego.Enlaces != null)
+																		{
+																			if (juego.Enlaces.Count > 0)
+																			{
+																				slug = juego.Enlaces[0].Slug;
+																			}
+																		}
+																	}
+
+																	if (descuento > 0 && string.IsNullOrEmpty(slug) == false && juego.Imagenes != null)
+																	{
+																		if (juego.Imagenes.Count > 0)
 																		{
 																			string nombre = juego.Nombre;
 																			nombre = WebUtility.HtmlDecode(nombre);
 
-																			string slug = juego.Enlaces[0].Slug;
                                                                             string enlace = "https://store.epicgames.com/p/" + slug;
 
 																			string imagen = juego.Imagenes[0].Enlace;
@@ -204,6 +221,9 @@ namespace APIs.EpicGames
 
 		[JsonProperty("price")]
 		public EpicGamesStoreJuegoPrecio Precio { get; set; }
+
+		[JsonProperty("productSlug")]
+		public string Enlace { get; set; }
 	}
 
 	public class EpicGamesStoreJuegoImagen

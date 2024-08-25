@@ -4,7 +4,6 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Xml.Serialization;
 
@@ -39,6 +38,8 @@ namespace APIs.GamersGate
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
+			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
+
 			string html = await Decompiladores.Estandar("https://www.gamersgate.com/feeds/products?country=DEU");
 
 			if (string.IsNullOrEmpty(html) == false)
@@ -58,8 +59,6 @@ namespace APIs.GamersGate
 					{
 						if (listaJuegos.Juegos.Count > 0)
 						{
-							int juegos2 = 0;
-
 							foreach (GamersGateJuego juego in listaJuegos.Juegos)
 							{
 								string nombre = WebUtility.HtmlDecode(juego.Nombre);
@@ -97,28 +96,38 @@ namespace APIs.GamersGate
 										oferta.FechaTermina = fechaTermina;
 									}
 
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-                                    }
-
-									juegos2 += 1;
-
-									try
-									{
-										BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
-                                    }
+									ofertas.Add(oferta);
 								}
 							}
 						}
+					}
+				}
+			}
+
+			int juegos2 = 0;
+
+			if (ofertas.Count > 0)
+			{
+				foreach (var oferta in ofertas)
+				{
+					try
+					{
+						BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+					}
+					catch (Exception ex)
+					{
+						BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+					}
+
+					juegos2 += 1;
+
+					try
+					{
+						BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+					}
+					catch (Exception ex)
+					{
+						BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
 					}
 				}
 			}

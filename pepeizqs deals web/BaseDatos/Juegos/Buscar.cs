@@ -271,7 +271,7 @@ namespace BaseDatos.Juegos
             }
             catch { }
 
-            return juego;
+			return juego;
 		}
 
 		public static Juego UnJuego(int id)
@@ -503,7 +503,7 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-        public static List<Juego> Todos(SqlConnection conexion, string tabla = null)
+        public static List<Juego> Todos(SqlConnection conexion, string tabla = null, int dias = 0)
 		{
 			string tabla2 = string.Empty;
 
@@ -520,10 +520,10 @@ namespace BaseDatos.Juegos
 
 			string busqueda = "SELECT * FROM " + tabla2;
 
-			//if (tabla2 == "juegos")
-			//{
-   //             busqueda = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + busqueda;
-   //         }
+            if (dias > 0)
+            {
+                busqueda = busqueda + Environment.NewLine + "WHERE ultimaModificacion >= DATEADD(day, -" + dias.ToString() + ", GETDATE())";
+            }
 
 			string limite = "SET QUERY_GOVERNOR_COST_LIMIT 15000;";
 			using (SqlCommand setQueryGovernorCommand = new SqlCommand(limite, conexion))

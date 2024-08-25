@@ -473,6 +473,7 @@
 				if (string.IsNullOrEmpty(usuario.HistoricalLowsStores) == false)
 				{
 					tiendas = JsonConvert.DeserializeObject<List<MostrarJuegoTienda>>(usuario.HistoricalLowsStores);
+					tiendas = GenerarListaTiendas(tiendas);
 				}
 
 				if (string.IsNullOrEmpty(usuario.HistoricalLowsCategories) == false)
@@ -1121,7 +1122,7 @@
 		ElegirOrdenamiento();
 	}
 
-	private List<MostrarJuegoTienda> tiendas = CrearListaTiendas();
+	private List<MostrarJuegoTienda> tiendas = GenerarListaTiendas();
 
 	public class MostrarJuegoTienda
 	{
@@ -1130,7 +1131,7 @@
 		public string TiendaId { get; set; }
 	}
 
-	private static List<MostrarJuegoTienda> CrearListaTiendas()
+	private static List<MostrarJuegoTienda> GenerarListaTiendas(List<MostrarJuegoTienda> viejaLista = null)
 	{
 		List<MostrarJuegoTienda> nuevaLista = new List<MostrarJuegoTienda>();
 
@@ -1140,6 +1141,18 @@
 			nuevaTienda.Estado = true;
 			nuevaTienda.Checkbox = "checked";
 			nuevaTienda.TiendaId = tienda.Id;
+
+			if (viejaLista != null)
+			{
+				foreach (var viejaTienda in viejaLista)
+				{
+					if (viejaTienda.TiendaId == tienda.Id)
+					{
+						nuevaTienda.Estado = viejaTienda.Estado;
+						nuevaTienda.Checkbox = viejaTienda.Checkbox;
+					}
+				}
+			}
 
 			nuevaLista.Add(nuevaTienda);
 		}

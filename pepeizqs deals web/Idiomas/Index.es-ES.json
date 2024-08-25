@@ -106,5 +106,13 @@
   {
     "Id": "FilterOption3.4",
     "Valor": "Software"
+  },
+  {
+    "Id": "Rewards1",
+    "Valor": "Recompensas"
+  },
+  {
+    "Id": "Rewards2",
+    "Valor": "Registra una cuenta y obtén juegos para Steam por simplemente visitar la web cada día."
   }
 ]

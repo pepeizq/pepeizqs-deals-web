@@ -351,6 +351,42 @@
 	</div>
 }
 
+@if (usuario == null)
+{
+	<a class="boton-pequeño" style="padding: 24px 32px; margin-bottom: 60px; overflow: hidden;" href="/rewards">
+		<div>
+			<div style="font-size: 18px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Rewards1", "Index")
+			</div>
+
+			<div style="margin-top: 10px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Rewards2", "Index")
+			</div>
+
+			<div style="position: absolute; bottom: -90px; right: 20px; opacity: 0.5;">
+				<div style="display: flex; align-items: center; gap: 20px;">
+					@{
+						if (recompensas.Count >= 3)
+						{
+							int i = 0;
+							while (i < 3)
+							{
+								global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensas[i].JuegoId);
+
+								<div style="max-width: 120px;">
+									<img src="@juego.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
+								</div>
+
+								i += 1;
+							}
+						}
+					}
+				</div>
+			</div>
+		</div>
+	</a>
+}
+
 @if (noticiasMostrar.Count > 0)
 {
 	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
@@ -835,6 +871,8 @@ else
 
 	private BaseDatos.Avisos.Aviso aviso = null;
 
+	private List<BaseDatos.Recompensas.RecompensaJuego> recompensas = new List<BaseDatos.Recompensas.RecompensaJuego>();
+
 	#nullable enable
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
@@ -989,6 +1027,23 @@ else
 						}
 					}
 				}
+
+				#endregion
+
+				#region Recompensas
+
+				if (usuario == null)
+				{
+					recompensas = BaseDatos.Recompensas.Juegos.Todo();
+
+					if (recompensas != null)
+					{
+						if (recompensas.Count > 0)
+						{
+							recompensas = recompensas.OrderByDescending(x => x.Coins).ToList();
+						}
+					}
+				}				
 
 				#endregion
 			}
