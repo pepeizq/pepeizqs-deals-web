@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BaseDatos.Juegos
 {
@@ -270,6 +271,30 @@ namespace BaseDatos.Juegos
                 }
             }
             catch { }
+
+			try
+			{
+				if (lector.IsDBNull(24) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(24)) == false)
+					{
+						juego.Categorias = JsonConvert.DeserializeObject<List<string>>(lector.GetString(24));
+					}
+				}
+			}
+			catch { }
+
+			try
+			{
+				if (lector.IsDBNull(25) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(25)) == false)
+					{
+						juego.Generos = JsonConvert.DeserializeObject<List<string>>(lector.GetString(25));
+					}
+				}
+			}
+			catch { }
 
 			return juego;
 		}

@@ -162,5 +162,17 @@
   {
     "Id": "String41",
     "Valor": "Eligiendo {0} juegos"
+  },
+  {
+    "Id": "String42",
+    "Valor": "Hay más ofertas pero tienen un descuento muy bajo (clickea para mostrar)"
+  },
+  {
+    "Id": "String43",
+    "Valor": "Clickea para ocultar las ofertas con un descuento bajo"
+  },
+  {
+    "Id": "String44",
+    "Valor": "Géneros"
   }
 ]

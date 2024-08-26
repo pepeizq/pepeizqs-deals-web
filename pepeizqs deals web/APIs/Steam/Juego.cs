@@ -158,6 +158,36 @@ namespace APIs.Steam
 						catch {}
 					}
 
+					if (datos.Datos.Categorias != null)
+					{
+						if (datos.Datos.Categorias.Count > 0)
+						{
+							List<string> categorias = new List<string>();
+
+							foreach (var categoria in datos.Datos.Categorias)
+							{
+								categorias.Add(categoria.Id);
+							}
+
+							juego.Categorias = categorias;
+						}
+					}
+
+					if (datos.Datos.Generos != null)
+					{
+						if (datos.Datos.Generos.Count > 0)
+						{
+							List<string> generos = new List<string>();
+
+							foreach (var categoria in datos.Datos.Generos)
+							{
+								generos.Add(categoria.Id);
+							}
+
+							juego.Generos = generos;
+						}
+					}
+
 					try
 					{
 						if (datos.Datos.Precio != null)
@@ -314,6 +344,12 @@ namespace APIs.Steam
 
 		[JsonProperty("fullgame")]
 		public SteamJuegoAPIMaestro Maestro { get; set; }
+
+		[JsonProperty("categories")]
+		public List<SteamJuegoAPICategoria> Categorias { get; set; }
+
+		[JsonProperty("genres")]
+		public List<SteamJuegoAPIGenero> Generos { get; set; }
 	}
 
 	public class SteamJuegoAPIPrecio
@@ -373,6 +409,24 @@ namespace APIs.Steam
 
 		[JsonProperty("name")]
 		public string Nombre { get; set; }
+	}
+
+	public class SteamJuegoAPICategoria
+	{
+		[JsonProperty("id")]
+		public string Id { get; set; }
+
+		[JsonProperty("description")]
+		public string Descripcion { get; set; }
+	}
+
+	public class SteamJuegoAPIGenero
+	{
+		[JsonProperty("id")]
+		public string Id { get; set; }
+
+		[JsonProperty("description")]
+		public string Descripcion { get; set; }
 	}
 
 	#endregion

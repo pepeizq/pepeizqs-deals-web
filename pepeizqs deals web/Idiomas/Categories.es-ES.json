@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1",
+    "Valor": "Multijugador"
+  },
+  {
+    "Id": "2",
+    "Valor": "Un jugador"
+  },
+  {
+    "Id": "9",
+    "Valor": "Cooperativo"
+  },
+  {
+    "Id": "24",
+    "Valor": "Pantalla partida/compartida"
+  }
+]

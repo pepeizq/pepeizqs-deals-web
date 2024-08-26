@@ -162,5 +162,17 @@
   {
     "Id": "String41",
     "Valor": "Choosing {0} games"
+  },
+  {
+    "Id": "String42",
+    "Valor": "There are more deals but they have a very low discount (click to show)"
+  },
+  {
+    "Id": "String43",
+    "Valor": "Click to hide deals with a low discount"
+  },
+  {
+    "Id": "String44",
+    "Valor": "Genres"
   }
 ]

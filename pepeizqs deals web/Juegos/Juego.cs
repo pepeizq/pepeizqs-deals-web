@@ -38,6 +38,8 @@ namespace Juegos
 		public string MayorEdad { get; set; }
 		public string SlugEpic { get; set; }
 		public DateTime? UltimaModificacion { get; set; }
+		public List<string> Categorias { get; set; }
+		public List<string> Generos { get; set; }
 	}
 
 	public static class JuegoCrear

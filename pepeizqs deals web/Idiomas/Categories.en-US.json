@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1",
+    "Valor": "Multi-player"
+  },
+  {
+    "Id": "2",
+    "Valor": "Single-player"
+  },
+  {
+    "Id": "9",
+    "Valor": "Co-op"
+  },
+  {
+    "Id": "24",
+    "Valor": "Shared/Split Screen"
+  }
+]

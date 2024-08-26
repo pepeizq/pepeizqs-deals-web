@@ -56,7 +56,7 @@ namespace BaseDatos.Juegos
 
 			if (actualizarAPI == true)
 			{
-				sqlActualizar = sqlActualizar + ", nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, analisis=@analisis, maestro=@maestro, freeToPlay=@freeToPlay";
+				sqlActualizar = sqlActualizar + ", nombre=@nombre, tipo=@tipo, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, analisis=@analisis, maestro=@maestro, freeToPlay=@freeToPlay, categorias=@categorias, generos=@generos";
 			}
 
 			if (juego.IdSteam > 0)
@@ -102,6 +102,8 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
 						comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
+						comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
+						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
 					}
 
 					if (string.IsNullOrEmpty(juego.SlugGOG) == false)
@@ -376,7 +378,7 @@ namespace BaseDatos.Juegos
 		public static void Media(Juego juego, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE juegos " +
-					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo WHERE id=@id";
+					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
@@ -386,6 +388,8 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
 				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+				comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
+				comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
 
 				try
 				{

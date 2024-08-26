@@ -127,7 +127,7 @@ namespace APIs.Steam
 					}
 				}
 
-				if (html != null)
+				if (string.IsNullOrEmpty(html) == false)
 				{
 					if (html.Contains("<!-- List Items -->") == true)
 					{

@@ -72,7 +72,14 @@ namespace Herramientas
 				{
 					if (string.IsNullOrEmpty(cadena) == false)
 					{
-						return CogerCadena("en-US", cadena, nombreFichero);
+						if (idiomaUsuario != "en-US")
+						{
+							return CogerCadena("en-US", cadena, nombreFichero);
+						}
+						else
+						{
+							return null;
+						}
 					}
 					else
 					{

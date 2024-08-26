@@ -340,10 +340,6 @@
     max-height: 40px;
 }
 
-.juego-imagen-boton-espacio {
-    margin: 5px 0px;
-}
-
 .juego-drm-centrado {
     display: flex;
     flex-direction: row;
@@ -351,14 +347,9 @@
     justify-content: space-between;
 }
 
-.juego-drm-imagen {
-    text-align: center;
-    width: 10%;
-}
-
 .juego-minimo {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .juego-descuento-precio {
@@ -438,6 +429,7 @@
     display: flex;
     overflow: auto;
     padding-bottom: 15px;
+    margin-top: -10px;
 }
 
 .juego-galeria-fila:after {
