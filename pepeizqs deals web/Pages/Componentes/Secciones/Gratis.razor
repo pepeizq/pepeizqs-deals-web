@@ -69,26 +69,6 @@
                             @tooltipDatos.Nombre
                         </div>
 
-                        @if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
-                        {
-                            <hr />
-
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px;" alt="Reviews" />
-                                <label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
-                            </div>
-                        }
-
-                        @if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
-                        {
-                            <hr />
-
-                            <div style="text-align: left;">
-                                @tooltipDatos.UsuarioMensaje
-                            </div>
-                        }
-
-
                         @{
                             int gratisEstado = 0;
 
@@ -110,6 +90,33 @@
                                     @Herramientas.Idiomas.CogerCadena(idioma, "String12", "Free")
                                 </div>
                             }
+                            else if (gratisEstado == 0)
+                            {
+                                <hr />
+
+                                <div style="text-align: left;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "String13", "Free")
+                                </div>
+                            }
+                        }
+
+                        @if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
+                        {
+                            <hr />
+
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px;" alt="Reviews" />
+                                <label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
+                            </div>
+                        }
+
+                        @if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
+                        {
+                            <hr />
+
+                            <div style="text-align: left;">
+                                @tooltipDatos.UsuarioMensaje
+                            </div>
                         }
                     </div>
                 </div>

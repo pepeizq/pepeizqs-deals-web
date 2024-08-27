@@ -50,5 +50,9 @@
   {
     "Id": "String12",
     "Valor": "Ya ha estado en otras promociones para reclamarlo gratis."
+  },
+  {
+    "Id": "String13",
+    "Valor": "Es la primera vez que se encuentra disponible para reclamar gratis."
   }
 ]

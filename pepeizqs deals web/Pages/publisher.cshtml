@@ -1,0 +1,85 @@
+﻿@page "/publisher/{id}/"
+
+@model pepeizqs_deals_web.Pages.publisherModel
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+    #nullable disable
+
+    string titulo = null;
+    string enlace = null;
+
+    if (Model.publisher != null)
+    {
+        if (string.IsNullOrEmpty(Model.id) == false)
+        {
+            enlace = "/publisher/" + Model.id + "/";
+        }
+
+        if (string.IsNullOrEmpty(Model.publisher.Nombre) == false)
+        {
+            titulo = Model.publisher.Nombre;        
+        }       
+    }
+    else
+    {
+        titulo = "Not Found";
+    }
+
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+    Usuario usuario = new Usuario();
+
+    bool adminLogeado = false;
+
+    if (usuarioLogeado == true)
+    {
+        usuario = await UserManager.GetUserAsync(User);
+
+        if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+        {
+            adminLogeado = true;
+        }
+    }
+
+    ViewData["Title"] = titulo;
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (Model.publisher != null)
+{
+    @if (usuarioLogeado == true)
+    {
+        if (adminLogeado == true)
+        {
+            @(await Html.RenderComponentAsync<Componentes.Admin.Publisher>(RenderMode.Server, new
+            {
+                id = Model.id
+            }))
+        }
+    }
+
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+    {
+        idioma = Model.idioma,
+        titulo = titulo,
+        enlace = enlace,
+        canonical = enlace,
+        descripcion = Model.publisher.Descripcion,
+        imagen = Model.publisher.Imagen
+    }))
+
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Publisher>(RenderMode.ServerPrerendered, new
+    {
+        idioma = Model.idioma,
+        id = Model.publisher.Id,
+        nombre = Model.publisher.Nombre,
+        descripcion = Model.publisher.Descripcion,
+        imagen = Model.publisher.Imagen,
+        acepciones = Model.publisher.Acepciones
+    }))
+}

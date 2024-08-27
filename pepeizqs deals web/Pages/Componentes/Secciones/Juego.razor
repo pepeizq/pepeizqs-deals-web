@@ -794,9 +794,16 @@
 
 						@if (juego.Media.Miniaturas != null)
 						{
-							<div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+							string añadirMargin = string.Empty;
+
+							if (string.IsNullOrEmpty(juego.Media.Video) == false)
+							{
+								añadirMargin = "margin-top: -10px;";
+							}
+
+							<div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro); @añadirMargin">
 								@{
-									if (juego.Media.Video != null)
+									if (string.IsNullOrEmpty(juego.Media.Video) == false)
 									{
 										<div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
 											<img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre">
@@ -898,16 +905,63 @@
 										
 										<div>
 											@{
-												int i = 0;
+
+
+												List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
 
 												foreach (var publisher in listaPublishers)
+												{
+													string publisherLimpio = publisher;
+													publisherLimpio = publisherLimpio.Replace(" ", null);
+													publisherLimpio = publisherLimpio.ToLower();
+
+													global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
+
+													if (publisherFinal == null)
+													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher);
+													}
+
+													if (publisherFinal != null)
+													{
+														bool añadir = true;
+
+														if (publishersFinales.Count > 0)
+														{
+															foreach (var publisherFinal2 in publishersFinales)
+															{
+																if (publisherFinal2.Id == publisherFinal.Id)
+																{
+																	añadir = false;
+																}
+															}
+														}
+
+														if (añadir == true)
+														{
+															publishersFinales.Add(publisherFinal);
+														}
+													}
+													else
+													{
+														global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
+														publisherFinal2.Id = publisherLimpio;
+														publisherFinal2.Nombre = publisher;
+
+														publishersFinales.Add(publisherFinal2);
+													}
+												}
+
+												int i = 0;
+
+												foreach (var publisher in publishersFinales)
 												{
 													if (i > 0)
 													{
 														<label style="margin-right: 5px;">,</label>
 													}
 
-													<label>@publisher</label>
+													<a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
 
 													i += 1;
 												}
@@ -923,7 +977,7 @@
 							if (juego.Generos.Count > 0)
 							{
 								<div>
-									<div>@Idiomas.CogerCadena(idioma, "String44", "Game")</div>
+									<div>@Idiomas.CogerCadena(idioma, "String44", "Game"):</div>
 
 									<div>
 										@{
@@ -961,7 +1015,7 @@
 				{
 					if (juego.Categorias.Count > 0)
 					{
-						<div class="perfil" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
+						<div class="perfil" style="padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; grid-auto-rows: min-content;">
 							@foreach (var categoria in juego.Categorias)
 							{
 								string cadenaCategoria = Idiomas.CogerCadena(idioma, categoria, "Categories");
@@ -970,10 +1024,10 @@
 								{
 									string imagenCategoria = "/imagenes/categorias/" + categoria + ".webp";
 
-									<div style="display: flex; align-items: center; gap: 10px;">
+									<div style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
 										<img style="width: 26px; height: 16px;" src="@imagenCategoria"/>
 
-										<div style="width: 100%;">@cadenaCategoria</div>
+										<div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
 									</div>
 								}
 								else
@@ -1429,6 +1483,13 @@
 						ofertaLimpiada = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ofertaLimpiada);
 
 						nuevoTexto = ofertaLimpiada;
+
+						nuevoTexto = nuevoTexto.Replace("Steam", null);
+						nuevoTexto = nuevoTexto.Replace("Epic", null);
+						nuevoTexto = nuevoTexto.Replace("Gog", null);
+						nuevoTexto = nuevoTexto.Replace("Giants", null);
+						nuevoTexto = nuevoTexto.Replace("Microsoft Store", null);
+						nuevoTexto = nuevoTexto.Replace("Row", null);
 					}
 
 					return nuevoTexto;

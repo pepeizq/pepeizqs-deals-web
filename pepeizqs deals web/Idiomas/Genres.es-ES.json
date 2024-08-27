@@ -4,7 +4,43 @@
     "Valor": "Acción"
   },
   {
+    "Id": "2",
+    "Valor": "Estrategia"
+  },
+  {
+    "Id": "3",
+    "Valor": "Rol"
+  },
+  {
+    "Id": "4",
+    "Valor": "Casual"
+  },
+  {
+    "Id": "9",
+    "Valor": "Carreras"
+  },
+  {
+    "Id": "18",
+    "Valor": "Deportes"
+  },
+  {
     "Id": "23",
     "Valor": "Indie"
+  },
+  {
+    "Id": "25",
+    "Valor": "Aventura"
+  },
+  {
+    "Id": "28",
+    "Valor": "Simuladores"
+  },
+  {
+    "Id": "29",
+    "Valor": "Multijugador masivo"
+  },
+  {
+    "Id": "70",
+    "Valor": "Acceso anticipado"
   }
 ]

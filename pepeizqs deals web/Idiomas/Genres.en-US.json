@@ -4,7 +4,43 @@
     "Valor": "Action"
   },
   {
+    "Id": "2",
+    "Valor": "Strategy"
+  },
+  {
+    "Id": "3",
+    "Valor": "RPG"
+  },
+  {
+    "Id": "4",
+    "Valor": "Casual"
+  },
+  {
+    "Id": "9",
+    "Valor": "Racing"
+  },
+  {
+    "Id": "18",
+    "Valor": "Sports"
+  },
+  {
     "Id": "23",
     "Valor": "Indie"
+  },
+  {
+    "Id": "25",
+    "Valor": "Adventure"
+  },
+  {
+    "Id": "28",
+    "Valor": "Simulation"
+  },
+  {
+    "Id": "29",
+    "Valor": "Massively Multiplayer"
+  },
+  {
+    "Id": "70",
+    "Valor": "Early Access"
   }
 ]

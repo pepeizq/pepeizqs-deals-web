@@ -21,10 +21,10 @@ namespace Herramientas
 					":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "€", "‚", "ƒ", "„",
 					"…", "†", "‡", "ˆ", "‰", "Š", "‹", "Œ", "Ž", "‘", "’", "“", "”", "•", "˜", "™", "š", "›", "œ", "ž", "Ÿ", "¡",
 					"¢", "£", "¤", "¥", "¦", "§", "¨", "©", "ª", "«", "¬", "®", "¯", "°", "±", "²", "³", "´", "µ", "¶", "·", "¸",
-					"¹", "º", "»", "¼", "½", "¾", "¿", "Æ", "Ç", "Ð", "×", "Ø", "Þ", "ß", "æ", "ç", "÷", "ø", "þ", 
+					"¹", "º", "»", "¼", "½", "¾", "¿", "Æ", "Ç", "Ð", "×", "Ø", "Þ", "ß", "æ", "ç", "÷", "ø", "þ",
 					Strings.ChrW(34).ToString(), Strings.ChrW(127).ToString(), Strings.ChrW(129).ToString(), Strings.ChrW(141).ToString(),
 					Strings.ChrW(143).ToString(), Strings.ChrW(144).ToString(), Strings.ChrW(150).ToString(), Strings.ChrW(151).ToString(),
-					Strings.ChrW(157).ToString(), Strings.ChrW(160).ToString(), Strings.ChrW(173).ToString()
+					Strings.ChrW(157).ToString(), Strings.ChrW(160).ToString(), Strings.ChrW(173).ToString(), Strings.ChrW(8211).ToString()
 				};
 
 				foreach (string caracter in caracteres)

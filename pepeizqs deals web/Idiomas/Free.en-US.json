@@ -50,5 +50,9 @@
   {
     "Id": "String12",
     "Valor": "Has already been in other promotions to claim it for free."
+  },
+  {
+    "Id": "String13",
+    "Valor": "This is the first time it is available to claim for free."
   }
 ]

@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+@using Microsoft.VisualBasic
+@using Newtonsoft.Json
+
+@if (publisher != null)
+{
+	<div style="padding: 20px; background: var(--fondoCuerpo);">
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 100%;">
+				Admin Editar • @publisher.Nombre
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Acepciones
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaAcepciones(e))" class="entrada-texto" rows="1">@textoAcepciones</textarea>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string id { get; set; }
+
+	public BaseDatos.Publishers.Publisher publisher = new BaseDatos.Publishers.Publisher();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(10);
+		publisher = BaseDatos.Publishers.Buscar.Id(id);
+
+		if (publisher != null)
+		{
+			textoAcepciones = JsonConvert.SerializeObject(publisher.Acepciones);
+
+			if (textoAcepciones == "null")
+			{
+				textoAcepciones = "[" + Strings.ChrW(34) + "acepcion" + Strings.ChrW(34) + "]";
+			}
+		}
+	}
+
+	private string textoAcepciones = string.Empty;
+
+	private void TextoCambiaAcepciones(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			publisher.Acepciones = JsonConvert.DeserializeObject<List<string>>(nuevoTexto);
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Publishers.Actualizar.Acepciones(publisher, conexion);
+			}
+		}
+	}
+}
