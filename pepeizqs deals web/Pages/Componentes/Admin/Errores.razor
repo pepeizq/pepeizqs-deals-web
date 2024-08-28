@@ -13,22 +13,72 @@
 
             foreach (var error in listaErrores)
             {
-                <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px;">
-                    <div style="padding-left: 10px; padding-right: 10px;">
+                bool conEnlace = false;
+
+                @if (string.IsNullOrEmpty(error.Enlace) == false)
+                {
+                    if (error.Enlace != "nada")
+                    {
+                        conEnlace = true;
+                    }
+                }
+
+                if (conEnlace == true)
+                {
+                    <a href="@error.Enlace" target="_blank">
+                        <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px; gap: 20px;">
+                            <div>
+                                <div>
+                                    @error.Seccion
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    @error.Fecha
+                                </div>
+                            </div>
+
+                            @if (string.IsNullOrEmpty(error.Mensaje) == false)
+                            {
+                                if (error.Mensaje != "nada")
+                                {
+                                    <div style="width: 20%;">
+                                        @error.Mensaje
+                                    </div>
+                                }
+                            }
+
+                            <div style="width: 100%;">
+                                @error.Stacktrace
+                            </div>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <div style="display: flex; align-items: start; margin-top: 10px; margin-bottom: 10px; gap: 20px;">
                         <div>
-                            @error.Seccion
+                            <div>
+                                @error.Seccion
+                            </div>
+                            <div style="margin-top: 15px;">
+                                @error.Fecha
+                            </div>
                         </div>
-                        <div style="margin-top: 15px;">
-                            @error.Fecha
+
+                        @if (string.IsNullOrEmpty(error.Mensaje) == false)
+                        {
+                            if (error.Mensaje != "nada")
+                            {
+                                <div style="width: 20%;">
+                                    @error.Mensaje
+                                </div>
+                            }
+                        }
+
+                        <div style="width: 100%;">
+                            @error.Stacktrace
                         </div>
                     </div>
-                    <div style="padding-left: 10px; padding-right: 10px; width: 20%;">
-                        @error.Mensaje
-                    </div>
-                    <div style="padding-left: 10px; padding-right: 10px; width: 80%;">
-                        @error.Stacktrace
-                    </div>
-                </div>
+                }
 
                 <hr />
             }

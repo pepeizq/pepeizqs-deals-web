@@ -43,7 +43,15 @@ namespace BaseDatos.Errores
                             }
                         }
 
-                        listaErrores.Add(error);
+						if (lector.IsDBNull(5) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+							{
+								error.Enlace = lector.GetString(5);
+							}
+						}
+
+						listaErrores.Add(error);
                     }
                 }
             }
@@ -63,5 +71,6 @@ namespace BaseDatos.Errores
         public string Mensaje;
         public string Stacktrace;
         public DateTime Fecha;
+        public string Enlace;
     }
 }

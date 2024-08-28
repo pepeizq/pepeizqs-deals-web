@@ -34,7 +34,6 @@ namespace APIs.Steam
 
                 if (publisher.Nombre == "Steam Search")
                 {
-                    BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", id);
                     return null;
                 }
                 else

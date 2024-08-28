@@ -28,7 +28,7 @@
     }
     else
     {
-        titulo = "Not Found";
+        titulo = "publisher";
     }
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -50,19 +50,19 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
+@if (usuarioLogeado == true)
+{
+    if (adminLogeado == true)
+    {
+        @(await Html.RenderComponentAsync<Componentes.Admin.Publisher>(RenderMode.Server, new
+        {
+            id = Model.id
+        }))
+    }
+}
+
 @if (Model.publisher != null)
 {
-    @if (usuarioLogeado == true)
-    {
-        if (adminLogeado == true)
-        {
-            @(await Html.RenderComponentAsync<Componentes.Admin.Publisher>(RenderMode.Server, new
-            {
-                id = Model.id
-            }))
-        }
-    }
-
     @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
     {
         idioma = Model.idioma,

@@ -40,6 +40,26 @@
     "Valor": "Massively Multiplayer"
   },
   {
+    "Id": "37",
+    "Valor": "Free To Play"
+  },
+  {
+    "Id": "52",
+    "Valor": "Audio Production"
+  },
+  {
+    "Id": "53",
+    "Valor": "Design & Illustration"
+  },
+  {
+    "Id": "57",
+    "Valor": "Utilities"
+  },
+  {
+    "Id": "58",
+    "Valor": "Video Production"
+  },
+  {
     "Id": "70",
     "Valor": "Early Access"
   }

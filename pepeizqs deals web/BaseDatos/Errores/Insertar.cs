@@ -42,21 +42,26 @@ namespace BaseDatos.Errores
             Environment.Exit(1);
         }
 
-        public static void Mensaje(string seccion, string mensaje)
+        public static void Mensaje(string seccion, string mensaje, string enlace = null)
         {
             SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
             using (conexion)
             {
-                Mensaje(seccion, mensaje, conexion);
+                Mensaje(seccion, mensaje, conexion, enlace);
             }
         }
 
-        public static void Mensaje(string seccion, string mensaje, SqlConnection conexion)
+        public static void Mensaje(string seccion, string mensaje, SqlConnection conexion, string enlace)
         {
+            if (enlace == null)
+            {
+                enlace = "nada";
+            }
+
             string sqlInsertar = "INSERT INTO errores " +
-                               "(seccion, mensaje, stacktrace, fecha) VALUES " +
-                               "(@seccion, @mensaje, @stacktrace, @fecha) ";
+                               "(seccion, mensaje, stacktrace, fecha, enlace) VALUES " +
+                               "(@seccion, @mensaje, @stacktrace, @fecha, @enlace) ";
 
             using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
             {
@@ -64,7 +69,8 @@ namespace BaseDatos.Errores
                 comando.Parameters.AddWithValue("@mensaje", "nada");
                 comando.Parameters.AddWithValue("@stacktrace", mensaje);
                 comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
-             
+                comando.Parameters.AddWithValue("@enlace", enlace);
+
                 try
                 {
                     comando.ExecuteNonQuery();

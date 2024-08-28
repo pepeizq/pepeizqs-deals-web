@@ -647,36 +647,31 @@
 
 		if (nuevoJuego != null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+			if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
 			{
-				if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
-				{
-					juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
-				}
-
-				if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
-				{
-					juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
-				}
-
-				if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
-				{
-					juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
-				}
-
-				juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
-				juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;
-
-				juego.Nombre = nuevoJuego.Nombre;
-				juego.Caracteristicas = nuevoJuego.Caracteristicas;
-				juego.Media = nuevoJuego.Media;
-				juego.Categorias = nuevoJuego.Categorias;
-				juego.Generos = nuevoJuego.Generos;
-
-				BaseDatos.Juegos.Actualizar.Media(juego, conexion);
+				juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
 			}
+
+			if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
+			{
+				juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
+			}
+
+			if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
+			{
+				juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
+			}
+
+			juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
+			juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;
+
+			juego.Nombre = nuevoJuego.Nombre;
+			juego.Caracteristicas = nuevoJuego.Caracteristicas;
+			juego.Media = nuevoJuego.Media;
+			juego.Categorias = nuevoJuego.Categorias;
+			juego.Generos = nuevoJuego.Generos;
+
+			BaseDatos.Juegos.Actualizar.Media(juego);
 		}
 	}
 

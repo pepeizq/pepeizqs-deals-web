@@ -25,6 +25,39 @@
 
 	<hr />
 }
+else
+{
+	<div style="padding: 20px; background: var(--fondoCuerpo);">
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 100%;">
+				Admin Añadir Publisher
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px; gap: 20px;">
+			<div style="width: 15%; text-align: right;">
+				Nombre
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaNombre(e))" class="entrada-texto" rows="1">@textoNombre</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px; gap: 20px;">
+			<div style="width: 15%; text-align: right;">
+
+			</div>
+
+			<div style="width: 85%;">
+				<button @onclick="(e => AñadirPublisher(e))" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+					Añadir
+				</button>
+			</div>
+		</div>
+
+	</div>
+}
 
 @code {
 
@@ -67,5 +100,28 @@
 				BaseDatos.Publishers.Actualizar.Acepciones(publisher, conexion);
 			}
 		}
+	}
+
+	//-------------------------------------------------------
+
+	private string textoNombre = string.Empty;
+
+	private void TextoCambiaNombre(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			textoNombre = texto.Value.ToString().Trim();
+		}
+	}
+
+	private void AñadirPublisher(MouseEventArgs e)
+	{
+		BaseDatos.Publishers.Publisher nuevoPublisher = new BaseDatos.Publishers.Publisher();
+		nuevoPublisher.Id = id;
+		nuevoPublisher.Nombre = textoNombre;
+		nuevoPublisher.Descripcion = string.Empty;
+		nuevoPublisher.Imagen = string.Empty;
+
+		BaseDatos.Publishers.Insertar.Ejecutar(nuevoPublisher);
 	}
 }

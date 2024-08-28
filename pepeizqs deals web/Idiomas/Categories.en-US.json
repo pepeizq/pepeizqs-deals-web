@@ -8,6 +8,10 @@
     "Valor": "Single-player"
   },
   {
+    "Id": "8",
+    "Valor": "Valve Anti-Cheat enabled"
+  },
+  {
     "Id": "9",
     "Valor": "Co-op"
   },
@@ -22,6 +26,10 @@
   {
     "Id": "15",
     "Valor": "Stats"
+  },
+  {
+    "Id": "16",
+    "Valor": "Includes Source SDK"
   },
   {
     "Id": "17",
@@ -72,6 +80,10 @@
     "Valor": "Steam Workshop"
   },
   {
+    "Id": "32",
+    "Valor": "Steam Turn Notifications"
+  },
+  {
     "Id": "35",
     "Valor": "In-App Purchases"
   },
@@ -120,12 +132,20 @@
     "Valor": "PvP"
   },
   {
+    "Id": "50",
+    "Valor": "Additional High-Quality Audio"
+  },
+  {
     "Id": "51",
     "Valor": "Steam China Workshop"
   },
   {
     "Id": "52",
     "Valor": "Tracked Controller Support"
+  },
+  {
+    "Id": "53",
+    "Valor": "VR Supported"
   },
   {
     "Id": "54",
@@ -138,5 +158,9 @@
   {
     "Id": "62",
     "Valor": "Family Sharing"
+  },
+  {
+    "Id": "63",
+    "Valor": "Steam Timeline"
   }
 ]

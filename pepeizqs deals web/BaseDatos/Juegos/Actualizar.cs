@@ -375,31 +375,40 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void Media(Juego juego, SqlConnection conexion)
+		public static void Media(Juego juego, SqlConnection conexion = null)
 		{
-			string sqlActualizar = "UPDATE juegos " +
-					"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos WHERE id=@id";
-
-			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			if (conexion == null)
 			{
-				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
-				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
-				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-				comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-				comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
-
-				try
-				{
-					comando.ExecuteNonQuery();
-				}
-				catch
-				{
-
-				}
+				conexion = Herramientas.BaseDatos.Conectar();
 			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+									"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+					comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
+					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+					comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
+					comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
+					comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}				
 		}
 
 		public static void Tipo(Juego juego, SqlConnection conexion)

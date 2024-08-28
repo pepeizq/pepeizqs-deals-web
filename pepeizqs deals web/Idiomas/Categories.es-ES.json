@@ -8,6 +8,10 @@
     "Valor": "Un jugador"
   },
   {
+    "Id": "8",
+    "Valor": "Con sist. antitrampas de Valve"
+  },
+  {
     "Id": "9",
     "Valor": "Cooperativo"
   },
@@ -22,6 +26,10 @@
   {
     "Id": "15",
     "Valor": "Estadísticas"
+  },
+  {
+    "Id": "16",
+    "Valor": "Incluye el SDK de Source"
   },
   {
     "Id": "17",
@@ -72,6 +80,10 @@
     "Valor": "Steam Workshop"
   },
   {
+    "Id": "32",
+    "Valor": "Notificaciones de turnos de Steam"
+  },
+  {
     "Id": "35",
     "Valor": "Compras dentro de la aplicación"
   },
@@ -120,12 +132,20 @@
     "Valor": "JcJ"
   },
   {
+    "Id": "50",
+    "Valor": "Audio adicional de alta calidad"
+  },
+  {
     "Id": "51",
     "Valor": "Steam China Workshop"
   },
   {
     "Id": "52",
     "Valor": "Detección de mov. en mando"
+  },
+  {
+    "Id": "53",
+    "Valor": "Compatible con RV"
   },
   {
     "Id": "54",
@@ -138,5 +158,9 @@
   {
     "Id": "62",
     "Valor": "Préstamo familiar"
+  },
+  {
+    "Id": "63",
+    "Valor": "Steam Timeline"
   }
 ]

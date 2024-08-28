@@ -99,5 +99,123 @@ namespace Herramientas
 
 			return null;
 		}
+
+		public static string GenerarMensaje(string idioma, Juegos.Juego juego)
+		{
+			string mensaje = string.Empty;
+
+			if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+			{
+				if (juego.FreeToPlay.ToLower() == "true")
+				{
+					return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage6", "Header");
+				}
+			}
+
+			if (juego.Gratis != null)
+			{
+				if (juego.Gratis.Count > 0)
+				{
+					foreach (var gratis in juego.Gratis)
+					{
+						if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+						{
+							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header");
+						}
+					}
+				}
+			}
+
+			if (juego.Bundles != null)
+			{
+				if (juego.Bundles.Count > 0)
+				{
+					foreach (var bundle in juego.Bundles)
+					{
+						if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+						{
+							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header");
+						}
+					}
+				}
+			}
+
+			if (juego.Suscripciones != null)
+			{
+				if (juego.Suscripciones.Count > 0)
+				{
+					foreach (var suscripcion in juego.Suscripciones)
+					{
+						if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+						{
+							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header");
+						}
+					}
+				}
+			}
+
+			decimal minimoCantidad = 10000000;
+			Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+			if (juego.PrecioActualesTiendas != null)
+			{
+				foreach (var oferta in juego.PrecioActualesTiendas)
+				{
+					bool drmAdecuado = true;
+
+					if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+					{
+						drmAdecuado = false;
+					}
+					else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+					{
+						drmAdecuado = false;
+					}
+
+					if (drmAdecuado == true)
+					{
+						TimeSpan actualizado = DateTime.Now.Subtract(oferta.FechaActualizacion);
+
+						if (actualizado.Days == 0)
+						{
+							decimal tempPrecio = oferta.Precio;
+
+							if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+							{
+								tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+							}
+
+							if (tempPrecio < minimoCantidad)
+							{
+								minimoCantidad = tempPrecio;
+							}
+						}
+					}
+				}
+			}
+
+			if (minimoCantidad > 0 && minimoCantidad < 10000000)
+			{
+				string precioTexto = string.Empty;
+
+				precioTexto = minimoCantidad.ToString();
+				precioTexto = precioTexto.Replace(".", ",");
+
+				int int1 = precioTexto.IndexOf(",");
+
+				if (int1 == precioTexto.Length - 2)
+				{
+					precioTexto = precioTexto + "0";
+				}
+
+				precioTexto = precioTexto + "€";
+
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
+			}
+			else
+			{
+				return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
+			}
+		}
 	}
 }

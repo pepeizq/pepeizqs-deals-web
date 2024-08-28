@@ -40,6 +40,26 @@
     "Valor": "Multijugador masivo"
   },
   {
+    "Id": "37",
+    "Valor": "Free To Play"
+  },
+  {
+    "Id": "52",
+    "Valor": "Producción de audio"
+  },
+  {
+    "Id": "53",
+    "Valor": "Diseño e ilustración"
+  },
+  {
+    "Id": "57",
+    "Valor": "Utilidades"
+  },
+  {
+    "Id": "58",
+    "Valor": "Producción de vídeo"
+  },
+  {
     "Id": "70",
     "Valor": "Acceso anticipado"
   }

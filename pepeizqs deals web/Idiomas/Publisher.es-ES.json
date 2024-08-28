@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Juegos"
+  },
+  {
+    "Id": "String2",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Software"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Bandas Sonoras"
+  }
+]
