@@ -147,7 +147,7 @@ else
 
 					foreach (var juego in resultadosMostrar)
 					{
-						<button @onclick="(e => AbrirJuego(e, juego.Id, juego.Nombre))" class="boton-pequeño" style="padding: 2px;">
+						<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
 							<div>
 								<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
 
@@ -155,7 +155,7 @@ else
 									@Herramientas.Buscador.GenerarMensaje(idioma, juego)
 								</div>
 							</div>
-						</button>
+						</a>
 					}
 				}
 			}
@@ -267,11 +267,6 @@ else
 
 			cargado = true;
 		}
-	}
-
-	private void AbrirJuego(MouseEventArgs e, int id, string nombre)
-	{
-		NavManager.NavigateTo("/game/" + id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(nombre) + "/", true);
 	}
 
 	private void CambiarListado(MouseEventArgs e, int modo)

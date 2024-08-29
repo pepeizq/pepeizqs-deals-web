@@ -14,6 +14,16 @@
 
 		<div style="display: flex; align-items: center; margin-bottom: 20px;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Nombre
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaNombre2(e))" class="entrada-texto" rows="1">@textoNombre2</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Acepciones
 			</div>
 
@@ -75,11 +85,30 @@ else
 
 		if (publisher != null)
 		{
+			textoNombre2 = publisher.Nombre;
 			textoAcepciones = JsonConvert.SerializeObject(publisher.Acepciones);
 
 			if (textoAcepciones == "null")
 			{
 				textoAcepciones = "[" + Strings.ChrW(34) + "acepcion" + Strings.ChrW(34) + "]";
+			}
+		}
+	}
+
+	private string textoNombre2 = string.Empty;
+
+	private void TextoCambiaNombre2(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+			publisher.Nombre = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Publishers.Actualizar.Nombre(publisher, conexion);
 			}
 		}
 	}

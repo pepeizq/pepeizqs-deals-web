@@ -7,6 +7,27 @@ namespace BaseDatos.Publishers
 {
 	public static class Actualizar
 	{
+		public static void Nombre(Publisher publisher, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE publishers " +
+					"SET nombre=@nombre WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", publisher.Id);
+				comando.Parameters.AddWithValue("@nombre", publisher.Nombre);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Acepciones(Publisher publisher, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE publishers " +

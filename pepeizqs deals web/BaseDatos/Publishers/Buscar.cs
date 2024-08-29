@@ -4,6 +4,7 @@ using Juegos;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BaseDatos.Publishers
 {
@@ -99,6 +100,34 @@ namespace BaseDatos.Publishers
             }
 
             return null;
+		}
+
+		public static List<Publisher> Todos(SqlConnection conexion = null)
+		{
+			List<Publisher> lista = new List<Publisher>();
+
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM publishers";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							lista.Add(Cargar(lector));
+						}
+					}
+				}
+			}
+
+			return lista;
 		}
 
 		public static Publisher Acepcion(string cadena, SqlConnection conexion = null)

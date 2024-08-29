@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Publishers;
 using Bundles2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
@@ -295,6 +296,48 @@ namespace Herramientas
 						 "</url>";
 
 					sb.Append(textoNoticias);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-publishers.xml")]
+		public IActionResult SitemapPublishers()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			string textoIndex = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoIndex);
+
+			List<Publisher> publishers = new List<Publisher>();
+
+			publishers = Buscar.Todos();
+
+			if (publishers.Count > 0)
+			{
+				foreach (var publisher in publishers)
+				{
+					string textoPublisher = "<url>" + Environment.NewLine +
+						 "<loc>https://pepeizqdeals.com/publisher/" + publisher.Id + "/</loc>" + Environment.NewLine +
+						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
+						 "<priority>0.9</priority> " + Environment.NewLine +
+						 "</url>";
+
+					sb.Append(textoPublisher);
 				}
 			}
 

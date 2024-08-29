@@ -798,7 +798,7 @@
 
 							if (string.IsNullOrEmpty(juego.Media.Video) == false)
 							{
-								añadirMargin = "margin-top: -10px;";
+								añadirMargin = "margin-top: -5px;";
 							}
 
 							<div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro); @añadirMargin">
@@ -943,7 +943,7 @@
 													else
 													{
 														global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
-														publisherFinal2.Id = publisherLimpio;
+														publisherFinal2.Id = null;
 														publisherFinal2.Nombre = publisher;
 
 														publishersFinales.Add(publisherFinal2);
@@ -961,7 +961,14 @@
 														<label style="margin-right: 5px;">,</label>
 													}
 
-													<a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
+													if (string.IsNullOrEmpty(publisher.Id) == false)
+													{
+														<a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
+													}
+													else
+													{
+														@publisher.Nombre
+													}
 
 													i += 1;
 												}

@@ -36,7 +36,25 @@ namespace pepeizqs_deals_web.Pages
 
 					if (publisher != null)
 					{
-						BaseDatos.Publishers.Insertar.Ejecutar(publisher);
+						bool añadir = true;
+
+						if (string.IsNullOrEmpty(publisher.Nombre) == true)
+						{
+							añadir = false;
+						}
+
+						if (string.IsNullOrEmpty(publisher.Imagen) == false)
+						{
+							if (publisher.Imagen == "https://avatars.akamai.steamstatic.com/_full.jpg")
+							{
+								añadir = false;
+							}
+						}
+
+						if (añadir == true)
+						{
+                            BaseDatos.Publishers.Insertar.Ejecutar(publisher);
+                        }
 					}
 				}
 			}

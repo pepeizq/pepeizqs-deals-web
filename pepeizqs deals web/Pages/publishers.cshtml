@@ -1,0 +1,28 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.publishersModel
+
+@{
+    ViewData["Title"] = "Publishers";
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (Model.publishers != null)
+{
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+        @{
+            foreach (var publisher in Model.publishers)
+            {
+                string nombre = publisher.Nombre;
+
+                if (string.IsNullOrEmpty(nombre) == true)
+                {
+                    nombre = "MIRAR --> " + publisher.Id;
+                }
+
+                <div>
+                    <a href="/publisher/@publisher.Id" target="_blank">@nombre</a>
+                </div>
+            }
+        }
+    </div>
+}
