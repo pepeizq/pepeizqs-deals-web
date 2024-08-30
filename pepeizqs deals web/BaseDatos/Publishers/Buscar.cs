@@ -130,6 +130,35 @@ namespace BaseDatos.Publishers
 			return lista;
 		}
 
+		public static Publisher Nombre(string cadena, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			if (string.IsNullOrEmpty(cadena) == false)
+			{
+				using (conexion)
+				{
+					string busqueda = "SELECT * FROM publishers WHERE nombre = '" + cadena + "'";
+
+					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+					{
+						using (SqlDataReader lector = comando.ExecuteReader())
+						{
+							while (lector.Read())
+							{
+								return Cargar(lector);
+							}
+						}
+					}
+				}
+			}
+
+			return null;
+		}
+
 		public static Publisher Acepcion(string cadena, SqlConnection conexion = null)
 		{
 			if (conexion == null)

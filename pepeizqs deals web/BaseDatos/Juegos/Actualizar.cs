@@ -375,8 +375,66 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void Media(Juego juego, SqlConnection conexion = null)
+		public static void Media(Juego nuevoJuego, Juego juego, SqlConnection conexion = null)
 		{
+			if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
+			{
+				juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
+			}
+
+			if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
+			{
+				juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
+			}
+
+			if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
+			{
+				juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
+			}
+
+			juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
+			juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;
+
+			juego.Nombre = nuevoJuego.Nombre;
+			juego.Caracteristicas.Descripcion = nuevoJuego.Caracteristicas.Descripcion;
+			juego.Caracteristicas.Windows = nuevoJuego.Caracteristicas.Windows;
+			juego.Caracteristicas.Mac = nuevoJuego.Caracteristicas.Mac;
+			juego.Caracteristicas.Linux = nuevoJuego.Caracteristicas.Linux;
+
+			List<string> desarrolladores = new List<string>();
+
+			if (nuevoJuego.Caracteristicas.Desarrolladores != null)
+			{
+				if (nuevoJuego.Caracteristicas.Desarrolladores.Count > 0)
+				{
+					foreach (var desarrollador in nuevoJuego.Caracteristicas.Desarrolladores)
+					{
+						desarrolladores.Add(desarrollador.Trim());
+					}
+				}
+			}
+
+			juego.Caracteristicas.Desarrolladores = desarrolladores;
+
+			List<string> publishers = new List<string>();
+
+			if (nuevoJuego.Caracteristicas.Publishers != null)
+			{
+				if (nuevoJuego.Caracteristicas.Publishers.Count > 0)
+				{
+					foreach (var publisher in nuevoJuego.Caracteristicas.Publishers)
+					{
+						publishers.Add(publisher.Trim());
+					}
+				}
+			}
+
+			juego.Caracteristicas.Publishers = publishers;
+
+			juego.Media = nuevoJuego.Media;
+			juego.Categorias = nuevoJuego.Categorias;
+			juego.Generos = nuevoJuego.Generos;
+
 			if (conexion == null)
 			{
 				conexion = Herramientas.BaseDatos.Conectar();

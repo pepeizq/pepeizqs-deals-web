@@ -263,6 +263,21 @@ else
 						resultadosBandasSonoras.Add(resultadoGestor);
 					}
 				}
+
+				if (resultadosJuegos.Count == 0)
+				{
+					resultadosModo = 1;
+
+					if (resultadosDLCs.Count == 0)
+					{
+						resultadosModo = 2;
+
+						if (resultadosSoftware.Count == 0)
+						{
+							resultadosModo = 3;
+						}
+					}
+				}
 			}
 
 			cargado = true;
