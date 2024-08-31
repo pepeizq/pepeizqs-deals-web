@@ -100,7 +100,64 @@ namespace Herramientas
 			return null;
 		}
 
-		public static string GenerarMensaje(string idioma, Juegos.Juego juego)
+		public static bool ComprobarBundles(Juegos.Juego juego)
+		{
+			if (juego.Bundles != null)
+			{
+				if (juego.Bundles.Count > 0)
+				{
+					foreach (var bundle in juego.Bundles)
+					{
+						if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+						{
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static bool ComprobarGratis(Juegos.Juego juego)
+		{
+			if (juego.Gratis != null)
+			{
+				if (juego.Gratis.Count > 0)
+				{
+					foreach (var gratis in juego.Gratis)
+					{
+						if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+						{
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static bool ComprobarSuscripcion(Juegos.Juego juego)
+		{
+			if (juego.Suscripciones != null)
+			{
+				if (juego.Suscripciones.Count > 0)
+				{
+					foreach (var suscripcion in juego.Suscripciones)
+					{
+						if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+						{
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static string GenerarMensaje(string idioma, Juegos.Juego juego, bool buscarBundles, bool buscarGratis, bool buscarSuscripciones)
 		{
 			string mensaje = string.Empty;
 
@@ -112,43 +169,52 @@ namespace Herramientas
 				}
 			}
 
-			if (juego.Gratis != null)
+			if (buscarBundles == true)
 			{
-				if (juego.Gratis.Count > 0)
+				if (juego.Bundles != null)
 				{
-					foreach (var gratis in juego.Gratis)
+					if (juego.Bundles.Count > 0)
 					{
-						if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+						foreach (var bundle in juego.Bundles)
 						{
-							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header");
+							if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+							{
+								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header"), global::BaseDatos.Bundles.Buscar.UnBundle(bundle.BundleId).NombreBundle);
+							}
 						}
 					}
 				}
 			}
 
-			if (juego.Bundles != null)
+			if (buscarGratis == true)
 			{
-				if (juego.Bundles.Count > 0)
+				if (juego.Gratis != null)
 				{
-					foreach (var bundle in juego.Bundles)
+					if (juego.Gratis.Count > 0)
 					{
-						if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+						foreach (var gratis in juego.Gratis)
 						{
-							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header");
+							if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+							{
+								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header"), Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre);
+							}
 						}
 					}
 				}
 			}
-
-			if (juego.Suscripciones != null)
+			
+			if (buscarSuscripciones == true)
 			{
-				if (juego.Suscripciones.Count > 0)
+				if (juego.Suscripciones != null)
 				{
-					foreach (var suscripcion in juego.Suscripciones)
+					if (juego.Suscripciones.Count > 0)
 					{
-						if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+						foreach (var suscripcion in juego.Suscripciones)
 						{
-							return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header");
+							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+							{
+								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre);
+							}
 						}
 					}
 				}

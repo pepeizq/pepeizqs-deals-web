@@ -68,6 +68,18 @@
     "Valor": "Software"
   },
   {
+    "Id": "SearchFilter5",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "SearchFilter6",
+    "Valor": "Free"
+  },
+  {
+    "Id": "SearchFilter7",
+    "Valor": "Subscriptions"
+  },
+  {
     "Id": "SearchMessage1",
     "Valor": "From {0}"
   },
@@ -77,15 +89,15 @@
   },
   {
     "Id": "SearchMessage3",
-    "Valor": "In a Subscription"
+    "Valor": "In the {0} subscription"
   },
   {
     "Id": "SearchMessage4",
-    "Valor": "In a Bundle"
+    "Valor": "In the bundle: {0}"
   },
   {
     "Id": "SearchMessage5",
-    "Valor": "Free to Claim"
+    "Valor": "Free to claim on {0}"
   },
   {
     "Id": "SearchMessage6",

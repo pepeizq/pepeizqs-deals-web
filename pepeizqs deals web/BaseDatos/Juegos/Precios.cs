@@ -78,10 +78,14 @@ namespace BaseDatos.Juegos
 			{
 				if (juego.PrecioMinimosHistoricos.Count > 0)
 				{
-					foreach (JuegoPrecio minimo in juego.PrecioMinimosHistoricos)
+                    bool drmEncontrado = false;
+
+                    foreach (JuegoPrecio minimo in juego.PrecioMinimosHistoricos)
 					{
 						if (nuevaOferta.DRM == minimo.DRM)
 						{
+							drmEncontrado = true;
+
 							decimal tempPrecio = nuevaOferta.Precio;
 
 							if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
@@ -169,6 +173,11 @@ namespace BaseDatos.Juegos
 							break;
 						}
 					}
+
+					if (drmEncontrado == false)
+					{
+                        juego.PrecioMinimosHistoricos.Add(nuevaOferta);
+                    }
 				}
 				else
 				{

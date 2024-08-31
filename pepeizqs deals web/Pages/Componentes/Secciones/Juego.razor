@@ -911,6 +911,8 @@
 												{
 													string publisherLimpio = publisher;
 													publisherLimpio = publisherLimpio.Replace(" ", null);
+													publisherLimpio = publisherLimpio.Replace("(", null);
+													publisherLimpio = publisherLimpio.Replace(")", null);
 													publisherLimpio = publisherLimpio.Replace("?", null);
 													publisherLimpio = publisherLimpio.ToLower();
 													publisherLimpio = publisherLimpio.Trim();
@@ -924,7 +926,17 @@
 
 													if (publisherFinal == null)
 													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Nombre(publisherLimpio.Trim());
+													}
+
+													if (publisherFinal == null)
+													{
 														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
+													}
+
+													if (publisherFinal == null)
+													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
 													}
 
 													if (publisherFinal != null)
@@ -952,6 +964,9 @@
 														global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
 														publisherFinal2.Id = publisherLimpio;
 														publisherFinal2.Nombre = publisher;
+
+														publisherFinal2.Nombre = publisherFinal2.Nombre.Replace(")", null);
+														publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("(", null);
 
 														if (publisherFinal2.Nombre.Contains("?") == true)
 														{
@@ -1023,7 +1038,7 @@
 												}
 												else
 												{
-													global::BaseDatos.Errores.Insertar.Mensaje("Género no encontrado", genero + " - " + juego.Nombre + ": https://store.steampowered.com/api/appdetails/?appids=" + juego.IdSteam.ToString() + "&l=english");
+													global::BaseDatos.Errores.Insertar.Mensaje("Género no encontrado", genero + " - " + juego.Nombre, "https://store.steampowered.com/api/appdetails/?appids=" + juego.IdSteam.ToString() + "&l=english");
 												}
 
 												i += 1;

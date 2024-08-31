@@ -22,7 +22,7 @@
         z-index: 1000;
         margin-top: var(--alturaCabecera);
         padding: 10px;
-        backdrop-filter: blur(50px);
+        backdrop-filter: blur(200px);
     }
 
     .boton-superior {
@@ -180,56 +180,150 @@
         {
             if (resultados.Count > 0)
             {
-                <div class="buscador-panel" style="display: flex; align-items: start;">
-                    <div style="width: 20%; padding-right: 20px;">
+                <div class="buscador-panel" style="display: flex; align-items: start; gap: 20px;">
+                    <div style="width: 20%;">
                         @if (resultadosJuegos.Count > 0)
                         {
-                            <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Game))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                            int id = 0;
+                            string fondo = "background-color: transparent;";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-top: 10px; text-align: right;">
                                 @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
                             </button>
                         }
 
                         @if (resultadosDLCs.Count > 0)
                         {
-                            <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.DLC))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                            int id = 1;
+                            string fondo = "background-color: transparent;";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-top: 10px; text-align: right;">
                                 @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
                             </button>
                         }
 
                         @if (resultadosBandasSonoras.Count > 0)
                         {
-                            <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Music))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                            int id = 2;
+                            string fondo = "background-color: transparent;";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-top: 10px; text-align: right;">
                                 @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
                             </button>
                         }
 
                         @if (resultadosSoftware.Count > 0)
                         {
-                            <button @onclick="@(e => CambiarPestaña(e, Juegos.JuegoTipo.Software))" class="boton-pequeño" style="padding: 12px 15px; font-size: 16px; margin-top: 10px;">
+                            int id = 3;
+                            string fondo = "background-color: transparent;";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-top: 10px; text-align: right;">
                                 @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
                             </button>
                         }
+
+                        @if (resultadosBundles.Count > 0 || resultadosGratis.Count > 0 || resultadosSuscripciones.Count > 0)
+                        {
+                            <hr/>
+
+                            @if (resultadosBundles.Count > 0)
+                            {
+                                int id = 4;
+                                string fondo = "background-color: transparent;";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-bottom: 10px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
+                                </button>
+                            }
+
+                            @if (resultadosGratis.Count > 0)
+                            {
+                                int id = 5;
+                                string fondo = "background-color: transparent;";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-bottom: 10px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
+                                </button>
+                            }
+
+                            @if (resultadosSuscripciones.Count > 0)
+                            {
+                                int id = 6;
+                                string fondo = "background-color: transparent;";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; margin-bottom: 10px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
+                                </button>
+                            }
+                        }
                     </div>
 
-                    <div style="width: 80%; padding-right: 10px;">
+                    <div style="width: 100%; padding-right: 10px;">
                         @{
                             List<Juegos.Juego> resultadosFinal = new List<Juegos.Juego>();
 
-                            if (pestañaSeleccionada == Juegos.JuegoTipo.Game && resultadosJuegos.Count > 0)
+                            if (pestañaSeleccionada == 0 && resultadosJuegos.Count > 0)
                             {
                                 resultadosFinal = resultadosJuegos;
                             }
-                            else if (pestañaSeleccionada == Juegos.JuegoTipo.DLC && resultadosDLCs.Count > 0)
+                            else if (pestañaSeleccionada == 1 && resultadosDLCs.Count > 0)
                             {
                                 resultadosFinal = resultadosDLCs;
                             }
-                            else if (pestañaSeleccionada == Juegos.JuegoTipo.Music && resultadosBandasSonoras.Count > 0)
+                            else if (pestañaSeleccionada == 2 && resultadosBandasSonoras.Count > 0)
                             {
                                 resultadosFinal = resultadosBandasSonoras;
                             }
-                            else if (pestañaSeleccionada == Juegos.JuegoTipo.Software && resultadosSoftware.Count > 0)
+                            else if (pestañaSeleccionada == 3 && resultadosSoftware.Count > 0)
                             {
                                 resultadosFinal = resultadosSoftware;
+                            }
+                            else if (pestañaSeleccionada == 4 && resultadosBundles.Count > 0)
+                            {
+                                resultadosFinal = resultadosBundles;
+                            }
+                            else if (pestañaSeleccionada == 5 && resultadosGratis.Count > 0)
+                            {
+                                resultadosFinal = resultadosGratis;
+                            }
+                            else if (pestañaSeleccionada == 6 && resultadosSuscripciones.Count > 0)
+                            {
+                                resultadosFinal = resultadosSuscripciones;
                             }
 
                             <Virtualize Context="juego" Items="resultadosFinal" ItemSize="117" OverscanCount="6">
@@ -241,12 +335,14 @@
                                                     <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
                                                 </div>
 
-                                                <div style="width: 100%; padding-left: 15px; padding-right: 15px;">
-                                                    @juego.Nombre
-                                                </div>
+                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
+                                                    <div>
+                                                        @juego.Nombre
+                                                    </div>
 
-                                                <div style="padding: 20px; min-width: 200px; text-align: center;">
-                                                    @Herramientas.Buscador.GenerarMensaje(idioma, juego)
+                                                    <div style="margin-top: 5px; font-size: 15px;">
+                                                        @Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+                                                    </div>
                                                 </div>
                                             </div>
                                         </a>
@@ -395,6 +491,9 @@ else
     private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosBundles = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
 
     private bool enseñarBuscador = false;
 
@@ -418,92 +517,133 @@ else
 
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            if (conexion.State != System.Data.ConnectionState.Open)
+            Task tarea = Task.Run(() =>
             {
-                conexion = Herramientas.BaseDatos.Conectar();
-            }
-
-            using (conexion)
-            {
-                resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 200);
-            }
-
-            if (resultadosBuscador != null)
-            {
-                pestañaSeleccionada = Juegos.JuegoTipo.Game;
-
-                resultados.Clear();
-                resultadosJuegos.Clear();
-                resultadosDLCs.Clear();
-                resultadosBandasSonoras.Clear();
-                resultadosSoftware.Clear();
-
-                resultados = resultadosBuscador;
-
-                if (resultadosBuscador.Count > 0)
+                if (conexion.State != System.Data.ConnectionState.Open)
                 {
-                    foreach (var resultado in resultadosBuscador)
-                    {
-                        if (resultado.Tipo == Juegos.JuegoTipo.Game)
-                        {
-                            resultadosJuegos.Add(resultado);
-                        }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.DLC)
-                        {
-                            resultadosDLCs.Add(resultado);
-                        }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.Music)
-                        {
-                            resultadosBandasSonoras.Add(resultado);
-                        }
-                        else if (resultado.Tipo == Juegos.JuegoTipo.Software)
-                        {
-                            resultadosSoftware.Add(resultado);
-                        }
-                    }
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
 
-                    if (resultadosJuegos.Count > 0)
-                    {
-                        pestañaSeleccionada = Juegos.JuegoTipo.Game;
+                using (conexion)
+                {
+                    resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 200);
+                }
 
-                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                if (resultadosBuscador != null)
+                {
+                    pestañaSeleccionada = 0;
+
+                    resultados.Clear();
+                    resultadosJuegos.Clear();
+                    resultadosDLCs.Clear();
+                    resultadosBandasSonoras.Clear();
+                    resultadosSoftware.Clear();
+                    resultadosBundles.Clear();
+                    resultadosGratis.Clear();
+                    resultadosSuscripciones.Clear();
+
+                    resultados = resultadosBuscador;
+
+                    if (resultadosBuscador.Count > 0)
+                    {
+                        foreach (var resultado in resultadosBuscador)
+                        {
+                            if (resultado.Tipo == Juegos.JuegoTipo.Game)
+                            {
+                                resultadosJuegos.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.DLC)
+                            {
+                                resultadosDLCs.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.Music)
+                            {
+                                resultadosBandasSonoras.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.Software)
+                            {
+                                resultadosSoftware.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
+                            {
+                                resultadosBundles.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
+                            {
+                                resultadosGratis.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
+                            {
+                                resultadosSuscripciones.Add(resultado);
+                            }
+                        }
+
+                        if (resultadosJuegos.Count > 0)
+                        {
+                            pestañaSeleccionada = 0;
+
+                            resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                             ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosDLCs.Count > 0)
-                    {
-                        if (resultadosJuegos.Count == 0)
-                        {
-                            pestañaSeleccionada = Juegos.JuegoTipo.DLC;
                         }
 
-                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        if (resultadosDLCs.Count > 0)
+                        {
+                            if (resultadosJuegos.Count == 0)
+                            {
+                                pestañaSeleccionada = 1;
+                            }
+
+                            resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                             ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosBandasSonoras.Count > 0)
-                    {
-                        if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0)
-                        {
-                            pestañaSeleccionada = Juegos.JuegoTipo.Music;
                         }
 
-                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        if (resultadosBandasSonoras.Count > 0)
+                        {
+                            if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0)
+                            {
+                                pestañaSeleccionada = 2;
+                            }
+
+                            resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                             ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosSoftware.Count > 0)
-                    {
-                        if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0 && resultadosBandasSonoras.Count == 0)
-                        {
-                            pestañaSeleccionada = Juegos.JuegoTipo.Software;
                         }
 
-                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        if (resultadosSoftware.Count > 0)
+                        {
+                            if (resultadosJuegos.Count == 0 && resultadosDLCs.Count == 0 && resultadosBandasSonoras.Count == 0)
+                            {
+                                pestañaSeleccionada = 3;
+                            }
+
+                            resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                             ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                        }
+
+                        if (resultadosBundles.Count > 0)
+                        {
+                            resultadosBundles = resultadosBundles.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                        }
+
+                        if (resultadosGratis.Count > 0)
+                        {
+                            resultadosGratis = resultadosGratis.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                        }
+
+                        if (resultadosSuscripciones.Count > 0)
+                        {
+                            resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(texto.Value.ToString().Trim())) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                        }
                     }
                 }
-            }
+            });
+
+            tarea.Wait();
         }
         else
         {
@@ -512,9 +652,9 @@ else
         }   
     }
 
-    Juegos.JuegoTipo pestañaSeleccionada = Juegos.JuegoTipo.Game;
+    int pestañaSeleccionada = 0;
 
-    private void CambiarPestaña(MouseEventArgs e, Juegos.JuegoTipo pestaña)
+    private void CambiarPestaña(MouseEventArgs e, int pestaña)
     {
         pestañaSeleccionada = pestaña;
     }

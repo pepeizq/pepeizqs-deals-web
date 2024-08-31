@@ -52,12 +52,24 @@
     "Valor": "Design & Illustration"
   },
   {
+    "Id": "54",
+    "Valor": "Education"
+  },
+  {
     "Id": "57",
     "Valor": "Utilities"
   },
   {
     "Id": "58",
     "Valor": "Video Production"
+  },
+  {
+    "Id": "59",
+    "Valor": "Web Publishing"
+  },
+  {
+    "Id": "60",
+    "Valor": "Game Development"
   },
   {
     "Id": "70",

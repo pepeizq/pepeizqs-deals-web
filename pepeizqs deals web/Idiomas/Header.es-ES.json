@@ -68,6 +68,18 @@
     "Valor": "Software"
   },
   {
+    "Id": "SearchFilter5",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "SearchFilter6",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "SearchFilter7",
+    "Valor": "Suscripciones"
+  },
+  {
     "Id": "SearchMessage1",
     "Valor": "Desde {0}"
   },
@@ -77,15 +89,15 @@
   },
   {
     "Id": "SearchMessage3",
-    "Valor": "En una Suscripción"
+    "Valor": "En la suscripción {0}"
   },
   {
     "Id": "SearchMessage4",
-    "Valor": "En un Bundle"
+    "Valor": "En el bundle: {0}"
   },
   {
     "Id": "SearchMessage5",
-    "Valor": "Gratis para Reclamar"
+    "Valor": "Gratis para reclamar en {0}"
   },
   {
     "Id": "SearchMessage6",

@@ -14,5 +14,21 @@
   {
     "Id": "String4",
     "Valor": "Bandas Sonoras"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Editor"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Suscripciones"
   }
 ]

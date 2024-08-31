@@ -14,5 +14,21 @@
   {
     "Id": "String4",
     "Valor": "Soundtracks"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Publisher"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Free"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Subscriptions"
   }
 ]

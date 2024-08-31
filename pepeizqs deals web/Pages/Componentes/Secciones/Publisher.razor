@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using System.Net
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 
 @inject NavigationManager NavManager
 
@@ -53,7 +54,7 @@ else
 				</div>
 			}
 
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
 				@if (resultadosJuegos.Count > 0)
 				{
 					string fondo = string.Empty;
@@ -79,7 +80,7 @@ else
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
 
-					<button @onclick="(e => CambiarListado(e, 1))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; margin-top: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 1))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Publisher") (@resultadosDLCs.Count.ToString())
 						</div>
@@ -95,7 +96,7 @@ else
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
 
-					<button @onclick="(e => CambiarListado(e, 2))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; margin-top: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 2))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Publisher") (@resultadosSoftware.Count.ToString())
 						</div>
@@ -111,16 +112,69 @@ else
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
 
-					<button @onclick="(e => CambiarListado(e, 3))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; margin-top: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 3))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Publisher") (@resultadosBandasSonoras.Count.ToString())
 						</div>
 					</button>
 				}
+
+				@if (resultadosBundles.Count > 0 || resultadosGratis.Count > 0 || resultadosSuscripciones.Count > 0)
+				{
+					<hr/>
+
+					@if (resultadosBundles.Count > 0)
+					{
+						string fondo = string.Empty;
+
+						if (resultadosModo == 4)
+						{
+							fondo = "background-color: var(--fondoBotonPequeño);";
+						}
+
+						<button @onclick="(e => CambiarListado(e, 4))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+							<div>
+								@Herramientas.Idiomas.CogerCadena(idioma, "String6", "Publisher") (@resultadosBundles.Count.ToString())
+							</div>
+						</button>
+					}
+
+					@if (resultadosGratis.Count > 0)
+					{
+						string fondo = string.Empty;
+
+						if (resultadosModo == 5)
+						{
+							fondo = "background-color: var(--fondoBotonPequeño);";
+						}
+
+						<button @onclick="(e => CambiarListado(e, 5))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+							<div>
+								@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Publisher") (@resultadosGratis.Count.ToString())
+							</div>
+						</button>
+					}
+
+					@if (resultadosSuscripciones.Count > 0)
+					{
+						string fondo = string.Empty;
+
+						if (resultadosModo == 6)
+						{
+							fondo = "background-color: var(--fondoBotonPequeño);";
+						}
+
+						<button @onclick="(e => CambiarListado(e, 6))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+							<div>
+								@Herramientas.Idiomas.CogerCadena(idioma, "String8", "Publisher") (@resultadosSuscripciones.Count.ToString())
+							</div>
+						</button>
+					}
+				}
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); width: 100%; padding: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-gap: 20px;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); width: 100%; padding: 10px; display: flex; flex-direction: column;">
 			@{
 				List<Juegos.Juego> resultadosMostrar = new List<Juegos.Juego>();
 
@@ -140,23 +194,63 @@ else
 				{
 					resultadosMostrar = resultadosBandasSonoras;
 				}
+				else if (resultadosModo == 4)
+				{
+					resultadosMostrar = resultadosBundles;
+				}
+				else if (resultadosModo == 5)
+				{
+					resultadosMostrar = resultadosGratis;
+				}
+				else if (resultadosModo == 6)
+				{
+					resultadosMostrar = resultadosSuscripciones;
+				}
 
 				if (resultadosMostrar != null)
 				{
 					resultadosMostrar = resultadosMostrar.OrderBy(x => x.Nombre).ToList();
 
-					foreach (var juego in resultadosMostrar)
-					{
-						<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
-							<div>
-								<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+					<Virtualize Context="juego" Items="resultadosMostrar" ItemSize="334" OverscanCount="6">
+						<ItemContent>
+							<div style="padding: 10px;">
+								<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
+									<div style="display: flex; align-items: center;">
+										<div>
+											<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+										</div>
 
-								<div style="font-size: 14px; text-align: right; padding: 5px 8px;">
-									@Herramientas.Buscador.GenerarMensaje(idioma, juego)
-								</div>
+										<div style="padding: 0px 20px;">
+											<div>
+												@juego.Nombre
+											</div>
+
+											<div style="margin-top: 10px; font-size: 15px;">
+																					
+											</div>
+
+											@if (resultadosModo == 4)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
+											}
+											else if (resultadosModo == 5)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
+											}
+											else if (resultadosModo == 6)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
+											}
+											else
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+											}
+										</div>
+									</div>
+								</a>
 							</div>
-						</a>
-					}
+						</ItemContent>
+					</Virtualize>
 				}
 			}
 		</div>
@@ -194,6 +288,9 @@ else
 	private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
+	private List<Juegos.Juego> resultadosBundles = new List<Juegos.Juego>();
+	private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
+	private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
 
 	#nullable enable
 	[CascadingParameter]
@@ -261,6 +358,21 @@ else
 					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Music)
 					{
 						resultadosBandasSonoras.Add(resultadoGestor);
+					}
+
+					if (Herramientas.Buscador.ComprobarBundles(resultadoGestor) == true)
+					{
+						resultadosBundles.Add(resultadoGestor);
+					}
+
+					if (Herramientas.Buscador.ComprobarGratis(resultadoGestor) == true)
+					{
+						resultadosGratis.Add(resultadoGestor);
+					}
+
+					if (Herramientas.Buscador.ComprobarSuscripcion(resultadoGestor) == true)
+					{
+						resultadosSuscripciones.Add(resultadoGestor);
 					}
 				}
 
