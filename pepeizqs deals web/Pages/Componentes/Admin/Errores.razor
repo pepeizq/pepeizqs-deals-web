@@ -36,18 +36,20 @@
                                 </div>
                             </div>
 
-                            @if (string.IsNullOrEmpty(error.Mensaje) == false)
-                            {
-                                if (error.Mensaje != "nada")
-                                {
-                                    <div style="width: 20%;">
-                                        @error.Mensaje
-                                    </div>
-                                }
-                            }
-
                             <div style="width: 100%;">
-                                @error.Stacktrace
+                                @if (string.IsNullOrEmpty(error.Mensaje) == false)
+                                {
+                                    if (error.Mensaje != "nada")
+                                    {
+                                        <div style="margin-bottom: 10px;">
+                                            @error.Mensaje
+                                        </div>
+                                    }
+                                }
+
+                                <div>
+                                    @error.Stacktrace
+                                </div>                             
                             </div>
                         </div>
                     </a>
@@ -64,18 +66,20 @@
                             </div>
                         </div>
 
-                        @if (string.IsNullOrEmpty(error.Mensaje) == false)
-                        {
-                            if (error.Mensaje != "nada")
-                            {
-                                <div style="width: 20%;">
-                                    @error.Mensaje
-                                </div>
-                            }
-                        }
-
                         <div style="width: 100%;">
-                            @error.Stacktrace
+                            @if (string.IsNullOrEmpty(error.Mensaje) == false)
+                            {
+                                if (error.Mensaje != "nada")
+                                {
+                                    <div style="margin-bottom: 10px;">
+                                        @error.Mensaje
+                                    </div>
+                                }
+                            }
+
+                            <div>
+                                @error.Stacktrace
+                            </div>
                         </div>
                     </div>
                 }

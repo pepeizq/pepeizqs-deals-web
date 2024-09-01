@@ -44,6 +44,10 @@
     "Valor": "Free To Play"
   },
   {
+    "Id": "51",
+    "Valor": "Animación y modelado"
+  },
+  {
     "Id": "52",
     "Valor": "Producción de audio"
   },
@@ -54,6 +58,10 @@
   {
     "Id": "54",
     "Valor": "Educación"
+  },
+  {
+    "Id": "55",
+    "Valor": "Edición fotográfica"
   },
   {
     "Id": "57",
@@ -74,5 +82,13 @@
   {
     "Id": "70",
     "Valor": "Acceso anticipado"
+  },
+  {
+    "Id": "73",
+    "Valor": "Violencia"
+  },
+  {
+    "Id": "74",
+    "Valor": "Gore"
   }
 ]

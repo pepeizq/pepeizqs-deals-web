@@ -93,7 +93,7 @@
   },
   {
     "Id": "SearchMessage4",
-    "Valor": "In the bundle: {0}"
+    "Valor": "In the bundle: {0} from {1}"
   },
   {
     "Id": "SearchMessage5",

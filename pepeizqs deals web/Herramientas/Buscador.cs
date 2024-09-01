@@ -179,7 +179,9 @@ namespace Herramientas
 						{
 							if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 							{
-								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header"), global::BaseDatos.Bundles.Buscar.UnBundle(bundle.BundleId).NombreBundle);
+								Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle.BundleId);
+
+                                return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header"), bundle2.NombreBundle, bundle2.NombreTienda);
 							}
 						}
 					}

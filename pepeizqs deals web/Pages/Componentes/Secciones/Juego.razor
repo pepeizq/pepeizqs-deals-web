@@ -974,6 +974,11 @@
 															publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
 														}
 
+														if (publisherFinal2.Nombre == "China")
+														{
+															publisherFinal2.Nombre = null;
+														}
+
 														if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
 														{
 															publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";

@@ -80,6 +80,10 @@
     "Valor": "Steam Workshop"
   },
   {
+    "Id": "31",
+    "Valor": "Compatibilidad con RV"
+  },
+  {
     "Id": "32",
     "Valor": "Notificaciones de turnos de Steam"
   },

@@ -44,6 +44,10 @@
     "Valor": "Free To Play"
   },
   {
+    "Id": "51",
+    "Valor": "Animation & Modeling"
+  },
+  {
     "Id": "52",
     "Valor": "Audio Production"
   },
@@ -54,6 +58,10 @@
   {
     "Id": "54",
     "Valor": "Education"
+  },
+  {
+    "Id": "55",
+    "Valor": "Photo Editing"
   },
   {
     "Id": "57",
@@ -74,5 +82,13 @@
   {
     "Id": "70",
     "Valor": "Early Access"
+  },
+  {
+    "Id": "73",
+    "Valor": "Violent"
+  },
+  {
+    "Id": "74",
+    "Valor": "Gore"
   }
 ]
