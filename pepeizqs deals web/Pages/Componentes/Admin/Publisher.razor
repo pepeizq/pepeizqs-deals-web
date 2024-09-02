@@ -3,6 +3,8 @@
 @using Microsoft.VisualBasic
 @using Newtonsoft.Json
 
+@inject NavigationManager NavManager
+
 @if (publisher != null)
 {
 	<div style="padding: 20px; background: var(--fondoCuerpo);">
@@ -152,5 +154,7 @@ else
 		nuevoPublisher.Imagen = string.Empty;
 
 		BaseDatos.Publishers.Insertar.Ejecutar(nuevoPublisher);
+
+		NavManager.NavigateTo("/publisher/" + nuevoPublisher.Id, true);
 	}
 }

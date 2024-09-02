@@ -1,8 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
-@using System.Net
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-
-@inject NavigationManager NavManager
+@using System.Net
 
 <style>
 	.cargando {
@@ -174,43 +172,15 @@ else
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); width: 100%; padding: 10px; display: flex; flex-direction: column;">
-			@{
-				List<Juegos.Juego> resultadosMostrar = new List<Juegos.Juego>();
+		<div style="width: 100%;">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+				<i class="fa-solid fa-magnifying-glass"></i>
+				<input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Publisher")" />
+			</div>
 
-				if (resultadosModo == 0)
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column;">
+				@if (resultadosMostrar.Count > 0)
 				{
-					resultadosMostrar = resultadosJuegos;
-				}
-				else if (resultadosModo == 1)
-				{
-					resultadosMostrar = resultadosDLCs;
-				}
-				else if (resultadosModo == 2)
-				{
-					resultadosMostrar = resultadosSoftware;
-				}
-				else if (resultadosModo == 3)
-				{
-					resultadosMostrar = resultadosBandasSonoras;
-				}
-				else if (resultadosModo == 4)
-				{
-					resultadosMostrar = resultadosBundles;
-				}
-				else if (resultadosModo == 5)
-				{
-					resultadosMostrar = resultadosGratis;
-				}
-				else if (resultadosModo == 6)
-				{
-					resultadosMostrar = resultadosSuscripciones;
-				}
-
-				if (resultadosMostrar != null)
-				{
-					resultadosMostrar = resultadosMostrar.OrderBy(x => x.Nombre).ToList();
-
 					<Virtualize Context="juego" Items="resultadosMostrar" ItemSize="334" OverscanCount="6">
 						<ItemContent>
 							<div style="padding: 10px;">
@@ -226,25 +196,23 @@ else
 											</div>
 
 											<div style="margin-top: 10px; font-size: 15px;">
-																					
+												@if (resultadosModo == 4)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
+												}
+												else if (resultadosModo == 5)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
+												}
+												else if (resultadosModo == 6)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
+												}
+												else
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+												}
 											</div>
-
-											@if (resultadosModo == 4)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
-											}
-											else if (resultadosModo == 5)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
-											}
-											else if (resultadosModo == 6)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
-											}
-											else
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
-											}
 										</div>
 									</div>
 								</a>
@@ -252,7 +220,13 @@ else
 						</ItemContent>
 					</Virtualize>
 				}
-			}
+				else
+				{
+					<div style="padding: 10px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String10", "Publisher")
+					</div>					
+				}
+			</div>
 		</div>
 	</div>
 }
@@ -284,6 +258,7 @@ else
 	private int resultadosModo = 0;
 
 	private List<Juegos.Juego> resultadosGestor = new List<Juegos.Juego>();
+	private List<Juegos.Juego> resultadosMostrar = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosSoftware = new List<Juegos.Juego>();
@@ -301,103 +276,202 @@ else
 	{
 		if (HttpContext == null)
 		{
-			await Task.Delay(10);
-			resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
+			await Task.Delay(1);
 
-			if (acepciones != null)
+			Task tarea = Task.Run(() =>
 			{
-				if (acepciones.Count > 0)
+				resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
+
+				if (acepciones != null)
 				{
-					foreach (var acepcion in acepciones)
+					if (acepciones.Count > 0)
 					{
-						if (acepcion != "acepcion")
+						foreach (var acepcion in acepciones)
 						{
-							List<Juegos.Juego> nuevosJuegos = BaseDatos.Publishers.Buscar.Juegos(acepcion);
-
-							foreach (var nuevoJuego in nuevosJuegos)
+							if (acepcion != "acepcion")
 							{
-								bool añadir = true;
+								List<Juegos.Juego> nuevosJuegos = BaseDatos.Publishers.Buscar.Juegos(acepcion);
 
-								if (resultadosGestor.Count > 0)
+								foreach (var nuevoJuego in nuevosJuegos)
 								{
-									foreach (var resultadoGestor in resultadosGestor)
+									bool añadir = true;
+
+									if (resultadosGestor.Count > 0)
 									{
-										if (resultadoGestor.Id == nuevoJuego.Id)
+										foreach (var resultadoGestor in resultadosGestor)
 										{
-											añadir = false;
+											if (resultadoGestor.Id == nuevoJuego.Id)
+											{
+												añadir = false;
+											}
 										}
 									}
-								}
 
-								if (añadir == true)
-								{
-									resultadosGestor.Add(nuevoJuego);
-								}								
+									if (añadir == true)
+									{
+										resultadosGestor.Add(nuevoJuego);
+									}
+								}
 							}
 						}
 					}
 				}
-			}
 
-			if (resultadosGestor.Count > 0)
-			{
-				foreach (var resultadoGestor in resultadosGestor)
+				if (resultadosGestor.Count > 0)
 				{
-					if (resultadoGestor.Tipo == Juegos.JuegoTipo.Game)
+					foreach (var resultadoGestor in resultadosGestor)
 					{
-						resultadosJuegos.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.DLC)
-					{
-						resultadosDLCs.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Software)
-					{
-						resultadosSoftware.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Music)
-					{
-						resultadosBandasSonoras.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarBundles(resultadoGestor) == true)
-					{
-						resultadosBundles.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarGratis(resultadoGestor) == true)
-					{
-						resultadosGratis.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarSuscripcion(resultadoGestor) == true)
-					{
-						resultadosSuscripciones.Add(resultadoGestor);
-					}
-				}
-
-				if (resultadosJuegos.Count == 0)
-				{
-					resultadosModo = 1;
-
-					if (resultadosDLCs.Count == 0)
-					{
-						resultadosModo = 2;
-
-						if (resultadosSoftware.Count == 0)
+						if (resultadoGestor.Tipo == Juegos.JuegoTipo.Game)
 						{
-							resultadosModo = 3;
+							resultadosJuegos.Add(resultadoGestor);
+						}
+						else if (resultadoGestor.Tipo == Juegos.JuegoTipo.DLC)
+						{
+							resultadosDLCs.Add(resultadoGestor);
+						}
+						else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Software)
+						{
+							resultadosSoftware.Add(resultadoGestor);
+						}
+						else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Music)
+						{
+							resultadosBandasSonoras.Add(resultadoGestor);
+						}
+
+						if (Herramientas.Buscador.ComprobarBundles(resultadoGestor) == true)
+						{
+							resultadosBundles.Add(resultadoGestor);
+						}
+
+						if (Herramientas.Buscador.ComprobarGratis(resultadoGestor) == true)
+						{
+							resultadosGratis.Add(resultadoGestor);
+						}
+
+						if (Herramientas.Buscador.ComprobarSuscripcion(resultadoGestor) == true)
+						{
+							resultadosSuscripciones.Add(resultadoGestor);
 						}
 					}
+
+					if (resultadosJuegos.Count == 0)
+					{
+						resultadosModo = 1;
+
+						if (resultadosDLCs.Count == 0)
+						{
+							resultadosModo = 2;
+
+							if (resultadosSoftware.Count == 0)
+							{
+								resultadosModo = 3;
+							}
+						}
+					}
+
+					CargarListado();
 				}
-			}
+			});
+
+			tarea.Wait();
 
 			cargado = true;
 		}
 	}
 
+	private void CargarListado()
+	{
+		resultadosMostrar.Clear();
+
+		if (string.IsNullOrEmpty(textoBuscador) == false)
+		{
+			List<Juegos.Juego> resultadosBuscador = new List<Juegos.Juego>();
+
+			if (resultadosModo == 0)
+			{
+				resultadosBuscador = resultadosJuegos;
+			}
+			else if (resultadosModo == 1)
+			{
+				resultadosBuscador = resultadosDLCs;
+			}
+			else if (resultadosModo == 2)
+			{
+				resultadosBuscador = resultadosSoftware;
+			}
+			else if (resultadosModo == 3)
+			{
+				resultadosBuscador = resultadosBandasSonoras;
+			}
+			else if (resultadosModo == 4)
+			{
+				resultadosBuscador = resultadosBundles;
+			}
+			else if (resultadosModo == 5)
+			{
+				resultadosBuscador = resultadosGratis;
+			}
+			else if (resultadosModo == 6)
+			{
+				resultadosBuscador = resultadosSuscripciones;
+			}
+
+			foreach (var resultadoBuscador in resultadosBuscador)
+			{
+				if (Herramientas.Buscador.LimpiarNombre(resultadoBuscador.Nombre).Contains(Herramientas.Buscador.LimpiarNombre(textoBuscador)) == true)
+				{
+					resultadosMostrar.Add(resultadoBuscador);
+				}
+			}			
+		}
+		else
+		{
+			if (resultadosModo == 0)
+			{
+				resultadosMostrar = resultadosJuegos;
+			}
+			else if (resultadosModo == 1)
+			{
+				resultadosMostrar = resultadosDLCs;
+			}
+			else if (resultadosModo == 2)
+			{
+				resultadosMostrar = resultadosSoftware;
+			}
+			else if (resultadosModo == 3)
+			{
+				resultadosMostrar = resultadosBandasSonoras;
+			}
+			else if (resultadosModo == 4)
+			{
+				resultadosMostrar = resultadosBundles;
+			}
+			else if (resultadosModo == 5)
+			{
+				resultadosMostrar = resultadosGratis;
+			}
+			else if (resultadosModo == 6)
+			{
+				resultadosMostrar = resultadosSuscripciones;
+			}
+		}
+
+		resultadosMostrar = resultadosMostrar.OrderBy(x => x.Nombre).ToList();
+	}
+
 	private void CambiarListado(MouseEventArgs e, int modo)
 	{
 		resultadosModo = modo;
+
+		CargarListado();
+	}
+
+	private string textoBuscador = string.Empty;
+
+	private void TextoCambiaBuscador(ChangeEventArgs texto)
+	{
+		textoBuscador = texto.Value.ToString().Trim();
+
+		CargarListado();
 	}
 }

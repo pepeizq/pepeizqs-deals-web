@@ -30,5 +30,13 @@
   {
     "Id": "String8",
     "Valor": "Suscripciones"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Busca por nombre"
+  },
+  {
+    "Id": "String10",
+    "Valor": "No hay resultados"
   }
 ]

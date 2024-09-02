@@ -1136,59 +1136,66 @@
 	{
 		if (HttpContext == null)
 		{
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
+			await Task.Delay(1);
 
-			//-------------------------------------------
-
-			if (juego != null)
+			Task tarea = Task.Run(async () =>
 			{
-				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+				usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
-				if (juego.Media != null)
+				//-------------------------------------------
+
+				if (juego != null)
 				{
-					if (string.IsNullOrEmpty(juego.Media.Video) == false)
+					DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+
+					if (juego.Media != null)
 					{
-						mediaMostrar = juego.Media.Video;
-						mediaMostrar = mediaMostrar.Replace("http://", "https://");
-						mediaMostrarPosicion = 99999;
-					}
-					else
-					{
-						if (juego.Media.Capturas != null)
+						if (string.IsNullOrEmpty(juego.Media.Video) == false)
 						{
-							if (juego.Media.Capturas.Count > 0)
+							mediaMostrar = juego.Media.Video;
+							mediaMostrar = mediaMostrar.Replace("http://", "https://");
+							mediaMostrarPosicion = 99999;
+						}
+						else
+						{
+							if (juego.Media.Capturas != null)
 							{
-								mediaMostrar = juego.Media.Capturas[0];
+								if (juego.Media.Capturas.Count > 0)
+								{
+									mediaMostrar = juego.Media.Capturas[0];
+								}
+							}
+						}
+					}
+
+					bool actualizarDatosAPI = false;
+
+					if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(21) < DateTime.Now)
+					{
+						actualizarDatosAPI = true;
+					}
+
+					if (juego.Categorias == null && juego.Generos == null)
+					{
+						actualizarDatosAPI = true;
+					}
+
+					if (actualizarDatosAPI == true)
+					{
+						if (juego.IdSteam > 0)
+						{
+							global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+							if (nuevoJuego != null)
+							{
+								global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
 							}
 						}
 					}
 				}
+			});
 
-				bool actualizarDatosAPI = false;
-
-				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(21) < DateTime.Now)
-				{
-					actualizarDatosAPI = true;
-				}
-
-				if (juego.Categorias == null && juego.Generos == null)
-				{
-					actualizarDatosAPI = true;
-				}
-
-				if (actualizarDatosAPI == true)
-				{
-					if (juego.IdSteam > 0)
-					{
-						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-						if (nuevoJuego != null)
-						{
-							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-						}
-					}
-				}
-			}
+			tarea.Wait();
 		}
 	}
 
