@@ -38,5 +38,13 @@
   {
     "Id": "String10",
     "Valor": "No results found"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Publishers"
+  },
+  {
+    "Id": "String12",
+    "Valor": "This is an index with {0} publishers mapped on the web."
   }
 ]

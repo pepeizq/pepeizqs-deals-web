@@ -24,14 +24,17 @@
 
     string titulo = string.Empty;
 
-    if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Title", "Index"))
+    if (ViewData["Title"] != null)
     {
-        titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(idioma, "Subtitle", "Index");
-    }
-    else
-    {
-        titulo = ViewData["Title"].ToString() + " • pepeizq's deals";
-    }
+        if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Title", "Index"))
+        {
+            titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(idioma, "Subtitle", "Index");
+        }
+        else
+        {
+            titulo = ViewData["Title"].ToString() + " • pepeizq's deals";
+        }
+    }    
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
     Usuario usuario = new Usuario();

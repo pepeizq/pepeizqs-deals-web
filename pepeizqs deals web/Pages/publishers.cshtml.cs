@@ -19,7 +19,16 @@ namespace pepeizqs_deals_web.Pages
 			}
 			catch { }
 
+			await Task.Delay(1);
 			publishers = BaseDatos.Publishers.Buscar.Todos();
+
+			if (publishers != null)
+			{
+				if (publishers.Count > 0)
+				{
+					publishers = publishers.OrderBy(x => x.Nombre).ToList();
+				}
+			}
 		}
     }
 }

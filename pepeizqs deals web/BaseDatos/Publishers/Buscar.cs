@@ -130,7 +130,7 @@ namespace BaseDatos.Publishers
 			return lista;
 		}
 
-		public static Publisher Nombre(string cadena, SqlConnection conexion = null)
+		public static Publisher NombreExacto(string cadena, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -159,7 +159,38 @@ namespace BaseDatos.Publishers
 			return null;
 		}
 
-		public static Publisher Acepcion(string cadena, SqlConnection conexion = null)
+        public static List<Publisher> NombreContiene(string cadena, int cantidad = 30, SqlConnection conexion = null)
+        {
+            List<Publisher> lista = new List<Publisher>();
+
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            if (string.IsNullOrEmpty(cadena) == false)
+            {
+                using (conexion)
+                {
+                    string busqueda = "SELECT TOP " + cantidad + " * FROM publishers WHERE nombre LIKE '%" + cadena + "%'";
+
+                    using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                    {
+                        using (SqlDataReader lector = comando.ExecuteReader())
+                        {
+                            while (lector.Read())
+                            {
+                                lista.Add(Cargar(lector));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return lista;
+        }
+
+        public static Publisher Acepcion(string cadena, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{

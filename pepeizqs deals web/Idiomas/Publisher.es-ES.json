@@ -38,5 +38,13 @@
   {
     "Id": "String10",
     "Valor": "No hay resultados"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Editores"
+  },
+  {
+    "Id": "String12",
+    "Valor": "Esto es un índice con {0} editores mapeados en la web."
   }
 ]

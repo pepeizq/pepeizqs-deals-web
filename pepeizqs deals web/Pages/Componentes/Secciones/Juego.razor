@@ -921,12 +921,12 @@
 
 													if (publisherFinal == null)
 													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Nombre(publisher.Trim());
+														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
 													}
 
 													if (publisherFinal == null)
 													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Nombre(publisherLimpio.Trim());
+														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
 													}
 
 													if (publisherFinal == null)

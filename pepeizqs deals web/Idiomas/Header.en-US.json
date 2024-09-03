@@ -80,6 +80,10 @@
     "Valor": "Subscriptions"
   },
   {
+    "Id": "SearchFilter8",
+    "Valor": "Publishers"
+  },
+  {
     "Id": "SearchMessage1",
     "Valor": "From {0}"
   },

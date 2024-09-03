@@ -33,11 +33,15 @@ else
 {
 	if (string.IsNullOrEmpty(nombre) == false)
 	{
-		<h1 style="font-size: 23px;">@nombre</h1>
+		<div style="display: flex; align-items: center; gap: 12px;">
+			<a href="/publishers/">@Herramientas.Idiomas.CogerCadena(idioma, "String11", "Publisher")</a>
+			<i class="fa-solid fa-chevron-right"></i>
+			<h1 style="font-size: 22px; margin: 0px;">@nombre</h1>
+		</div>
 
 		if (string.IsNullOrEmpty(descripcion) == false)
 		{
-			<div style="font-size: 14px;">@WebUtility.HtmlDecode(descripcion)</div>
+			<div style="font-size: 14px; margin-top: 10px;">@WebUtility.HtmlDecode(descripcion)</div>
 		}
 
 		<hr />
