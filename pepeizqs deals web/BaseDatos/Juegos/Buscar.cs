@@ -2,6 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 
 namespace BaseDatos.Juegos
@@ -10,10 +11,14 @@ namespace BaseDatos.Juegos
 	{
 		public static Juego Cargar(Juego juego, SqlDataReader lector)
 		{
-            if (lector.IsDBNull(0) == false)
-			{
-                juego.Id = lector.GetInt32(0);
-            }
+            try
+            {
+				if (lector.IsDBNull(0) == false)
+				{
+					juego.Id = lector.GetInt32(0);
+				}
+			}
+            catch { }
 
             try
             {
@@ -640,6 +645,86 @@ namespace BaseDatos.Juegos
 			}
 			
 			return dlcs.OrderBy(x => x.Nombre).ToList();
+		}
+
+        public static List<Juego> Genero(List<string> generos, int cantidad, SqlConnection conexion = null)
+        {
+            List<Juego> resultados = new List<Juego>();
+
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                string generosTexto = string.Empty;
+                int i = 0;
+
+                foreach (var genero in generos)
+                {
+                    if (i == 0)
+                    {
+                        generosTexto = "generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
+                    }
+                    else
+                    {
+                        generosTexto = generosTexto + " OR generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
+					}
+
+                    i += 1;
+                }
+
+                string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
+                    "WHERE ISJSON(analisis) > 0 and ISJSON(generos) > 0 and (" + generosTexto + ") ORDER BY Cantidad DESC";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Juego juego = new Juego();
+                            juego = Cargar(juego, lector);
+
+                            resultados.Add(juego);
+                        }
+                    }
+                }
+            }
+
+            return resultados;
+        }
+
+        public static List<Juego> UltimosDetectados(int cantidad, SqlConnection conexion = null)
+        {
+			List<Juego> resultados = new List<Juego>();
+
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+            using (conexion)
+            {
+				string busqueda = "SELECT TOP " + cantidad + " *, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 499 ORDER BY Fecha DESC";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							Juego juego = new Juego();
+							juego = Cargar(juego, lector);
+
+							resultados.Add(juego);
+						}
+					}
+				}
+			}
+
+			return resultados;
 		}
 
 		public static Juego Aleatorio()

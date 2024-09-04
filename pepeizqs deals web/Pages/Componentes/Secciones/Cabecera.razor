@@ -180,73 +180,14 @@
         {
             <div class="buscador-panel" style="display: flex; align-items: start; gap: 20px;">
                 <div style="width: 20%; display: flex; flex-direction: column; gap: 10px; padding: 10px;">
-                    @if (resultadosJuegos.Count > 0)
-                    {
-                        int id = 0;
-                        string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+                    @{
+                        int contador = 0;
 
-                        if (pestañaSeleccionada == id)
+                        if (resultadosJuegos.Count > 0)
                         {
-                            fondo = "background-color: var(--fondoBotonPequeño);";
-                        }
+                            contador += 1;
 
-                        <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
-                        </button>
-                    }
-
-                    @if (resultadosDLCs.Count > 0)
-                    {
-                        int id = 1;
-                        string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
-
-                        if (pestañaSeleccionada == id)
-                        {
-                            fondo = "background-color: var(--fondoBotonPequeño);";
-                        }
-
-                        <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
-                        </button>
-                    }
-
-                    @if (resultadosBandasSonoras.Count > 0)
-                    {
-                        int id = 2;
-                        string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
-
-                        if (pestañaSeleccionada == id)
-                        {
-                            fondo = "background-color: var(--fondoBotonPequeño);";
-                        }
-
-                        <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
-                        </button>
-                    }
-
-                    @if (resultadosSoftware.Count > 0)
-                    {
-                        int id = 3;
-                        string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
-
-                        if (pestañaSeleccionada == id)
-                        {
-                            fondo = "background-color: var(--fondoBotonPequeño);";
-                        }
-
-                        <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
-                        </button>
-                    }
-
-                    @if (resultadosBundles.Count > 0 || resultadosGratis.Count > 0 || resultadosSuscripciones.Count > 0)
-                    {
-                        <hr />
-
-                        @if (resultadosBundles.Count > 0)
-                        {
-                            int id = 4;
+                            int id = 0;
                             string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
 
                             if (pestañaSeleccionada == id)
@@ -255,13 +196,15 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
+                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
                             </button>
                         }
 
-                        @if (resultadosGratis.Count > 0)
+                        if (resultadosDLCs.Count > 0)
                         {
-                            int id = 5;
+                            contador += 1;
+
+                            int id = 1;
                             string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
 
                             if (pestañaSeleccionada == id)
@@ -270,13 +213,15 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
+                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
                             </button>
                         }
 
-                        @if (resultadosSuscripciones.Count > 0)
+                        if (resultadosBandasSonoras.Count > 0)
                         {
-                            int id = 6;
+                            contador += 1;
+
+                            int id = 2;
                             string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
 
                             if (pestañaSeleccionada == id)
@@ -285,24 +230,99 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
+                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
                             </button>
                         }
-                    }
 
-                    @if (resultadosPublishers.Count > 0)
-                    {
-                        int id = 7;
-                        string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
-
-                        if (pestañaSeleccionada == id)
+                        if (resultadosSoftware.Count > 0)
                         {
-                            fondo = "background-color: var(--fondoBotonPequeño);";
+                            contador += 1;
+
+                            int id = 3;
+                            string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
+                            </button>
                         }
 
-                        <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter8", "Header") (@resultadosPublishers.Count)
-                        </button>
+                        if (resultadosBundles.Count > 0 || resultadosGratis.Count > 0 || resultadosSuscripciones.Count > 0)
+                        {
+                            if (contador > 0)
+                            {
+                                <hr />
+                            }
+                            
+                            if (resultadosBundles.Count > 0)
+                            {
+                                int id = 4;
+                                string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
+                                </button>
+                            }
+
+                            if (resultadosGratis.Count > 0)
+                            {
+                                int id = 5;
+                                string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
+                                </button>
+                            }
+
+                            if (resultadosSuscripciones.Count > 0)
+                            {
+                                int id = 6;
+                                string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                                if (pestañaSeleccionada == id)
+                                {
+                                    fondo = "background-color: var(--fondoBotonPequeño);";
+                                }
+
+                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
+                                </button>
+                            }
+                        }
+
+                        if (resultadosPublishers.Count > 0)
+                        {
+                            if (contador > 0)
+                            {
+                                <hr />
+                            }
+
+                            int id = 7;
+                            string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter8", "Header") (@resultadosPublishers.Count)
+                            </button>
+                        }
                     }
                 </div>
 

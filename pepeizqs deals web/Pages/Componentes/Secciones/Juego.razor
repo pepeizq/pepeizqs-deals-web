@@ -79,8 +79,8 @@
 				<div class="juego-titulo">
 					<h1 style="font-size: 20px;">@juego.Nombre</h1>
 
-					<div style="margin-right: 10px; margin-top: 10px; display: flex; align-items: center;">
-						<div style="margin-right: 5px; display: flex; align-items: center;">
+					<div style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
 							@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 							{
 								@if (drm != JuegoDRM.NoEspecificado)
@@ -89,11 +89,11 @@
 									{
 										@if (drm == JuegoDRM.DRMFree)
 										{
-											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px; margin-right: 10px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
+											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
 										}
 										else
 										{
-											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px; margin-right: 10px">
+											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px;">
 												<div style="display: flex; align-items: center;">
 													<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" alt="DRM"/>
 												</div>
@@ -106,28 +106,28 @@
 						
 						@if (juego.Bundles != null)
 						{
-							<div style="margin-right: 15px; font-size: 16px;">
+							<div style="font-size: 16px;">
 								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Bundles", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Gratis != null)
 						{
-							<div style="margin-right: 15px; font-size: 16px;">
+							<div style="font-size: 16px;">
 								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Free", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Suscripciones != null)
 						{
-							<div style="margin-right: 15px; font-size: 16px;">
+							<div style="font-size: 16px;">
 								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Subscriptions", "Header")</a>
 							</div>
 						}
 
 						@if (DLCs.Count > 0)
 						{
-							<div style="margin-right: 15px; font-size: 16px; background: var(--fondoDlc); height: 40px;">
+							<div style="font-size: 16px; background: var(--fondoDlc); height: 40px;">
 								<a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</a>
 							</div>
 						}
@@ -1039,7 +1039,7 @@
 
 												if (string.IsNullOrEmpty(cadenaGenero) == false)
 												{
-													<label>@cadenaGenero</label>
+													<a href="/filter/genre/@genero/">@cadenaGenero</a>
 												}
 												else
 												{

@@ -40,7 +40,7 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?partner=pepeizq";
+			return enlace + "?partner=pepeizq&irgwc=1&irpid=1382810";
 		}
 
 		public static Tiendas2.Tienda GenerarChoice()

@@ -1,0 +1,203 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+
+@inject NavigationManager NavManager
+
+<style>
+	.cargando {
+		width: 48px;
+		height: 48px;
+		border: 5px solid var(--colorTexto);
+		border-bottom-color: transparent;
+		border-radius: 50%;
+		display: inline-block;
+		box-sizing: border-box;
+		animation: rotation 1s linear infinite;
+	}
+
+	@@keyframes rotation {
+		0% {
+			transform: rotate(0deg);
+		}
+
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+</style>
+
+@if (cargado == false)
+{
+	<div class="cargando" />
+}
+else
+{
+	<div style="display: flex; align-items: start; gap: 20px;">
+		<div style="width: 30%;">
+			@if (generos.Count > 0)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+					@foreach (var genero in generos)
+					{
+						string fondo = string.Empty;
+
+						foreach (var id2 in ids)
+						{
+							if (genero.Id == id2)
+							{
+								fondo = "background-color: var(--fondoBotonPequeño);";
+								break;
+							}
+						}
+
+						<button @onclick="(e => CambiarGenero(e, genero.Id))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+							<div>
+								@genero.Contenido
+							</div>
+						</button>
+					}
+				</div>
+			}
+		</div>
+
+		<div style="width: 100%;">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column;">
+				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="334" OverscanCount="6">
+					<ItemContent>
+						<div style="padding: 10px;">
+							<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
+								<div style="display: flex; align-items: center;">
+									<div>
+										<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+									</div>
+
+									<div style="padding: 0px 20px;">
+										<div>
+											@juego.Nombre
+										</div>
+
+										<div style="margin-top: 10px; font-size: 15px;">
+											@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</ItemContent>
+				</Virtualize>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public string tipo { get; set; }
+
+	[Parameter]
+	public string id { get; set; }
+
+	private bool cargado = false;
+
+	private List<string> ids = new List<string>();
+
+	private List<Juegos.Juego> resultadosGestor = new List<Juegos.Juego>();
+
+	#nullable enable
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+	#nullable disable
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (HttpContext == null)
+		{
+			cargado = false;
+
+			await Task.Delay(1);
+
+			CargarGeneros();
+
+			ids = Herramientas.Listados.Generar(id);
+
+			resultadosGestor = BaseDatos.Juegos.Buscar.Genero(ids, 250);
+
+			cargado = true;
+		}
+	}
+
+	private List<Genero> generos = new List<Genero>();
+
+	private void CargarGeneros()
+	{
+		int i = 0;
+
+		while (i < 100)
+		{
+			string comprobacion = Herramientas.Idiomas.CogerCadena(idioma, i.ToString(), "Genres");
+
+			if (string.IsNullOrEmpty(comprobacion) == false)
+			{
+				Genero nuevoGenero = new Genero();
+				nuevoGenero.Id = i.ToString();
+				nuevoGenero.Contenido = comprobacion;
+
+				generos.Add(nuevoGenero);
+			}
+
+			i += 1;
+		}
+	}
+
+	private class Genero
+	{
+		public string Id { get; set; }
+		public string Contenido { get; set; }
+	}
+
+	private void CambiarGenero(MouseEventArgs e, string nuevoGenero)
+	{
+		string nuevosGeneros = null;
+
+		bool encontrado = false;
+
+		foreach (var id in ids)
+		{
+			if (id != nuevoGenero)
+			{
+				if (string.IsNullOrEmpty(nuevosGeneros) == true)
+				{
+					nuevosGeneros = id;
+				}
+				else
+				{
+					nuevosGeneros = nuevosGeneros + "," + id;
+				}
+			}
+			else
+			{
+				encontrado = true;
+			}
+		}
+
+		if (encontrado == false)
+		{
+			nuevosGeneros = nuevosGeneros + "," + nuevoGenero;
+		}
+
+		if (string.IsNullOrEmpty(nuevosGeneros) == true)
+		{
+			nuevosGeneros = nuevoGenero;
+		}
+
+		NavManager.NavigateTo("/filter/genre/" + nuevosGeneros + "/", true);
+	}
+
+}

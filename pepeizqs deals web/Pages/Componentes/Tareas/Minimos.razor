@@ -247,90 +247,13 @@
 												Juego juegoDestacadoFinal = juegoDestacado.Juego;
 												juegoDestacadoFinal.PrecioMinimosHistoricos = [juegoDestacado.Historico];
 
-												BaseDatos.Juegos.Insertar.Ejecutar(juegoDestacadoFinal, conexion, "portadaJuegosDestacados");
-											}
-										}
-
-										#endregion
-
-										#region Minimos
-
-										juegosConMinimos = juegosConMinimos.OrderByDescending(x => x.Historico.FechaDetectado).ThenBy(x => x.Juego.Nombre).ToList();
-
-										List<MinimoListado> juegosMinimosMostrar = new List<MinimoListado>();
-
-										foreach (var juegoConMinimo in juegosConMinimos)
-										{
-											bool descarte2 = false;
-
-											string tempCantidad = juegoConMinimo.Juego.Analisis.Cantidad;
-											tempCantidad = tempCantidad.Replace(".", null);
-											tempCantidad = tempCantidad.Replace(",", null);
-
-											if (Convert.ToInt32(tempCantidad) < 500)
-											{
-												descarte2 = true;
-											}
-
-											if (descarte2 == false)
-											{
-												bool descarte3 = false;
-
-												if (juegoConMinimo.Juego.Gratis != null)
-												{
-													if (juegoConMinimo.Juego.Gratis.Count > 0)
-													{
-														foreach (var gratis in juegoConMinimo.Juego.Gratis)
-														{
-															if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-															{
-																descarte3 = true;
-															}
-														}
-													}
-												}
-
-												if (descarte3 == false)
-												{
-													juegosMinimosMostrar.Add(juegoConMinimo);
-
-													if (juegosMinimosMostrar.Count >= 80)
-													{
-														break;
-													}
-												}
-											}
-										}
-
-										if (juegosMinimosMostrar.Count > 0)
-										{
-											BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosMinimos", conexion);
-
-											foreach (var minimoMostrar in juegosMinimosMostrar)
-											{
-												Juego minimoMostrarFinal = minimoMostrar.Juego;
-												minimoMostrarFinal.PrecioMinimosHistoricos = [minimoMostrar.Historico];
-
-												BaseDatos.Juegos.Insertar.Ejecutar(minimoMostrarFinal, conexion, "portadaJuegosMinimos");
-											}
-										}
-
-										if (juegosConMinimos.Count > 0)
-										{
-											BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
-
-											foreach (var minimo in juegosConMinimos)
-											{
-												Juego minimoFinal = minimo.Juego;
-												minimoFinal.PrecioMinimosHistoricos = [minimo.Historico];
-
 												try
 												{
-													BaseDatos.Juegos.Insertar.Ejecutar(minimoFinal, conexion, "seccionMinimos");
+													BaseDatos.Juegos.Insertar.Ejecutar(juegoDestacadoFinal, conexion, "portadaJuegosDestacados");
 												}
-												catch
+												catch (Exception ex)
 												{
-													BaseDatos.Errores.Insertar.Mensaje("Tarea - Minimos Insertar", minimo.Juego.Nombre, conexion, null);
+													BaseDatos.Errores.Insertar.Ejecutar("Portada Destacados " + juegoDestacadoFinal.Nombre, ex);
 												}
 											}
 										}

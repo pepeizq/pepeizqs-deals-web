@@ -1,0 +1,18 @@
+﻿@page "/filter/{tipo}/{id}/"
+
+@model pepeizqs_deals_web.Pages.filterModel
+
+@{
+    ViewData["Title"] = "filter";
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (string.IsNullOrEmpty(Model.tipo) == false && string.IsNullOrEmpty(Model.id) == false)
+{
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+    {
+        idioma = Model.idioma,
+        tipo = Model.tipo,
+        id = Model.id
+    }))
+}

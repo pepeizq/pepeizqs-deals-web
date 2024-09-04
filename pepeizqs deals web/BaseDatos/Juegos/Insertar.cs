@@ -141,7 +141,7 @@ namespace BaseDatos.Juegos
 				}
 				catch (Exception ex) 
 				{
-					Errores.Insertar.Ejecutar("añadir juego", ex);
+					Errores.Insertar.Ejecutar("Añadir juego " + juego.Nombre, ex);
 				}
 			}
 		}

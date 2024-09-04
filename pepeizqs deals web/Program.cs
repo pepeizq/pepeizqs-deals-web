@@ -256,11 +256,6 @@ app.MapBlazorHub(opciones =>
 	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
 
-//var webSocketOptions = new Microsoft.AspNetCore.Builder.WebSocketOptions()
-//{
-//	KeepAliveInterval = TimeSpan.FromSeconds(60),
-//};
-
-//app.UseWebSockets(webSocketOptions);
+//app.UseSession();
 
 app.Run();

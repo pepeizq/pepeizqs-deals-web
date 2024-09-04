@@ -37,7 +37,7 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?partner=pepeizq";
+			return enlace + "?partner=pepeizq&irgwc=1&irpid=1382810";
 		}
 
 		public static async Task<Bundles2.Bundle> ExtraerDatos(Bundles2.Bundle bundle)

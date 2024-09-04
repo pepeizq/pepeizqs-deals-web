@@ -185,33 +185,35 @@ namespace BaseDatos.Noticias
 			return noticias;
 		}
 
-		public static List<global::Noticias.Noticia> Ultimas(string cantidad)
+		public static List<global::Noticias.Noticia> Ultimas(string cantidad, SqlConnection conexion = null)
 		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else if (conexion.State != System.Data.ConnectionState.Open)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
 
 			using (conexion)
 			{
-				return Ultimas(conexion, cantidad);
-			}
-		}
+				string busqueda = "SELECT TOP " + cantidad + " * FROM noticias ORDER BY id DESC";
 
-		public static List<global::Noticias.Noticia> Ultimas(SqlConnection conexion, string cantidad)
-		{
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
-
-			string busqueda = "SELECT TOP " + cantidad + " * FROM noticias ORDER BY id DESC";
-
-			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-			{
-				using (SqlDataReader lector = comando.ExecuteReader())
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
-					while (lector.Read())
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						noticias.Add(Cargar(lector, conexion));
+						while (lector.Read())
+						{
+							noticias.Add(Cargar(lector, conexion));
+						}
 					}
 				}
 			}
-
+			
 			return noticias;
 		}
 	}
