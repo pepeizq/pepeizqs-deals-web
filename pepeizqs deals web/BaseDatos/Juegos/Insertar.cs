@@ -70,7 +70,7 @@ namespace BaseDatos.Juegos
 			string añadirIdMaestra1 = null;
 			string añadirIdMaestra2 = null;
 
-			if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados" || tabla == "portadaJuegosMinimos")
+			if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados")
 			{
 				añadirIdMaestra1 = ", idMaestra";
 				añadirIdMaestra2 = ", @idMaestra";
@@ -130,7 +130,7 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
 				}
 
-				if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados" || tabla == "portadaJuegosMinimos")
+				if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados")
 				{
 					comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				}

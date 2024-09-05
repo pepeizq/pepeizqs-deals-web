@@ -146,7 +146,7 @@
 								{
 									if (juegosConMinimos.Count > 0)
 									{
-										#region Destacados
+										BaseDatos.Portada.Limpiar.Ejecutar("seccionMinimos", conexion);
 
 										juegosConMinimos = juegosConMinimos.OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
 
@@ -156,6 +156,18 @@
 
 										foreach (var minimo in juegosConMinimos)
 										{
+											try
+											{
+												Juego juegoMinimoFinal = minimo.Juego;
+												juegoMinimoFinal.PrecioMinimosHistoricos = [minimo.Historico];
+
+												BaseDatos.Juegos.Insertar.Ejecutar(juegoMinimoFinal, conexion, "seccionMinimos");
+											}
+											catch (Exception ex)
+											{
+												BaseDatos.Errores.Insertar.Ejecutar("Portada Destacados " + minimo.Juego.Nombre, ex);
+											}
+
 											bool añadir = true;
 
 											if (juegosDestacadosMostrar.Count > 0)
@@ -257,8 +269,6 @@
 												}
 											}
 										}
-
-										#endregion
 									}
 								}
 							}

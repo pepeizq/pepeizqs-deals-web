@@ -174,5 +174,13 @@
   {
     "Id": "String44",
     "Valor": "Genres"
+  },
+  {
+    "Id": "String45",
+    "Valor": "This game contains sexual content not suitable for minors."
+  },
+  {
+    "Id": "String46",
+    "Valor": "This DLC contains sexual content not suitable for minors."
   }
 ]
