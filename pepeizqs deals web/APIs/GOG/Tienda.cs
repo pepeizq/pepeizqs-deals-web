@@ -95,7 +95,7 @@ namespace APIs.GOG
 
 										try
 										{
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, juego.Id, slug);
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion, juego.Id, slug);
 										}
 										catch (Exception ex)
 										{

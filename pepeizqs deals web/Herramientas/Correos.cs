@@ -176,6 +176,12 @@ namespace Herramientas
             EnviarCorreo(html, "Confirm your email", "admin@pepeizqdeals.com", correoHacia);
 		}
 
+		public static void EnviarNuevoMinimo(int idJuego, JuegoPrecio precio, string correoHacia)
+		{
+			Juegos.Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
+			EnviarNuevoMinimo(juego, precio, correoHacia);
+		}
+
 		public static void EnviarNuevoMinimo(Juego juego, JuegoPrecio precio, string correoHacia)
 		{
 			string html = string.Empty;

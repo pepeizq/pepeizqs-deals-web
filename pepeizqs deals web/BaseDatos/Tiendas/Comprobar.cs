@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace BaseDatos.Tiendas
 {
@@ -179,29 +180,43 @@ namespace BaseDatos.Tiendas
 			return juego;
 		}
 
-		public static void Resto(JuegoPrecio oferta, ViewDataDictionary objeto, SqlConnection conexion, string idGog = null, string slugGOG = null, string slugEpic = null)
+		public static void Resto(JuegoPrecio oferta, SqlConnection conexion, string idGog = null, string slugGOG = null, string slugEpic = null)
 		{
 			bool encontrado = false;
 
-			string buscarJuegos = "DECLARE @ids NVARCHAR(MAX);\r\n\r\nSET @ids = (SELECT idJuegos FROM tienda" + oferta.Tienda + " WHERE enlace='" + oferta.Enlace + "' AND descartado='no'); \r\n\r\nDECLARE @pos INT; \r\nDECLARE @nextpos INT; \r\nDECLARE @valuelen INT; \r\nDECLARE @tabla TABLE (numero int NOT NULL); \r\n\r\nSELECT @pos = 0, @nextpos = 1; \r\n\r\nWHILE @nextpos > 0\r\nBEGIN\r\n    SELECT @nextpos = charindex(',', @ids, @pos + 1)\r\n    SELECT @valuelen = CASE WHEN @nextpos > 0\r\n                            THEN @nextpos\r\n                            ELSE len(@ids) + 1\r\n                        END - @pos - 1\r\nIF (convert(int, substring(@ids, @pos + 1, @valuelen))) != 0 BEGIN\r\n    INSERT @tabla (numero)\r\n        VALUES (convert(int, substring(@ids, @pos + 1, @valuelen))) END\r\n    SELECT @pos = @nextpos;\r\nEND\r\n\r\nSELECT * FROM juegos WHERE id IN (SELECT numero FROM @tabla);";
+			string buscarJuegos = @"DECLARE @ids NVARCHAR(MAX); 
 
-			//string buscarJuegos = "DECLARE @ids NVARCHAR(MAX); " + Environment.NewLine + 
-			//	"SET @ids = (SELECT idJuegos FROM tienda" + oferta.Tienda + " WHERE enlace='" + oferta.Enlace + "' AND descartado='no'); " + Environment.NewLine +
-			//	"DECLARE @pos INT; " + Environment.NewLine +
-			//	"DECLARE @nextpos INT; " + Environment.NewLine +
-			//	"DECLARE @valuelen INT; " + Environment.NewLine +
-			//	"DECLARE @tabla TABLE (numero int NOT NULL); " + Environment.NewLine +
-			//	"SELECT @pos = 0, @nextpos = 1; " + Environment.NewLine +
-			//	"WHILE @nextpos > 0 " + Environment.NewLine +
-			//	"BEGIN " + Environment.NewLine +
-			//	"SELECT @nextpos = charindex(',', @ids, @pos + 1) " + Environment.NewLine +
-			//	"SELECT @valuelen = CASE WHEN @nextpos > 0 " + Environment.NewLine +
-			//	"THEN @nextpos " + Environment.NewLine +
-			//	"ELSE len(@ids) + 1 " + Environment.NewLine +                       
-			//	"END - @pos - 1 " + Environment.NewLine +
-			//	"    IF convert(int, substring(@ids, @pos + 1, @valuelen)) != 0 BEGIN\r\n IF @ids != 0 BEGIN   INSERT @tabla (numero)\r\n        VALUES (convert(int, substring(@ids, @pos + 1, @valuelen)))\r\n END;  END;    SELECT @pos = @nextpos;\r\nEND\r\n\r\nSELECT * FROM juegos WHERE id IN (SELECT numero FROM @tabla);";
+				SET @ids = (SELECT idJuegos FROM tienda@oferta.Tienda WHERE enlace='@oferta.Enlace' AND descartado='no'); 
 
-			using (SqlCommand comandoBuscar = new SqlCommand(buscarJuegos, conexion))
+				IF @ids IS NOT NULL BEGIN
+				IF @ids != '0' BEGIN
+				DECLARE @pos INT; 
+				DECLARE @nextpos INT; 
+				DECLARE @valuelen INT; 
+				DECLARE @tabla TABLE (numero int NOT NULL); 
+
+				SELECT @pos = 0, @nextpos = 1; 
+
+				WHILE @nextpos > 0
+				BEGIN
+					SELECT @nextpos = charindex(',', @ids, @pos + 1)
+					SELECT @valuelen = CASE WHEN @nextpos > 0
+											THEN @nextpos
+											ELSE len(@ids) + 1
+										END - @pos - 1
+					INSERT @tabla (numero)
+						VALUES (convert(int, substring(@ids, @pos + 1, @valuelen)))
+					SELECT @pos = @nextpos;
+				END
+
+				SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam FROM juegos WHERE id IN (SELECT numero FROM @tabla);
+				END;
+				END;";
+
+			buscarJuegos = buscarJuegos.Replace("@oferta.Tienda", oferta.Tienda);
+			buscarJuegos = buscarJuegos.Replace("@oferta.Enlace", oferta.Enlace);
+
+            using (SqlCommand comandoBuscar = new SqlCommand(buscarJuegos, conexion))
 			{
 				using (SqlDataReader lector = comandoBuscar.ExecuteReader())
 				{
@@ -209,63 +224,93 @@ namespace BaseDatos.Tiendas
 					{
 						encontrado = true;
 
-						Juego juego = Juegos.Buscar.Cargar(JuegoCrear.Generar(), lector);
-
-						if (juego.PrecioActualesTiendas == null)
+						int id = 0;
+						if (lector.IsDBNull(0) == false)
 						{
-							juego.PrecioActualesTiendas = new List<JuegoPrecio>();
-							juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
+							id = lector.GetInt32(0);
 						}
 
-						if (juego.PrecioActualesTiendas.Count == 0)
+						List<JuegoPrecio> ofertasHistoricas = new List<JuegoPrecio>();
+						if (lector.IsDBNull(1) == false)
 						{
-							juego.PrecioActualesTiendas.Add(oferta);
-							juego.PrecioMinimosHistoricos.Add(oferta);
-						}
-
-						if (juego.IdGog == 0)
-						{
-							if (string.IsNullOrEmpty(idGog) == false)
+							if (string.IsNullOrEmpty(lector.GetString(1)) == false)
 							{
-								juego.IdGog = int.Parse(idGog);
-								juego.SlugGOG = slugGOG;
-							}
-						}
-						else
-						{
-							if (string.IsNullOrEmpty(slugGOG) == false)
-							{
-								juego.SlugGOG = slugGOG;
+								ofertasHistoricas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(1));
 							}
 						}
 
-						if (string.IsNullOrEmpty(slugEpic) == false)
+						if (ofertasHistoricas.Count == 0)
 						{
-							juego.SlugEpic = slugEpic;
+							ofertasHistoricas.Add(oferta);
 						}
 
-						Juegos.Precios.Actualizar(juego, oferta, conexion, false);
+						List<JuegoPrecio> ofertasActuales = new List<JuegoPrecio>();
+						if (lector.IsDBNull(2) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+							{
+								ofertasActuales = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(2));
+							}
+						}
+
+						if (ofertasActuales.Count == 0)
+						{
+							ofertasActuales.Add(oferta);
+						}
+
+						List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
+						if (lector.IsDBNull(3) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+							{
+								usuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(3));
+							}
+						}
+
+						int idSteam = 0;
+						if (lector.IsDBNull(4) == false)
+						{
+							idSteam = lector.GetInt32(4);
+						}
+
+						if (id > 0)
+						{
+							Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, oferta, conexion, slugGOG, idGog, slugEpic, usuariosInteresados);
+						}
 					}
 				}
 			}
 
 			if (encontrado == false)
 			{
-				string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
-					"(enlace, nombre, imagen, idJuegos, descartado) VALUES " +
-					"(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
+				string buscarId = @"IF NOT EXISTS (SELECT * from tienda@oferta.tienda WHERE enlace = '@oferta.enlace') BEGIN
 
-				using (SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion))
+					DECLARE @nuevaId NVARCHAR(MAX); 
+
+					SET @nuevaId = (SELECT id FROM juegos WHERE nombreCodigo='oferta.nombreCodigo'); 
+
+					IF @nuevaId IS NULL
+					BEGIN 
+					SET @nuevaId = 0;
+					END; 
+
+					INSERT INTO tienda@oferta.tienda 
+					(enlace, nombre, imagen, idJuegos, descartado) VALUES 
+					('@oferta.enlace', '@oferta.nombre', '@oferta.imagen', @nuevaId, 'no'); 
+
+					END;";
+
+				buscarId = buscarId.Replace("@oferta.nombreCodigo", Herramientas.Buscador.LimpiarNombre(oferta.Nombre));
+				buscarId = buscarId.Replace("@oferta.enlace", oferta.Enlace);
+				buscarId = buscarId.Replace("@oferta.tienda", oferta.Tienda);
+				buscarId = buscarId.Replace("@oferta.nombre", oferta.Nombre.Replace("'", "''"));
+				buscarId = buscarId.Replace("@oferta.imagen", oferta.Imagen);
+
+				using (SqlCommand comandoInsertar = new SqlCommand(buscarId, conexion))
 				{
-					comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
-					comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
-					comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
-					comandoInsertar.Parameters.AddWithValue("@idJuegos", "0");
-					comandoInsertar.Parameters.AddWithValue("@descartado", "no");
-
 					try
 					{
-						comandoInsertar.ExecuteNonQuery();
+						comandoInsertar.ExecuteReader();
 					}
 					catch (Exception ex)
 					{
@@ -273,192 +318,6 @@ namespace BaseDatos.Tiendas
 					}
 				}
 			}
-
-
-
-
-
-
-			//	//Buscar en tabla tienda
-			//	List<int> listaIds = new List<int>();
-			//string buscarTienda = "SELECT idJuegos FROM tienda" + oferta.Tienda + " WHERE enlace=@enlace";
-
-			//         using (SqlCommand comandoBuscar = new SqlCommand(buscarTienda, conexion))
-			//{
-			//             comandoBuscar.Parameters.AddWithValue("@enlace", oferta.Enlace);
-
-			//             using (SqlDataReader lector = comandoBuscar.ExecuteReader())
-			//	{
-			//		if (lector.Read() == true)
-			//		{
-			//			string tempIds = lector.GetString(0);
-
-			//			if (string.IsNullOrEmpty(tempIds) == false)
-			//			{
-			//				int i = 0;
-			//				while (i < 100)
-			//				{
-			//					if (tempIds.Contains(",") == true)
-			//					{
-			//						int int1 = tempIds.IndexOf(",");
-			//						string temp1 = tempIds.Remove(int1, tempIds.Length - int1);
-
-			//						listaIds.Add(int.Parse(temp1));
-
-			//						tempIds = tempIds.Remove(0, int1 + 1);
-			//					}
-			//					else
-			//					{
-			//						listaIds.Add(int.Parse(tempIds));
-			//						break;
-			//					}
-
-			//					i += 1;
-			//				}
-			//			}						
-			//		}
-			//	}
-			//}
-
-			////Insertar en tabla tienda o actualizar juego
-			//if (listaIds.Count == 0)
-			//{
-			//	int idBuscarJuego = 0;
-
-			//	string buscarNombre = "SELECT * FROM juegos WHERE nombreCodigo=@nombreCodigo";
-
-			//	using (SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion))
-			//	{
-			//		comandoBuscar2.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(oferta.Nombre));
-
-			//		using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
-			//		{
-			//			if (lector.Read() == true)
-			//			{
-			//				idBuscarJuego = lector.GetInt32(0);
-			//			}
-			//		}
-			//	}
-
-			//	string sqlAñadir = "INSERT INTO tienda" + oferta.Tienda + " " +
-			//		"(enlace, nombre, imagen, idJuegos, descartado) VALUES " +
-			//		"(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
-
-			//	using (SqlCommand comandoInsertar = new SqlCommand(sqlAñadir, conexion))
-			//	{
-			//		comandoInsertar.Parameters.AddWithValue("@enlace", oferta.Enlace);
-			//		comandoInsertar.Parameters.AddWithValue("@nombre", oferta.Nombre);
-			//		comandoInsertar.Parameters.AddWithValue("@imagen", oferta.Imagen);
-			//		comandoInsertar.Parameters.AddWithValue("@idJuegos", idBuscarJuego);
-			//		comandoInsertar.Parameters.AddWithValue("@descartado", "no");
-
-			//		try
-			//		{
-			//			comandoInsertar.ExecuteNonQuery();
-			//		}
-			//		catch (Exception ex)
-			//		{
-			//			Errores.Insertar.Ejecutar("Insertar Tienda", ex);
-			//		}
-			//	}
-			//}
-			//else if (listaIds.Count > 0)
-			//{
-			//	foreach (int id in listaIds)
-			//	{
-			//		if (id > 0)
-			//		{
-			//			string buscarJuego = "SELECT * FROM juegos WHERE id=@id";
-
-			//			using (SqlCommand comandoBuscar3 = new SqlCommand(buscarJuego, conexion))
-			//			{
-			//				comandoBuscar3.Parameters.AddWithValue("@id", id);
-
-			//				using (SqlDataReader lector = comandoBuscar3.ExecuteReader())
-			//				{
-			//					if (lector.Read() == true)
-			//					{
-			//                                 Juego juego = JuegoCrear.Generar();
-
-			//						juego = Juegos.Buscar.Cargar(juego, lector);
-
-			//						if (juego.PrecioActualesTiendas == null)
-			//						{
-			//							juego.PrecioActualesTiendas = new List<JuegoPrecio>();
-			//							juego.PrecioMinimosHistoricos = new List<JuegoPrecio>();
-			//						}
-
-			//						if (juego.PrecioActualesTiendas.Count == 0)
-			//						{
-			//							juego.PrecioActualesTiendas.Add(oferta);
-			//							juego.PrecioMinimosHistoricos.Add(oferta);
-			//						}
-
-			//						if (juego.IdGog == 0)
-			//						{
-			//							if (string.IsNullOrEmpty(idGog) == false)
-			//							{
-			//								juego.IdGog = int.Parse(idGog);
-			//								juego.SlugGOG = slugGOG;
-			//							}
-			//						}
-			//						else
-			//						{
-			//                                     if (string.IsNullOrEmpty(slugGOG) == false)
-			//                                     {
-			//								juego.SlugGOG = slugGOG;
-			//							}
-			//						}
-
-			//                                 if (string.IsNullOrEmpty(slugEpic) == false)
-			//						{
-			//							juego.SlugEpic = slugEpic;
-			//						}
-
-			//                                 Juegos.Precios.Actualizar(juego, oferta, conexion, false);
-			//					}
-			//				}
-			//			}
-			//		}
-			//		else
-			//		{
-			//			string buscarNombre = "SELECT * FROM juegos WHERE nombreCodigo=@nombreCodigo";
-
-			//			SqlCommand comandoBuscar2 = new SqlCommand(buscarNombre, conexion);
-
-			//			using (comandoBuscar2)
-			//			{
-			//				comandoBuscar2.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(oferta.Nombre));
-
-			//				using (SqlDataReader lector = comandoBuscar2.ExecuteReader())
-			//				{
-			//					if (lector.Read() == true)
-			//					{
-			//						int idBuscarJuego2 = lector.GetInt32(0);
-
-			//						string sqlActualizar = "UPDATE tienda" + oferta.Tienda + " " +
-			//								"SET idJuegos=@idJuegos WHERE enlace=@enlace";
-
-			//						using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-			//						{
-			//							comando.Parameters.AddWithValue("@idJuegos", idBuscarJuego2);
-			//							comando.Parameters.AddWithValue("@enlace", oferta.Enlace);
-
-			//							try
-			//							{
-			//                                         comando.ExecuteNonQuery();
-			//                                     }
-			//							catch
-			//							{
-
-			//							}
-			//						}
-			//					}
-			//				}
-			//			}
-			//		}
-			//	}
-			//}
 		}
 	}
 }

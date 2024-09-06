@@ -128,6 +128,78 @@ namespace BaseDatos.Juegos
 			}		
 		}
 
+		public static void Comprobacion(int id, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, SqlConnection conexion = null, string slugGOG = null, string idGOG = null, string slugEpic = null, DateTime? ultimaModificacion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string añadirSlugGog = null;
+
+			if (string.IsNullOrEmpty(slugGOG) == false)
+			{
+				añadirSlugGog = ", idGog=@idGog, slugGOG=@slugGOG";
+			}
+
+			string añadirSlugEpic = null;
+
+			if (string.IsNullOrEmpty(slugEpic) == false)
+			{
+				añadirSlugEpic = ", slugEpic=@slugEpic";
+			}
+
+			string añadirUltimaModificacion = null;
+
+			if (ultimaModificacion != null)
+			{
+				añadirUltimaModificacion = ", ultimaModificacion=@ultimaModificacion";
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas" +
+					añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic + " WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(ofertasHistoricas));
+				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(ofertasActuales));
+
+				if (ultimaModificacion != null)
+				{
+					comando.Parameters.AddWithValue("@ultimaModificacion", ultimaModificacion);
+				}
+
+				if (string.IsNullOrEmpty(slugGOG) == false)
+				{
+					comando.Parameters.AddWithValue("@idGog", idGOG);
+					comando.Parameters.AddWithValue("@slugGOG", slugGOG);
+				}
+
+				if (string.IsNullOrEmpty(slugEpic) == false)
+				{
+					comando.Parameters.AddWithValue("@slugEpic", slugEpic);
+				}
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch (Exception ex)
+				{
+					Errores.Insertar.Ejecutar("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, ex);
+				}
+			}
+		}
+
 		public static void UsuariosInteresados(int idJuego, SqlConnection conexion, List<JuegoUsuariosInteresados> usuariosInteresados)
 		{
 			string sqlActualizar = "UPDATE juegos " +

@@ -95,23 +95,34 @@ namespace APIs.EpicGames
 
 																	string slug = null;
 
-																	if (string.IsNullOrEmpty(juego.Enlace) == false)
-																	{
-																		slug = juego.Enlace;
-																	}
+                                                                    if (juego.Enlaces != null)
+                                                                    {
+                                                                        if (juego.Enlaces.Count > 0)
+                                                                        {
+                                                                            slug = juego.Enlaces[0].Slug;
+                                                                        }
+                                                                    }
 
-																	if (string.IsNullOrEmpty(slug) == false)
+                                                                    if (string.IsNullOrEmpty(slug) == true)
 																	{
-																		if (juego.Enlaces != null)
+																		if (juego.Enlaces2 != null)
 																		{
-																			if (juego.Enlaces.Count > 0)
+																			if (juego.Enlaces2.Mapeos != null)
 																			{
-																				slug = juego.Enlaces[0].Slug;
+																				slug = juego.Enlaces2.Mapeos[0].Slug;
 																			}
 																		}
 																	}
 
-																	if (descuento > 0 && string.IsNullOrEmpty(slug) == false && juego.Imagenes != null)
+                                                                    if (string.IsNullOrEmpty(slug) == true)
+																	{
+                                                                        if (string.IsNullOrEmpty(juego.Enlace) == false)
+                                                                        {
+                                                                            slug = juego.Enlace;
+                                                                        }
+                                                                    }
+
+                                                                    if (descuento > 0 && string.IsNullOrEmpty(slug) == false && juego.Imagenes != null)
 																	{
 																		if (juego.Imagenes.Count > 0)
 																		{
@@ -138,9 +149,9 @@ namespace APIs.EpicGames
 																				FechaActualizacion = DateTime.Now
 																			};
 
-																			try
+                                                                            try
 																			{
-																				BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion, null, null, slug);
+																				BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion, null, null, slug);
 																			}
 																			catch (Exception ex)
 																			{
@@ -224,7 +235,10 @@ namespace APIs.EpicGames
 
 		[JsonProperty("productSlug")]
 		public string Enlace { get; set; }
-	}
+
+        [JsonProperty("catalogNs")]
+        public EpicGamesStoreJuegoEnlaceMapeo Enlaces2 { get; set; }
+    }
 
 	public class EpicGamesStoreJuegoImagen
 	{
@@ -261,4 +275,10 @@ namespace APIs.EpicGames
 		[JsonProperty("discountPrice")]
 		public string PrecioRebajado { get; set; }
 	}
+
+    public class EpicGamesStoreJuegoEnlaceMapeo
+    {
+        [JsonProperty("mappings")]
+        public List<EpicGamesStoreJuegoEnlace> Mapeos { get; set; }
+    }
 }

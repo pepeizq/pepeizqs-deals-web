@@ -140,19 +140,16 @@ namespace Herramientas
 
 			if (juegosConMinimos.Count > 0)
 			{
-				int i = 0;
-				while (i < 200)
+				foreach (var minimo in juegosConMinimos)
 				{
-					string textoJuegos = "<url>" + Environment.NewLine +
-						 "<loc>https://pepeizqdeals.com/game/" + juegosConMinimos[i].IdMaestra + "/" + EnlaceAdaptador.Nombre(juegosConMinimos[i].Nombre) + "/</loc>" + Environment.NewLine +
+                    string textoJuegos = "<url>" + Environment.NewLine +
+						 "<loc>https://pepeizqdeals.com/game/" + minimo.IdMaestra + "/" + EnlaceAdaptador.Nombre(minimo.Nombre) + "/</loc>" + Environment.NewLine +
 						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
 						 "<priority>0.9</priority> " + Environment.NewLine +
 						 "</url>";
 
-					sb.Append(textoJuegos);
-
-					i += 1;
-				}
+                    sb.Append(textoJuegos);
+                }
 			}
 
 			sb.Append("</urlset>");

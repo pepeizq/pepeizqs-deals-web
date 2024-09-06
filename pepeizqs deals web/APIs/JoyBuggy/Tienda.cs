@@ -99,7 +99,7 @@ namespace APIs.JoyBuggy
 
 										try
 										{
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
 										}
 										catch (Exception ex)
 										{
