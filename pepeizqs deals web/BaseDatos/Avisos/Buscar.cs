@@ -6,9 +6,21 @@ namespace BaseDatos.Avisos
 {
     public static class Buscar
     {
-        public static Aviso Ejecutar(string idioma, SqlConnection conexion)
+        public static Aviso Ejecutar(string idioma, SqlConnection conexion = null)
         {
-            if (idioma == "es-ES")
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			if (idioma == "es-ES")
             {
                 idioma = "es";
             }

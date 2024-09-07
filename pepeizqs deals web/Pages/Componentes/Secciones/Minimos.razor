@@ -9,6 +9,7 @@
 @using Newtonsoft.Json
 @using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
+@using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
@@ -79,129 +80,10 @@
 
 	@if (juegosMostrar.Count > 0)
 	{
-		<div>
-			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107" OverscanCount="6">
+		<div style="display: flex; flex-direction: column; gap: 25px;">
+			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
 				<ItemContent>
-					<div style="margin-top: 25px; margin-bottom: 25px;">
-						@{
-							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
-							bool usuarioTieneDeseado = false;
-
-							string fondoColor = string.Empty;
-
-							if (usuarioTieneJuego == true)
-							{
-								fondoColor = "background-color: var(--fondoBien);";
-							}
-							else
-							{
-								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
-
-								if (usuarioTieneDeseado == true)
-								{
-									fondoColor = "background-color: var(--fondoAlerta);";
-								}
-							}
-
-							bool usuarioConectado = false;
-
-							if (usuario != null)
-							{
-								usuarioConectado = true;
-							}
-
-							Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
-
-							<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.IdMaestra.ToString()-@juego.PrecioMinimosHistoricos[0].DRM.ToString()')">
-								<div id="tooltip-@juego.IdMaestra.ToString()-@juego.PrecioMinimosHistoricos[0].DRM.ToString()" class="tooltip-relleno">
-									@if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
-									{
-										<video src="@tooltipDatos.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
-									}
-
-									<div style="padding: 15px; text-align: center;">
-										<div style="text-align: center;">
-											@tooltipDatos.Nombre
-										</div>
-
-										@if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
-										{
-											<div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
-												<img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" />
-												<label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
-											</div>
-										}
-
-										@if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
-										{
-											<div style="text-align: center;">
-												@tooltipDatos.UsuarioMensaje
-											</div>
-										}
-									</div>
-								</div>
-
-								<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@CargarEnlace(juego)" target="_blank">
-									<div class="perfil-flexible-centrado">
-										<div style="max-width: 230px;">
-											<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
-										</div>
-
-										<div style="padding: 5px 20px; text-align: left; width: 100%;">
-											<div>@juego.Nombre</div>
-
-											<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
-												<div style="width: 20px; height: 20px;">
-													<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="width: 100%; height: 100%;" />
-												</div>
-
-												<div style="width: 20px; height: 20px; margin-left: 10px;">
-													<img src="@CargarImagenTienda(juego)" style="width: 100%; height: 100%;" />
-												</div>
-
-												@if (juego.Analisis != null)
-												{
-													if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
-													{
-														if (int.Parse(juego.Analisis.Porcentaje) > 74)
-														{
-															<div style="width: 20px; height: 20px; margin-left: 10px;">
-																<img src="/imagenes/analisis/positive.webp" style="width: 100%; height: 100%;" />
-															</div>
-														}
-
-														if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-														{
-															<div style="width: 20px; height: 20px; margin-left: 10px;">
-																<img src="/imagenes/analisis/mixed.webp" style="width: 100%; height: 100%;" />
-															</div>
-														}
-
-														if (int.Parse(juego.Analisis.Porcentaje) < 50)
-														{
-															<div style="width: 20px; height: 20px; margin-left: 10px;">
-																<img src="/imagenes/analisis/negative.webp" style="width: 100%; height: 100%;" />
-															</div>
-														}
-													}
-												}
-											</div>
-										</div>
-
-										<div style="display: flex; align-items: center;">
-											<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
-												@CargarDescuento(juego)
-											</div>
-
-											<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
-												@CargarPrecio(juego)
-											</div>
-										</div>
-									</div>
-								</a>
-							</div>
-						}
-					</div>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.MinimosHistoricos"/>
 				</ItemContent>
 			</Virtualize>
 		</div>
@@ -532,97 +414,6 @@
 					}
 				}
 			}
-		}
-	}
-
-	private string CargarImagenDRM(global::Juegos.Juego juego)
-	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-		if (oferta != null)
-		{
-			return JuegoDRM2.SacarImagen(oferta.DRM.ToString());
-		}
-
-		return null;
-	}
-
-	private string CargarImagenTienda(global::Juegos.Juego juego)
-	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-		if (oferta != null)
-		{
-			List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
-
-			foreach (var tienda in tiendas)
-			{
-				if (tienda.Id == oferta.Tienda)
-				{
-					return tienda.ImagenIcono;
-				}
-			}
-		}
-
-		return null;	
-	}
-
-	private string CargarDescuento(global::Juegos.Juego juego)
-	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-		if (oferta != null)
-		{
-			return oferta.Descuento.ToString() + "%";
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private static string CargarPrecio(global::Juegos.Juego juego)
-	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-		if (oferta != null)
-		{
-			string precioMensaje = oferta.Precio.ToString();
-			precioMensaje = precioMensaje.Replace(".", ",");
-
-			int int1 = precioMensaje.IndexOf(",");
-
-			if (int1 == precioMensaje.Length - 2)
-			{
-				precioMensaje = precioMensaje + "0";
-			}
-
-			if (precioMensaje.Length > int1 + 3)
-			{
-				precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
-			}
-
-			precioMensaje = precioMensaje + "€";
-
-			return precioMensaje;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private string CargarEnlace(global::Juegos.Juego juego)
-	{
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-		if (oferta != null)
-		{
-			return Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
-		}
-		else
-		{
-			return null;
 		}
 	}
 

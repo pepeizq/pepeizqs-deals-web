@@ -12,6 +12,7 @@
 @using Newtonsoft.Json
 @using Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
+@using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
@@ -31,24 +32,6 @@
 		font-size: 15px;
 	}
 
-	.minimo-fuente {
-		font-size: 17px;
-	}
-
-	.minimo-fuentefecha {
-		font-size: 14px;
-	}
-
-	.minimo-espacio1 {
-		width: 100px;
-		padding: 20px;
-	}
-
-	.minimo-espacio2 {
-		padding: 10px 15px;
-		margin-right: 15px;
-	}
-
 	@@media (max-width: 800px) {
 		.noticia-fuente {
 			font-size: 13px;
@@ -60,24 +43,6 @@
 
 		.noticia-fecha {
 			font-size: 11px;
-		}
-
-		.minimo-fuente {
-			font-size: 12px;
-		}
-
-		.minimo-fuentefecha {
-			font-size: 10px;
-		}
-
-		.minimo-espacio1 {
-			width: 60px;
-			padding: 5px;
-		}
-
-		.minimo-espacio2 {
-			padding: 5px 10px;
-			margin-right: 0px;
 		}
 	}
 </style>
@@ -273,14 +238,32 @@
 			<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
 				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
 					<div class="destacado-mostrar">
-						@if (string.IsNullOrEmpty(CargarVideo(juegoSeleccionado)) == false)
+						@{
+							string video = string.Empty;
+
+							if (juegoSeleccionado.Media != null)
+							{
+								if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
+								{
+									int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
+									string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
+
+									video = temp1 + "/microtrailer.webm";
+
+									video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
+									video = video.Replace("http://", "https://");
+								}
+							}
+						}
+
+						@if (string.IsNullOrEmpty(video) == false)
 						{
 							<div class="destacado-fondo">
 								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
 							</div>
 
 							<div class="destacado-video">
-								<video src="@CargarVideo(juegoSeleccionado)" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+								<video src="@video" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
 							</div>
 						}
 						else
@@ -296,14 +279,48 @@
 							</div>
 
 							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-								<img class="destacado-icono" src="@CargarDRM(juegoSeleccionado)" style="margin-right: 20px;" alt="DRM" />
-								<img class="destacado-icono" src="@CargarIconoTienda(juegoSeleccionado)" style="margin-right: 40px;" alt="Store" />
+								<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
+								
+								@{
+									string iconoTienda = string.Empty;
+									List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+									foreach (var tienda in tiendas)
+									{
+										if (tienda.Id == juegoSeleccionado.PrecioMinimosHistoricos[0].Tienda)
+										{
+											iconoTienda = tienda.ImagenIcono;
+											break;
+										}
+									}
+								}
+								
+								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
 
 								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
-									@CargarDescuento(juegoSeleccionado)
+									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
 								</div>
 								<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
-									@CargarPrecio(juegoSeleccionado)
+									@{
+										string precioMensaje = juegoSeleccionado.PrecioMinimosHistoricos[0].Precio.ToString();
+										precioMensaje = precioMensaje.Replace(".", ",");
+
+										int int1 = precioMensaje.IndexOf(",");
+
+										if (int1 == precioMensaje.Length - 2)
+										{
+											precioMensaje = precioMensaje + "0";
+										}
+
+										if (precioMensaje.Length > int1 + 3)
+										{
+											precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
+										}
+
+										precioMensaje = precioMensaje + "€";
+
+										@precioMensaje
+									}
 								</div>
 							</div>
 						</div>
@@ -585,126 +602,12 @@ else
 			</button>
 		</div>
 
-		<div class="tooltip4" onmousemove="hover(event, 'tooltip-minimos')" style="margin-bottom: 25px;">
-			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="117" OverscanCount="6">
+		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
+			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
-					@{
-						bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
-						bool usuarioTieneDeseado = false;
-
-						string fondoColor = string.Empty;
-						string fondoDescuento = "background-color: darkgreen;";
-
-						if (usuarioTieneJuego == true)
-						{
-							fondoColor = "background-color: var(--fondoBien);";
-							fondoDescuento = "backdrop-filter: brightness(70%);";
-						}
-						else
-						{
-							usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
-
-							if (usuarioTieneDeseado == true)
-							{
-								fondoColor = "background-color: var(--fondoAlerta);";
-								fondoDescuento = "backdrop-filter: brightness(70%);";
-							}
-						}
-					}
-					
-					<div class="perfil-flexible-centrado" style="margin-top: 20px;" @onmouseover="@(e => CargarTooltip(e, juego))">
-						<a class="boton-pequeño" style="padding: 2px; @fondoColor" href="/game/@juego.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/">
-							<div class="perfil-flexible-centrado">
-								<div style="max-width: 230px;">
-									<img src="@juego.Imagenes.Header_460x215" style="height: 100%; width: 100%;" alt="@juego.Nombre" />
-								</div>
-
-								<div style="width: 100%; display: flex; flex-flow: column wrap; padding: 15px 20px;">
-									<div class="minimo-fuente">@juego.Nombre</div>
-									<div style="margin-top: 15px; display: flex; align-items: center;">
-										<img src="@CargarDRM(juego)" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" />
-										<img src="@CargarIconoTienda(juego)" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" />
-										<div class="minimo-fuentefecha">@CargarFechaDetectado(juego)</div>
-									</div>
-								</div>
-
-								<div style="display: flex; align-items: center;">
-									<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px; @fondoDescuento">
-										@CargarDescuento(juego)
-									</div>
-
-									<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
-										@CargarPrecio(juego)
-									</div>
-								</div>
-							</div>
-						</a>
-					</div>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.Portada"/>
 				</ItemContent>
 			</Virtualize>
-
-			<div id="tooltip-minimos" class="tooltip-relleno">
-				@if (string.IsNullOrEmpty(tooltipVideo) == false)
-				{
-					<video src="@tooltipVideo" autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;" />
-				}
-
-				<div style="padding: 12px; max-width: 430px;">
-					<label style="padding-left: 5px; padding-right: 5px;">@tooltipNombre</label>
-					<div style="display: flex; align-items: center; margin-top: 5px; padding: 5px; text-align: left; justify-content: left;">
-						<div style="margin-right: 20px;">
-							<img src="@tooltipDRM" style="max-width: 20px; max-height: 20px;" alt="DRM" />
-						</div>
-						<div style="margin-right: 20px;">
-							<img src="@tooltipTienda" style="width: 20px; height: 20px;" alt="Store" />
-						</div>
-
-						@if (string.IsNullOrEmpty(tooltipReviews) == false)
-						{
-							<div style="margin-right: 20px;">
-								<img src="@tooltipReviews" style="width: 20px; height: 20px;" alt="Reviews" />
-							</div>
-						}
-
-						<div style="margin-right: 15px; background-color: darkgreen; padding: 5px 10px;">
-							@tooltipDescuento
-						</div>
-						<div>
-							@tooltipPrecio
-						</div>
-					</div>
-
-					@if (string.IsNullOrEmpty(tooltipBundles) == false || string.IsNullOrEmpty(tooltipGratis) == false || string.IsNullOrEmpty(tooltipSuscripciones) == false)
-					{
-						<div style="font-size: 14px; margin-top: 5px; padding: 5px;">
-							<div>
-								@Herramientas.Idiomas.CogerCadena(idioma, "Tooltip1", "Index")
-							</div>
-
-							@if (string.IsNullOrEmpty(tooltipBundles) == false)
-							{
-								<div>
-									• @tooltipBundles
-								</div>
-							}
-
-							@if (string.IsNullOrEmpty(tooltipGratis) == false)
-							{
-								<div>
-									• @tooltipGratis
-								</div>
-							}
-
-							@if (string.IsNullOrEmpty(tooltipSuscripciones) == false)
-							{
-								<div>
-									• @tooltipSuscripciones
-								</div>
-							}
-						</div>
-					}
-				</div>
-			</div>
 		</div>
 
 		<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
@@ -866,6 +769,8 @@ else
 	private string rss = string.Empty;
 	private string bluesky = string.Empty;
 
+	private SqlConnection conexion = new SqlConnection();
+
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
 
@@ -927,7 +832,7 @@ else
 
 			//------------------------------------------------
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
@@ -935,19 +840,14 @@ else
 
 				try
 				{
-					juegosDestacadosCarga = BaseDatos.Juegos.Buscar.Todos(conexion, "portadaJuegosDestacados");
+					juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
 
-					if (juegosDestacadosCarga != null)
+					if (juegosDestacadosMostrar.Count > 0)
 					{
-						if (juegosDestacadosCarga.Count > 0)
-						{
-							juegosDestacadosGestor = juegosDestacadosCarga;
-
-							juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
-
-							CronometroDestacados();
-						}
+						juegoSeleccionado = juegosDestacadosMostrar[0];
 					}
+
+					CronometroDestacados();
 				}
 				catch (Exception ex)
 				{
@@ -964,22 +864,7 @@ else
 
 				#region Minimos
 
-				try
-				{
-					juegosMinimosGestor = BaseDatos.Juegos.Buscar.UltimosDetectados(250, conexion);
-				}
-				catch (Exception ex)
-				{
-					BaseDatos.Errores.Insertar.Ejecutar("Portada Minimos", ex);				
-				}
-
-				if (juegosMinimosGestor != null)
-				{
-					if (juegosMinimosGestor.Count > 0)
-					{
-						Filtros();
-					}
-				}
+				Filtros();
 
 				#endregion
 
@@ -1058,8 +943,6 @@ else
 
 	#region Destacados
 
-	private List<Juegos.Juego> juegosDestacadosCarga = new List<Juegos.Juego>();
-	private List<Juegos.Juego> juegosDestacadosGestor = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
 	private Juegos.Juego juegoSeleccionado = new Juegos.Juego();
 	private PeriodicTimer cronometro = null;
@@ -1073,38 +956,6 @@ else
 		cronometroContador = 0;
 		cronometro.Dispose();
 		CronometroDestacados();
-	}
-
-	private List<Juegos.Juego> CargarJuegosDestacados(List<Juegos.Juego> gestor)
-	{
-		List<Juegos.Juego> mostrar = new List<Juegos.Juego>();
-
-		if (gestor != null)
-		{
-			if (gestor.Count > 0)
-			{
-				gestor = gestor.OrderBy(x => Random.Shared.Next()).ToList();
-
-				foreach (var destacadoGestor in gestor)
-				{
-					bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacadoGestor, destacadoGestor.PrecioMinimosHistoricos[0].DRM);
-
-					if (usuarioTieneJuego == false)
-					{
-						mostrar.Add(destacadoGestor);
-					}
-
-					if (mostrar.Count == 6)
-					{
-						break;
-					}
-				}
-
-				juegoSeleccionado = mostrar[0];
-			}
-		}
-
-		return mostrar;
 	}
 
 	private async void CronometroDestacados()
@@ -1137,13 +988,66 @@ else
 
 				if (i == juegosDestacadosMostrar.Count)
 				{
-					juegosDestacadosMostrar = CargarJuegosDestacados(juegosDestacadosGestor);
+					juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
+
+					if (juegosDestacadosMostrar.Count > 0)
+					{
+						juegoSeleccionado = juegosDestacadosMostrar[0];
+					}
 				}
 
 				cronometroContador = 0;
 			}
 
 			await InvokeAsync(StateHasChanged);
+		}
+	}
+
+	#endregion
+
+	#region Minimos Lista
+
+	private void GenerarListaMinimos()
+	{
+		try
+		{
+			List<string> categoriasNumeros = new List<string>();
+
+			if (categorias != null)
+			{
+				if (categorias.Count > 0)
+				{
+					foreach (var categoria in categorias)
+					{
+						if (categoria.Estado == true)
+						{
+							categoriasNumeros.Add(Convert.ChangeType(categoria.Categoria, categoria.Categoria.GetTypeCode()).ToString());
+						}
+					}
+				}
+			}
+
+			List<string> drmsNumeros = new List<string>();
+
+			if (drms != null)
+			{
+				if (drms.Count > 0)
+				{
+					foreach (var drm in drms)
+					{
+						if (drm.Estado == true)
+						{
+							drmsNumeros.Add(Convert.ChangeType(drm.DRMId, drm.DRMId.GetTypeCode()).ToString());
+						}
+					}
+				}
+			}
+
+			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(250, categoriasNumeros, drmsNumeros, conexion);
+		}
+		catch (Exception ex)
+		{
+			BaseDatos.Errores.Insertar.Ejecutar("Portada Minimos", ex);
 		}
 	}
 
@@ -1156,6 +1060,8 @@ else
 
 	private void Filtros()
 	{
+		GenerarListaMinimos();
+
 		if (juegosMinimosGestor != null)
 		{
 			if (juegosMinimosGestor.Count > 0)
@@ -1181,27 +1087,7 @@ else
 						}
 					}
 
-					bool drm2 = false;
-
-					foreach (var drm in drms)
-					{
-						if (juego.PrecioMinimosHistoricos[0].DRM == drm.DRMId && drm.Estado == true)
-						{
-							drm2 = true;
-						}
-					}
-
-					bool categoria2 = false;
-
-					foreach (var categoria in categorias)
-					{
-						if (juego.Tipo == categoria.Categoria && categoria.Estado == true)
-						{
-							categoria2 = true;
-						}
-					}
-
-					if (ocultar == false && drm2 == true && categoria2 == true)
+					if (ocultar == false)
 					{
 						juegosMinimosMostrar.Add(juego);
 					}
@@ -1382,220 +1268,6 @@ else
 		}
 
 		return nuevaLista;
-	}
-
-	#endregion
-
-	#region Tooltip
-
-	private string tooltipNombre = string.Empty;
-	private string tooltipDescuento = string.Empty;
-	private string tooltipPrecio = string.Empty;
-	private string tooltipDRM = string.Empty;
-	private string tooltipTienda = string.Empty;
-	private string tooltipTiempo = string.Empty;
-	private string tooltipVideo = string.Empty;
-	private string tooltipReviews = string.Empty;
-	private string tooltipBundles = string.Empty;
-	private string tooltipGratis = string.Empty;
-	private string tooltipSuscripciones = string.Empty;
-
-	private void CargarTooltip(MouseEventArgs args, Juegos.Juego juego)
-	{
-		tooltipNombre = juego.Nombre;
-		tooltipDescuento = CargarDescuento(juego);
-		tooltipPrecio = CargarPrecio(juego);
-		tooltipDRM = CargarDRM(juego);
-		tooltipTienda = CargarIconoTienda(juego);
-		tooltipTiempo = CargarFechaDetectado(juego);
-		tooltipVideo = CargarVideo(juego);
-		tooltipReviews = null;
-		tooltipBundles = null;
-		tooltipGratis = null;
-		tooltipSuscripciones = null;
-
-		if (juego.Analisis != null)
-		{
-			if (int.Parse(juego.Analisis.Porcentaje) > 74)
-			{
-				tooltipReviews = "/imagenes/analisis/positive.webp";
-			}
-			else if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-			{
-				tooltipReviews = "/imagenes/analisis/mixed.webp";
-			}
-			else if (int.Parse(juego.Analisis.Porcentaje) < 50)
-			{
-				tooltipReviews = "/imagenes/analisis/negative.webp";
-			}
-		}
-
-		if (juego.Bundles != null)
-		{
-			if (juego.Bundles.Count == 1)
-			{
-				tooltipBundles = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip2", "Index");
-			}
-			else if (juego.Bundles.Count > 1)
-			{
-				tooltipBundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip3", "Index"), juego.Bundles.Count.ToString());
-			}			
-		}
-
-		if (juego.Gratis != null)
-		{
-			if (juego.Gratis.Count == 1)
-			{
-				tooltipGratis = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip4", "Index");
-			}
-			else if (juego.Gratis.Count > 1)
-			{
-				tooltipGratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip5", "Index"), juego.Gratis.Count.ToString());
-			}
-		}
-
-		if (juego.Suscripciones != null)
-		{
-			if (juego.Suscripciones.Count == 1)
-			{
-				tooltipSuscripciones = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip6", "Index");
-			}
-			else if (juego.Suscripciones.Count > 1)
-			{
-				tooltipSuscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip7", "Index"), juego.Suscripciones.Count.ToString());
-			}
-		}
-	}
-
-	private string CargarDRM(Juegos.Juego juego)
-	{
-		string imagen = null;
-
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-		List<Juegos.DRM> drms = Juegos.JuegoDRM2.GenerarListado();
-
-		foreach (var drm in drms)
-		{
-			if (drm.Id == oferta.DRM)
-			{
-				imagen = drm.Imagen;
-			}
-		}
-
-		if (imagen != null)
-		{
-			return imagen;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private string CargarIconoTienda(Juegos.Juego juego)
-	{
-		string imagen = null;
-
-		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
-
-		foreach (var tienda in tiendas)
-		{
-			if (tienda.Id == oferta.Tienda)
-			{
-				imagen = tienda.ImagenIcono;
-			}
-		}
-
-		if (imagen != null)
-		{
-			return imagen;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private string CargarDescuento(Juegos.Juego juego)
-	{
-		string descuentoMensaje = null;
-
-		descuentoMensaje = juego.PrecioMinimosHistoricos[0].Descuento.ToString();
-		descuentoMensaje = descuentoMensaje + "%";
-
-		if (descuentoMensaje != null)
-		{
-			return descuentoMensaje;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private string CargarPrecio(Juegos.Juego juego)
-	{
-		string precioMensaje = null;
-
-		precioMensaje = juego.PrecioMinimosHistoricos[0].Precio.ToString();
-		precioMensaje = precioMensaje.Replace(".", ",");
-
-		int int1 = precioMensaje.IndexOf(",");
-
-		if (int1 == precioMensaje.Length - 2)
-		{
-			precioMensaje = precioMensaje + "0";
-		}
-
-		if (precioMensaje.Length > int1 + 3)
-		{
-			precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
-		}
-
-		precioMensaje = precioMensaje + "€";
-
-		if (precioMensaje != null)
-		{
-			return precioMensaje;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private string CargarFechaDetectado(Juegos.Juego juego)
-	{
-		string mensaje = null;
-
-		if (juego.PrecioMinimosHistoricos[0].FechaDetectado.Year > 2023)
-		{
-			mensaje = Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma);
-		}
-
-		return mensaje;
-	}
-
-	private string CargarVideo(Juegos.Juego juego)
-	{
-		string video = null;
-
-		if (juego.Media != null)
-		{
-			if (string.IsNullOrEmpty(juego.Media.Video) == false)
-			{
-				int int1 = juego.Media.Video.LastIndexOf("/");
-				string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
-
-				video = temp1 + "/microtrailer.webm";
-
-				video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-				video = video.Replace("http://", "https://");
-			}
-		}
-
-		return video;
 	}
 
 	#endregion

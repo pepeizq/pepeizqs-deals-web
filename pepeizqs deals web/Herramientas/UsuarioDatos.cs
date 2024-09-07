@@ -55,7 +55,7 @@ namespace Herramientas
 							}
 							else
 							{
-								if (usuario.RewardsCoins < 31)
+								if (usuario.RewardsCoins < 30)
 								{
 									if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
 									{

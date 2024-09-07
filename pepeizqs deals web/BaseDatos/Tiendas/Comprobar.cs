@@ -238,6 +238,11 @@ namespace BaseDatos.Tiendas
 								ofertasHistoricas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(1));
 							}
 						}
+						
+						if (ofertasHistoricas == null)
+						{
+							ofertasHistoricas = new List<JuegoPrecio>();							
+						}
 
 						if (ofertasHistoricas.Count == 0)
 						{
@@ -253,7 +258,12 @@ namespace BaseDatos.Tiendas
 							}
 						}
 
-						if (ofertasActuales.Count == 0)
+                        if (ofertasActuales == null)
+                        {
+                            ofertasActuales = new List<JuegoPrecio>();
+                        }
+
+                        if (ofertasActuales.Count == 0)
 						{
 							ofertasActuales.Add(oferta);
 						}

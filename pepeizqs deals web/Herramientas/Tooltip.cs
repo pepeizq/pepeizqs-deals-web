@@ -15,7 +15,10 @@ namespace Herramientas
                 Video = null,
                 ReviewsIcono = null,
                 ReviewsCantidad = null,
-                UsuarioMensaje = null
+                UsuarioMensaje = null,
+                Bundles = null,
+                Gratis = null,
+                Suscripciones = null
             };
 
             if (juego.Media != null)
@@ -79,7 +82,43 @@ namespace Herramientas
                 datos.UsuarioMensaje = null;
 			}
 
-            return datos;
+			if (juego.Bundles != null)
+			{
+				if (juego.Bundles.Count == 1)
+				{
+					datos.Bundles = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip2", "Index");
+				}
+				else if (juego.Bundles.Count > 1)
+				{
+					datos.Bundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip3", "Index"), juego.Bundles.Count.ToString());
+				}
+			}
+
+			if (juego.Gratis != null)
+			{
+				if (juego.Gratis.Count == 1)
+				{
+					datos.Gratis = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip4", "Index");
+				}
+				else if (juego.Gratis.Count > 1)
+				{
+					datos.Gratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip5", "Index"), juego.Gratis.Count.ToString());
+				}
+			}
+
+			if (juego.Suscripciones != null)
+			{
+				if (juego.Suscripciones.Count == 1)
+				{
+					datos.Suscripciones = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip6", "Index");
+				}
+				else if (juego.Suscripciones.Count > 1)
+				{
+					datos.Suscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip7", "Index"), juego.Suscripciones.Count.ToString());
+				}
+			}
+
+			return datos;
         }
 
         public static bool ComprobarUsuarioTieneJuego(Usuario usuario, List<string> juegosUsuario, Juego juego, JuegoDRM drm)
@@ -118,5 +157,8 @@ namespace Herramientas
 		public string ReviewsIcono { get; set; }
 		public string ReviewsCantidad { get; set; }
 		public string UsuarioMensaje { get; set; }
+		public string Bundles { get; set; }
+		public string Gratis { get; set; }
+		public string Suscripciones { get; set; }
 	}
 }

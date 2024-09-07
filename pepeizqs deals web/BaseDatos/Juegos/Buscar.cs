@@ -696,37 +696,6 @@ namespace BaseDatos.Juegos
             return resultados;
         }
 
-        public static List<Juego> UltimosDetectados(int cantidad, SqlConnection conexion = null)
-        {
-			List<Juego> resultados = new List<Juego>();
-
-			if (conexion == null)
-			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
-
-            using (conexion)
-            {
-				string busqueda = "SELECT TOP " + cantidad + " *, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 499 ORDER BY Fecha DESC";
-
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-				{
-					using (SqlDataReader lector = comando.ExecuteReader())
-					{
-						while (lector.Read())
-						{
-							Juego juego = new Juego();
-							juego = Cargar(juego, lector);
-
-							resultados.Add(juego);
-						}
-					}
-				}
-			}
-
-			return resultados;
-		}
-
 		public static Juego Aleatorio()
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();

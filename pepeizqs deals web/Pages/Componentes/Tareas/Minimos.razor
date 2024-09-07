@@ -150,10 +150,6 @@
 
 										juegosConMinimos = juegosConMinimos.OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
 
-										List<MinimoListado> juegosDestacadosMostrar = new List<MinimoListado>();
-
-										int i = 0;
-
 										foreach (var minimo in juegosConMinimos)
 										{
 											try
@@ -165,108 +161,7 @@
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Ejecutar("Portada Destacados " + minimo.Juego.Nombre, ex);
-											}
-
-											bool añadir = true;
-
-											if (juegosDestacadosMostrar.Count > 0)
-											{
-												foreach (var juegoDestacado in juegosDestacadosMostrar)
-												{
-													if (juegoDestacado.Juego.Id == minimo.Juego.Id)
-													{
-														añadir = false;
-														break;
-													}
-												}
-											}
-
-											if (minimo.Juego.Tipo != JuegoTipo.Game)
-											{
-												añadir = false;
-											}
-
-											if (minimo.Historico.DRM != JuegoDRM.Steam)
-											{
-												añadir = false;
-											}
-
-											if (minimo.Juego.Bundles != null)
-											{
-												foreach (var bundle in minimo.Juego.Bundles)
-												{
-													if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-													{
-														añadir = false;
-														break;
-													}
-												}
-											}
-
-											if (minimo.Juego.Gratis != null)
-											{
-												foreach (var gratis in minimo.Juego.Gratis)
-												{
-													if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-													{
-														añadir = false;
-														break;
-													}
-												}
-											}
-
-											if (minimo.Juego.Suscripciones != null)
-											{
-												foreach (var suscripcion in minimo.Juego.Suscripciones)
-												{
-													if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
-													{
-														añadir = false;
-														break;
-													}
-												}
-											}
-
-											if (añadir == true && minimo != null)
-											{
-												string tempCantidad = minimo.Juego.Analisis.Cantidad;
-												tempCantidad = tempCantidad.Replace(".", null);
-												tempCantidad = tempCantidad.Replace(",", null);
-
-												if (Convert.ToInt32(tempCantidad) >= 5000)
-												{
-													if (i < 150)
-													{
-														juegosDestacadosMostrar.Add(minimo);
-														i += 1;
-
-														if (i == 150)
-														{
-															break;
-														}
-													}
-												}
-											}
-										}
-
-										if (juegosDestacadosMostrar.Count > 0)
-										{
-											BaseDatos.Portada.Limpiar.Ejecutar("portadaJuegosDestacados", conexion);
-
-											foreach (var juegoDestacado in juegosDestacadosMostrar)
-											{
-												Juego juegoDestacadoFinal = juegoDestacado.Juego;
-												juegoDestacadoFinal.PrecioMinimosHistoricos = [juegoDestacado.Historico];
-
-												try
-												{
-													BaseDatos.Juegos.Insertar.Ejecutar(juegoDestacadoFinal, conexion, "portadaJuegosDestacados");
-												}
-												catch (Exception ex)
-												{
-													BaseDatos.Errores.Insertar.Ejecutar("Portada Destacados " + juegoDestacadoFinal.Nombre, ex);
-												}
+												BaseDatos.Errores.Insertar.Ejecutar("Seccion Minimos " + minimo.Juego.Nombre, ex);
 											}
 										}
 									}

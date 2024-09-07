@@ -67,7 +67,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id;
+			return "/link/" + enlaceFinal.Id + "/";
 		}
 
 		public static string Generar(string enlace, BundleTipo tipo)
@@ -92,7 +92,7 @@ namespace Herramientas
 
 			if (enlaceFinal != null)
 			{
-				return "/link/" + enlaceFinal.Id;
+				return "/link/" + enlaceFinal.Id + "/";
 			}
 			else
 			{
@@ -128,7 +128,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id;
+			return "/link/" + enlaceFinal.Id + "/";
 		}
 
 		public static string Generar(string enlace, SuscripcionTipo tipo)
@@ -147,7 +147,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id;
+			return "/link/" + enlaceFinal.Id + "/";
 		}
 	}
 
