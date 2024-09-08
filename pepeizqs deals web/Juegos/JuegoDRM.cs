@@ -18,7 +18,8 @@ namespace Juegos
 		ElderScrolls,
 		BattleNet,
 		Giants,
-		PearlAbyss
+		PearlAbyss,
+		SquareEnix
 	}
 
 	public static class JuegoDRM2
@@ -182,9 +183,21 @@ namespace Juegos
 
             drms.Add(pearl);
 
-            //----------------------------
+			//----------------------------
 
-            return drms;
+			DRM square = new DRM
+			{
+				Id = JuegoDRM.PearlAbyss,
+				Nombre = "Square Enix",
+				Imagen = "/imagenes/drm/squareenix.webp",
+				Acepciones = new List<string> { "square-enix" }
+			};
+
+			drms.Add(square);
+
+			//----------------------------
+
+			return drms;
 		}
 
 		public static string DevolverDRM(JuegoDRM drmBuscar)

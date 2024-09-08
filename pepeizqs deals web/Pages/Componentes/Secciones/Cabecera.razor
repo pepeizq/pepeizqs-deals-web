@@ -594,7 +594,7 @@ else
 
                 using (conexion)
                 {
-                    resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 200);
+                    resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim(), conexion, 200, false);
 
                     resultadosBuscador2 = BaseDatos.Publishers.Buscar.NombreContiene(texto.Value.ToString(), 50);
                 }

@@ -8,9 +8,21 @@ namespace BaseDatos.Juegos
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(Juego juego, SqlConnection conexion, string tabla = "juegos")
+		public static void Ejecutar(Juego juego, SqlConnection conexion = null, string tabla = "juegos")
 		{
-			string añadirBundles1 = null;
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            string añadirBundles1 = null;
 			string añadirBundles2 = null;
 
 			if (juego.Bundles != null)

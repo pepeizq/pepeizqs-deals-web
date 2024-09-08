@@ -54,7 +54,14 @@
 
 		//--------------------------------------------------------
 
-		enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
+		if (tipo == Tipo.Portada)
+		{
+			enlace = "/game/" + juego.Id + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+		}
+		else
+		{
+			enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
+		}	
 
 		//--------------------------------------------------------
 

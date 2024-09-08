@@ -377,27 +377,29 @@ namespace BaseDatos.Juegos
 			{
 				if (ids.Count > 0)
 				{
+					sqlBuscar = "SELECT * FROM juegos WHERE idSteam IN (";
+
 					int i = 0;
 					while (i < ids.Count)
 					{
 						if (i == 0)
 						{
-							sqlBuscar = "SELECT * FROM juegos WHERE idSteam=" + ids[i];
+							sqlBuscar = sqlBuscar + "'" + ids[i] + "'";
 						}
 						else
 						{
-							sqlBuscar = sqlBuscar + " OR idSteam=" + ids[i];
+							sqlBuscar = sqlBuscar + ", '" + ids[i] + "'";
 						}
 
 						i += 1;
 					}
+
+					sqlBuscar = sqlBuscar + ")";
 				}
 			}
 
 			if (string.IsNullOrEmpty(sqlBuscar) == false)
 			{
-				sqlBuscar = "SET QUERY_GOVERNOR_COST_LIMIT 15000" + Environment.NewLine + sqlBuscar;
-
 				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 				using (conexion)
@@ -443,7 +445,7 @@ namespace BaseDatos.Juegos
             return null;
         }
 
-        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30)
+        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30, bool todo = true)
 		{
 			if (conexion != null)
 			{
@@ -456,6 +458,12 @@ namespace BaseDatos.Juegos
 			List<Juego> juegos = new List<Juego>();
 
 			string busqueda = string.Empty;
+			string busquedaTodo = "*";
+
+			if (todo == false)
+			{
+				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis";
+			}
 
 			if (nombre.Contains(" ") == true)
 			{
@@ -475,7 +483,7 @@ namespace BaseDatos.Juegos
 					{
                         if (i == 0)
                         {
-                            busqueda = "SELECT TOP " + cantidad + " * FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
+                            busqueda = "SELECT TOP " + cantidad + " " + busquedaTodo + " FROM juegos WHERE CHARINDEX('" + palabraLimpia + "', nombreCodigo) > 0 ";
                         }
                         else
                         {
@@ -506,7 +514,7 @@ namespace BaseDatos.Juegos
 			}
 			else
 			{
-				busqueda = "SELECT TOP " + cantidad + " * FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
+				busqueda = "SELECT TOP " + cantidad + " " + busquedaTodo + " FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 			}
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -515,9 +523,94 @@ namespace BaseDatos.Juegos
 				{
 					while (lector.Read())
 					{
-						Juego juego = new Juego();
-						juego = Cargar(juego, lector);
-						juegos.Add(juego);
+						if (todo == true)
+						{
+							Juego juego = new Juego();
+							juego = Cargar(juego, lector);
+							juegos.Add(juego);
+						}
+						else
+						{
+							Juego juego = new Juego();
+
+							if (lector.IsDBNull(0) == false)
+							{
+								juego.Id = lector.GetInt32(0);
+								juego.IdMaestra = lector.GetInt32(0);
+							}
+
+							if (lector.IsDBNull(1) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+								{
+									juego.Nombre = lector.GetString(1);
+									juego.NombreCodigo = Herramientas.Buscador.LimpiarNombre(juego.Nombre);
+								}
+							}
+
+							if (lector.IsDBNull(2) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+								{
+									juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(2));
+								}
+							}
+
+							if (lector.IsDBNull(3) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+								{
+									juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(3));
+								}
+							}
+
+							if (lector.IsDBNull(4) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(4)) == false)
+								{
+									juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+								}
+							}
+
+							if (lector.IsDBNull(5) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+								{
+									juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(5));
+								}
+							}
+
+							if (lector.IsDBNull(6) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+								{
+									juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(6));
+								}
+							}
+
+							if (lector.IsDBNull(7) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(7)) == false)
+								{
+									juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(7));
+								}
+							}
+
+							if (lector.IsDBNull(8) == false)
+							{
+								juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(8));
+							}
+
+							if (lector.IsDBNull(9) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(9)) == false)
+								{
+									juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(9));
+								}
+							}
+
+							juegos.Add(juego);
+						}
 					}
 				}
 			}
@@ -532,9 +625,21 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-        public static List<Juego> Todos(SqlConnection conexion, string tabla = null, int dias = 0)
+        public static List<Juego> Todos(SqlConnection conexion = null, string tabla = null, int dias = 0, bool analisis = false)
 		{
-			string tabla2 = string.Empty;
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            string tabla2 = string.Empty;
 
 			if (tabla == null)
 			{
@@ -548,16 +653,31 @@ namespace BaseDatos.Juegos
 			List<Juego> juegos = new List<Juego>();
 
 			string busqueda = "SELECT * FROM " + tabla2;
+			string donde = string.Empty;
 
             if (dias > 0)
             {
-                busqueda = busqueda + Environment.NewLine + "WHERE ultimaModificacion >= DATEADD(day, -" + dias.ToString() + ", GETDATE())";
+				if (string.IsNullOrEmpty(donde) == false)
+				{
+					donde = donde + " AND";
+				}
+
+				donde = donde + " ultimaModificacion >= DATEADD(day, -" + dias.ToString() + ", GETDATE())";
             }
 
-			string limite = "SET QUERY_GOVERNOR_COST_LIMIT 15000;";
-			using (SqlCommand setQueryGovernorCommand = new SqlCommand(limite, conexion))
+			if (analisis == true)
 			{
-				setQueryGovernorCommand.ExecuteNonQuery();
+				if (string.IsNullOrEmpty(donde) == false)
+				{
+					donde = donde + " AND";
+				}
+
+				donde = donde + " JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99";
+			}
+
+			if (string.IsNullOrEmpty(donde) == false)
+			{
+				busqueda = busqueda + " WHERE" + donde;
 			}
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -566,11 +686,11 @@ namespace BaseDatos.Juegos
 				{
 					while (lector.Read())
 					{
-						Juego juego = new Juego();
-						juego = Cargar(juego, lector);
+                        Juego juego = new Juego();
+                        juego = Cargar(juego, lector);
 
-						juegos.Add(juego);
-					}
+                        juegos.Add(juego);
+                    }
 				}
 			}
 

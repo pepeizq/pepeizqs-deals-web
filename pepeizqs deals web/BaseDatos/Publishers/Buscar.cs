@@ -232,7 +232,8 @@ namespace BaseDatos.Publishers
             {
                 using (conexion)
                 {
-                    string busqueda = "SELECT * FROM juegos WHERE ISJSON(caracteristicas) > 0 AND JSON_QUERY(caracteristicas, '$.Publishers') LIKE '%" + Strings.ChrW(34) + publisher + Strings.ChrW(34) + "%'";
+                    string busqueda = @"SELECT id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo FROM juegos 
+                                        WHERE ISJSON(caracteristicas) > 0 AND JSON_QUERY(caracteristicas, '$.Publishers') LIKE '%" + Strings.ChrW(34) + publisher + Strings.ChrW(34) + "%'";
 
                     using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                     {
@@ -241,8 +242,76 @@ namespace BaseDatos.Publishers
                             while (lector.Read())
                             {
                                 Juego juego = new Juego();
-                                juego = BaseDatos.Juegos.Buscar.Cargar(juego, lector);
-                                juegos.Add(juego);
+
+								if (lector.IsDBNull(0) == false)
+								{
+									juego.Id = lector.GetInt32(0);
+									juego.IdMaestra = lector.GetInt32(0);
+								}
+
+								if (lector.IsDBNull(1) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+									{
+										juego.Nombre = lector.GetString(1);
+										juego.NombreCodigo = Herramientas.Buscador.LimpiarNombre(juego.Nombre);
+									}
+								}
+
+								if (lector.IsDBNull(2) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+									{
+										juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(2));
+									}
+								}
+
+								if (lector.IsDBNull(3) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+									{
+										juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(3));
+									}
+								}
+
+								if (lector.IsDBNull(4) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(4)) == false)
+									{
+										juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+									}
+								}
+
+								if (lector.IsDBNull(5) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+									{
+										juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(5));
+									}
+								}
+
+								if (lector.IsDBNull(6) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+									{
+										juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(6));
+									}
+								}
+
+								if (lector.IsDBNull(7) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(7)) == false)
+									{
+										juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(7));
+									}
+								}
+
+								if (lector.IsDBNull(8) == false)
+								{
+									juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(8));
+								}
+
+								juegos.Add(juego);
                             }
                         }
                     }

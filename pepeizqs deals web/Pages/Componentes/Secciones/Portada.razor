@@ -230,6 +230,11 @@
 		{
 			string colorSeleccionado = "var(--fondoOscuro)";
 
+			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
+			{
+				colorSeleccionado = "var(--fondoBien)";
+			}
+
 			if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
 			{
 				colorSeleccionado = "var(--fondoAlerta)";
@@ -345,6 +350,11 @@
 				}
 
 				string fondoDestacado = "background-color: var(--fondoOscuro);";
+
+				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+				{
+					fondoDestacado = "background-color: var(--fondoBien);";
+				}
 
 				if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
 				{
