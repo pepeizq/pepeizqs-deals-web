@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.ServiceModel.Syndication;
 using System.Text;
@@ -17,7 +18,6 @@ namespace Herramientas
 	{
 		public string dominio = "https://pepeizqdeals.com";
 
-		[ResponseCache(Duration = 2000)]
 		[HttpGet("rss-en.xml")]
 		public IActionResult GenerarEnRSS()
 		{
@@ -57,12 +57,12 @@ namespace Herramientas
 						}
 
 						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
-						
-						if (noticia.Imagen != null)
+
+						if (string.IsNullOrEmpty(noticia.Imagen) == false)
 						{
-							item.ElementExtensions.Add(new XElement("image", dominio + "/imagenes/noticias/" + noticia.Id.ToString() + "/header.webp"));
+							item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
 						}
-						
+
 						items.Add(item);
 					}
 				}
@@ -93,6 +93,7 @@ namespace Herramientas
 			return null;
 		}
 
+		[ResponseCache(Duration = 1200)]
 		[HttpGet("rss-es.xml")]
 		public IActionResult GenerarEsRSS()
 		{
@@ -133,9 +134,9 @@ namespace Herramientas
 
 						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
 						
-						if (noticia.Imagen != null)
+						if (string.IsNullOrEmpty(noticia.Imagen) == false)
 						{
-							item.ElementExtensions.Add(new XElement("image", dominio + "/imagenes/noticias/" + noticia.Id.ToString() + "/header.webp"));
+							item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
 						}
 
 						items.Add(item);

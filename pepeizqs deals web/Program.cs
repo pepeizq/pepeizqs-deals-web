@@ -2,10 +2,8 @@ using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Owl.reCAPTCHA;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
@@ -115,16 +113,6 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
 		});
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
-
-#endregion
-
-#region Captcha
-
-builder.Services.AddreCAPTCHAV3(x =>
-{
-	x.SiteKey = "6Lfxf4AUAAAAAKK-pxZOeWCZOeyx9OVrEvn1Fu2-";
-	x.SiteSecret = "6Lfxf4AUAAAAACUB7u6vbTqOQVuLOAIV4f1xKIdq";
-});
 
 #endregion
 
@@ -242,7 +230,7 @@ app.MapControllers();
 
 app.MapHealthChecks("/vida");
 
-app.UseRouting();
+//app.UseRouting();
 
 //app.UseAuthorization();
 
@@ -253,7 +241,7 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+	//opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
 
 //app.UseSession();

@@ -32,13 +32,13 @@
 			{
 				try
 				{
-					TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(10);
+					TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(5);
 
 					if (BaseDatos.Tiendas.Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
 					{
 						BaseDatos.Tiendas.Admin.ActualizarTareaUso(conexion, "minimos", DateTime.Now);
 
-						List<Juego> juegos = BaseDatos.Juegos.Buscar.Todos(conexion, "juegos", 3, true);
+						List<Juego> juegos = BaseDatos.Portada.Buscar.Minimos(conexion);
 
 						if (juegos != null)
 						{
@@ -86,22 +86,6 @@
 
 													bool añadir = true;
 
-													if (string.IsNullOrEmpty(nuevoJuego.FreeToPlay) == false)
-													{
-														if (nuevoJuego.FreeToPlay.ToLower() == "true")
-														{
-															añadir = false;
-														}
-													}
-
-													if (string.IsNullOrEmpty(nuevoJuego.MayorEdad) == false)
-													{
-														if (nuevoJuego.MayorEdad.ToLower() == "true")
-														{
-															añadir = false;
-														}
-													}
-
 													if (nuevoJuego.Gratis != null)
 													{
 														if (nuevoJuego.Gratis.Count > 0)
@@ -145,7 +129,7 @@
 												Juego juegoMinimoFinal = minimo.Juego;
 												juegoMinimoFinal.PrecioMinimosHistoricos = [minimo.Historico];
 
-												BaseDatos.Juegos.Insertar.Ejecutar(juegoMinimoFinal, conexion, "seccionMinimos");
+												BaseDatos.Juegos.Insertar.Ejecutar(juegoMinimoFinal, conexion, "seccionMinimos", true);
 											}
 											catch (Exception ex)
 											{
@@ -165,5 +149,4 @@
 			}
 		}
     }
-
 }

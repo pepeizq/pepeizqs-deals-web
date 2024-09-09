@@ -1,4 +1,5 @@
 ﻿@using Juegos
+@using Microsoft.VisualBasic
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 <style>
@@ -25,6 +26,7 @@
 	string descuento = string.Empty;
 	string precio = string.Empty;
 	string enlace = string.Empty;
+	string enlaceNuevaPestaña = string.Empty;
 	string iconoTienda = string.Empty;
 
 	JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
@@ -57,10 +59,12 @@
 		if (tipo == Tipo.Portada)
 		{
 			enlace = "/game/" + juego.Id + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+			enlaceNuevaPestaña = "_self";
 		}
 		else
 		{
 			enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
+			enlaceNuevaPestaña = "_blank";
 		}	
 
 		//--------------------------------------------------------
@@ -175,7 +179,7 @@
 			</div>
 		</div>
 
-		<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="_blank">
+		<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
 			<div class="perfil-flexible-centrado">
 				<div style="max-width: 230px;">
 					<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />

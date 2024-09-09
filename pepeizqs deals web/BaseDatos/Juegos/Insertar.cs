@@ -8,7 +8,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(Juego juego, SqlConnection conexion = null, string tabla = "juegos")
+		public static void Ejecutar(Juego juego, SqlConnection conexion = null, string tabla = "juegos", bool noExiste = false)
 		{
             if (conexion == null)
             {
@@ -82,7 +82,7 @@ namespace BaseDatos.Juegos
 			string añadirIdMaestra1 = null;
 			string añadirIdMaestra2 = null;
 
-			if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados")
+			if (tabla == "seccionMinimos")
 			{
 				añadirIdMaestra1 = ", idMaestra";
 				añadirIdMaestra2 = ", @idMaestra";
@@ -91,6 +91,11 @@ namespace BaseDatos.Juegos
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
 					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirIdMaestra1 + ") VALUES " +
 					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirIdMaestra2 + ") ";
+
+			if (noExiste == true)
+			{
+				sqlAñadir = "IF NOT EXISTS (SELECT 1 FROM " + tabla + " WHERE JSON_VALUE(precioMinimosHistoricos, '$[0].Enlace') = '" + juego.PrecioMinimosHistoricos[0].Enlace + "' AND idMaestra=" + juego.IdMaestra + ") BEGIN " + sqlAñadir + " END"; 
+			}
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 			{
@@ -126,35 +131,35 @@ namespace BaseDatos.Juegos
 
 				if (string.IsNullOrEmpty(juego.Maestro) == false)
 				{
-                    if (juego.Maestro.Length > 1)
+					if (juego.Maestro.Length > 1)
 					{
-                        comando.Parameters.AddWithValue("@maestro", juego.Maestro);
-                    }                       
+						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
+					}
 				}
-				
+
 				if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
 				{
 					comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 				}
-				
+
 				if (string.IsNullOrEmpty(juego.MayorEdad) == false)
 				{
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
 				}
 
-				if (tabla == "seccionMinimos" || tabla == "portadaJuegosDestacados")
+				if (tabla == "seccionMinimos")
 				{
 					comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				}
-				
+
 				try
 				{
 					comando.ExecuteNonQuery();
 				}
-				catch (Exception ex) 
+				catch (Exception ex)
 				{
 					Errores.Insertar.Ejecutar("Añadir juego " + juego.Nombre, ex);
-				}
+				}				
 			}
 		}
 	}

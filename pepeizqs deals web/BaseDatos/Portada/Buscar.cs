@@ -8,6 +8,48 @@ namespace BaseDatos.Portada
 {
 	public static class Buscar
 	{
+		public static List<Juego> Minimos(SqlConnection conexion = null)
+		{
+			List<Juego> resultados = new List<Juego>();
+
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string busqueda = @"SELECT * FROM juegos
+									WHERE ultimaModificacion >= DATEADD(day, -3, GETDATE()) AND JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND 
+									CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
+									((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND 
+									(freeToPlay = 'false' OR freeToPlay IS NULL)";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							Juego juego = new Juego();
+							juego = BaseDatos.Juegos.Buscar.Cargar(juego, lector);
+
+							resultados.Add(juego);
+						}
+					}
+				}
+			}
+			
+			return resultados;
+		}
+
 		public static List<Juego> Destacados(List<string> idsSteam = null, SqlConnection conexion = null)
 		{
 			List<Juego> resultados = new List<Juego>();

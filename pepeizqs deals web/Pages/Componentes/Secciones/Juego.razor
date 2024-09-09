@@ -80,29 +80,47 @@
 					<h1 style="font-size: 20px;">@juego.Nombre</h1>
 
 					<div style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
-						<div style="display: flex; align-items: center; gap: 10px;">
-							@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+						@{
+							bool mostrarDRMs = false;
+
+							foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
 							{
-								@if (drm != JuegoDRM.NoEspecificado)
+								if (VerificarMostrarDRM(idioma, drm, juego) == true && drm != JuegoDRM.NoEspecificado)
 								{
-									@if (VerificarMostrarDRM(idioma, drm, juego) == true)
-									{
-										@if (drm == JuegoDRM.DRMFree)
-										{
-											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
-										}
-										else
-										{
-											<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px;">
-												<div style="display: flex; align-items: center;">
-													<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" alt="DRM"/>
-												</div>
-											</button>
-										}
-									}
+									mostrarDRMs = true;
+									break;
 								}
 							}
-						</div>
+
+							if (mostrarDRMs == true)
+							{
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+									{
+										if (drm != JuegoDRM.NoEspecificado)
+										{
+											if (VerificarMostrarDRM(idioma, drm, juego) == true)
+											{
+												if (drm == JuegoDRM.DRMFree)
+												{
+													<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
+												}
+												else
+												{
+													<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px;">
+														<div style="display: flex; align-items: center;">
+															<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" alt="DRM"/>
+														</div>
+													</button>
+												}
+											}
+										}
+									}
+								</div>
+							}
+						}
+
+						
 						
 						@if (juego.Bundles != null)
 						{

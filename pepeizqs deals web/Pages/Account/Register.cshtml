@@ -52,24 +52,12 @@
                 @Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Register")
             </button>
 
-            @addTagHelper *, Owl.reCAPTCHA
-
             <div style="display: none;">
                 <form method="POST">
                     <input id="token" name="token" type="text" />
                     <input id="submit" type="submit" value="submit" />
                 </form>
             </div>
-
-            <recaptcha-script-v3 />
-
-            <script>
-                function callback(token) {
-                    document.getElementById("token").value = token;
-                }
-            </script>
-
-            <recaptcha-script-v3-js action="login" callback="callback" />
         </form>
 
         @if (Model.errorMensaje.Length > 0)
