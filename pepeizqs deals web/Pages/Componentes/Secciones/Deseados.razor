@@ -135,7 +135,7 @@
 
 				@if (deseadosMostrar.Count > 0)
 				{
-					<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="@alturaFila" OverscanCount="6">
+					<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="@alturaFila">
 						<ItemContent>
 							<div style="margin: 20px 0px;">
 								<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">

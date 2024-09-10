@@ -424,13 +424,23 @@ namespace BaseDatos.Juegos
 			return juegos;
 		}
 
-		public static List<Juego> Nombre(string nombre, int cantidad = 30)
+		public static List<Juego> Nombre(string nombre, int cantidad = 30, SqlConnection conexion = null)
         {
             List<Juego> juegos = new List<Juego>();
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
 
-			using (conexion)
+            using (conexion)
 			{
 				juegos = Nombre(nombre, conexion, cantidad);
             }		
@@ -445,17 +455,21 @@ namespace BaseDatos.Juegos
             return null;
         }
 
-        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30, bool todo = true)
+        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30, bool todo = true, int tipo = -1)
 		{
-			if (conexion != null)
-			{
-				if (conexion.State != System.Data.ConnectionState.Open)
-				{
-					conexion = Herramientas.BaseDatos.Conectar();
-				}
-			}
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
 
-			List<Juego> juegos = new List<Juego>();
+            List<Juego> juegos = new List<Juego>();
 
 			string busqueda = string.Empty;
 			string busquedaTodo = "*";
@@ -517,7 +531,12 @@ namespace BaseDatos.Juegos
 				busqueda = "SELECT TOP " + cantidad + " " + busquedaTodo + " FROM juegos WHERE nombreCodigo LIKE '%" + Herramientas.Buscador.LimpiarNombre(nombre) + "%'";
 			}
 
-			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			if (tipo > -1)
+			{
+				busqueda = busqueda + " AND tipo = " + tipo.ToString();
+			}
+    
+            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
 				using (SqlDataReader lector = comando.ExecuteReader())
 				{
@@ -767,13 +786,20 @@ namespace BaseDatos.Juegos
 			return dlcs.OrderBy(x => x.Nombre).ToList();
 		}
 
-        public static List<Juego> Genero(List<string> generos, int cantidad, SqlConnection conexion = null)
+        public static List<Juego> Filtro(List<string> generos, int cantidad, SqlConnection conexion = null)
         {
             List<Juego> resultados = new List<Juego>();
 
             if (conexion == null)
             {
                 conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
             }
 
             using (conexion)

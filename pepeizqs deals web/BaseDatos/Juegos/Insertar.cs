@@ -94,7 +94,7 @@ namespace BaseDatos.Juegos
 
 			if (noExiste == true)
 			{
-				sqlAñadir = "IF NOT EXISTS (SELECT 1 FROM " + tabla + " WHERE JSON_VALUE(precioMinimosHistoricos, '$[0].Enlace') = '" + juego.PrecioMinimosHistoricos[0].Enlace + "' AND idMaestra=" + juego.IdMaestra + ") BEGIN " + sqlAñadir + " END"; 
+				sqlAñadir = "IF EXISTS (SELECT 1 FROM " + tabla + " WHERE JSON_VALUE(precioMinimosHistoricos, '$[0].Enlace') != '" + juego.PrecioMinimosHistoricos[0].Enlace + "' AND idMaestra=" + juego.IdMaestra + ") BEGIN DELETE FROM seccionMinimos WHERE idMaestra=" + juego.IdMaestra + " END IF NOT EXISTS (SELECT 1 FROM " + tabla + " WHERE JSON_VALUE(precioMinimosHistoricos, '$[0].Enlace') = '" + juego.PrecioMinimosHistoricos[0].Enlace + "' AND idMaestra=" + juego.IdMaestra + ") BEGIN " + sqlAñadir + " END"; 
 			}
 
 			using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))

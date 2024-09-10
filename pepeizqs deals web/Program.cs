@@ -240,7 +240,7 @@ app.MapRazorPages();
 
 app.MapBlazorHub(opciones =>
 {
-	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+	//opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	//opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
 

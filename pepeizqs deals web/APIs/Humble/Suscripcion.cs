@@ -45,7 +45,7 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?partner=pepeizq&refc=gXsa9X&irgwc=1&irpid=1382810";
+			return enlace + "?partner=pepeizq&sharedid=&irpid=1382810&utm_source=impact&utm_medium=paid&utm_campaign=pepeizq&utm_content=1382810&utm_term=Online Tracking Link&irgwc=1";
 		}
 
 		public static Suscripciones2.Suscripcion GenerarAntiguo()
