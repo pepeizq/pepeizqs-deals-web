@@ -109,7 +109,53 @@ namespace BaseDatos.Bundles
 			}
 		}
 
-		public static void Juegos(string id, string juegos, SqlConnection conexion)
+        public static void ImagenBundle(string id, string imagen, SqlConnection conexion)
+        {
+            string sqlActualizar = "UPDATE bundles " +
+                    "SET imagen=@imagen " +
+                    "WHERE id=@id";
+
+            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", id);
+                comando.Parameters.AddWithValue("@imagen", imagen);
+
+                comando.ExecuteNonQuery();
+                try
+                {
+
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        public static void ImagenNoticia(string id, string imagen, SqlConnection conexion)
+        {
+            string sqlActualizar = "UPDATE bundles " +
+                    "SET imagenNoticia=@imagenNoticia " +
+                    "WHERE id=@id";
+
+            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            {
+                comando.Parameters.AddWithValue("@id", id);
+                comando.Parameters.AddWithValue("@imagenNoticia", imagen);
+
+                comando.ExecuteNonQuery();
+                try
+                {
+
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        public static void Juegos(string id, string juegos, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE bundles " +
 					"SET juegos=@juegos " +

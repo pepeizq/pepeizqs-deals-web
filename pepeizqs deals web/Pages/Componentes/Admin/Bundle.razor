@@ -21,6 +21,28 @@
 			</div>
 		</div>
 
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Imagen Bundle
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaImagenBundle(e))" class="entrada-texto" rows="1">@textoImagenBundle</textarea>
+				<img src="@textoImagenBundle" style="max-width: 250px; max-height: 250px; margin-top: 5px;"/>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Imagen Noticia
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaImagenNoticia(e))" class="entrada-texto" rows="1">@textoImagenNoticia</textarea>
+				<img src="@textoImagenNoticia" style="max-width: 250px; max-height: 250px; margin-top: 5px;" />
+			</div>
+		</div>
+
 		<div style="display: flex; align-items: center; margin-bottom: 20px;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Fecha Empieza
@@ -41,8 +63,8 @@
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: center;">
-			<div style="width: 15%; padding-right: 20px; text-align: right;">
+		<div style="display: flex; align-items: start;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
 				Juegos
 			</div>
 
@@ -76,6 +98,8 @@
 		if (bundle != null)
 		{
 			textoNombre = bundle.NombreBundle;
+			textoImagenBundle = bundle.ImagenBundle;
+			textoImagenNoticia = bundle.ImagenNoticia;
 			textoFechaEmpieza = bundle.FechaEmpieza.ToString();
 			textoFechaTermina = bundle.FechaTermina.ToString();
 			textoJuegos = JsonConvert.SerializeObject(bundle.Juegos);
@@ -95,6 +119,40 @@
 			using (conexion)
 			{
 				BaseDatos.Bundles.Actualizar.Nombre(bundleId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoImagenBundle = string.Empty;
+
+	private void TextoCambiaImagenBundle(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Bundles.Actualizar.ImagenBundle(bundleId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoImagenNoticia = string.Empty;
+
+	private void TextoCambiaImagenNoticia(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Bundles.Actualizar.ImagenNoticia(bundleId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

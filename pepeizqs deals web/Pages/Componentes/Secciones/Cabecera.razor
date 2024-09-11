@@ -170,11 +170,11 @@
     }
     else
     {
-        <button class="texto-cabecera boton-superior" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px;">
+        <button class="texto-cabecera boton-superior" @onclick="@(e => MostrarBuscador(e))" style="cursor: pointer; border: 0px; background-color: transparent;">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
+        <input type="text" @onchange="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
 
         @if (encontroAlgo == true)
         {
@@ -701,223 +701,185 @@ else
         }
     }
 
-    private bool puedeBuscar = true;
     private string cadenaBusqueda = string.Empty;
 
-    private void TextoCambiaBuscador(ChangeEventArgs texto)
+    private CancellationTokenSource cancelar = new CancellationTokenSource();
+
+    private async Task TextoCambiaBuscador(ChangeEventArgs e)
     {
-        if (texto.Value.ToString().Trim().Length > 1 && cadenaBusqueda != texto.Value.ToString().Trim())
+        cadenaBusqueda = e.Value.ToString();
+
+        cancelar.Cancel();
+        cancelar = new CancellationTokenSource();
+        await Task.Delay(50, cancelar.Token).ContinueWith(TareaBuscador, cancelar.Token);
+    }
+
+    private void TareaBuscador(Task e)
+    {
+        if (cadenaBusqueda.Trim().Length > 3)
         {
-            if (puedeBuscar == true)
+            if (conexion == null)
             {
-                puedeBuscar = false;
-                cadenaBusqueda = texto.Value.ToString().Trim();
-
-                Task tarea = Task.Factory.StartNew(() =>
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
                 {
-                    if (conexion == null)
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            using (conexion)
+            {
+                pestañaSeleccionada = -1;
+
+                List<Juegos.Juego> resultadosGestor = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 20, false);
+
+                resultadosJuegos.Clear();
+                resultadosDLCs.Clear();
+                resultadosBandasSonoras.Clear();
+                resultadosSoftware.Clear();
+
+                resultadosBundles.Clear();
+                resultadosGratis.Clear();
+                resultadosSuscripciones.Clear();
+
+                if (resultadosGestor != null)
+                {
+                    if (resultadosGestor.Count > 0)
                     {
-                        conexion = Herramientas.BaseDatos.Conectar();
-                    }
-                    else
-                    {
-                        if (conexion.State != System.Data.ConnectionState.Open)
+                        foreach (var resultado in resultadosGestor)
                         {
-                            conexion = Herramientas.BaseDatos.Conectar();
+                            if (resultado.Tipo == Juegos.JuegoTipo.Game)
+                            {
+                                resultadosJuegos.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.DLC)
+                            {
+                                resultadosDLCs.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.Music)
+                            {
+                                resultadosBandasSonoras.Add(resultado);
+                            }
+                            else if (resultado.Tipo == Juegos.JuegoTipo.Software)
+                            {
+                                resultadosSoftware.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
+                            {
+                                resultadosBundles.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
+                            {
+                                resultadosGratis.Add(resultado);
+                            }
+
+                            if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
+                            {
+                                resultadosSuscripciones.Add(resultado);
+                            }
                         }
                     }
+                }
 
-                    using (conexion)
+                resultadosPublishers.Clear();
+                resultadosPublishers = BaseDatos.Publishers.Buscar.NombreContiene(cadenaBusqueda, 5);
+
+                if (resultadosJuegos != null)
+                {
+                    if (resultadosJuegos.Count > 0)
                     {
-                        pestañaSeleccionada = -1;
+                        encontroAlgo = true;
 
-                        resultadosBundles.Clear();
-                        resultadosGratis.Clear();
-                        resultadosSuscripciones.Clear();
-
-                        resultadosJuegos.Clear();
-                        resultadosJuegos = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 100, false, (int)Juegos.JuegoTipo.Game);
-
-                        resultadosDLCs.Clear();
-                        resultadosDLCs = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, (int)Juegos.JuegoTipo.DLC);
-
-                        resultadosBandasSonoras.Clear();
-                        resultadosBandasSonoras = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, (int)Juegos.JuegoTipo.Music);
-
-                        resultadosSoftware.Clear();
-                        resultadosSoftware = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, (int)Juegos.JuegoTipo.Software);
-
-                        resultadosPublishers.Clear();
-                        resultadosPublishers = BaseDatos.Publishers.Buscar.NombreContiene(cadenaBusqueda, 50);
-                    }
-
-                    if (resultadosJuegos != null)
-                    {
-                        if (resultadosJuegos.Count > 0)
-                        {
-                            encontroAlgo = true;
-
-                            foreach (var resultado in resultadosJuegos)
-                            {
-                                if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
-                                {
-                                    resultadosBundles.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
-                                {
-                                    resultadosGratis.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
-                                {
-                                    resultadosSuscripciones.Add(resultado);
-                                }
-                            }
-
-                            if (pestañaSeleccionada == -1)
-                            {
-                                pestañaSeleccionada = 0;
-                            }
-
-                            resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
-                        }
-                    }
-
-                    if (resultadosDLCs != null)
-                    {
-                        if (resultadosDLCs.Count > 0)
-                        {
-                            encontroAlgo = true;
-
-                            foreach (var resultado in resultadosDLCs)
-                            {
-                                if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
-                                {
-                                    resultadosBundles.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
-                                {
-                                    resultadosGratis.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
-                                {
-                                    resultadosSuscripciones.Add(resultado);
-                                }
-                            }
-
-                            if (pestañaSeleccionada == -1)
-                            {
-                                pestañaSeleccionada = 1;
-                            }
-
-                            resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
-                        }
-                    }
-
-                    if (resultadosBandasSonoras != null)
-                    {
-                        if (resultadosBandasSonoras.Count > 0)
-                        {
-                            encontroAlgo = true;
-
-                            foreach (var resultado in resultadosBandasSonoras)
-                            {
-                                if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
-                                {
-                                    resultadosBundles.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
-                                {
-                                    resultadosGratis.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
-                                {
-                                    resultadosSuscripciones.Add(resultado);
-                                }
-                            }
-
-                            if (pestañaSeleccionada == -1)
-                            {
-                                pestañaSeleccionada = 2;
-                            }
-
-                            resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
-                        }
-                    }
-
-                    if (resultadosSoftware != null)
-                    {
-                        if (resultadosSoftware.Count > 0)
-                        {
-                            encontroAlgo = true;
-
-                            foreach (var resultado in resultadosSoftware)
-                            {
-                                if (Herramientas.Buscador.ComprobarBundles(resultado) == true)
-                                {
-                                    resultadosBundles.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarGratis(resultado) == true)
-                                {
-                                    resultadosGratis.Add(resultado);
-                                }
-
-                                if (Herramientas.Buscador.ComprobarSuscripcion(resultado) == true)
-                                {
-                                    resultadosSuscripciones.Add(resultado);
-                                }
-                            }
-
-                            if (pestañaSeleccionada == -1)
-                            {
-                                pestañaSeleccionada = 3;
-                            }
-
-                            resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                            ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                        }
-                    }
-
-                    if (resultadosBundles.Count > 0)
-                    {
-                        resultadosBundles = resultadosBundles.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosGratis.Count > 0)
-                    {
-                        resultadosGratis = resultadosGratis.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosSuscripciones.Count > 0)
-                    {
-                        resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                    }
-
-                    if (resultadosPublishers.Count > 0)
-                    {
                         if (pestañaSeleccionada == -1)
                         {
-                            pestañaSeleccionada = 7;
+                            pestañaSeleccionada = 0;
                         }
 
-                        resultadosPublishers = resultadosPublishers.OrderBy(x => x.Nombre).ToList();
+                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
                     }
-                });
+                }
 
-                tarea.Wait();
-                puedeBuscar = tarea.IsCompleted;
+                if (resultadosDLCs != null)
+                {
+                    if (resultadosDLCs.Count > 0)
+                    {
+                        encontroAlgo = true;
+
+                        if (pestañaSeleccionada == -1)
+                        {
+                            pestañaSeleccionada = 1;
+                        }
+
+                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
+                    }
+                }
+
+                if (resultadosBandasSonoras != null)
+                {
+                    if (resultadosBandasSonoras.Count > 0)
+                    {
+                        encontroAlgo = true;
+
+                        if (pestañaSeleccionada == -1)
+                        {
+                            pestañaSeleccionada = 2;
+                        }
+
+                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
+                    }
+                }
+
+                if (resultadosSoftware != null)
+                {
+                    if (resultadosSoftware.Count > 0)
+                    {
+                        encontroAlgo = true;
+
+                        if (pestañaSeleccionada == -1)
+                        {
+                            pestañaSeleccionada = 3;
+                        }
+
+                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                    }
+                }
+
+                if (resultadosBundles.Count > 0)
+                {
+                    resultadosBundles = resultadosBundles.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                }
+
+                if (resultadosGratis.Count > 0)
+                {
+                    resultadosGratis = resultadosGratis.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                }
+
+                if (resultadosSuscripciones.Count > 0)
+                {
+                    resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+                }
+
+                if (resultadosPublishers.Count > 0)
+                {
+                    if (pestañaSeleccionada == -1)
+                    {
+                        pestañaSeleccionada = 7;
+                    }
+
+                    resultadosPublishers = resultadosPublishers.OrderBy(x => x.Nombre).ToList();
+                }
             }
         }        
         else
@@ -926,12 +888,12 @@ else
         }
     }
 
-    private void Buscar(string cadena)
+    public void Dispose()
     {
-
+        cancelar.Dispose();
     }
 
-    int pestañaSeleccionada = 0;
+    private int pestañaSeleccionada = 0;
 
     private void CambiarPestaña(MouseEventArgs e, int pestaña)
     {

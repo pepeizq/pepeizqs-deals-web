@@ -2,32 +2,9 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using System.Net
 
-<style>
-	.cargando {
-		width: 48px;
-		height: 48px;
-		border: 5px solid var(--colorTexto);
-		border-bottom-color: transparent;
-		border-radius: 50%;
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
-	}
-
-	@@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
-		}
-
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-</style>
-
 @if (cargado == false)
 {
-	<div style="text-align: center; width: 100%;">
+	<div style="text-align: center; width: 100%; padding: 40px;">
 		<div class="cargando" />
 	</div>	
 }
