@@ -10,10 +10,7 @@ namespace pepeizqs_deals_web.Pages
         public string idioma = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string tipo { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string id { get; set; }
+        public string ids { get; set; }
 
         public void OnGet()
         {

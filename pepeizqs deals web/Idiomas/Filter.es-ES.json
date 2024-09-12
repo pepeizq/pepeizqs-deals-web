@@ -1,0 +1,14 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Filtro"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Géneros"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Categorias"
+  }
+]

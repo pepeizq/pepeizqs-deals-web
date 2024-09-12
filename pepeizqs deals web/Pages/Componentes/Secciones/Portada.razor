@@ -624,7 +624,7 @@ else
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
-					<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.Portada"/>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.Portada" />
 				</ItemContent>
 			</Virtualize>
 		</div>
@@ -893,7 +893,7 @@ else
 
 				try
 				{
-					noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas("30", conexion);
+					noticiasGestor = BaseDatos.Noticias.Buscar.Ultimas("10", conexion);
 				}
 				catch (Exception ex)
 				{
@@ -1065,7 +1065,7 @@ else
 				}
 			}
 
-			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(200, categoriasNumeros, drmsNumeros, conexion);
+			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(250, categoriasNumeros, drmsNumeros, conexion);
 		}
 		catch (Exception ex)
 		{

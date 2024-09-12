@@ -153,13 +153,13 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 	opciones.SlidingExpiration = true;
 });
 
-builder.Services.AddMemoryCache();
-builder.Services.AddSession(opciones =>
-{
-	opciones.IdleTimeout = TimeSpan.FromSeconds(10);
-	opciones.Cookie.HttpOnly = true;
-	opciones.Cookie.IsEssential = true;
-});
+//builder.Services.AddMemoryCache();
+//builder.Services.AddSession(opciones =>
+//{
+//	opciones.IdleTimeout = TimeSpan.FromSeconds(10);
+//	opciones.Cookie.HttpOnly = true;
+//	opciones.Cookie.IsEssential = true;
+//});
 
 //builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 //{

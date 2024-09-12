@@ -108,6 +108,10 @@
     "Valor": "Shared/Split Screen Co-op"
   },
   {
+    "Id": "40",
+    "Valor": "SteamVR Collectibles"
+  },
+  {
     "Id": "41",
     "Valor": "Remote Play on Phone"
   },

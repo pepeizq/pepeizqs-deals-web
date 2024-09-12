@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="BaseDatos\Noticias\Insertar.cs~RF3b968c9c.TMP" />
     <None Remove="BaseDatos\Recompensas\Historial.cs~RF2c9f9c36.TMP" />
+    <None Remove="Pages\Componentes\Secciones\Portada.razor~RF1cd04c56.TMP" />
   </ItemGroup>
 
   <ItemGroup>

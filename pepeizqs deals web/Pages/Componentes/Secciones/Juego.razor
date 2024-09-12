@@ -37,20 +37,6 @@
 </script>
 
 <style>
-	.drm-icono {
-		visibility: visible;
-		padding: 40px;
-		width: 10%;
-	}
-
-	@@media(max-width: 1000px) {
-		.drm-icono {
-			visibility: hidden;
-			padding: 0px;
-			width: 0%;
-		}
-	}
-
 	.descripcion-datos {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
@@ -341,7 +327,7 @@
 										mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
 									}
 
-									<div class="perfil" style="padding: 20px 30px; background-color: var(--fondoBien);">
+									<div class="perfil" style="padding: 20px 25px; background-color: var(--fondoBien);">
 										<div class="perfil-flexible-centrado">
 											<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
@@ -381,7 +367,7 @@
 								
 									if (string.IsNullOrEmpty(mensaje) == false)
 									{
-										<div class="perfil" style="padding: 20px 30px; background-color: var(--fondoAlerta);">
+										<div class="perfil" style="padding: 20px 25px; background-color: var(--fondoAlerta);">
 											<div class="perfil-flexible-centrado">
 												<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
@@ -415,13 +401,13 @@
 						}
 
 						<div class="juego-drm-centrado" style="margin-bottom: 50px;">
-							<div class="perfil" style="width: 100%; gap: 10px; padding: 20px;">
+							<div class="perfil" style="width: 100%; padding: 0px;">
 								@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm) != null || GratisComprobar(juego.Gratis, drm) != null || SuscripcionesComprobar(juego.Suscripciones, drm) != null)
 								{
-									<div style="text-align: left; margin-bottom: 10px; background-color: var(--fondoMinimo); padding: 15px 20px; display: flex; align-items: center; gap: 30px;">
+									<div style="text-align: left; background-color: var(--fondoMinimo); padding: 20px; display: flex; align-items: center; gap: 30px;">
 										@if (drm == JuegoDRM.DRMFree)
 										{
-											<div style="font-weight: bold; font-size: 18px;">DRM Free</div>
+											<div style="font-weight: bold; font-size: 18px; max-width: 45px; text-align: center;">DRM Free</div>
 										}
 										else
 										{
@@ -434,9 +420,9 @@
 											@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
 											{
 												<div>
-													<div>@Idiomas.CogerCadena(idioma, "String10", "Game") @JuegoDRM2.DevolverDRM(drm)</div>
+													<div>@Idiomas.CogerCadena(idioma, "String10", "Game") @JuegoDRM2.DevolverDRM(drm):</div>
 
-													<div style="margin-top: 10px;">
+													<div style="margin-top: 5px;">
 														<label>@PrepararPrecio(juego.PrecioMinimosHistoricos, drm, true)</label>
 														<label style="font-size: 14px;">@CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas)</label>
 													</div>
@@ -473,122 +459,124 @@
 								}
 
 								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm).Count > 0)
-								{
+								{									
 									List<JuegoPrecio> preciosBajos = new List<JuegoPrecio>();
 									int descuentoMaximo = 0;
 
-									foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
-									{
-										if (precio.Descuento > descuentoMaximo)
+									<div style="display: flex; flex-direction: column; gap: 10px; padding: 20px;">
+										@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
 										{
-											descuentoMaximo = precio.Descuento;
-										}
-
-										if (precio.Descuento > descuentoMaximo - (descuentoMaximo / 2))
-										{
-											<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
-												<div class="perfil-flexible-centrado">
-													<div>
-														<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store" />
-														<span style="margin-left: 20px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
-													</div>
-												
-													<div class="juego-descuento-precio">
-														<div style="font-size: 14px; margin: 20px;">
-															@Calculadora.DiferenciaTiempo(precio.FechaDetectado, idioma)
-														</div>
-
-														<div style="width: 75px; text-align: center;" class="juego-descuento">
-															@precio.Descuento.ToString()%
-														</div>
-
-														<div class="juego-precio" style="text-align: center;">
-															@PrepararPrecio(precio, false)
-
-															@if (precio.Moneda != JuegoMoneda.Euro)
-															{
-																<br />
-
-																<label style="font-size: 13px;">@Divisas.DevolverSimbolo(precio.Precio, precio.Moneda)</label>
-															}
-														</div>
-													</div>
-												</div>
-											</a>
-										}
-										else
-										{
-											preciosBajos.Add(precio);
-										}
-									}
-
-									if (preciosBajos.Count > 0)
-									{
-										<button class="juego-boton-pequeño" @onclick="(e => DescuentosBajosMostrar(e))">
-											<div style="display: flex; align-items: center; padding: 5px;">
-												@if (mostrarDescuentosBajos == true)
-												{
-													<i class="fa-solid fa-angles-up"></i>
-
-													<div style="width: 100%; text-align: center; font-size: 14px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "String43", "Game")
-													</div>
-
-													<i class="fa-solid fa-angles-up"></i>
-												}
-												else
-												{
-													<i class="fa-solid fa-angles-down"></i>
-
-													<div style="width: 100%; text-align: center; font-size: 14px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "String42", "Game")
-													</div>
-
-													<i class="fa-solid fa-angles-down"></i>
-												}
-											</div>
-										</button>
-
-										if (mostrarDescuentosBajos == true)
-										{
-											foreach (var precioBajo in preciosBajos)
+											if (precio.Descuento > descuentoMaximo)
 											{
-												<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(precioBajo.Enlace, precioBajo.Tienda)" target="_blank">
+												descuentoMaximo = precio.Descuento;
+											}
+
+											if (precio.Descuento > descuentoMaximo - (descuentoMaximo / 2))
+											{
+												<a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
 													<div class="perfil-flexible-centrado">
 														<div>
-															<img src="@SacarImagenTienda(precioBajo.Tienda)" class="juego-imagen-boton" alt="Store" />
-															<span style="margin-left: 20px;">@ComprobarEdicion(juego.Nombre, precioBajo.Nombre)</span>
+															<img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="Store" />
+															<span style="margin-left: 20px;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
 														</div>
 
 														<div class="juego-descuento-precio">
 															<div style="font-size: 14px; margin: 20px;">
-																@Calculadora.DiferenciaTiempo(precioBajo.FechaDetectado, idioma)
+																@Calculadora.DiferenciaTiempo(precio.FechaDetectado, idioma)
 															</div>
 
 															<div style="width: 75px; text-align: center;" class="juego-descuento">
-																@precioBajo.Descuento.ToString()%
+																@precio.Descuento.ToString()%
 															</div>
 
 															<div class="juego-precio" style="text-align: center;">
-																@PrepararPrecio(precioBajo, false)
+																@PrepararPrecio(precio, false)
 
-																@if (precioBajo.Moneda != JuegoMoneda.Euro)
+																@if (precio.Moneda != JuegoMoneda.Euro)
 																{
 																	<br />
 
-																	<label style="font-size: 13px;">@Divisas.DevolverSimbolo(precioBajo.Precio, precioBajo.Moneda)</label>
+																	<label style="font-size: 13px;">@Divisas.DevolverSimbolo(precio.Precio, precio.Moneda)</label>
 																}
 															</div>
 														</div>
 													</div>
 												</a>
 											}
+											else
+											{
+												preciosBajos.Add(precio);
+											}
 										}
-									}
+
+										@if (preciosBajos.Count > 0)
+										{
+											<button class="juego-boton-pequeño" style="display: block;" @onclick="(e => DescuentosBajosMostrar(e))">
+												<div style="display: flex; align-items: center; padding: 5px;">
+													@if (mostrarDescuentosBajos == true)
+													{
+														<i class="fa-solid fa-angles-up"></i>
+
+														<div style="width: 100%; text-align: center; font-size: 14px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "String43", "Game")
+														</div>
+
+														<i class="fa-solid fa-angles-up"></i>
+													}
+													else
+													{
+														<i class="fa-solid fa-angles-down"></i>
+
+														<div style="width: 100%; text-align: center; font-size: 14px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "String42", "Game")
+														</div>
+
+														<i class="fa-solid fa-angles-down"></i>
+													}
+												</div>
+											</button>
+
+											if (mostrarDescuentosBajos == true)
+											{
+												foreach (var precioBajo in preciosBajos)
+												{
+													<a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precioBajo.Enlace, precioBajo.Tienda)" target="_blank">
+														<div class="perfil-flexible-centrado">
+															<div>
+																<img src="@SacarImagenTienda(precioBajo.Tienda)" class="juego-imagen-boton" alt="Store" />
+																<span style="margin-left: 20px;">@ComprobarEdicion(juego.Nombre, precioBajo.Nombre)</span>
+															</div>
+
+															<div class="juego-descuento-precio">
+																<div style="font-size: 14px; margin: 20px;">
+																	@Calculadora.DiferenciaTiempo(precioBajo.FechaDetectado, idioma)
+																</div>
+
+																<div style="width: 75px; text-align: center;" class="juego-descuento">
+																	@precioBajo.Descuento.ToString()%
+																</div>
+
+																<div class="juego-precio" style="text-align: center;">
+																	@PrepararPrecio(precioBajo, false)
+
+																	@if (precioBajo.Moneda != JuegoMoneda.Euro)
+																	{
+																		<br />
+
+																		<label style="font-size: 13px;">@Divisas.DevolverSimbolo(precioBajo.Precio, precioBajo.Moneda)</label>
+																	}
+																</div>
+															</div>
+														</div>
+													</a>
+												}
+											}
+										}
+									</div>
 								}
 								else
 								{
-									<div style="padding: 5px 20px;">@Idiomas.CogerCadena(idioma, "String12", "Game")</div>
+									<div style="padding: 20px;">@Idiomas.CogerCadena(idioma, "String12", "Game")</div>
 								}
 							</div>
 						</div>
@@ -1103,7 +1091,8 @@
 
 												if (string.IsNullOrEmpty(cadenaGenero) == false)
 												{
-													<a href="/filter/genre/@genero/">@cadenaGenero</a>
+													string idGenero = "g" + genero;
+													<a href="/filter/@idGenero/">@cadenaGenero</a>
 												}
 												else
 												{
@@ -1176,6 +1165,21 @@
 		}
 	</div>
 </div>
+
+@if (bundleId > 0)
+{
+	<div class="opciones-panel">
+		<div style="margin: 10px auto; position: relative;">
+			<div style="margin-bottom: 20px;">
+				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => BundleCerrar(e))">
+					<i class="fa-solid fa-arrow-left" style="font-size: 30px;"></i>
+				</button>
+			</div>
+
+			<Bundle bundleId="@bundleId" idioma="@idioma" tipo="@Bundle.Tipo.Juego" />
+		</div>		
+	</div>
+}
 
 @code {
 
@@ -1809,9 +1813,17 @@
 		}
 	}
 
-	private void BundleAbrir(MouseEventArgs e, int bundleId)
+	private int bundleId = 0;
+
+	private void BundleAbrir(MouseEventArgs e, int nuevoBundleId)
 	{
-		NavManager.NavigateTo("/bundle/" + bundleId.ToString(), true);
+		// NavManager.NavigateTo("/bundle/" + bundleId.ToString(), true);
+		bundleId = nuevoBundleId;
+	}
+
+	private void BundleCerrar(MouseEventArgs e)
+	{
+		bundleId = 0;
 	}
 
 	#endregion 

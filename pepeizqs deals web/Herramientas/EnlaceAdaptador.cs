@@ -14,7 +14,8 @@ namespace Herramientas
             s2 = s2.Replace("+", string.Empty);
 			s2 = s2.Replace("/", string.Empty);
             s2 = s2.Replace("™", string.Empty);
-            s2 = s2.Replace("&", "_");
+			s2 = s2.Replace("-", string.Empty);
+			s2 = s2.Replace("&", "_");
 			s2 = s2.Replace(Strings.ChrW(160).ToString(), "_");
 			s2 = s2.Replace(" ", "_");
 

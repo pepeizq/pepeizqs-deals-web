@@ -1,18 +1,17 @@
-﻿@page "/filter/{tipo}/{id}/"
+﻿@page "/filter/{ids}/"
 
 @model pepeizqs_deals_web.Pages.filterModel
 
 @{
-    ViewData["Title"] = "filter";
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Filter"); ;
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@if (string.IsNullOrEmpty(Model.tipo) == false && string.IsNullOrEmpty(Model.id) == false)
+@if (string.IsNullOrEmpty(Model.ids) == false)
 {
     @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
     {
         idioma = Model.idioma,
-        tipo = Model.tipo,
-        id = Model.id
+        ids = Model.ids
     }))
 }

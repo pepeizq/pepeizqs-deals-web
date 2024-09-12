@@ -2,30 +2,14 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 
+@inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
-<style>
-	.cargando {
-		width: 48px;
-		height: 48px;
-		border: 5px solid var(--colorTexto);
-		border-bottom-color: transparent;
-		border-radius: 50%;
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
+<script>
+	window.ChangeUrl = function (url) {
+		history.pushState(null, '', url);
 	}
-
-	@@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
-		}
-
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-</style>
+</script>
 
 @if (cargado == false)
 {
@@ -35,29 +19,88 @@
 }
 else
 {
+	<h1 style="font-size: 23px;">
+		@Herramientas.Idiomas.CogerCadena(idioma, "Title", "Filter")
+	</h1>
+
+	<hr>
+
 	<div style="display: flex; align-items: start; gap: 20px;">
-		<div style="width: 30%;">
+		<div style="width: 30%; display: flex; flex-direction: column; gap: 20px;">
+			@if (categorias.Count > 0)
+			{
+				<div>
+					<button @onclick="(e => AbrirCategorias(e))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div>
+							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter")
+						</div>
+					</button>
+
+					@if (enseñarCategorias == true)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var categoria in categorias)
+							{
+								string fondo = string.Empty;
+
+								foreach (var id2 in idsLista)
+								{
+									if ("c" + categoria.Id == id2)
+									{
+										fondo = "background-color: var(--fondoBotonPequeño);";
+										break;
+									}
+								}
+
+								<button @onclick="(e => CambiarCategoria(e, categoria.Id))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div>
+										@{
+											string imagen = "/imagenes/categorias/" + @categoria.Id + ".webp";
+										}
+
+										<img src="@imagen" />
+
+										@categoria.Contenido
+									</div>
+								</button>
+							}
+						</div>
+					}
+				</div>
+			}
+
 			@if (generos.Count > 0)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
-					@foreach (var genero in generos)
+				<div>
+					<button @onclick="(e => AbrirGeneros(e))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div>
+							@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter")
+						</div>
+					</button>
+
+					@if (enseñarGeneros == true)
 					{
-						string fondo = string.Empty;
-
-						foreach (var id2 in ids)
-						{
-							if (genero.Id == id2)
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var genero in generos)
 							{
-								fondo = "background-color: var(--fondoBotonPequeño);";
-								break;
-							}
-						}
+								string fondo = string.Empty;
 
-						<button @onclick="(e => CambiarGenero(e, genero.Id))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
-							<div>
-								@genero.Contenido
-							</div>
-						</button>
+								foreach (var id2 in idsLista)
+								{
+									if ("g" + genero.Id == id2)
+									{
+										fondo = "background-color: var(--fondoBotonPequeño);";
+										break;
+									}
+								}
+
+								<button @onclick="(e => CambiarGenero(e, genero.Id))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div>
+										@genero.Contenido
+									</div>
+								</button>
+							}
+						</div>
 					}
 				</div>
 			}
@@ -101,14 +144,11 @@ else
 	public string idioma { get; set; }
 
 	[Parameter]
-	public string tipo { get; set; }
-
-	[Parameter]
-	public string id { get; set; }
+	public string ids { get; set; }
 
 	private bool cargado = false;
 
-	private List<string> ids = new List<string>();
+	private List<string> idsLista = new List<string>();
 
 	private List<Juegos.Juego> resultadosGestor = new List<Juegos.Juego>();
 
@@ -125,17 +165,80 @@ else
 
 			await Task.Delay(1);
 
+			CargarCategorias();
 			CargarGeneros();
 
-			ids = Herramientas.Listados.Generar(id);
+			idsLista = Herramientas.Listados.Generar(ids);
 
-			resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(ids, 250);
+			foreach (var id in idsLista)
+			{
+				if (id.Contains("g") == true)
+				{
+					enseñarGeneros = true;
+				}
+			}
+
+			resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
 
 			cargado = true;
 		}
 	}
 
-	private List<Genero> generos = new List<Genero>();
+	private class CategoriaGenero
+	{
+		public string Id { get; set; }
+		public string Contenido { get; set; }
+	}
+
+	#region Categorias
+
+	private List<CategoriaGenero> categorias = new List<CategoriaGenero>();
+
+	private void CargarCategorias()
+	{
+		int i = 0;
+
+		while (i < 100)
+		{
+			string comprobacion = Herramientas.Idiomas.CogerCadena(idioma, i.ToString(), "Categories");
+
+			if (string.IsNullOrEmpty(comprobacion) == false)
+			{
+				CategoriaGenero nuevoGenero = new CategoriaGenero();
+				nuevoGenero.Id = i.ToString();
+				nuevoGenero.Contenido = comprobacion;
+
+				categorias.Add(nuevoGenero);
+			}
+
+			i += 1;
+		}
+	}
+
+	private bool enseñarCategorias = false;
+
+	private void AbrirCategorias(MouseEventArgs e)
+	{
+		if (enseñarCategorias == true)
+		{
+			enseñarCategorias = false;
+		}
+		else
+		{
+			enseñarCategorias = true;
+		}
+	}
+
+	private async void CambiarCategoria(MouseEventArgs e, string nuevaCategoria)
+	{
+		
+	}
+
+	#endregion
+
+	#region Generos
+
+	private List<CategoriaGenero> generos = new List<CategoriaGenero>();
 
 	private void CargarGeneros()
 	{
@@ -147,7 +250,7 @@ else
 
 			if (string.IsNullOrEmpty(comprobacion) == false)
 			{
-				Genero nuevoGenero = new Genero();
+				CategoriaGenero nuevoGenero = new CategoriaGenero();
 				nuevoGenero.Id = i.ToString();
 				nuevoGenero.Contenido = comprobacion;
 
@@ -158,48 +261,62 @@ else
 		}
 	}
 
-	private class Genero
+	private bool enseñarGeneros = false;
+
+	private void AbrirGeneros(MouseEventArgs e)
 	{
-		public string Id { get; set; }
-		public string Contenido { get; set; }
+		if (enseñarGeneros == true)
+		{
+			enseñarGeneros = false;
+		}
+		else
+		{
+			enseñarGeneros = true;
+		}
 	}
 
-	private void CambiarGenero(MouseEventArgs e, string nuevoGenero)
+	private async void CambiarGenero(MouseEventArgs e, string nuevoGenero)
 	{
-		string nuevosGeneros = null;
+		nuevoGenero = "g" + nuevoGenero;
 
 		bool encontrado = false;
 
-		foreach (var id in ids)
+		int i = 0;
+		foreach (var id in idsLista)
 		{
-			if (id != nuevoGenero)
-			{
-				if (string.IsNullOrEmpty(nuevosGeneros) == true)
-				{
-					nuevosGeneros = id;
-				}
-				else
-				{
-					nuevosGeneros = nuevosGeneros + "," + id;
-				}
-			}
-			else
+			if (id == nuevoGenero)
 			{
 				encontrado = true;
+				break;
 			}
+
+			i += 1;
 		}
 
 		if (encontrado == false)
 		{
-			nuevosGeneros = nuevosGeneros + "," + nuevoGenero;
+			idsLista.Add(nuevoGenero);
 		}
-
-		if (string.IsNullOrEmpty(nuevosGeneros) == true)
+		else
 		{
-			nuevosGeneros = nuevoGenero;
+			idsLista.RemoveAt(i);
 		}
 
-		NavManager.NavigateTo("/filter/genre/" + nuevosGeneros + "/", true);
+		ids = null;
+
+		foreach (var id in idsLista)
+		{
+			ids = ids + "," + id;
+		}
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			ids = ids.Remove(0, 1);
+		}
+		
+		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
+		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
 	}
 
+	#endregion
 }

@@ -789,7 +789,7 @@ namespace BaseDatos.Juegos
 			return dlcs.OrderBy(x => x.Nombre).ToList();
 		}
 
-        public static List<Juego> Filtro(List<string> generos, int cantidad, SqlConnection conexion = null)
+        public static List<Juego> Filtro(List<string> ids, int cantidad, SqlConnection conexion = null)
         {
             List<Juego> resultados = new List<Juego>();
 
@@ -807,8 +807,18 @@ namespace BaseDatos.Juegos
 
             using (conexion)
             {
-                string generosTexto = string.Empty;
-                int i = 0;
+				List<string> generos = new List<string>();
+
+				foreach (var id in ids)
+				{
+					if (id.Contains("g") == true)
+					{
+						generos.Add(id.Replace("g", null));
+					}
+				}
+
+                string generosTexto = string.Empty;              			
+				int i = 0;
 
                 foreach (var genero in generos)
                 {
@@ -824,8 +834,13 @@ namespace BaseDatos.Juegos
                     i += 1;
                 }
 
+				if (string.IsNullOrEmpty(generosTexto) == false)
+				{
+					generosTexto = " AND (" + generosTexto + ")";
+				}
+
                 string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
-                    "WHERE ISJSON(analisis) > 0 and ISJSON(generos) > 0 and (" + generosTexto + ") ORDER BY Cantidad DESC";
+                    "WHERE ISJSON(analisis) > 0 AND ISJSON(generos) > 0 " + generosTexto + " ORDER BY Cantidad DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
