@@ -185,7 +185,8 @@ namespace APIs.Steam
 
 								JuegoAnalisis analisis = new JuegoAnalisis
 								{
-									Cantidad = "0"
+									Cantidad = "0",
+									Porcentaje = "0"
 								};
 
 								if (enlace.Contains("https://store.steampowered.com/app/") == true)

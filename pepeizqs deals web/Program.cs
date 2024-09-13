@@ -122,13 +122,13 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-builder.Services.AddSignalR(opciones =>
-{
-	opciones.EnableDetailedErrors = true;
-	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
-	//opciones.MaximumReceiveMessageSize = 102400000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//	opciones.EnableDetailedErrors = true;
+//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+//	//opciones.MaximumReceiveMessageSize = 102400000;
+//});
 
 builder.Services.Configure<HubOptions>(opciones =>
 {

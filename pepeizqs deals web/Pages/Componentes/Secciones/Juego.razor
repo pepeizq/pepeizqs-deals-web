@@ -46,7 +46,16 @@
 			grid-template-columns: 1fr;
 		}
 	}
-}
+
+	.boton-expandir {
+		transition: transform .2s;
+		background-color: var(--fondoBotonPequeño);
+	}
+
+		.boton-expandir:hover {
+			transform: scale(1.01);
+			background-color: var(--fondoBotonPequeñoHover);
+		}
 </style>
 
 <div>
@@ -106,8 +115,6 @@
 							}
 						}
 
-						
-						
 						@if (juego.Bundles != null)
 						{
 							<div style="font-size: 16px;">
@@ -193,22 +200,23 @@
 							</div>
 						}												
 
-						@if (juego.IdSteam > 0 || string.IsNullOrEmpty(juego.SlugGOG) == false)
+						@if (usuario != null)
 						{
-							<div style="margin-left: 20px;">
-								<label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
-
+							if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+							{
 								@if (juego.IdSteam > 0)
 								{
-									<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
-								}
+									<div style="margin-left: 20px;">
+										<label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
 
-								@if (string.IsNullOrEmpty(juego.SlugGOG) == false)
-								{
-									<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank">GOG</a>
-								}
-							</div>
-						}						
+										@if (juego.IdSteam > 0)
+										{
+											<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+										}
+									</div>
+								}		
+							}
+						}					
 					</div>
 				</div>				
 			</div>
@@ -416,7 +424,7 @@
 											</div>
 										}
 
-										<div style="display: flex; flex-direction: column; gap: 20px;">
+										<div style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
 											@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
 											{
 												<div>
@@ -455,6 +463,36 @@
 												</div>
 											}
 										</div>
+
+										@if (drm == JuegoDRM.Steam)
+										{
+											if (juego.IdSteam > 0)
+											{
+												<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank" style="width: 200px; text-align: center;">
+													@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Steam")
+												</a>
+											}											
+										}
+
+										@if (drm == JuegoDRM.GOG)
+										{
+											if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+											{
+												<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank" style="width: 200px; text-align: center;">
+													@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "GOG")
+												</a>
+											}
+										}
+
+										@if (drm == JuegoDRM.Epic)
+										{
+											if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+											{
+												<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, "epicgamesstore")" target="_blank" style="width: 200px; text-align: center;">
+													@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Epic Games")
+												</a>
+											}
+										}
 									</div>
 								}
 
@@ -966,6 +1004,7 @@
 													publisherLimpio = publisherLimpio.Replace(")", null);
 													publisherLimpio = publisherLimpio.Replace("?", null);
 													publisherLimpio = publisherLimpio.Replace("/", null);
+													publisherLimpio = publisherLimpio.Replace("\"", null);
 													publisherLimpio = publisherLimpio.ToLower();
 													publisherLimpio = publisherLimpio.Trim();
 
@@ -1121,12 +1160,15 @@
 								if (string.IsNullOrEmpty(cadenaCategoria) == false)
 								{
 									string imagenCategoria = "/imagenes/categorias/" + categoria + ".webp";
+									string idCategoria = "c" + categoria;
 
-									<div style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
-										<img style="width: 26px; height: 16px;" src="@imagenCategoria"/>
+									<a href="/filter/@idCategoria/" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none;">
+										<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+											<img style="width: 26px; height: 16px;" src="@imagenCategoria"/>
 
-										<div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
-									</div>
+											<div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
+										</div>
+									</a>
 								}
 								else
 								{
@@ -1169,7 +1211,7 @@
 @if (bundleId > 0)
 {
 	<div class="opciones-panel">
-		<div style="margin: 10px auto; position: relative;">
+		<div style="max-width: 1300px; margin: 10px auto; position: relative;">
 			<div style="margin-bottom: 20px;">
 				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => BundleCerrar(e))">
 					<i class="fa-solid fa-arrow-left" style="font-size: 30px;"></i>
@@ -1204,67 +1246,60 @@
 	{
 		if (HttpContext == null)
 		{
-			await Task.Delay(1);
+			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
 
-			Task tarea = Task.Run(async () =>
+			//-------------------------------------------
+
+			if (juego != null)
 			{
-				usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
+				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
 
-				//-------------------------------------------
-
-				if (juego != null)
+				if (juego.Media != null)
 				{
-					DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
-					if (juego.Media != null)
+					if (string.IsNullOrEmpty(juego.Media.Video) == false)
 					{
-						if (string.IsNullOrEmpty(juego.Media.Video) == false)
+						mediaMostrar = juego.Media.Video;
+						mediaMostrar = mediaMostrar.Replace("http://", "https://");
+						mediaMostrar = mediaMostrar.Replace("http://", "https://");
+						mediaMostrarPosicion = 99999;
+					}
+					else
+					{
+						if (juego.Media.Capturas != null)
 						{
-							mediaMostrar = juego.Media.Video;
-							mediaMostrar = mediaMostrar.Replace("http://", "https://");
-							mediaMostrar = mediaMostrar.Replace("http://", "https://");
-							mediaMostrarPosicion = 99999;
-						}
-						else
-						{
-							if (juego.Media.Capturas != null)
+							if (juego.Media.Capturas.Count > 0)
 							{
-								if (juego.Media.Capturas.Count > 0)
-								{
-									mediaMostrar = juego.Media.Capturas[0];
-								}
-							}
-						}
-					}
-
-					bool actualizarDatosAPI = false;
-
-					if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(21) < DateTime.Now)
-					{
-						actualizarDatosAPI = true;
-					}
-
-					if (juego.Categorias == null && juego.Generos == null)
-					{
-						actualizarDatosAPI = true;
-					}
-
-					if (actualizarDatosAPI == true)
-					{
-						if (juego.IdSteam > 0)
-						{
-							global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-							if (nuevoJuego != null)
-							{
-								global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+								mediaMostrar = juego.Media.Capturas[0];
 							}
 						}
 					}
 				}
-			});
 
-			tarea.Wait();
+				bool actualizarDatosAPI = false;
+
+				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(21) < DateTime.Now)
+				{
+					actualizarDatosAPI = true;
+				}
+
+				if (juego.Categorias == null && juego.Generos == null)
+				{
+					actualizarDatosAPI = true;
+				}
+
+				if (actualizarDatosAPI == true)
+				{
+					if (juego.IdSteam > 0)
+					{
+						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+						if (nuevoJuego != null)
+						{
+							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+						}
+					}
+				}
+			}
 		}
 	}
 

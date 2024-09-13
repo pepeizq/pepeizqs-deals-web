@@ -87,6 +87,11 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
+					if (juego.Id == 38208)
+					{
+						BaseDatos.Errores.Insertar.Mensaje(juego.Nombre, JsonConvert.SerializeObject(juego.Analisis));
+					}
+
 					if (analisis != null && juego != null)
 					{
 						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)

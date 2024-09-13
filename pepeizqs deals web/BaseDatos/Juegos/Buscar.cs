@@ -807,17 +807,45 @@ namespace BaseDatos.Juegos
 
             using (conexion)
             {
+				List<string> categorias = new List<string>();
 				List<string> generos = new List<string>();
 
 				foreach (var id in ids)
 				{
+					if (id.Contains("c") == true)
+					{
+						categorias.Add(id.Replace("c", null));
+					}
+
 					if (id.Contains("g") == true)
 					{
 						generos.Add(id.Replace("g", null));
 					}
 				}
 
-                string generosTexto = string.Empty;              			
+				string categoriasTexto = string.Empty;
+				int j = 0;
+
+				foreach (var categoria in categorias)
+				{
+					if (j == 0)
+					{
+						categoriasTexto = "categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
+					}
+					else
+					{
+						categoriasTexto = categoriasTexto + " OR categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
+					}
+
+					j += 1;
+				}
+
+				if (string.IsNullOrEmpty(categoriasTexto) == false)
+				{
+					categoriasTexto = " AND (" + categoriasTexto + ")";
+				}
+
+				string generosTexto = string.Empty;              			
 				int i = 0;
 
                 foreach (var genero in generos)
@@ -840,7 +868,8 @@ namespace BaseDatos.Juegos
 				}
 
                 string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
-                    "WHERE ISJSON(analisis) > 0 AND ISJSON(generos) > 0 " + generosTexto + " ORDER BY Cantidad DESC";
+                    "WHERE ISJSON(analisis) > 0 AND ISJSON(categorias) > 0 " + categoriasTexto + " " +
+					"AND ISJSON(generos) > 0 " + generosTexto + " ORDER BY Cantidad DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
