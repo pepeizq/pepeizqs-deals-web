@@ -40,7 +40,15 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?partner=pepeizq";
+			enlace = enlace + "?partner=pepeizq";
+
+            enlace = enlace.Replace(":", "%3A");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("?", "%3F");
+            enlace = enlace.Replace("=", "%3D");
+
+            return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
 		}
 
 		public static Tiendas2.Tienda GenerarChoice()
@@ -62,7 +70,7 @@ namespace APIs.Humble
 
 		public static string ReferidoChoice(string enlace)
 		{
-			return enlace + "?refc=gXsa9X&partner=pepeizq&irgwc=1&irpid=1382810&utm_medium=paid&utm_campaign=pepeizq&utm_content=1382810&utm_term=Online Tracking Link";
+			return enlace + "?refc=gXsa9X&partner=pepeizq";
 		}
 
 		public static void RecopilarOfertas(string html)

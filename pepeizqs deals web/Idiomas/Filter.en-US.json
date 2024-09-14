@@ -6,5 +6,13 @@
   {
     "Id": "String1",
     "Valor": "Genres"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Categories"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Tags"
   }
 ]

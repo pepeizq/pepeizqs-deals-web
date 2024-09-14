@@ -1,10 +1,11 @@
 ﻿#nullable disable
 
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Herramientas
 {
-	public class Idioma
+	public class IdiomaCadena
 	{
 		public string Id { get; set; }
 		public string Valor { get; set; }
@@ -39,12 +40,12 @@ namespace Herramientas
 
 				using (StreamReader r = new StreamReader(rutaFichero))
 				{
-					List<Idioma> items = new List<Idioma>();
+					List<IdiomaCadena> items = new List<IdiomaCadena>();
 
 					try
 					{
 						string json = r.ReadToEnd();
-						items = JsonConvert.DeserializeObject<List<Idioma>>(json);
+						items = JsonConvert.DeserializeObject<List<IdiomaCadena>>(json);
 					}
 					catch { }
 
@@ -91,6 +92,50 @@ namespace Herramientas
 			{
 				return rutaFichero;
 			}
+		}
+
+		public static List<IdiomaCadena> CogerTodasCadenas(string idiomaUsuario, string nombreFichero)
+		{
+			if (string.IsNullOrEmpty(idiomaUsuario) == true)
+			{
+				idiomaUsuario = "en-US";
+			}
+			else
+			{
+				if (idiomaUsuario == "es")
+				{
+					idiomaUsuario = "es-ES";
+				}
+			}
+
+			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
+
+			if (string.IsNullOrEmpty(nombreFichero) == false)
+			{
+				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
+			}
+
+			if (File.Exists(rutaFichero) == true)
+			{
+				using (StreamReader r = new StreamReader(rutaFichero))
+				{
+					List<IdiomaCadena> items = new List<IdiomaCadena>();
+
+					try
+					{
+						string json = r.ReadToEnd();
+						items = JsonConvert.DeserializeObject<List<IdiomaCadena>>(json);
+					}
+					catch { }
+
+					if (items != null)
+					{
+						return items;
+					}
+				}
+			}
+
+			return null;
 		}
 
 		public static string MirarTexto(string idiomaUsuario, string textoIngles, string textoEspañol)

@@ -6,8 +6,10 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using System.Net;
 using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace APIs._2Game
 {
@@ -30,9 +32,22 @@ namespace APIs._2Game
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+        public static string Referido(string enlace)
+        {
+            enlace = enlace.Replace(":", "%3A");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("?", "%3F");
+            enlace = enlace.Replace("=", "%3D");
+
+            return "https://2game-europe.sjv.io/c/1382810/1813947/19711?u=" + enlace;
+        }
+
+        public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
             BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+            string html2 = await Decompiladores.GZipFormato("https://app.impact.com/secure/productservices/apps/catalog/download.irps?p=46x%7B%22networkId%22%3A%221%22%2C%22id%22%3A%221813947%22%2C%22mpId%22%3A%221382810%22%2C%22version%22%3A%22standard%22%7DRdI6oFUr5Kb9Dw0tR8044psFyU8%3D");
 
             string html = await Decompiladores.Estandar("https://2game.com/feeds/GoogleShopping_EU.xml");
 
@@ -41,6 +56,7 @@ namespace APIs._2Game
                 html = html.Replace("g:image_link", "image_link");
                 html = html.Replace("g:sale_price", "sale_price");
                 html = html.Replace("g:price", "price");
+                html = html.Replace("g:id", "id");
 
                 XmlSerializer xml = new XmlSerializer(typeof(_2GameJuegos));
                 _2GameJuegos listaJuegos = null;
@@ -62,16 +78,24 @@ namespace APIs._2Game
                             {
                                 if (string.IsNullOrEmpty(juego.PrecioBase) == false && string.IsNullOrEmpty(juego.PrecioRebajado) == false)
                                 {
-                                    decimal precioBase = decimal.Parse(juego.PrecioBase);
-                                    decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
+                                    string precioBase = juego.PrecioBase;
+                                    precioBase = precioBase.Replace("EUR", null);
 
-                                    int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+                                    string precioRebajado = juego.PrecioRebajado;
+                                    precioRebajado = precioRebajado.Replace("EUR", null);
+
+                                    decimal dprecioBase = decimal.Parse(precioBase);
+                                    decimal dprecioRebajado = decimal.Parse(precioRebajado);
+
+                                    int descuento = Calculadora.SacarDescuento(dprecioBase, dprecioRebajado);
 
                                     if (descuento > 0)
                                     {
                                         string nombre = WebUtility.HtmlDecode(juego.Nombre);
 
                                         string enlace = juego.Enlace;
+
+                                        enlace = enlace.Replace("/fr/", "/");
 
                                         string imagen = juego.Imagen;
 
@@ -83,7 +107,7 @@ namespace APIs._2Game
                                             Enlace = enlace,
                                             Imagen = imagen,
                                             Moneda = JuegoMoneda.Euro,
-                                            Precio = precioRebajado,
+                                            Precio = dprecioRebajado,
                                             Descuento = descuento,
                                             Tienda = Generar().Id,
                                             DRM = drm,
@@ -91,15 +115,42 @@ namespace APIs._2Game
                                             FechaActualizacion = DateTime.Now
                                         };
 
-                                        //try
-                                        //{
-                                        //    BaseDatos.Tiendas.Comprobar.Resto(oferta, objeto, conexion);
-                                        //}
-                                        //catch (Exception ex)
-                                        //{
-                                        //    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
-                                        //}
+                                        if (html2.Contains(juego.Id) == true)
+                                        {
+                                            StringReader lector = new StringReader(html2);
 
+                                            string linea = string.Empty;
+
+                                            do
+                                            {
+                                                linea = lector.ReadLine();
+
+                                                if (string.IsNullOrEmpty(linea) == false)
+                                                {
+                                                    if (linea.Contains(juego.Id) == true)
+                                                    {
+                                                        if (linea.Contains("Steam,,") == true)
+                                                        {
+                                                            oferta.DRM = JuegoDRM.Steam;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            while (linea != null);
+                                        }
+
+                                        if (oferta.DRM != JuegoDRM.NoEspecificado)
+                                        {
+                                            try
+                                            {
+                                                BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                            }
+                                        }
+                                        
                                         juegos2 += 1;
 
                                         try
@@ -135,6 +186,9 @@ namespace APIs._2Game
 
     public class _2GameJuego
     {
+        [XmlElement("id")]
+        public string Id { get; set; }
+
         [XmlElement("title")]
         public string Nombre { get; set; }
 

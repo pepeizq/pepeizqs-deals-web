@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BaseDatos.Juegos
 {
@@ -49,10 +50,20 @@ namespace BaseDatos.Juegos
                 añadirUltimaModificacion = ", ultimaModificacion=@ultimaModificacion";
             }
 
-            string sqlActualizar = "UPDATE juegos " +
-					"SET idSteam=@idSteam, idGog=@idGog, " +
+			string añadirEtiquetas = null;
+
+			if (juego.Etiquetas != null)
+			{
+				if (juego.Etiquetas.Count > 0)
+				{
+					añadirEtiquetas = ", etiquetas=@etiquetas";
+				}
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET idSteam=@idSteam, idGog=@idGog, analisis=@analisis, " +
 						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic;
+                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirSlugGog + añadirSlugEpic;
 
 			if (actualizarAPI == true)
 			{
@@ -84,12 +95,21 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
 					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
 					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
+					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 
                     if (juego.UltimaModificacion != null)
                     {
                         comando.Parameters.AddWithValue("@ultimaModificacion", juego.UltimaModificacion);
                     }
+
+					if (juego.Etiquetas != null)
+					{
+						if (juego.Etiquetas.Count > 0)
+						{
+							comando.Parameters.AddWithValue("@etiquetas", JsonConvert.SerializeObject(juego.Etiquetas));
+						}
+					}
 
                     if (actualizarAPI == true)
 					{
@@ -103,7 +123,7 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
 						comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
 						comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
+						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));						
 					}
 
 					if (string.IsNullOrEmpty(juego.SlugGOG) == false)

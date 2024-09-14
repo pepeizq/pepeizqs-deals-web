@@ -300,6 +300,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(26) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(26)) == false)
+					{
+						juego.Etiquetas = JsonConvert.DeserializeObject<List<string>>(lector.GetString(26));
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 
@@ -807,11 +819,17 @@ namespace BaseDatos.Juegos
 
             using (conexion)
             {
+				List<string> etiquetas = new List<string>();
 				List<string> categorias = new List<string>();
 				List<string> generos = new List<string>();
 
 				foreach (var id in ids)
 				{
+					if (id.Contains("t") == true)
+					{
+						etiquetas.Add(id.Replace("t", null));
+					}
+
 					if (id.Contains("c") == true)
 					{
 						categorias.Add(id.Replace("c", null));
@@ -821,6 +839,28 @@ namespace BaseDatos.Juegos
 					{
 						generos.Add(id.Replace("g", null));
 					}
+				}
+
+				string etiquetasTexto = string.Empty;
+				int h = 0;
+
+				foreach (var etiqueta in etiquetas)
+				{
+					if (h == 0)
+					{
+						etiquetasTexto = "etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
+					}
+					else
+					{
+						etiquetasTexto = etiquetasTexto + " OR etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
+					}
+
+					h += 1;
+				}
+
+				if (string.IsNullOrEmpty(etiquetasTexto) == false)
+				{
+					etiquetasTexto = " AND (" + etiquetasTexto + ")";
 				}
 
 				string categoriasTexto = string.Empty;
@@ -868,7 +908,7 @@ namespace BaseDatos.Juegos
 				}
 
                 string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
-                    "WHERE ISJSON(analisis) > 0 AND ISJSON(categorias) > 0 " + categoriasTexto + " " +
+                    "WHERE ISJSON(analisis) > 0 AND ISJSON(etiquetas) > 0 " + etiquetasTexto + " AND ISJSON(categorias) > 0 " + categoriasTexto + " " +
 					"AND ISJSON(generos) > 0 " + generosTexto + " ORDER BY Cantidad DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))

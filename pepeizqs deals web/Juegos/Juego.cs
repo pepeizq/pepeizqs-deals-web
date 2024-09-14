@@ -40,6 +40,7 @@ namespace Juegos
 		public DateTime? UltimaModificacion { get; set; }
 		public List<string> Categorias { get; set; }
 		public List<string> Generos { get; set; }
+		public List<string> Etiquetas { get; set; }
 	}
 
 	public static class JuegoCrear

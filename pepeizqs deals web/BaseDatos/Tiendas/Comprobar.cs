@@ -9,7 +9,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, ViewDataDictionary objeto, SqlConnection conexion)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion)
 		{
 			Juego juego = JuegoCrear.Generar();
 
@@ -87,11 +87,6 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
-					if (juego.Id == 38208)
-					{
-						BaseDatos.Errores.Insertar.Mensaje(juego.Nombre, JsonConvert.SerializeObject(juego.Analisis));
-					}
-
 					if (analisis != null && juego != null)
 					{
 						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)
@@ -144,6 +139,8 @@ namespace BaseDatos.Tiendas
 						{
 							juego = await ActualizarDatosAPI(juego);
 						}
+
+						juego.Etiquetas = etiquetas;
 
 						Juegos.Precios.Actualizar(juego, oferta, conexion, actualizarAPI);
 					}

@@ -38,11 +38,21 @@
 
 <style>
 	.descripcion-datos {
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
 	}
 
 	@@media(max-width: 1000px) {
 		.descripcion-datos {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.descripcion-datos2 {
+		grid-template-columns: 67fr 33fr;
+	}
+
+	@@media(max-width: 1000px) {
+		.descripcion-datos2 {
 			grid-template-columns: 1fr;
 		}
 	}
@@ -919,19 +929,19 @@
 			}
 		}
 
-		<div class="descripcion-datos" style="display: grid; margin-top: 50px; gap: 30px;">
+		<div class="descripcion-datos2" style="display: grid; margin-top: 50px; gap: 30px;">
 			@if (juego.Caracteristicas != null)
 			{
 				@if (string.IsNullOrEmpty(juego.Caracteristicas.Descripcion) == false)
 				{
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; width: 100%;">
+					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 						@WebUtility.HtmlDecode(juego.Caracteristicas.Descripcion)
 					</div>
 				}
 
 				@if (juego.Caracteristicas.Desarrolladores != null || juego.Caracteristicas.Publishers != null || juego.Generos != null)
 				{
-					<div class="perfil" style="border: 1px solid var(--fondoBotonPequeño); width: 100%; gap: 20px;">
+					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 15px;">
 						@if (juego.Caracteristicas.Desarrolladores != null)
 						{
 							if (juego.Caracteristicas.Desarrolladores.Count > 0)
@@ -1147,39 +1157,92 @@
 						}
 					</div>
 				}
+			}
+		</div>
 
+		@if (juego.Categorias != null || juego.Etiquetas != null)
+		{
+			<div class="descripcion-datos" style="display: grid; margin-top: 50px; gap: 30px;">
 				@if (juego.Categorias != null)
 				{
 					if (juego.Categorias.Count > 0)
 					{
-						<div class="perfil" style="border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; grid-auto-rows: min-content;">
-							@foreach (var categoria in juego.Categorias)
-							{
-								string cadenaCategoria = Idiomas.CogerCadena(idioma, categoria, "Categories");
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; width: 100%;">
+							<div style="margin-bottom: 5px;">
+								@Idiomas.CogerCadena(idioma, "String49", "Game")
+							</div>
+							<div style="font-size: 14px;">
+								@Idiomas.CogerCadena(idioma, "String50", "Game")
+							</div>
+							<hr/>
 
-								if (string.IsNullOrEmpty(cadenaCategoria) == false)
+							<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px;">
+								@foreach (var categoria in juego.Categorias)
 								{
-									string imagenCategoria = "/imagenes/categorias/" + categoria + ".webp";
-									string idCategoria = "c" + categoria;
+									string cadenaCategoria = Idiomas.CogerCadena(idioma, categoria, "Categories");
 
-									<a href="/filter/@idCategoria/" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none;">
-										<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-											<img style="width: 26px; height: 16px;" src="@imagenCategoria"/>
+									if (string.IsNullOrEmpty(cadenaCategoria) == false)
+									{
+										string imagenCategoria = "/imagenes/categorias/" + categoria + ".webp";
+										string idCategoria = "c" + categoria;
 
-											<div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
-										</div>
-									</a>
+										<a href="/filter/@idCategoria/" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none;">
+											<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+												<img style="width: 26px; height: 16px;" src="@imagenCategoria" />
+
+												<div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
+											</div>
+										</a>
+									}
+									else
+									{
+										global::BaseDatos.Errores.Insertar.Mensaje("Categoría no encontrada", categoria + " - " + juego.Nombre + ": https://store.steampowered.com/api/appdetails/?appids=" + juego.IdSteam.ToString() + "&l=english");
+									}
 								}
-								else
-								{
-									global::BaseDatos.Errores.Insertar.Mensaje("Categoría no encontrada", categoria + " - " + juego.Nombre + ": https://store.steampowered.com/api/appdetails/?appids=" + juego.IdSteam.ToString() + "&l=english");
-								}
-							}
+							</div>					
 						</div>	
 					}
 				}
-			}
-		</div>
+
+				@if (juego.Etiquetas != null)
+				{
+					if (juego.Etiquetas.Count > 0)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; width: 100%;">
+							<div style="margin-bottom: 5px;">
+								@Idiomas.CogerCadena(idioma, "String47", "Game")
+							</div>
+							<div style="font-size: 14px;">
+								@Idiomas.CogerCadena(idioma, "String48", "Game")
+							</div>
+							<hr/>
+
+							<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px;">
+								@foreach (var etiqueta in juego.Etiquetas)
+								{
+									string cadenaEtiqueta = Idiomas.CogerCadena(idioma, etiqueta, "Tags");
+
+									if (string.IsNullOrEmpty(cadenaEtiqueta) == false)
+									{
+										string idEtiqueta = "t" + etiqueta;
+
+										<a href="/filter/@idEtiqueta/" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none;">
+											<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+												<div style="width: 100%; font-size: 14px;">@cadenaEtiqueta</div>
+											</div>
+										</a>
+									}
+									else
+									{
+										global::BaseDatos.Errores.Insertar.Mensaje("Etiqueta no encontrada", etiqueta + " - " + juego.Nombre, "https://store.steampowered.com/tagdata/populartags/spanish");
+									}
+								}
+							</div>
+						</div>
+					}
+				}
+			</div>
+		}
 
 		@if (DLCs.Count > 0)
 		{
@@ -1212,10 +1275,45 @@
 {
 	<div class="opciones-panel">
 		<div style="max-width: 1300px; margin: 10px auto; position: relative;">
+			@{
+				Bundles2.Bundle bundleSeleccionado = global::BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+			}
+
 			<div style="margin-bottom: 20px;">
-				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => BundleCerrar(e))">
-					<i class="fa-solid fa-arrow-left" style="font-size: 30px;"></i>
-				</button>
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
+					<button @onclick="@(e => BundleCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+						<i class="fa-solid fa-arrow-left"></i>
+					</button>
+
+					<div style="display: flex; align-items: center; flex-direction: row;">
+						<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" style="width: auto;" target="_blank">
+							<div style="height: 60px; padding-left: 40px; padding-right: 20px;">
+								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
+							</div>
+						</a>
+
+						<div style="padding-left: 20px; padding-right: 20px;">
+							<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
+								@bundleSeleccionado.NombreBundle
+							</a>
+
+							<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
+								<a href="/bundle/@bundleSeleccionado.Id/@Herramientas.EnlaceAdaptador.Nombre(bundleSeleccionado.NombreBundle)/" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
+									<i class="fa-solid fa-link"></i>
+								</a>
+
+								@bundleSeleccionado.FechaEmpieza.Day.ToString()/@bundleSeleccionado.FechaEmpieza.Month.ToString()/@bundleSeleccionado.FechaEmpieza.Year.ToString() • @bundleSeleccionado.FechaTermina.Day.ToString()/@bundleSeleccionado.FechaTermina.Month.ToString()/@bundleSeleccionado.FechaTermina.Year.ToString()
+							</div>
+						</div>
+					</div>
+				</div>
+
+				@if (DateTime.Today < bundleSeleccionado.FechaTermina)
+				{
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
+						@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Bundle")
+					</a>
+				}
 			</div>
 
 			<Bundle bundleId="@bundleId" idioma="@idioma" tipo="@Bundle.Tipo.Juego" />

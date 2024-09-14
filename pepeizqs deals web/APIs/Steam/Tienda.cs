@@ -1,4 +1,5 @@
 ﻿//https://store.steampowered.com/search/results/?query&start=350&count=50&dynamic_data=&sort_by=Price_ASC&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1
+//https://api.steampowered.com/IStoreQueryService/Query/v1/?input_json={%22query%22:{%22filters%22:{%22tagids_must_match%22:[{%22tagids%22:[%229%22]}]}},%22context%22:{%22language%22:%22english%22,%22country_code%22:%22US%22,%22steam_realm%22:%221%22},%22data_request%22:{%22include_basic_info%22:true}}
 
 #nullable disable
 
@@ -291,6 +292,22 @@ namespace APIs.Steam
 											{
 												decimal precio = decimal.Parse(temp14.Trim());
 
+												List<string> etiquetas = new List<string>();
+
+												if (temp4.Contains("data-ds-tagids") == true)
+												{
+													int int15 = temp4.IndexOf("data-ds-tagids");
+													string temp15 = temp4.Remove(0, int15);
+
+													int int16 = temp15.IndexOf("[");
+													string temp16 = temp15.Remove(0, int16 + 1);
+
+													int int17 = temp16.IndexOf("]");
+													string temp17 = temp16.Remove(int17, temp16.Length - int17);
+
+													etiquetas = Herramientas.Listados.Generar(temp17);
+												}
+
 												JuegoPrecio oferta = new JuegoPrecio
 												{
 													Nombre = titulo,
@@ -307,7 +324,7 @@ namespace APIs.Steam
 
 												try
 												{
-													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, objeto, conexion);
+													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, etiquetas, conexion);
 												}
 												catch (Exception ex)
 												{

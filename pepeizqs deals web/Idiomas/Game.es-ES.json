@@ -182,5 +182,21 @@
   {
     "Id": "String46",
     "Valor": "Este DLC contiene contenido sexual no apto para menores de edad."
+  },
+  {
+    "Id": "String47",
+    "Valor": "Etiquetas"
+  },
+  {
+    "Id": "String48",
+    "Valor": "Las etiquetas han sido asignadas por los usuarios en Steam"
+  },
+  {
+    "Id": "String49",
+    "Valor": "Categorías"
+  },
+  {
+    "Id": "String50",
+    "Valor": "Las categorías han sido asignadas por los desarrolladores en Steam"
   }
 ]

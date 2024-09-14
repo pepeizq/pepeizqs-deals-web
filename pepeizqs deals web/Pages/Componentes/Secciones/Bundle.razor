@@ -47,29 +47,6 @@
 		</div>
 	}
 
-	if (tipo == Tipo.Juego)
-	{
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row; margin-bottom: 20px;">
-			<div style="display: flex; align-items: center; flex-direction: row;">
-				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
-					<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
-						<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
-					</div>
-				</a>
-
-				<div style="padding-left: 20px; padding-right: 20px;">
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
-						@bundle.NombreBundle
-					</a>
-
-					<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-						@bundle.FechaEmpieza.Day.ToString()/@bundle.FechaEmpieza.Month.ToString()/@bundle.FechaEmpieza.Year.ToString() • @bundle.FechaTermina.Day.ToString()/@bundle.FechaTermina.Month.ToString()/@bundle.FechaTermina.Year.ToString()
-					</div>
-				</div>
-			</div>
-		</div>
-	}
-
 	if (bundle.Tiers != null)
 	{
 		decimal totalMinimos = 0;
@@ -278,7 +255,7 @@
 
 													<div style="display: flex; align-items: center;">
 														<div style="display: flex; align-items: center; gap: 15px; padding: 15px; width: 100%;">
-															<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 20px; height: 20px;" />
+															<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
 
 															@if (juego.Juego.PrecioMinimosHistoricos != null)
 															{

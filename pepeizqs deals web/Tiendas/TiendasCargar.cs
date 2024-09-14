@@ -29,7 +29,8 @@ namespace Tiendas2
 				APIs.Battlenet.Tienda.Generar(),
 				APIs.JoyBuggy.Tienda.Generar(),
 				APIs.Voidu.Tienda.Generar(),
-				APIs.EpicGames.Tienda.Generar()
+				APIs.EpicGames.Tienda.Generar(),
+				APIs._2Game.Tienda.Generar()
             };
 
 			return tiendas;
@@ -109,7 +110,11 @@ namespace Tiendas2
 				{
 					await APIs.EpicGames.Tienda.BuscarOfertas(conexion, decompilador);
 				}
-			}
+                else if (id == APIs._2Game.Tienda.Generar().Id)
+                {
+                    await APIs._2Game.Tienda.BuscarOfertas(conexion, decompilador);
+                }
+            }
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador = null)
@@ -186,6 +191,10 @@ namespace Tiendas2
 			{
 				await APIs.EpicGames.Tienda.BuscarOfertas(conexion, decompilador);
 			}
-		}
+            else if (id == APIs._2Game.Tienda.Generar().Id)
+            {
+                await APIs._2Game.Tienda.BuscarOfertas(conexion, decompilador);
+            }
+        }
     }
 }

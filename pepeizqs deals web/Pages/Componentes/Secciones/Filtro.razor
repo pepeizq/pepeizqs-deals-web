@@ -45,12 +45,74 @@ else
 
 	<div style="display: flex; align-items: start; gap: 20px;">
 		<div style="width: 30%; display: flex; flex-direction: column; gap: 20px;">
+			@if (etiquetas.Count > 0)
+			{
+				<div>
+					<button @onclick="(e => AbrirEtiquetas(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Filter") (@CantidadEtiquetas())
+							</div>
+
+							<div>
+								@if (enseñarEtiquetas == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
+						</div>
+					</button>
+
+					@if (enseñarEtiquetas == true)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var etiqueta in etiquetas)
+							{
+								string fondo = string.Empty;
+
+								foreach (var id2 in idsLista)
+								{
+									if ("t" + etiqueta.Id == id2)
+									{
+										fondo = "background-color: var(--fondoBotonPequeño);";
+										break;
+									}
+								}
+
+								<button @onclick="(e => CambiarEtiqueta(e, etiqueta.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div style="font-size: 14px;">
+										@etiqueta.Contenido
+									</div>
+								</button>
+							}
+						</div>
+					}
+				</div>
+			}
+
 			@if (categorias.Count > 0)
 			{
 				<div>
 					<button @onclick="(e => AbrirCategorias(e))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
-						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter")
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter") (@CantidadCategorias())
+							</div>
+							
+							<div>
+								@if (enseñarCategorias == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
 						</div>
 					</button>
 
@@ -95,8 +157,21 @@ else
 			{
 				<div>
 					<button @onclick="(e => AbrirGeneros(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
-						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter")
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter") (@CantidadGeneros())
+							</div>
+
+							<div>
+								@if (enseñarGeneros == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
 						</div>
 					</button>
 
@@ -217,6 +292,7 @@ else
 				}
 			}
 
+			CargarEtiquetas();
 			CargarCategorias();
 			CargarGeneros();
 
@@ -224,6 +300,11 @@ else
 
 			foreach (var id in idsLista)
 			{
+				if (id.Contains("t") == true)
+				{
+					enseñarEtiquetas = true;
+				}
+
 				if (id.Contains("c") == true)
 				{
 					enseñarCategorias = true;
@@ -247,28 +328,132 @@ else
 		public string Contenido { get; set; }
 	}
 
+	#region Etiquetas
+
+	private List<CategoriaGenero> etiquetas = new List<CategoriaGenero>();
+
+	private void CargarEtiquetas()
+	{
+		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
+
+		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Tags");
+
+		if (cadenas != null)
+		{
+			if (cadenas.Count > 0)
+			{
+				foreach (var cadena in cadenas)
+				{
+					CategoriaGenero nuevaEtiqueta = new CategoriaGenero();
+					nuevaEtiqueta.Id = cadena.Id;
+					nuevaEtiqueta.Contenido = cadena.Valor;
+
+					etiquetas.Add(nuevaEtiqueta);
+				}
+			}
+		}
+	}
+
+	private bool enseñarEtiquetas = false;
+
+	private void AbrirEtiquetas(MouseEventArgs e)
+	{
+		if (enseñarEtiquetas == true)
+		{
+			enseñarEtiquetas = false;
+		}
+		else
+		{
+			enseñarEtiquetas = true;
+		}
+	}
+
+	private async void CambiarEtiqueta(MouseEventArgs e, string nuevaEtiqueta)
+	{
+		nuevaEtiqueta = "t" + nuevaEtiqueta;
+
+		bool encontrado = false;
+
+		int i = 0;
+		foreach (var id in idsLista)
+		{
+			if (id == nuevaEtiqueta)
+			{
+				encontrado = true;
+				break;
+			}
+
+			i += 1;
+		}
+
+		if (encontrado == false)
+		{
+			idsLista.Add(nuevaEtiqueta);
+		}
+		else
+		{
+			idsLista.RemoveAt(i);
+		}
+
+		ids = null;
+
+		foreach (var id in idsLista)
+		{
+			ids = ids + "," + id;
+		}
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			ids = ids.Remove(0, 1);
+		}
+
+		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
+		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+	}
+
+	private int CantidadEtiquetas()
+	{
+		int i = 0;
+
+		if (idsLista.Count > 0)
+		{
+			foreach (var id in idsLista)
+			{
+				if (id.Contains("t") == true)
+				{
+					i += 1;
+				}
+			}
+		}
+
+		return i;
+	}
+
+	#endregion
+
 	#region Categorias
 
 	private List<CategoriaGenero> categorias = new List<CategoriaGenero>();
 
 	private void CargarCategorias()
 	{
-		int i = 0;
+		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
 
-		while (i < 100)
+		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Categories");
+
+		if (cadenas != null)
 		{
-			string comprobacion = Herramientas.Idiomas.CogerCadena(idioma, i.ToString(), "Categories");
-
-			if (string.IsNullOrEmpty(comprobacion) == false)
+			if (cadenas.Count > 0)
 			{
-				CategoriaGenero nuevoGenero = new CategoriaGenero();
-				nuevoGenero.Id = i.ToString();
-				nuevoGenero.Contenido = comprobacion;
+				foreach (var cadena in cadenas)
+				{
+					CategoriaGenero nuevaCategoria = new CategoriaGenero();
+					nuevaCategoria.Id = cadena.Id;
+					nuevaCategoria.Contenido = cadena.Valor;
 
-				categorias.Add(nuevoGenero);
+					categorias.Add(nuevaCategoria);
+				}
 			}
-
-			i += 1;
 		}
 	}
 
@@ -329,6 +514,24 @@ else
 		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
 	}
 
+	private int CantidadCategorias()
+	{
+		int i = 0;
+
+		if (idsLista.Count > 0)
+		{
+			foreach (var id in idsLista)
+			{
+				if (id.Contains("c") == true)
+				{
+					i += 1;
+				}
+			}
+		}
+
+		return i;
+	}
+
 	#endregion
 
 	#region Generos
@@ -337,22 +540,23 @@ else
 
 	private void CargarGeneros()
 	{
-		int i = 0;
+		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
 
-		while (i < 100)
+		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Genres");
+
+		if (cadenas != null)
 		{
-			string comprobacion = Herramientas.Idiomas.CogerCadena(idioma, i.ToString(), "Genres");
-
-			if (string.IsNullOrEmpty(comprobacion) == false)
+			if (cadenas.Count > 0)
 			{
-				CategoriaGenero nuevoGenero = new CategoriaGenero();
-				nuevoGenero.Id = i.ToString();
-				nuevoGenero.Contenido = comprobacion;
+				foreach (var cadena in cadenas)
+				{
+					CategoriaGenero nuevoGenero = new CategoriaGenero();
+					nuevoGenero.Id = cadena.Id;
+					nuevoGenero.Contenido = cadena.Valor;
 
-				generos.Add(nuevoGenero);
+					generos.Add(nuevoGenero);
+				}
 			}
-
-			i += 1;
 		}
 	}
 
@@ -411,6 +615,24 @@ else
 		
 		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
 		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+	}
+
+	private int CantidadGeneros()
+	{
+		int i = 0;
+
+		if (idsLista.Count > 0)
+		{
+			foreach (var id in idsLista)
+			{
+				if (id.Contains("g") == true)
+				{
+					i += 1;
+				}
+			}
+		}
+
+		return i;
 	}
 
 	#endregion

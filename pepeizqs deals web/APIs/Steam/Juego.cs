@@ -146,17 +146,17 @@ namespace APIs.Steam
 
 					juego.MayorEdad = "false";
 
-					if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
-					{
-						try
-						{
-							if (int.Parse(datos.Datos.MayorEdad) >= 18)
-							{
-								juego.MayorEdad = "true";
-							}
-						}
-						catch {}
-					}
+					//if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
+					//{
+					//	try
+					//	{
+					//		if (int.Parse(datos.Datos.MayorEdad) >= 18)
+					//		{
+					//			juego.MayorEdad = "true";
+					//		}
+					//	}
+					//	catch {}
+					//}
 
 					if (datos.Datos.Categorias != null)
 					{

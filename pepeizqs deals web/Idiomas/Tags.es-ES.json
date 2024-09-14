@@ -1,0 +1,1790 @@
+[
+  {
+    "Id": "9",
+    "Valor": "Estrategia"
+  },
+  {
+    "Id": "19",
+    "Valor": "Acción"
+  },
+  {
+    "Id": "21",
+    "Valor": "Aventura"
+  },
+  {
+    "Id": "84",
+    "Valor": "Diseño e ilustración"
+  },
+  {
+    "Id": "87",
+    "Valor": "Utilidades"
+  },
+  {
+    "Id": "113",
+    "Valor": "Free to Play"
+  },
+  {
+    "Id": "122",
+    "Valor": "Rol"
+  },
+  {
+    "Id": "128",
+    "Valor": "Multijugador masivo"
+  },
+  {
+    "Id": "492",
+    "Valor": "Indie"
+  },
+  {
+    "Id": "493",
+    "Valor": "Acceso anticipado"
+  },
+  {
+    "Id": "597",
+    "Valor": "Casuales"
+  },
+  {
+    "Id": "599",
+    "Valor": "Simulación"
+  },
+  {
+    "Id": "699",
+    "Valor": "Carreras"
+  },
+  {
+    "Id": "701",
+    "Valor": "Deportes"
+  },
+  {
+    "Id": "784",
+    "Valor": "Producción de vídeo"
+  },
+  {
+    "Id": "809",
+    "Valor": "Edición fotográfica"
+  },
+  {
+    "Id": "872",
+    "Valor": "Animación y modelado"
+  },
+  {
+    "Id": "1027",
+    "Valor": "Producción de audio"
+  },
+  {
+    "Id": "1036",
+    "Valor": "Educación"
+  },
+  {
+    "Id": "1038",
+    "Valor": "Publicación web"
+  },
+  {
+    "Id": "1445",
+    "Valor": "Formación en software"
+  },
+  {
+    "Id": "1616",
+    "Valor": "Trenes"
+  },
+  {
+    "Id": "1621",
+    "Valor": "Música"
+  },
+  {
+    "Id": "1625",
+    "Valor": "Plataformas"
+  },
+  {
+    "Id": "1628",
+    "Valor": "Metroidvania"
+  },
+  {
+    "Id": "1638",
+    "Valor": "Perros"
+  },
+  {
+    "Id": "1643",
+    "Valor": "Construcción"
+  },
+  {
+    "Id": "1644",
+    "Valor": "Conducción"
+  },
+  {
+    "Id": "1645",
+    "Valor": "Defensa de torres"
+  },
+  {
+    "Id": "1646",
+    "Valor": "Hack and slash"
+  },
+  {
+    "Id": "1647",
+    "Valor": "Vaqueros"
+  },
+  {
+    "Id": "1649",
+    "Valor": "GameMaker"
+  },
+  {
+    "Id": "1651",
+    "Valor": "Sátira"
+  },
+  {
+    "Id": "1654",
+    "Valor": "Relajantes"
+  },
+  {
+    "Id": "1659",
+    "Valor": "Zombis"
+  },
+  {
+    "Id": "1662",
+    "Valor": "Supervivencia"
+  },
+  {
+    "Id": "1663",
+    "Valor": "FPS"
+  },
+  {
+    "Id": "1664",
+    "Valor": "Puzles"
+  },
+  {
+    "Id": "1665",
+    "Valor": "Combinar 3"
+  },
+  {
+    "Id": "1666",
+    "Valor": "Juegos de cartas"
+  },
+  {
+    "Id": "1667",
+    "Valor": "Terror"
+  },
+  {
+    "Id": "1669",
+    "Valor": "Modificables"
+  },
+  {
+    "Id": "1670",
+    "Valor": "4X"
+  },
+  {
+    "Id": "1671",
+    "Valor": "Superhéroes"
+  },
+  {
+    "Id": "1673",
+    "Valor": "Extraterrestres"
+  },
+  {
+    "Id": "1674",
+    "Valor": "Mecanografía"
+  },
+  {
+    "Id": "1676",
+    "Valor": "ETR"
+  },
+  {
+    "Id": "1677",
+    "Valor": "Por turnos"
+  },
+  {
+    "Id": "1678",
+    "Valor": "Bélicos"
+  },
+  {
+    "Id": "1680",
+    "Valor": "Robos"
+  },
+  {
+    "Id": "1681",
+    "Valor": "Piratas"
+  },
+  {
+    "Id": "1684",
+    "Valor": "Fantasía"
+  },
+  {
+    "Id": "1685",
+    "Valor": "Cooperativos"
+  },
+  {
+    "Id": "1687",
+    "Valor": "Sigilo"
+  },
+  {
+    "Id": "1688",
+    "Valor": "Ninjas"
+  },
+  {
+    "Id": "1693",
+    "Valor": "Clásico"
+  },
+  {
+    "Id": "1695",
+    "Valor": "Mundo abierto"
+  },
+  {
+    "Id": "1697",
+    "Valor": "Tercera persona"
+  },
+  {
+    "Id": "1698",
+    "Valor": "Apuntar y clic"
+  },
+  {
+    "Id": "1702",
+    "Valor": "Fabricación"
+  },
+  {
+    "Id": "1708",
+    "Valor": "Tácticos"
+  },
+  {
+    "Id": "1710",
+    "Valor": "Surrealistas"
+  },
+  {
+    "Id": "1714",
+    "Valor": "Psicodélicos"
+  },
+  {
+    "Id": "1716",
+    "Valor": "Roguelike"
+  },
+  {
+    "Id": "1717",
+    "Valor": "Mapas de hexágonos"
+  },
+  {
+    "Id": "1718",
+    "Valor": "MOBA"
+  },
+  {
+    "Id": "1719",
+    "Valor": "Comedia"
+  },
+  {
+    "Id": "1720",
+    "Valor": "Exploración de mazmorras"
+  },
+  {
+    "Id": "1721",
+    "Valor": "Terror psicológico"
+  },
+  {
+    "Id": "1723",
+    "Valor": "ETR de acción"
+  },
+  {
+    "Id": "1730",
+    "Valor": "Sokoban"
+  },
+  {
+    "Id": "1732",
+    "Valor": "Vóxel"
+  },
+  {
+    "Id": "1733",
+    "Valor": "Imperdonable"
+  },
+  {
+    "Id": "1734",
+    "Valor": "De ritmo rápido"
+  },
+  {
+    "Id": "1736",
+    "Valor": "LEGO"
+  },
+  {
+    "Id": "1738",
+    "Valor": "Objetos ocultos"
+  },
+  {
+    "Id": "1741",
+    "Valor": "Estrategia por turnos"
+  },
+  {
+    "Id": "1742",
+    "Valor": "Buena trama"
+  },
+  {
+    "Id": "1743",
+    "Valor": "Lucha"
+  },
+  {
+    "Id": "1746",
+    "Valor": "Baloncesto"
+  },
+  {
+    "Id": "1751",
+    "Valor": "Cómics"
+  },
+  {
+    "Id": "1752",
+    "Valor": "Ritmo"
+  },
+  {
+    "Id": "1753",
+    "Valor": "Monopatines"
+  },
+  {
+    "Id": "1754",
+    "Valor": "MMORPG"
+  },
+  {
+    "Id": "1755",
+    "Valor": "Espacio"
+  },
+  {
+    "Id": "1756",
+    "Valor": "Gran banda sonora"
+  },
+  {
+    "Id": "1759",
+    "Valor": "Muerte permanente"
+  },
+  {
+    "Id": "1770",
+    "Valor": "Juego de tablero"
+  },
+  {
+    "Id": "1773",
+    "Valor": "Arcade"
+  },
+  {
+    "Id": "1774",
+    "Valor": "Disparos"
+  },
+  {
+    "Id": "1775",
+    "Valor": "JcJ"
+  },
+  {
+    "Id": "1777",
+    "Valor": "Steampunk"
+  },
+  {
+    "Id": "3796",
+    "Valor": "Basado en una novela"
+  },
+  {
+    "Id": "3798",
+    "Valor": "Desplazamiento lateral"
+  },
+  {
+    "Id": "3799",
+    "Valor": "Novelas visuales"
+  },
+  {
+    "Id": "3810",
+    "Valor": "Sandbox"
+  },
+  {
+    "Id": "3813",
+    "Valor": "Tácticas en tiempo real"
+  },
+  {
+    "Id": "3814",
+    "Valor": "Disparos en tercera persona"
+  },
+  {
+    "Id": "3834",
+    "Valor": "Exploración"
+  },
+  {
+    "Id": "3835",
+    "Valor": "Posapocalípticos"
+  },
+  {
+    "Id": "3839",
+    "Valor": "Primera persona"
+  },
+  {
+    "Id": "3841",
+    "Valor": "Cooperativos locales"
+  },
+  {
+    "Id": "3843",
+    "Valor": "Cooperativos en línea"
+  },
+  {
+    "Id": "3854",
+    "Valor": "Mitos y leyendas"
+  },
+  {
+    "Id": "3859",
+    "Valor": "Multijugador"
+  },
+  {
+    "Id": "3871",
+    "Valor": "2D"
+  },
+  {
+    "Id": "3877",
+    "Valor": "Plataformas de precisión"
+  },
+  {
+    "Id": "3878",
+    "Valor": "Competitivos"
+  },
+  {
+    "Id": "3916",
+    "Valor": "Vieja escuela"
+  },
+  {
+    "Id": "3920",
+    "Valor": "Cocina"
+  },
+  {
+    "Id": "3934",
+    "Valor": "Inmersivo"
+  },
+  {
+    "Id": "3942",
+    "Valor": "Ciencia ficción"
+  },
+  {
+    "Id": "3952",
+    "Valor": "Góticos"
+  },
+  {
+    "Id": "3955",
+    "Valor": "Juegos de acción de personajes"
+  },
+  {
+    "Id": "3959",
+    "Valor": "Roguelite"
+  },
+  {
+    "Id": "3964",
+    "Valor": "Pixelados"
+  },
+  {
+    "Id": "3965",
+    "Valor": "Épico"
+  },
+  {
+    "Id": "3968",
+    "Valor": "Física"
+  },
+  {
+    "Id": "3978",
+    "Valor": "Supervivencia / Terror"
+  },
+  {
+    "Id": "3987",
+    "Valor": "Históricos"
+  },
+  {
+    "Id": "3993",
+    "Valor": "Combate"
+  },
+  {
+    "Id": "4004",
+    "Valor": "Retro"
+  },
+  {
+    "Id": "4018",
+    "Valor": "Vampiros"
+  },
+  {
+    "Id": "4026",
+    "Valor": "Difíciles"
+  },
+  {
+    "Id": "4036",
+    "Valor": "Parkour"
+  },
+  {
+    "Id": "4046",
+    "Valor": "Dragones"
+  },
+  {
+    "Id": "4057",
+    "Valor": "Magia"
+  },
+  {
+    "Id": "4064",
+    "Valor": "Suspense"
+  },
+  {
+    "Id": "4085",
+    "Valor": "Anime"
+  },
+  {
+    "Id": "4094",
+    "Valor": "Minimalistas"
+  },
+  {
+    "Id": "4102",
+    "Valor": "Carreras de combate"
+  },
+  {
+    "Id": "4106",
+    "Valor": "Acción y aventura"
+  },
+  {
+    "Id": "4115",
+    "Valor": "Ciberpunk"
+  },
+  {
+    "Id": "4136",
+    "Valor": "Divertidos"
+  },
+  {
+    "Id": "4137",
+    "Valor": "Transhumanismo"
+  },
+  {
+    "Id": "4145",
+    "Valor": "Cinematográficos"
+  },
+  {
+    "Id": "4150",
+    "Valor": "Segunda Guerra Mundial"
+  },
+  {
+    "Id": "4155",
+    "Valor": "Basados en clases"
+  },
+  {
+    "Id": "4158",
+    "Valor": "Peleas callejeras"
+  },
+  {
+    "Id": "4161",
+    "Valor": "Tiempo real"
+  },
+  {
+    "Id": "4166",
+    "Valor": "Ambientales"
+  },
+  {
+    "Id": "4168",
+    "Valor": "Militares"
+  },
+  {
+    "Id": "4172",
+    "Valor": "Medievales"
+  },
+  {
+    "Id": "4175",
+    "Valor": "Realistas"
+  },
+  {
+    "Id": "4182",
+    "Valor": "Un jugador"
+  },
+  {
+    "Id": "4184",
+    "Valor": "Ajedrez"
+  },
+  {
+    "Id": "4190",
+    "Valor": "Adictivos"
+  },
+  {
+    "Id": "4191",
+    "Valor": "3D"
+  },
+  {
+    "Id": "4195",
+    "Valor": "Caricaturescos"
+  },
+  {
+    "Id": "4202",
+    "Valor": "Comercio"
+  },
+  {
+    "Id": "4231",
+    "Valor": "Rol de acción"
+  },
+  {
+    "Id": "4234",
+    "Valor": "Corto "
+  },
+  {
+    "Id": "4236",
+    "Valor": "Botín"
+  },
+  {
+    "Id": "4242",
+    "Valor": "Episódico"
+  },
+  {
+    "Id": "4252",
+    "Valor": "Estilizados"
+  },
+  {
+    "Id": "4255",
+    "Valor": "Matamarcianos"
+  },
+  {
+    "Id": "4291",
+    "Valor": "Naves espaciales"
+  },
+  {
+    "Id": "4295",
+    "Valor": "Futuristas"
+  },
+  {
+    "Id": "4305",
+    "Valor": "Coloridos"
+  },
+  {
+    "Id": "4325",
+    "Valor": "Combate por turnos"
+  },
+  {
+    "Id": "4328",
+    "Valor": "Construcción de ciudades"
+  },
+  {
+    "Id": "4342",
+    "Valor": "Oscuros"
+  },
+  {
+    "Id": "4345",
+    "Valor": "Sangriento"
+  },
+  {
+    "Id": "4364",
+    "Valor": "Gran estrategia"
+  },
+  {
+    "Id": "4376",
+    "Valor": "Asesinos"
+  },
+  {
+    "Id": "4400",
+    "Valor": "Abstractos"
+  },
+  {
+    "Id": "4434",
+    "Valor": "Rol japonés"
+  },
+  {
+    "Id": "4474",
+    "Valor": "Rol clásico"
+  },
+  {
+    "Id": "4486",
+    "Valor": "Elige tu propia aventura"
+  },
+  {
+    "Id": "4508",
+    "Valor": "Campañas cooperativas"
+  },
+  {
+    "Id": "4520",
+    "Valor": "Agrícolas"
+  },
+  {
+    "Id": "4559",
+    "Valor": "Eventos rápidos"
+  },
+  {
+    "Id": "4562",
+    "Valor": "Dibujos animados"
+  },
+  {
+    "Id": "4598",
+    "Valor": "Historia alternativa"
+  },
+  {
+    "Id": "4604",
+    "Valor": "Fantasía oscura"
+  },
+  {
+    "Id": "4608",
+    "Valor": "Espadas"
+  },
+  {
+    "Id": "4637",
+    "Valor": "Muerte desde arriba"
+  },
+  {
+    "Id": "4667",
+    "Valor": "Violentos"
+  },
+  {
+    "Id": "4684",
+    "Valor": "Juegos de guerra"
+  },
+  {
+    "Id": "4695",
+    "Valor": "Economía"
+  },
+  {
+    "Id": "4700",
+    "Valor": "Película"
+  },
+  {
+    "Id": "4711",
+    "Valor": "Valor continuo"
+  },
+  {
+    "Id": "4726",
+    "Valor": "Adorables"
+  },
+  {
+    "Id": "4736",
+    "Valor": "Luchador en 2D"
+  },
+  {
+    "Id": "4747",
+    "Valor": "Personalización de personajes"
+  },
+  {
+    "Id": "4754",
+    "Valor": "Política"
+  },
+  {
+    "Id": "4758",
+    "Valor": "Disparos con doble stick"
+  },
+  {
+    "Id": "4777",
+    "Valor": "Luchador espectacular"
+  },
+  {
+    "Id": "4791",
+    "Valor": "De arriba a abajo"
+  },
+  {
+    "Id": "4821",
+    "Valor": "Mechas"
+  },
+  {
+    "Id": "4835",
+    "Valor": "6 grados de libertad"
+  },
+  {
+    "Id": "4840",
+    "Valor": "4 jugadores en modo local"
+  },
+  {
+    "Id": "4845",
+    "Valor": "Capitalismo"
+  },
+  {
+    "Id": "4853",
+    "Valor": "Políticos"
+  },
+  {
+    "Id": "4878",
+    "Valor": "Parodias"
+  },
+  {
+    "Id": "4885",
+    "Valor": "Lluvia de balas"
+  },
+  {
+    "Id": "4947",
+    "Valor": "Romance"
+  },
+  {
+    "Id": "4975",
+    "Valor": "2.5D"
+  },
+  {
+    "Id": "4994",
+    "Valor": "Combate naval"
+  },
+  {
+    "Id": "5030",
+    "Valor": "Distopías"
+  },
+  {
+    "Id": "5055",
+    "Valor": "e-sports"
+  },
+  {
+    "Id": "5094",
+    "Valor": "Narración"
+  },
+  {
+    "Id": "5125",
+    "Valor": "Generación por procedimientos"
+  },
+  {
+    "Id": "5153",
+    "Valor": "Kickstarter"
+  },
+  {
+    "Id": "5154",
+    "Valor": "Puntuación de ataque"
+  },
+  {
+    "Id": "5160",
+    "Valor": "Dinosaurios "
+  },
+  {
+    "Id": "5179",
+    "Valor": "Guerra Fría"
+  },
+  {
+    "Id": "5186",
+    "Valor": "Psicológicos"
+  },
+  {
+    "Id": "5228",
+    "Valor": "Sangre"
+  },
+  {
+    "Id": "5230",
+    "Valor": "Secuela"
+  },
+  {
+    "Id": "5300",
+    "Valor": "Simulador de dios"
+  },
+  {
+    "Id": "5310",
+    "Valor": "Games Workshop"
+  },
+  {
+    "Id": "5348",
+    "Valor": "Mods"
+  },
+  {
+    "Id": "5350",
+    "Valor": "Para toda la familia"
+  },
+  {
+    "Id": "5363",
+    "Valor": "Destrucción"
+  },
+  {
+    "Id": "5372",
+    "Valor": "Conspiraciones"
+  },
+  {
+    "Id": "5379",
+    "Valor": "Plataformas 2D"
+  },
+  {
+    "Id": "5382",
+    "Valor": "Primera Guerra Mundial"
+  },
+  {
+    "Id": "5390",
+    "Valor": "Tiempo de ataque"
+  },
+  {
+    "Id": "5395",
+    "Valor": "Plataformas 3D"
+  },
+  {
+    "Id": "5407",
+    "Valor": "Punto de referencia"
+  },
+  {
+    "Id": "5411",
+    "Valor": "Preciosos"
+  },
+  {
+    "Id": "5432",
+    "Valor": "Programación"
+  },
+  {
+    "Id": "5502",
+    "Valor": "Hackeo"
+  },
+  {
+    "Id": "5537",
+    "Valor": "Plataformas de puzles"
+  },
+  {
+    "Id": "5547",
+    "Valor": "Disparos en escenarios"
+  },
+  {
+    "Id": "5577",
+    "Valor": "RPGMaker"
+  },
+  {
+    "Id": "5608",
+    "Valor": "Emocionales"
+  },
+  {
+    "Id": "5611",
+    "Valor": "Para adultos"
+  },
+  {
+    "Id": "5613",
+    "Valor": "Detectives"
+  },
+  {
+    "Id": "5652",
+    "Valor": "Recolectatlón"
+  },
+  {
+    "Id": "5673",
+    "Valor": "Modernos"
+  },
+  {
+    "Id": "5708",
+    "Valor": "Versiones nuevas"
+  },
+  {
+    "Id": "5711",
+    "Valor": "Basados en equipos"
+  },
+  {
+    "Id": "5716",
+    "Valor": "Misterio"
+  },
+  {
+    "Id": "5727",
+    "Valor": "Béisbol"
+  },
+  {
+    "Id": "5752",
+    "Valor": "Robots"
+  },
+  {
+    "Id": "5765",
+    "Valor": "Personalización de armas"
+  },
+  {
+    "Id": "5794",
+    "Valor": "Ciencia"
+  },
+  {
+    "Id": "5796",
+    "Valor": "Tiempo bala"
+  },
+  {
+    "Id": "5851",
+    "Valor": "Isométricos"
+  },
+  {
+    "Id": "5900",
+    "Valor": "Simulador de caminar"
+  },
+  {
+    "Id": "5914",
+    "Valor": "Tenis"
+  },
+  {
+    "Id": "5923",
+    "Valor": "Humor negro"
+  },
+  {
+    "Id": "5941",
+    "Valor": "Reinicio"
+  },
+  {
+    "Id": "5981",
+    "Valor": "Minería"
+  },
+  {
+    "Id": "5984",
+    "Valor": "Drama"
+  },
+  {
+    "Id": "6041",
+    "Valor": "Caballos"
+  },
+  {
+    "Id": "6052",
+    "Valor": "Noir"
+  },
+  {
+    "Id": "6129",
+    "Valor": "Lógica"
+  },
+  {
+    "Id": "6214",
+    "Valor": "Aves"
+  },
+  {
+    "Id": "6276",
+    "Valor": "Gestión de inventario"
+  },
+  {
+    "Id": "6310",
+    "Valor": "Diplomacia"
+  },
+  {
+    "Id": "6378",
+    "Valor": "Crimen"
+  },
+  {
+    "Id": "6426",
+    "Valor": "Las elecciones importan"
+  },
+  {
+    "Id": "6506",
+    "Valor": "Luchador en 3D"
+  },
+  {
+    "Id": "6621",
+    "Valor": "Pinball"
+  },
+  {
+    "Id": "6625",
+    "Valor": "Manipulación del tiempo"
+  },
+  {
+    "Id": "6650",
+    "Valor": "Desnudos"
+  },
+  {
+    "Id": "6691",
+    "Valor": "Años 90"
+  },
+  {
+    "Id": "6702",
+    "Valor": "Marte"
+  },
+  {
+    "Id": "6730",
+    "Valor": "JcE"
+  },
+  {
+    "Id": "6815",
+    "Valor": "Dibujados a mano"
+  },
+  {
+    "Id": "6869",
+    "Valor": "No lineales"
+  },
+  {
+    "Id": "6910",
+    "Valor": "Marítimos"
+  },
+  {
+    "Id": "6915",
+    "Valor": "Artes marciales"
+  },
+  {
+    "Id": "6948",
+    "Valor": "Roma"
+  },
+  {
+    "Id": "6971",
+    "Valor": "Finales múltiples"
+  },
+  {
+    "Id": "7038",
+    "Valor": "Golf"
+  },
+  {
+    "Id": "7107",
+    "Valor": "Tiempo real con pausas"
+  },
+  {
+    "Id": "7108",
+    "Valor": "Grupo"
+  },
+  {
+    "Id": "7113",
+    "Valor": "Financiación colectiva"
+  },
+  {
+    "Id": "7178",
+    "Valor": "Juegos de fiesta"
+  },
+  {
+    "Id": "7208",
+    "Valor": "Protagonista femenina"
+  },
+  {
+    "Id": "7250",
+    "Valor": "Lineales"
+  },
+  {
+    "Id": "7309",
+    "Valor": "Esquí"
+  },
+  {
+    "Id": "7328",
+    "Valor": "Bolos"
+  },
+  {
+    "Id": "7332",
+    "Valor": "Construcción de bases"
+  },
+  {
+    "Id": "7368",
+    "Valor": "Multijugador local"
+  },
+  {
+    "Id": "7423",
+    "Valor": "Francotiradores"
+  },
+  {
+    "Id": "7432",
+    "Valor": "Lovecraftianos"
+  },
+  {
+    "Id": "7478",
+    "Valor": "Illuminati"
+  },
+  {
+    "Id": "7481",
+    "Valor": "Para mando"
+  },
+  {
+    "Id": "7556",
+    "Valor": "Dados"
+  },
+  {
+    "Id": "7569",
+    "Valor": "Movimiento basado en cuadrícula"
+  },
+  {
+    "Id": "7622",
+    "Valor": "Todoterreno"
+  },
+  {
+    "Id": "7702",
+    "Valor": "Narrativos"
+  },
+  {
+    "Id": "7743",
+    "Valor": "Años 80"
+  },
+  {
+    "Id": "7782",
+    "Valor": "Clásico de culto"
+  },
+  {
+    "Id": "7918",
+    "Valor": "Enanos"
+  },
+  {
+    "Id": "7926",
+    "Valor": "Inteligencia artificial"
+  },
+  {
+    "Id": "7948",
+    "Valor": "Banda sonora"
+  },
+  {
+    "Id": "8013",
+    "Valor": "Software"
+  },
+  {
+    "Id": "8075",
+    "Valor": "TrackIR"
+  },
+  {
+    "Id": "8093",
+    "Valor": "Minijuegos"
+  },
+  {
+    "Id": "8122",
+    "Valor": "Editor de niveles"
+  },
+  {
+    "Id": "8253",
+    "Valor": "Generación por procedimientos basada en música"
+  },
+  {
+    "Id": "8369",
+    "Valor": "Investigación"
+  },
+  {
+    "Id": "8461",
+    "Valor": "Bien escrito"
+  },
+  {
+    "Id": "8666",
+    "Valor": "Corredores"
+  },
+  {
+    "Id": "8945",
+    "Valor": "Gestión de recursos"
+  },
+  {
+    "Id": "9130",
+    "Valor": "Hentai"
+  },
+  {
+    "Id": "9157",
+    "Valor": "Subacuáticos"
+  },
+  {
+    "Id": "9204",
+    "Valor": "Simulador inmersivo"
+  },
+  {
+    "Id": "9271",
+    "Valor": "Cartas coleccionables"
+  },
+  {
+    "Id": "9541",
+    "Valor": "Demonios"
+  },
+  {
+    "Id": "9551",
+    "Valor": "Simulador de citas"
+  },
+  {
+    "Id": "9564",
+    "Valor": "Caza"
+  },
+  {
+    "Id": "9592",
+    "Valor": "Narraciones dinámicas"
+  },
+  {
+    "Id": "9803",
+    "Valor": "Nieve"
+  },
+  {
+    "Id": "9994",
+    "Valor": "Experiencia"
+  },
+  {
+    "Id": "10235",
+    "Valor": "Simulador de vida"
+  },
+  {
+    "Id": "10383",
+    "Valor": "Transportes"
+  },
+  {
+    "Id": "10397",
+    "Valor": "Memes"
+  },
+  {
+    "Id": "10437",
+    "Valor": "Preguntas"
+  },
+  {
+    "Id": "10679",
+    "Valor": "Viajes en el tiempo"
+  },
+  {
+    "Id": "10695",
+    "Valor": "Rol en grupo"
+  },
+  {
+    "Id": "10808",
+    "Valor": "Sobrenaturales"
+  },
+  {
+    "Id": "10816",
+    "Valor": "Pantalla dividida"
+  },
+  {
+    "Id": "11014",
+    "Valor": "Ficción interactiva"
+  },
+  {
+    "Id": "11095",
+    "Valor": "Avalancha de jefes"
+  },
+  {
+    "Id": "11104",
+    "Valor": "Combate con vehículos"
+  },
+  {
+    "Id": "11123",
+    "Valor": "Solo ratón"
+  },
+  {
+    "Id": "11333",
+    "Valor": "Protagonista villano"
+  },
+  {
+    "Id": "11634",
+    "Valor": "Vikingos"
+  },
+  {
+    "Id": "12057",
+    "Valor": "Tutoriales"
+  },
+  {
+    "Id": "12095",
+    "Valor": "Contenido sexual"
+  },
+  {
+    "Id": "12190",
+    "Valor": "Boxeo"
+  },
+  {
+    "Id": "12286",
+    "Valor": "Warhammer 40K"
+  },
+  {
+    "Id": "12472",
+    "Valor": "Gestión"
+  },
+  {
+    "Id": "13070",
+    "Valor": "Solitario"
+  },
+  {
+    "Id": "13190",
+    "Valor": "América"
+  },
+  {
+    "Id": "13276",
+    "Valor": "Tanques"
+  },
+  {
+    "Id": "13382",
+    "Valor": "Tiro con arco"
+  },
+  {
+    "Id": "13577",
+    "Valor": "Navegación"
+  },
+  {
+    "Id": "13782",
+    "Valor": "Experimentales"
+  },
+  {
+    "Id": "13906",
+    "Valor": "Desarrollo de juegos"
+  },
+  {
+    "Id": "14139",
+    "Valor": "Tácticas por turnos"
+  },
+  {
+    "Id": "14153",
+    "Valor": "Dragones y Mazmorras"
+  },
+  {
+    "Id": "14720",
+    "Valor": "Nostalgia"
+  },
+  {
+    "Id": "14906",
+    "Valor": "Controles incómodos"
+  },
+  {
+    "Id": "15045",
+    "Valor": "Vuelo"
+  },
+  {
+    "Id": "15172",
+    "Valor": "Conversación"
+  },
+  {
+    "Id": "15277",
+    "Valor": "Filosóficos"
+  },
+  {
+    "Id": "15339",
+    "Valor": "Documental"
+  },
+  {
+    "Id": "15564",
+    "Valor": "Pesca"
+  },
+  {
+    "Id": "15868",
+    "Valor": "Motocross"
+  },
+  {
+    "Id": "15954",
+    "Valor": "Protagonista silencioso"
+  },
+  {
+    "Id": "16094",
+    "Valor": "Mitología"
+  },
+  {
+    "Id": "16250",
+    "Valor": "Apuestas"
+  },
+  {
+    "Id": "16598",
+    "Valor": "Simulador espacial"
+  },
+  {
+    "Id": "16689",
+    "Valor": "Gestión del tiempo"
+  },
+  {
+    "Id": "17015",
+    "Valor": "Hombres lobo"
+  },
+  {
+    "Id": "17305",
+    "Valor": "Rol estratégico"
+  },
+  {
+    "Id": "17337",
+    "Valor": "Lemmings"
+  },
+  {
+    "Id": "17389",
+    "Valor": "Mesa"
+  },
+  {
+    "Id": "17770",
+    "Valor": "Multijugador asíncrono"
+  },
+  {
+    "Id": "17894",
+    "Valor": "Gatos"
+  },
+  {
+    "Id": "17927",
+    "Valor": "Billar"
+  },
+  {
+    "Id": "18594",
+    "Valor": "FMV"
+  },
+  {
+    "Id": "19568",
+    "Valor": "Ciclismo"
+  },
+  {
+    "Id": "19780",
+    "Valor": "Submarinos"
+  },
+  {
+    "Id": "19995",
+    "Valor": "Humor negro"
+  },
+  {
+    "Id": "21006",
+    "Valor": "Subterráneos"
+  },
+  {
+    "Id": "21725",
+    "Valor": "Juegos de rol tácticos"
+  },
+  {
+    "Id": "21978",
+    "Valor": "RV"
+  },
+  {
+    "Id": "22602",
+    "Valor": "Agricultura"
+  },
+  {
+    "Id": "22955",
+    "Valor": "Minigolf"
+  },
+  {
+    "Id": "24003",
+    "Valor": "Juegos de palabras"
+  },
+  {
+    "Id": "24904",
+    "Valor": "No aptos para oficinas"
+  },
+  {
+    "Id": "25085",
+    "Valor": "Táctiles"
+  },
+  {
+    "Id": "26921",
+    "Valor": "Simulador de política"
+  },
+  {
+    "Id": "27758",
+    "Valor": "Control de voz"
+  },
+  {
+    "Id": "28444",
+    "Valor": "Snowboard"
+  },
+  {
+    "Id": "29363",
+    "Valor": "Visión 3D"
+  },
+  {
+    "Id": "29482",
+    "Valor": "Tipo «Dark Souls»"
+  },
+  {
+    "Id": "29855",
+    "Valor": "Ambiente"
+  },
+  {
+    "Id": "30358",
+    "Valor": "Naturaleza"
+  },
+  {
+    "Id": "30927",
+    "Valor": "Zorros"
+  },
+  {
+    "Id": "31275",
+    "Valor": "Basados en texto"
+  },
+  {
+    "Id": "31579",
+    "Valor": "Otome"
+  },
+  {
+    "Id": "32322",
+    "Valor": "Construcción de barajas"
+  },
+  {
+    "Id": "33572",
+    "Valor": "Mahjong"
+  },
+  {
+    "Id": "35079",
+    "Valor": "Simulador de trabajo"
+  },
+  {
+    "Id": "42089",
+    "Valor": "Sustos repentinos"
+  },
+  {
+    "Id": "42329",
+    "Valor": "Codificación"
+  },
+  {
+    "Id": "42804",
+    "Valor": "Roguelike de acción"
+  },
+  {
+    "Id": "44868",
+    "Valor": "LGBTQ+"
+  },
+  {
+    "Id": "47827",
+    "Valor": "Lucha libre"
+  },
+  {
+    "Id": "49213",
+    "Valor": "Rugby"
+  },
+  {
+    "Id": "51306",
+    "Valor": "Extranjeros"
+  },
+  {
+    "Id": "56690",
+    "Valor": "Disparos sobre raíles"
+  },
+  {
+    "Id": "61357",
+    "Valor": "Música electrónica"
+  },
+  {
+    "Id": "71389",
+    "Valor": "Ortografía"
+  },
+  {
+    "Id": "87918",
+    "Valor": "Simulador agrícola"
+  },
+  {
+    "Id": "91114",
+    "Valor": "Gestión de tiendas"
+  },
+  {
+    "Id": "92092",
+    "Valor": "Jets"
+  },
+  {
+    "Id": "96359",
+    "Valor": "Patinaje"
+  },
+  {
+    "Id": "97376",
+    "Valor": "Acogedores"
+  },
+  {
+    "Id": "102530",
+    "Valor": "Elfos"
+  },
+  {
+    "Id": "117648",
+    "Valor": "Música de 8 bits"
+  },
+  {
+    "Id": "123332",
+    "Valor": "Motos y bicicletas"
+  },
+  {
+    "Id": "129761",
+    "Valor": "ATV"
+  },
+  {
+    "Id": "143739",
+    "Valor": "Electrónica"
+  },
+  {
+    "Id": "150626",
+    "Valor": "Juegos de azar"
+  },
+  {
+    "Id": "158638",
+    "Valor": "Críquet"
+  },
+  {
+    "Id": "176733",
+    "Valor": "Combinar piezas"
+  },
+  {
+    "Id": "176981",
+    "Valor": "Battle Royale"
+  },
+  {
+    "Id": "180368",
+    "Valor": "Fe"
+  },
+  {
+    "Id": "189941",
+    "Valor": "Música instrumental"
+  },
+  {
+    "Id": "198631",
+    "Valor": "Mazmorra misteriosa"
+  },
+  {
+    "Id": "198913",
+    "Valor": "Motos"
+  },
+  {
+    "Id": "220585",
+    "Valor": "Simulador de colonias"
+  },
+  {
+    "Id": "233824",
+    "Valor": "Largometraje"
+  },
+  {
+    "Id": "252854",
+    "Valor": "BMX"
+  },
+  {
+    "Id": "255534",
+    "Valor": "Automatización"
+  },
+  {
+    "Id": "323922",
+    "Valor": "Musou"
+  },
+  {
+    "Id": "324176",
+    "Valor": "Hockey"
+  },
+  {
+    "Id": "337964",
+    "Valor": "Música Rock"
+  },
+  {
+    "Id": "348922",
+    "Valor": "Steam Machine"
+  },
+  {
+    "Id": "353880",
+    "Valor": "Disparos y botín"
+  },
+  {
+    "Id": "363767",
+    "Valor": "Snooker"
+  },
+  {
+    "Id": "379975",
+    "Valor": "Clics"
+  },
+  {
+    "Id": "454187",
+    "Valor": "Roguelike tradicional"
+  },
+  {
+    "Id": "552282",
+    "Valor": "Reconfortantes"
+  },
+  {
+    "Id": "603297",
+    "Valor": "Hardware"
+  },
+  {
+    "Id": "615955",
+    "Valor": "Inactividad"
+  },
+  {
+    "Id": "620519",
+    "Valor": "Disparos de héroe"
+  },
+  {
+    "Id": "745697",
+    "Valor": "Deducción social"
+  },
+  {
+    "Id": "769306",
+    "Valor": "Habitación de escape"
+  },
+  {
+    "Id": "776177",
+    "Valor": "Vídeo en 360°"
+  },
+  {
+    "Id": "791774",
+    "Valor": "Combate con cartas"
+  },
+  {
+    "Id": "847164",
+    "Valor": "Voleibol"
+  },
+  {
+    "Id": "856791",
+    "Valor": "RV asimétrica"
+  },
+  {
+    "Id": "916648",
+    "Valor": "Coleccionista de criaturas"
+  },
+  {
+    "Id": "922563",
+    "Valor": "Roguevania"
+  },
+  {
+    "Id": "1023537",
+    "Valor": "Disparos clásicos"
+  },
+  {
+    "Id": "1084988",
+    "Valor": "Lucha automática"
+  },
+  {
+    "Id": "1091588",
+    "Valor": "Constructor de barajas Roguelike"
+  },
+  {
+    "Id": "1100686",
+    "Valor": "Simulador de brotes"
+  },
+  {
+    "Id": "1100687",
+    "Valor": "Simulador de automóviles"
+  },
+  {
+    "Id": "1100688",
+    "Valor": "Simulador médico"
+  },
+  {
+    "Id": "1100689",
+    "Valor": "Supervivencia en mundo abierto"
+  },
+  {
+    "Id": "1199779",
+    "Valor": "Disparos y extracción"
+  },
+  {
+    "Id": "1220528",
+    "Valor": "Simulador de aficiones"
+  },
+  {
+    "Id": "1254546",
+    "Valor": "Fútbol"
+  },
+  {
+    "Id": "1254552",
+    "Valor": "Fútbol americano"
+  }
+]
