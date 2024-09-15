@@ -94,147 +94,158 @@ namespace APIs.Steam
 								media.Video = datos.Datos.Videos[0].Mp4.Enlace;
 							}
 						}
-					}						
+					}
 
 					//------------------------------------------------------
 
-					Encoding Utf8 = Encoding.UTF8;
-					byte[] utf8Bytes = Utf8.GetBytes(datos.Datos.Nombre);
-					string nombre = Utf8.GetString(utf8Bytes);
+					string nombre = string.Empty;
 
-					Juegos.Juego juego = new Juegos.Juego
+					if (datos.Datos != null)
 					{
-						IdSteam = int.Parse(datos.Datos.Id),
-						Nombre = nombre,
-						Imagenes = imagenes,
-						Caracteristicas = caracteristicas,
-						Media = media,
-						FechaSteamAPIComprobacion = DateTime.Now
-					};
-
-					if (datos.Datos.Tipo == "dlc")
-					{
-						juego.Tipo = Juegos.JuegoTipo.DLC;
-
-						Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id);
-
-						if (maestro != null)
+						if (string.IsNullOrEmpty(datos.Datos.Nombre) == false)
 						{
-							if (maestro.IdSteam > 0) 
-							{
-								juego.Maestro = maestro.Id.ToString();
-							}
-						}
-					}
-					else if (datos.Datos.Tipo == "music")
-					{
-						juego.Tipo = Juegos.JuegoTipo.Music;
-					}
-					else if (datos.Datos.Tipo == "software" || datos.Datos.Tipo == "application")
-					{
-						juego.Tipo = Juegos.JuegoTipo.Software;
-					}
-					else
-					{
-						juego.Tipo = Juegos.JuegoTipo.Game;
-					}
-
-					if (string.IsNullOrEmpty(datos.Datos.Free2Play) == false)
-					{
-						juego.FreeToPlay = datos.Datos.Free2Play;
-					}
-
-					juego.MayorEdad = "false";
-
-					//if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
-					//{
-					//	try
-					//	{
-					//		if (int.Parse(datos.Datos.MayorEdad) >= 18)
-					//		{
-					//			juego.MayorEdad = "true";
-					//		}
-					//	}
-					//	catch {}
-					//}
-
-					if (datos.Datos.Categorias != null)
-					{
-						if (datos.Datos.Categorias.Count > 0)
-						{
-							List<string> categorias = new List<string>();
-
-							foreach (var categoria in datos.Datos.Categorias)
-							{
-								categorias.Add(categoria.Id);
-							}
-
-							juego.Categorias = categorias;
+							Encoding Utf8 = Encoding.UTF8;
+							byte[] utf8Bytes = Utf8.GetBytes(datos.Datos.Nombre);
+							nombre = Utf8.GetString(utf8Bytes);
 						}
 					}
 
-					if (datos.Datos.Generos != null)
+					if (string.IsNullOrEmpty(nombre) == false)
 					{
-						if (datos.Datos.Generos.Count > 0)
+						Juegos.Juego juego = new Juegos.Juego
 						{
-							List<string> generos = new List<string>();
+							IdSteam = int.Parse(datos.Datos.Id),
+							Nombre = nombre,
+							Imagenes = imagenes,
+							Caracteristicas = caracteristicas,
+							Media = media,
+							FechaSteamAPIComprobacion = DateTime.Now
+						};
 
-							foreach (var categoria in datos.Datos.Generos)
-							{
-								generos.Add(categoria.Id);
-							}
-
-							juego.Generos = generos;
-						}
-					}
-
-					try
-					{
-						if (datos.Datos.Precio != null)
+						if (datos.Datos.Tipo == "dlc")
 						{
-							string descuento = datos.Datos.Precio.Descuento;
+							juego.Tipo = Juegos.JuegoTipo.DLC;
 
-							if (descuento != null)
+							Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id);
+
+							if (maestro != null)
 							{
-								descuento = descuento.Replace("%", null);
-								descuento = descuento.Replace("-", null);
-							}
-
-							string precioFormateado = datos.Datos.Precio.Formateado;
-
-							if (precioFormateado != null)
-							{
-								if (precioFormateado == "Free")
+								if (maestro.IdSteam > 0)
 								{
-									precioFormateado = "0.00";
+									juego.Maestro = maestro.Id.ToString();
+								}
+							}
+						}
+						else if (datos.Datos.Tipo == "music")
+						{
+							juego.Tipo = Juegos.JuegoTipo.Music;
+						}
+						else if (datos.Datos.Tipo == "software" || datos.Datos.Tipo == "application")
+						{
+							juego.Tipo = Juegos.JuegoTipo.Software;
+						}
+						else
+						{
+							juego.Tipo = Juegos.JuegoTipo.Game;
+						}
+
+						if (string.IsNullOrEmpty(datos.Datos.Free2Play) == false)
+						{
+							juego.FreeToPlay = datos.Datos.Free2Play;
+						}
+
+						juego.MayorEdad = "false";
+
+						//if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
+						//{
+						//	try
+						//	{
+						//		if (int.Parse(datos.Datos.MayorEdad) >= 18)
+						//		{
+						//			juego.MayorEdad = "true";
+						//		}
+						//	}
+						//	catch {}
+						//}
+
+						if (datos.Datos.Categorias != null)
+						{
+							if (datos.Datos.Categorias.Count > 0)
+							{
+								List<string> categorias = new List<string>();
+
+								foreach (var categoria in datos.Datos.Categorias)
+								{
+									categorias.Add(categoria.Id);
 								}
 
-								precioFormateado = precioFormateado.Replace("€", null);
-								precioFormateado = precioFormateado.Replace(",", ".");
-								precioFormateado = precioFormateado.Replace(".--", ".00");
+								juego.Categorias = categorias;
 							}
-
-							string enlacePrecio = "https://store.steampowered.com/app/" + datos.Datos.Id;
-
-							Juegos.JuegoPrecio precio = new Juegos.JuegoPrecio
-							{
-								Descuento = int.Parse(descuento),
-								DRM = Juegos.JuegoDRM.Steam,
-								Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
-								Moneda = JuegoMoneda.Euro,
-								FechaDetectado = DateTime.Now,
-								FechaActualizacion = DateTime.Now,
-								Enlace = enlacePrecio,
-								Tienda = "steam"
-							};
-
-							juego.PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio };
-							juego.PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio };
 						}
+
+						if (datos.Datos.Generos != null)
+						{
+							if (datos.Datos.Generos.Count > 0)
+							{
+								List<string> generos = new List<string>();
+
+								foreach (var categoria in datos.Datos.Generos)
+								{
+									generos.Add(categoria.Id);
+								}
+
+								juego.Generos = generos;
+							}
+						}
+
+						try
+						{
+							if (datos.Datos.Precio != null)
+							{
+								string descuento = datos.Datos.Precio.Descuento;
+
+								if (descuento != null)
+								{
+									descuento = descuento.Replace("%", null);
+									descuento = descuento.Replace("-", null);
+								}
+
+								string precioFormateado = datos.Datos.Precio.Formateado;
+
+								if (precioFormateado != null)
+								{
+									if (precioFormateado == "Free")
+									{
+										precioFormateado = "0.00";
+									}
+
+									precioFormateado = precioFormateado.Replace("€", null);
+									precioFormateado = precioFormateado.Replace(",", ".");
+									precioFormateado = precioFormateado.Replace(".--", ".00");
+								}
+
+								string enlacePrecio = "https://store.steampowered.com/app/" + datos.Datos.Id;
+
+								Juegos.JuegoPrecio precio = new Juegos.JuegoPrecio
+								{
+									Descuento = int.Parse(descuento),
+									DRM = Juegos.JuegoDRM.Steam,
+									Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
+									Moneda = JuegoMoneda.Euro,
+									FechaDetectado = DateTime.Now,
+									FechaActualizacion = DateTime.Now,
+									Enlace = enlacePrecio,
+									Tienda = "steam"
+								};
+
+								juego.PrecioActualesTiendas = new List<Juegos.JuegoPrecio> { precio };
+								juego.PrecioMinimosHistoricos = new List<Juegos.JuegoPrecio> { precio };
+							}
+						}
+						catch { }
+
+						return juego;
 					}
-					catch { }
-					
-					return juego;
 				}
 			}
 

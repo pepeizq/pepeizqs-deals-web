@@ -70,7 +70,15 @@ namespace APIs.Humble
 
 		public static string ReferidoChoice(string enlace)
 		{
-			return enlace + "?refc=gXsa9X&partner=pepeizq";
+            enlace = enlace + "?refc=gXsa9X&partner=pepeizq";
+
+            enlace = enlace.Replace(":", "%3A");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("?", "%3F");
+            enlace = enlace.Replace("=", "%3D");
+
+            return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
 		}
 
 		public static void RecopilarOfertas(string html)

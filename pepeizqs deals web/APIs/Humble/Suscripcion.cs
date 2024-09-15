@@ -45,8 +45,16 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			return enlace + "?partner=pepeizq";
-		}
+            enlace = enlace + "?partner=pepeizq";
+
+            enlace = enlace.Replace(":", "%3A");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("/", "%2F");
+            enlace = enlace.Replace("?", "%3F");
+            enlace = enlace.Replace("=", "%3D");
+
+            return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
+        }
 
 		public static Suscripciones2.Suscripcion GenerarAntiguo()
 		{

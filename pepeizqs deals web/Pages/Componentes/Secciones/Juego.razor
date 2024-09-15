@@ -47,16 +47,6 @@
 		}
 	}
 
-	.descripcion-datos2 {
-		grid-template-columns: 67fr 33fr;
-	}
-
-	@@media(max-width: 1000px) {
-		.descripcion-datos2 {
-			grid-template-columns: 1fr;
-		}
-	}
-
 	.boton-expandir {
 		transition: transform .2s;
 		background-color: var(--fondoBotonPequeño);
@@ -929,7 +919,7 @@
 			}
 		}
 
-		<div class="descripcion-datos2" style="display: grid; margin-top: 50px; gap: 30px;">
+		<div class="descripcion-datos" style="display: grid; margin-top: 50px; gap: 30px;">
 			@if (juego.Caracteristicas != null)
 			{
 				@if (string.IsNullOrEmpty(juego.Caracteristicas.Descripcion) == false)
@@ -1157,12 +1147,7 @@
 						}
 					</div>
 				}
-			}
-		</div>
 
-		@if (juego.Categorias != null || juego.Etiquetas != null)
-		{
-			<div class="descripcion-datos" style="display: grid; margin-top: 50px; gap: 30px;">
 				@if (juego.Categorias != null)
 				{
 					if (juego.Categorias.Count > 0)
@@ -1174,7 +1159,7 @@
 							<div style="font-size: 14px;">
 								@Idiomas.CogerCadena(idioma, "String50", "Game")
 							</div>
-							<hr/>
+							<hr />
 
 							<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px;">
 								@foreach (var categoria in juego.Categorias)
@@ -1199,8 +1184,8 @@
 										global::BaseDatos.Errores.Insertar.Mensaje("Categoría no encontrada", categoria + " - " + juego.Nombre + ": https://store.steampowered.com/api/appdetails/?appids=" + juego.IdSteam.ToString() + "&l=english");
 									}
 								}
-							</div>					
-						</div>	
+							</div>
+						</div>
 					}
 				}
 
@@ -1215,7 +1200,7 @@
 							<div style="font-size: 14px;">
 								@Idiomas.CogerCadena(idioma, "String48", "Game")
 							</div>
-							<hr/>
+							<hr />
 
 							<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px;">
 								@foreach (var etiqueta in juego.Etiquetas)
@@ -1241,8 +1226,8 @@
 						</div>
 					}
 				}
-			</div>
-		}
+			}
+		</div>
 
 		@if (DLCs.Count > 0)
 		{
