@@ -48,34 +48,6 @@
     "Valor": "Estas ofertas son mínimos históricos que tienen por primera vez los juegos."
   },
   {
-    "Id": "Tooltip1",
-    "Valor": "Ha estado en:"
-  },
-  {
-    "Id": "Tooltip2",
-    "Valor": "1 bundle"
-  },
-  {
-    "Id": "Tooltip3",
-    "Valor": "{0} bundles"
-  },
-  {
-    "Id": "Tooltip4",
-    "Valor": "1 vez gratis"
-  },
-  {
-    "Id": "Tooltip5",
-    "Valor": "{0} veces gratis"
-  },
-  {
-    "Id": "Tooltip6",
-    "Valor": "1 suscripción"
-  },
-  {
-    "Id": "Tooltip7",
-    "Valor": "{0} suscripciones"
-  },
-  {
     "Id": "Filter",
     "Valor": "Filtro"
   },

@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Has been in:"
+  },
+  {
+    "Id": "String2",
+    "Valor": "1 bundle"
+  },
+  {
+    "Id": "String3",
+    "Valor": "{0} bundles"
+  },
+  {
+    "Id": "String4",
+    "Valor": "1 free"
+  },
+  {
+    "Id": "String5",
+    "Valor": "{0} free"
+  },
+  {
+    "Id": "String6",
+    "Valor": "1 subscription"
+  },
+  {
+    "Id": "String7",
+    "Valor": "{0} subscriptions"
+  },
+  {
+    "Id": "String8",
+    "Valor": "You already have this game on Steam"
+  },
+  {
+    "Id": "String9",
+    "Valor": "You don't have this game on Steam"
+  },
+  {
+    "Id": "String10",
+    "Valor": "This game is on your wishlist"
+  }
+]

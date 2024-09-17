@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
@@ -9,7 +8,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion, int deck = 0)
 		{
 			Juego juego = JuegoCrear.Generar();
 
@@ -141,6 +140,11 @@ namespace BaseDatos.Tiendas
 						}
 
 						juego.Etiquetas = etiquetas;
+
+						if (deck > 0)
+						{
+							juego.Deck = Enum.Parse<JuegoDeck>(deck.ToString());
+						}
 
 						Juegos.Precios.Actualizar(juego, oferta, conexion, actualizarAPI);
 					}

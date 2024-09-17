@@ -62,17 +62,17 @@ namespace Herramientas
 				{
 					if (usuarioTieneJuego == true)
 					{
-						datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "Tooltip.String1");
+						datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String8", "Tooltip");
 					}
 					else
 					{
 						if (usuarioDeseaJuego == true)
 						{
-							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "Tooltip.String3");
+							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String10", "Tooltip");
 						}
 						else
 						{
-							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "Tooltip.String2");
+							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String9", "Tooltip");
 						}
 					}
 				}
@@ -86,11 +86,11 @@ namespace Herramientas
 			{
 				if (juego.Bundles.Count == 1)
 				{
-					datos.Bundles = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip2", "Index");
+					datos.Bundles = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
 				}
 				else if (juego.Bundles.Count > 1)
 				{
-					datos.Bundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip3", "Index"), juego.Bundles.Count.ToString());
+					datos.Bundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
 				}
 			}
 
@@ -98,11 +98,11 @@ namespace Herramientas
 			{
 				if (juego.Gratis.Count == 1)
 				{
-					datos.Gratis = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip4", "Index");
+					datos.Gratis = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
 				}
 				else if (juego.Gratis.Count > 1)
 				{
-					datos.Gratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip5", "Index"), juego.Gratis.Count.ToString());
+					datos.Gratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
 			}
 
@@ -110,11 +110,11 @@ namespace Herramientas
 			{
 				if (juego.Suscripciones.Count == 1)
 				{
-					datos.Suscripciones = Herramientas.Idiomas.CogerCadena(idioma, "Tooltip6", "Index");
+					datos.Suscripciones = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
 				}
 				else if (juego.Suscripciones.Count > 1)
 				{
-					datos.Suscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Tooltip7", "Index"), juego.Suscripciones.Count.ToString());
+					datos.Suscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
 				}
 			}
 

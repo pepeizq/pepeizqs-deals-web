@@ -43,6 +43,62 @@ else
 
 	<hr>
 
+	@if (idsLista.Count > 0)
+	{
+		<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px; margin-bottom: 20px;">
+			@foreach (var id in idsLista)
+			{
+				if (id.Contains("t") == true)
+				{
+					string cadena = id.Replace("t", null);
+					string etiqueta = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Tags");
+
+					if (string.IsNullOrEmpty(etiqueta) == false)
+					{
+						<button @onclick="(e => CambiarEtiqueta(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+								<div style="font-size: 14px;">@etiqueta</div>
+								<i class="fa-solid fa-xmark"></i>
+							</div>
+						</button>
+					}
+				}
+
+				if (id.Contains("c") == true)
+				{
+					string cadena = id.Replace("c", null);
+					string categoria = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Categories");
+
+					if (string.IsNullOrEmpty(categoria) == false)
+					{
+						<button @onclick="(e => CambiarCategoria(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+								<div style="font-size: 14px;">@categoria</div>
+								<i class="fa-solid fa-xmark"></i>
+							</div>
+						</button>
+					}
+				}
+
+				if (id.Contains("g") == true)
+				{
+					string cadena = id.Replace("g", null);
+					string generos = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Genres");
+
+					if (string.IsNullOrEmpty(generos) == false)
+					{
+						<button @onclick="(e => CambiarGenero(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+								<div style="font-size: 14px;">@generos</div>
+								<i class="fa-solid fa-xmark"></i>
+							</div>
+						</button>
+					}
+				}
+			}
+		</div>		
+	}
+
 	<div style="display: flex; align-items: start; gap: 20px;">
 		<div style="width: 30%; display: flex; flex-direction: column; gap: 20px;">
 			@if (etiquetas.Count > 0)
@@ -297,24 +353,6 @@ else
 			CargarGeneros();
 
 			idsLista = Herramientas.Listados.Generar(ids);
-
-			foreach (var id in idsLista)
-			{
-				if (id.Contains("t") == true)
-				{
-					enseñarEtiquetas = true;
-				}
-
-				if (id.Contains("c") == true)
-				{
-					enseñarCategorias = true;
-				}
-
-				if (id.Contains("g") == true)
-				{
-					enseñarGeneros = true;
-				}
-			}
 
 			resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
 

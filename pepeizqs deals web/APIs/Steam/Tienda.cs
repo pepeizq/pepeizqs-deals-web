@@ -37,9 +37,30 @@ namespace APIs.Steam
             return enlace + "?curator_clanid=33500256";
         }
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+			string añadirDeck = string.Empty;
+			int deck = 0;
+
+			if (DateTime.Now.Hour > 0 && DateTime.Now.Hour < 10)
+			{
+				Random rnd = new Random();
+				int azar = rnd.Next(1, 2);
+
+				if (azar == 1)
+				{
+					añadirDeck = "&deck_compatibility=3";
+					deck = 3;
+				}
+
+				if (azar == 2)
+				{
+					añadirDeck = "&deck_compatibility=2";
+					deck = 2;
+				}
+			}
 
 			int juegos = 0;
 
@@ -69,7 +90,7 @@ namespace APIs.Steam
 
 				if (mirarOfertas == true)
 				{				
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english");
+					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english" + añadirDeck);
 
 					try
 					{
@@ -324,7 +345,7 @@ namespace APIs.Steam
 
 												try
 												{
-													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, etiquetas, conexion);
+													BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, etiquetas, conexion, deck);
 												}
 												catch (Exception ex)
 												{

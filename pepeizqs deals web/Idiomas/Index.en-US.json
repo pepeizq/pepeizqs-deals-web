@@ -48,34 +48,6 @@
     "Valor": "Load more historical lows"
   },
   {
-    "Id": "Tooltip1",
-    "Valor": "Has been in:"
-  },
-  {
-    "Id": "Tooltip2",
-    "Valor": "1 bundle"
-  },
-  {
-    "Id": "Tooltip3",
-    "Valor": "{0} bundles"
-  },
-  {
-    "Id": "Tooltip4",
-    "Valor": "1 free"
-  },
-  {
-    "Id": "Tooltip5",
-    "Valor": "{0} free"
-  },
-  {
-    "Id": "Tooltip6",
-    "Valor": "1 subscription"
-  },
-  {
-    "Id": "Tooltip7",
-    "Valor": "{0} subscriptions"
-  },
-  {
     "Id": "Filter",
     "Valor": "Filter"
   },

@@ -338,17 +338,5 @@
   {
     "Id": "Month.12",
     "Valor": "Diciembre"
-  },
-  {
-    "Id": "Tooltip.String1",
-    "Valor": "Ya tienes este juego en Steam"
-  },
-  {
-    "Id": "Tooltip.String2",
-    "Valor": "No tienes este juego en Steam"
-  },
-  {
-    "Id": "Tooltip.String3",
-    "Valor": "Este juego está en tu lista de deseados"
   }
 ]

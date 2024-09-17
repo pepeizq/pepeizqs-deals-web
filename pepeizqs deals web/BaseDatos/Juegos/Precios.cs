@@ -97,7 +97,7 @@ namespace BaseDatos.Juegos
 							{
 								bool notificar = false;
 
-								if (decimal.Add(tempPrecio, 0.2m) < minimo.Precio)
+								if (decimal.Add(tempPrecio, 0.1m) < minimo.Precio)
 								{
 									notificar = true;
 								}

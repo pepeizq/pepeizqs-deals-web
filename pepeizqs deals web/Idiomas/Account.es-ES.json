@@ -65,7 +65,7 @@
   },
   {
     "Id": "Notifications2",
-    "Valor": "Se te notificará por correo cuando un juego de tu lista de deseados alcance un nuevo precio mínimo histórico."
+    "Valor": "Se te notificará por correo cuando un juego de tu lista de deseados tenga un nuevo precio mínimo histórico."
   },
   {
     "Id": "Notifications3",
@@ -98,6 +98,10 @@
   {
     "Id": "Notifications10",
     "Valor": "Se te notificará por correo cuando noticias relevantes aparezcan en la web y estas no sean de las categorías anteriores."
+  },
+  {
+    "Id": "Notifications11",
+    "Valor": "Nota: Para evitar spam de correos sólo se envían correos cuando el nuevo precio mínimo histórico tiene una diferencia de al menos 10 céntimos de euro respecto al anterior precio."
   },
   {
     "Id": "ChangePassword1",

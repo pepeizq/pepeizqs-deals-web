@@ -312,6 +312,15 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(27) == false)
+				{
+					juego.Deck = Enum.Parse<JuegoDeck>(lector.GetInt32(27).ToString());
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

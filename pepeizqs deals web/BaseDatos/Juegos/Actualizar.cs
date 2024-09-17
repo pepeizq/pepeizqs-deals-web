@@ -3,7 +3,6 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BaseDatos.Juegos
 {
@@ -60,10 +59,17 @@ namespace BaseDatos.Juegos
 				}
 			}
 
+			string añadirDeck = null;
+
+			if (juego.Deck != JuegoDeck.Desconocido)
+			{
+				añadirDeck = ", deck=@deck";
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, analisis=@analisis, " +
 						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
-                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirSlugGog + añadirSlugEpic;
+                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirDeck + añadirSlugGog + añadirSlugEpic;
 
 			if (actualizarAPI == true)
 			{
@@ -111,7 +117,12 @@ namespace BaseDatos.Juegos
 						}
 					}
 
-                    if (actualizarAPI == true)
+					if (juego.Deck != JuegoDeck.Desconocido)
+					{
+						comando.Parameters.AddWithValue("@deck", juego.Deck);
+					}
+
+					if (actualizarAPI == true)
 					{
 						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
 						comando.Parameters.AddWithValue("@tipo", juego.Tipo);

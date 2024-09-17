@@ -41,6 +41,7 @@ namespace Juegos
 		public List<string> Categorias { get; set; }
 		public List<string> Generos { get; set; }
 		public List<string> Etiquetas { get; set; }
+		public JuegoDeck Deck { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -185,5 +186,14 @@ namespace Juegos
 
 			return tipos;
 		}
+	}
+
+	//-------------------------------------------------------
+
+	public enum JuegoDeck
+	{
+		Desconocido,
+		Verificado,
+		Jugable
 	}
 }

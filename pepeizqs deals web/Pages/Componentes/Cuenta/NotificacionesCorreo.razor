@@ -6,19 +6,32 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <div>
-	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
-		<div class="checkbox-caja">
-			<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos">
-		</div>
-
-		<div style="padding-left: 30px;">
-			<div style="margin-bottom: 10px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications1", "Account")
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+		<div style="display: flex; align-items: center; gap: 30px;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos">
 			</div>
 
 			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Notifications2", "Account")
-			</div>			
+				<div style="margin-bottom: 10px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Notifications1", "Account")
+				</div>
+
+				<div>
+					@Herramientas.Idiomas.CogerCadena(idioma, "Notifications2", "Account")
+				</div>			
+			</div>
+		</div>
+		
+		<div style="display: flex; align-items: center; gap: 30px;">
+			<div style="width: 40px;"></div>
+
+			<div>
+				<hr />
+				<div style="font-size: 14px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "Notifications11", "Account")
+				</div>
+			</div>
 		</div>
 	</div>
 
