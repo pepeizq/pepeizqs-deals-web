@@ -656,5 +656,67 @@ namespace BaseDatos.Juegos
 				}
 			}
 		}
+
+		public static void Deck(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+					"SET deck=@deck, deckTokens=@deckTokens, deckComprobacion=@deckComprobacion WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@deck", juego.Deck);
+					comando.Parameters.AddWithValue("@deckTokens", JsonConvert.SerializeObject(juego.DeckTokens));
+					comando.Parameters.AddWithValue("@deckComprobacion", juego.DeckComprobacion);
+
+					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
+
+		public static void DeckVacio(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+					"SET deckComprobacion=@deckComprobacion WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@deckComprobacion", juego.DeckComprobacion);
+
+					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
 	}
 }

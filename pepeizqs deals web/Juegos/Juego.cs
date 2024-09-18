@@ -42,6 +42,8 @@ namespace Juegos
 		public List<string> Generos { get; set; }
 		public List<string> Etiquetas { get; set; }
 		public JuegoDeck Deck { get; set; }
+		public List<JuegoDeckToken> DeckTokens { get; set; }
+		public DateTime? DeckComprobacion { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -192,8 +194,15 @@ namespace Juegos
 
 	public enum JuegoDeck
 	{
-		Desconocido,
-		Verificado,
-		Jugable
+		Desconocido,		
+		NoSoportado,
+		Jugable,
+		Verificado
+	}
+
+	public class JuegoDeckToken
+	{
+		public int Tipo { get; set; }
+		public string Mensaje { get; set; }
 	}
 }

@@ -252,6 +252,34 @@ namespace APIs.Steam
 			return null;
 		}
 
+		public static async Task<SteamDeckAPI> CargarDatosDeck(int id2)
+		{
+			string id = id2.ToString();
+
+			if (string.IsNullOrEmpty(id) == false)
+			{
+				string html = await Decompiladores.Estandar("https://store.steampowered.com/saleaction/ajaxgetdeckappcompatibilityreport?nAppID=" + id + "&l=english&cc=en");
+			
+				if (string.IsNullOrEmpty(html) == false)
+				{
+					SteamDeckAPI api = null;
+						
+					try
+					{
+						api = JsonConvert.DeserializeObject<SteamDeckAPI>(html);
+					}
+					catch { }
+					
+					if (api != null)
+					{
+						return api;
+					}
+				}
+			}	
+				
+			return null;
+		}
+
 		public static bool Detectar(string enlace)
 		{
 			bool resultado = false;
@@ -298,7 +326,7 @@ namespace APIs.Steam
 		}
 	}
 
-	#region Clases
+	#region Clases Juego
 
 	public class SteamJuegoAPI
 	{
@@ -438,6 +466,37 @@ namespace APIs.Steam
 
 		[JsonProperty("description")]
 		public string Descripcion { get; set; }
+	}
+
+	#endregion
+
+	#region Clases Deck
+
+	public class SteamDeckAPI
+	{
+		[JsonProperty("results")]
+		public SteamDeckAPIResultado Datos { get; set; }
+	}
+
+	public class SteamDeckAPIResultado
+	{
+		[JsonProperty("appid")]
+		public string Id { get; set; }
+
+		[JsonProperty("resolved_category")]
+		public int Resultado { get; set; }
+
+		[JsonProperty("resolved_items")]
+		public List<SteamDeckAPIToken> Tokens { get; set; }
+	}
+
+	public class SteamDeckAPIToken
+	{
+		[JsonProperty("display_type")]
+		public int Tipo { get; set; }
+
+		[JsonProperty("loc_token")]
+		public string Token { get; set; }
 	}
 
 	#endregion

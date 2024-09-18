@@ -321,6 +321,27 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(28) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(28)) == false)
+					{
+						juego.DeckTokens = JsonConvert.DeserializeObject<List<JuegoDeckToken>>(lector.GetString(28));
+					}
+				}
+			}
+			catch { }
+
+			try
+			{
+				if (lector.IsDBNull(29) == false)
+				{
+					juego.DeckComprobacion = lector.GetDateTime(29);
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

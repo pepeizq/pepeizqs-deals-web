@@ -25,6 +25,8 @@
     --fondoCodigo: #345884;
     --alturaCabecera: 70px;
     --fondoMinimo: #002c47;
+    --deckVerificado: #59bf40;
+    --deckJugable: #ffc82c;
 }
 
 @font-face {

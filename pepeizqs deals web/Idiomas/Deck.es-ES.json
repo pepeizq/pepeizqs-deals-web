@@ -1,0 +1,86 @@
+[
+  {
+    "Id": "String1",
+    "Valor": "Compatibilidad para Steam Deck"
+  },
+  {
+    "Id": "String2",
+    "Valor": "{0} ha obtenido la clasificación de Verificado en las pruebas de compatibilidad con Steam Deck realizadas por Valve. Este juego es totalmente funcional en Steam Deck y va muy bien con sus controles y su pantalla."
+  },
+  {
+    "Id": "String3",
+    "Valor": "{0} ha obtenido la clasificación de Jugable en las pruebas de compatibilidad con Steam Deck realizadas por Valve. Este juego es funcional en Steam Deck, pero puede requerir un esfuerzo adicional a la hora de interactuar con él o configurarlo."
+  },
+  {
+    "Id": "String4",
+    "Valor": "{0} ha obtenido la clasificación de No Compatible en las pruebas de compatibilidad con Steam Deck realizadas por Valve. Una parte o la totalidad de este juego no funciona actualmente en Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_UnsupportedGraphicsPerformance",
+    "Valor": "Los ajustes gráficos de este juego no se pueden configurar para que funcione bien en Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_DefaultControllerConfigFullyFunctional",
+    "Valor": "Es posible acceder a todas las funciones con la configuración predeterminada del mando."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_ControllerGlyphsMatchDeckDevice",
+    "Valor": "Este juego muestra los iconos del mando de Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_InterfaceTextIsLegible",
+    "Valor": "El texto de la interfaz del juego es legible en Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_DefaultConfigurationIsPerformant",
+    "Valor": "La configuración gráfica predeterminada de este juego funciona bien en Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_LauncherInteractionIssues",
+    "Valor": "El lanzador o la herramienta de configuración de este juego pueden requerir el uso de la pantalla táctil o el teclado virtual, o tener texto difícil de leer."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_ControllerGlyphsDoNotMatchDeckDevice",
+    "Valor": "Este juego a veces muestra iconos de ratón, de teclado o de mandos que no son el de Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_FirstTimeSetupRequiresActiveInternetConnection",
+    "Valor": "La configuración inicial de este juego requiere una conexión activa a Internet."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedPrimaryPlayer",
+    "Valor": "Este juego no utiliza mandos Bluetooth o USB externos por defecto en Deck, y es posible que tengas que cambiar el mando activo de forma manual desde el menú de acceso rápido."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_DefaultControllerConfigNotFullyFunctional",
+    "Valor": "No es posible acceder a algunas funciones con la configuración predeterminada del mando, por lo que es necesario utilizar la pantalla táctil, el teclado virtual o una configuración de la comunidad."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_TextInputDoesNotAutomaticallyInvokesKeyboard",
+    "Valor": "La introducción de texto requiere la activación manual del teclado en pantalla."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_InterfaceTextIsNotLegible",
+    "Valor": "Algunos textos del juego son pequeños y pueden resultar difíciles de leer."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_DefaultConfigurationIsNotPerformant",
+    "Valor": "Este juego requiere una configuración manual de los ajustes gráficos para funcionar bien en Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_NativeResolutionNotDefault",
+    "Valor": "Este juego es compatible con la resolución de pantalla nativa de Steam Deck, pero no la establece como predeterminada, así que tal vez tengas que configurar la resolución de pantalla manualmente."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_UnsupportedAntiCheatConfiguration",
+    "Valor": "El sistema antitrampas de este juego no está configurado para ser compatible con Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_SteamOSDoesNotSupport",
+    "Valor": "Valve aún está trabajando en la compatibilidad de este juego con Steam Deck."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection",
+    "Valor": "El modo para un jugador requiere una conexión activa a Internet."
+  }
+]
