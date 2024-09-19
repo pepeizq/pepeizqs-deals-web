@@ -748,15 +748,19 @@ select {
     }
 
 .opciones-panel {
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
     overflow-x: auto;
-    position: fixed;
     z-index: 10001;
     padding: 10px;
     backdrop-filter: blur(20px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .cargando {

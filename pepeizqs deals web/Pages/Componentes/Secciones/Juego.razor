@@ -1333,7 +1333,7 @@
 @if (enseñarDeck == true)
 {
 	<div class="opciones-panel">
-		<div style="max-width: 800px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+		<div style="max-width: 800px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
 			<div style="display: flex; align-items: start; flex-direction: row; gap: 30px;">
 				<button @onclick="@(e => DeckCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
 					<i class="fa-solid fa-arrow-left"></i>

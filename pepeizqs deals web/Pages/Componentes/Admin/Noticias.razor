@@ -237,15 +237,24 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     }
 </div>
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-    <div>
-        <label style="margin-left: 10px; margin-bottom: 10px;">Contenido ES:</label>
-        <textarea @onchange="@(e => CambiarContenidoEsNoticias(e))" class="entrada-texto" rows="8">@noticia.ContenidoEs</textarea>
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <label>Contenido ES:</label>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button @onclick="@(e => EditorDiv(e, noticia))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+				<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+					<div style="font-size: 14px;">div</div>
+				</div>
+			</button>
+        </div>
+
+        <textarea class="entrada-texto" rows="8" @bind="noticia.ContenidoEs"/>
     </div>
 
     @if (string.IsNullOrEmpty(noticia.ContenidoEs) == false)
     {
-        <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+        <div>
             @((MarkupString)noticia.ContenidoEs)
         </div>
     }
@@ -326,11 +335,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     private void CambiarContenidoEnNoticias(ChangeEventArgs texto)
     {
         noticia.ContenidoEn = texto.Value.ToString();
-    }
-
-    private void CambiarContenidoEsNoticias(ChangeEventArgs texto)
-    {
-        noticia.ContenidoEs = texto.Value.ToString();
     }
 
     private void CambiarFechaNoticias(ChangeEventArgs texto)
@@ -482,4 +486,13 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
             noticia = Plantillas.Sorteos(sorteosActivos);
         }
     }
+
+    #region Editor
+
+    private void EditorDiv(MouseEventArgs e, Plantilla textoDondeAñadir)
+    {
+        textoDondeAñadir.ContenidoEs = textoDondeAñadir.ContenidoEs + "<div></div>";
+    }
+
+    #endregion
 }

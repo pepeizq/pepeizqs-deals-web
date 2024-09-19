@@ -232,7 +232,7 @@ namespace Herramientas
 
 			using (conexion)
 			{
-				bundles = global::BaseDatos.Bundles.Buscar.Ultimos("20");
+				bundles = global::BaseDatos.Bundles.Buscar.Ultimos("100");
 			}
 
 			if (bundles.Count > 0)
