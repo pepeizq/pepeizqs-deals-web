@@ -1703,7 +1703,7 @@
 					}
 				}
 
-				if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(23) > DateTime.Now)
+				if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(23) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
 				{
 					drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "String11", "Game") + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
 				}
