@@ -1096,11 +1096,33 @@
 
 														if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
 														{
-															publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
+															bool añadirError = false;
 
-															publishersFinales.Add(publisherFinal2);
+															if (juego.Analisis != null)
+															{
+																if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+																{
+																	if (juego.Analisis.Cantidad.Length > 2)
+																	{
+																		añadirError = true;
+																	}
+																}
+															}
 
-															global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre, "/game/" + juego.Id.ToString() + "/");
+															if (añadirError == true)
+															{
+																publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
+
+																publishersFinales.Add(publisherFinal2);
+
+																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre, "/game/" + juego.Id.ToString() + "/");
+															}
+															else
+															{
+																publisherFinal2.Id = "noenlazar";
+
+																publishersFinales.Add(publisherFinal2);
+															}
 														}
 													}
 												}
@@ -1116,7 +1138,14 @@
 
 													if (string.IsNullOrEmpty(publisher.Id) == false)
 													{
-														<a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
+														if (publisher.Id != "noenlazar")
+														{
+															<a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
+														}
+														else
+														{
+															@publisher.Nombre
+														}
 													}
 													else
 													{
