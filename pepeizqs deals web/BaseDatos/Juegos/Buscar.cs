@@ -852,94 +852,144 @@ namespace BaseDatos.Juegos
 				List<string> etiquetas = new List<string>();
 				List<string> categorias = new List<string>();
 				List<string> generos = new List<string>();
+				List<string> decks = new List<string>();
 
-				foreach (var id in ids)
+				if (ids != null)
 				{
-					if (id.Contains("t") == true)
-					{
-						etiquetas.Add(id.Replace("t", null));
-					}
-
-					if (id.Contains("c") == true)
-					{
-						categorias.Add(id.Replace("c", null));
-					}
-
-					if (id.Contains("g") == true)
-					{
-						generos.Add(id.Replace("g", null));
-					}
-				}
-
-				string etiquetasTexto = string.Empty;
-				int h = 0;
-
-				foreach (var etiqueta in etiquetas)
-				{
-					if (h == 0)
-					{
-						etiquetasTexto = "etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
-					}
-					else
-					{
-						etiquetasTexto = etiquetasTexto + " OR etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
-					}
-
-					h += 1;
-				}
-
-				if (string.IsNullOrEmpty(etiquetasTexto) == false)
-				{
-					etiquetasTexto = " AND (" + etiquetasTexto + ")";
-				}
-
-				string categoriasTexto = string.Empty;
-				int j = 0;
-
-				foreach (var categoria in categorias)
-				{
-					if (j == 0)
-					{
-						categoriasTexto = "categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
-					}
-					else
-					{
-						categoriasTexto = categoriasTexto + " OR categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
-					}
-
-					j += 1;
-				}
-
-				if (string.IsNullOrEmpty(categoriasTexto) == false)
-				{
-					categoriasTexto = " AND (" + categoriasTexto + ")";
-				}
-
-				string generosTexto = string.Empty;              			
-				int i = 0;
-
-                foreach (var genero in generos)
-                {
-                    if (i == 0)
+                    if (ids.Count > 0)
                     {
-                        generosTexto = "generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
+                        foreach (var id in ids)
+                        {
+                            if (id.Contains("t") == true)
+                            {
+                                etiquetas.Add(id.Replace("t", null));
+                            }
+
+                            if (id.Contains("c") == true)
+                            {
+                                categorias.Add(id.Replace("c", null));
+                            }
+
+                            if (id.Contains("g") == true)
+                            {
+                                generos.Add(id.Replace("g", null));
+                            }
+
+                            if (id.Contains("d") == true)
+                            {
+                                decks.Add(id.Replace("d", null));
+                            }
+                        }
                     }
-                    else
-                    {
-                        generosTexto = generosTexto + " OR generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
-					}
+                }				
+				
+				string etiquetasTexto = string.Empty;
+				
+				if (etiquetas.Count > 0)
+				{
+                    int i = 0;
 
-                    i += 1;
+                    foreach (var etiqueta in etiquetas)
+                    {
+                        if (i == 0)
+                        {
+                            etiquetasTexto = "etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
+                        }
+                        else
+                        {
+                            etiquetasTexto = etiquetasTexto + " OR etiquetas LIKE '%" + Strings.ChrW(34) + etiqueta + Strings.ChrW(34) + "%'";
+                        }
+
+                        i += 1;
+                    }
+
+                    if (string.IsNullOrEmpty(etiquetasTexto) == false)
+                    {
+                        etiquetasTexto = " AND ISJSON(etiquetas) > 0 AND (" + etiquetasTexto + ")";
+                    }
                 }
 
-				if (string.IsNullOrEmpty(generosTexto) == false)
+				string categoriasTexto = string.Empty;
+				
+				if (categorias.Count > 0)
 				{
-					generosTexto = " AND (" + generosTexto + ")";
-				}
+					int i = 0;
 
-                string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
-                    "WHERE ISJSON(analisis) > 0 AND ISJSON(etiquetas) > 0 " + etiquetasTexto + " AND ISJSON(categorias) > 0 " + categoriasTexto + " " +
-					"AND ISJSON(generos) > 0 " + generosTexto + " ORDER BY Cantidad DESC";
+                    foreach (var categoria in categorias)
+                    {
+                        if (i == 0)
+                        {
+                            categoriasTexto = "categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
+                        }
+                        else
+                        {
+                            categoriasTexto = categoriasTexto + " OR categorias LIKE '%" + Strings.ChrW(34) + categoria + Strings.ChrW(34) + "%'";
+                        }
+
+                        i += 1;
+                    }
+
+                    if (string.IsNullOrEmpty(categoriasTexto) == false)
+                    {
+                        categoriasTexto = "  AND ISJSON(categorias) > 0 AND (" + categoriasTexto + ")";
+                    }
+                }
+
+				string generosTexto = string.Empty;              			
+				
+				if (generos.Count > 0)
+				{
+                    int i = 0;
+
+                    foreach (var genero in generos)
+                    {
+                        if (i == 0)
+                        {
+                            generosTexto = "generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
+                        }
+                        else
+                        {
+                            generosTexto = generosTexto + " OR generos LIKE '%" + Strings.ChrW(34) + genero + Strings.ChrW(34) + "%'";
+                        }
+
+                        i += 1;
+                    }
+
+                    if (string.IsNullOrEmpty(generosTexto) == false)
+                    {
+                        generosTexto = " AND ISJSON(generos) > 0 AND (" + generosTexto + ")";
+                    }
+                }
+
+				string deckTexto = string.Empty;
+
+				if (decks.Count > 0)
+				{
+                    int i = 0;
+
+                    foreach (var deck in decks)
+                    {
+                        if (i == 0)
+                        {
+                            deckTexto = "deck = " + deck;
+                        }
+                        else
+                        {
+                            deckTexto = deckTexto + " OR deck = " + deck;
+                        }
+
+                        i += 1;
+                    }
+
+                    if (string.IsNullOrEmpty(deckTexto) == false)
+                    {
+                        deckTexto = " AND (" + deckTexto + ")";
+                    }
+                }
+				
+				string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
+                    "WHERE ISJSON(analisis) > 0 " + etiquetasTexto + " " + categoriasTexto + " " + generosTexto + " " + deckTexto +
+					" ORDER BY Cantidad DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {

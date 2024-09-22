@@ -14,5 +14,29 @@
   {
     "Id": "String3",
     "Valor": "Tags"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Genre"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Category"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Tag"
+  },
+  {
+    "Id": "Deck2",
+    "Valor": "Playable"
+  },
+  {
+    "Id": "Deck3",
+    "Valor": "Verified"
+  },
+  {
+    "Id": "Deck4",
+    "Valor": "Steam Deck"
   }
 ]

@@ -9,10 +9,12 @@ namespace pepeizqs_deals_web.Pages
     {
         public string idioma = string.Empty;
 
-        [BindProperty(SupportsGet = true)]
-        public string ids { get; set; }
+        #nullable enable
+		[BindProperty(SupportsGet = true)]
+        public string? ids { get; set; }
+        #nullable disable
 
-        public void OnGet()
+		public void OnGet()
         {
             try
             {

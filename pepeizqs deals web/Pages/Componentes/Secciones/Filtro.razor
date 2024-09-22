@@ -43,64 +43,138 @@ else
 
 	<hr>
 
-	@if (idsLista.Count > 0)
+	@if (idsLista != null)
 	{
-		<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px; margin-bottom: 20px;">
-			@foreach (var id in idsLista)
-			{
-				if (id.Contains("t") == true)
+		if (idsLista.Count > 0)
+		{
+			<div style="display: flex; align-items: center; flex-flow: wrap; grid-gap: 10px; margin-bottom: 20px;">
+				@foreach (var id in idsLista)
 				{
-					string cadena = id.Replace("t", null);
-					string etiqueta = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Tags");
-
-					if (string.IsNullOrEmpty(etiqueta) == false)
+					if (id.Contains("d") == true)
 					{
-						<button @onclick="(e => CambiarEtiqueta(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
-							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-								<div style="font-size: 14px;">@etiqueta</div>
-								<i class="fa-solid fa-xmark"></i>
-							</div>
-						</button>
+						string cadena = id.Replace("d", null);
+						string deck = Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "Deck" + cadena, "Filter");
+
+						if (string.IsNullOrEmpty(deck) == false)
+						{
+							<button @onclick="(e => CambiarDeck(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@deck</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
+					}
+
+					if (id.Contains("t") == true)
+					{
+						string cadena = id.Replace("t", null);
+						string etiqueta = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Tags");
+
+						if (string.IsNullOrEmpty(etiqueta) == false)
+						{
+							<button @onclick="(e => CambiarEtiqueta(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@etiqueta</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
+					}
+
+					if (id.Contains("c") == true)
+					{
+						string cadena = id.Replace("c", null);
+						string categoria = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Categories");
+
+						if (string.IsNullOrEmpty(categoria) == false)
+						{
+							<button @onclick="(e => CambiarCategoria(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@categoria</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
+					}
+
+					if (id.Contains("g") == true)
+					{
+						string cadena = id.Replace("g", null);
+						string generos = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Genres");
+
+						if (string.IsNullOrEmpty(generos) == false)
+						{
+							<button @onclick="(e => CambiarGenero(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@generos</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
 					}
 				}
-
-				if (id.Contains("c") == true)
-				{
-					string cadena = id.Replace("c", null);
-					string categoria = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Categories");
-
-					if (string.IsNullOrEmpty(categoria) == false)
-					{
-						<button @onclick="(e => CambiarCategoria(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
-							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-								<div style="font-size: 14px;">@categoria</div>
-								<i class="fa-solid fa-xmark"></i>
-							</div>
-						</button>
-					}
-				}
-
-				if (id.Contains("g") == true)
-				{
-					string cadena = id.Replace("g", null);
-					string generos = Herramientas.Idiomas.CogerCadena(idioma, cadena, "Genres");
-
-					if (string.IsNullOrEmpty(generos) == false)
-					{
-						<button @onclick="(e => CambiarGenero(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
-							<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-								<div style="font-size: 14px;">@generos</div>
-								<i class="fa-solid fa-xmark"></i>
-							</div>
-						</button>
-					}
-				}
-			}
-		</div>		
+			</div>
+		}
 	}
 
 	<div style="display: flex; align-items: start; gap: 20px;">
 		<div style="width: 30%; display: flex; flex-direction: column; gap: 20px;">
+			@if (decks.Count > 0)
+			{
+				<div>
+					<button @onclick="(e => AbrirDeck(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") (@CantidadDeck())
+							</div>
+
+							<div>
+								@if (enseñarDeck == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
+						</div>
+					</button>
+
+					@if (enseñarDeck == true)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var deck in decks)
+							{
+								string fondo = string.Empty;
+
+								if (idsLista != null)
+								{
+									if (idsLista.Count > 0)
+									{
+										foreach (var id2 in idsLista)
+										{
+											if ("d" + deck.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
+									}
+								}
+
+								<button @onclick="(e => CambiarDeck(e, deck.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div style="font-size: 14px;">
+										@deck.Contenido
+									</div>
+								</button>
+							}
+						</div>
+					}
+				</div>
+			}
+
 			@if (etiquetas.Count > 0)
 			{
 				<div>
@@ -130,12 +204,18 @@ else
 							{
 								string fondo = string.Empty;
 
-								foreach (var id2 in idsLista)
+								if (idsLista != null)
 								{
-									if ("t" + etiqueta.Id == id2)
+									if (idsLista.Count > 0)
 									{
-										fondo = "background-color: var(--fondoBotonPequeño);";
-										break;
+										foreach (var id2 in idsLista)
+										{
+											if ("t" + etiqueta.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
 									}
 								}
 
@@ -179,12 +259,18 @@ else
 							{
 								string fondo = string.Empty;
 
-								foreach (var id2 in idsLista)
+								if (idsLista != null)
 								{
-									if ("c" + categoria.Id == id2)
+									if (idsLista.Count > 0)
 									{
-										fondo = "background-color: var(--fondoBotonPequeño);";
-										break;
+										foreach (var id2 in idsLista)
+										{
+											if ("c" + categoria.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
 									}
 								}
 
@@ -238,12 +324,18 @@ else
 							{
 								string fondo = string.Empty;
 
-								foreach (var id2 in idsLista)
+								if (idsLista != null)
 								{
-									if ("g" + genero.Id == id2)
+									if (idsLista.Count > 0)
 									{
-										fondo = "background-color: var(--fondoBotonPequeño);";
-										break;
+										foreach (var id2 in idsLista)
+										{
+											if ("g" + genero.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
 									}
 								}
 
@@ -315,8 +407,10 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
+	#nullable enable
 	[Parameter]
-	public string ids { get; set; }
+	public string? ids { get; set; }
+	#nullable disable
 
 	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
@@ -348,6 +442,7 @@ else
 				}
 			}
 
+			CargarDeck();
 			CargarEtiquetas();
 			CargarCategorias();
 			CargarGeneros();
@@ -360,15 +455,134 @@ else
 		}
 	}
 
-	private class CategoriaGenero
+	private class FiltroItem
 	{
 		public string Id { get; set; }
 		public string Contenido { get; set; }
 	}
 
+	#region Deck
+
+	private List<FiltroItem> decks = new List<FiltroItem>();
+
+	private void CargarDeck()
+	{
+		List<string> cadenas = new List<string>();
+		cadenas.Add("2");
+		cadenas.Add("3");
+
+		foreach (var cadena in cadenas)
+		{
+			FiltroItem nuevoDeck = new FiltroItem();
+			nuevoDeck.Id = cadena;
+			nuevoDeck.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "Deck" + cadena, "Filter");
+
+			decks.Add(nuevoDeck);
+		}
+	}
+
+	private bool enseñarDeck = true;
+
+	private void AbrirDeck(MouseEventArgs e)
+	{
+		if (enseñarDeck == true)
+		{
+			enseñarDeck = false;
+		}
+		else
+		{
+			enseñarDeck = true;
+		}
+	}
+
+	private async void CambiarDeck(MouseEventArgs e, string nuevoDeck)
+	{
+		nuevoDeck = "d" + nuevoDeck;
+
+		bool encontrado = false;
+
+		int i = 0;
+		if (idsLista != null)
+		{
+			if (idsLista.Count > 0)
+			{
+				foreach (var id in idsLista)
+				{
+					if (id == nuevoDeck)
+					{
+						encontrado = true;
+						break;
+					}
+
+					i += 1;
+				}
+			}
+		}
+
+		if (encontrado == false)
+		{
+			if (idsLista == null)
+			{
+				idsLista = new List<string>();
+			}
+
+			idsLista.Add(nuevoDeck);
+		}
+		else
+		{
+			idsLista.RemoveAt(i);
+		}
+
+		ids = null;
+
+		foreach (var id in idsLista)
+		{
+			ids = ids + "," + id;
+		}
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			ids = ids.Remove(0, 1);
+		}
+
+		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+		}
+		else
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+		}
+	}
+
+	private int CantidadDeck()
+	{
+		int i = 0;
+
+		if (idsLista != null)
+		{
+			if (idsLista.Count > 0)
+			{
+				foreach (var id in idsLista)
+				{
+					if (id.Contains("d") == true)
+					{
+						i += 1;
+					}
+				}
+			}
+		}
+
+		return i;
+	}
+
+	#endregion
+
 	#region Etiquetas
 
-	private List<CategoriaGenero> etiquetas = new List<CategoriaGenero>();
+	private List<FiltroItem> etiquetas = new List<FiltroItem>();
 
 	private void CargarEtiquetas()
 	{
@@ -382,7 +596,7 @@ else
 			{
 				foreach (var cadena in cadenas)
 				{
-					CategoriaGenero nuevaEtiqueta = new CategoriaGenero();
+					FiltroItem nuevaEtiqueta = new FiltroItem();
 					nuevaEtiqueta.Id = cadena.Id;
 					nuevaEtiqueta.Contenido = cadena.Valor;
 
@@ -413,19 +627,30 @@ else
 		bool encontrado = false;
 
 		int i = 0;
-		foreach (var id in idsLista)
+		if (idsLista != null)
 		{
-			if (id == nuevaEtiqueta)
+			if (idsLista.Count > 0)
 			{
-				encontrado = true;
-				break;
-			}
+				foreach (var id in idsLista)
+				{
+					if (id == nuevaEtiqueta)
+					{
+						encontrado = true;
+						break;
+					}
 
-			i += 1;
+					i += 1;
+				}
+			}
 		}
 
 		if (encontrado == false)
 		{
+			if (idsLista == null)
+			{
+				idsLista = new List<string>();
+			}
+
 			idsLista.Add(nuevaEtiqueta);
 		}
 		else
@@ -446,20 +671,31 @@ else
 		}
 
 		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+		}
+		else
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+		}
 	}
 
 	private int CantidadEtiquetas()
 	{
 		int i = 0;
 
-		if (idsLista.Count > 0)
+		if (idsLista != null)
 		{
-			foreach (var id in idsLista)
+			if (idsLista.Count > 0)
 			{
-				if (id.Contains("t") == true)
+				foreach (var id in idsLista)
 				{
-					i += 1;
+					if (id.Contains("t") == true)
+					{
+						i += 1;
+					}
 				}
 			}
 		}
@@ -471,7 +707,7 @@ else
 
 	#region Categorias
 
-	private List<CategoriaGenero> categorias = new List<CategoriaGenero>();
+	private List<FiltroItem> categorias = new List<FiltroItem>();
 
 	private void CargarCategorias()
 	{
@@ -485,7 +721,7 @@ else
 			{
 				foreach (var cadena in cadenas)
 				{
-					CategoriaGenero nuevaCategoria = new CategoriaGenero();
+					FiltroItem nuevaCategoria = new FiltroItem();
 					nuevaCategoria.Id = cadena.Id;
 					nuevaCategoria.Contenido = cadena.Valor;
 
@@ -516,19 +752,30 @@ else
 		bool encontrado = false;
 
 		int i = 0;
-		foreach (var id in idsLista)
+		if (idsLista != null)
 		{
-			if (id == nuevaCategoria)
+			if (idsLista.Count > 0)
 			{
-				encontrado = true;
-				break;
-			}
+				foreach (var id in idsLista)
+				{
+					if (id == nuevaCategoria)
+					{
+						encontrado = true;
+						break;
+					}
 
-			i += 1;
+					i += 1;
+				}
+			}
 		}
 
 		if (encontrado == false)
 		{
+			if (idsLista == null)
+			{
+				idsLista = new List<string>();
+			}
+
 			idsLista.Add(nuevaCategoria);
 		}
 		else
@@ -549,20 +796,31 @@ else
 		}
 
 		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+		}
+		else
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+		}
 	}
 
 	private int CantidadCategorias()
 	{
 		int i = 0;
 
-		if (idsLista.Count > 0)
+		if (idsLista != null)
 		{
-			foreach (var id in idsLista)
+			if (idsLista.Count > 0)
 			{
-				if (id.Contains("c") == true)
+				foreach (var id in idsLista)
 				{
-					i += 1;
+					if (id.Contains("c") == true)
+					{
+						i += 1;
+					}
 				}
 			}
 		}
@@ -574,7 +832,7 @@ else
 
 	#region Generos
 
-	private List<CategoriaGenero> generos = new List<CategoriaGenero>();
+	private List<FiltroItem> generos = new List<FiltroItem>();
 
 	private void CargarGeneros()
 	{
@@ -588,7 +846,7 @@ else
 			{
 				foreach (var cadena in cadenas)
 				{
-					CategoriaGenero nuevoGenero = new CategoriaGenero();
+					FiltroItem nuevoGenero = new FiltroItem();
 					nuevoGenero.Id = cadena.Id;
 					nuevoGenero.Contenido = cadena.Valor;
 
@@ -619,19 +877,30 @@ else
 		bool encontrado = false;
 
 		int i = 0;
-		foreach (var id in idsLista)
+		if (idsLista != null)
 		{
-			if (id == nuevoGenero)
+			if (idsLista.Count > 0)
 			{
-				encontrado = true;
-				break;
-			}
+				foreach (var id in idsLista)
+				{
+					if (id == nuevoGenero)
+					{
+						encontrado = true;
+						break;
+					}
 
-			i += 1;
+					i += 1;
+				}
+			}
 		}
 
 		if (encontrado == false)
 		{
+			if (idsLista == null)
+			{
+				idsLista = new List<string>();
+			}
+
 			idsLista.Add(nuevoGenero);
 		}
 		else
@@ -650,26 +919,37 @@ else
 		{
 			ids = ids.Remove(0, 1);
 		}
-		
+
 		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-		await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+		}
+		else
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+		}
 	}
 
 	private int CantidadGeneros()
 	{
 		int i = 0;
 
-		if (idsLista.Count > 0)
+		if (idsLista != null)
 		{
-			foreach (var id in idsLista)
+			if (idsLista.Count > 0)
 			{
-				if (id.Contains("g") == true)
+				foreach (var id in idsLista)
 				{
-					i += 1;
+					if (id.Contains("g") == true)
+					{
+						i += 1;
+					}
 				}
 			}
 		}
-
+		
 		return i;
 	}
 

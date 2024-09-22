@@ -14,5 +14,29 @@
   {
     "Id": "String3",
     "Valor": "Etiquetas"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Género"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Categoria"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Etiqueta"
+  },
+  {
+    "Id": "Deck2",
+    "Valor": "Jugable"
+  },
+  {
+    "Id": "Deck3",
+    "Valor": "Verificado"
+  },
+  {
+    "Id": "Deck4",
+    "Valor": "Steam Deck"
   }
 ]

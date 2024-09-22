@@ -1,4 +1,4 @@
-﻿@page "/filter/{ids}/"
+﻿@page "/filter/{ids?}/"
 
 @model pepeizqs_deals_web.Pages.filterModel
 
@@ -13,5 +13,12 @@
     {
         idioma = Model.idioma,
         ids = Model.ids
+    }))
+}
+else
+{
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+    {
+        idioma = Model.idioma
     }))
 }
