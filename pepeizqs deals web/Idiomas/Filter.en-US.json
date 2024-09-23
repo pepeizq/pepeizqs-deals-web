@@ -28,6 +28,18 @@
     "Valor": "Tag"
   },
   {
+    "Id": "String7",
+    "Valor": "Systems"
+  },
+  {
+    "Id": "String8",
+    "Valor": "System"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Type"
+  },
+  {
     "Id": "Deck2",
     "Valor": "Playable"
   },
@@ -38,5 +50,33 @@
   {
     "Id": "Deck4",
     "Valor": "Steam Deck"
+  },
+  {
+    "Id": "System1",
+    "Valor": "Windows"
+  },
+  {
+    "Id": "System2",
+    "Valor": "Mac"
+  },
+  {
+    "Id": "System3",
+    "Valor": "Linux"
+  },
+  {
+    "Id": "Type0",
+    "Valor": "Games"
+  },
+  {
+    "Id": "Type1",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "Type3",
+    "Valor": "Soundtracks"
+  },
+  {
+    "Id": "Type4",
+    "Valor": "Software"
   }
 ]

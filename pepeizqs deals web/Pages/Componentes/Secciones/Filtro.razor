@@ -52,12 +52,13 @@ else
 				{
 					if (id.Contains("d") == true)
 					{
-						string cadena = id.Replace("d", null);
+						string letra = "d";
+						string cadena = id.Replace(letra, null);
 						string deck = Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "Deck" + cadena, "Filter");
 
 						if (string.IsNullOrEmpty(deck) == false)
 						{
-							<button @onclick="(e => CambiarDeck(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
 								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
 									<div style="font-size: 14px;">@deck</div>
 									<i class="fa-solid fa-xmark"></i>
@@ -66,14 +67,49 @@ else
 						}
 					}
 
+					if (id.Contains("i") == true)
+					{
+						string letra = "i";
+						string cadena = id.Replace(letra, null);
+						string tipo = Herramientas.Idiomas.CogerCadena(idioma, "String9", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "Type" + cadena, "Filter");
+
+						if (string.IsNullOrEmpty(tipo) == false)
+						{
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@tipo</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
+					}
+
+					if (id.Contains("s") == true)
+					{
+						string letra = "s";
+						string cadena = id.Replace(letra, null);
+						string sistema = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "System" + cadena, "Filter");
+
+						if (string.IsNullOrEmpty(sistema) == false)
+						{
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
+									<div style="font-size: 14px;">@sistema</div>
+									<i class="fa-solid fa-xmark"></i>
+								</div>
+							</button>
+						}
+					}
+
 					if (id.Contains("t") == true)
 					{
-						string cadena = id.Replace("t", null);
+						string letra = "t";
+						string cadena = id.Replace(letra, null);
 						string etiqueta = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Tags");
 
 						if (string.IsNullOrEmpty(etiqueta) == false)
 						{
-							<button @onclick="(e => CambiarEtiqueta(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
 								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
 									<div style="font-size: 14px;">@etiqueta</div>
 									<i class="fa-solid fa-xmark"></i>
@@ -84,12 +120,13 @@ else
 
 					if (id.Contains("c") == true)
 					{
-						string cadena = id.Replace("c", null);
+						string letra = "c";
+						string cadena = id.Replace(letra, null);
 						string categoria = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Categories");
 
 						if (string.IsNullOrEmpty(categoria) == false)
 						{
-							<button @onclick="(e => CambiarCategoria(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
 								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
 									<div style="font-size: 14px;">@categoria</div>
 									<i class="fa-solid fa-xmark"></i>
@@ -100,12 +137,13 @@ else
 
 					if (id.Contains("g") == true)
 					{
-						string cadena = id.Replace("g", null);
+						string letra = "g";
+						string cadena = id.Replace(letra, null);
 						string generos = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Genres");
 
 						if (string.IsNullOrEmpty(generos) == false)
 						{
-							<button @onclick="(e => CambiarGenero(e, cadena))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
+							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
 								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
 									<div style="font-size: 14px;">@generos</div>
 									<i class="fa-solid fa-xmark"></i>
@@ -122,11 +160,13 @@ else
 		<div style="width: 30%; display: flex; flex-direction: column; gap: 20px;">
 			@if (decks.Count > 0)
 			{
+				string letra = "d";
+
 				<div>
 					<button @onclick="(e => AbrirDeck(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") (@CantidadDeck())
+								@Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -155,7 +195,7 @@ else
 									{
 										foreach (var id2 in idsLista)
 										{
-											if ("d" + deck.Id == id2)
+											if (letra + deck.Id == id2)
 											{
 												fondo = "background-color: var(--fondoBotonPequeño);";
 												break;
@@ -164,7 +204,7 @@ else
 									}
 								}
 
-								<button @onclick="(e => CambiarDeck(e, deck.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+								<button @onclick="(e => CambiarIDs(e, deck.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 									<div style="font-size: 14px;">
 										@deck.Contenido
 									</div>
@@ -175,13 +215,129 @@ else
 				</div>
 			}
 
+			@if (tipos.Count > 0)
+			{
+				string letra = "i";
+
+				<div>
+					<button @onclick="(e => AbrirTipos(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Filter") (@CantidadIDs(letra))
+							</div>
+
+							<div>
+								@if (enseñarSistemas == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
+						</div>
+					</button>
+
+					@if (enseñarTipos == true)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var tipo in tipos)
+							{
+								string fondo = string.Empty;
+
+								if (idsLista != null)
+								{
+									if (idsLista.Count > 0)
+									{
+										foreach (var id2 in idsLista)
+										{
+											if (letra + tipo.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
+									}
+								}
+
+								<button @onclick="(e => CambiarIDs(e, tipo.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div style="font-size: 14px;">
+										@tipo.Contenido
+									</div>
+								</button>
+							}
+						</div>
+					}
+				</div>
+			}
+
+			@if (sistemas.Count > 0)
+			{
+				string letra = "s";
+
+				<div>
+					<button @onclick="(e => AbrirSistemas(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
+						<div style="display: flex; align-items: center;">
+							<div style="width: 100%;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Filter") (@CantidadIDs(letra))
+							</div>
+
+							<div>
+								@if (enseñarSistemas == true)
+								{
+									<i class="fa-solid fa-chevron-up"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-chevron-down"></i>
+								}
+							</div>
+						</div>
+					</button>
+
+					@if (enseñarSistemas == true)
+					{
+						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+							@foreach (var sistema in sistemas)
+							{
+								string fondo = string.Empty;
+
+								if (idsLista != null)
+								{
+									if (idsLista.Count > 0)
+									{
+										foreach (var id2 in idsLista)
+										{
+											if (letra + sistema.Id == id2)
+											{
+												fondo = "background-color: var(--fondoBotonPequeño);";
+												break;
+											}
+										}
+									}
+								}
+
+								<button @onclick="(e => CambiarIDs(e, sistema.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+									<div style="font-size: 14px;">
+										@sistema.Contenido
+									</div>
+								</button>
+							}
+						</div>
+					}
+				</div>
+			}
+
 			@if (etiquetas.Count > 0)
 			{
+				string letra = "t";
+
 				<div>
 					<button @onclick="(e => AbrirEtiquetas(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Filter") (@CantidadEtiquetas())
+								@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -210,7 +366,7 @@ else
 									{
 										foreach (var id2 in idsLista)
 										{
-											if ("t" + etiqueta.Id == id2)
+											if (letra + etiqueta.Id == id2)
 											{
 												fondo = "background-color: var(--fondoBotonPequeño);";
 												break;
@@ -219,7 +375,7 @@ else
 									}
 								}
 
-								<button @onclick="(e => CambiarEtiqueta(e, etiqueta.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+								<button @onclick="(e => CambiarIDs(e, etiqueta.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 									<div style="font-size: 14px;">
 										@etiqueta.Contenido
 									</div>
@@ -232,11 +388,13 @@ else
 
 			@if (categorias.Count > 0)
 			{
+				string letra = "c";
+
 				<div>
 					<button @onclick="(e => AbrirCategorias(e))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter") (@CantidadCategorias())
+								@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter") (@CantidadIDs(letra))
 							</div>
 							
 							<div>
@@ -265,7 +423,7 @@ else
 									{
 										foreach (var id2 in idsLista)
 										{
-											if ("c" + categoria.Id == id2)
+											if (letra + categoria.Id == id2)
 											{
 												fondo = "background-color: var(--fondoBotonPequeño);";
 												break;
@@ -274,7 +432,7 @@ else
 									}
 								}
 
-								<button @onclick="(e => CambiarCategoria(e, categoria.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+								<button @onclick="(e => CambiarIDs(e, categoria.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 									<div style="display: flex; align-items: center; gap: 10px;">
 										<div style="max-width: 30px;">
 											@{
@@ -297,11 +455,13 @@ else
 
 			@if (generos.Count > 0)
 			{
+				string letra = "g";
+
 				<div>
 					<button @onclick="(e => AbrirGeneros(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter") (@CantidadGeneros())
+								@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -330,7 +490,7 @@ else
 									{
 										foreach (var id2 in idsLista)
 										{
-											if ("g" + genero.Id == id2)
+											if (letra + genero.Id == id2)
 											{
 												fondo = "background-color: var(--fondoBotonPequeño);";
 												break;
@@ -339,7 +499,7 @@ else
 									}
 								}
 
-								<button @onclick="(e => CambiarGenero(e, genero.Id))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+								<button @onclick="(e => CambiarIDs(e, genero.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 									<div style="font-size: 14px;">
 										@genero.Contenido
 									</div>
@@ -443,6 +603,8 @@ else
 			}
 
 			CargarDeck();
+			CargarTipos();
+			CargarSistemas();
 			CargarEtiquetas();
 			CargarCategorias();
 			CargarGeneros();
@@ -459,6 +621,89 @@ else
 	{
 		public string Id { get; set; }
 		public string Contenido { get; set; }
+	}
+
+	private async void CambiarIDs(MouseEventArgs e, string nuevaId, string letra)
+	{
+		nuevaId = letra + nuevaId;
+
+		bool encontrado = false;
+
+		int i = 0;
+		if (idsLista != null)
+		{
+			if (idsLista.Count > 0)
+			{
+				foreach (var id in idsLista)
+				{
+					if (id == nuevaId)
+					{
+						encontrado = true;
+						break;
+					}
+
+					i += 1;
+				}
+			}
+		}
+
+		if (encontrado == false)
+		{
+			if (idsLista == null)
+			{
+				idsLista = new List<string>();
+			}
+
+			idsLista.Add(nuevaId);
+		}
+		else
+		{
+			idsLista.RemoveAt(i);
+		}
+
+		ids = null;
+
+		foreach (var id in idsLista)
+		{
+			ids = ids + "," + id;
+		}
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			ids = ids.Remove(0, 1);
+		}
+
+		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
+		}
+		else
+		{
+			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+		}
+	}
+
+	private int CantidadIDs(string letra)
+	{
+		int i = 0;
+
+		if (idsLista != null)
+		{
+			if (idsLista.Count > 0)
+			{
+				foreach (var id in idsLista)
+				{
+					if (id.Contains(letra) == true)
+					{
+						i += 1;
+					}
+				}
+			}
+		}
+
+		return i;
 	}
 
 	#region Deck
@@ -495,87 +740,79 @@ else
 		}
 	}
 
-	private async void CambiarDeck(MouseEventArgs e, string nuevoDeck)
+	#endregion
+
+	#region Tipos
+
+	private List<FiltroItem> tipos = new List<FiltroItem>();
+
+	private void CargarTipos()
 	{
-		nuevoDeck = "d" + nuevoDeck;
+		List<string> cadenas = new List<string>();
+		cadenas.Add("0");
+		cadenas.Add("1");
+		cadenas.Add("3");
+		cadenas.Add("4");
 
-		bool encontrado = false;
-
-		int i = 0;
-		if (idsLista != null)
+		foreach (var cadena in cadenas)
 		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id == nuevoDeck)
-					{
-						encontrado = true;
-						break;
-					}
+			FiltroItem nuevoTipo = new FiltroItem();
+			nuevoTipo.Id = cadena;
+			nuevoTipo.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "Type" + cadena, "Filter");
 
-					i += 1;
-				}
-			}
-		}
-
-		if (encontrado == false)
-		{
-			if (idsLista == null)
-			{
-				idsLista = new List<string>();
-			}
-
-			idsLista.Add(nuevoDeck);
-		}
-		else
-		{
-			idsLista.RemoveAt(i);
-		}
-
-		ids = null;
-
-		foreach (var id in idsLista)
-		{
-			ids = ids + "," + id;
-		}
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			ids = ids.Remove(0, 1);
-		}
-
-		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
-		}
-		else
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
+			tipos.Add(nuevoTipo);
 		}
 	}
 
-	private int CantidadDeck()
+	private bool enseñarTipos = true;
+
+	private void AbrirTipos(MouseEventArgs e)
 	{
-		int i = 0;
-
-		if (idsLista != null)
+		if (enseñarTipos == true)
 		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id.Contains("d") == true)
-					{
-						i += 1;
-					}
-				}
-			}
+			enseñarTipos = false;
 		}
+		else
+		{
+			enseñarTipos = true;
+		}
+	}
 
-		return i;
+	#endregion
+
+	#region Sistemas
+
+	private List<FiltroItem> sistemas = new List<FiltroItem>();
+
+	private void CargarSistemas()
+	{
+		List<string> cadenas = new List<string>();
+		cadenas.Add("1");
+		cadenas.Add("2");
+		cadenas.Add("3");
+
+		foreach (var cadena in cadenas)
+		{
+			FiltroItem nuevoSistema = new FiltroItem();
+			nuevoSistema.Id = cadena;
+			nuevoSistema.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "System" + cadena, "Filter");
+
+			sistemas.Add(nuevoSistema);
+		}
+	}
+
+	private bool enseñarSistemas = false;
+
+	private void AbrirSistemas(MouseEventArgs e)
+	{
+		if (enseñarSistemas == true)
+		{
+			enseñarSistemas = false;
+		}
+		else
+		{
+			enseñarSistemas = true;
+		}
 	}
 
 	#endregion
@@ -620,89 +857,6 @@ else
 		}
 	}
 
-	private async void CambiarEtiqueta(MouseEventArgs e, string nuevaEtiqueta)
-	{
-		nuevaEtiqueta = "t" + nuevaEtiqueta;
-
-		bool encontrado = false;
-
-		int i = 0;
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id == nuevaEtiqueta)
-					{
-						encontrado = true;
-						break;
-					}
-
-					i += 1;
-				}
-			}
-		}
-
-		if (encontrado == false)
-		{
-			if (idsLista == null)
-			{
-				idsLista = new List<string>();
-			}
-
-			idsLista.Add(nuevaEtiqueta);
-		}
-		else
-		{
-			idsLista.RemoveAt(i);
-		}
-
-		ids = null;
-
-		foreach (var id in idsLista)
-		{
-			ids = ids + "," + id;
-		}
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			ids = ids.Remove(0, 1);
-		}
-
-		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
-		}
-		else
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
-		}
-	}
-
-	private int CantidadEtiquetas()
-	{
-		int i = 0;
-
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id.Contains("t") == true)
-					{
-						i += 1;
-					}
-				}
-			}
-		}
-
-		return i;
-	}
-
 	#endregion
 
 	#region Categorias
@@ -745,89 +899,6 @@ else
 		}
 	}
 
-	private async void CambiarCategoria(MouseEventArgs e, string nuevaCategoria)
-	{
-		nuevaCategoria = "c" + nuevaCategoria;
-
-		bool encontrado = false;
-
-		int i = 0;
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id == nuevaCategoria)
-					{
-						encontrado = true;
-						break;
-					}
-
-					i += 1;
-				}
-			}
-		}
-
-		if (encontrado == false)
-		{
-			if (idsLista == null)
-			{
-				idsLista = new List<string>();
-			}
-
-			idsLista.Add(nuevaCategoria);
-		}
-		else
-		{
-			idsLista.RemoveAt(i);
-		}
-
-		ids = null;
-
-		foreach (var id in idsLista)
-		{
-			ids = ids + "," + id;
-		}
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			ids = ids.Remove(0, 1);
-		}
-
-		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
-		}
-		else
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
-		}
-	}
-
-	private int CantidadCategorias()
-	{
-		int i = 0;
-
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id.Contains("c") == true)
-					{
-						i += 1;
-					}
-				}
-			}
-		}
-
-		return i;
-	}
-
 	#endregion
 
 	#region Generos
@@ -868,89 +939,6 @@ else
 		{
 			enseñarGeneros = true;
 		}
-	}
-
-	private async void CambiarGenero(MouseEventArgs e, string nuevoGenero)
-	{
-		nuevoGenero = "g" + nuevoGenero;
-
-		bool encontrado = false;
-
-		int i = 0;
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id == nuevoGenero)
-					{
-						encontrado = true;
-						break;
-					}
-
-					i += 1;
-				}
-			}
-		}
-
-		if (encontrado == false)
-		{
-			if (idsLista == null)
-			{
-				idsLista = new List<string>();
-			}
-
-			idsLista.Add(nuevoGenero);
-		}
-		else
-		{
-			idsLista.RemoveAt(i);
-		}
-
-		ids = null;
-
-		foreach (var id in idsLista)
-		{
-			ids = ids + "," + id;
-		}
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			ids = ids.Remove(0, 1);
-		}
-
-		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-
-		if (string.IsNullOrEmpty(ids) == false)
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/" + ids + "/");
-		}
-		else
-		{
-			await JavaScript.InvokeVoidAsync("ChangeUrl", "/filter/");
-		}
-	}
-
-	private int CantidadGeneros()
-	{
-		int i = 0;
-
-		if (idsLista != null)
-		{
-			if (idsLista.Count > 0)
-			{
-				foreach (var id in idsLista)
-				{
-					if (id.Contains("g") == true)
-					{
-						i += 1;
-					}
-				}
-			}
-		}
-		
-		return i;
 	}
 
 	#endregion

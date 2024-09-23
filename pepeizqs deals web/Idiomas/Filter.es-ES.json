@@ -28,6 +28,18 @@
     "Valor": "Etiqueta"
   },
   {
+    "Id": "String7",
+    "Valor": "Sistemas"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Sistema"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Tipo"
+  },
+  {
     "Id": "Deck2",
     "Valor": "Jugable"
   },
@@ -38,5 +50,33 @@
   {
     "Id": "Deck4",
     "Valor": "Steam Deck"
+  },
+  {
+    "Id": "System1",
+    "Valor": "Windows"
+  },
+  {
+    "Id": "System2",
+    "Valor": "Mac"
+  },
+  {
+    "Id": "System3",
+    "Valor": "Linux"
+  },
+  {
+    "Id": "Type0",
+    "Valor": "Juegos"
+  },
+  {
+    "Id": "Type1",
+    "Valor": "DLCs"
+  },
+  {
+    "Id": "Type3",
+    "Valor": "Bandas Sonoras"
+  },
+  {
+    "Id": "Type4",
+    "Valor": "Software"
   }
 ]

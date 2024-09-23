@@ -73,7 +73,7 @@
 	@if (adminLogeado == true)
 	{
 		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.ServerPrerendered, new { 
-			idioma = Model.idioma, 
+			idioma = Model.idioma,
 			juego = Model.juego 
 		}))
 	}

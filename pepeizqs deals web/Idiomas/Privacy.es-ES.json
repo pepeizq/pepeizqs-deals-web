@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Privacidad y Vuestros Datos"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Cookies"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Como desarrollador de esta web y de otros proyectos, soy consciente del uso pernicioso que se puede hacer de la recolección de datos a través del uso de cookies. Al desarrollar desde cero esta web he podido mantener al mínimo necesario el uso de cookies, para que os hagáis una idea:"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Si decidís usar esta web sin registrar una cuenta, la web no usará ninguna cookie."
+  },
+  {
+    "Id": "String4",
+    "Valor": "Si decidís usar esta web registrando una cuenta, la web solo necesita 3 cookies para operar correctamente. Las necesito para que vuestro navegador y mi servidor no se olviden ninguno del otro cada vez que abras la web."
+  },
+  {
+    "Id": "String5",
+    "Valor": "Nota: Esta web es multilenguaje pero la identificación del idioma del usuario no se hace con ninguna cookie, sino a través de la petición que envía el navegador web."
+  },
+  {
+    "Id": "String6",
+    "Valor": "Vuestros Datos"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Si decidís registraros una cuenta en la web quiero que ser lo más transparente posible y prometo que solo usaré vuestros datos 'dentro de la web, no fuera'. Pero si tienes dudas de que me pueda volver malvado puedes borrar tu cuenta en cualquier momento desde 'Personal Data' o descargar todos los datos que tengo sobre ti."
+  },
+  {
+    "Id": "String8",
+    "Valor": "De hecho, en esta web no voy a usar servicios como Google Analytics, aunque seguramente Google me castigará en su buscador por ello."
+  }
+]

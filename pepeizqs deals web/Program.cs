@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
@@ -179,12 +180,13 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //        options.QueueLimit = 5;
 //    }));
 
-//builder.WebHost.ConfigureKestrel(opciones =>
-//{
-//	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-//	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-//	opciones.AllowSynchronousIO = true;
-//});
+builder.WebHost.ConfigureKestrel(opciones =>
+{
+	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
+	opciones.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
+	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+	opciones.AllowSynchronousIO = true;
+});
 
 var app = builder.Build();
 
@@ -244,5 +246,7 @@ app.MapBlazorHub(opciones =>
 });
 
 //app.UseSession();
+
+app.UseWebSockets();
 
 app.Run();

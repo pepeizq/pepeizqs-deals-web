@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Privacy and Your Data"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Cookies"
+  },
+  {
+    "Id": "String2",
+    "Valor": "As a developer of this website and other projects, I am aware of the harmful use that can be made of data collection through the use of cookies. By developing this website from scratch I have been able to maintain the use of cookies to the minimum necessary, to give you an idea:"
+  },
+  {
+    "Id": "String3",
+    "Valor": "If you decide to use this website without registering an account, the website will not use any cookies."
+  },
+  {
+    "Id": "String4",
+    "Valor": "If you decide to use this website by registering an account, the website only needs 3 cookies to operate correctly. I need them so that your browser and my server do not forget each other every time you open the website."
+  },
+  {
+    "Id": "String5",
+    "Valor": "Note: This website is multilingual but the identification of the user's language is not done with any cookie, but through the request sent by the web browser."
+  },
+  {
+    "Id": "String6",
+    "Valor": "Your Data"
+  },
+  {
+    "Id": "String7",
+    "Valor": "If you decide to register an account on the website, I want to be as transparent as possible and I promise that I will only use your data 'inside the website, not outside'. But if you have doubts that I might turn evil, you can delete your account at any time from 'Personal Data' or download all the data I have about you."
+  },
+  {
+    "Id": "String8",
+    "Valor": "In fact, on this website I am not going to use services like Google Analytics, although Google will surely punish me in its search engine for it."
+  }
+]

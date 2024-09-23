@@ -28,7 +28,7 @@
 
 <script>
 	function moverScroll(id) {
-		const yOffset = -200;
+		const yOffset = -185;
 		const element = document.getElementById(id);
 		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
@@ -1018,18 +1018,19 @@
 										<div>@Idiomas.CogerCadena(idioma, "String36", "Game")</div>
 										
 										<div>
-											@{
-												List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
+                                            @{
+                                                List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
 
-												foreach (var publisher in listaPublishers)
-												{
-													string publisherLimpio = publisher;
+                                                foreach (var publisher in listaPublishers)
+                                                {
+                                                    string publisherLimpio = publisher;
 													publisherLimpio = publisherLimpio.Replace(" ", null);
 													publisherLimpio = publisherLimpio.Replace("(", null);
 													publisherLimpio = publisherLimpio.Replace(")", null);
 													publisherLimpio = publisherLimpio.Replace("?", null);
 													publisherLimpio = publisherLimpio.Replace("/", null);
 													publisherLimpio = publisherLimpio.Replace("\"", null);
+													publisherLimpio = publisherLimpio.Replace("💘", null);
 													publisherLimpio = publisherLimpio.ToLower();
 													publisherLimpio = publisherLimpio.Trim();
 
@@ -1053,6 +1054,19 @@
 													if (publisherFinal == null)
 													{
 														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
+													}
+
+													string publisherLimpio2 = publisher;
+													publisherLimpio2 = System.Text.RegularExpressions.Regex.Replace(publisherLimpio2, @"[^\u0000-\u007F]+", "");
+
+													if (publisherFinal == null)
+													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio2.Trim());
+													}
+
+													if (publisherFinal == null)
+													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio2.Trim());
 													}
 
 													if (publisherFinal != null)
@@ -1116,7 +1130,14 @@
 
 																publishersFinales.Add(publisherFinal2);
 
-																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre, "/game/" + juego.Id.ToString() + "/");
+																string userAgent = string.Empty;
+
+																if (HttpContext != null)
+																{
+																	userAgent = Environment.NewLine + HttpContext.Request.Headers.UserAgent;
+																}
+
+																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
 															}
 															else
 															{
@@ -1313,7 +1334,7 @@
 @if (bundleId > 0)
 {
 	<div class="opciones-panel">
-		<div style="max-width: 1300px; margin: 10px auto; position: relative;">
+		<div style="max-width: 1320px; margin: 20px auto; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 			@{
 				Bundles2.Bundle bundleSeleccionado = global::BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 			}
@@ -1363,8 +1384,8 @@
 @if (enseñarDeck == true)
 {
 	<div class="opciones-panel">
-		<div style="max-width: 800px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
-			<div style="display: flex; align-items: start; flex-direction: row; gap: 30px;">
+		<div style="max-width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
+			<div style="display: flex; align-items: start; flex-direction: row; gap: 40px;">
 				<button @onclick="@(e => DeckCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
 					<i class="fa-solid fa-arrow-left"></i>
 				</button>

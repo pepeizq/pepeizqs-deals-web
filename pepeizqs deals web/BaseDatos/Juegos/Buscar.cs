@@ -853,6 +853,8 @@ namespace BaseDatos.Juegos
 				List<string> categorias = new List<string>();
 				List<string> generos = new List<string>();
 				List<string> decks = new List<string>();
+				List<string> sistemas = new List<string>();
+				List<string> tipos = new List<string>();
 
 				if (ids != null)
 				{
@@ -879,7 +881,17 @@ namespace BaseDatos.Juegos
                             {
                                 decks.Add(id.Replace("d", null));
                             }
-                        }
+
+							if (id.Contains("s") == true)
+							{
+								sistemas.Add(id.Replace("s", null));
+							}
+
+							if (id.Contains("i") == true)
+							{
+								tipos.Add(id.Replace("i", null));
+							}
+						}
                     }
                 }				
 				
@@ -986,9 +998,68 @@ namespace BaseDatos.Juegos
                         deckTexto = " AND (" + deckTexto + ")";
                     }
                 }
-				
+
+				string sistemasTexto = string.Empty;
+
+				if (sistemas.Count > 0)
+				{
+					foreach (var sistema in sistemas)
+					{
+						if (string.IsNullOrEmpty(sistemasTexto) == false)
+						{
+							sistemasTexto = sistemasTexto + " OR ";
+						}
+
+						if (sistema == "1")
+						{
+							sistemasTexto = sistemasTexto + "caracteristicas LIKE '%" + Strings.ChrW(34) + "Windows" + Strings.ChrW(34) + ":true%'";
+						}
+
+						if (sistema == "2")
+						{
+							sistemasTexto = sistemasTexto + "caracteristicas LIKE '%" + Strings.ChrW(34) + "Mac" + Strings.ChrW(34) + ":true%'";
+						}
+
+						if (sistema == "3")
+						{
+							sistemasTexto = sistemasTexto + "caracteristicas LIKE '%" + Strings.ChrW(34) + "Linux" + Strings.ChrW(34) + ":true%'";
+						}
+					}
+
+					if (string.IsNullOrEmpty(sistemasTexto) == false)
+					{
+						sistemasTexto = " AND (" + sistemasTexto + ")";
+					}
+				}
+
+				string tiposTexto = string.Empty;
+
+				if (tipos.Count > 0)
+				{
+					int i = 0;
+
+					foreach (var tipo in tipos)
+					{
+						if (i == 0)
+						{
+							tiposTexto = "tipo = " + tipo;
+						}
+						else
+						{
+							tiposTexto = tiposTexto + " OR tipo = " + tipo;
+						}
+
+						i += 1;
+					}
+
+					if (string.IsNullOrEmpty(tiposTexto) == false)
+					{
+						tiposTexto = " AND (" + tiposTexto + ")";
+					}
+				}
+
 				string busqueda = "SELECT TOP " + cantidad.ToString() + " *, CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) AS Cantidad FROM juegos " + Environment.NewLine + 
-                    "WHERE ISJSON(analisis) > 0 " + etiquetasTexto + " " + categoriasTexto + " " + generosTexto + " " + deckTexto +
+                    "WHERE ISJSON(analisis) > 0 " + etiquetasTexto + " " + categoriasTexto + " " + generosTexto + " " + deckTexto + " " + sistemasTexto + " " + tiposTexto +
 					" ORDER BY Cantidad DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
