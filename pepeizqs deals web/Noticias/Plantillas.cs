@@ -491,37 +491,6 @@ namespace Noticias
 
             return plantilla;
         }
-
-        public static Plantilla Rumores(Plantilla plantilla, string juegoId)
-        {
-            if (plantilla.Juegos == null)
-            {
-                plantilla.Juegos = juegoId;
-            }
-            else
-            {
-                plantilla.Juegos = plantilla.Juegos + "," + juegoId;
-            }
-
-            plantilla.ContenidoEn = "<ul>" + Environment.NewLine;
-            plantilla.ContenidoEs = "<ul>" + Environment.NewLine;
-
-            foreach (string juego in Herramientas.Listados.Generar(plantilla.Juegos))
-            {
-                Juegos.Juego juegob = BaseDatos.Juegos.Buscar.UnJuego(juego);
-
-                if (juegob != null)
-                {
-                    plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + "/game/" + juegob.Id.ToString() + Strings.ChrW(34) + ">" + juegob.Nombre + "</a></li>" + Environment.NewLine;
-                    plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + "/game/" + juegob.Id.ToString() + Strings.ChrW(34) + ">" + juegob.Nombre + "</a></li>" + Environment.NewLine;
-                }
-            }
-
-            plantilla.ContenidoEn = Environment.NewLine + plantilla.ContenidoEn + "</ul>";
-            plantilla.ContenidoEs = Environment.NewLine + plantilla.ContenidoEs + "</ul>";
-
-            return plantilla;
-        }
     }
 
     public class Plantilla

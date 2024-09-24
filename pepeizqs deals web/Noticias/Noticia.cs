@@ -25,4 +25,10 @@ namespace Noticias
 		public int IdMaestra;
 		public int BundleId;
 	}
+
+	public class NoticiaMostrar
+	{
+        public NoticiaTipo Tipo;
+		public bool Mostrar;
+    }
 }

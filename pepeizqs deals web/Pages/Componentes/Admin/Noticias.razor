@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
+@using Microsoft.VisualBasic
 @using Suscripciones2
 @using global::Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -12,9 +13,12 @@
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="opciones-combobox" style="width: 33%;">
         <select @onchange="@(e => CambiarNoticiaTipo(e))">
-            @foreach (NoticiaTipo tipo in NoticiasCargar.CargarNoticiasTipo())
+            @foreach (NoticiaMostrar mostrar in NoticiasCargar.CargarNoticiasMostrar())
             {
-                <option value="@tipo">@tipo</option>
+                if (mostrar.Mostrar == true)
+                {
+                    <option value="@mostrar.Tipo">@mostrar.Tipo</option>
+                } 
             }
         </select>
     </div>
@@ -147,45 +151,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         </div>
     }
 }
-else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
-{
-    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-        <div style="margin-bottom: 10px;">
-            <label style="margin: 10px;">Juegos IDs:</label>
-            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
-        </div>
-
-        <div style="margin-bottom: 10px;">
-            <label style="margin: 10px;">Juegos Buscador:</label>
-            <input type="text" @oninput="TextoCambiaBuscadorNoticias" class="entrada-texto" style="margin-bottom: 20px;" />
-
-            @if (juegosBuscadorNoticias != null)
-            {
-                @if (juegosBuscadorNoticias.Count > 0)
-                {
-                    <div>
-                        @foreach (var juego in juegosBuscadorNoticias)
-                        {
-                            <div class="perfil-flexible-centrado perfil-espacio-top">
-                                <button @onclick="@(e => SeleccionarJuegoNoticias(e, juego.Id.ToString()))" class="boton-pequeño">
-                                    <div class="perfil-flexible-centrado">
-                                        <div style="width: 12%;">
-                                            <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
-                                        </div>
-
-                                        <div style="width: 88%; padding-left: 15px; padding-right: 15px;">
-                                            @juego.Id - @juego.Nombre
-                                        </div>
-                                    </div>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                }
-            }
-        </div>
-    </div>
-}
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
     <div>
@@ -223,15 +188,36 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     </div>
 </div>
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-    <div>
-        <label style="margin-left: 10px; margin-bottom: 10px;">Contenido EN:</label>
-        <textarea @onchange="@(e => CambiarContenidoEnNoticias(e))" class="entrada-texto" rows="8">@noticia.ContenidoEn</textarea>
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <label>Contenido EN:</label>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button @onclick="@(e => EditorDiv(e, noticia, "en"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">div</div>
+                </div>
+            </button>
+
+            <button @onclick="@(e => EditorUl(e, noticia, "en"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">ul</div>
+                </div>
+            </button>
+
+            <button @onclick="@(e => EditorEnlace(e, noticia, "en"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">a href</div>
+                </div>
+            </button>
+        </div>
+
+        <textarea class="entrada-texto" rows="8" @bind="noticia.ContenidoEn" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';" />
     </div>
 
     @if (string.IsNullOrEmpty(noticia.ContenidoEn) == false)
     {
-        <div style="margin-top: 20px; margin-left: 20px; margin-bottom: 10px;">
+        <div>
             @((MarkupString)noticia.ContenidoEn)
         </div>
     }
@@ -242,14 +228,26 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
         <label>Contenido ES:</label>
 
         <div style="display: flex; align-items: center; gap: 10px;">
-            <button @onclick="@(e => EditorDiv(e, noticia))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+            <button @onclick="@(e => EditorDiv(e, noticia, "es"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
 				<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
 					<div style="font-size: 14px;">div</div>
 				</div>
 			</button>
+
+            <button @onclick="@(e => EditorUl(e, noticia, "es"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">ul</div>
+                </div>
+            </button>
+
+            <button @onclick="@(e => EditorEnlace(e, noticia, "es"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">a href</div>
+                </div>
+            </button>
         </div>
 
-        <textarea class="entrada-texto" rows="8" @bind="noticia.ContenidoEs"/>
+        <textarea class="entrada-texto" rows="8" @bind="noticia.ContenidoEs" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';" />
     </div>
 
     @if (string.IsNullOrEmpty(noticia.ContenidoEs) == false)
@@ -266,6 +264,62 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     </div>
 </div>
 
+@if (abrirEnlace == true)
+{
+    <div class="opciones-panel">
+        <div style="width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll; display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; align-items: start; gap: 40px;">
+                <button @onclick="@(e => EnlaceCerrar(e))" class="boton-pequeño" style="padding: 10px 20px; width: auto;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+
+                <div style="width: 100%;">
+                    <label style="margin: 10px;">Juegos Buscador:</label>
+                    <input type="text" @oninput="TextoCambiaBuscadorJuegoEnlace" class="entrada-texto" style="margin-bottom: 20px;" />
+
+                    @if (juegosBuscadorEnlace != null)
+                    {
+                        @if (juegosBuscadorEnlace.Count > 0)
+                        {
+                            <div>
+                                @foreach (var juego in juegosBuscadorEnlace)
+                                {
+                                    <div class="perfil-flexible-centrado perfil-espacio-top">
+                                        <button @onclick="@(e => SeleccionarJuegoAñadirEnlace(e, juego.Id.ToString(), juego.Nombre))" class="boton-pequeño">
+                                            <div class="perfil-flexible-centrado">
+                                                <div style="width: 12%;">
+                                                    <img src="@juego.Imagenes.Capsule_231x87" style="max-height:100%; max-width:100%;" />
+                                                </div>
+
+                                                <div style="width: 88%; padding-left: 15px; padding-right: 15px;">
+                                                    @juego.Id - @juego.Nombre
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+
+                    <label style="margin: 10px;">Enlace:</label>
+
+                    <input class="entrada-texto" @bind="contenidoEnlace">
+
+                    <hr />
+
+                    <button @onclick="@(e => EnlaceAñadir(e))" class="boton-pequeño" style="width: 120px; text-align: center; padding: 10px 20px;">
+                        Añadir
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
 @code {
 
     #nullable disable
@@ -273,8 +327,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     private SqlConnection conexion = new SqlConnection();
 
     private string noticiaTipoSeleccionada = null;
-
-    private List<global::Juegos.Juego> juegosBuscadorNoticias = new List<global::Juegos.Juego>();
 
     private string bundleSeleccionadoNoticias = null;
     private string gratisSeleccionadoNoticias = null;
@@ -330,11 +382,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
     private void CambiarImagenNoticia(ChangeEventArgs texto)
     {
         noticia.Imagen = texto.Value.ToString();
-    }
-
-    private void CambiarContenidoEnNoticias(ChangeEventArgs texto)
-    {
-        noticia.ContenidoEn = texto.Value.ToString();
     }
 
     private void CambiarFechaNoticias(ChangeEventArgs texto)
@@ -428,25 +475,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
         }
     }
 
-    private void TextoCambiaBuscadorNoticias(ChangeEventArgs texto)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegosBuscadorNoticias = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
-        }
-        else
-        {
-            juegosBuscadorNoticias = new List<global::Juegos.Juego>();
-        }
-    }
-
-    private void SeleccionarJuegoNoticias(MouseEventArgs e, string id)
-    {
-        noticia = Plantillas.Rumores(noticia, id);
-
-        juegosBuscadorNoticias = new List<global::Juegos.Juego>();
-    }
-
     private void CambiarBundleNoticias(ChangeEventArgs texto)
     {
         bundleSeleccionadoNoticias = texto.Value.ToString();
@@ -489,9 +517,121 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
 
     #region Editor
 
-    private void EditorDiv(MouseEventArgs e, Plantilla textoDondeAñadir)
+    private void EditorDiv(MouseEventArgs e, Plantilla textoDondeAñadir, string idioma)
     {
-        textoDondeAñadir.ContenidoEs = textoDondeAñadir.ContenidoEs + "<div></div>";
+        if (idioma == "en")
+        {
+            bool yaExiste = false;
+
+            if (string.IsNullOrEmpty(textoDondeAñadir.ContenidoEn) == false)
+            {
+                if (textoDondeAñadir.ContenidoEn.Contains("<div>") == true)
+                {
+                    yaExiste = true;
+                }
+            }
+
+            if (yaExiste == false)
+            {
+                textoDondeAñadir.ContenidoEn = textoDondeAñadir.ContenidoEn + "<div>" + Environment.NewLine + Environment.NewLine + "</div>";
+            }
+            else
+            {
+                textoDondeAñadir.ContenidoEn = textoDondeAñadir.ContenidoEn + @"<div style=""margin-top: 10px;"">" + Environment.NewLine + Environment.NewLine + "</div>";
+            }
+        }
+
+        if (idioma == "es")
+        {
+            bool yaExiste = false;
+
+            if (string.IsNullOrEmpty(textoDondeAñadir.ContenidoEs) == false)
+            {
+                if (textoDondeAñadir.ContenidoEs.Contains("<div>") == true)
+                {
+                    yaExiste = true;
+                }
+            }
+
+            if (yaExiste == false)
+            {
+                textoDondeAñadir.ContenidoEs = textoDondeAñadir.ContenidoEs + @"<div>" + Environment.NewLine + Environment.NewLine + "</div>";
+            }
+            else
+            {
+                textoDondeAñadir.ContenidoEs = textoDondeAñadir.ContenidoEs + @"<div style=""margin-top: 10px;"">" + Environment.NewLine + Environment.NewLine + "</div>";
+            }
+        }       
+    }
+
+    private void EditorUl(MouseEventArgs e, Plantilla textoDondeAñadir, string idioma)
+    {
+        if (idioma == "en")
+        {
+            textoDondeAñadir.ContenidoEn = textoDondeAñadir.ContenidoEn + "<ul>" + Environment.NewLine + "<li>" + Environment.NewLine + Environment.NewLine + "</li>" + Environment.NewLine + "</ul>";
+        }
+
+        if (idioma == "es")
+        {
+            textoDondeAñadir.ContenidoEs = textoDondeAñadir.ContenidoEs + "<ul>" + Environment.NewLine + "<li>" + Environment.NewLine + Environment.NewLine + "</li>" + Environment.NewLine + "</ul>";
+        }
+    }
+
+    private bool abrirEnlace = false;
+    private string contenidoEnlace = string.Empty;
+    private Plantilla plantillaEnlace = null;
+    private string idiomaEnlace = null;
+
+    private void EditorEnlace(MouseEventArgs e, Plantilla textoDondeAñadir, string idioma)
+    {
+        abrirEnlace = true;
+
+        plantillaEnlace = textoDondeAñadir;
+        idiomaEnlace = idioma;
+    }
+
+    private void EnlaceCerrar(MouseEventArgs e)
+    {
+        abrirEnlace = false;
+    }
+
+
+    private List<global::Juegos.Juego> juegosBuscadorEnlace = new List<global::Juegos.Juego>();
+
+    private void TextoCambiaBuscadorJuegoEnlace(ChangeEventArgs texto)
+    {
+        if (texto.Value.ToString().Trim().Length > 1)
+        {
+            juegosBuscadorEnlace = BaseDatos.Juegos.Buscar.Nombre(texto.Value.ToString().Trim());
+        }
+        else
+        {
+            juegosBuscadorEnlace = new List<global::Juegos.Juego>();
+        }
+    }
+
+    private void SeleccionarJuegoAñadirEnlace(MouseEventArgs e, string id, string nombre)
+    {
+        contenidoEnlace = "https://pepeizqdeals.com/game/" + id + "/" + Herramientas.EnlaceAdaptador.Nombre(nombre) + "/";
+        juegosBuscadorEnlace = new List<global::Juegos.Juego>();
+    }
+
+    private void EnlaceAñadir(MouseEventArgs e)
+    {
+        if (plantillaEnlace != null && string.IsNullOrEmpty(idiomaEnlace) == false)
+        {
+            if (idiomaEnlace == "en")
+            {
+                plantillaEnlace.ContenidoEn = plantillaEnlace.ContenidoEn + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + "></a>";
+            }
+
+            if (idiomaEnlace == "es")
+            {
+                plantillaEnlace.ContenidoEs = plantillaEnlace.ContenidoEs + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + "></a>";
+            }
+        }
+
+        abrirEnlace = false;
     }
 
     #endregion

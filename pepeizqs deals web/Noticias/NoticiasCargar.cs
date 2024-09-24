@@ -17,7 +17,54 @@ namespace Noticias
 
 	public static class NoticiasCargar
 	{
-		public static List<NoticiaTipo> CargarNoticiasTipo()
+        public static List<NoticiaMostrar> CargarNoticiasMostrar()
+		{
+			List<NoticiaMostrar> noticias = new List<NoticiaMostrar>();
+
+            NoticiaMostrar bundles = new NoticiaMostrar
+            {
+                Tipo = NoticiaTipo.Bundles,
+                Mostrar = true
+            };
+
+            noticias.Add(bundles);
+
+            NoticiaMostrar gratis = new NoticiaMostrar
+            {
+                Tipo = NoticiaTipo.Gratis,
+                Mostrar = true
+            };
+
+            noticias.Add(gratis);
+
+            NoticiaMostrar suscripciones = new NoticiaMostrar
+            {
+                Tipo = NoticiaTipo.Suscripciones,
+                Mostrar = true
+            };
+
+            noticias.Add(suscripciones);
+
+            NoticiaMostrar rumores = new NoticiaMostrar
+            {
+                Tipo = NoticiaTipo.Rumores,
+                Mostrar = true
+            };
+
+            noticias.Add(rumores);
+
+            NoticiaMostrar web = new NoticiaMostrar
+            {
+                Tipo = NoticiaTipo.Web,
+                Mostrar = true
+            };
+
+            noticias.Add(web);
+
+            return noticias;
+		}
+
+        public static List<NoticiaTipo> CargarNoticiasTipo()
 		{
 			List<NoticiaTipo> tipos = Enum.GetValues(typeof(NoticiaTipo)).Cast<NoticiaTipo>().ToList();
 

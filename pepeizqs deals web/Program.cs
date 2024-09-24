@@ -229,9 +229,9 @@ app.MapControllers();
 
 #endregion
 
-app.MapHealthChecks("/vida");
+//app.MapHealthChecks("/vida");
 
-//app.UseRouting();
+app.UseRouting();
 
 //app.UseAuthorization();
 
@@ -241,12 +241,10 @@ app.MapRazorPages();
 
 app.MapBlazorHub(opciones =>
 {
-	//opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	//opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
 });
 
 //app.UseSession();
-
-app.UseWebSockets();
 
 app.Run();
