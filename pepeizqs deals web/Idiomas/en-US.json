@@ -1,13 +1,5 @@
 [
   {
-    "Id": "LastNews.Title",
-    "Valor": "Last News"
-  },
-  {
-    "Id": "LastNews.String1",
-    "Valor": "News Archive"
-  },
-  {
     "Id": "News.Type1",
     "Valor": "Deals"
   },

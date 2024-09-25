@@ -11,13 +11,6 @@
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
-    string discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
-    string telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
-    string reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
-    string twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
-    string steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
-    string rss = Herramientas.Idiomas.CogerRSS(idioma);
-    string bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
 
     string codigoFuente = builder.Configuration.GetValue<string>("Enlaces:CodigoFuente");
     string visitas = builder.Configuration.GetValue<string>("Enlaces:Visitas");
@@ -125,15 +118,10 @@
                 </div>
 
                 <div style="padding: 0px 80px;">
-                    <div style="display: flex; align-items: center; justify-content: center; font-size: 24px; text-align: center;">
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a></div>
-                        <div style="margin-left: 6px; margin-right: 6px;"><a href="@bluesky" target="_blank"><i class="fa-brands fa-bluesky"></i></a></div>
-                    </div>
+                    @(await Html.RenderComponentAsync<Componentes.Interfaz.RedesSociales>(RenderMode.ServerPrerendered, new {
+                        idioma = idioma,
+                        tamañoFuente = "24px"
+                    }))
                 </div>
 
                 <div>
@@ -181,9 +169,9 @@
             await Blazor.start()
 
             if (document.location.href != "https://pepeizqdeals.com/admin") {
-                while (Blazor.defaultReconnectionHandler === undefined) {
-                    await delay(100)
-                }
+                // while (Blazor.defaultReconnectionHandler === undefined) {
+                //     await delay(100)
+                // }
                 Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
                     document.location.reload()
                 }

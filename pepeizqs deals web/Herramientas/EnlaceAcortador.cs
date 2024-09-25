@@ -9,6 +9,8 @@ namespace Herramientas
 {
 	public static class EnlaceAcortador
 	{
+		private static string dominio = "https://pepeizqdeals.com";
+
 		public static string Generar(string enlace, string tienda = null)
 		{
 			if (tienda != null)
@@ -71,7 +73,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + enlaceFinal.Id + "/";
 		}
 
 		public static string Generar(string enlace, BundleTipo tipo)
@@ -96,7 +98,7 @@ namespace Herramientas
 
 			if (enlaceFinal != null)
 			{
-				return "/link/" + enlaceFinal.Id + "/";
+				return dominio + "/link/" + enlaceFinal.Id + "/";
 			}
 			else
 			{
@@ -132,7 +134,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + enlaceFinal.Id + "/";
 		}
 
 		public static string Generar(string enlace, SuscripcionTipo tipo)
@@ -151,7 +153,7 @@ namespace Herramientas
 				enlaceFinal = Insertar.Ejecutar(enlace);
 			}
 
-			return "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + enlaceFinal.Id + "/";
 		}
 	}
 

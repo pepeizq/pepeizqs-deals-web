@@ -1,0 +1,56 @@
+﻿
+<div style="display: flex; align-items: center; justify-content: center; font-size: @tamañoFuente; text-align: center; gap: 12px;">
+    <div>
+        <a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a>
+    </div>
+    <div>
+        <a href="@telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+    </div>
+    <div>
+        <a href="@reddit" target="_blank"><i class="fa-brands fa-reddit"></i></a>
+    </div>
+    <div>
+        <a href="@twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+    <div>
+        <a href="@steam" target="_blank"><i class="fa-brands fa-steam"></i></a>
+    </div>
+    <div>
+        <a href="@rss" target="_blank"><i class="fa-solid fa-rss"></i></a>
+    </div>
+    <div>
+        <a href="@bluesky" target="_blank"><i class="fa-brands fa-bluesky"></i></a>
+    </div>
+</div>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    [Parameter]
+    public string tamañoFuente { get; set; }
+
+    private string discord = string.Empty;
+    private string telegram = string.Empty;
+    private string reddit = string.Empty;
+    private string twitter = string.Empty;
+    private string steam = string.Empty;
+    private string rss = string.Empty;
+    private string bluesky = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
+        telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
+        reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
+        twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
+        steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
+        rss = Herramientas.Idiomas.CogerRSS(idioma);
+        bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
+    }
+
+}

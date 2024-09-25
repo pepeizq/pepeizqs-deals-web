@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.ServiceModel.Syndication;
 using System.Text;
@@ -27,7 +26,7 @@ namespace Herramientas
 			};
 
 			List<SyndicationItem> items = new List<SyndicationItem>();
-			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas();
+			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
 
 			if (noticias.Count > 0)
 			{
@@ -35,36 +34,33 @@ namespace Herramientas
 
 				foreach (Noticias.Noticia noticia in noticias)
 				{
-					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+					string enlace = noticia.Enlace;
+
+					if (enlace != null)
 					{
-						string enlace = noticia.Enlace;
-
-						if (enlace != null)
+						if (enlace.Contains(dominio) == false)
 						{
-							if (enlace.Contains(dominio) == false)
-							{
-								enlace = dominio + noticia.Enlace;
-							}
+							enlace = dominio + noticia.Enlace;
 						}
-
-						string titulo = noticia.TituloEn;
-						string contenido = noticia.ContenidoEn;
-						Uri enlaceUri = null;
-
-						if (enlace != null)
-						{
-							enlaceUri = new Uri(enlace);
-						}
-
-						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
-
-						if (string.IsNullOrEmpty(noticia.Imagen) == false)
-						{
-							item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
-						}
-
-						items.Add(item);
 					}
+
+					string titulo = noticia.TituloEn;
+					string contenido = noticia.ContenidoEn;
+					Uri enlaceUri = null;
+
+					if (enlace != null)
+					{
+						enlaceUri = new Uri(enlace);
+					}
+
+					SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
+
+					if (string.IsNullOrEmpty(noticia.Imagen) == false)
+					{
+						item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
+					}
+
+					items.Add(item);
 				}
 
 				feed.Items = items;
@@ -103,7 +99,7 @@ namespace Herramientas
 			};
 
 			List<SyndicationItem> items = new List<SyndicationItem>();
-			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Todas();
+			List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
 
 			if (noticias.Count > 0)
 			{
@@ -111,36 +107,33 @@ namespace Herramientas
 
 				foreach (Noticias.Noticia noticia in noticias)
 				{
-					if (DateTime.Now >= noticia.FechaEmpieza && DateTime.Now <= noticia.FechaTermina)
+					string enlace = noticia.Enlace;
+
+					if (enlace != null)
 					{
-						string enlace = noticia.Enlace;
-
-						if (enlace != null)
+						if (enlace.Contains(dominio) == false)
 						{
-							if (enlace.Contains(dominio) == false)
-							{
-								enlace = dominio + noticia.Enlace;
-							}
+							enlace = dominio + noticia.Enlace;
 						}
-
-						string titulo = noticia.TituloEs;
-						string contenido = noticia.ContenidoEs;
-						Uri enlaceUri = null;
-
-						if (enlace != null)
-						{
-							enlaceUri = new Uri(enlace);
-						}
-
-						SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
-						
-						if (string.IsNullOrEmpty(noticia.Imagen) == false)
-						{
-							item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
-						}
-
-						items.Add(item);
 					}
+
+					string titulo = noticia.TituloEs;
+					string contenido = noticia.ContenidoEs;
+					Uri enlaceUri = null;
+
+					if (enlace != null)
+					{
+						enlaceUri = new Uri(enlace);
+					}
+
+					SyndicationItem item = new SyndicationItem(titulo, contenido, enlaceUri, noticia.Id.ToString(), noticia.FechaEmpieza);
+
+					if (string.IsNullOrEmpty(noticia.Imagen) == false)
+					{
+						item.ElementExtensions.Add(new XElement("image", noticia.Imagen));
+					}
+
+					items.Add(item);
 				}
 
 				feed.Items = items;

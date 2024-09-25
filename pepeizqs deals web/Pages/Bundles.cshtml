@@ -7,7 +7,7 @@
 	string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Bundle");
 
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
-	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Todos();
+	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Actuales();
 
 	if (bundles.Count > 0)
 	{

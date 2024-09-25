@@ -32,15 +32,25 @@ namespace BaseDatos.Bundles
 			return bundle;
         }
 
-		public static List<Bundles2.Bundle> Todos()
+		public static List<Bundles2.Bundle> Actuales(SqlConnection conexion = null)
 		{
 			List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM bundles";
+				string busqueda = "SELECT * FROM bundles WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

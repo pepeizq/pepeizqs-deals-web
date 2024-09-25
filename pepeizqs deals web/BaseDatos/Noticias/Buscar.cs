@@ -140,46 +140,81 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static List<global::Noticias.Noticia> Todas()
-        {
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
-
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-            using (conexion)
-            {
-				noticias = Todas(conexion, "noticias");
-            }
-
-            return noticias;
-        }
-
-		public static List<global::Noticias.Noticia> Todas(SqlConnection conexion, string tabla = null)
+		public static List<global::Noticias.Noticia> Actuales(SqlConnection conexion = null)
 		{
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
-
-			string tabla2 = string.Empty;
-
-			if (tabla == null)
+			if (conexion == null)
 			{
-				tabla2 = "noticias";
+				conexion = Herramientas.BaseDatos.Conectar();
 			}
 			else
 			{
-				tabla2 = tabla;
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
 			}
 
-			string busqueda = "SELECT * FROM " + tabla2;
+			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
 
-			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			using (conexion)
 			{
-				using (SqlDataReader lector = comando.ExecuteReader())
+				string busqueda = "SELECT * FROM noticias WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
-					while (lector.Read())
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						noticias.Add(Cargar(lector, conexion));
+						while (lector.Read())
+						{
+							noticias.Add(Cargar(lector, conexion));
+						}
 					}
 				}
+			}
+
+			if (noticias.Count > 0)
+			{
+				noticias.Reverse();
+			}
+
+			return noticias;
+		}
+
+		public static List<global::Noticias.Noticia> Año(string año, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM noticias WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							noticias.Add(Cargar(lector, conexion));
+						}
+					}
+				}
+			}
+
+			if (noticias.Count > 0)
+			{
+				noticias.Reverse();
 			}
 
 			return noticias;
@@ -191,9 +226,12 @@ namespace BaseDatos.Noticias
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
 			}
-			else if (conexion.State != System.Data.ConnectionState.Open)
+			else
 			{
-				conexion = Herramientas.BaseDatos.Conectar();
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
 			}
 
 			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
