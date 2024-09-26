@@ -80,7 +80,7 @@
 
 	@if (juegosMostrar.Count > 0)
 	{
-		<div style="display: flex; flex-direction: column; gap: 25px;">
+		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: -25px;">
 			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
 				<ItemContent>
 					<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.MinimosHistoricos"/>

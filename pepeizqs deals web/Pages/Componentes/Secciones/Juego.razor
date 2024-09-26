@@ -2372,7 +2372,7 @@
 		return null;
 	}
 
-	public List<JuegoSuscripcion> SuscripcionesDisponibles(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = 0)
+	public List<JuegoSuscripcion> SuscripcionesDisponibles(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoSuscripcion> suscripcionesDisponibles = new List<JuegoSuscripcion>();
 
@@ -2384,7 +2384,7 @@
 				{
 					if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != JuegoDRM.NoEspecificado)
 						{
 							if (suscripcion.DRM == drm)
 							{

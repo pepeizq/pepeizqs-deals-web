@@ -2,6 +2,7 @@
 
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using pepeizqs_deals_web.Pages.Componentes.Admin;
 
 namespace BaseDatos.Bundles
 {
@@ -62,6 +63,51 @@ namespace BaseDatos.Bundles
 						}
 					}
 				}
+			}
+
+			if (bundles.Count > 0)
+			{
+				bundles.Reverse();
+			}
+
+			return bundles;
+		}
+
+		public static List<Bundles2.Bundle> Año(string año, SqlConnection conexion = null)
+		{
+			List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
+
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM bundles WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							bundles.Add(Cargar(lector));
+						}
+					}
+				}
+			}
+
+			if (bundles.Count > 0)
+			{
+				bundles.Reverse();
 			}
 
 			return bundles;

@@ -30,15 +30,25 @@ namespace BaseDatos.Suscripciones
 			return suscripcion;
 		}
 
-		public static List<JuegoSuscripcion> Todos()
+		public static List<JuegoSuscripcion> Actuales(SqlConnection conexion = null)
         {
             List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
 
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
-            using (conexion)
+			using (conexion)
             {
-                string busqueda = "SELECT * FROM suscripciones";
+                string busqueda = "SELECT * FROM suscripciones WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
@@ -52,8 +62,53 @@ namespace BaseDatos.Suscripciones
                 }
             } 
 
+			if (suscripciones.Count > 0)
+			{
+				suscripciones.Reverse();
+			}
+
             return suscripciones;
         }
+
+		public static List<JuegoSuscripcion> Año(string año, SqlConnection conexion = null)
+		{
+			List<JuegoSuscripcion> suscripciones = new List<JuegoSuscripcion>();
+
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM suscripciones WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							suscripciones.Add(Cargar(lector));
+						}
+					}
+				}
+			}
+
+			if (suscripciones.Count > 0)
+			{
+				suscripciones.Reverse();
+			}
+
+			return suscripciones;
+		}
 
 		public static List<JuegoSuscripcion> UnTipo(string suscripcionTexto, Herramientas.Tiempo tiempo)
 		{

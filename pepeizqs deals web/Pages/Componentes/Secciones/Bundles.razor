@@ -214,7 +214,6 @@
 	[Parameter]
 	public string idioma { get; set; }
 
-	private List<Bundles2.Bundle> bundlesGestor = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 	private Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
@@ -263,32 +262,13 @@
 			años.Add(DateTime.Now.Year.ToString());
 			años.Reverse();
 
-			añoSeleccionado = DateTime.Now.Year.ToString();
-
 			//--------------------------------------------------------------------
 
-			bundlesGestor = BaseDatos.Bundles.Buscar.Actuales();
+			bundlesActuales = BaseDatos.Bundles.Buscar.Actuales();
 
-			if (bundlesGestor.Count > 0)
+			if (bundlesActuales.Count > 0)
 			{
-				foreach (var bundle in bundlesGestor)
-				{
-					if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-					{
-						bundlesActuales.Add(bundle);
-					}
-					else
-					{
-						bundlesPasados.Add(bundle);
-					}
-				}
-
-				if (bundlesActuales.Count > 0)
-				{
-					bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
-
-					bundleSeleccionado = bundlesActuales[0];
-				}
+				bundleSeleccionado = bundlesActuales[0];
 			}
 		}		
 	}
@@ -296,6 +276,8 @@
 	private void CambiarAño(MouseEventArgs e, string nuevoAño)
 	{
 		añoSeleccionado = nuevoAño;
+
+		bundlesPasados = BaseDatos.Bundles.Buscar.Año(añoSeleccionado);
 	}
 
 	private string MostrarFecha(DateTime fechaEmpieza, DateTime fechaTermina)

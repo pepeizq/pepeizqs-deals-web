@@ -579,6 +579,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 
     private bool abrirEnlace = false;
     private string contenidoEnlace = string.Empty;
+    private string tituloEnlace = string.Empty;
     private Plantilla plantillaEnlace = null;
     private string idiomaEnlace = null;
 
@@ -613,6 +614,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     private void SeleccionarJuegoAñadirEnlace(MouseEventArgs e, string id, string nombre)
     {
         contenidoEnlace = "https://pepeizqdeals.com/game/" + id + "/" + Herramientas.EnlaceAdaptador.Nombre(nombre) + "/";
+        tituloEnlace = nombre;
         juegosBuscadorEnlace = new List<global::Juegos.Juego>();
     }
 
@@ -622,12 +624,12 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         {
             if (idiomaEnlace == "en")
             {
-                plantillaEnlace.ContenidoEn = plantillaEnlace.ContenidoEn + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + "></a>";
+                plantillaEnlace.ContenidoEn = plantillaEnlace.ContenidoEn + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + tituloEnlace + "</a>";
             }
 
             if (idiomaEnlace == "es")
             {
-                plantillaEnlace.ContenidoEs = plantillaEnlace.ContenidoEs + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + "></a>";
+                plantillaEnlace.ContenidoEs = plantillaEnlace.ContenidoEs + "<a href=" + Strings.ChrW(34) + contenidoEnlace + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + tituloEnlace + "</a>";
             }
         }
 
