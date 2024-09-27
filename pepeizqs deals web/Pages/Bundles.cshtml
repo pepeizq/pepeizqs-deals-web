@@ -53,6 +53,6 @@
 	descripcion = descripcion
 }))
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.ServerPrerendered, new { 
+@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.Server, new { 
 	idioma = Model.idioma
 }))

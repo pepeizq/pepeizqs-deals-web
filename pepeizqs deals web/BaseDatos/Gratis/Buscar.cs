@@ -30,15 +30,25 @@ namespace BaseDatos.Gratis
 			return gratis;
         }
 
-		public static List<JuegoGratis> Todos()
+		public static List<JuegoGratis> Actuales(SqlConnection conexion = null)
 		{
 			List<JuegoGratis> listaGratis = new List<JuegoGratis>();
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM gratis";
+				string busqueda = "SELECT * FROM gratis WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -52,10 +62,55 @@ namespace BaseDatos.Gratis
 				}
 			}
 
+			if (listaGratis.Count > 0)
+			{
+				listaGratis.Reverse();
+			}
+
 			return listaGratis;
 		}
 
-		public static List<JuegoGratis> UnTipo(string gratisTexto, Herramientas.Tiempo tiempo)
+        public static List<JuegoGratis> Año(string año, SqlConnection conexion = null)
+        {
+            List<JuegoGratis> listaGratis = new List<JuegoGratis>();
+
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            using (conexion)
+            {
+                string busqueda = "SELECT * FROM gratis WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            listaGratis.Add(Cargar(lector));
+                        }
+                    }
+                }
+            }
+
+            if (listaGratis.Count > 0)
+            {
+                listaGratis.Reverse();
+            }
+
+            return listaGratis;
+        }
+
+        public static List<JuegoGratis> UnTipo(string gratisTexto, Herramientas.Tiempo tiempo)
 		{
 			List<JuegoGratis> listaGratis = new List<JuegoGratis>();
 

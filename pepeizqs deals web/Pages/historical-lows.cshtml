@@ -8,6 +8,6 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new { 
+@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new { 
 	idioma = Model.idioma
 }))

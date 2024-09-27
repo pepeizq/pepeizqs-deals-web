@@ -210,7 +210,7 @@ namespace BaseDatos.Portada
 				}
 
 				string busqueda = @"SELECT DISTINCT TOP @cantidad idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
-                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 199 AND JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado') > DATEADD(day, -14, CAST(GETDATE() AS date)) @categoria @drm
+                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 199 AND JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado') > DATEADD(day, -4, CAST(GETDATE() AS date)) @categoria @drm
                                     ORDER BY Fecha DESC";
 
 				busqueda = busqueda.Replace("@cantidad", cantidad.ToString());

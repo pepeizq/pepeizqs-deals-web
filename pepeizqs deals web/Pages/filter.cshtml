@@ -9,7 +9,7 @@
 
 @if (string.IsNullOrEmpty(Model.ids) == false)
 {
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
     {
         idioma = Model.idioma,
         ids = Model.ids
@@ -17,7 +17,7 @@
 }
 else
 {
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
     {
         idioma = Model.idioma
     }))

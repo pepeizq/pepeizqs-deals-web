@@ -311,62 +311,17 @@
             años.Add(DateTime.Now.Year.ToString());
             años.Reverse();
 
-            añoSeleccionado = DateTime.Now.Year.ToString();
-
             //--------------------------------------------------------------------
 
-            List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
+            juegosActuales = BaseDatos.Gratis.Buscar.Actuales();
 
-            if (juegosTodos.Count > 0)
+            if (juegosActuales.Count > 0)
             {
-                List<Juegos.JuegoGratis> juegosPasados = new List<Juegos.JuegoGratis>();
-
-                foreach (var juego in juegosTodos)
+                foreach (var juegoActual in juegosActuales)
                 {
-                    if (DateTime.Now >= juego.FechaEmpieza && DateTime.Now <= juego.FechaTermina)
-                    {
-                        Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-                        juego.Imagen = juego2.Imagenes.Header_460x215;
-                        juego.Juego = juego2;
-
-                        juegosActuales.Add(juego);
-                    }
-                    else
-                    {
-                        juegosPasados.Add(juego);
-                    }
-                }
-
-                if (juegosActuales.Count > 0)
-                {
-                    juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
-                }
-
-                if (juegosPasados.Count > 0)
-                {
-                    juegosPasados = juegosPasados.OrderBy(x => x.Nombre).ToList();
-
-                    foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
-                    {
-                        List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
-
-                        foreach (var juego in juegosPasados)
-                        {
-                            if (juego.Tipo == gratis.Tipo)
-                            {
-                                juegos2.Add(juego);
-                            }
-                        }
-
-                        if (juegos2.Count > 0)
-                        {
-                            Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
-                            componente.Juegos = juegos2;
-                            componente.Tipo = gratis;
-
-                            gratisPasados.Add(componente);
-                        }
-                    }
+                    Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
+                    juegoActual.Imagen = juego2.Imagenes.Header_460x215;
+                    juegoActual.Juego = juego2;
                 }
             }
         }
@@ -375,5 +330,34 @@
     private void CambiarAño(MouseEventArgs e, string nuevoAño)
     {
         añoSeleccionado = nuevoAño;
+
+        List<Juegos.JuegoGratis> juegosPasados = BaseDatos.Gratis.Buscar.Año(añoSeleccionado);
+
+        if (juegosPasados.Count > 0)
+        {
+            gratisPasados.Clear();
+
+            foreach (var gratis in Gratis2.GratisCargar.GenerarListado())
+            {
+                List<Juegos.JuegoGratis> juegos2 = new List<Juegos.JuegoGratis>();
+
+                foreach (var juego in juegosPasados)
+                {
+                    if (juego.Tipo == gratis.Tipo)
+                    {
+                        juegos2.Add(juego);
+                    }
+                }
+
+                if (juegos2.Count > 0)
+                {
+                    Gratis2.GratisComponente componente = new Gratis2.GratisComponente();
+                    componente.Juegos = juegos2;
+                    componente.Tipo = gratis;
+
+                    gratisPasados.Add(componente);
+                }
+            }
+        }
     }
 }

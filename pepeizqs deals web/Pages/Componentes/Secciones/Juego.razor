@@ -359,11 +359,13 @@
 										mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
 									}
 
-									<div class="perfil" style="padding: 20px 25px; background-color: var(--fondoBien);">
-										<div class="perfil-flexible-centrado">
-											<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+									<div class="perfil" style="padding: 10px 10px 0px 10px;">
+										<div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+											<div class="perfil-flexible-centrado">
+												<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
-											<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+												<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+											</div>
 										</div>
 									</div>
 								}
@@ -399,11 +401,13 @@
 								
 									if (string.IsNullOrEmpty(mensaje) == false)
 									{
-										<div class="perfil" style="padding: 20px 25px; background-color: var(--fondoAlerta);">
-											<div class="perfil-flexible-centrado">
-												<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+										<div class="perfil" style="padding: 10px 10px 0px 10px;">
+											<div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+												<div class="perfil-flexible-centrado">
+													<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
-												<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+													<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+												</div>
 											</div>
 										</div>
 									}
@@ -436,7 +440,7 @@
 							<div class="perfil" style="width: 100%; padding: 0px;">
 								@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm) != null || GratisComprobar(juego.Gratis, drm) != null || SuscripcionesComprobar(juego.Suscripciones, drm) != null)
 								{
-									<div style="text-align: left; background-color: var(--fondoMinimo); padding: 20px; display: flex; align-items: center; gap: 30px;">
+									<div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px; margin: 10px 10px 0px 10px;">
 										@if (drm == JuegoDRM.DRMFree)
 										{
 											<div style="font-weight: bold; font-size: 18px; max-width: 45px; text-align: center;">DRM Free</div>
@@ -638,7 +642,7 @@
 								}
 								else
 								{
-									<div style="padding: 20px;">@Idiomas.CogerCadena(idioma, "String12", "Game")</div>
+									<div style="padding: 30px 40px;">@Idiomas.CogerCadena(idioma, "String12", "Game")</div>
 								}
 							</div>
 						</div>

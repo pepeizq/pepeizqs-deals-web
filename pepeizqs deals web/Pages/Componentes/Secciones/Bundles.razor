@@ -269,6 +269,8 @@
 			if (bundlesActuales.Count > 0)
 			{
 				bundleSeleccionado = bundlesActuales[0];
+
+				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
 			}
 		}		
 	}

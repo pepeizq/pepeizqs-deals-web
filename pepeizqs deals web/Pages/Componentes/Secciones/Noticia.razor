@@ -34,71 +34,74 @@
 		}
 	}
 
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px; display: flex; flex-direction: row; align-items: center;">
-		@{
-			string imagenCabecera = string.Empty;
+	@if (tipo != Tipo.Portada)
+	{
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px; display: flex; flex-direction: row; align-items: center;">
+			@{
+				string imagenCabecera = string.Empty;
 
-			if (noticia.Tipo == NoticiaTipo.Bundles)
-			{
-				imagenCabecera = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
-			}
-			else if (noticia.Tipo == NoticiaTipo.Gratis)
-			{
-				imagenCabecera = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
-			}
-			else if (noticia.Tipo == NoticiaTipo.Suscripciones)
-			{
-				imagenCabecera = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
-			}
-
-			if (string.IsNullOrEmpty(imagenCabecera) == false)
-			{
-				<div>
-					<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo" />
-				</div>
-			}
-		}
-
-		<div style="padding-left: 40px;">
-			<h1 style="font-size: 22px;">
-				@titulo
-			</h1>
-
-			<div style="display: flex; font-size: 14px; margin-top: 20px;">
-				<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
-
-				@{
-					string fechaTermina = string.Empty;
-					TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
-
-					if (diferenciaTiempo.Days > 1)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days == 1)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days == 0)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
-					}
-					else if (diferenciaTiempo.Days < 0)
-					{
-						fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
-					}
-
-					if (string.IsNullOrEmpty(fechaTermina) == false)
-					{
-						<div style="margin-left: 30px;">
-							@fechaTermina
-						</div>
-					}
+				if (noticia.Tipo == NoticiaTipo.Bundles)
+				{
+					imagenCabecera = BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenTienda;
 				}
+				else if (noticia.Tipo == NoticiaTipo.Gratis)
+				{
+					imagenCabecera = GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenLogo;
+				}
+				else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+				{
+					imagenCabecera = SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenLogo;
+				}
+
+				if (string.IsNullOrEmpty(imagenCabecera) == false)
+				{
+					<div>
+						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo" />
+					</div>
+				}
+			}
+
+			<div style="padding-left: 40px;">
+				<h1 style="font-size: 22px;">
+					@titulo
+				</h1>
+
+				<div style="display: flex; font-size: 14px; margin-top: 20px;">
+					<div>@Herramientas.Idiomas.CogerCadena(idioma, "News.String6") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
+
+					@{
+						string fechaTermina = string.Empty;
+						TimeSpan diferenciaTiempo = noticia.FechaTermina.Subtract(DateTime.Now);
+
+						if (diferenciaTiempo.Days > 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String1"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 1)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String2"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days == 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String3"), diferenciaTiempo.Days);
+						}
+						else if (diferenciaTiempo.Days < 0)
+						{
+							fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "News.String4"), diferenciaTiempo.Days);
+						}
+
+						if (string.IsNullOrEmpty(fechaTermina) == false)
+						{
+							<div style="margin-left: 30px;">
+								@fechaTermina
+							</div>
+						}
+					}
+				</div>
 			</div>
 		</div>
-	</div>
-
+	}
+	
 	@if (string.IsNullOrEmpty(noticia.Enlace) == false)
 	{
 		<a href="@noticia.Enlace" class="boton-pequeño" style="padding: 10px; text-align: center; font-size: 19px;" target="_blank">
@@ -201,6 +204,9 @@
 	[Parameter]
 	public bool cambiarEnlace { get; set; } = true;
 
+	[Parameter]
+	public Tipo tipo { get; set; } = Tipo.UltimasNoticias;
+
 	public Noticias.Noticia noticia = new Noticias.Noticia();
 
 	private string titulo = string.Empty;
@@ -256,6 +262,12 @@
 				}				
 			}
 		}
+	}
+
+	public enum Tipo
+	{
+		Portada,
+		UltimasNoticias
 	}
 
 	private void VolverNoticias(MouseEventArgs e)

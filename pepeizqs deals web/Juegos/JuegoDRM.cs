@@ -187,7 +187,7 @@ namespace Juegos
 
 			DRM square = new DRM
 			{
-				Id = JuegoDRM.PearlAbyss,
+				Id = JuegoDRM.SquareEnix,
 				Nombre = "Square Enix",
 				Imagen = "/imagenes/drm/squareenix.webp",
 				Acepciones = new List<string> { "square-enix" }

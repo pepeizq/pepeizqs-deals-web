@@ -6,6 +6,6 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new { 
+@(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new { 
 	idioma = @Model.idioma
 }))

@@ -555,32 +555,21 @@ else
 	</div>
 }
 
-<style>
-	.noticia-panel {
-		height: calc(100% - var(--alturaCabecera));
-		width: 100%;
-		left: 0;
-		top: 0;
-		overflow-x: auto;
-		position: fixed;
-		z-index: 1001;
-		margin-top: var(--alturaCabecera);
-		padding: 10px;
-		backdrop-filter: blur(30px);
-	}
-</style>
-
 @if (noticiaMostrarId > 0)
 {
-	<div class="noticia-panel">
-		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative;">
-			<div style="position: absolute; top: 0; right: -80px; display: flex; flex-direction: column; gap: 20px;">
-				<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="(e => CerrarNoticia(e))">
-					<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
+	<div class="opciones-panel">
+		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px; display: flex; align-items: center; gap: 40px;">
+				<button class="boton-pequeño" @onclick="CerrarNoticia" style="width: auto; padding: 5px 15px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
+					<i class="fa-solid fa-arrow-left"></i>
 				</button>
+
+				<div style="font-size: 20px;">
+					@noticiaMostrarTitulo
+				</div>
 			</div>
 			
-			<Noticia idioma="@idioma" noticiaId="@noticiaMostrarId" cambiarEnlace="false"/>
+			<Noticia idioma="@idioma" noticiaId="@noticiaMostrarId" cambiarEnlace="false" tipo="Noticia.Tipo.Portada"/>
 		</div>		
 	</div>
 }
@@ -624,7 +613,7 @@ else
 @if (mostrarFiltrado == true)
 {
 	<div class="opciones-panel">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto; overflow-y: scroll;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 			<div style="display: flex; align-items: center;">
 				<button class="boton-pequeño" @onclick="OcultarFiltrado" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
 					<i class="fa-solid fa-arrow-left"></i>
@@ -1031,7 +1020,7 @@ else
 				}
 			}
 
-			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(250, categoriasNumeros, drmsNumeros, conexion);
+			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(150, categoriasNumeros, drmsNumeros, conexion);
 		}
 		catch (Exception ex)
 		{

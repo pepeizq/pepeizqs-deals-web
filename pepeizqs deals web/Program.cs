@@ -1,11 +1,13 @@
 using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
+using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,27 @@ builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(D
 builder.Services.AddRazorPages();
 
 //----------------------------------------------------------------------------------
+
+#region Compresion (Primero)
+
+builder.Services.AddResponseCompression(options =>
+{
+	options.EnableForHttps = true;
+	options.Providers.Add<BrotliCompressionProvider>();
+	options.Providers.Add<GzipCompressionProvider>();
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+	options.Level = CompressionLevel.Fastest;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+	options.Level = CompressionLevel.SmallestSize;
+});
+
+#endregion
 
 #region Redireccionador
 
@@ -190,10 +213,16 @@ builder.WebHost.ConfigureKestrel(opciones =>
 
 var app = builder.Build();
 
+#region Compresion (Primero)
+
+app.UseResponseCompression();
+
+#endregion
+
 //if (!app.Environment.IsDevelopment())
 //{
-    //app.UseExceptionHandler("/Error");
-    app.UseDeveloperExceptionPage();
+//app.UseExceptionHandler("/Error");
+app.UseDeveloperExceptionPage();
 
     app.UseHsts();
 //}

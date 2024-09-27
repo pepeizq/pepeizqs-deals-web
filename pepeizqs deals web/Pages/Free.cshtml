@@ -8,7 +8,7 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
-    List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Todos();
+    List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Actuales();
 
     if (juegosTodos.Count > 0)
     {
