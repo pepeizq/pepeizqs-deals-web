@@ -10,6 +10,6 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.ServerPrerendered, new { 
+@(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new { 
 	idioma = Model.idioma
 }))

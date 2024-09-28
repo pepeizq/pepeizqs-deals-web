@@ -255,11 +255,11 @@
 					Juegos.Juego juegoMaestro = global::BaseDatos.Juegos.Buscar.UnJuego(juego.Maestro);
 
 					<a href="/game/@juego.Maestro/@Herramientas.EnlaceAdaptador.Nombre(juegoMaestro.Nombre)/" style="text-decoration: none;">
-						<div class="perfil perfil-espacio-bottom" style="padding: 20px 40px; flex-direction: row; align-items: center; background-color: var(--fondoDlc); color: var(--colorTextoDlc);">
-							<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
+						<div class="boton-expandir" style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoDlc); color: var(--colorTextoDlc); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 50px;">
+							<i class="fa-solid fa-circle-arrow-down" style="font-size: 22px; opacity: 0.5;"></i>
 
 							<div style="width: 100%;">
-								@Idiomas.CogerCadena(idioma, "String32", "Game")
+								@string.Format(Idiomas.CogerCadena(idioma, "String32", "Game"), juegoMaestro.Nombre)
 							</div>
 						</div>
 					</a>
@@ -1587,7 +1587,7 @@
 						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
 						if (nuevoJuego != null)
-						{
+						{		
 							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
 						}
 					}

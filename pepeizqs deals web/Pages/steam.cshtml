@@ -9,4 +9,4 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { idioma = Model.idioma, juego = Model.juego}))
+@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new { idioma = Model.idioma, juego = Model.juego}))

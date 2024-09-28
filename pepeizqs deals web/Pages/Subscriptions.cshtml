@@ -6,6 +6,35 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new { 
-	idioma = @Model.idioma
-}))
+@{
+    bool prerenderizado = false;
+    string userAgent = string.Empty;
+
+    if (HttpContext != null)
+    {
+        userAgent = HttpContext.Request.Headers.UserAgent;
+
+        if (string.IsNullOrEmpty(userAgent) == false)
+        {
+            if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
+            {
+                prerenderizado = true;
+            }
+        }
+    }
+
+    if (prerenderizado == true)
+    {
+        @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new
+        {
+            idioma = @Model.idioma
+        }))
+    }
+    else
+    {
+        @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new
+        {
+            idioma = @Model.idioma
+        }))
+    }
+}

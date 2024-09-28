@@ -480,96 +480,105 @@ namespace BaseDatos.Juegos
 
 		public static void Media(Juego nuevoJuego, Juego juego, SqlConnection conexion = null)
 		{
-			if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
+			if (nuevoJuego != null && juego != null)
 			{
-				juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
-			}
-
-			if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
-			{
-				juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
-			}
-
-			if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
-			{
-				juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
-			}
-
-			juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
-			juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;
-
-			juego.Nombre = nuevoJuego.Nombre;
-			juego.Caracteristicas.Descripcion = nuevoJuego.Caracteristicas.Descripcion;
-			juego.Caracteristicas.Windows = nuevoJuego.Caracteristicas.Windows;
-			juego.Caracteristicas.Mac = nuevoJuego.Caracteristicas.Mac;
-			juego.Caracteristicas.Linux = nuevoJuego.Caracteristicas.Linux;
-
-			List<string> desarrolladores = new List<string>();
-
-			if (nuevoJuego.Caracteristicas.Desarrolladores != null)
-			{
-				if (nuevoJuego.Caracteristicas.Desarrolladores.Count > 0)
+				if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
 				{
-					foreach (var desarrollador in nuevoJuego.Caracteristicas.Desarrolladores)
+					juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
+				}
+
+				if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
+				{
+					juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
+				}
+
+				if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
+				{
+					juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
+				}
+
+				juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
+				juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;
+
+				juego.Nombre = nuevoJuego.Nombre;
+				
+				if (juego.Caracteristicas == null)
+				{
+					juego.Caracteristicas = new JuegoCaracteristicas();
+				}
+
+				juego.Caracteristicas.Descripcion = nuevoJuego.Caracteristicas.Descripcion;
+				juego.Caracteristicas.Windows = nuevoJuego.Caracteristicas.Windows;
+				juego.Caracteristicas.Mac = nuevoJuego.Caracteristicas.Mac;
+				juego.Caracteristicas.Linux = nuevoJuego.Caracteristicas.Linux;
+
+				List<string> desarrolladores = new List<string>();
+
+				if (nuevoJuego.Caracteristicas.Desarrolladores != null)
+				{
+					if (nuevoJuego.Caracteristicas.Desarrolladores.Count > 0)
 					{
-						desarrolladores.Add(desarrollador.Trim());
+						foreach (var desarrollador in nuevoJuego.Caracteristicas.Desarrolladores)
+						{
+							desarrolladores.Add(desarrollador.Trim());
+						}
 					}
 				}
-			}
 
-			juego.Caracteristicas.Desarrolladores = desarrolladores;
+				juego.Caracteristicas.Desarrolladores = desarrolladores;
 
-			List<string> publishers = new List<string>();
+				List<string> publishers = new List<string>();
 
-			if (nuevoJuego.Caracteristicas.Publishers != null)
-			{
-				if (nuevoJuego.Caracteristicas.Publishers.Count > 0)
+				if (nuevoJuego.Caracteristicas.Publishers != null)
 				{
-					foreach (var publisher in nuevoJuego.Caracteristicas.Publishers)
+					if (nuevoJuego.Caracteristicas.Publishers.Count > 0)
 					{
-						publishers.Add(publisher.Trim());
+						foreach (var publisher in nuevoJuego.Caracteristicas.Publishers)
+						{
+							publishers.Add(publisher.Trim());
+						}
 					}
 				}
-			}
 
-			juego.Caracteristicas.Publishers = publishers;
+				juego.Caracteristicas.Publishers = publishers;
 
-			juego.Media = nuevoJuego.Media;
-			juego.Categorias = nuevoJuego.Categorias;
-			juego.Generos = nuevoJuego.Generos;
+				juego.Media = nuevoJuego.Media;
+				juego.Categorias = nuevoJuego.Categorias;
+				juego.Generos = nuevoJuego.Generos;
 
-			if (conexion == null)
-			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
-
-			using (conexion)
-			{
-				string sqlActualizar = "UPDATE juegos " +
-									"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion WHERE id=@id";
-
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				if (conexion == null)
 				{
-					comando.Parameters.AddWithValue("@id", juego.Id);
-					comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-					comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
-					comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-					comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
-					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-					comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-					comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
-					comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
 
-					try
-					{
-						comando.ExecuteNonQuery();
-					}
-					catch
-					{
+				using (conexion)
+				{
+					string sqlActualizar = "UPDATE juegos " +
+										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion WHERE id=@id";
 
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", juego.Id);
+						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+						comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+						comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
+						comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+						comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+						comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
+						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
+						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+
+						try
+						{
+							comando.ExecuteNonQuery();
+						}
+						catch
+						{
+
+						}
 					}
 				}
-			}				
+			}		
 		}
 
 		public static void Tipo(Juego juego, SqlConnection conexion)

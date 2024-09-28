@@ -148,8 +148,8 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 //builder.Services.AddSignalR(opciones =>
 //{
 //	opciones.EnableDetailedErrors = true;
-//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(15);
+//	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//	opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
 //	//opciones.MaximumReceiveMessageSize = 102400000;
 //});
 

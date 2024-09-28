@@ -125,7 +125,7 @@
   },
   {
     "Id": "String32",
-    "Valor": "Warning, this is a DLC and requires the base game to work (click to open the game)."
+    "Valor": "Warning, this is a DLC and requires the game {0} to work properly (click to open the game)."
   },
   {
     "Id": "String33",

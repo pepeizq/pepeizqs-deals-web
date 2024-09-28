@@ -16,7 +16,7 @@
 
 @if (usuarioLogeado == true)
 {
-    @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.ServerPrerendered, new
+    @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.Server, new
     {
         idioma = Model.idioma
     }))
