@@ -83,7 +83,7 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
             <div class="cabecera-poner cuerpo-ancho">
-                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { 
+                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.Server, new { 
                     idioma = idioma, 
                     usuarioLogeado = usuarioLogeado,
                     adminLogeado = adminLogeado, 
@@ -98,8 +98,8 @@
     </header>
 
     <main role="main" class="cuerpo-ancho cuerpo-espacio">
-        @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.ServerPrerendered))
-        @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.ServerPrerendered))
+        @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.Server))
+        @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.Server))
 
         @RenderBody()
     </main>

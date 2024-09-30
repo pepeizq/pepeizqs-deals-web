@@ -223,168 +223,159 @@
 	}
 }
 
-@if (cargadoDestacados == false)
+@if (juegosDestacadosMostrar.Count > 0)
 {
-	<div style="text-align: center; width: 100%; padding: 40px;">
-		<div class="cargando" />
-	</div>
-}
-else
-{
-	if (juegosDestacadosMostrar.Count > 0)
-	{
-		<div style="margin-bottom: 60px; position: relative;">
-			@if (juegoSeleccionado != null)
+	<div style="margin-bottom: 60px; position: relative;">
+		@if (juegoSeleccionado != null)
+		{
+			string colorSeleccionado = "var(--fondoOscuro)";
+
+			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
 			{
-				string colorSeleccionado = "var(--fondoOscuro)";
+				colorSeleccionado = "var(--fondoBien)";
+			}
 
-				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
-				{
-					colorSeleccionado = "var(--fondoBien)";
-				}
+			if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+			{
+				colorSeleccionado = "var(--fondoAlerta)";
+			}
 
-				if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
-				{
-					colorSeleccionado = "var(--fondoAlerta)";
-				}
+			<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
+				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
+					<div class="destacado-mostrar">
+						@{
+							string video = string.Empty;
 
-				<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
-					<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
-						<div class="destacado-mostrar">
-							@{
-								string video = string.Empty;
-
-								if (juegoSeleccionado.Media != null)
+							if (juegoSeleccionado.Media != null)
+							{
+								if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
 								{
-									if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
-									{
-										int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
-										string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
+									int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
+									string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
 
-										video = temp1 + "/microtrailer.webm";
+									video = temp1 + "/microtrailer.webm";
 
-										video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-										video = video.Replace("http://", "https://");
-									}
+									video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
+									video = video.Replace("http://", "https://");
 								}
 							}
+						}
 
-							@if (string.IsNullOrEmpty(video) == false)
-							{
-								<div class="destacado-fondo">
-									<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
-								</div>
+						@if (string.IsNullOrEmpty(video) == false)
+						{
+							<div class="destacado-fondo">
+								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+							</div>
 
-								<div class="destacado-video">
-									<video src="@video" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
-								</div>
-							}
-							else
-							{
-								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
-							}
+							<div class="destacado-video">
+								<video src="@video" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+							</div>
+						}
+						else
+						{
+							<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
+						}
 
-							<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
-								display: flex; align-items: end;" class="destacado-hueco">
+						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
+									display: flex; align-items: end;" class="destacado-hueco">
 
-								<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
-									<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
-								</div>
+							<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
+								<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
+							</div>
 
-								<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-									<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
+							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
+								<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
 
-									@{
-										string iconoTienda = string.Empty;
-										List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+								@{
+									string iconoTienda = string.Empty;
+									List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
 
-										foreach (var tienda in tiendas)
+									foreach (var tienda in tiendas)
+									{
+										if (tienda.Id == juegoSeleccionado.PrecioMinimosHistoricos[0].Tienda)
 										{
-											if (tienda.Id == juegoSeleccionado.PrecioMinimosHistoricos[0].Tienda)
-											{
-												iconoTienda = tienda.ImagenIcono;
-												break;
-											}
+											iconoTienda = tienda.ImagenIcono;
+											break;
 										}
 									}
+								}
 
-									<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
+								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
 
-									<div class="destacado-precio-descuento" style="background-color: darkgreen;">
-										@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
-									</div>
-									<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
-										@{
-											string precioMensaje = juegoSeleccionado.PrecioMinimosHistoricos[0].Precio.ToString();
-											precioMensaje = precioMensaje.Replace(".", ",");
+								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
+								</div>
+								<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
+									@{
+										string precioMensaje = juegoSeleccionado.PrecioMinimosHistoricos[0].Precio.ToString();
+										precioMensaje = precioMensaje.Replace(".", ",");
 
-											int int1 = precioMensaje.IndexOf(",");
+										int int1 = precioMensaje.IndexOf(",");
 
-											if (int1 == precioMensaje.Length - 2)
-											{
-												precioMensaje = precioMensaje + "0";
-											}
-
-											if (precioMensaje.Length > int1 + 3)
-											{
-												precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
-											}
-
-											precioMensaje = precioMensaje + "€";
-
-											@precioMensaje
+										if (int1 == precioMensaje.Length - 2)
+										{
+											precioMensaje = precioMensaje + "0";
 										}
-									</div>
+
+										if (precioMensaje.Length > int1 + 3)
+										{
+											precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
+										}
+
+										precioMensaje = precioMensaje + "€";
+
+										@precioMensaje
+									}
 								</div>
 							</div>
 						</div>
 					</div>
-				</a>
-			}
+				</div>
+			</a>
+		}
 
-			<div class="destacados-galeria-fila">
-				@foreach (var destacado in juegosDestacadosMostrar)
+		<div class="destacados-galeria-fila">
+			@foreach (var destacado in juegosDestacadosMostrar)
+			{
+				bool mostrarBarra = false;
+				string opacidad = string.Empty;
+
+				if (juegoSeleccionado != null)
 				{
-					bool mostrarBarra = false;
-					string opacidad = string.Empty;
-
-					if (juegoSeleccionado != null)
+					if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
 					{
-						if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
-						{
-							opacidad = "opacity: 1;";
-							mostrarBarra = true;
-						}
+						opacidad = "opacity: 1;";
+						mostrarBarra = true;
 					}
-
-					string fondoDestacado = "background-color: var(--fondoOscuro);";
-
-					if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
-					{
-						fondoDestacado = "background-color: var(--fondoBien);";
-					}
-
-					if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
-					{
-						fondoDestacado = "background-color: var(--fondoAlerta);";
-					}
-
-					<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
-						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
-
-						@if (mostrarBarra == true)
-						{
-							int porcentaje = (cronometroContador * 100) / cronometroLimite;
-
-							<div style="height: 3px; width: 100%; background-color: transparent;">
-								<div style="height: 3px; background-color: var(--fondoCodigo); width: @porcentaje%;" />
-							</div>
-						}
-					</div>
 				}
-			</div>
+
+				string fondoDestacado = "background-color: var(--fondoOscuro);";
+
+				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+				{
+					fondoDestacado = "background-color: var(--fondoBien);";
+				}
+
+				if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+				{
+					fondoDestacado = "background-color: var(--fondoAlerta);";
+				}
+
+				<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
+					<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
+
+					@if (mostrarBarra == true)
+					{
+						int porcentaje = (cronometroContador * 100) / cronometroLimite;
+
+						<div style="height: 3px; width: 100%; background-color: transparent;">
+							<div style="height: 3px; background-color: var(--fondoCodigo); width: @porcentaje%;" />
+						</div>
+					}
+				</div>
+			}
 		</div>
-	}
+	</div>
 }
 
 @if (usuario == null)
@@ -812,18 +803,20 @@ else
 			{
 				#region Destacados
 
+				juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
+
+				if (juegosDestacadosMostrar.Count > 0)
+				{
+					juegoSeleccionado = juegosDestacadosMostrar[0];
+				}
+
+				cargadoDestacados = true;
+
+				CronometroDestacados();
+
 				try
 				{
-					juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
-
-					if (juegosDestacadosMostrar.Count > 0)
-					{
-						juegoSeleccionado = juegosDestacadosMostrar[0];
-					}
-
-					cargadoDestacados = true;
-
-					CronometroDestacados();
+					
 				}
 				catch (Exception ex)
 				{
@@ -917,6 +910,34 @@ else
 		}
 	}
 
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			// if (juegosDestacadosMostrar.Count == 0)
+			// {
+			// 	int i = 0;
+			// 	while (i < 10)
+			// 	{
+			// 		await Task.Delay(1000);
+			// 		juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
+
+			// 		if (juegosDestacadosMostrar.Count > 0)
+			// 		{
+			// 			juegoSeleccionado = juegosDestacadosMostrar[0];
+			// 			break;
+			// 		}
+
+			// 		i += 1;
+			// 	}
+
+			// 	cargadoDestacados = true;
+
+			// 	CronometroDestacados();
+			// }
+		}
+	}
+
 	#region Destacados
 
 	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
@@ -942,7 +963,7 @@ else
 		{
 			cronometroContador += 1;
 
-			if (cronometroContador == cronometroLimite)
+			if (cronometroContador == cronometroLimite || juegosDestacadosMostrar.Count == 0)
 			{
 				bool tomarSiguiente = false;
 

@@ -174,7 +174,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <input type="text" @onchange="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
+        <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
 
         @if (encontroAlgo == true)
         {
@@ -703,19 +703,10 @@ else
 
     private string cadenaBusqueda = string.Empty;
 
-    private CancellationTokenSource cancelar = new CancellationTokenSource();
-
-    private async Task TextoCambiaBuscador(ChangeEventArgs e)
+    private void TextoCambiaBuscador(ChangeEventArgs e)
     {
         cadenaBusqueda = e.Value.ToString();
 
-        cancelar.Cancel();
-        cancelar = new CancellationTokenSource();
-        await Task.Delay(50, cancelar.Token).ContinueWith(TareaBuscador, cancelar.Token);
-    }
-
-    private void TareaBuscador(Task e)
-    {
         if (cadenaBusqueda.Trim().Length > 3)
         {
             if (conexion == null)
@@ -883,16 +874,11 @@ else
                     resultadosPublishers = resultadosPublishers.OrderBy(x => x.Nombre).ToList();
                 }
             }
-        }        
+        }
         else
         {
             encontroAlgo = false;
         }
-    }
-
-    public void Dispose()
-    {
-        cancelar.Dispose();
     }
 
     private int pestañaSeleccionada = 0;
