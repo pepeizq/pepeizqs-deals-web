@@ -271,7 +271,7 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
 });
 
 //app.UseSession();

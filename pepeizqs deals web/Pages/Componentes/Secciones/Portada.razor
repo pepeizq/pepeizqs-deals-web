@@ -809,6 +809,10 @@ else
 				{
 					juegoSeleccionado = juegosDestacadosMostrar[0];
 				}
+				else
+				{
+					NavManager.NavigateTo("https://pepeizqdeals.com/", true);
+				}
 
 				cargadoDestacados = true;
 
@@ -907,34 +911,6 @@ else
 
 				#endregion
 			}
-		}
-	}
-
-	protected override async Task OnAfterRenderAsync(bool primerRender)
-	{
-		if (primerRender == true)
-		{
-			// if (juegosDestacadosMostrar.Count == 0)
-			// {
-			// 	int i = 0;
-			// 	while (i < 10)
-			// 	{
-			// 		await Task.Delay(1000);
-			// 		juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
-
-			// 		if (juegosDestacadosMostrar.Count > 0)
-			// 		{
-			// 			juegoSeleccionado = juegosDestacadosMostrar[0];
-			// 			break;
-			// 		}
-
-			// 		i += 1;
-			// 	}
-
-			// 	cargadoDestacados = true;
-
-			// 	CronometroDestacados();
-			// }
 		}
 	}
 
