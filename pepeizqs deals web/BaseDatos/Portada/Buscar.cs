@@ -30,7 +30,8 @@ namespace BaseDatos.Portada
 									WHERE ultimaModificacion >= DATEADD(day, -3, GETDATE()) AND JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND 
 									CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
 									((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND 
-									(freeToPlay = 'false' OR freeToPlay IS NULL)";
+									(freeToPlay = 'false' OR freeToPlay IS NULL) AND
+									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 15";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -210,7 +211,7 @@ namespace BaseDatos.Portada
 				}
 
 				string busqueda = @"SELECT DISTINCT TOP @cantidad idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
-                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 199 AND JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado') > DATEADD(day, -4, CAST(GETDATE() AS date)) @categoria @drm
+                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 199 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -4, CAST(GETDATE() AS date)) @categoria @drm
                                     ORDER BY Fecha DESC";
 
 				busqueda = busqueda.Replace("@cantidad", cantidad.ToString());

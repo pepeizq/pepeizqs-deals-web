@@ -53,11 +53,6 @@ namespace BaseDatos.Juegos
 							precio.Nombre = nuevaOferta.Nombre;
 							precio.Imagen = nuevaOferta.Imagen;
 
-							if (precio.FechaUltimoMinimo.Year == 0001)
-							{
-								precio.FechaUltimoMinimo = precio.FechaDetectado;
-							}
-
 							añadir = false;
 							break;
 						}
@@ -108,7 +103,6 @@ namespace BaseDatos.Juegos
 								minimo.Moneda = nuevaOferta.Moneda;
 								minimo.Descuento = nuevaOferta.Descuento;
 								minimo.FechaDetectado = nuevaOferta.FechaDetectado;
-								minimo.FechaUltimoMinimo = nuevaOferta.FechaDetectado;
 								minimo.FechaActualizacion = nuevaOferta.FechaActualizacion;
 								minimo.FechaTermina = nuevaOferta.FechaTermina;
 								minimo.CodigoDescuento = nuevaOferta.CodigoDescuento;
@@ -245,11 +239,6 @@ namespace BaseDatos.Juegos
 							precio.Nombre = nuevaOferta.Nombre;
 							precio.Imagen = nuevaOferta.Imagen;
 
-							if (precio.FechaUltimoMinimo.Year == 0001)
-							{
-								precio.FechaUltimoMinimo = precio.FechaDetectado;
-							}
-
 							añadir = false;
 							break;
 						}
@@ -300,7 +289,6 @@ namespace BaseDatos.Juegos
 								minimo.Moneda = nuevaOferta.Moneda;
 								minimo.Descuento = nuevaOferta.Descuento;
 								minimo.FechaDetectado = nuevaOferta.FechaDetectado;
-								minimo.FechaUltimoMinimo = nuevaOferta.FechaDetectado;
 								minimo.FechaActualizacion = nuevaOferta.FechaActualizacion;
 								minimo.FechaTermina = nuevaOferta.FechaTermina;
 								minimo.CodigoDescuento = nuevaOferta.CodigoDescuento;

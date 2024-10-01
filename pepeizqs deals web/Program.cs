@@ -33,6 +33,12 @@ builder.Services.AddRazorPages();
 
 //----------------------------------------------------------------------------------
 
+#region Detallado en Componentes Razor
+
+builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
+
+#endregion
+
 #region Compresion (Primero)
 
 builder.Services.AddResponseCompression(options =>
@@ -63,12 +69,6 @@ builder.Services.AddControllersWithViews();
 #region Seo
 
 builder.Services.AddHeadElementHelper();
-
-#endregion
-
-#region Detallado en Componentes Razor
-
-builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
 
 #endregion
 
@@ -203,13 +203,13 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //        options.QueueLimit = 5;
 //    }));
 
-builder.WebHost.ConfigureKestrel(opciones =>
-{
-	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
-	opciones.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
-	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
-	opciones.AllowSynchronousIO = true;
-});
+//builder.WebHost.ConfigureKestrel(opciones =>
+//{
+//	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
+//	opciones.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
+//	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
+//	opciones.AllowSynchronousIO = true;
+//});
 
 var app = builder.Build();
 
