@@ -29,16 +29,16 @@ namespace Tareas
 
                 if (piscinaApp == piscinaUsada)
                 {
-					HttpClient httpClient = new HttpClient();
+                    HttpClient httpClient = new HttpClient();
 
-					HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
-					HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
+                    HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
+                    HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
 
-					respuesta2.EnsureSuccessStatusCode();
+                    respuesta2.EnsureSuccessStatusCode();
 
-					//---------------------------------------------------------------------------------------
+                    //---------------------------------------------------------------------------------------
 
-					string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
+                    string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
 
 					string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
 

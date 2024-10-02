@@ -117,28 +117,28 @@
 
 						@if (juego.Bundles != null)
 						{
-							<div style="font-size: 16px;">
-								<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Bundles", "Header")</a>
+							<div style="font-size: 16px; height: 40px; align-content: center;">
+								<a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Bundles", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Gratis != null)
 						{
-							<div style="font-size: 16px;">
-								<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Free", "Header")</a>
+							<div style="font-size: 16px; height: 40px; align-content: center;">
+								<a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Free", "Header")</a>
 							</div>
 						}
 
 						@if (juego.Suscripciones != null)
 						{
-							<div style="font-size: 16px;">
-								<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Subscriptions", "Header")</a>
+							<div style="font-size: 16px; height: 40px; align-content: center;">
+								<a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.CogerCadena(idioma, "Subscriptions", "Header")</a>
 							</div>
 						}
 
 						@if (DLCs.Count > 0)
 						{
-							<div style="font-size: 16px; background: var(--fondoDlc); height: 40px;">
+							<div style="font-size: 16px; background-color: var(--fondoDlc); height: 40px;">
 								<a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</a>
 							</div>
 						}
@@ -470,22 +470,22 @@
 												<div style="display: flex; flex-direction: column; gap: 10px;">
 													@if (BundlesComprobar(juego.Bundles, drm) != null)
 													{
-														<div>
-															<a onclick="moverScroll('bundles')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@BundlesPreparar(drm, idioma)</a>
+														<div style="font-size: 16px;">
+															<a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@BundlesPreparar(drm, idioma)</a>
 														</div>
 													}
 
 													@if (GratisComprobar(juego.Gratis, drm) != null)
 													{
-														<div>
-															<a onclick="moverScroll('gratis')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@GratisPreparar(drm, idioma)</a>
+														<div style="font-size: 16px;">
+															<a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@GratisPreparar(drm, idioma)</a>
 														</div>
 													}
 
 													@if (SuscripcionesComprobar(juego.Suscripciones, drm) != null)
 													{
-														<div>
-															<a onclick="moverScroll('suscripciones')" style="color: var(--colorTextoOscuro); text-decoration: underline; cursor: pointer;">@SuscripcionesPreparar(drm, idioma)</a>
+														<div style="font-size: 16px;">
+															<a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@SuscripcionesPreparar(drm, idioma)</a>
 														</div>
 													}
 												</div>
@@ -2064,9 +2064,18 @@
 	{
 		if (BundlesDisponibles(juego.Bundles, drm) != null)
 		{
-			if (BundlesDisponibles(juego.Bundles, drm).Count > 0)
+			List<JuegoBundle> bundlesDisponibles = BundlesDisponibles(juego.Bundles, drm);
+
+			if (bundlesDisponibles.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String20", "Game");
+				if (bundlesDisponibles.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String53", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesDisponibles[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesDisponibles[0].Tipo).NombreTienda);
+				}
+				else if (bundlesDisponibles.Count > 1)
+				{
+					return Idiomas.CogerCadena(idioma, "String54", "Game");
+				}			
 			}
 		}
 
@@ -2359,9 +2368,18 @@
 	{
 		if (SuscripcionesDisponibles(juego.Suscripciones, drm) != null)
 		{
-			if (SuscripcionesDisponibles(juego.Suscripciones, drm).Count > 0)
+			List<JuegoSuscripcion> suscripciones = SuscripcionesDisponibles(juego.Suscripciones, drm);
+
+			if (suscripciones.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String24", "Game");
+				if (suscripciones.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String51", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+				}
+				else if (suscripciones.Count > 1)
+				{
+					return Idiomas.CogerCadena(idioma, "String52", "Game");
+				}			
 			}
 		}
 

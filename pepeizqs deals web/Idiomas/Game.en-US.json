@@ -198,5 +198,21 @@
   {
     "Id": "String50",
     "Valor": "The categories have been assigned by the developers on Steam"
+  },
+  {
+    "Id": "String51",
+    "Valor": "Available with {0} subscription"
+  },
+  {
+    "Id": "String52",
+    "Valor": "Available in various subscriptions"
+  },
+  {
+    "Id": "String53",
+    "Valor": "Available in the bundle: {0} from {1}"
+  },
+  {
+    "Id": "String54",
+    "Valor": "Available in various bundles"
   }
 ]

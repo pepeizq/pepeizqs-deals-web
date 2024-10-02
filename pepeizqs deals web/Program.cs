@@ -11,6 +11,30 @@ using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region Compresion (Primero)
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "image/svg+xml", "image/jpeg" });
+    options.EnableForHttps = true;
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.SmallestSize;
+});
+
+#endregion
+
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
 
 builder.Services.AddDefaultIdentity<Usuario>(opciones =>
@@ -36,27 +60,6 @@ builder.Services.AddRazorPages();
 #region Detallado en Componentes Razor
 
 builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
-
-#endregion
-
-#region Compresion (Primero)
-
-builder.Services.AddResponseCompression(options =>
-{
-	options.EnableForHttps = true;
-	options.Providers.Add<BrotliCompressionProvider>();
-	options.Providers.Add<GzipCompressionProvider>();
-});
-
-builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
-{
-	options.Level = CompressionLevel.Fastest;
-});
-
-builder.Services.Configure<GzipCompressionProviderOptions>(options =>
-{
-	options.Level = CompressionLevel.SmallestSize;
-});
 
 #endregion
 

@@ -99,7 +99,7 @@
 
     <main role="main" class="cuerpo-ancho cuerpo-espacio">
         @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.Server))
-        @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.Server))
+        @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.ServerPrerendered))
 
         @RenderBody()
     </main>

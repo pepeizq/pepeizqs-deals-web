@@ -198,5 +198,21 @@
   {
     "Id": "String50",
     "Valor": "Las categorías han sido asignadas por los desarrolladores en Steam"
+  },
+  {
+    "Id": "String51",
+    "Valor": "Disponible en la suscripción {0}"
+  },
+  {
+    "Id": "String52",
+    "Valor": "Disponible en varias suscripciones"
+  },
+  {
+    "Id": "String53",
+    "Valor": "Disponible en el bundle: {0} de {1}"
+  },
+  {
+    "Id": "String54",
+    "Valor": "Disponible en varios bundles"
   }
 ]
