@@ -205,7 +205,7 @@
   },
   {
     "Id": "String52",
-    "Valor": "Disponible en varias suscripciones"
+    "Valor": "Disponible en {0} suscripciones"
   },
   {
     "Id": "String53",
@@ -213,6 +213,38 @@
   },
   {
     "Id": "String54",
-    "Valor": "Disponible en varios bundles"
+    "Valor": "Disponible en {0} bundles"
+  },
+  {
+    "Id": "String55",
+    "Valor": "Estuvo en la suscripción {0}"
+  },
+  {
+    "Id": "String56",
+    "Valor": "Estuvo en {0} suscripciones"
+  },
+  {
+    "Id": "String57",
+    "Valor": "Estuvo en el bundle: {0} de {1}"
+  },
+  {
+    "Id": "String58",
+    "Valor": "Estuvo en {0} bundles"
+  },
+  {
+    "Id": "String59",
+    "Valor": "Disponible gratis para reclamar en {0}"
+  },
+  {
+    "Id": "String60",
+    "Valor": "Disponible gratis para reclamar en {0} sitios"
+  },
+  {
+    "Id": "String61",
+    "Valor": "Estuvo gratis para reclamar en {0}"
+  },
+  {
+    "Id": "String62",
+    "Valor": "Estuvo gratis para reclamar {0} veces"
   }
 ]

@@ -205,7 +205,7 @@
   },
   {
     "Id": "String52",
-    "Valor": "Available in various subscriptions"
+    "Valor": "Available in {0} subscriptions"
   },
   {
     "Id": "String53",
@@ -213,6 +213,38 @@
   },
   {
     "Id": "String54",
-    "Valor": "Available in various bundles"
+    "Valor": "Available in {0} bundles"
+  },
+  {
+    "Id": "String55",
+    "Valor": "It was in the {0} subscription"
+  },
+  {
+    "Id": "String56",
+    "Valor": "It was in {0} subscriptions"
+  },
+  {
+    "Id": "String57",
+    "Valor": "It was in the bundle: {0} from {1}"
+  },
+  {
+    "Id": "String58",
+    "Valor": "It was in {0} bundles"
+  },
+  {
+    "Id": "String59",
+    "Valor": "Available free to claim on {0}"
+  },
+  {
+    "Id": "String60",
+    "Valor": "Available free to claim at {0} sites"
+  },
+  {
+    "Id": "String61",
+    "Valor": "It was free to claim on {0}"
+  },
+  {
+    "Id": "String62",
+    "Valor": "It was free to claim {0} times"
   }
 ]

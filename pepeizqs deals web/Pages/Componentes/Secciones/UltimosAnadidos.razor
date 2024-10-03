@@ -151,9 +151,9 @@
 		{
 			foreach (var precio in juego.PrecioActualesTiendas)
 			{
-				bool fechaEncaja = Herramientas.Calculadora.CalcularAntiguedad(precio);
+				TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-				if (fechaEncaja == true)
+				if (actualizado.Days == 0)
 				{
 					decimal tempPrecio = precio.Precio;
 

@@ -5,6 +5,7 @@
 @using Herramientas
 @using Juegos
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic
@@ -78,9 +79,9 @@
 						@{
 							bool mostrarDRMs = false;
 
-							foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+							foreach (DRM drm in JuegoDRM2.GenerarListado())
 							{
-								if (VerificarMostrarDRM(idioma, drm, juego) == true && drm != JuegoDRM.NoEspecificado)
+								if (VerificarMostrarDRM(idioma, drm.Id, juego) == true && drm.Id != JuegoDRM.NoEspecificado)
 								{
 									mostrarDRMs = true;
 									break;
@@ -90,21 +91,21 @@
 							if (mostrarDRMs == true)
 							{
 								<div style="display: flex; align-items: center; gap: 10px;">
-									@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+									@foreach (DRM drm in JuegoDRM2.GenerarListado())
 									{
-										if (drm != JuegoDRM.NoEspecificado)
+										if (drm.Id != JuegoDRM.NoEspecificado)
 										{
-											if (VerificarMostrarDRM(idioma, drm, juego) == true)
+											if (VerificarMostrarDRM(idioma, drm.Id, juego) == true)
 											{
-												if (drm == JuegoDRM.DRMFree)
+												if (drm.Id == JuegoDRM.DRMFree)
 												{
-													<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
+													<button onclick="moverScroll('@drm.Id')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 7px;"><div style="font-weight: bold; font-size: 9px;">DRM Free</div></button>
 												}
 												else
 												{
-													<button onclick="moverScroll('@drm')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px;">
+													<button onclick="moverScroll('@drm.Id')" class="boton-pequeño" style="width: 40px; height: 40px; text-align: center; padding: 9px;">
 														<div style="display: flex; align-items: center;">
-															<img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 100%; max-height: 100%;" alt="DRM"/>
+															<img src="@JuegoDRM2.SacarImagen(drm.Id)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre"/>
 														</div>
 													</button>
 												}
@@ -270,8 +271,8 @@
 			{
 				if (juego.MayorEdad.ToLower() == "true")
 				{
-					<div class="perfil" style="padding: 20px 40px; flex-direction: row; align-items: center; background-color: var(--fondoAlerta); margin-bottom: 50px;">
-						<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
+					<div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 50px;">
+						<i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
 
 						<div style="width: 100%;">
 							@Idiomas.CogerCadena(idioma, "String46", "Game")
@@ -300,8 +301,8 @@
 			{
 				if (juego.MayorEdad.ToLower() == "true")
 				{
-					<div class="perfil" style="padding: 20px 40px; flex-direction: row; align-items: center; background-color: var(--fondoAlerta); margin-bottom: 50px;">
-						<i class="fa-solid fa-exclamation" style="font-size: 22px; margin-right: 30px;"></i>
+					<div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 50px;">
+						<i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
 
 						<div style="width: 100%;">
 							@Idiomas.CogerCadena(idioma, "String45", "Game")
@@ -311,26 +312,28 @@
 			}
 		}
 
-		@foreach (JuegoDRM drm in JuegoDRM2.CargarDRMs())
+		@foreach (DRM drm in JuegoDRM2.GenerarListado())
 		{
-			if (drm != JuegoDRM.NoEspecificado)
+			if (drm.Id != JuegoDRM.NoEspecificado)
 			{
-				if (VerificarMostrarDRM(idioma, drm, juego) == true)
+				if (VerificarMostrarDRM(idioma, drm.Id, juego) == true)
 				{
-					<div id="@drm">
+					bool usuarioTieneJuego = false;
+					bool usuarioTieneDeseado = false;
+					string usuarioTieneDeseadoSteam = string.Empty;
+
+					<div id="@drm.Id">
 						@if (HttpContext == null)
 						{
 							if (usuario != null)
 							{
-								bool usuarioTieneJuego = false;
-
 								if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 								{
 									List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 
 									if (juegosSteam.Count > 0)
 									{
-										if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
+										if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Steam)
 										{
 											foreach (var juegoUsuario in juegosSteam)
 											{
@@ -343,33 +346,8 @@
 										}
 									}
 								}
-							
-								bool usuarioTieneDeseado = false;
 
-								string mensaje = string.Empty;
-
-								if (usuarioTieneJuego == true)
-								{
-									if (juego.Tipo == Juegos.JuegoTipo.Game)
-									{
-										mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Game");
-									}
-									else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-									{
-										mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
-									}
-
-									<div class="perfil" style="padding: 10px 10px 0px 10px;">
-										<div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-											<div class="perfil-flexible-centrado">
-												<i class="fa-solid fa-check" style="font-size: 25px;"></i>
-
-												<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
-											</div>
-										</div>
-									</div>
-								}
-								else
+								if (usuarioTieneJuego == false)
 								{
 									if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
 									{
@@ -381,15 +359,15 @@
 											{
 												if (juego.IdSteam > 0)
 												{
-													if (juego.IdSteam == int.Parse(deseado) && drm == Juegos.JuegoDRM.Steam)
+													if (juego.IdSteam == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.Steam)
 													{
 														if (juego.Tipo == Juegos.JuegoTipo.Game)
 														{
-															mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String7", "Game");
+															usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String7", "Game");
 														}
 														else if (juego.Tipo == Juegos.JuegoTipo.DLC)
 														{
-															mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Game");
+															usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Game");
 														}
 
 														break;
@@ -398,26 +376,14 @@
 											}
 										}
 									}
-								
-									if (string.IsNullOrEmpty(mensaje) == false)
-									{
-										<div class="perfil" style="padding: 10px 10px 0px 10px;">
-											<div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-												<div class="perfil-flexible-centrado">
-													<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
-													<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
-												</div>
-											</div>
-										</div>
-									}
-									else
+									if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
 									{
-										usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm);
+										usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm.Id);
 
 										if (usuarioTieneDeseado == true)
 										{
-											<button @onclick="(e => CambiarEstadoDeseado(e, false, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											<button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
 												<div class="perfil-flexible-centrado">
 													<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
@@ -427,72 +393,118 @@
 										}
 										else
 										{
-											<button @onclick="(e => CambiarEstadoDeseado(e, true, drm))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											<button @onclick="(e => CambiarEstadoDeseado(e, true, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
 												@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Game")
 											</button>
 										}
-									}								
+									}
 								}
 							}
 						}
 
+
 						<div class="juego-drm-centrado" style="margin-bottom: 50px;">
-							<div class="perfil" style="width: 100%; padding: 0px;">
-								@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm) != null || GratisComprobar(juego.Gratis, drm) != null || SuscripcionesComprobar(juego.Suscripciones, drm) != null)
+							<div style="width: 100%; display: flex; flex-direction: column; gap: 10px; padding: 10px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
+								@if (HttpContext == null)
 								{
-									<div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px; margin: 10px 10px 0px 10px;">
-										@if (drm == JuegoDRM.DRMFree)
+									if (usuario != null)
+									{
+										if (usuarioTieneJuego == true)
+										{
+											string mensaje = string.Empty;
+
+											if (juego.Tipo == Juegos.JuegoTipo.Game)
+											{
+												mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Game");
+											}
+											else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+											{
+												mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
+											}
+
+											<div>
+												<div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+													<div class="perfil-flexible-centrado">
+														<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+
+														<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+													</div>
+												</div>
+											</div>
+										}
+										else
+										{
+											if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == false)
+											{
+												<div>
+													<div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+														<div class="perfil-flexible-centrado">
+															<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+
+															<label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoSteam</label>
+														</div>
+													</div>
+												</div>
+											}
+										}
+									}
+								}
+								
+								@if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
+								{
+									<div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px;">
+										@if (drm.Id == JuegoDRM.DRMFree)
 										{
 											<div style="font-weight: bold; font-size: 18px; max-width: 45px; text-align: center;">DRM Free</div>
 										}
 										else
 										{
 											<div style="max-width: 40px; max-height: 40px;">
-												<img src="@JuegoDRM2.SacarImagen(drm)" alt="DRM" style="width: 100%; height: 100%;" />
+												<img src="@JuegoDRM2.SacarImagen(drm.Id)" alt="@drm.Nombre" style="width: 100%; height: 100%;" />
 											</div>
 										}
 
 										<div style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
-											@if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+											@if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
 											{
 												<div>
-													<div>@Idiomas.CogerCadena(idioma, "String10", "Game") @JuegoDRM2.DevolverDRM(drm):</div>
+													<div>@Idiomas.CogerCadena(idioma, "String10", "Game") @JuegoDRM2.DevolverDRM(drm.Id):</div>
 
 													<div style="margin-top: 5px;">
-														<label>@PrepararPrecio(juego.PrecioMinimosHistoricos, drm, true)</label>
-														<label style="font-size: 14px;">@CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas)</label>
+														<label>@PrepararPrecio(juego.PrecioMinimosHistoricos, drm.Id, true)</label>
+														<label style="font-size: 14px;">@CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas)</label>
 													</div>
 												</div>
 											}
 
-											@if (BundlesComprobar(juego.Bundles, drm) != null || GratisComprobar(juego.Gratis, drm) != null || SuscripcionesComprobar(juego.Suscripciones, drm) != null)
+											@if (BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
 											{
 												<div style="display: flex; flex-direction: column; gap: 10px;">
-													@if (BundlesComprobar(juego.Bundles, drm) != null)
+													@if (BundlesComprobar(juego.Bundles, drm.Id) != null)
 													{
 														<div style="font-size: 16px;">
-															<a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@BundlesPreparar(drm, idioma)</a>
+															<a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@BundlesPreparar(drm.Id, idioma)</a>
 														</div>
 													}
 
-													@if (GratisComprobar(juego.Gratis, drm) != null)
+													@if (GratisComprobar(juego.Gratis, drm.Id) != null)
 													{
 														<div style="font-size: 16px;">
-															<a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@GratisPreparar(drm, idioma)</a>
+															<a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@GratisPreparar(drm.Id, idioma)</a>
 														</div>
 													}
 
-													@if (SuscripcionesComprobar(juego.Suscripciones, drm) != null)
+													@if (SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
 													{
 														<div style="font-size: 16px;">
-															<a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@SuscripcionesPreparar(drm, idioma)</a>
+															<a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@SuscripcionesPreparar(drm.Id, idioma)</a>
 														</div>
 													}
 												</div>
 											}
 										</div>
 
-										@if (drm == JuegoDRM.Steam)
+										@if (drm.Id == JuegoDRM.Steam)
 										{
 											if (juego.IdSteam > 0)
 											{
@@ -502,7 +514,7 @@
 											}											
 										}
 
-										@if (drm == JuegoDRM.GOG)
+										@if (drm.Id == JuegoDRM.GOG)
 										{
 											if (string.IsNullOrEmpty(juego.SlugGOG) == false)
 											{
@@ -512,7 +524,7 @@
 											}
 										}
 
-										@if (drm == JuegoDRM.Epic)
+										@if (drm.Id == JuegoDRM.Epic)
 										{
 											if (string.IsNullOrEmpty(juego.SlugEpic) == false)
 											{
@@ -524,13 +536,13 @@
 									</div>
 								}
 
-								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm).Count > 0)
+								@if (OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id).Count > 0)
 								{									
 									List<JuegoPrecio> preciosBajos = new List<JuegoPrecio>();
 									int descuentoMaximo = 0;
 
 									<div style="display: flex; flex-direction: column; gap: 10px; padding: 20px;">
-										@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm))
+										@foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id))
 										{
 											if (precio.Descuento > descuentoMaximo)
 											{
@@ -843,7 +855,7 @@
 					}
 				}
 
-				@if (SuscripcionesAntiguos(juego.Suscripciones).Count > 0)
+				@if (SuscripcionesAntiguas(juego.Suscripciones).Count > 0)
 				{
 					if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 					{
@@ -858,7 +870,7 @@
 						</div>
 					}
 
-					foreach (var suscripcion2 in SuscripcionesAntiguos(juego.Suscripciones))
+					foreach (var suscripcion2 in SuscripcionesAntiguas(juego.Suscripciones))
 					{
 						<hr />
 						<div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
@@ -894,7 +906,7 @@
 					<div class="juego-galeria-contenedor" style="margin-top: 50px;">
 						@if (mediaMostrarPosicion == 99999)
 						{
-							<BlazoredVideo style="width: 100vw; height: calc(100vh - 190px); cursor: pointer; max-width: 1320px; max-height: 742.50px;" controls="controls" preload="auto">
+							<BlazoredVideo style="width: 100vw; height: calc(100vh - 190px); cursor: pointer; max-width: 1320px; max-height: 742.50px;" controls="controls" preload="metadata">
 								<source src="@mediaMostrar" type="video/mp4" />
 								<source src="@mediaMostrar.Replace(".mp4", ".webm")" type="video/webm" />
 							</BlazoredVideo>
@@ -1060,17 +1072,21 @@
 														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
 													}
 
-													string publisherLimpio2 = publisher;
-													publisherLimpio2 = System.Text.RegularExpressions.Regex.Replace(publisherLimpio2, @"[^\u0000-\u007F]+", "");
+													publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
 
 													if (publisherFinal == null)
 													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio2.Trim());
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
 													}
 
 													if (publisherFinal == null)
 													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio2.Trim());
+														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
+													}
+
+													if (publisherFinal == null)
+													{
+														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
 													}
 
 													if (publisherFinal != null)
@@ -1099,18 +1115,10 @@
 														publisherFinal2.Id = publisherLimpio;
 														publisherFinal2.Nombre = publisher;
 
-														publisherFinal2.Nombre = publisherFinal2.Nombre.Replace(")", null);
-														publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("(", null);
-
 														if (publisherFinal2.Nombre.Contains("?") == true)
 														{
 															publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
 															publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
-														}
-
-														if (publisherFinal2.Nombre == "China")
-														{
-															publisherFinal2.Nombre = null;
 														}
 
 														if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
@@ -1138,7 +1146,7 @@
 
 																if (HttpContext != null)
 																{
-																	userAgent = Environment.NewLine + HttpContext.Request.Headers.UserAgent;
+																	userAgent = Environment.NewLine + Environment.NewLine + HttpContext.Request.Headers.UserAgent;
 																}
 
 																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
@@ -1310,26 +1318,29 @@
 
 		@if (DLCs.Count > 0)
 		{
-			<div id="dlcs" class="perfil" style="margin-top: 50px;">
-				<div style="margin-bottom: 10px;">
+			<div id="dlcs" style="margin-top: 50px; padding: 40px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
+				<div>
 					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</label>
 				</div>
 
-				@foreach (var dlc in DLCs)
-				{
-					<a class="juego-boton-pequeño" href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; padding: 0px;">
-						<div style="display: flex; align-items: center;">
-							<div style="margin-right: 20px;">
-								<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
-							</div>
+				<div style="display: flex; flex-direction: column; gap: 20px;">
+					<Virtualize Context="dlc" Items="DLCs" ItemSize="107" OverscanCount="3">
+						<ItemContent>
+							<a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
+								<div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
+									<div>
+										<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
+									</div>
 
-							<div style="margin-right: 20px; width: 100%;">
-								<div>@dlc.Nombre</div>
-								<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
-							</div>
-						</div>
-					</a>
-				}
+									<div style="width: 100%;">
+										<div>@dlc.Nombre</div>
+										<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
+									</div>
+								</div>
+							</a>
+						</ItemContent>
+					</Virtualize>
+				</div>
 			</div>
 		}
 	</div>
@@ -2074,16 +2085,25 @@
 				}
 				else if (bundlesDisponibles.Count > 1)
 				{
-					return Idiomas.CogerCadena(idioma, "String54", "Game");
+					return string.Format(Idiomas.CogerCadena(idioma, "String54", "Game"), bundlesDisponibles.Count);
 				}			
 			}
 		}
 
 		if (BundlesAntiguos(juego.Bundles, drm) != null)
 		{
-			if (BundlesAntiguos(juego.Bundles, drm).Count > 0)
+			List<JuegoBundle> bundlesAntiguos = BundlesAntiguos(juego.Bundles, drm);
+
+			if (bundlesAntiguos.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String21", "Game");
+				if (bundlesAntiguos.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String57", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesAntiguos[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesAntiguos[0].Tipo).NombreTienda);
+				}
+				else if (bundlesAntiguos.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String58", "Game"), bundlesAntiguos.Count);
+				}
 			}
 		}
 
@@ -2257,17 +2277,35 @@
 	{
 		if (GratisDisponibles(juego.Gratis, drm) != null)
 		{
-			if (GratisDisponibles(juego.Gratis, drm).Count > 0)
+			List<JuegoGratis> gratis = GratisDisponibles(juego.Gratis, drm);
+
+			if (gratis.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String28", "Game");
+				if (gratis.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String59", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
+				}
+				else if (gratis.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String60", "Game"), gratis.Count);
+				}
 			}
 		}
 
 		if (GratisAntiguos(juego.Gratis, drm) != null)
 		{
-			if (GratisAntiguos(juego.Gratis, drm).Count > 0)
+			List<JuegoGratis> gratis = GratisAntiguos(juego.Gratis, drm);
+
+			if (gratis.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String29", "Game");
+				if (gratis.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String61", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
+				}
+				else if (gratis.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String62", "Game"), gratis.Count);
+				}
 			}
 		}
 
@@ -2378,16 +2416,25 @@
 				}
 				else if (suscripciones.Count > 1)
 				{
-					return Idiomas.CogerCadena(idioma, "String52", "Game");
+					return string.Format(Idiomas.CogerCadena(idioma, "String52", "Game"), suscripciones.Count);
 				}			
 			}
 		}
 
-		if (SuscripcionesAntiguos(juego.Suscripciones, drm) != null)
+		if (SuscripcionesAntiguas(juego.Suscripciones, drm) != null)
 		{
-			if (SuscripcionesAntiguos(juego.Suscripciones, drm).Count > 0)
+			List<JuegoSuscripcion> suscripciones = SuscripcionesAntiguas(juego.Suscripciones, drm);
+
+			if (suscripciones.Count > 0)
 			{
-				return Idiomas.CogerCadena(idioma, "String25", "Game");
+				if (suscripciones.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String55", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+				}
+				else if (suscripciones.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String56", "Game"), suscripciones.Count);
+				}
 			}
 		}
 
@@ -2425,7 +2472,7 @@
 		return suscripcionesDisponibles;
 	}
 
-	public List<JuegoSuscripcion> SuscripcionesAntiguos(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = 0)
+	public List<JuegoSuscripcion> SuscripcionesAntiguas(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoSuscripcion> suscripcionesAntiguas = new List<JuegoSuscripcion>();
 
@@ -2437,7 +2484,7 @@
 				{
 					if (DateTime.Now > suscripcion.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != JuegoDRM.NoEspecificado)
 						{
 							if (suscripcion.DRM == drm)
 							{
@@ -2506,9 +2553,9 @@
 		{
 			foreach (var precio in minimo.PrecioActualesTiendas)
 			{
-				bool fechaEncaja = Calculadora.CalcularAntiguedad(precio);
+				TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-				if (fechaEncaja == true)
+				if (actualizado.Days == 0)
 				{
 					decimal tempPrecio = precio.Precio;
 

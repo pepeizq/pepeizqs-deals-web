@@ -11,6 +11,8 @@
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
+    string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
+    string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
     string codigoFuente = builder.Configuration.GetValue<string>("Enlaces:CodigoFuente");
     string visitas = builder.Configuration.GetValue<string>("Enlaces:Visitas");
@@ -99,7 +101,11 @@
 
     <main role="main" class="cuerpo-ancho cuerpo-espacio">
         @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.Server))
-        @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.ServerPrerendered))
+
+        @if (piscinaTiendas == piscinaUsada)
+        {
+            @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.ServerPrerendered))
+        }
 
         @RenderBody()
     </main>
@@ -118,7 +124,7 @@
                 </div>
 
                 <div style="padding: 0px 80px;">
-                    @(await Html.RenderComponentAsync<Componentes.Interfaz.RedesSociales>(RenderMode.ServerPrerendered, new {
+                    @(await Html.RenderComponentAsync<Componentes.Interfaz.RedesSociales>(RenderMode.Server, new {
                         idioma = idioma,
                         tamañoFuente = "24px"
                     }))

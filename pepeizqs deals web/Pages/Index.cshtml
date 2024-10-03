@@ -12,15 +12,6 @@
 	string enlace = "https://pepeizqdeals.com";
 }
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-{
-	idioma = Model.idioma,
-	titulo = titulo,
-	descripcion = descripcion,
-	enlace = enlace,
-	canonical = enlace
-}))
-
 @{
 	bool prerenderizado = false;
 	string userAgent = string.Empty;
@@ -40,6 +31,15 @@
 
 	if (prerenderizado == true)
 	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = titulo,
+			descripcion = descripcion,
+			enlace = enlace,
+			canonical = enlace
+		}))
+
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered, new
 		{
 			idioma = Model.idioma

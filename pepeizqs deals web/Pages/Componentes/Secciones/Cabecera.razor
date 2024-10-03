@@ -706,6 +706,7 @@ else
     private void TextoCambiaBuscador(ChangeEventArgs e)
     {
         cadenaBusqueda = e.Value.ToString();
+        cadenaBusqueda = cadenaBusqueda.Replace("'", null);
 
         if (cadenaBusqueda.Trim().Length > 3)
         {
