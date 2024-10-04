@@ -113,7 +113,7 @@ namespace APIs.Humble
                                     }
 									catch (Exception ex) 
 									{
-                                        global::BaseDatos.Errores.Insertar.Ejecutar("Humble Recopilación", ex, conexion);
+                                        global::BaseDatos.Errores.Insertar.Mensaje("Humble Recopilación", ex, conexion);
                                     }								
 								}
 							}		
@@ -287,7 +287,7 @@ namespace APIs.Humble
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                        BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
@@ -298,7 +298,7 @@ namespace APIs.Humble
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                        BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
                                     }
 								}
 							}

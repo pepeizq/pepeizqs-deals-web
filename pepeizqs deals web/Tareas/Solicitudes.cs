@@ -63,7 +63,7 @@ namespace Tareas
                         }
                         catch (Exception ex)
                         {
-                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Solicitudes", ex, conexion);
+                            BaseDatos.Errores.Insertar.Mensaje("Tarea - Solicitudes", ex, conexion);
                         }
                     }
                 }                   

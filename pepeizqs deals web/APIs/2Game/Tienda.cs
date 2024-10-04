@@ -147,7 +147,7 @@ namespace APIs._2Game
                                             }
                                             catch (Exception ex)
                                             {
-                                                BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex);
+                                                BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex);
                                             }
                                         }
                                         
@@ -159,7 +159,7 @@ namespace APIs._2Game
                                         }
                                         catch (Exception ex)
                                         {
-                                            BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                            BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
                                         }
                                     }
                                 }

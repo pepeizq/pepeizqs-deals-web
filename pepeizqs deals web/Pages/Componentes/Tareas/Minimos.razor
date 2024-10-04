@@ -133,7 +133,7 @@
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Ejecutar("Seccion Minimos " + minimo.Juego.Nombre, ex);
+												BaseDatos.Errores.Insertar.Mensaje("Seccion Minimos " + minimo.Juego.Nombre, ex);
 											}
 										}
 									}
@@ -144,7 +144,7 @@
 				}
 				catch (Exception ex)
 				{
-					BaseDatos.Errores.Insertar.Ejecutar("Tarea - Minimos", ex, conexion);
+					BaseDatos.Errores.Insertar.Mensaje("Tarea - Minimos", ex, conexion);
 				}
 			}
 		}

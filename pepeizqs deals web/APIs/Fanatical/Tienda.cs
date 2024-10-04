@@ -162,7 +162,7 @@ namespace APIs.Fanatical
 												}
 												catch (Exception ex)
 												{
-                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                                    BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
                                                 }
 
 												juegos2 += 1;
@@ -173,7 +173,7 @@ namespace APIs.Fanatical
 												}
 												catch (Exception ex)
 												{
-                                                    BaseDatos.Errores.Insertar.Ejecutar(Tienda.Generar().Id, ex, conexion);
+                                                    BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
                                                 }
 											}
 										}

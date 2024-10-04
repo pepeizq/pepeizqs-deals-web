@@ -703,60 +703,63 @@ namespace BaseDatos.Juegos
                 }
             }
 
-            string tabla2 = string.Empty;
+            List<Juego> juegos = new List<Juego>();
 
-			if (tabla == null)
+            using (conexion)
 			{
-				tabla2 = "juegos";
-			}
-			else
-			{
-				tabla2 = tabla;
-			}
+                string tabla2 = string.Empty;
 
-			List<Juego> juegos = new List<Juego>();
+                if (tabla == null)
+                {
+                    tabla2 = "juegos";
+                }
+                else
+                {
+                    tabla2 = tabla;
+                }
 
-			string busqueda = "SELECT * FROM " + tabla2;
-			string donde = string.Empty;
+                string busqueda = "SELECT * FROM " + tabla2;
+                string donde = string.Empty;
 
-            if (dias > 0)
-            {
-				if (string.IsNullOrEmpty(donde) == false)
-				{
-					donde = donde + " AND";
-				}
-
-				donde = donde + " ultimaModificacion >= DATEADD(day, -" + dias.ToString() + ", GETDATE())";
-            }
-
-			if (analisis == true)
-			{
-				if (string.IsNullOrEmpty(donde) == false)
-				{
-					donde = donde + " AND";
-				}
-
-				donde = donde + " JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99";
-			}
-
-			if (string.IsNullOrEmpty(donde) == false)
-			{
-				busqueda = busqueda + " WHERE" + donde;
-			}
-
-			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-			{
-				using (SqlDataReader lector = comando.ExecuteReader())
-				{
-					while (lector.Read())
-					{
-                        Juego juego = new Juego();
-                        juego = Cargar(juego, lector);
-
-                        juegos.Add(juego);
+                if (dias > 0)
+                {
+                    if (string.IsNullOrEmpty(donde) == false)
+                    {
+                        donde = donde + " AND";
                     }
-				}
-			}
+
+                    donde = donde + " ultimaModificacion >= DATEADD(day, -" + dias.ToString() + ", GETDATE())";
+                }
+
+                if (analisis == true)
+                {
+                    if (string.IsNullOrEmpty(donde) == false)
+                    {
+                        donde = donde + " AND";
+                    }
+
+                    donde = donde + " JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99";
+                }
+
+                if (string.IsNullOrEmpty(donde) == false)
+                {
+                    busqueda = busqueda + " WHERE" + donde;
+                }
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Juego juego = new Juego();
+                            juego = Cargar(juego, lector);
+
+                            juegos.Add(juego);
+                        }
+                    }
+                }
+            }
 
 			return juegos;
 		}
@@ -784,7 +787,7 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-		public static List<Juego> DLCs(string idMaestro = null, SqlConnection conexion = null, bool limpiarConexion = true)
+		public static List<Juego> DLCs(string idMaestro = null, SqlConnection conexion = null)
 		{
 			List<Juego> dlcs = new List<Juego>();
 
@@ -1104,6 +1107,58 @@ namespace BaseDatos.Juegos
 			}
 
 			return null;
+		}
+
+		public static List<string> Sitemap()
+		{
+			List<string> enlaces = new List<string>();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				string buscar = "SELECT id, nombre FROM seccionMinimos";
+
+				using (SqlCommand comando = new SqlCommand(buscar, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							int id = 0;
+							string nombre = string.Empty;
+
+							try
+							{
+								if (lector.IsDBNull(0) == false)
+								{
+									id = lector.GetInt32(0);
+								}
+							}
+							catch { }
+
+							try
+							{
+								if (lector.IsDBNull(1) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+									{
+										nombre = lector.GetString(1);
+									}
+								}
+							}
+							catch { }
+
+							if (id > 0 && string.IsNullOrEmpty(nombre) == false)
+							{
+								enlaces.Add("https://pepeizqdeals.com/game/" + id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(nombre) + "/");
+							}
+						}
+					}
+				}
+			}
+
+			return enlaces;
 		}
 	}
 }

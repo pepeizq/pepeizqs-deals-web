@@ -27,6 +27,7 @@
     --fondoMinimo: #002c47;
     --deckVerificado: #59bf40;
     --deckJugable: #ffc82c;
+    --fondoOpcionesTransparente: rgba(13, 22, 33, 0.95);
 }
 
 @font-face {

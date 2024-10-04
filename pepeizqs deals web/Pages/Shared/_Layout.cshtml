@@ -99,6 +99,43 @@
         </nav>
     </header>
 
+    @{
+        BaseDatos.Avisos.Aviso aviso = BaseDatos.Avisos.Buscar.Ejecutar(idioma);
+
+        @if (aviso != null)
+        {
+            if (string.IsNullOrEmpty(aviso.Mensaje.Trim()) == false)
+            {
+                <div style="padding: 20px; background-color: var(--fondoMinimo); font-size: 17px;">
+                    <div class="cuerpo-ancho" style="display: flex; align-items: center; flex-direction: initial; gap: 20px;">
+                        <label>@aviso.Fecha.Day.ToString()/@aviso.Fecha.Month.ToString()</label>
+
+                        @{
+                            bool hayEnlace = false;
+
+                            if (string.IsNullOrEmpty(aviso.Enlace.Trim()) == false)
+                            {
+                                if (aviso.Enlace.Contains("https://") == true)
+                                {
+                                    hayEnlace = true;
+                                }
+                            }
+
+                            if (hayEnlace == true)
+                            {
+                                <a href="@aviso.Enlace" target="_blank" style="text-decoration: none;">@aviso.Mensaje</a>
+                            }
+                            else
+                            {
+                                <label>@aviso.Mensaje</label>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
+
     <main role="main" class="cuerpo-ancho cuerpo-espacio">
         @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.Server))
 

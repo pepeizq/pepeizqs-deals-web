@@ -26,32 +26,47 @@ namespace BaseDatos.Pendientes
             return "0";
 		}
 
-        public static List<Pendiente> Todos(SqlConnection conexion)
+        public static List<Pendiente> Todos(SqlConnection conexion = null)
         {
-            List<Pendiente> listaPendientes = new List<Pendiente>();
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
-            foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
-            {
-                if (tienda.Id != "steam")
+			List<Pendiente> listaPendientes = new List<Pendiente>();
+
+			using (conexion)
+			{
+                foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
                 {
-                    string busqueda = "SELECT * FROM tienda" + tienda.Id + " WHERE (idJuegos='0' AND descartado='no')";
-
-                    using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                    if (tienda.Id != "steam")
                     {
-                        SqlDataReader lector = comando.ExecuteReader();
+                        string busqueda = "SELECT * FROM tienda" + tienda.Id + " WHERE (idJuegos='0' AND descartado='no')";
 
-                        using (lector)
+                        using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                         {
-                            while (lector.Read())
-                            {
-                                Pendiente pendiente = new Pendiente
-                                {
-                                    enlace = lector.GetString(0),
-                                    nombre = lector.GetString(1),
-                                    imagen = lector.GetString(2)
-                                };
+                            SqlDataReader lector = comando.ExecuteReader();
 
-                                listaPendientes.Add(pendiente);
+                            using (lector)
+                            {
+                                while (lector.Read())
+                                {
+                                    Pendiente pendiente = new Pendiente
+                                    {
+                                        enlace = lector.GetString(0),
+                                        nombre = lector.GetString(1),
+                                        imagen = lector.GetString(2)
+                                    };
+
+                                    listaPendientes.Add(pendiente);
+                                }
                             }
                         }
                     }

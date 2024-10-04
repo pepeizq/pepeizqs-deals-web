@@ -129,21 +129,14 @@ namespace Herramientas
 
 			sb.Append(textoIndex);
 
-			List<Juego> juegosConMinimos = new List<Juego>();
+			List<string> juegos = global::BaseDatos.Juegos.Buscar.Sitemap();
 
-			SqlConnection conexion = BaseDatos.Conectar();
-
-			using (conexion)
+			if (juegos.Count > 0)
 			{
-				juegosConMinimos = global::BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
-			}
-
-			if (juegosConMinimos.Count > 0)
-			{
-				foreach (var minimo in juegosConMinimos)
+				foreach (var enlace in juegos)
 				{
                     string textoJuegos = "<url>" + Environment.NewLine +
-						 "<loc>https://pepeizqdeals.com/game/" + minimo.IdMaestra + "/" + EnlaceAdaptador.Nombre(minimo.Nombre) + "/</loc>" + Environment.NewLine +
+						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
 						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
 						 "<priority>0.9</priority> " + Environment.NewLine +
 						 "</url>";

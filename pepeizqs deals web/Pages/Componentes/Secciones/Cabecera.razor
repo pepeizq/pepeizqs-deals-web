@@ -22,7 +22,7 @@
         z-index: 1000;
         margin-top: var(--alturaCabecera);
         padding: 10px;
-        backdrop-filter: blur(200px);
+        background-color: var(--fondoOscuroTransparente);
     }
 
     .boton-superior {
@@ -645,22 +645,14 @@ else
     {
         if (adminLogeado == true)
         {
-            if (conexion.State != System.Data.ConnectionState.Open)
+            adminMensaje = "Admin";
+
+            int nuevosCorreosDeals = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos"));
+            int nuevosCorreosApps = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos2"));
+
+            if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
             {
-                conexion = Herramientas.BaseDatos.Conectar();
-            }
-
-            using (conexion)
-            {
-                adminMensaje = "Admin";
-
-                int nuevosCorreosDeals = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos"));
-                int nuevosCorreosApps = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2"));
-
-                if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
-                {
-                    adminMensaje = adminMensaje + " - Correo Nuevo";
-                }
+                adminMensaje = adminMensaje + " - Correo Nuevo";
             }
         }
     }

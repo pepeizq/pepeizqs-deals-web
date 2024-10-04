@@ -151,8 +151,8 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 //builder.Services.AddSignalR(opciones =>
 //{
 //	opciones.EnableDetailedErrors = true;
-//	opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//	opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
+//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+//	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
 //	//opciones.MaximumReceiveMessageSize = 102400000;
 //});
 
@@ -216,12 +216,6 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 
 var app = builder.Build();
 
-#region Compresion (Primero)
-
-app.UseResponseCompression();
-
-#endregion
-
 //if (!app.Environment.IsDevelopment())
 //{
 //app.UseExceptionHandler("/Error");
@@ -239,6 +233,12 @@ app.UseDeveloperExceptionPage();
 //		await next();
 //	}
 //});
+
+#region Compresion (Primero)
+
+app.UseResponseCompression();
+
+#endregion
 
 #region Seo
 
@@ -263,19 +263,18 @@ app.MapControllers();
 
 //app.MapHealthChecks("/vida");
 
-app.UseRouting();
-
 //app.UseAuthorization();
 
 //app.UseRateLimiter();
+
+app.UseRouting();
 
 app.MapRazorPages();
 
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
-	opciones.TransportSendTimeout = TimeSpan.FromMinutes(5);
+	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
 });
 
 //app.UseSession();

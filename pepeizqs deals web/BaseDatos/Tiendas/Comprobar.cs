@@ -330,7 +330,7 @@ namespace BaseDatos.Tiendas
 					}
 					catch (Exception ex)
 					{
-						Errores.Insertar.Ejecutar("Insertar Tienda", ex);
+						Errores.Insertar.Mensaje("Insertar Tienda", ex);
 					}
 				}
 			}

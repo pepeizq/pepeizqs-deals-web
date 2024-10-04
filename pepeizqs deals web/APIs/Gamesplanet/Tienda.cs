@@ -156,7 +156,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarUk().Id, ex, conexion);
 					}
 
 					juegos2 += 1;
@@ -167,7 +167,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUk().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarUk().Id, ex, conexion);
 					}
 				}
 			}
@@ -245,7 +245,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarFr().Id, ex, conexion);
 					}
 
 					juegos2 += 1;
@@ -256,7 +256,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarFr().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarFr().Id, ex, conexion);
 					}
 				}
 			}
@@ -334,7 +334,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarDe().Id, ex, conexion);
 					}
 
 					juegos2 += 1;
@@ -345,7 +345,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarDe().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarDe().Id, ex, conexion);
 					}
 				}
 			}
@@ -423,7 +423,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarUs().Id, ex, conexion);
 					}
 
 					juegos2 += 1;
@@ -434,7 +434,7 @@ namespace APIs.Gamesplanet
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Ejecutar(Tienda.GenerarUs().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Tienda.GenerarUs().Id, ex, conexion);
 					}
 				}
 			}

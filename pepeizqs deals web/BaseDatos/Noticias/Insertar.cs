@@ -150,7 +150,7 @@ namespace BaseDatos.Noticias
                     }
 					catch (Exception ex)
                     {
-                        Errores.Insertar.Ejecutar("Portada Noticias", ex, conexion);
+                        Errores.Insertar.Mensaje("Portada Noticias", ex, conexion);
                     }
 				}
 

@@ -63,7 +63,7 @@ namespace Tareas
                         }
                         catch (Exception ex)
                         {
-                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Correos Apps", ex, conexion);
+                            BaseDatos.Errores.Insertar.Mensaje("Tarea - Correos Apps", ex, conexion);
                         }
                     }
                 }                 

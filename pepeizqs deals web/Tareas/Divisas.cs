@@ -55,7 +55,7 @@ namespace Tareas
                         }
                         catch (Exception ex)
                         {
-                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Divisas", ex, conexion);
+                            BaseDatos.Errores.Insertar.Mensaje("Tarea - Divisas", ex, conexion);
                         }
                     }
                 }                    

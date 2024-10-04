@@ -755,7 +755,7 @@ select {
     overflow-x: auto;
     z-index: 10001;
     padding: 10px;
-    backdrop-filter: blur(20px);
+    background-color: var(--fondoOpcionesTransparente);
     position: fixed;
     top: 0;
     left: 0;

@@ -95,7 +95,7 @@ namespace Tareas
                         }
                         catch (Exception ex)
                         {
-                            BaseDatos.Errores.Insertar.Ejecutar("Tarea - Sorteos", ex, conexion);
+                            BaseDatos.Errores.Insertar.Mensaje("Tarea - Sorteos", ex, conexion);
                         }
                     }
                 }                   

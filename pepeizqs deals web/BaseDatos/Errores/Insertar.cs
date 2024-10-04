@@ -6,39 +6,44 @@ namespace BaseDatos.Errores
 {
     public static class Insertar
 	{
-        public static void Ejecutar(string seccion, Exception ex)
+        public static void Mensaje(string seccion, Exception ex, SqlConnection conexion = null)
 		{
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
-                Ejecutar(seccion, ex, conexion);
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
             }
-        }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
 
-        public static void Ejecutar(string seccion, Exception ex, SqlConnection conexion)
-		{
-            string sqlInsertar = "INSERT INTO errores " +
+            using (conexion)
+            {
+                string sqlInsertar = "INSERT INTO errores " +
                                 "(seccion, mensaje, stacktrace, fecha) VALUES " +
                                 "(@seccion, @mensaje, @stacktrace, @fecha) ";
 
-            using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
-            {
-                comando.Parameters.AddWithValue("@seccion", seccion);
-                comando.Parameters.AddWithValue("@mensaje", ex.Message);
-                comando.Parameters.AddWithValue("@stacktrace", ex.StackTrace);
-                comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
-  
-                try
+                using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
                 {
-                    comando.ExecuteNonQuery();
-                }
-                catch
-                {
+                    comando.Parameters.AddWithValue("@seccion", seccion);
+                    comando.Parameters.AddWithValue("@mensaje", ex.Message);
+                    comando.Parameters.AddWithValue("@stacktrace", ex.StackTrace);
+                    comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 
+                    try
+                    {
+                        comando.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+
+                    }
                 }
             }
-
+            
             Environment.Exit(1);
         }
 
@@ -52,8 +57,20 @@ namespace BaseDatos.Errores
             }
         }
 
-        public static void Mensaje(string seccion, string mensaje, SqlConnection conexion, string enlace)
+        public static void Mensaje(string seccion, string mensaje, SqlConnection conexion, string enlace = null)
         {
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
             if (enlace == null)
             {
                 enlace = "nada";
@@ -77,7 +94,7 @@ namespace BaseDatos.Errores
                 }
                 catch (Exception ex)
                 {
-                    Ejecutar("Errores", ex);
+                    Mensaje("Errores", ex);
                 }
             }
         }

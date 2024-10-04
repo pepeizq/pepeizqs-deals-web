@@ -11,81 +11,78 @@ namespace Herramientas
     {
         public static async Task<Usuario> Actualizar(ClaimsPrincipal contexto, Usuario usuario, UserManager<Usuario> UserManager, string idioma)
         {
-            if (contexto != null)
-            {
-				usuario = await UserManager.GetUserAsync(contexto);
+			usuario = await UserManager.GetUserAsync(contexto);
 
-				if (usuario != null)
+			if (usuario != null)
+			{
+				if (usuario.EmailConfirmed == true && string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
 				{
-					if (usuario.EmailConfirmed == true && string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+					bool tiempo = true;
+
+					if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
 					{
-						bool tiempo = true;
-
-						if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+						if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
 						{
-							if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
-							{
-								tiempo = false;
-							}
+							tiempo = false;
 						}
+					}
 
-						if (tiempo == true)
+					if (tiempo == true)
+					{
+						SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+
+						usuario.SteamGames = datos.Juegos;
+						usuario.SteamWishlist = datos.Deseados;
+						usuario.Avatar = datos.Avatar;
+						usuario.Nickname = datos.Nombre;
+						usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+						usuario.OfficialGroup = datos.GrupoPremium;
+						usuario.OfficialGroup2 = datos.GrupoNormal;
+					}
+					else
+					{
+						if (string.IsNullOrEmpty(usuario.RewardsLastLogin) == true)
 						{
-							SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+							if (Listados.Generar(usuario.SteamGames).Count() > 50)
+							{
+								usuario.RewardsLastLogin = DateTime.Now.ToString();
+								usuario.RewardsCoins = 1;
 
-							usuario.SteamGames = datos.Juegos;
-							usuario.SteamWishlist = datos.Deseados;
-							usuario.Avatar = datos.Avatar;
-							usuario.Nickname = datos.Nombre;
-							usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-							usuario.OfficialGroup = datos.GrupoPremium;
-							usuario.OfficialGroup2 = datos.GrupoNormal;
+								global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+							}
 						}
 						else
 						{
-							if (string.IsNullOrEmpty(usuario.RewardsLastLogin) == true)
+							if (usuario.RewardsCoins < 30)
 							{
-								if (Listados.Generar(usuario.SteamGames).Count() > 50)
+								if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
 								{
-									usuario.RewardsLastLogin = DateTime.Now.ToString();
-									usuario.RewardsCoins = 1;
-
-									global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-								}
-							}
-							else
-							{
-								if (usuario.RewardsCoins < 30)
-								{
-									if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
+									if (Listados.Generar(usuario.SteamGames).Count() > 50)
 									{
-										if (Listados.Generar(usuario.SteamGames).Count() > 50)
-										{
-											usuario.RewardsLastLogin = DateTime.Now.ToString();
-											usuario.RewardsCoins = usuario.RewardsCoins + 1;
+										usuario.RewardsLastLogin = DateTime.Now.ToString();
+										usuario.RewardsCoins = usuario.RewardsCoins + 1;
 
-											global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-										}
+										global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
 									}
 								}
 							}
 						}
 					}
-
-					if (string.IsNullOrEmpty(idioma) == false)
-					{
-						usuario.Language = idioma;
-					}
-					
-					try
-					{
-						await UserManager.UpdateAsync(usuario);
-					}
-					catch { }
 				}
+
+				if (string.IsNullOrEmpty(idioma) == false)
+				{
+					usuario.Language = idioma;
+				}
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
 			}
 
-            return usuario;
+			return usuario;
         }
     }
 }

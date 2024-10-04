@@ -153,7 +153,7 @@ namespace BaseDatos.Juegos
 					}
 					catch (Exception ex)
 					{
-						Errores.Insertar.Ejecutar("Actualizar Datos " + juego.Nombre, ex);
+						Errores.Insertar.Mensaje("Actualizar Datos " + juego.Nombre, ex);
 					}
 				}
 			}		
@@ -226,7 +226,7 @@ namespace BaseDatos.Juegos
 				}
 				catch (Exception ex)
 				{
-					Errores.Insertar.Ejecutar("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, ex);
+					Errores.Insertar.Mensaje("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, ex);
 				}
 			}
 		}

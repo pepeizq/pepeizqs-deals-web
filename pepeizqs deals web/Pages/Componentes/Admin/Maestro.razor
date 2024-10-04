@@ -3,8 +3,6 @@
 @using Microsoft.Data.SqlClient
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@inject UserManager<Usuario> UserManager
-
 <style>
     .boton-pestañas {
         color: var(--colorTexto);
@@ -151,20 +149,13 @@
 
     protected override void OnInitialized()
     {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
+        ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
+        ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "pendientes")));
+        ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "errores")));
+        ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null).Count);
 
-        using (conexion)
-        {
-            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
-            ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
-            ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
-
-            DLCs = global::BaseDatos.Juegos.Buscar.DLCs(null, conexion, false);
-            ActualizarMensajeDLCs(DLCs.Count);
-        }
+        // global::Noticias.Noticia noticia = global::BaseDatos.Noticias.Buscar.UnaNoticia(450);
+        // Herramientas.Correos.EnviarNuevaNoticia(noticia, "pepeizq@msn.com", conexion, "es-ES");
 
         CerrarPestañas();
         mostrarEnlaces = true;
@@ -313,7 +304,6 @@
     private bool mostrarDLCs = false;
     private string estiloDLCs = null;
 
-    private List<global::Juegos.Juego> DLCs = new List<global::Juegos.Juego>();
     private int nuevosDLCsCantidad = 0;
     private string nuevosDLCsMensaje = string.Empty;
 
@@ -359,11 +349,6 @@
         CerrarPestañas();
         mostrarPendientes = true;
         estiloPendientes = fondo;
-
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
 
         ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(conexion).Count);
     }
