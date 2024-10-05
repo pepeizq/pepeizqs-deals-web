@@ -246,5 +246,9 @@
   {
     "Id": "String62",
     "Valor": "It was free to claim {0} times"
+  },
+  {
+    "Id": "String63",
+    "Valor": "Register an account and you will be able to receive notifications by email when there is a new historical minimum price for {0}."
   }
 ]

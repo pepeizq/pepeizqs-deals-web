@@ -409,27 +409,42 @@ namespace BaseDatos.Tiendas
 
 		public static void ActualizarDato(SqlConnection conexion, string id, string contenido)
 		{
-			string sqlActualizar = "UPDATE adminDatos " +
-						"SET contenido=@contenido WHERE id=@id";
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
 
-			SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
-
-			using (comando)
+            using (conexion)
 			{
-				comando.Parameters.AddWithValue("@id", id);
-				comando.Parameters.AddWithValue("@contenido", contenido);
+                string sqlActualizar = "UPDATE adminDatos " +
+					"SET contenido=@contenido WHERE id=@id";
 
-				SqlDataReader lector = comando.ExecuteReader();
+                SqlCommand comando = new SqlCommand(sqlActualizar, conexion);
 
-				try
-				{
-					comando.ExecuteNonQuery();
-				}
-				catch
-				{
+                using (comando)
+                {
+                    comando.Parameters.AddWithValue("@id", id);
+                    comando.Parameters.AddWithValue("@contenido", contenido);
 
-				}
-			}
+                    SqlDataReader lector = comando.ExecuteReader();
+
+                    try
+                    {
+                        comando.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
 		}
 
 		public static string CargarValorAdicional(string tienda, SqlConnection conexion)

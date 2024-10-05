@@ -1,5 +1,12 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.BundlesModel
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 @{
 	#nullable disable
@@ -39,22 +46,19 @@
 	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+	}
+
 	string enlace = "https://pepeizqdeals.com/bundles/";
 
 	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "String19", "Bundle");
-}
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-{
-	idioma = Model.idioma,
-	titulo = titulo,
-	enlace = enlace,
-	canonical = enlace,
-	descripcion = descripcion
-}))
-
-@{
-	bool prerenderizado = false;
+	bool seo = false;
 	string userAgent = string.Empty;
 
 	if (HttpContext != null)
@@ -65,13 +69,22 @@
 		{
 			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
 			{
-				prerenderizado = true;
+				seo = true;
 			}
 		}
 	}
 
-	if (prerenderizado == true)
+	if (seo == true)
 	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = titulo,
+			enlace = enlace,
+			canonical = enlace,
+			descripcion = descripcion
+		}))
+
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.ServerPrerendered, new
 		{
 			idioma = Model.idioma
@@ -81,7 +94,8 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.Server, new
 		{
-			idioma = Model.idioma
+			idioma = Model.idioma,
+			usuario = usuario
 		}))
 	}
 }

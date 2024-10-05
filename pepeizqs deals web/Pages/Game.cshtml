@@ -35,23 +35,21 @@
 			}
 		}
 	}
-}
 
-
-@if (usuarioLogeado == true)
-{
-	@if (adminLogeado == true)
+	if (usuarioLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new { 
-			idioma = Model.idioma,
-			juego = Model.juego 
-		}))
+		@if (adminLogeado == true)
+		{
+			@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new
+			{
+				idioma = Model.idioma,
+				juego = Model.juego
+			}))
+		}
 	}
-}
 
-@{
-	bool prerenderizado = false;
-	string userAgent = string.Empty;
+	bool seo = false;
+	string? userAgent = string.Empty;
 
 	if (HttpContext != null)
 	{
@@ -61,12 +59,12 @@
 		{
 			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
 			{
-				prerenderizado = true;
+				seo = true;
 			}
 		}
 	}
 
-	if (prerenderizado == true)
+	if (seo == true)
 	{
 		string enlace = "https://pepeizqdeals.com/game/" + Model.juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.juego.Nombre) + "/";
 
@@ -111,7 +109,8 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			juego = Model.juego
+			juego = Model.juego,
+			usuario = usuario
 		}))
 	}
 }

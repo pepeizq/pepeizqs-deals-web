@@ -323,23 +323,51 @@
 					string usuarioTieneDeseadoSteam = string.Empty;
 
 					<div id="@drm.Id">
-						@if (HttpContext == null)
+						@if (usuario != null)
 						{
-							if (usuario != null)
+							if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 							{
-								if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-								{
-									List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+								List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 
-									if (juegosSteam.Count > 0)
+								if (juegosSteam.Count > 0)
+								{
+									if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Steam)
 									{
-										if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Steam)
+										foreach (var juegoUsuario in juegosSteam)
 										{
-											foreach (var juegoUsuario in juegosSteam)
+											if (juegoUsuario == juego.IdSteam.ToString())
 											{
-												if (juegoUsuario == juego.IdSteam.ToString())
+												usuarioTieneJuego = true;
+												break;
+											}
+										}
+									}
+								}
+							}
+
+							if (usuarioTieneJuego == false)
+							{
+								if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+								{
+									List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
+
+									if (deseadosSteam.Count > 0)
+									{
+										foreach (var deseado in deseadosSteam)
+										{
+											if (juego.IdSteam > 0)
+											{
+												if (juego.IdSteam == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.Steam)
 												{
-													usuarioTieneJuego = true;
+													if (juego.Tipo == Juegos.JuegoTipo.Game)
+													{
+														usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String7", "Game");
+													}
+													else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+													{
+														usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Game");
+													}
+
 													break;
 												}
 											}
@@ -347,109 +375,82 @@
 									}
 								}
 
-								if (usuarioTieneJuego == false)
+								if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
 								{
-									if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm.Id);
+
+									if (usuarioTieneDeseado == true)
 									{
-										List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
+										<button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											<div class="perfil-flexible-centrado">
+												<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
-										if (deseadosSteam.Count > 0)
-										{
-											foreach (var deseado in deseadosSteam)
-											{
-												if (juego.IdSteam > 0)
-												{
-													if (juego.IdSteam == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.Steam)
-													{
-														if (juego.Tipo == Juegos.JuegoTipo.Game)
-														{
-															usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String7", "Game");
-														}
-														else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-														{
-															usuarioTieneDeseadoSteam = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Game");
-														}
-
-														break;
-													}
-												}
-											}
-										}
+												<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Game")</div>
+											</div>
+										</button>
 									}
-
-									if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
+									else
 									{
-										usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm.Id);
-
-										if (usuarioTieneDeseado == true)
-										{
-											<button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
-												<div class="perfil-flexible-centrado">
-													<i class="fa-solid fa-check" style="font-size: 25px;"></i>
-
-													<div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Game")</div>
-												</div>
-											</button>
-										}
-										else
-										{
-											<button @onclick="(e => CambiarEstadoDeseado(e, true, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
-												@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Game")
-											</button>
-										}
+										<button @onclick="(e => CambiarEstadoDeseado(e, true, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+											@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Game")
+										</button>
 									}
 								}
 							}
 						}
 
-
 						<div class="juego-drm-centrado" style="margin-bottom: 50px;">
 							<div style="width: 100%; display: flex; flex-direction: column; gap: 10px; padding: 10px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
-								@if (HttpContext == null)
+								@if (usuario != null)
 								{
-									if (usuario != null)
+									if (usuarioTieneJuego == true)
 									{
-										if (usuarioTieneJuego == true)
+										string mensaje = string.Empty;
+
+										if (juego.Tipo == Juegos.JuegoTipo.Game)
 										{
-											string mensaje = string.Empty;
+											mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Game");
+										}
+										else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+										{
+											mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
+										}
 
-											if (juego.Tipo == Juegos.JuegoTipo.Game)
-											{
-												mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Game");
-											}
-											else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-											{
-												mensaje = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Game");
-											}
+										<div>
+											<div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+												<div class="perfil-flexible-centrado">
+													<i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
-											<div>
-												<div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-													<div class="perfil-flexible-centrado">
-														<i class="fa-solid fa-check" style="font-size: 25px;"></i>
+													<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
+												</div>
+											</div>
+										</div>
+									}
+									else
+									{
+										if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == false)
+										{
+											<div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+												<div class="perfil-flexible-centrado">
+													<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
-														<label style="text-align: left; padding-left: 25px; width: 100%;">@mensaje</label>
-													</div>
+													<label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoSteam</label>
 												</div>
 											</div>
 										}
-										else
-										{
-											if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == false)
-											{
-												<div>
-													<div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-														<div class="perfil-flexible-centrado">
-															<i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
-
-															<label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoSteam</label>
-														</div>
-													</div>
-												</div>
-											}
-										}
 									}
 								}
-								
+								else
+								{
+									<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+										<div class="perfil-flexible-centrado">
+											<i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
+
+											<label style="text-align: left; padding-left: 25px; width: 100%;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String63", "Game"), drm.Nombre)</label>
+										</div>
+									</div>
+								}
+
 								@if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
 								{
 									<div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px;">
@@ -1142,13 +1143,6 @@
 
 																publishersFinales.Add(publisherFinal2);
 
-																string userAgent = string.Empty;
-
-																if (HttpContext != null)
-																{
-																	userAgent = Environment.NewLine + Environment.NewLine + HttpContext.Request.Headers.UserAgent;
-																}
-
 																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
 															}
 															else
@@ -1530,148 +1524,140 @@
 	public string idioma { get; set; }
 
 	[Parameter]
+	public Usuario usuario { get; set; }
+
+	[Parameter]
 	public Juegos.Juego juego { get; set; }
 
-	private Usuario usuario = new Usuario();
+	[Parameter]
+	public string userAgent { get; set; }
 
 	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
 	protected override async Task OnInitializedAsync()
 	{
-		if (HttpContext == null)
+		if (juego != null)
 		{
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
+			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
 
-			//-------------------------------------------
-
-			if (juego != null)
+			if (juego.Media != null)
 			{
-				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
-				if (juego.Media != null)
+				if (string.IsNullOrEmpty(juego.Media.Video) == false)
 				{
-					if (string.IsNullOrEmpty(juego.Media.Video) == false)
+					mediaMostrar = juego.Media.Video;
+					mediaMostrar = mediaMostrar.Replace("http://", "https://");
+					mediaMostrar = mediaMostrar.Replace("http://", "https://");
+					mediaMostrarPosicion = 99999;
+				}
+				else
+				{
+					if (juego.Media.Capturas != null)
 					{
-						mediaMostrar = juego.Media.Video;
-						mediaMostrar = mediaMostrar.Replace("http://", "https://");
-						mediaMostrar = mediaMostrar.Replace("http://", "https://");
-						mediaMostrarPosicion = 99999;
-					}
-					else
-					{
-						if (juego.Media.Capturas != null)
+						if (juego.Media.Capturas.Count > 0)
 						{
-							if (juego.Media.Capturas.Count > 0)
-							{
-								mediaMostrar = juego.Media.Capturas[0];
-							}
+							mediaMostrar = juego.Media.Capturas[0];
 						}
 					}
 				}
-
-				if (juego.IdSteam > 0)
-				{
-					bool actualizarDatosAPI = false;
-
-					if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
-					{
-						actualizarDatosAPI = true;
-					}
-
-					if (juego.Categorias == null && juego.Generos == null)
-					{
-						actualizarDatosAPI = true;
-
-						if (juego.Tipo == JuegoTipo.Music)
-						{
-							actualizarDatosAPI = false;
-						}
-					}
-
-					if (actualizarDatosAPI == true)
-					{
-						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-						if (nuevoJuego != null)
-						{		
-							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-						}
-					}
-
-					if (juego.Tipo == JuegoTipo.Game)
-					{
-						bool actualizarDeckAPI = false;
-
-						if (juego.DeckComprobacion == null)
-						{
-							actualizarDeckAPI = true;
-						}
-						else
-						{
-							if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
-							{
-								actualizarDeckAPI = true;
-							}
-						}
-
-						if (juego.DeckTokens == null)
-						{
-							actualizarDeckAPI = true;
-						}
-
-						if (actualizarDeckAPI == true)
-						{
-							APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
-							bool vacio = true;
-
-							if (deckAPI != null)
-							{
-								if (deckAPI.Datos != null)
-								{
-									juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
-									juego.DeckComprobacion = DateTime.Now;
-
-									if (deckAPI.Datos.Tokens != null)
-									{
-										if (deckAPI.Datos.Tokens.Count > 0)
-										{
-											List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
-
-											foreach (var token in deckAPI.Datos.Tokens)
-											{
-												if (string.IsNullOrEmpty(token.Token) == false)
-												{
-													JuegoDeckToken nuevoToken = new JuegoDeckToken();
-													nuevoToken.Tipo = token.Tipo;
-													nuevoToken.Mensaje = token.Token;
-
-													tokens.Add(nuevoToken);
-												}
-											}
-
-											juego.DeckTokens = tokens;
-										}
-									}
-
-									vacio = false;
-									global::BaseDatos.Juegos.Actualizar.Deck(juego);
-								}
-							}
-
-							if (vacio == true)
-							{
-								juego.DeckComprobacion = DateTime.Now;
-								global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
-							}
-						}
-					}
-				}				
 			}
+
+			if (juego.IdSteam > 0)
+			{
+				bool actualizarDatosAPI = false;
+
+				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
+				{
+					actualizarDatosAPI = true;
+				}
+
+				if (juego.Categorias == null && juego.Generos == null)
+				{
+					actualizarDatosAPI = true;
+
+					if (juego.Tipo == JuegoTipo.Music)
+					{
+						actualizarDatosAPI = false;
+					}
+				}
+
+				if (actualizarDatosAPI == true)
+				{
+					global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+					if (nuevoJuego != null)
+					{		
+						global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+					}
+				}
+
+				if (juego.Tipo == JuegoTipo.Game)
+				{
+					bool actualizarDeckAPI = false;
+
+					if (juego.DeckComprobacion == null)
+					{
+						actualizarDeckAPI = true;
+					}
+					else
+					{
+						if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
+						{
+							actualizarDeckAPI = true;
+						}
+					}
+
+					if (juego.DeckTokens == null)
+					{
+						actualizarDeckAPI = true;
+					}
+
+					if (actualizarDeckAPI == true)
+					{
+						APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
+						bool vacio = true;
+
+						if (deckAPI != null)
+						{
+							if (deckAPI.Datos != null)
+							{
+								juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
+								juego.DeckComprobacion = DateTime.Now;
+
+								if (deckAPI.Datos.Tokens != null)
+								{
+									if (deckAPI.Datos.Tokens.Count > 0)
+									{
+										List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
+
+										foreach (var token in deckAPI.Datos.Tokens)
+										{
+											if (string.IsNullOrEmpty(token.Token) == false)
+											{
+												JuegoDeckToken nuevoToken = new JuegoDeckToken();
+												nuevoToken.Tipo = token.Tipo;
+												nuevoToken.Mensaje = token.Token;
+
+												tokens.Add(nuevoToken);
+											}
+										}
+
+										juego.DeckTokens = tokens;
+									}
+								}
+
+								vacio = false;
+								global::BaseDatos.Juegos.Actualizar.Deck(juego);
+							}
+						}
+
+						if (vacio == true)
+						{
+							juego.DeckComprobacion = DateTime.Now;
+							global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
+						}
+					}
+				}
+			}				
 		}
 	}
 

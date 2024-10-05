@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using System.Net
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 @if (cargado == false)
 {
@@ -222,6 +223,9 @@ else
 	public string idioma { get; set; }
 
 	[Parameter]
+	public Usuario usuario { get; set; }
+
+	[Parameter]
 	public string id { get; set; }
 
 	[Parameter]
@@ -250,111 +254,101 @@ else
 	private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (HttpContext == null)
+		resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
+
+		if (acepciones != null)
 		{
-			await Task.Delay(1);
-
-			resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
-
-			if (acepciones != null)
+			if (acepciones.Count > 0)
 			{
-				if (acepciones.Count > 0)
+				foreach (var acepcion in acepciones)
 				{
-					foreach (var acepcion in acepciones)
+					if (acepcion != "acepcion")
 					{
-						if (acepcion != "acepcion")
+						List<Juegos.Juego> nuevosJuegos = BaseDatos.Publishers.Buscar.Juegos(acepcion);
+
+						foreach (var nuevoJuego in nuevosJuegos)
 						{
-							List<Juegos.Juego> nuevosJuegos = BaseDatos.Publishers.Buscar.Juegos(acepcion);
+							bool añadir = true;
 
-							foreach (var nuevoJuego in nuevosJuegos)
+							if (resultadosGestor.Count > 0)
 							{
-								bool añadir = true;
-
-								if (resultadosGestor.Count > 0)
+								foreach (var resultadoGestor in resultadosGestor)
 								{
-									foreach (var resultadoGestor in resultadosGestor)
+									if (resultadoGestor.Id == nuevoJuego.Id)
 									{
-										if (resultadoGestor.Id == nuevoJuego.Id)
-										{
-											añadir = false;
-										}
+										añadir = false;
 									}
 								}
+							}
 
-								if (añadir == true)
-								{
-									resultadosGestor.Add(nuevoJuego);
-								}
+							if (añadir == true)
+							{
+								resultadosGestor.Add(nuevoJuego);
 							}
 						}
 					}
 				}
 			}
+		}
 
-			if (resultadosGestor.Count > 0)
+		if (resultadosGestor.Count > 0)
+		{
+			foreach (var resultadoGestor in resultadosGestor)
 			{
-				foreach (var resultadoGestor in resultadosGestor)
+				if (resultadoGestor.Tipo == Juegos.JuegoTipo.Game)
 				{
-					if (resultadoGestor.Tipo == Juegos.JuegoTipo.Game)
-					{
-						resultadosJuegos.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.DLC)
-					{
-						resultadosDLCs.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Software)
-					{
-						resultadosSoftware.Add(resultadoGestor);
-					}
-					else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Music)
-					{
-						resultadosBandasSonoras.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarBundles(resultadoGestor) == true)
-					{
-						resultadosBundles.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarGratis(resultadoGestor) == true)
-					{
-						resultadosGratis.Add(resultadoGestor);
-					}
-
-					if (Herramientas.Buscador.ComprobarSuscripcion(resultadoGestor) == true)
-					{
-						resultadosSuscripciones.Add(resultadoGestor);
-					}
+					resultadosJuegos.Add(resultadoGestor);
+				}
+				else if (resultadoGestor.Tipo == Juegos.JuegoTipo.DLC)
+				{
+					resultadosDLCs.Add(resultadoGestor);
+				}
+				else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Software)
+				{
+					resultadosSoftware.Add(resultadoGestor);
+				}
+				else if (resultadoGestor.Tipo == Juegos.JuegoTipo.Music)
+				{
+					resultadosBandasSonoras.Add(resultadoGestor);
 				}
 
-				if (resultadosJuegos.Count == 0)
+				if (Herramientas.Buscador.ComprobarBundles(resultadoGestor) == true)
 				{
-					resultadosModo = 1;
-
-					if (resultadosDLCs.Count == 0)
-					{
-						resultadosModo = 2;
-
-						if (resultadosSoftware.Count == 0)
-						{
-							resultadosModo = 3;
-						}
-					}
+					resultadosBundles.Add(resultadoGestor);
 				}
 
-				CargarListado();
+				if (Herramientas.Buscador.ComprobarGratis(resultadoGestor) == true)
+				{
+					resultadosGratis.Add(resultadoGestor);
+				}
+
+				if (Herramientas.Buscador.ComprobarSuscripcion(resultadoGestor) == true)
+				{
+					resultadosSuscripciones.Add(resultadoGestor);
+				}
 			}
 
-			cargado = true;
+			if (resultadosJuegos.Count == 0)
+			{
+				resultadosModo = 1;
+
+				if (resultadosDLCs.Count == 0)
+				{
+					resultadosModo = 2;
+
+					if (resultadosSoftware.Count == 0)
+					{
+						resultadosModo = 3;
+					}
+				}
+			}
+
+			CargarListado();
 		}
+
+		cargado = true;
 	}
 
 	private void CargarListado()

@@ -233,98 +233,90 @@
     [Parameter]
     public string idioma { get; set; }
 
+    [Parameter]
+    public Usuario usuario { get; set; }
+
     List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
 
     List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
     List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
 
-    private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();
 
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
-    #nullable enable
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-    #nullable disable
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (HttpContext == null)
+        if (usuario != null)
         {
-            usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-            if (usuario != null)
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {
-                if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+            }
+        }
+
+        //--------------------------------------------------------------------
+
+        DateTime arranque = new DateTime(2015, 1, 1);
+
+        int i = 0;
+        while (i < 100)
+        {
+            if (arranque.Year != DateTime.Now.Year)
+            {
+                años.Add(arranque.Year.ToString());
+                arranque = arranque.AddYears(1);
+            }
+            i += 1;
+        }
+
+        años.Add(DateTime.Now.Year.ToString());
+        años.Reverse();
+
+        //--------------------------------------------------------------------
+
+        List<Juegos.JuegoSuscripcion> juegosActuales = BaseDatos.Suscripciones.Buscar.Actuales();
+
+        if (juegosActuales.Count > 0)
+        {
+            foreach (var juegoActual in juegosActuales)
+            {
+                Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
+
+                if (juego2.Tipo == Juegos.JuegoTipo.Game)
                 {
-                    juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+                    juegoActual.Imagen = juego2.Imagenes.Library_600x900;
                 }
+                else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
+                {
+                    juegoActual.Imagen = juego2.Imagenes.Capsule_231x87;
+                }
+
+                juegoActual.Juego = juego2;
             }
 
-            //--------------------------------------------------------------------
+            juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
 
-            DateTime arranque = new DateTime(2015, 1, 1);
-
-            int i = 0;
-            while (i < 100)
+            foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
             {
-                if (arranque.Year != DateTime.Now.Year)
+                List<Juegos.JuegoSuscripcion> juegos2 = new List<Juegos.JuegoSuscripcion>();
+
+                foreach (var juego in juegosActuales)
                 {
-                    años.Add(arranque.Year.ToString());
-                    arranque = arranque.AddYears(1);
-                }
-                i += 1;
-            }
-
-            años.Add(DateTime.Now.Year.ToString());
-            años.Reverse();
-
-            //--------------------------------------------------------------------
-
-            List<Juegos.JuegoSuscripcion> juegosActuales = BaseDatos.Suscripciones.Buscar.Actuales();
-
-            if (juegosActuales.Count > 0)
-            {
-                foreach (var juegoActual in juegosActuales)
-                {
-                    Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
-
-                    if (juego2.Tipo == Juegos.JuegoTipo.Game)
+                    if (juego.Tipo == suscripcion.Id)
                     {
-                        juegoActual.Imagen = juego2.Imagenes.Library_600x900;
+                        juegos2.Add(juego);
                     }
-                    else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
-                    {
-                        juegoActual.Imagen = juego2.Imagenes.Capsule_231x87;
-                    }
-
-                    juegoActual.Juego = juego2;
                 }
 
-                juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
-
-                foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+                if (juegos2.Count > 0)
                 {
-                    List<Juegos.JuegoSuscripcion> juegos2 = new List<Juegos.JuegoSuscripcion>();
+                    Suscripciones2.SuscripcionComponente componente = new Suscripciones2.SuscripcionComponente();
+                    componente.Juegos = juegos2;
+                    componente.Tipo = suscripcion;
 
-                    foreach (var juego in juegosActuales)
-                    {
-                        if (juego.Tipo == suscripcion.Id)
-                        {
-                            juegos2.Add(juego);
-                        }
-                    }
-
-                    if (juegos2.Count > 0)
-                    {
-                        Suscripciones2.SuscripcionComponente componente = new Suscripciones2.SuscripcionComponente();
-                        componente.Juegos = juegos2;
-                        componente.Tipo = suscripcion;
-
-                        suscripcionesActuales.Add(componente);
-                    }
+                    suscripcionesActuales.Add(componente);
                 }
             }
         }

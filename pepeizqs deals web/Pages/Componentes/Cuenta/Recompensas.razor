@@ -261,7 +261,9 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
-	private Usuario usuario = new Usuario();
+	[Parameter]
+	public Usuario usuario { get; set; }
+
 	private List<string> juegosUsuario = new List<string>();
 
 	private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
@@ -278,29 +280,19 @@ else
 
 	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (HttpContext == null)
+		mostrarJuegos = true;
+		estiloJuegos = fondo;
+
+		if (usuario != null)
 		{
-			mostrarJuegos = true;
-			estiloJuegos = fondo;
+			juegos = BaseDatos.Recompensas.Juegos.Todo();
+			entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
 
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-			if (usuario != null)
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				juegos = BaseDatos.Recompensas.Juegos.Todo();
-				entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
-
-				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-				}
+				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
 		}
 	}

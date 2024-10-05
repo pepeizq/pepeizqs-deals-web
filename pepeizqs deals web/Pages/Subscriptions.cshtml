@@ -1,13 +1,28 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.SubscriptionsModel
 
-@{
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Subscriptions.Title");
-	Layout = "/Pages/Shared/_Layout.cshtml";
-}
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 @{
-    bool prerenderizado = false;
+    #nullable disable
+
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Subscriptions.Title");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+    Usuario usuario = new Usuario();
+
+    if (usuarioLogeado == true)
+    {
+        usuario = await UserManager.GetUserAsync(User);
+    }
+
+    bool seo = false;
     string userAgent = string.Empty;
 
     if (HttpContext != null)
@@ -18,23 +33,24 @@
         {
             if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
             {
-                prerenderizado = true;
+                seo = true;
             }
         }
     }
 
-    if (prerenderizado == true)
+    if (seo == true)
     {
         @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new
         {
-            idioma = @Model.idioma
+            idioma = Model.idioma
         }))
     }
     else
     {
         @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new
         {
-            idioma = @Model.idioma
+            idioma = Model.idioma,
+            usuario = usuario
         }))
     }
 }

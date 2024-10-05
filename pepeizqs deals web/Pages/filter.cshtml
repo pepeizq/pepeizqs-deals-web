@@ -1,51 +1,68 @@
 ﻿@page "/filter/{ids?}/"
 
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.filterModel
 
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
+	#nullable disable
+
     ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Filter"); ;
     Layout = "/Pages/Shared/_Layout.cshtml";
-}
 
-@if (string.IsNullOrEmpty(Model.ids) == false)
-{
-	bool prerenderizado = false;
-	string userAgent = string.Empty;
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
 
-	if (HttpContext != null)
+	if (usuarioLogeado == true)
 	{
-		userAgent = HttpContext.Request.Headers.UserAgent;
-
-		if (string.IsNullOrEmpty(userAgent) == false)
-		{
-			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
-			{
-				prerenderizado = true;
-			}
-		}
+		usuario = await UserManager.GetUserAsync(User);
 	}
 
-	if (prerenderizado == true)
+	if (string.IsNullOrEmpty(Model.ids) == false)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+		bool seo = false;
+		string userAgent = string.Empty;
+
+		if (HttpContext != null)
 		{
-			idioma = Model.idioma,
-			ids = Model.ids
-		}))
+			userAgent = HttpContext.Request.Headers.UserAgent;
+
+			if (string.IsNullOrEmpty(userAgent) == false)
+			{
+				if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
+				{
+					seo = true;
+				}
+			}
+		}
+
+		if (seo == true)
+		{
+			@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
+			{
+				idioma = Model.idioma,
+				ids = Model.ids
+			}))
+		}
+		else
+		{
+			@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
+			{
+				idioma = Model.idioma,
+				ids = Model.ids
+			}))
+		}
 	}
 	else
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			ids = Model.ids
+			usuario = usuario
 		}))
 	}
-}
-else
-{
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
-    {
-        idioma = Model.idioma
-    }))
 }

@@ -249,7 +249,7 @@ namespace Herramientas
 			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
 
-        private static async void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
+        private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
 		{
 			if (string.IsNullOrEmpty(correoDesde) == false && string.IsNullOrEmpty(correoHacia) == false) 
 			{
@@ -257,48 +257,6 @@ namespace Herramientas
 
 				string host = builder.Configuration.GetValue<string>("Correo:Host");
 				string contraseña = builder.Configuration.GetValue<string>("Correo:Contraseña");
-
-				//var email = new MimeMessage();
-
-				//var sender = MailboxAddress.Parse(correoDesde);
-				//if (!string.IsNullOrEmpty("pepeizq's deals"))
-				//    sender.Name = "pepeizq's deals";
-				//email.Sender = sender;
-				//email.From.Add(sender);
-				//email.To.Add(MailboxAddress.Parse(correoHacia));
-				//email.Subject = titulo;
-				//email.Body = new TextPart(TextFormat.Html) { Text = html };
-
-				//using (var smtp = new SmtpClient())
-				//{
-				//    smtp.Timeout = 10000; // 10secs
-				//    try
-				//    {
-				//        await smtp.ConnectAsync(host, 25, false);
-				//        if (!string.IsNullOrEmpty("admin@pepeizqdeals.com"))
-				//            smtp.Authenticate("admin@pepeizqdeals.com", contraseña);
-				//        await smtp.SendAsync(email);
-				//        await smtp.DisconnectAsync(true);
-				//    }
-				//    catch (Exception ex)
-				//    {
-				//        global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex);
-				//    }
-				//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 				System.Net.Mail.MailMessage mensaje = new System.Net.Mail.MailMessage();
 				mensaje.From = new System.Net.Mail.MailAddress(correoDesde, "pepeizq's deals");
@@ -318,12 +276,11 @@ namespace Herramientas
 					cliente.Port = 587;
 					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
 					cliente.EnableSsl = true;
-
-					cliente.Send(mensaje);
+		
 					try
 					{
-
-					}
+                        cliente.Send(mensaje);
+                    }
 					catch (Exception ex)
 					{
 						global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex);
@@ -331,15 +288,14 @@ namespace Herramientas
 				}
 				else
 				{
-					cliente.Port = 25;
+					cliente.Port = 8889;
 					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
 					cliente.EnableSsl = false;
-
-					cliente.Send(mensaje);
+                   
 					try
 					{
-
-					}
+                        cliente.Send(mensaje);
+                    }
 					catch (Exception ex)
 					{
 						global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex);

@@ -320,7 +320,7 @@
 		z-index: 1001;
 		margin-top: var(--alturaCabecera);
 		padding: 10px;
-		background-color: var(--fondoOscuro);
+		background-color: var(--fondoOscuroTransparente);
 	}
 </style>
 
@@ -509,6 +509,9 @@
 	public string idioma { get; set; }
 
 	[Parameter]
+	public Usuario usuario { get; set; }
+
+	[Parameter]
 	public int bundleId { get; set; }
 
 	[Parameter]
@@ -516,39 +519,28 @@
 
 	public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (HttpContext == null)
+		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
+
+		if (bundle != null)
 		{
-			bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
-
-			if (bundle != null)
+			foreach (var juego in bundle.Juegos)
 			{
-				foreach (var juego in bundle.Juegos)
-				{
-					juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-					juego.Imagen = juego.Juego.Imagenes.Header_460x215;
-				}
+				juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
+				juego.Imagen = juego.Juego.Imagenes.Header_460x215;
 			}
+		}
 
-			//------------------------------------------------------------
+		//------------------------------------------------------------
 
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-			if (usuario != null)
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-				}
+				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
 		}
 	}

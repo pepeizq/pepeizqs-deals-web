@@ -90,7 +90,7 @@
 				</a>
 			</div>		
 
-			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" tipo="@Bundle.Tipo.Bundles" />
+			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" usuario="@usuario" tipo="@Bundle.Tipo.Bundles" />
 		}
 	}
 }
@@ -214,65 +214,57 @@
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public Usuario usuario { get; set; }
+
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
 	private Bundles2.Bundle bundleSeleccionado = new Bundles2.Bundle();
 	private bool mostrarBundleSeleccionado = false;
 
-	private Usuario usuario = new Usuario();
 	private List<string> juegosUsuario = new List<string>();
 
 	private List<string> años = new List<string>();
 	private string añoSeleccionado = string.Empty;
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (HttpContext == null)
+		if (usuario != null)
 		{
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-			if (usuario != null)
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-				}
+				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
+		}
 
-			//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
 
-			DateTime arranque = new DateTime(2010, 1, 1);
+		DateTime arranque = new DateTime(2010, 1, 1);
 
-			int i = 0;
-			while (i < 100)
+		int i = 0;
+		while (i < 100)
+		{
+			if (arranque.Year != DateTime.Now.Year)
 			{
-				if (arranque.Year != DateTime.Now.Year)
-				{
-					años.Add(arranque.Year.ToString());
-					arranque = arranque.AddYears(1);
-				}
-				i += 1;
+				años.Add(arranque.Year.ToString());
+				arranque = arranque.AddYears(1);
 			}
+			i += 1;
+		}
 
-			años.Add(DateTime.Now.Year.ToString());
-			años.Reverse();
+		años.Add(DateTime.Now.Year.ToString());
+		años.Reverse();
 
-			//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
 
-			bundlesActuales = BaseDatos.Bundles.Buscar.Actuales();
+		bundlesActuales = BaseDatos.Bundles.Buscar.Actuales();
 
-			if (bundlesActuales.Count > 0)
-			{
-				bundleSeleccionado = bundlesActuales[0];
+		if (bundlesActuales.Count > 0)
+		{
+			bundleSeleccionado = bundlesActuales[0];
 
-				bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
-			}
-		}		
+			bundlesActuales = bundlesActuales.OrderBy(x => x.FechaTermina).ToList();
+		}
 	}
 
 	private void CambiarAño(MouseEventArgs e, string nuevoAño)

@@ -713,22 +713,17 @@ else
 	[Parameter]
 	public string idioma { get; set; }
 
+	[Parameter]
+	public Usuario usuario { get; set; }
+
 	private SqlConnection conexion = new SqlConnection();
 
-	private Usuario usuario = new Usuario();
 	private List<string> usuarioJuegosSteam = new List<string>();
 
 	private List<BaseDatos.Recompensas.RecompensaJuego> recompensas = new List<BaseDatos.Recompensas.RecompensaJuego>();
 
-	// #nullable enable
-	// [CascadingParameter]
-	// public HttpContext? HttpContext { get; set; }
-	// #nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
 		if (usuario != null)
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)

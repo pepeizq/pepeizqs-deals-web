@@ -145,17 +145,16 @@
 
     #nullable disable
 
-    private SqlConnection conexion = new SqlConnection();
+    // private SqlConnection conexion = new SqlConnection();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
+        await Task.Delay(100);
+
+        ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos2")));
         ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "pendientes")));
         ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "errores")));
         ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null).Count);
-
-        // global::Noticias.Noticia noticia = global::BaseDatos.Noticias.Buscar.UnaNoticia(450);
-        // Herramientas.Correos.EnviarNuevaNoticia(noticia, "pepeizq@msn.com", conexion, "es-ES");
 
         CerrarPestañas();
         mostrarEnlaces = true;
@@ -229,16 +228,11 @@
 
     private void MostrarErrores(MouseEventArgs e)
     {
-        if (conexion.State != System.Data.ConnectionState.Open)
-        {
-            conexion = Herramientas.BaseDatos.Conectar();
-        }
-
         CerrarPestañas();
         mostrarErrores = true;
         estiloErrores = fondo;
 
-        ActualizarMensajeErrores(BaseDatos.Errores.Buscar.Todos(conexion).Count);
+        ActualizarMensajeErrores(BaseDatos.Errores.Buscar.Todos(null).Count);
     }
 
     #endregion
@@ -350,7 +344,7 @@
         mostrarPendientes = true;
         estiloPendientes = fondo;
 
-        ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(conexion).Count);
+        ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(null).Count);
     }
 
     #endregion

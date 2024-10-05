@@ -6,18 +6,25 @@
 @model pepeizqs_deals_web.Pages.Account.RewardsModel
 
 @inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 @{
+    #nullable disable
+
     ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Rewards");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
-}
+    Usuario usuario = new Usuario();
 
-@if (usuarioLogeado == true)
-{
-    @(await Html.RenderComponentAsync<Componentes.Cuenta.Recompensas>(RenderMode.ServerPrerendered, new
+    if (usuarioLogeado == true)
     {
-        idioma = Model.idioma
-    }))
+        usuario = await UserManager.GetUserAsync(User);
+
+        @(await Html.RenderComponentAsync<Componentes.Cuenta.Recompensas>(RenderMode.Server, new
+        {
+            idioma = Model.idioma,
+            usuario = usuario
+        }))
+    }
 }

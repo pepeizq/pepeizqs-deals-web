@@ -265,64 +265,56 @@
     [Parameter]
     public string idioma { get; set; }
 
+    [Parameter]
+    public Usuario usuario { get; set; }
+
     private List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
     private List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
 
-    private Usuario usuario = new Usuario();
     private List<string> juegosUsuario = new List<string>();
 
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
-    #nullable enable
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-    #nullable disable
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (HttpContext == null)
+        if (usuario != null)
         {
-            usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-            if (usuario != null)
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {
-                if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-                {
-                    juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
-                }
+                juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
             }
+        }
 
-            //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
 
-            DateTime arranque = new DateTime(2011, 1, 1);
+        DateTime arranque = new DateTime(2011, 1, 1);
 
-            int i = 0;
-            while (i < 100)
+        int i = 0;
+        while (i < 100)
+        {
+            if (arranque.Year != DateTime.Now.Year)
             {
-                if (arranque.Year != DateTime.Now.Year)
-                {
-                    años.Add(arranque.Year.ToString());
-                    arranque = arranque.AddYears(1);
-                }
-                i += 1;
+                años.Add(arranque.Year.ToString());
+                arranque = arranque.AddYears(1);
             }
+            i += 1;
+        }
 
-            años.Add(DateTime.Now.Year.ToString());
-            años.Reverse();
+        años.Add(DateTime.Now.Year.ToString());
+        años.Reverse();
 
-            //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
 
-            juegosActuales = BaseDatos.Gratis.Buscar.Actuales();
+        juegosActuales = BaseDatos.Gratis.Buscar.Actuales();
 
-            if (juegosActuales.Count > 0)
+        if (juegosActuales.Count > 0)
+        {
+            foreach (var juegoActual in juegosActuales)
             {
-                foreach (var juegoActual in juegosActuales)
-                {
-                    Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
-                    juegoActual.Imagen = juego2.Imagenes.Header_460x215;
-                    juegoActual.Juego = juego2;
-                }
+                Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
+                juegoActual.Imagen = juego2.Imagenes.Header_460x215;
+                juegoActual.Juego = juego2;
             }
         }
     }

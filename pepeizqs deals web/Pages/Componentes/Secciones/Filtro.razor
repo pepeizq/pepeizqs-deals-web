@@ -572,7 +572,9 @@ else
 	public string? ids { get; set; }
 	#nullable disable
 
-	private Usuario usuario = new Usuario();
+	[Parameter]
+	public Usuario usuario { get; set; }
+
 	private List<string> usuarioJuegosSteam = new List<string>();
 
 	private bool cargado = false;
@@ -581,40 +583,30 @@ else
 
 	private List<Juegos.Juego> resultadosGestor = new List<Juegos.Juego>();
 
-	#nullable enable
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; }
-	#nullable disable
-
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (HttpContext == null)
+		cargado = false;
+
+		if (usuario != null)
 		{
-			cargado = false;
-
-			usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-			if (usuario != null)
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-				}
+				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
-
-			CargarDeck();
-			CargarTipos();
-			CargarSistemas();
-			CargarEtiquetas();
-			CargarCategorias();
-			CargarGeneros();
-
-			idsLista = Herramientas.Listados.Generar(ids);
-
-			resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
-
-			cargado = true;
 		}
+
+		CargarDeck();
+		CargarTipos();
+		CargarSistemas();
+		CargarEtiquetas();
+		CargarCategorias();
+		CargarGeneros();
+
+		idsLista = Herramientas.Listados.Generar(ids);
+
+		resultadosGestor = BaseDatos.Juegos.Buscar.Filtro(idsLista, 250);
+
+		cargado = true;
 	}
 
 	private class FiltroItem

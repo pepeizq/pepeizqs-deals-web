@@ -4,7 +4,6 @@ using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace BaseDatos.Usuarios
 {

@@ -62,32 +62,21 @@
 			imagen = Model.bundle.ImagenNoticia;
 		}
 	}
-}
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-{
-	idioma = Model.idioma,
-	titulo = titulo,
-	enlace = enlace,
-	canonical = enlace,
-	descripcion = descripcion,
-	imagen = imagen
-}))
-
-@if (usuarioLogeado == true)
-{
-	if (adminLogeado == true)
+	@if (usuarioLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new { 
-			idioma = Model.idioma, 
-			bundleId = Model.bundle.Id 
-		}))
+		if (adminLogeado == true)
+		{
+			@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new
+			{
+				idioma = Model.idioma,
+				bundleId = Model.bundle.Id
+			}))
+		}
 	}
-}
 
-@{
-	bool prerenderizado = false;
-	string userAgent = string.Empty;
+	bool seo = false;
+	string? userAgent = string.Empty;
 
 	if (HttpContext != null)
 	{
@@ -97,13 +86,23 @@
 		{
 			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
 			{
-				prerenderizado = true;
+				seo = true;
 			}
 		}
 	}
 
-	if (prerenderizado == true)
+	if (seo == true)
 	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = titulo,
+			enlace = enlace,
+			canonical = enlace,
+			descripcion = descripcion,
+			imagen = imagen
+		}))
+
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
 		{
 			idioma = Model.idioma,
@@ -115,7 +114,8 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			bundleId = Model.bundle.Id
+			bundleId = Model.bundle.Id,
+			usuario = usuario
 		}))
 	}
 }
