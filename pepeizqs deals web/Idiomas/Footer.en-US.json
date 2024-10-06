@@ -1,11 +1,11 @@
 [
   {
     "Id": "SourceCode",
-    "Valor": "Source Code"
+    "Valor": "Source code of this website"
   },
   {
     "Id": "Api",
-    "Valor": "API"
+    "Valor": "API. In case you want to program any app"
   },
   {
     "Id": "Contact",
@@ -13,10 +13,18 @@
   },
   {
     "Id": "Visits",
-    "Valor": "Visit Statistics"
+    "Valor": "Visit statistics"
   },
   {
     "Id": "Privacy",
-    "Valor": "Privacy and Your Data"
+    "Valor": "Privacy and your data"
+  },
+  {
+    "Id": "Rewards",
+    "Valor": "Rewards for daily visits"
+  },
+  {
+    "Id": "LastAdded",
+    "Valor": "Latest additions to the database"
   }
 ]

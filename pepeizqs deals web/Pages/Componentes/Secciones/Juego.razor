@@ -456,7 +456,7 @@
 									<div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px;">
 										@if (drm.Id == JuegoDRM.DRMFree)
 										{
-											<div style="font-weight: bold; font-size: 18px; max-width: 45px; text-align: center;">DRM Free</div>
+											<div style="max-width: 45px; text-align: center;">DRM Free</div>
 										}
 										else
 										{
@@ -757,7 +757,7 @@
 
 		@if (juego.Gratis != null)
 		{
-			<div id="gratis" class="perfil" style="margin-bottom: 50px;">
+			<div id="gratis" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 50px;">
 				@if (GratisDisponibles(juego.Gratis).Count > 0)
 				{
 					<div style="margin-bottom: 10px;">
@@ -808,7 +808,14 @@
 							</div>
 
 							<div style="margin-right: 30px; width: 22px; height: 22px;">
-								<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
+								@if (gratis2.DRM == JuegoDRM.DRMFree)
+								{
+									<label style="max-width: 22px; max-height: 22px; font-size: 8px; text-align: center;">DRM Free</label>
+								}
+								else
+								{
+									<img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="@JuegoDRM2.DevolverDRM(gratis2.DRM)" />
+								}
 							</div>
 
 							 <div style="padding-right: 20px; width: 15%;">
@@ -1137,7 +1144,7 @@
 																}
 															}
 
-															if (añadirError == true)
+															if (añadirError == true && string.IsNullOrEmpty(publisherFinal2.Id) == false)
 															{
 																publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
 
@@ -1313,27 +1320,26 @@
 		@if (DLCs.Count > 0)
 		{
 			<div id="dlcs" style="margin-top: 50px; padding: 40px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
-				<div>
+				<div style="margin-bottom: 20px;">
 					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</label>
 				</div>
 
 				<div style="display: flex; flex-direction: column; gap: 20px;">
-					<Virtualize Context="dlc" Items="DLCs" ItemSize="107" OverscanCount="3">
-						<ItemContent>
-							<a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
-								<div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
-									<div>
-										<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
-									</div>
-
-									<div style="width: 100%;">
-										<div>@dlc.Nombre</div>
-										<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
-									</div>
+					@foreach (var dlc in DLCs)
+					{
+						<a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
+							<div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
+								<div>
+									<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
 								</div>
-							</a>
-						</ItemContent>
-					</Virtualize>
+
+								<div style="width: 100%;">
+									<div>@dlc.Nombre</div>
+									<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
+								</div>
+							</div>
+						</a>
+					}
 				</div>
 			</div>
 		}

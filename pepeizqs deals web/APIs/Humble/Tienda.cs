@@ -40,8 +40,6 @@ namespace APIs.Humble
 
 		public static string Referido(string enlace)
 		{
-			enlace = enlace + "?partner=pepeizq";
-
             enlace = enlace.Replace(":", "%3A");
             enlace = enlace.Replace("/", "%2F");
             enlace = enlace.Replace("/", "%2F");

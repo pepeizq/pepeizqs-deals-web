@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Coste de mantener esta web"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Personalmente creo en ser tan transparente como sea posible con este proyecto y os procedo a detallar los diversos costes que tengo para mantenerlo activo:"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Servidor • $286.20 / Cada 3 años (no incluye impuestos)"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Pagado hasta 30/1/2027 hospedado en el hosting SmarterASP con la modalidad .NET Premium."
+  },
+  {
+    "Id": "String4",
+    "Valor": "Dominio • 70.95€ / Cada 5 años (no incluye impuestos)"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Pagado hasta 15/3/2028 en el hosting Webempresa."
+  },
+  {
+    "Id": "String6",
+    "Valor": "SSL • $29 / Cada 1 año (no incluye impuestos)"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Pagado hasta 6/12/2024 en el hosting SmarterASP."
+  },
+  {
+    "Id": "String8",
+    "Valor": "Extra 1 Static IP • $24 / Cada 1 año (no incluye impuestos)"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Pagado hasta 6/12/2024 en el hosting SmarterASP."
+  }
+]

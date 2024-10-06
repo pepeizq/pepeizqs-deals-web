@@ -330,29 +330,28 @@
                     @{
                         if (pestañaSeleccionada == 0)
                         {
-                            <Virtualize Context="juego" Items="resultadosJuegos" ItemSize="107" OverscanCount="3">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@juego.Id/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
+                            foreach (var juego in resultadosJuegos)
+                            {
+                                <div class="perfil-flexible-centrado" style="padding-top: 10px;">
+                                    <a class="boton-pequeño" href="/game/@juego.Id/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" style="padding: 0px;">
+                                        <div class="perfil-flexible-centrado">
+                                            <div>
+                                                <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                                            </div>
+
+                                            <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
                                                 <div>
-                                                    <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                                                    @juego.Nombre
                                                 </div>
 
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @juego.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
-                                                    </div>
+                                                <div style="margin-top: 5px; font-size: 15px;">
+                                                    @Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
                                                 </div>
                                             </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
                         }
                         else if (pestañaSeleccionada == 1)
                         {

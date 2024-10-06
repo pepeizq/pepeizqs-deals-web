@@ -165,44 +165,43 @@ else
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column;">
 				@if (resultadosMostrar.Count > 0)
 				{
-					<Virtualize Context="juego" Items="resultadosMostrar" ItemSize="334" OverscanCount="6">
-						<ItemContent>
-							<div style="padding: 10px;">
-								<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
-									<div style="display: flex; align-items: center;">
+					foreach (var juego in resultadosMostrar)
+					{
+						<div style="padding: 10px;">
+							<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
+								<div style="display: flex; align-items: center;">
+									<div>
+										<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+									</div>
+
+									<div style="padding: 0px 20px;">
 										<div>
-											<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+											@juego.Nombre
 										</div>
 
-										<div style="padding: 0px 20px;">
-											<div>
-												@juego.Nombre
-											</div>
-
-											<div style="margin-top: 10px; font-size: 15px;">
-												@if (resultadosModo == 4)
-												{
-													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
-												}
-												else if (resultadosModo == 5)
-												{
-													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
-												}
-												else if (resultadosModo == 6)
-												{
-													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
-												}
-												else
-												{
-													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
-												}
-											</div>
+										<div style="margin-top: 10px; font-size: 15px;">
+											@if (resultadosModo == 4)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
+											}
+											else if (resultadosModo == 5)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
+											}
+											else if (resultadosModo == 6)
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
+											}
+											else
+											{
+												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+											}
 										</div>
 									</div>
-								</a>
-							</div>
-						</ItemContent>
-					</Virtualize>
+								</div>
+							</a>
+						</div>
+					}
 				}
 				else
 				{

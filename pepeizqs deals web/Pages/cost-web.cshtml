@@ -1,0 +1,70 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.cost_webModel
+
+@{
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "CostWeb");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div style="font-size: 22px; text-align: left; margin-bottom: 20px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "CostWeb")
+</div>
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+	@Herramientas.Idiomas.CogerCadena(Model.idioma, "String1", "CostWeb")
+</div>
+
+<div style="display: flex; align-items: stretch;">
+	<div style="background-color: var(--fondoBotonPequeño); width: 6px; margin-bottom: 57px;"></div>
+
+	<div style="display: flex; flex-direction: column; gap: 20px; padding-top: 20px;">
+		<div style="display: flex; align-items: center;">
+			<div style="border: 3px solid var(--fondoBotonPequeño); width: 25px;"></div>
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				<div>
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String2", "CostWeb")
+				</div>
+				<div style="margin-top: 10px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String3", "CostWeb")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center;">
+			<div style="border: 3px solid var(--fondoBotonPequeño); width: 25px;"></div>
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				<div>
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "CostWeb")
+				</div>
+				<div style="margin-top: 10px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "CostWeb")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center;">
+			<div style="border: 3px solid var(--fondoBotonPequeño); width: 25px;"></div>
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				<div>
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "CostWeb")
+				</div>
+				<div style="margin-top: 10px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "CostWeb")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center;">
+			<div style="border: 3px solid var(--fondoBotonPequeño); width: 25px;"></div>
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				<div>
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String8", "CostWeb")
+				</div>
+				<div style="margin-top: 10px;">
+					@Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "CostWeb")
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

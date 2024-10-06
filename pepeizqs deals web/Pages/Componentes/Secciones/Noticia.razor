@@ -4,6 +4,7 @@
 @using Microsoft.JSInterop
 @using Noticias
 @using Suscripciones2
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
@@ -127,7 +128,7 @@
 		if (noticia.BundleId > 0)
 		{
 			<div>
-				<Bundle bundleId="@noticia.BundleId" idioma="@idioma" tipo="Bundle.Tipo.Noticia" />
+				<Bundle bundleId="@noticia.BundleId" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuario="@usuario"/>
 			</div>
 		}
 	}
@@ -197,6 +198,9 @@
 
 	[Parameter]
 	public string idioma { get; set; }
+
+	[Parameter]
+	public Usuario usuario { get; set; }
 
 	[Parameter]
 	public int noticiaId { get; set; }

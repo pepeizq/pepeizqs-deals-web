@@ -101,7 +101,8 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new
 		{
 			idioma = Model.idioma,
-			juego = Model.juego
+			juego = Model.juego,
+			userAgent = userAgent
 		}))
 	}
 	else
@@ -110,7 +111,8 @@
 		{
 			idioma = Model.idioma,
 			juego = Model.juego,
-			usuario = usuario
+			usuario = usuario,
+			userAgent = userAgent
 		}))
 	}
 }

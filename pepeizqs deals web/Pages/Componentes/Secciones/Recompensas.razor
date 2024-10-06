@@ -34,7 +34,7 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; justify-items: center; margin-top: 30px;">
             @{
                 int i = 0;
-                foreach (var recompensa in juegos)
+                foreach (var recompensa in juegosMostrar)
                 {
                     if (i < 5)
                     {
@@ -63,28 +63,28 @@
     [Parameter]
     public string idioma { get; set; }
 
-    private Usuario usuario = new Usuario();
+    [Parameter]
+    public Usuario usuario { get; set; }
 
-    private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
+    private List<RecompensaJuego> juegosGestor = new List<RecompensaJuego>();
+    private List<RecompensaJuego> juegosMostrar = new List<RecompensaJuego>();
 
-    #nullable enable
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-    #nullable disable
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (HttpContext == null)
+        juegosGestor = BaseDatos.Recompensas.Juegos.Todo();
+
+        if (juegosGestor != null)
         {
-            usuario = await Herramientas.UsuarioDatos.Actualizar(HttpContextAccessor.HttpContext.User, usuario, UserManager, idioma);
-
-            juegos = BaseDatos.Recompensas.Juegos.Todo();
-
-            if (juegos != null)
+            if (juegosGestor.Count > 0)
             {
-                if (juegos.Count > 0)
+                juegosGestor = juegosGestor.OrderByDescending(x => x.Coins).ToList();
+
+                foreach (var juegoGestor in juegosGestor)
                 {
-                    juegos = juegos.OrderByDescending(x => x.Coins).ToList();
+                    if (string.IsNullOrEmpty(juegoGestor.UsuarioId) == true)
+                    {
+                        juegosMostrar.Add(juegoGestor);
+                    }
                 }
             }
         }

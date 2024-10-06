@@ -36,31 +36,21 @@
 	string enlace = "https://pepeizqdeals.com/news/" + Model.noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/";
 
 	string imagen = Model.noticia.Imagen;
-}
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-{
-	idioma = Model.idioma,
-	titulo = titulo,
-	enlace = enlace,
-	canonical = enlace,
-	imagen = imagen
-}))
-
-@if (usuarioLogeado == true)
-{
-	@if (adminLogeado == true)
+	if (usuarioLogeado == true)
 	{
-		@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new { 
-			idioma = Model.idioma, 
-			noticiaId = Model.noticia.Id 
-		}))
+		@if (adminLogeado == true)
+		{
+			@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new
+			{
+				idioma = Model.idioma,
+				noticiaId = Model.noticia.Id
+			}))
+		}
 	}
-}
 
-@{
-	bool prerenderizado = false;
-	string userAgent = string.Empty;
+	bool seo = false;
+	string? userAgent = string.Empty;
 
 	if (HttpContext != null)
 	{
@@ -70,13 +60,22 @@
 		{
 			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
 			{
-				prerenderizado = true;
+				seo = true;
 			}
 		}
 	}
 
-	if (prerenderizado == true)
+	if (seo == true)
 	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = titulo,
+			enlace = enlace,
+			canonical = enlace,
+			imagen = imagen
+		}))
+
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.ServerPrerendered, new
 		{
 			idioma = Model.idioma,
@@ -88,7 +87,8 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Noticia>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			noticiaId = Model.noticia.Id
+			noticiaId = Model.noticia.Id,
+			usuario = usuario
 		}))
 	}
 }

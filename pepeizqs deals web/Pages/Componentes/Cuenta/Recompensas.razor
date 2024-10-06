@@ -60,15 +60,15 @@
 				</div>
 			</div>
 
-			<div style="width: 100%;">
+			<div style="width: 100%; display: flex; flex-direction: column; gap: 40px;">
 				@if (mostrarJuegos == true)
 				{
 					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 						@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "Rewards")
 					</div>
 
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; justify-items: center;">
+					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; justify-items: center;">
 							@if (juegos != null)
 							{
 								if (juegos.Count > 0)
@@ -199,7 +199,7 @@ else
 		z-index: 1001;
 		margin-top: var(--alturaCabecera);
 		padding: 10px;
-		backdrop-filter: blur(10px);
+		background-color: var(--fondoOpcionesTransparente);
 	}
 </style>
 
