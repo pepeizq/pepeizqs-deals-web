@@ -375,7 +375,7 @@
 								<div style="display: flex; align-items: center;">
 									@if (usuario != null)
 									{
-										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 										{
 											<div style="width: auto;">
 												<a href="/news/@noticia.Id">Editar</a>

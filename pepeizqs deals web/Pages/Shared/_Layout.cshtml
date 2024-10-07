@@ -112,7 +112,7 @@
                 catch { }
             }
 
-            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
             {
                 adminLogeado = true;
             }
@@ -146,6 +146,8 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
+    <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
+
     <base href="/" />
 </head>
 
@@ -177,7 +179,7 @@
             {
                 <div style="padding: 20px; background-color: var(--fondoMinimo); font-size: 17px;">
                     <div class="cuerpo-ancho" style="display: flex; align-items: center; flex-direction: initial; gap: 30px;">
-                        <label style="font-size: 14px;">@Herramientas.Calculadora.DiferenciaTiempo(aviso.Fecha, idioma)</label>
+                        <label style="font-size: 14px; text-align: center;">@Herramientas.Calculadora.DiferenciaTiempo(aviso.Fecha, idioma)</label>
 
                         @{
                             bool hayEnlace = false;
@@ -236,15 +238,24 @@
                             <a href="/rewards" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Rewards", "Footer")</a>
                             <a href="/last-added" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "LastAdded", "Footer")</a>
                             <a href="/api" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Api", "Footer")</a>
+                            <a href="/cost-web" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "CostWeb", "Footer")</a>
                         </div>
                     </div>
                 </div>
 
-                <div style="padding: 0px 80px;">
+                <div style="padding: 0px 80px; display: flex; flex-direction: column; gap: 30px;">
                     @(await Html.RenderComponentAsync<Componentes.Interfaz.RedesSociales>(RenderMode.Server, new {
                         idioma = idioma,
                         tamañoFuente = "24px"
                     }))
+
+                    <div style="text-align: center;">
+                        <div>@Herramientas.Idiomas.CogerCadena(idioma, "Donations", "Footer")</div>
+
+                        <div style="margin-top: 10px;">
+                            <a href="https://paypal.me/pepeizq" style="text-decoration: none;"><i class="fa-brands fa-paypal" style="font-size: 22px;"></i></a>
+                        </div>                       
+                    </div>
                 </div>
 
                 <div>

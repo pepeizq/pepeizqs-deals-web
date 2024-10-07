@@ -25,7 +25,7 @@
 
         if (usuario != null)
         {
-            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
             {
                 adminLogeado = true;
             }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
+using Radzen;
 using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -213,6 +214,8 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
 //	opciones.AllowSynchronousIO = true;
 //});
+
+builder.Services.AddRadzenComponents();
 
 var app = builder.Build();
 

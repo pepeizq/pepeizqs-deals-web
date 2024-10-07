@@ -19,7 +19,7 @@
 	bool usuarioLogeado = false;
 	usuarioLogeado = SignInManager.IsSignedIn(User);
 
-	Usuario usuario = new Usuario();
+	Usuario usuario = null;
 
 	bool adminLogeado = false;
 
@@ -29,7 +29,7 @@
 
 		if (usuario != null)
 		{
-			if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+			if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 			{
 				adminLogeado = true;
 			}

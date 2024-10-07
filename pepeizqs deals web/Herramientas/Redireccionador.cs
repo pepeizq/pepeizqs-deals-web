@@ -4,6 +4,7 @@ using Bundles2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Noticias;
+using System.Security.Claims;
 
 namespace Herramientas
 {
@@ -286,7 +287,7 @@ namespace Herramientas
         {
             if (User.Identity.IsAuthenticated == true)
             {
-                if (global::BaseDatos.Usuarios.Buscar.RolDios(User.Identity.Name) == true)
+                if (global::BaseDatos.Usuarios.Buscar.RolDios(User.FindFirst(ClaimTypes.NameIdentifier).Value) == true)
                 {
 					List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("10");
 

@@ -38,7 +38,7 @@
 
 									@if (usuario != null)
 									{
-										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.UserName) == true)
+										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 										{
 											<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
 												<div style="font-size: 13px;">@juego.Id</div>

@@ -26,5 +26,13 @@
   {
     "Id": "LastAdded",
     "Valor": "Latest additions to the database"
+  },
+  {
+    "Id": "CostWeb",
+    "Valor": "Cost of maintaining this website"
+  },
+  {
+    "Id": "Donations",
+    "Valor": "Donations"
   }
 ]

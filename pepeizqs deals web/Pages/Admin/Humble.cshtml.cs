@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 {
@@ -29,9 +30,9 @@ namespace pepeizqs_deals_web.Pages.Admin.Tiendas
 
         public void OnPost() 
         {
-			string nombre = _contexto.HttpContext.User.Identity.Name;
+			string id = _contexto.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (BaseDatos.Usuarios.Buscar.RolDios(nombre) == true)
+            if (BaseDatos.Usuarios.Buscar.RolDios(id) == true)
             {
 				if (Input.Texto != null)
 				{

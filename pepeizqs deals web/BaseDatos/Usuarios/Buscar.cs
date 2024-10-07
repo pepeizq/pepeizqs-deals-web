@@ -9,19 +9,19 @@ namespace BaseDatos.Usuarios
 {
 	public static class Buscar
 	{
-		public static bool RolDios(string username)
+		public static bool RolDios(string id)
 		{
-			if (string.IsNullOrEmpty(username) == false) 
+			if (string.IsNullOrEmpty(id) == false) 
 			{
 				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 				using (conexion)
 				{
-					string busqueda = "SELECT * FROM AspNetUsers WHERE UserName=@UserName";
+					string busqueda = "SELECT * FROM AspNetUsers WHERE Id=@Id";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
-						comando.Parameters.AddWithValue("@UserName", username);
+						comando.Parameters.AddWithValue("@Id", id);
 
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{

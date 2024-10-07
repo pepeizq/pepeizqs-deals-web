@@ -26,5 +26,13 @@
   {
     "Id": "LastAdded",
     "Valor": "Últimos añadidos a la base de datos"
+  },
+  {
+    "Id": "CostWeb",
+    "Valor": "Coste de mantener esta web"
+  },
+  {
+    "Id": "Donations",
+    "Valor": "Donaciones"
   }
 ]
