@@ -32,11 +32,6 @@
 <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
 
 <style>
-/* 	.rz-chart {
-		width: 80vh;
-		height: 80vh;
-	} */
-
 	.rz-tick-text {
 		fill: var(--colorTexto);
 	}
@@ -48,6 +43,10 @@
 	.rz-legend-item {
 		margin: 10px;
 		cursor: pointer;
+	}
+
+	.rz-axis .rz-axis-title {
+		fill: var(--colorTexto);
 	}
 </style>
 
@@ -534,9 +533,12 @@
 											{
 												if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 												{
-													<button @onclick="(e => HistoricoEnseñar(e))" class="boton-pequeño" style="width: 200px; text-align: center; font-size: 14px; padding: 10px 12px;">
-														@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
-													</button>
+													if (HistoricoComprobar(drm.Id) == true)
+													{
+														<button @onclick="(e => HistoricoEnseñar(e, drm.Id))" class="boton-pequeño" style="width: 200px; text-align: center; font-size: 14px; padding: 10px 12px;">
+															@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
+														</button>
+													}
 												}
 											}
 
@@ -1558,1233 +1560,1329 @@
 	</div>
 }
 
-@if (usuario != null)
+@if (enseñarHistorico == true)
 {
-	if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
-	{
-		if (enseñarHistorico == true)
-		{
-			<div class="opciones-panel">
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-					<div>
-						<RadzenStack>
-						    <RadzenChart Style="width: 80vh; height: 80vh">
-								<RadzenChartTooltipOptions Shared="false" />
-								<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@revenue2023" CategoryProperty="Fecha" Title="2023" LineType="LineType.Dashed" ValueProperty="Precio">
+	<div class="opciones-panel">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 30px;">
+			<button @onclick="@(e => HistoricoCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+				<i class="fa-solid fa-arrow-left"></i>
+			</button>
+
+			<div>
+				<RadzenStack>
+					<RadzenChart Style="width: 100vh; height: 80vh;">
+						<RadzenChartTooltipOptions Shared="false" />
+
+						@foreach (var punto in puntos)
+						{
+							<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@punto.Puntos" CategoryProperty="Fecha" Title="@punto.Año.ToString()" LineType="LineType.Dashed" ValueProperty="Precio">
+								<ChildContent>
 									<RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
 									<RadzenSeriesDataLabels Visible="true" />
-								</RadzenLineSeries>
-								<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@revenue2024" CategoryProperty="Fecha" Title="2024" ValueProperty="Precio">
-									<RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
-									<RadzenSeriesDataLabels Visible="true"/>
-								</RadzenLineSeries>
-								<RadzenCategoryAxis Formatter="FormatoFecha" FormatString="{0:C0}">
-									<RadzenGridLines Visible="true" Stroke="var(--fondoMinimo)" StrokeWidth="1"/>
-								</RadzenCategoryAxis>
-								<RadzenValueAxis Formatter="FormatoEuro">
-									<RadzenGridLines Visible="true" Stroke="var(--fondoMinimo)" StrokeWidth="1"/>
-								</RadzenValueAxis>
-							</RadzenChart>
-						</RadzenStack>
-					</div>
-				</div>
+								</ChildContent>
+
+								<TooltipTemplate Context="datos">
+									<div style="background-color: var(--fondoOscuro); color: var(--colorTexto); padding: 10px; margin: -8px; border-radius: 5px;">
+										@{
+											string icono = string.Empty;
+											string nombre = string.Empty;
+											List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+											foreach (var tienda in tiendas)
+											{
+												if (tienda.Id == datos.Tienda)
+												{
+													icono = "https://pepeizqdeals.com/" + tienda.ImagenIcono;
+													nombre = tienda.Nombre;
+												}
+											}
+
+											<div style="display: flex; align-items: center; gap: 10px;">
+												<img src="@icono" style="width: 20px; height: 20px;" />
+												<label>@nombre</label>
+											</div>
+										}
+
+										<div style="margin-top: 5px;">
+											<strong>@FormatoEuro(datos.Precio)</strong> - @datos.Fecha.Day/@datos.Fecha.Month/@punto.Año
+										</div>
+									</div>
+								</TooltipTemplate>
+							</RadzenLineSeries>
+						}
+
+						<RadzenCategoryAxis Formatter="FormatoFecha" FormatString="{0:C0}">
+							<RadzenGridLines Visible="true" Stroke="var(--fondoMinimo)" StrokeWidth="1" />
+							<RadzenAxisTitle Text="@Idiomas.CogerCadena(idioma, "String65", "Game")" />
+						</RadzenCategoryAxis>
+						<RadzenValueAxis Formatter="FormatoEuro">
+							<RadzenGridLines Visible="true" Stroke="var(--fondoMinimo)" StrokeWidth="1" />
+							<RadzenAxisTitle Text="@Idiomas.CogerCadena(idioma, "String66", "Game")" />
+						</RadzenValueAxis>
+					</RadzenChart>
+				</RadzenStack>
 			</div>
-		}
-	}
+		</div>
+	</div>
 }
 
 @code {
 
-    #nullable disable
-
-    [Parameter]
-    public string idioma { get; set; }
-
-    [Parameter]
-    public Usuario usuario { get; set; }
-
-    [Parameter]
-    public Juegos.Juego juego { get; set; }
-
-    [Parameter]
-    public string userAgent { get; set; }
-
-    private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (juego != null)
-        {
-            DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
-            if (juego.Media != null)
-            {
-                if (string.IsNullOrEmpty(juego.Media.Video) == false)
-                {
-                    mediaMostrar = juego.Media.Video;
-                    mediaMostrar = mediaMostrar.Replace("http://", "https://");
-                    mediaMostrar = mediaMostrar.Replace("http://", "https://");
-                    mediaMostrarPosicion = 99999;
-                }
-                else
-                {
-                    if (juego.Media.Capturas != null)
-                    {
-                        if (juego.Media.Capturas.Count > 0)
-                        {
-                            mediaMostrar = juego.Media.Capturas[0];
-                        }
-                    }
-                }
-            }
-
-            if (juego.IdSteam > 0)
-            {
-                bool actualizarDatosAPI = false;
-
-                if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
-                {
-                    actualizarDatosAPI = true;
-                }
-
-                if (juego.Categorias == null && juego.Generos == null)
-                {
-                    actualizarDatosAPI = true;
-
-                    if (juego.Tipo == JuegoTipo.Music)
-                    {
-                        actualizarDatosAPI = false;
-                    }
-                }
-
-                if (actualizarDatosAPI == true)
-                {
-                    global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-                    if (nuevoJuego != null)
-                    {		
-                        global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-                    }
-                }
-
-                if (juego.Tipo == JuegoTipo.Game)
-                {
-                    bool actualizarDeckAPI = false;
-
-                    if (juego.DeckComprobacion == null)
-                    {
-                        actualizarDeckAPI = true;
-                    }
-                    else
-                    {
-                        if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
-                        {
-                            actualizarDeckAPI = true;
-                        }
-                    }
-
-                    if (juego.DeckTokens == null)
-                    {
-                        actualizarDeckAPI = true;
-                    }
-
-                    if (actualizarDeckAPI == true)
-                    {
-                        APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
-                        bool vacio = true;
-
-                        if (deckAPI != null)
-                        {
-                            if (deckAPI.Datos != null)
-                            {
-                                juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
-                                juego.DeckComprobacion = DateTime.Now;
-
-                                if (deckAPI.Datos.Tokens != null)
-                                {
-                                    if (deckAPI.Datos.Tokens.Count > 0)
-                                    {
-                                        List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
-
-                                        foreach (var token in deckAPI.Datos.Tokens)
-                                        {
-                                            if (string.IsNullOrEmpty(token.Token) == false)
-                                            {
-                                                JuegoDeckToken nuevoToken = new JuegoDeckToken();
-                                                nuevoToken.Tipo = token.Tipo;
-                                                nuevoToken.Mensaje = token.Token;
-
-                                                tokens.Add(nuevoToken);
-                                            }
-                                        }
-
-                                        juego.DeckTokens = tokens;
-                                    }
-                                }
-
-                                vacio = false;
-                                global::BaseDatos.Juegos.Actualizar.Deck(juego);
-                            }
-                        }
-
-                        if (vacio == true)
-                        {
-                            juego.DeckComprobacion = DateTime.Now;
-                            global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
-                        }
-                    }
-                }
-            }				
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool primerRender)
-    {
-        if (primerRender == true)
-        {
-            if (juego != null)
-            {
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
-            }
-        }
-    }
-
-    public static string LimpiarImagenJuego(string enlace)
-    {
-        if (enlace.Contains("/header_alt_") == true)
-        {
-            int int1 = enlace.IndexOf("/header_alt_");
-            enlace = enlace.Remove(int1, enlace.Length - int1);
-
-            enlace = enlace + "/header.jpg";
-        }
-
-        return enlace;
-    }
-
-    public bool VerificarMostrarDRM(string idioma, JuegoDRM drm, global::Juegos.Juego juego)
-    {
-        bool mostrar = false;
-
-        if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
-        {
-            mostrar = true;
-        }
-        else if (BundlesComprobar(juego.Bundles, drm) != null)
-        {
-            mostrar = true;
-        }
-        else if (GratisComprobar(juego.Gratis, drm) != null)
-        {
-            mostrar = true;
-        }
-        else if (SuscripcionesComprobar(juego.Suscripciones, drm) != null)
-        {
-            mostrar = true;
-        }
-
-        return mostrar;
-    }
-
-    public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> historicos, List<JuegoPrecio> actuales)
-    {
-        string drmPreparado = null;
-
-        List<JuegoPrecio> historicosOrdenados = new List<JuegoPrecio>();
-
-        if (historicos != null)
-        {
-            if (historicos.Count > 0)
-            {
-                foreach (JuegoPrecio historico in historicos)
-                {
-                    if (historico.DRM == drm)
-                    {
-                        historicosOrdenados.Add(historico);
-                    }
-                }
-            }
-        }
-
-        if (historicosOrdenados.Count == 0)
-        {
-            if (actuales != null)
-            {
-                if (actuales.Count > 0)
-                {
-                    historicosOrdenados = OrdenarPrecios(actuales, drm);
-                }
-            }			
-        }
-
-        if (historicosOrdenados.Count > 0)
-        {
-            if (historicosOrdenados[0] != null)
-            {
-                List<Tienda> tiendas = TiendasCargar.GenerarListado();
-                string tiendaFinal = string.Empty;
-
-                foreach (var tienda in tiendas)
-                {
-                    if (tienda.Id == historicosOrdenados[0].Tienda)
-                    {
-                        tiendaFinal = tienda.Nombre;
-                    }
-                }
-
-                if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(23) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
-                {
-                    drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "String11", "Game") + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
-                }
-                else
-                {
-                    drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
-                }
-
-            }		
-        }
-
-        return drmPreparado;
-    }
-
-    public static string PrepararPrecio(List<JuegoPrecio> precios, JuegoDRM drm, bool historico)
-    {
-        if (precios != null)
-        {
-            if (precios.Count > 0)
-            {
-                foreach (var precio in precios)
-                {
-                    if (precio.DRM == drm)
-                    {
-                        return PrepararPrecio(precio, historico);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public static string PrepararPrecio(JuegoPrecio precio, bool historico)
-    {
-        string precioTexto = string.Empty;
-
-        if (historico == true)
-        {
-            precioTexto = precio.Precio.ToString();
-        }
-        else
-        {
-            if (precio.Moneda != JuegoMoneda.Euro)
-            {
-                precioTexto = precio.PrecioCambiado.ToString();
-            }
-            else
-            {
-                precioTexto = precio.Precio.ToString();
-            }
-        }
-
-        precioTexto = precioTexto.Replace(".", ",");
-
-        int int1 = precioTexto.IndexOf(",");
-
-        if (int1 == precioTexto.Length - 2)
-        {
-            precioTexto = precioTexto + "0";
-        }
-
-        if (precioTexto.Length > int1 + 3)
-        {
-            precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
-        }
-
-        precioTexto = precioTexto + "€";
-
-        return precioTexto;
-    }
-
-    public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm)
-    {
-        List<JuegoPrecio> preciosOrdenados = new List<JuegoPrecio>();
-
-        if (precios != null)
-        {
-            if (precios.Count > 0)
-            {
-                foreach (JuegoPrecio precio in precios)
-                {
-                    if (precio.DRM == drm && precio.Descuento > 0)
-                    {
-                        TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-                        if (actualizado.Days == 0)
-                        {
-                            JuegoPrecio nuevoPrecio = precio;
-
-                            if (nuevoPrecio != null)
-                            {
-                                if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
-                                {
-                                    nuevoPrecio.PrecioCambiado = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
-                                }
-                            }
-
-                            bool verificacionFinal = true;
-
-                            if (preciosOrdenados.Count > 0)
-                            {
-                                foreach (var ordenado in preciosOrdenados)
-                                {
-                                    if (ordenado.Enlace == nuevoPrecio.Enlace && ordenado.Tienda == nuevoPrecio.Tienda && ordenado.DRM == nuevoPrecio.DRM)
-                                    {
-                                        verificacionFinal = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (drm == JuegoDRM.NoEspecificado)
-                            {
-                                verificacionFinal = false;
-                            }
-
-                            if (verificacionFinal == true)
-                            {
-                                preciosOrdenados.Add(nuevoPrecio);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (preciosOrdenados.Count > 0)
-        {
-            preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
-            {
-                decimal precio1 = 0;
-
-                if (p1.Moneda != JuegoMoneda.Euro)
-                {
-                    precio1 = p1.PrecioCambiado;
-                }
-                else
-                {
-                    precio1 = p1.Precio;
-                }
-
-                decimal precio2 = 0;
-
-                if (p2.Moneda != JuegoMoneda.Euro)
-                {
-                    precio2 = p2.PrecioCambiado;
-                }
-                else
-                {
-                    precio2 = p2.Precio;
-                }
-
-                if (precio1 == precio2)
-                {
-                    return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
-                }
-                else
-                {
-                    return precio1.CompareTo(precio2);
-                }
-            });
-        }
-
-        return preciosOrdenados;
-    }
-
-    public static string SacarImagenTienda(string codigo)
-    {
-        string imagen = string.Empty;
-
-        List<Tienda> tiendas = TiendasCargar.GenerarListado();
-
-        foreach (var tienda in tiendas)
-        {
-            if (tienda.Id == codigo)
-            {
-                imagen = tienda.Imagen300x80;
-            }
-        }
-
-        return imagen;
-    }
-
-    private static string ComprobarEdicion(string juego, string oferta)
-    {
-        if (string.IsNullOrEmpty(oferta) == false)
-        {
-            if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(oferta))
-            {
-                string nuevoTexto = oferta.Replace(juego, null);
-                nuevoTexto = nuevoTexto.Trim();
-
-                int i = 0;
-                while (i < 10)
-                {
-                    if (nuevoTexto.Contains("-") == true)
-                    {
-                        int int1 = nuevoTexto.IndexOf("-");
-
-                        if (int1 == 0)
-                        {
-                            nuevoTexto = nuevoTexto.Remove(0, 1);
-                            nuevoTexto = nuevoTexto.Trim();
-                        }
-                    }
-                    i += 1;
-                }
-
-                i = 0;
-                while (i < 10)
-                {
-                    if (nuevoTexto.Contains(":") == true)
-                    {
-                        int int1 = nuevoTexto.IndexOf(":");
-
-                        if (int1 == 0)
-                        {
-                            nuevoTexto = nuevoTexto.Remove(0, 1);
-                            nuevoTexto = nuevoTexto.Trim();
-                        }
-                    }
-                    i += 1;
-                }
-
-                if (nuevoTexto.Contains("??") == true)
-                {
-                    nuevoTexto = nuevoTexto.Replace("/", null);
-                    nuevoTexto = nuevoTexto.Replace("?", null);
-                }
-
-                nuevoTexto = nuevoTexto.Replace("(Steam)", null);
-                nuevoTexto = nuevoTexto.Replace("(STEAM)", null);
-                nuevoTexto = nuevoTexto.Replace("(Epic)", null);
-                nuevoTexto = nuevoTexto.Replace("(EPIC)", null);
-                nuevoTexto = nuevoTexto.Replace("(GOG)", null);
-                nuevoTexto = nuevoTexto.Replace("(Giants)", null);
-                nuevoTexto = nuevoTexto.Replace("(Microsoft Store)", null);
-                nuevoTexto = nuevoTexto.Replace("(ROW)", null);
-
-                nuevoTexto = nuevoTexto.Trim();
-
-                if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(nuevoTexto))
-                {
-                    string ofertaLimpiada = Buscador.LimpiarNombre(oferta, false);
-                    string juegoLimpiado = Buscador.LimpiarNombre(juego, false);
-
-                    if (ofertaLimpiada.Contains(juegoLimpiado) == true)
-                    {
-                        ofertaLimpiada = ofertaLimpiada.Replace(juegoLimpiado, null);
-                        ofertaLimpiada = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ofertaLimpiada);
-
-                        nuevoTexto = ofertaLimpiada;
-
-                        nuevoTexto = nuevoTexto.Replace("Steam", null);
-                        nuevoTexto = nuevoTexto.Replace("Epic", null);
-                        nuevoTexto = nuevoTexto.Replace("Gog", null);
-                        nuevoTexto = nuevoTexto.Replace("Giants", null);
-                        nuevoTexto = nuevoTexto.Replace("Microsoft Store", null);
-                        nuevoTexto = nuevoTexto.Replace("Row", null);
-                        nuevoTexto = nuevoTexto.Replace("Mac", null);
-                    }
-
-                    return nuevoTexto;
-                }				
-            }
-        }
-
-        return null;
-    }
-
-    #region Deseados
-
-    private void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
-    {
-        Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, estado, drm);
-    }
-
-    #endregion
-
-    #region Bundles
-
-    public string BundlesComprobar(List<JuegoBundle> listaBundles, JuegoDRM drm)
-    {
-        if (listaBundles != null)
-        {
-            if (listaBundles.Count > 0)
-            {
-                foreach (var bundle in listaBundles)
-                {
-                    if (drm == bundle.DRM)
-                    {
-                        return "bundle";
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public string BundlesPreparar(JuegoDRM drm, string idioma)
-    {
-        if (BundlesDisponibles(juego.Bundles, drm) != null)
-        {
-            List<JuegoBundle> bundlesDisponibles = BundlesDisponibles(juego.Bundles, drm);
-
-            if (bundlesDisponibles.Count > 0)
-            {
-                if (bundlesDisponibles.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String53", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesDisponibles[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesDisponibles[0].Tipo).NombreTienda);
-                }
-                else if (bundlesDisponibles.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String54", "Game"), bundlesDisponibles.Count);
-                }			
-            }
-        }
-
-        if (BundlesAntiguos(juego.Bundles, drm) != null)
-        {
-            List<JuegoBundle> bundlesAntiguos = BundlesAntiguos(juego.Bundles, drm);
-
-            if (bundlesAntiguos.Count > 0)
-            {
-                if (bundlesAntiguos.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String57", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesAntiguos[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesAntiguos[0].Tipo).NombreTienda);
-                }
-                else if (bundlesAntiguos.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String58", "Game"), bundlesAntiguos.Count);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public List<JuegoBundle> BundlesDisponibles(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
-    {
-        List<JuegoBundle> bundlesDisponibles = new List<JuegoBundle>();
-
-        if (listaBundles != null)
-        {
-            if (listaBundles.Count > 0)
-            {
-                foreach (var bundle in listaBundles)
-                {
-                    if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-                    {
-                        if (drm != 0 && bundle.BundleId > 0)
-                        {
-                            if (bundle.DRM == drm)
-                            {
-                                bundlesDisponibles.Add(bundle);
-                            }
-                        }
-                        else
-                        {
-                            bundlesDisponibles.Add(bundle);
-                        }
-                    }					
-                }
-            }
-        }
-
-        return bundlesDisponibles;
-    }
-
-    public List<JuegoBundle> BundlesAntiguos(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
-    {
-        List<JuegoBundle> bundlesAntiguos = new List<JuegoBundle>();
-
-        if (listaBundles != null)
-        {
-            if (listaBundles.Count > 0)
-            {
-                foreach (var bundle in listaBundles)
-                {
-                    if (DateTime.Now > bundle.FechaTermina)
-                    {
-                        if (drm != 0)
-                        {
-                            if (bundle.DRM == drm)
-                            {
-                                bundlesAntiguos.Add(bundle);
-                            }
-                        }
-                        else
-                        {
-                            bundlesAntiguos.Add(bundle);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (bundlesAntiguos.Count > 0)
-        {
-            bundlesAntiguos = bundlesAntiguos.OrderByDescending(x => x.FechaTermina).ToList();
-        }
-
-        return bundlesAntiguos;
-    }
-
-    public string BundlesPrepararPrecio(Bundles2.Bundle bundle, int juegoId)
-    {
-        foreach (var juego in bundle.Juegos)
-        {
-            if (juegoId.ToString() == juego.JuegoId)
-            {
-                string precioTexto = juego.Tier.Precio;
-
-                if (precioTexto != null)
-                {
-                    precioTexto = precioTexto.Replace(".", ",");
-
-                    if (precioTexto.Contains(",") == true)
-                    {
-                        int int1 = precioTexto.IndexOf(",");
-
-                        if (int1 == precioTexto.Length - 2)
-                        {
-                            precioTexto = precioTexto + "0";
-                        }
-                    }
-
-                    precioTexto = precioTexto + "€";
-                    return precioTexto;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public string BundlesPrepararInfo(Bundles2.Bundle bundle, int juegoId)
-    {
-        if (bundle.Pick == false)
-        {
-            int tier = 0;
-
-            foreach (var juego in bundle.Juegos)
-            {
-                if (juegoId.ToString() == juego.JuegoId)
-                {
-                    tier = juego.Tier.Posicion;
-                    break;
-                }
-            }
-
-            return Herramientas.Idiomas.CogerCadena(idioma, "String39", "Game") + " " + tier.ToString();
-        }
-        else
-        {
-            if (bundle.Tiers[0].CantidadJuegos == 1)
-            {
-                return Herramientas.Idiomas.CogerCadena(idioma, "String40", "Game");
-            }
-            else
-            {
-                return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String41", "Game"), bundle.Tiers[0].CantidadJuegos.ToString());
-            }
-        }
-    }
-
-    private int bundleId = 0;
-
-    private void BundleAbrir(MouseEventArgs e, int nuevoBundleId)
-    {
-        bundleId = nuevoBundleId;
-    }
-
-    private void BundleCerrar(MouseEventArgs e)
-    {
-        bundleId = 0;
-    }
-
-    #endregion 
-
-    #region Gratis
-
-    public string GratisComprobar(List<JuegoGratis> listaGratis, JuegoDRM drm)
-    {
-        if (listaGratis != null)
-        {
-            if (listaGratis.Count > 0)
-            {
-                foreach (var gratis in listaGratis)
-                {
-                    if (drm == gratis.DRM)
-                    {
-                        return "gratis";
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public string GratisPreparar(JuegoDRM drm, string idioma)
-    {
-        if (GratisDisponibles(juego.Gratis, drm) != null)
-        {
-            List<JuegoGratis> gratis = GratisDisponibles(juego.Gratis, drm);
-
-            if (gratis.Count > 0)
-            {
-                if (gratis.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String59", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
-                }
-                else if (gratis.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String60", "Game"), gratis.Count);
-                }
-            }
-        }
-
-        if (GratisAntiguos(juego.Gratis, drm) != null)
-        {
-            List<JuegoGratis> gratis = GratisAntiguos(juego.Gratis, drm);
-
-            if (gratis.Count > 0)
-            {
-                if (gratis.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String61", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
-                }
-                else if (gratis.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String62", "Game"), gratis.Count);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public List<JuegoGratis> GratisDisponibles(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
-    {
-        List<JuegoGratis> gratisDisponibles = new List<JuegoGratis>();
-
-        if (listaGratis != null)
-        {
-            if (listaGratis.Count > 0)
-            {
-                foreach (var gratis in listaGratis)
-                {
-                    if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-                    {
-                        if (drm != 0)
-                        {
-                            if (gratis.DRM == drm)
-                            {
-                                gratisDisponibles.Add(gratis);
-                            }
-                        }
-                        else
-                        {
-                            gratisDisponibles.Add(gratis);
-                        }
-                    }
-                }
-            }
-        }
-
-        return gratisDisponibles;
-    }
-
-    public List<JuegoGratis> GratisAntiguos(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
-    {
-        List<JuegoGratis> gratisAntiguos = new List<JuegoGratis>();
-
-        if (listaGratis != null)
-        {
-            if (listaGratis.Count > 0)
-            {
-                foreach (var gratis in listaGratis)
-                {
-                    if (DateTime.Now > gratis.FechaTermina)
-                    {
-                        if (drm != 0)
-                        {
-                            if (gratis.DRM == drm)
-                            {
-                                gratisAntiguos.Add(gratis);
-                            }
-                        }
-                        else
-                        {
-                            gratisAntiguos.Add(gratis);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (gratisAntiguos.Count > 0)
-        {
-            gratisAntiguos = gratisAntiguos.OrderByDescending(x => x.FechaEmpieza).ToList();
-        }
-
-        return gratisAntiguos;
-    }
-
-    #endregion
-
-    #region Suscripciones
-
-    public string SuscripcionesComprobar(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm)
-    {
-        if (listaSuscripciones != null)
-        {
-            if (listaSuscripciones.Count > 0)
-            {
-                foreach (var suscripciones in listaSuscripciones)
-                {
-                    if (drm == suscripciones.DRM)
-                    {
-                        return "suscripcion";
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public string SuscripcionesPreparar(JuegoDRM drm, string idioma)
-    {
-        if (SuscripcionesDisponibles(juego.Suscripciones, drm) != null)
-        {
-            List<JuegoSuscripcion> suscripciones = SuscripcionesDisponibles(juego.Suscripciones, drm);
-
-            if (suscripciones.Count > 0)
-            {
-                if (suscripciones.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String51", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
-                }
-                else if (suscripciones.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String52", "Game"), suscripciones.Count);
-                }			
-            }
-        }
-
-        if (SuscripcionesAntiguas(juego.Suscripciones, drm) != null)
-        {
-            List<JuegoSuscripcion> suscripciones = SuscripcionesAntiguas(juego.Suscripciones, drm);
-
-            if (suscripciones.Count > 0)
-            {
-                if (suscripciones.Count == 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String55", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
-                }
-                else if (suscripciones.Count > 1)
-                {
-                    return string.Format(Idiomas.CogerCadena(idioma, "String56", "Game"), suscripciones.Count);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public List<JuegoSuscripcion> SuscripcionesDisponibles(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
-    {
-        List<JuegoSuscripcion> suscripcionesDisponibles = new List<JuegoSuscripcion>();
-
-        if (listaSuscripciones != null)
-        {
-            if (listaSuscripciones.Count > 0)
-            {
-                foreach (var suscripcion in listaSuscripciones)
-                {
-                    if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
-                    {
-                        if (drm != JuegoDRM.NoEspecificado)
-                        {
-                            if (suscripcion.DRM == drm)
-                            {
-                                suscripcionesDisponibles.Add(suscripcion);
-                            }
-                        }
-                        else
-                        {
-                            suscripcionesDisponibles.Add(suscripcion);
-                        }
-                    }
-                }
-            }
-        }
-
-        return suscripcionesDisponibles;
-    }
-
-    public List<JuegoSuscripcion> SuscripcionesAntiguas(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
-    {
-        List<JuegoSuscripcion> suscripcionesAntiguas = new List<JuegoSuscripcion>();
-
-        if (listaSuscripciones != null)
-        {
-            if (listaSuscripciones.Count > 0)
-            {
-                foreach (var suscripcion in listaSuscripciones)
-                {
-                    if (DateTime.Now > suscripcion.FechaTermina)
-                    {
-                        if (drm != JuegoDRM.NoEspecificado)
-                        {
-                            if (suscripcion.DRM == drm)
-                            {
-                                suscripcionesAntiguas.Add(suscripcion);
-                            }
-                        }
-                        else
-                        {
-                            suscripcionesAntiguas.Add(suscripcion);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (suscripcionesAntiguas.Count > 0)
-        {
-            suscripcionesAntiguas = suscripcionesAntiguas.OrderByDescending(x => x.FechaEmpieza).ToList();
-        }
-
-        return suscripcionesAntiguas;
-    }
-
-    #endregion
-
-    #region Caracteristicas
-
-    private int mediaMostrarPosicion = 0;
-    private string mediaMostrar = string.Empty;
-
-    private void CambiarMediaMostrar(MouseEventArgs e, int nuevaCaptura)
-    {
-        if (nuevaCaptura < 0)
-        {
-            nuevaCaptura = juego.Media.Capturas.Count - 1;
-        }
-        else if (nuevaCaptura >= juego.Media.Capturas.Count && nuevaCaptura != 99999)
-        {
-            nuevaCaptura = 0;
-        }
-
-        mediaMostrarPosicion = nuevaCaptura;
-
-        if (nuevaCaptura == 99999)
-        {
-            mediaMostrar = juego.Media.Video;
-        }
-        else
-        {
-            if (nuevaCaptura >= 0 && nuevaCaptura < juego.Media.Capturas.Count)
-            {
-                mediaMostrar = juego.Media.Capturas[mediaMostrarPosicion];
-            }
-        }
-    }
-
-    #endregion
-
-    #region Minimo
-
-    public static string PrecioMinimoActual(global::Juegos.Juego minimo, string idioma)
-    {
-        decimal minimoCantidad = 10000000;
-
-        if (minimo.PrecioActualesTiendas != null)
-        {
-            foreach (var precio in minimo.PrecioActualesTiendas)
-            {
-                TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-                if (actualizado.Days == 0)
-                {
-                    decimal tempPrecio = precio.Precio;
-
-                    if (precio.Moneda != JuegoMoneda.Euro)
-                    {
-                        tempPrecio = Divisas.Cambio(tempPrecio, precio.Moneda);
-                    }
-
-                    if (tempPrecio < minimoCantidad)
-                    {
-                        minimoCantidad = tempPrecio;
-                    }
-                }
-            }
-        }
-
-        if (minimoCantidad > 0 && minimoCantidad < 10000000)
-        {
-            string precioTexto = string.Empty;
-
-            precioTexto = minimoCantidad.ToString();
-            precioTexto = precioTexto.Replace(".", ",");
-
-            int int1 = precioTexto.IndexOf(",");
-
-            if (int1 == precioTexto.Length - 2)
-            {
-                precioTexto = precioTexto + "0";
-            }
-
-            precioTexto = precioTexto + "€";
-
-            return string.Format(Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
-        }
-
-        return Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
-    }
-
-    #endregion
-
-    #region Descuentos Bajos
-
-    private bool mostrarDescuentosBajos = false;
-
-    private void DescuentosBajosMostrar(MouseEventArgs e)
-    {
-        if (mostrarDescuentosBajos == false)
-        {
-            mostrarDescuentosBajos = true;
-        }
-        else
-        {
-            mostrarDescuentosBajos = false;
-        }
-    }
-
-    #endregion
-
-    #region Deck
-
-    private bool enseñarDeck = false;
-
-    private void DeckEnseñar(MouseEventArgs e)
-    {
-        if (enseñarDeck == false)
-        {
-            enseñarDeck = true;
-        }
-        else
-        {
-            enseñarDeck = false;
-        }
-    }
-
-    private void DeckCerrar(MouseEventArgs e)
-    {
-        enseñarDeck = false;
-    }
-
-    #endregion
-
-    #region Historico
-
-    private bool enseñarHistorico = false;
-
-
-    private async void HistoricoEnseñar(MouseEventArgs e)
-    {
-        if (enseñarHistorico == false)
-        {
-            enseñarHistorico = true;
-            HistoricoCargar();
-        }
-        else
-        {
-            enseñarHistorico = false;
-        }
-    }
-
-    bool sharedTooltip = true;
-    bool showDataLabels = true;
-    bool showMarkers = true;
-
-    class DataItem
-    {
-        public DateTime Fecha { get; set; }
-        public double Precio { get; set; }
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public Usuario usuario { get; set; }
+
+	[Parameter]
+	public Juegos.Juego juego { get; set; }
+
+	[Parameter]
+	public string userAgent { get; set; }
+
+	private List<Juegos.Juego> DLCs = new List<Juegos.Juego>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (juego != null)
+		{
+			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+
+			if (juego.Media != null)
+			{
+				if (string.IsNullOrEmpty(juego.Media.Video) == false)
+				{
+					mediaMostrar = juego.Media.Video;
+					mediaMostrar = mediaMostrar.Replace("http://", "https://");
+					mediaMostrar = mediaMostrar.Replace("http://", "https://");
+					mediaMostrarPosicion = 99999;
+				}
+				else
+				{
+					if (juego.Media.Capturas != null)
+					{
+						if (juego.Media.Capturas.Count > 0)
+						{
+							mediaMostrar = juego.Media.Capturas[0];
+						}
+					}
+				}
+			}
+
+			if (juego.IdSteam > 0)
+			{
+				bool actualizarDatosAPI = false;
+
+				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
+				{
+					actualizarDatosAPI = true;
+				}
+
+				if (juego.Categorias == null && juego.Generos == null)
+				{
+					actualizarDatosAPI = true;
+
+					if (juego.Tipo == JuegoTipo.Music)
+					{
+						actualizarDatosAPI = false;
+					}
+				}
+
+				if (actualizarDatosAPI == true)
+				{
+					global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+					if (nuevoJuego != null)
+					{		
+						global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+					}
+				}
+
+				if (juego.Tipo == JuegoTipo.Game)
+				{
+					bool actualizarDeckAPI = false;
+
+					if (juego.DeckComprobacion == null)
+					{
+						actualizarDeckAPI = true;
+					}
+					else
+					{
+						if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
+						{
+							actualizarDeckAPI = true;
+						}
+					}
+
+					if (juego.DeckTokens == null)
+					{
+						actualizarDeckAPI = true;
+					}
+
+					if (actualizarDeckAPI == true)
+					{
+						APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
+						bool vacio = true;
+
+						if (deckAPI != null)
+						{
+							if (deckAPI.Datos != null)
+							{
+								juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
+								juego.DeckComprobacion = DateTime.Now;
+
+								if (deckAPI.Datos.Tokens != null)
+								{
+									if (deckAPI.Datos.Tokens.Count > 0)
+									{
+										List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
+
+										foreach (var token in deckAPI.Datos.Tokens)
+										{
+											if (string.IsNullOrEmpty(token.Token) == false)
+											{
+												JuegoDeckToken nuevoToken = new JuegoDeckToken();
+												nuevoToken.Tipo = token.Tipo;
+												nuevoToken.Mensaje = token.Token;
+
+												tokens.Add(nuevoToken);
+											}
+										}
+
+										juego.DeckTokens = tokens;
+									}
+								}
+
+								vacio = false;
+								global::BaseDatos.Juegos.Actualizar.Deck(juego);
+							}
+						}
+
+						if (vacio == true)
+						{
+							juego.DeckComprobacion = DateTime.Now;
+							global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
+						}
+					}
+				}
+			}				
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (juego != null)
+			{
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+			}
+		}
+	}
+
+	public static string LimpiarImagenJuego(string enlace)
+	{
+		if (enlace.Contains("/header_alt_") == true)
+		{
+			int int1 = enlace.IndexOf("/header_alt_");
+			enlace = enlace.Remove(int1, enlace.Length - int1);
+
+			enlace = enlace + "/header.jpg";
+		}
+
+		return enlace;
+	}
+
+	public bool VerificarMostrarDRM(string idioma, JuegoDRM drm, global::Juegos.Juego juego)
+	{
+		bool mostrar = false;
+
+		if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+		{
+			mostrar = true;
+		}
+		else if (BundlesComprobar(juego.Bundles, drm) != null)
+		{
+			mostrar = true;
+		}
+		else if (GratisComprobar(juego.Gratis, drm) != null)
+		{
+			mostrar = true;
+		}
+		else if (SuscripcionesComprobar(juego.Suscripciones, drm) != null)
+		{
+			mostrar = true;
+		}
+
+		return mostrar;
+	}
+
+	public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> historicos, List<JuegoPrecio> actuales)
+	{
+		string drmPreparado = null;
+
+		List<JuegoPrecio> historicosOrdenados = new List<JuegoPrecio>();
+
+		if (historicos != null)
+		{
+			if (historicos.Count > 0)
+			{
+				foreach (JuegoPrecio historico in historicos)
+				{
+					if (historico.DRM == drm)
+					{
+						historicosOrdenados.Add(historico);
+					}
+				}
+			}
+		}
+
+		if (historicosOrdenados.Count == 0)
+		{
+			if (actuales != null)
+			{
+				if (actuales.Count > 0)
+				{
+					historicosOrdenados = OrdenarPrecios(actuales, drm);
+				}
+			}			
+		}
+
+		if (historicosOrdenados.Count > 0)
+		{
+			if (historicosOrdenados[0] != null)
+			{
+				List<Tienda> tiendas = TiendasCargar.GenerarListado();
+				string tiendaFinal = string.Empty;
+
+				foreach (var tienda in tiendas)
+				{
+					if (tienda.Id == historicosOrdenados[0].Tienda)
+					{
+						tiendaFinal = tienda.Nombre;
+					}
+				}
+
+				if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(23) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
+				{
+					drmPreparado = drmPreparado + " (" + Idiomas.CogerCadena(idioma, "String11", "Game") + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
+				}
+				else
+				{
+					drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.CogerCadena(idioma, "String13", "Game") + " " + tiendaFinal + ")";
+				}
+
+			}		
+		}
+
+		return drmPreparado;
+	}
+
+	public static string PrepararPrecio(List<JuegoPrecio> precios, JuegoDRM drm, bool historico)
+	{
+		if (precios != null)
+		{
+			if (precios.Count > 0)
+			{
+				foreach (var precio in precios)
+				{
+					if (precio.DRM == drm)
+					{
+						return PrepararPrecio(precio, historico);
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static string PrepararPrecio(JuegoPrecio precio, bool historico)
+	{
+		string precioTexto = string.Empty;
+
+		if (historico == true)
+		{
+			precioTexto = precio.Precio.ToString();
+		}
+		else
+		{
+			if (precio.Moneda != JuegoMoneda.Euro)
+			{
+				precioTexto = precio.PrecioCambiado.ToString();
+			}
+			else
+			{
+				precioTexto = precio.Precio.ToString();
+			}
+		}
+
+		precioTexto = precioTexto.Replace(".", ",");
+
+		int int1 = precioTexto.IndexOf(",");
+
+		if (int1 == precioTexto.Length - 2)
+		{
+			precioTexto = precioTexto + "0";
+		}
+
+		if (precioTexto.Length > int1 + 3)
+		{
+			precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
+		}
+
+		precioTexto = precioTexto + "€";
+
+		return precioTexto;
+	}
+
+	public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm)
+	{
+		List<JuegoPrecio> preciosOrdenados = new List<JuegoPrecio>();
+
+		if (precios != null)
+		{
+			if (precios.Count > 0)
+			{
+				foreach (JuegoPrecio precio in precios)
+				{
+					if (precio.DRM == drm && precio.Descuento > 0)
+					{
+						TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
+
+						if (actualizado.Days == 0)
+						{
+							JuegoPrecio nuevoPrecio = precio;
+
+							if (nuevoPrecio != null)
+							{
+								if (nuevoPrecio.Moneda != JuegoMoneda.Euro)
+								{
+									nuevoPrecio.PrecioCambiado = Divisas.Cambio(nuevoPrecio.Precio, nuevoPrecio.Moneda);
+								}
+							}
+
+							bool verificacionFinal = true;
+
+							if (preciosOrdenados.Count > 0)
+							{
+								foreach (var ordenado in preciosOrdenados)
+								{
+									if (ordenado.Enlace == nuevoPrecio.Enlace && ordenado.Tienda == nuevoPrecio.Tienda && ordenado.DRM == nuevoPrecio.DRM)
+									{
+										verificacionFinal = false;
+										break;
+									}
+								}
+							}
+
+							if (drm == JuegoDRM.NoEspecificado)
+							{
+								verificacionFinal = false;
+							}
+
+							if (verificacionFinal == true)
+							{
+								preciosOrdenados.Add(nuevoPrecio);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (preciosOrdenados.Count > 0)
+		{
+			preciosOrdenados.Sort(delegate (JuegoPrecio p1, JuegoPrecio p2)
+			{
+				decimal precio1 = 0;
+
+				if (p1.Moneda != JuegoMoneda.Euro)
+				{
+					precio1 = p1.PrecioCambiado;
+				}
+				else
+				{
+					precio1 = p1.Precio;
+				}
+
+				decimal precio2 = 0;
+
+				if (p2.Moneda != JuegoMoneda.Euro)
+				{
+					precio2 = p2.PrecioCambiado;
+				}
+				else
+				{
+					precio2 = p2.Precio;
+				}
+
+				if (precio1 == precio2)
+				{
+					return p2.FechaDetectado.CompareTo(p1.FechaDetectado);
+				}
+				else
+				{
+					return precio1.CompareTo(precio2);
+				}
+			});
+		}
+
+		return preciosOrdenados;
+	}
+
+	public static string SacarImagenTienda(string codigo)
+	{
+		string imagen = string.Empty;
+
+		List<Tienda> tiendas = TiendasCargar.GenerarListado();
+
+		foreach (var tienda in tiendas)
+		{
+			if (tienda.Id == codigo)
+			{
+				imagen = tienda.Imagen300x80;
+			}
+		}
+
+		return imagen;
+	}
+
+	private static string ComprobarEdicion(string juego, string oferta)
+	{
+		if (string.IsNullOrEmpty(oferta) == false)
+		{
+			if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(oferta))
+			{
+				string nuevoTexto = oferta.Replace(juego, null);
+				nuevoTexto = nuevoTexto.Trim();
+
+				int i = 0;
+				while (i < 10)
+				{
+					if (nuevoTexto.Contains("-") == true)
+					{
+						int int1 = nuevoTexto.IndexOf("-");
+
+						if (int1 == 0)
+						{
+							nuevoTexto = nuevoTexto.Remove(0, 1);
+							nuevoTexto = nuevoTexto.Trim();
+						}
+					}
+					i += 1;
+				}
+
+				i = 0;
+				while (i < 10)
+				{
+					if (nuevoTexto.Contains(":") == true)
+					{
+						int int1 = nuevoTexto.IndexOf(":");
+
+						if (int1 == 0)
+						{
+							nuevoTexto = nuevoTexto.Remove(0, 1);
+							nuevoTexto = nuevoTexto.Trim();
+						}
+					}
+					i += 1;
+				}
+
+				if (nuevoTexto.Contains("??") == true)
+				{
+					nuevoTexto = nuevoTexto.Replace("/", null);
+					nuevoTexto = nuevoTexto.Replace("?", null);
+				}
+
+				nuevoTexto = nuevoTexto.Replace("(Steam)", null);
+				nuevoTexto = nuevoTexto.Replace("(STEAM)", null);
+				nuevoTexto = nuevoTexto.Replace("(Epic)", null);
+				nuevoTexto = nuevoTexto.Replace("(EPIC)", null);
+				nuevoTexto = nuevoTexto.Replace("(GOG)", null);
+				nuevoTexto = nuevoTexto.Replace("(Giants)", null);
+				nuevoTexto = nuevoTexto.Replace("(Microsoft Store)", null);
+				nuevoTexto = nuevoTexto.Replace("(ROW)", null);
+
+				nuevoTexto = nuevoTexto.Trim();
+
+				if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(nuevoTexto))
+				{
+					string ofertaLimpiada = Buscador.LimpiarNombre(oferta, false);
+					string juegoLimpiado = Buscador.LimpiarNombre(juego, false);
+
+					if (ofertaLimpiada.Contains(juegoLimpiado) == true)
+					{
+						ofertaLimpiada = ofertaLimpiada.Replace(juegoLimpiado, null);
+						ofertaLimpiada = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ofertaLimpiada);
+
+						nuevoTexto = ofertaLimpiada;
+
+						nuevoTexto = nuevoTexto.Replace("Steam", null);
+						nuevoTexto = nuevoTexto.Replace("Epic", null);
+						nuevoTexto = nuevoTexto.Replace("Gog", null);
+						nuevoTexto = nuevoTexto.Replace("Giants", null);
+						nuevoTexto = nuevoTexto.Replace("Microsoft Store", null);
+						nuevoTexto = nuevoTexto.Replace("Row", null);
+						nuevoTexto = nuevoTexto.Replace("Mac", null);
+					}
+
+					return nuevoTexto;
+				}				
+			}
+		}
+
+		return null;
+	}
+
+	#region Deseados
+
+	private void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
+	{
+		Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, estado, drm);
+	}
+
+	#endregion
+
+	#region Bundles
+
+	public string BundlesComprobar(List<JuegoBundle> listaBundles, JuegoDRM drm)
+	{
+		if (listaBundles != null)
+		{
+			if (listaBundles.Count > 0)
+			{
+				foreach (var bundle in listaBundles)
+				{
+					if (drm == bundle.DRM)
+					{
+						return "bundle";
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public string BundlesPreparar(JuegoDRM drm, string idioma)
+	{
+		if (BundlesDisponibles(juego.Bundles, drm) != null)
+		{
+			List<JuegoBundle> bundlesDisponibles = BundlesDisponibles(juego.Bundles, drm);
+
+			if (bundlesDisponibles.Count > 0)
+			{
+				if (bundlesDisponibles.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String53", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesDisponibles[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesDisponibles[0].Tipo).NombreTienda);
+				}
+				else if (bundlesDisponibles.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String54", "Game"), bundlesDisponibles.Count);
+				}			
+			}
+		}
+
+		if (BundlesAntiguos(juego.Bundles, drm) != null)
+		{
+			List<JuegoBundle> bundlesAntiguos = BundlesAntiguos(juego.Bundles, drm);
+
+			if (bundlesAntiguos.Count > 0)
+			{
+				if (bundlesAntiguos.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String57", "Game"), global::BaseDatos.Bundles.Buscar.UnBundle(bundlesAntiguos[0].BundleId).NombreBundle, Bundles2.BundlesCargar.DevolverBundle(bundlesAntiguos[0].Tipo).NombreTienda);
+				}
+				else if (bundlesAntiguos.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String58", "Game"), bundlesAntiguos.Count);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public List<JuegoBundle> BundlesDisponibles(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
+	{
+		List<JuegoBundle> bundlesDisponibles = new List<JuegoBundle>();
+
+		if (listaBundles != null)
+		{
+			if (listaBundles.Count > 0)
+			{
+				foreach (var bundle in listaBundles)
+				{
+					if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+					{
+						if (drm != 0 && bundle.BundleId > 0)
+						{
+							if (bundle.DRM == drm)
+							{
+								bundlesDisponibles.Add(bundle);
+							}
+						}
+						else
+						{
+							bundlesDisponibles.Add(bundle);
+						}
+					}					
+				}
+			}
+		}
+
+		return bundlesDisponibles;
+	}
+
+	public List<JuegoBundle> BundlesAntiguos(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
+	{
+		List<JuegoBundle> bundlesAntiguos = new List<JuegoBundle>();
+
+		if (listaBundles != null)
+		{
+			if (listaBundles.Count > 0)
+			{
+				foreach (var bundle in listaBundles)
+				{
+					if (DateTime.Now > bundle.FechaTermina)
+					{
+						if (drm != 0)
+						{
+							if (bundle.DRM == drm)
+							{
+								bundlesAntiguos.Add(bundle);
+							}
+						}
+						else
+						{
+							bundlesAntiguos.Add(bundle);
+						}
+					}
+				}
+			}
+		}
+
+		if (bundlesAntiguos.Count > 0)
+		{
+			bundlesAntiguos = bundlesAntiguos.OrderByDescending(x => x.FechaTermina).ToList();
+		}
+
+		return bundlesAntiguos;
+	}
+
+	public string BundlesPrepararPrecio(Bundles2.Bundle bundle, int juegoId)
+	{
+		foreach (var juego in bundle.Juegos)
+		{
+			if (juegoId.ToString() == juego.JuegoId)
+			{
+				string precioTexto = juego.Tier.Precio;
+
+				if (precioTexto != null)
+				{
+					precioTexto = precioTexto.Replace(".", ",");
+
+					if (precioTexto.Contains(",") == true)
+					{
+						int int1 = precioTexto.IndexOf(",");
+
+						if (int1 == precioTexto.Length - 2)
+						{
+							precioTexto = precioTexto + "0";
+						}
+					}
+
+					precioTexto = precioTexto + "€";
+					return precioTexto;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public string BundlesPrepararInfo(Bundles2.Bundle bundle, int juegoId)
+	{
+		if (bundle.Pick == false)
+		{
+			int tier = 0;
+
+			foreach (var juego in bundle.Juegos)
+			{
+				if (juegoId.ToString() == juego.JuegoId)
+				{
+					tier = juego.Tier.Posicion;
+					break;
+				}
+			}
+
+			return Herramientas.Idiomas.CogerCadena(idioma, "String39", "Game") + " " + tier.ToString();
+		}
+		else
+		{
+			if (bundle.Tiers[0].CantidadJuegos == 1)
+			{
+				return Herramientas.Idiomas.CogerCadena(idioma, "String40", "Game");
+			}
+			else
+			{
+				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String41", "Game"), bundle.Tiers[0].CantidadJuegos.ToString());
+			}
+		}
+	}
+
+	private int bundleId = 0;
+
+	private void BundleAbrir(MouseEventArgs e, int nuevoBundleId)
+	{
+		bundleId = nuevoBundleId;
+	}
+
+	private void BundleCerrar(MouseEventArgs e)
+	{
+		bundleId = 0;
+	}
+
+	#endregion 
+
+	#region Gratis
+
+	public string GratisComprobar(List<JuegoGratis> listaGratis, JuegoDRM drm)
+	{
+		if (listaGratis != null)
+		{
+			if (listaGratis.Count > 0)
+			{
+				foreach (var gratis in listaGratis)
+				{
+					if (drm == gratis.DRM)
+					{
+						return "gratis";
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public string GratisPreparar(JuegoDRM drm, string idioma)
+	{
+		if (GratisDisponibles(juego.Gratis, drm) != null)
+		{
+			List<JuegoGratis> gratis = GratisDisponibles(juego.Gratis, drm);
+
+			if (gratis.Count > 0)
+			{
+				if (gratis.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String59", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
+				}
+				else if (gratis.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String60", "Game"), gratis.Count);
+				}
+			}
+		}
+
+		if (GratisAntiguos(juego.Gratis, drm) != null)
+		{
+			List<JuegoGratis> gratis = GratisAntiguos(juego.Gratis, drm);
+
+			if (gratis.Count > 0)
+			{
+				if (gratis.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String61", "Game"), Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
+				}
+				else if (gratis.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String62", "Game"), gratis.Count);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public List<JuegoGratis> GratisDisponibles(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
+	{
+		List<JuegoGratis> gratisDisponibles = new List<JuegoGratis>();
+
+		if (listaGratis != null)
+		{
+			if (listaGratis.Count > 0)
+			{
+				foreach (var gratis in listaGratis)
+				{
+					if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
+					{
+						if (drm != 0)
+						{
+							if (gratis.DRM == drm)
+							{
+								gratisDisponibles.Add(gratis);
+							}
+						}
+						else
+						{
+							gratisDisponibles.Add(gratis);
+						}
+					}
+				}
+			}
+		}
+
+		return gratisDisponibles;
+	}
+
+	public List<JuegoGratis> GratisAntiguos(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
+	{
+		List<JuegoGratis> gratisAntiguos = new List<JuegoGratis>();
+
+		if (listaGratis != null)
+		{
+			if (listaGratis.Count > 0)
+			{
+				foreach (var gratis in listaGratis)
+				{
+					if (DateTime.Now > gratis.FechaTermina)
+					{
+						if (drm != 0)
+						{
+							if (gratis.DRM == drm)
+							{
+								gratisAntiguos.Add(gratis);
+							}
+						}
+						else
+						{
+							gratisAntiguos.Add(gratis);
+						}
+					}
+				}
+			}
+		}
+
+		if (gratisAntiguos.Count > 0)
+		{
+			gratisAntiguos = gratisAntiguos.OrderByDescending(x => x.FechaEmpieza).ToList();
+		}
+
+		return gratisAntiguos;
+	}
+
+	#endregion
+
+	#region Suscripciones
+
+	public string SuscripcionesComprobar(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm)
+	{
+		if (listaSuscripciones != null)
+		{
+			if (listaSuscripciones.Count > 0)
+			{
+				foreach (var suscripciones in listaSuscripciones)
+				{
+					if (drm == suscripciones.DRM)
+					{
+						return "suscripcion";
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public string SuscripcionesPreparar(JuegoDRM drm, string idioma)
+	{
+		if (SuscripcionesDisponibles(juego.Suscripciones, drm) != null)
+		{
+			List<JuegoSuscripcion> suscripciones = SuscripcionesDisponibles(juego.Suscripciones, drm);
+
+			if (suscripciones.Count > 0)
+			{
+				if (suscripciones.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String51", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+				}
+				else if (suscripciones.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String52", "Game"), suscripciones.Count);
+				}			
+			}
+		}
+
+		if (SuscripcionesAntiguas(juego.Suscripciones, drm) != null)
+		{
+			List<JuegoSuscripcion> suscripciones = SuscripcionesAntiguas(juego.Suscripciones, drm);
+
+			if (suscripciones.Count > 0)
+			{
+				if (suscripciones.Count == 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String55", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+				}
+				else if (suscripciones.Count > 1)
+				{
+					return string.Format(Idiomas.CogerCadena(idioma, "String56", "Game"), suscripciones.Count);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public List<JuegoSuscripcion> SuscripcionesDisponibles(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
+	{
+		List<JuegoSuscripcion> suscripcionesDisponibles = new List<JuegoSuscripcion>();
+
+		if (listaSuscripciones != null)
+		{
+			if (listaSuscripciones.Count > 0)
+			{
+				foreach (var suscripcion in listaSuscripciones)
+				{
+					if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+					{
+						if (drm != JuegoDRM.NoEspecificado)
+						{
+							if (suscripcion.DRM == drm)
+							{
+								suscripcionesDisponibles.Add(suscripcion);
+							}
+						}
+						else
+						{
+							suscripcionesDisponibles.Add(suscripcion);
+						}
+					}
+				}
+			}
+		}
+
+		return suscripcionesDisponibles;
+	}
+
+	public List<JuegoSuscripcion> SuscripcionesAntiguas(List<JuegoSuscripcion> listaSuscripciones, JuegoDRM drm = JuegoDRM.NoEspecificado)
+	{
+		List<JuegoSuscripcion> suscripcionesAntiguas = new List<JuegoSuscripcion>();
+
+		if (listaSuscripciones != null)
+		{
+			if (listaSuscripciones.Count > 0)
+			{
+				foreach (var suscripcion in listaSuscripciones)
+				{
+					if (DateTime.Now > suscripcion.FechaTermina)
+					{
+						if (drm != JuegoDRM.NoEspecificado)
+						{
+							if (suscripcion.DRM == drm)
+							{
+								suscripcionesAntiguas.Add(suscripcion);
+							}
+						}
+						else
+						{
+							suscripcionesAntiguas.Add(suscripcion);
+						}
+					}
+				}
+			}
+		}
+
+		if (suscripcionesAntiguas.Count > 0)
+		{
+			suscripcionesAntiguas = suscripcionesAntiguas.OrderByDescending(x => x.FechaEmpieza).ToList();
+		}
+
+		return suscripcionesAntiguas;
+	}
+
+	#endregion
+
+	#region Caracteristicas
+
+	private int mediaMostrarPosicion = 0;
+	private string mediaMostrar = string.Empty;
+
+	private void CambiarMediaMostrar(MouseEventArgs e, int nuevaCaptura)
+	{
+		if (nuevaCaptura < 0)
+		{
+			nuevaCaptura = juego.Media.Capturas.Count - 1;
+		}
+		else if (nuevaCaptura >= juego.Media.Capturas.Count && nuevaCaptura != 99999)
+		{
+			nuevaCaptura = 0;
+		}
+
+		mediaMostrarPosicion = nuevaCaptura;
+
+		if (nuevaCaptura == 99999)
+		{
+			mediaMostrar = juego.Media.Video;
+		}
+		else
+		{
+			if (nuevaCaptura >= 0 && nuevaCaptura < juego.Media.Capturas.Count)
+			{
+				mediaMostrar = juego.Media.Capturas[mediaMostrarPosicion];
+			}
+		}
+	}
+
+	#endregion
+
+	#region Minimo
+
+	public static string PrecioMinimoActual(global::Juegos.Juego minimo, string idioma)
+	{
+		decimal minimoCantidad = 10000000;
+
+		if (minimo.PrecioActualesTiendas != null)
+		{
+			foreach (var precio in minimo.PrecioActualesTiendas)
+			{
+				TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
+
+				if (actualizado.Days == 0)
+				{
+					decimal tempPrecio = precio.Precio;
+
+					if (precio.Moneda != JuegoMoneda.Euro)
+					{
+						tempPrecio = Divisas.Cambio(tempPrecio, precio.Moneda);
+					}
+
+					if (tempPrecio < minimoCantidad)
+					{
+						minimoCantidad = tempPrecio;
+					}
+				}
+			}
+		}
+
+		if (minimoCantidad > 0 && minimoCantidad < 10000000)
+		{
+			string precioTexto = string.Empty;
+
+			precioTexto = minimoCantidad.ToString();
+			precioTexto = precioTexto.Replace(".", ",");
+
+			int int1 = precioTexto.IndexOf(",");
+
+			if (int1 == precioTexto.Length - 2)
+			{
+				precioTexto = precioTexto + "0";
+			}
+
+			precioTexto = precioTexto + "€";
+
+			return string.Format(Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
+		}
+
+		return Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
+	}
+
+	#endregion
+
+	#region Descuentos Bajos
+
+	private bool mostrarDescuentosBajos = false;
+
+	private void DescuentosBajosMostrar(MouseEventArgs e)
+	{
+		if (mostrarDescuentosBajos == false)
+		{
+			mostrarDescuentosBajos = true;
+		}
+		else
+		{
+			mostrarDescuentosBajos = false;
+		}
+	}
+
+	#endregion
+
+	#region Deck
+
+	private bool enseñarDeck = false;
+
+	private void DeckEnseñar(MouseEventArgs e)
+	{
+		if (enseñarDeck == false)
+		{
+			enseñarDeck = true;
+		}
+		else
+		{
+			enseñarDeck = false;
+		}
+	}
+
+	private void DeckCerrar(MouseEventArgs e)
+	{
+		enseñarDeck = false;
+	}
+
+	#endregion
+
+	#region Historico
+
+	private bool enseñarHistorico = false;
+
+	private bool HistoricoComprobar(JuegoDRM drm)
+	{
+		bool tiene = false;
+
+		if (juego.Historicos != null)
+		{
+			if (juego.Historicos.Count > 0)
+			{
+				foreach (var historico in juego.Historicos)
+				{
+					if (historico.DRM == drm)
+					{
+						tiene = true;
+						break;
+					}
+				}
+			}
+		}
+
+		return tiene;
+	}
+
+	private void HistoricoEnseñar(MouseEventArgs e, JuegoDRM drm)
+	{
+		if (enseñarHistorico == false)
+		{
+			enseñarHistorico = true;
+			HistoricoCargar(drm);
+		}
+		else
+		{
+			enseñarHistorico = false;
+		}
+	}
+
+	private void HistoricoCerrar(MouseEventArgs e)
+	{
+		enseñarHistorico = false;
+	}
+
+	List<Punto> puntos = new List<Punto>();
+
+	class Punto
+	{
+		public int Año { get; set; }
+		public List<PuntoDatos> Puntos { get; set; }
+	}
+
+	class PuntoDatos
+	{
+		public DateTime Fecha { get; set; }
+		public double Precio { get; set; }
 		public string Tienda { get; set; }
-    }
+	}
 
-    string FormatoEuro(object valor)
-    {
+	private string FormatoEuro(object valor)
+	{
 		return ((double)valor).ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("es-ES"));
-    }
+	}
 
-	string FormatoFecha(object valor)
+	private string FormatoFecha(object valor)
 	{
 		return ((DateTime)valor).ToString("MMMM", System.Globalization.CultureInfo.CreateSpecificCulture(idioma));
 	}
 
-	private void HistoricoCargar()
+	private void HistoricoCargar(JuegoDRM drm)
 	{
-		
-	}
+		puntos.Clear();
 
-	DataItem[] revenue2023 = new DataItem[] {
-		new DataItem
+		if (juego.Historicos != null)
 		{
-			Fecha = new DateTime(2000, 1, 12),
-			Precio = 23.40,
-			Tienda = "steam"
-		},
-		new DataItem
-		{
-			Fecha = new DateTime(2000, 5, 9),
-			Precio = 3.40,
-			Tienda = "steam"
-		},
-		new DataItem
-		{
-			Fecha = new DateTime(2000, 11, 12),
-			Precio = 33.90,
-			Tienda = "test"
+			if (juego.Historicos.Count > 0)
+			{
+				foreach (var historico in juego.Historicos)
+				{
+					if (drm == historico.DRM)
+					{
+						if (puntos.Count == 0)
+						{
+							Punto año = new Punto();
+							año.Año = historico.Fecha.Year;
+
+							List<PuntoDatos> datos = new List<PuntoDatos> {
+								new PuntoDatos
+								{
+									Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
+									Precio = (double)historico.Precio,
+									Tienda = historico.Tienda
+								} };
+
+							año.Puntos = datos;
+
+							puntos.Add(año);
+						}
+						else
+						{
+							bool añadirAño = true;
+
+							foreach (var punto in puntos)
+							{
+								if (punto.Año == historico.Fecha.Year)
+								{
+									añadirAño = false;
+								}
+							}
+
+							if (añadirAño == true)
+							{
+								Punto año = new Punto();
+								año.Año = historico.Fecha.Year;
+
+								List<PuntoDatos> datos = new List<PuntoDatos> {
+									new PuntoDatos
+									{
+										Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
+										Precio = (double)historico.Precio,
+										Tienda = historico.Tienda
+									} };
+
+								año.Puntos = datos;
+
+								puntos.Add(año);
+							}
+							else
+							{
+								foreach (var punto in puntos)
+								{
+									if (punto.Año == historico.Fecha.Year)
+									{
+										PuntoDatos nuevoPunto = new PuntoDatos
+										{
+											Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
+											Precio = (double)historico.Precio,
+											Tienda = historico.Tienda
+										};
+
+										punto.Puntos.Add(nuevoPunto);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-	};
-
-    DataItem[] revenue2024 = new DataItem[] {
-        new DataItem
-        {
-            Fecha = new DateTime(2000, 1, 2),
-            Precio = 5,
-			Tienda = "steam"
-        },
-        new DataItem
-        {
-			Fecha = new DateTime(2000, 6, 12),
-            Precio = 2.50,
-			Tienda = "test2"
-        },
-        new DataItem
-        {
-			Fecha = new DateTime(2000, 12, 12),
-            Precio = 2.10,
-			Tienda = "test3"
-        }
-    };
+	}
 
 	#endregion
 }

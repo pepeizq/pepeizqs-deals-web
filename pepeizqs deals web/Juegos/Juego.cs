@@ -44,6 +44,7 @@ namespace Juegos
 		public JuegoDeck Deck { get; set; }
 		public List<JuegoDeckToken> DeckTokens { get; set; }
 		public DateTime? DeckComprobacion { get; set; }
+		public List<JuegoHistorico> Historicos { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -167,6 +168,14 @@ namespace Juegos
 		public string ImagenNoticia { get; set; }
         public Juego Juego { get; set; }
     }
+
+	public class JuegoHistorico
+	{
+		public DateTime Fecha { get; set; }
+		public JuegoDRM DRM { get; set; }
+		public decimal Precio { get; set; }
+		public string Tienda { get; set; }
+	}
 
 	//-------------------------------------------------------
 

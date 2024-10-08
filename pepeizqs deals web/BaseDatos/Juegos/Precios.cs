@@ -1,5 +1,7 @@
 ﻿#nullable disable
 
+using BaseDatos.Recompensas;
+using BaseDatos.Tiendas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 
@@ -90,6 +92,8 @@ namespace BaseDatos.Juegos
 
 							if (tempPrecio < minimo.Precio)
 							{
+								juego.Historicos = ComprobarHistoricos(juego.Historicos, nuevaOferta);
+
 								bool notificar = false;
 
 								if (decimal.Add(tempPrecio, 0.1m) < minimo.Precio)
@@ -138,7 +142,9 @@ namespace BaseDatos.Juegos
 							}
 							else if (tempPrecio == minimo.Precio)
 							{
-                                ultimaMoficacion = true;
+								juego.Historicos = ComprobarHistoricos(juego.Historicos, nuevaOferta);
+
+								ultimaMoficacion = true;
 
                                 minimo.Imagen = nuevaOferta.Imagen;
 								minimo.Enlace = nuevaOferta.Enlace;
@@ -193,7 +199,7 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);
 		}
 
-		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, JuegoPrecio nuevaOferta, SqlConnection conexion, string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null)
+		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta, SqlConnection conexion, string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null)
 		{
 			bool ultimaModificacion = false;
 
@@ -276,6 +282,8 @@ namespace BaseDatos.Juegos
 
 							if (tempPrecio < minimo.Precio)
 							{
+								historicos = ComprobarHistoricos(historicos, nuevaOferta);
+
 								bool notificar = false;
 
 								if (decimal.Add(tempPrecio, 0.2m) < minimo.Precio)
@@ -324,6 +332,8 @@ namespace BaseDatos.Juegos
 							}
 							else if (tempPrecio == minimo.Precio)
 							{
+								historicos = ComprobarHistoricos(historicos, nuevaOferta);
+
 								ultimaModificacion = true;
 
 								minimo.Imagen = nuevaOferta.Imagen;
@@ -378,7 +388,89 @@ namespace BaseDatos.Juegos
 				ahora = DateTime.Now;
 			}
 
-			Juegos.Actualizar.Comprobacion(id, ofertasActuales, ofertasHistoricas, conexion, slugGOG, idGOG, slugEpic, ahora);
+			Juegos.Actualizar.Comprobacion(id, ofertasActuales, ofertasHistoricas, historicos, conexion, slugGOG, idGOG, slugEpic, ahora);
+		}
+
+		private static List<JuegoHistorico> ComprobarHistoricos(List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta)
+		{
+			if (historicos == null)
+			{
+				historicos = new List<JuegoHistorico>();
+			}
+
+			if (historicos.Count == 0)
+			{
+				JuegoHistorico nuevoHistorico = new JuegoHistorico();
+				nuevoHistorico.DRM = nuevaOferta.DRM;
+				nuevoHistorico.Tienda = nuevaOferta.Tienda;
+				nuevoHistorico.Fecha = nuevaOferta.FechaDetectado;
+				nuevoHistorico.Precio = nuevaOferta.Precio;
+
+				if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
+				{
+					nuevoHistorico.Precio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
+				}
+
+				historicos.Add(nuevoHistorico);
+			}
+			else if (historicos.Count > 0)
+			{
+				JuegoHistorico nuevoHistorico = new JuegoHistorico();
+				nuevoHistorico.DRM = nuevaOferta.DRM;
+				nuevoHistorico.Tienda = nuevaOferta.Tienda;
+				nuevoHistorico.Fecha = nuevaOferta.FechaDetectado;
+				nuevoHistorico.Precio = nuevaOferta.Precio;
+
+				if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
+				{
+					nuevoHistorico.Precio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
+				}
+
+				bool mismoDRM = false;
+				bool precioMasBajo = false;
+				decimal precioMasBajo2 = 1000000;
+				DateTime fechaMasBajo2 = new DateTime();
+
+				foreach (var historico in historicos)
+				{
+					if (historico.DRM == nuevoHistorico.DRM)
+					{
+						mismoDRM = true;
+
+						if (precioMasBajo2 > nuevoHistorico.Precio)
+						{
+							precioMasBajo2 = nuevoHistorico.Precio;
+							fechaMasBajo2 = nuevoHistorico.Fecha;
+                        }
+                    }
+                }
+
+                if (precioMasBajo2 > nuevoHistorico.Precio)
+                {
+                    precioMasBajo = true;
+                }
+                else if (precioMasBajo2 == nuevoHistorico.Precio)
+                {
+                    DateTime historico2 = fechaMasBajo2;
+                    historico2 = historico2.AddDays(30);
+
+                    if (historico2 < nuevoHistorico.Fecha)
+                    {
+                        precioMasBajo = true;
+                    }
+                }
+
+                if (mismoDRM == false)
+				{
+					historicos.Add(nuevoHistorico);
+				}
+				else if (mismoDRM == true && precioMasBajo == true)
+				{
+					historicos.Add(nuevoHistorico);
+				}
+			}
+
+			return historicos;
 		}
 	}
 }

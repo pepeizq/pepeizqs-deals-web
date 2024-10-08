@@ -254,5 +254,13 @@
   {
     "Id": "String64",
     "Valor": "Show historical"
+  },
+  {
+    "Id": "String65",
+    "Valor": "Months"
+  },
+  {
+    "Id": "String66",
+    "Valor": "Prices"
   }
 ]

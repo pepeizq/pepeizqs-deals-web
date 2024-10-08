@@ -254,5 +254,13 @@
   {
     "Id": "String64",
     "Valor": "Enseñar histórico"
+  },
+  {
+    "Id": "String65",
+    "Valor": "Meses"
+  },
+  {
+    "Id": "String66",
+    "Valor": "Precios"
   }
 ]

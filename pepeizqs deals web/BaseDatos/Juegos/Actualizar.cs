@@ -68,7 +68,7 @@ namespace BaseDatos.Juegos
 
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, analisis=@analisis, " +
-						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, " +
+						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, historicos=@historicos, " +
                         "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirDeck + añadirSlugGog + añadirSlugEpic;
 
 			if (actualizarAPI == true)
@@ -103,8 +103,9 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
 					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
+					comando.Parameters.AddWithValue("@historicos", JsonConvert.SerializeObject(juego.Historicos));
 
-                    if (juego.UltimaModificacion != null)
+					if (juego.UltimaModificacion != null)
                     {
                         comando.Parameters.AddWithValue("@ultimaModificacion", juego.UltimaModificacion);
                     }
@@ -159,7 +160,7 @@ namespace BaseDatos.Juegos
 			}		
 		}
 
-		public static void Comprobacion(int id, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, SqlConnection conexion = null, string slugGOG = null, string idGOG = null, string slugEpic = null, DateTime? ultimaModificacion = null)
+		public static void Comprobacion(int id, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, SqlConnection conexion = null, string slugGOG = null, string idGOG = null, string slugEpic = null, DateTime? ultimaModificacion = null)
 		{
 			if (conexion == null)
 			{
@@ -195,7 +196,7 @@ namespace BaseDatos.Juegos
 			}
 
 			string sqlActualizar = "UPDATE juegos " +
-					"SET precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas" +
+					"SET precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, historicos=@historicos" +
 					añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic + " WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
@@ -203,6 +204,7 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@id", id);
 				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(ofertasHistoricas));
 				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(ofertasActuales));
+				comando.Parameters.AddWithValue("@historicos", JsonConvert.SerializeObject(historicos));
 
 				if (ultimaModificacion != null)
 				{

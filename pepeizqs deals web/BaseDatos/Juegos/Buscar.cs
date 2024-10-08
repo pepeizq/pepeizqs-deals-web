@@ -342,6 +342,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(30) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(30)) == false)
+					{
+						juego.Historicos = JsonConvert.DeserializeObject<List<JuegoHistorico>>(lector.GetString(30));
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

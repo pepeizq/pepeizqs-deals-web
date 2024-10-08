@@ -9,6 +9,8 @@
 @{
     #nullable disable
 
+    // Context.Response.Headers["Cache-Control"] = "no-store";
+
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
@@ -271,8 +273,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @* <script src="_framework/blazor.server.js"></script> *@
-@*     <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="_framework/blazor.server.js" autostart="false"></script>
     <script>
         Blazor.start({
             reconnectionOptions: {
@@ -294,10 +295,10 @@
         //     document.location.reload();
         // }
         // Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
-    </script> *@
+    </script>
 
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
+   @*   <script src="_framework/blazor.server.js" autostart="false"></script>
     <script>
         async function boot() {
             await Blazor.start()
@@ -313,7 +314,7 @@
         }
 
         boot()
-    </script>
+    </script>*@
 
     <script>
         function hoverTooltip(e, id) {
