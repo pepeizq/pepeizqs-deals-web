@@ -445,21 +445,24 @@ namespace BaseDatos.Juegos
                     }
                 }
 
-                if (precioMasBajo2 > nuevoHistorico.Precio)
-                {
-                    precioMasBajo = true;
-                }
-                else if (precioMasBajo2 == nuevoHistorico.Precio)
-                {
-                    DateTime historico2 = fechaMasBajo2;
-                    historico2 = historico2.AddDays(30);
+				if (mismoDRM == true)
+				{
+					if (precioMasBajo2 > nuevoHistorico.Precio)
+					{
+						precioMasBajo = true;
+					}
+					else if (precioMasBajo2 == nuevoHistorico.Precio)
+					{
+						DateTime historico2 = fechaMasBajo2;
+						historico2 = historico2.AddDays(30);
 
-                    if (historico2 < nuevoHistorico.Fecha)
-                    {
-                        precioMasBajo = true;
-                    }
-                }
-
+						if (historico2 < nuevoHistorico.Fecha)
+						{
+							precioMasBajo = true;
+						}
+					}
+				}
+                
                 if (mismoDRM == false)
 				{
 					historicos.Add(nuevoHistorico);

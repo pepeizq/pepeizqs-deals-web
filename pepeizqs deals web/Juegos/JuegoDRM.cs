@@ -249,6 +249,8 @@ namespace Juegos
 			if (string.IsNullOrEmpty(drmTexto) == false)
 			{
 				drmTexto = drmTexto.Replace("key", null);
+				drmTexto = drmTexto.Replace("DRM &gt;", null);
+				drmTexto = drmTexto.Replace("DRM >", null);
 				drmTexto = drmTexto.ToLower();
 				drmTexto = drmTexto.Trim();
 

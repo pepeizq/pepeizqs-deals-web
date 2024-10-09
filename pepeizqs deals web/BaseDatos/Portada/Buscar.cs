@@ -31,7 +31,7 @@ namespace BaseDatos.Portada
 									CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
 									((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND 
 									(freeToPlay = 'false' OR freeToPlay IS NULL) AND
-									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 15";
+									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 14";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

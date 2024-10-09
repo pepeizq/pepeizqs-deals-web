@@ -2740,6 +2740,7 @@
 	private bool HistoricoComprobar(JuegoDRM drm)
 	{
 		bool tiene = false;
+		int cantidad = 0;
 
 		if (juego.Historicos != null)
 		{
@@ -2749,8 +2750,13 @@
 				{
 					if (historico.DRM == drm)
 					{
-						tiene = true;
-						break;
+						cantidad += 1;
+
+						if (cantidad > 1)
+						{
+							tiene = true;
+							break;
+						}
 					}
 				}
 			}
@@ -2779,13 +2785,13 @@
 
 	List<Punto> puntos = new List<Punto>();
 
-	class Punto
+	private class Punto
 	{
 		public int Año { get; set; }
 		public List<PuntoDatos> Puntos { get; set; }
 	}
 
-	class PuntoDatos
+	private class PuntoDatos
 	{
 		public DateTime Fecha { get; set; }
 		public double Precio { get; set; }
