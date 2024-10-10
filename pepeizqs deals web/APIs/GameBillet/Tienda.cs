@@ -1,4 +1,10 @@
-﻿#nullable disable
+﻿//Europe: https://www.gamebillet.com/product/jsonfeed?store=eu&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365
+//UK: https://www.gamebillet.com/product/jsonfeed?store=uk&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365
+//US / CA / ROW: https://www.gamebillet.com/product/jsonfeed?store=us&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365
+//China: https://www.gamebillet.com/product/jsonfeed?store=cn&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365
+//Brazil: https://www.gamebillet.com/product/jsonfeed?store=sa&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365
+
+#nullable disable
 
 using Herramientas;
 using Juegos;
@@ -46,63 +52,66 @@ namespace APIs.GameBillet
 
 							foreach (GameBilletJuego juego in juegos.Juegos)
 							{
-								string sPrecioBase = juego.PrecioBase;
-								sPrecioBase = sPrecioBase.Replace("€", null);
-
-								string sPrecioRebajado = juego.PrecioRebajado;
-								sPrecioRebajado = sPrecioRebajado.Replace("€", null);
-
-								decimal precioBase = decimal.Parse(sPrecioBase);
-								decimal precioRebajado = decimal.Parse(sPrecioRebajado);
-
-								int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-								if (descuento > 0)
+								if (string.IsNullOrEmpty(juego.PrecioBase) == false && string.IsNullOrEmpty(juego.PrecioRebajado) == false)
 								{
-									JuegoDRM drm1 = JuegoDRM2.Traducir(juego.DRM1, Generar().Id);
-									JuegoDRM drm2 = JuegoDRM2.Traducir(juego.DRM2, Generar().Id);
+									string sPrecioBase = juego.PrecioBase;
+									sPrecioBase = sPrecioBase.Replace("€", null);
 
-									if (drm1 != JuegoDRM.NoEspecificado || drm2 != JuegoDRM.NoEspecificado)
+									string sPrecioRebajado = juego.PrecioRebajado;
+									sPrecioRebajado = sPrecioRebajado.Replace("€", null);
+
+									decimal precioBase = decimal.Parse(sPrecioBase);
+									decimal precioRebajado = decimal.Parse(sPrecioRebajado);
+
+									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+									if (descuento > 0)
 									{
-										JuegoDRM drmFinal = drm1;
+										JuegoDRM drm1 = JuegoDRM2.Traducir(juego.DRM1, Generar().Id);
+										JuegoDRM drm2 = JuegoDRM2.Traducir(juego.DRM2, Generar().Id);
 
-										if (drm2 != JuegoDRM.NoEspecificado)
+										if (drm1 != JuegoDRM.NoEspecificado || drm2 != JuegoDRM.NoEspecificado)
 										{
-											drmFinal = drm2;
-										}
+											JuegoDRM drmFinal = drm1;
 
-										JuegoPrecio oferta = new JuegoPrecio
-										{
-											Nombre = juego.Nombre,
-											Enlace = juego.Enlace,
-											Imagen = "nada",
-											Moneda = JuegoMoneda.Euro,
-											Precio = precioRebajado,
-											Descuento = descuento,
-											Tienda = Generar().Id,
-											DRM = drmFinal,
-											FechaDetectado = DateTime.Now,
-											FechaActualizacion = DateTime.Now
-										};
+											if (drm2 != JuegoDRM.NoEspecificado)
+											{
+												drmFinal = drm2;
+											}
 
-										try
-										{
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
-										}
+											JuegoPrecio oferta = new JuegoPrecio
+											{
+												Nombre = juego.Nombre,
+												Enlace = juego.Enlace,
+												Imagen = "nada",
+												Moneda = JuegoMoneda.Euro,
+												Precio = precioRebajado,
+												Descuento = descuento,
+												Tienda = Generar().Id,
+												DRM = drmFinal,
+												FechaDetectado = DateTime.Now,
+												FechaActualizacion = DateTime.Now
+											};
 
-										juegos2 += 1;
+											try
+											{
+												BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+											}
+											catch (Exception ex)
+											{
+												BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+											}
 
-										try
-										{
-											BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+											juegos2 += 1;
+
+											try
+											{
+												BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+											}
+											catch (Exception ex)
+											{
+												BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+											}
 										}
 									}
 								}

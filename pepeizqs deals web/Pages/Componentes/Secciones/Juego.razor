@@ -804,7 +804,7 @@
 
 					@foreach (var gratis2 in GratisDisponibles(juego.Gratis))
 					{
-						<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
+						<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; width: 100%; display: block;">
 							<div style="display: flex; align-items: center;">
 								<div style="margin-right: 15px;">
 									<img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
@@ -1573,42 +1573,63 @@
 					<RadzenChart Style="width: 100vh; height: 80vh;">
 						<RadzenChartTooltipOptions Shared="false" />
 
-						@foreach (var punto in puntos)
-						{
-							<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@punto.Puntos" CategoryProperty="Fecha" Title="@punto.Año.ToString()" LineType="LineType.Dashed" ValueProperty="Precio">
-								<ChildContent>
-									<RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
-									<RadzenSeriesDataLabels Visible="true" />
-								</ChildContent>
+						@{
+							int añoMayor = 0;
 
-								<TooltipTemplate Context="datos">
-									<div style="background-color: var(--fondoOscuro); color: var(--colorTexto); padding: 10px; margin: -8px; border-radius: 5px;">
-										@{
-											string icono = string.Empty;
-											string nombre = string.Empty;
-											List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+							foreach (var punto in puntos)
+							{
+								if (añoMayor < punto.Año)
+								{
+									añoMayor = punto.Año;
+								}
+							}
 
-											foreach (var tienda in tiendas)
-											{
-												if (tienda.Id == datos.Tienda)
+							foreach (var punto in puntos)
+							{
+								Radzen.Blazor.LineType lineaTipo = LineType.Dashed;
+								bool oculta = true;
+
+								if (añoMayor == punto.Año)
+								{
+									lineaTipo = LineType.Solid;
+									oculta = false;
+								}
+
+								<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@punto.Puntos" CategoryProperty="Fecha" Title="@punto.Año.ToString()" LineType="@lineaTipo" ValueProperty="Precio" Hidden="@oculta">
+									<ChildContent>
+										<RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
+										<RadzenSeriesDataLabels Visible="true" />
+									</ChildContent>
+
+									<TooltipTemplate Context="datos">
+										<div style="background-color: var(--fondoOscuro); color: var(--colorTexto); padding: 10px; margin: -8px; border-radius: 5px;">
+											@{
+												string icono = string.Empty;
+												string nombre = string.Empty;
+												List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+												foreach (var tienda in tiendas)
 												{
-													icono = "https://pepeizqdeals.com/" + tienda.ImagenIcono;
-													nombre = tienda.Nombre;
+													if (tienda.Id == datos.Tienda)
+													{
+														icono = "https://pepeizqdeals.com/" + tienda.ImagenIcono;
+														nombre = tienda.Nombre;
+													}
 												}
+
+												<div style="display: flex; align-items: center; gap: 10px;">
+													<img src="@icono" style="width: 20px; height: 20px;" />
+													<label>@nombre</label>
+												</div>
 											}
 
-											<div style="display: flex; align-items: center; gap: 10px;">
-												<img src="@icono" style="width: 20px; height: 20px;" />
-												<label>@nombre</label>
+											<div style="margin-top: 5px;">
+												<strong>@FormatoEuro(datos.Precio)</strong> - @datos.Fecha.Day/@datos.Fecha.Month/@punto.Año
 											</div>
-										}
-
-										<div style="margin-top: 5px;">
-											<strong>@FormatoEuro(datos.Precio)</strong> - @datos.Fecha.Day/@datos.Fecha.Month/@punto.Año
 										</div>
-									</div>
-								</TooltipTemplate>
-							</RadzenLineSeries>
+									</TooltipTemplate>
+								</RadzenLineSeries>
+							}
 						}
 
 						<RadzenCategoryAxis Formatter="FormatoFecha" FormatString="{0:C0}">
@@ -2105,10 +2126,15 @@
 				nuevoTexto = nuevoTexto.Replace("(Giants)", null);
 				nuevoTexto = nuevoTexto.Replace("(Microsoft Store)", null);
 				nuevoTexto = nuevoTexto.Replace("(ROW)", null);
+				nuevoTexto = nuevoTexto.Replace("(DLC)", null);
 
-				nuevoTexto = nuevoTexto.Trim();
+				if (nuevoTexto.Length > 1)
+				{
+					nuevoTexto = Buscador.LimpiarNombre(nuevoTexto, true);
+					nuevoTexto = nuevoTexto.Trim();
+				}
 
-				if (Buscador.LimpiarNombre(juego) != Buscador.LimpiarNombre(nuevoTexto))
+				if (Buscador.LimpiarNombre(juego, true) != nuevoTexto)
 				{
 					string ofertaLimpiada = Buscador.LimpiarNombre(oferta, false);
 					string juegoLimpiado = Buscador.LimpiarNombre(juego, false);
@@ -2206,7 +2232,7 @@
 		return null;
 	}
 
-	public List<JuegoBundle> BundlesDisponibles(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
+	public List<JuegoBundle> BundlesDisponibles(List<JuegoBundle> listaBundles, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoBundle> bundlesDisponibles = new List<JuegoBundle>();
 
@@ -2218,7 +2244,7 @@
 				{
 					if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 					{
-						if (drm != 0 && bundle.BundleId > 0)
+						if (drm != JuegoDRM.NoEspecificado && bundle.BundleId > 0)
 						{
 							if (bundle.DRM == drm)
 							{
@@ -2237,7 +2263,7 @@
 		return bundlesDisponibles;
 	}
 
-	public List<JuegoBundle> BundlesAntiguos(List<JuegoBundle> listaBundles, JuegoDRM drm = 0)
+	public List<JuegoBundle> BundlesAntiguos(List<JuegoBundle> listaBundles, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoBundle> bundlesAntiguos = new List<JuegoBundle>();
 
@@ -2249,7 +2275,7 @@
 				{
 					if (DateTime.Now > bundle.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != JuegoDRM.NoEspecificado)
 						{
 							if (bundle.DRM == drm)
 							{
@@ -2408,7 +2434,7 @@
 		return null;
 	}
 
-	public List<JuegoGratis> GratisDisponibles(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
+	public List<JuegoGratis> GratisDisponibles(List<JuegoGratis> listaGratis, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoGratis> gratisDisponibles = new List<JuegoGratis>();
 
@@ -2420,7 +2446,7 @@
 				{
 					if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != JuegoDRM.NoEspecificado)
 						{
 							if (gratis.DRM == drm)
 							{
@@ -2439,7 +2465,7 @@
 		return gratisDisponibles;
 	}
 
-	public List<JuegoGratis> GratisAntiguos(List<JuegoGratis> listaGratis, JuegoDRM drm = 0)
+	public List<JuegoGratis> GratisAntiguos(List<JuegoGratis> listaGratis, JuegoDRM drm = JuegoDRM.NoEspecificado)
 	{
 		List<JuegoGratis> gratisAntiguos = new List<JuegoGratis>();
 
@@ -2451,7 +2477,7 @@
 				{
 					if (DateTime.Now > gratis.FechaTermina)
 					{
-						if (drm != 0)
+						if (drm != JuegoDRM.NoEspecificado)
 						{
 							if (gratis.DRM == drm)
 							{
@@ -2831,7 +2857,8 @@
 									Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
 									Precio = (double)historico.Precio,
 									Tienda = historico.Tienda
-								} };
+								} 
+							};
 
 							año.Puntos = datos;
 
@@ -2860,7 +2887,8 @@
 										Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
 										Precio = (double)historico.Precio,
 										Tienda = historico.Tienda
-									} };
+									} 
+								};
 
 								año.Puntos = datos;
 

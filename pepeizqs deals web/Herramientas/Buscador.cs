@@ -15,6 +15,9 @@ namespace Herramientas
 					nombre = nombre.Replace(" ", null);
 				}
 
+				nombre = nombre.Replace("&#39;", "'");
+				nombre = nombre.Replace("&amp;", "&");
+
 				List<string> caracteres = new List<string>
 				{
 					"!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",

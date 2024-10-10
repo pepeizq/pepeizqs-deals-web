@@ -427,7 +427,6 @@ namespace BaseDatos.Juegos
 				}
 
 				bool mismoDRM = false;
-				bool precioMasBajo = false;
 				decimal precioMasBajo2 = 1000000;
 				DateTime fechaMasBajo2 = new DateTime();
 
@@ -437,10 +436,10 @@ namespace BaseDatos.Juegos
 					{
 						mismoDRM = true;
 
-						if (precioMasBajo2 > nuevoHistorico.Precio)
+						if (precioMasBajo2 > historico.Precio)
 						{
-							precioMasBajo2 = nuevoHistorico.Precio;
-							fechaMasBajo2 = nuevoHistorico.Fecha;
+							precioMasBajo2 = historico.Precio;
+							fechaMasBajo2 = historico.Fecha;
                         }
                     }
                 }
@@ -449,25 +448,21 @@ namespace BaseDatos.Juegos
 				{
 					if (precioMasBajo2 > nuevoHistorico.Precio)
 					{
-						precioMasBajo = true;
+						historicos.Add(nuevoHistorico);
 					}
-					else if (precioMasBajo2 == nuevoHistorico.Precio)
+					
+					if (precioMasBajo2 == nuevoHistorico.Precio)
 					{
 						DateTime historico2 = fechaMasBajo2;
 						historico2 = historico2.AddDays(30);
 
 						if (historico2 < nuevoHistorico.Fecha)
 						{
-							precioMasBajo = true;
+							historicos.Add(nuevoHistorico);
 						}
 					}
 				}
-                
-                if (mismoDRM == false)
-				{
-					historicos.Add(nuevoHistorico);
-				}
-				else if (mismoDRM == true && precioMasBajo == true)
+                else
 				{
 					historicos.Add(nuevoHistorico);
 				}
