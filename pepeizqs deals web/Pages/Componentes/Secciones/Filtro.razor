@@ -516,7 +516,7 @@ else
 				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="334" OverscanCount="6">
 					<ItemContent>
 						@{
-							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
+							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
 							bool usuarioTieneDeseado = false;
 
 							string fondoColor = string.Empty;
@@ -527,7 +527,7 @@ else
 							}
 							else
 							{
-								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
 
 								if (usuarioTieneDeseado == true)
 								{
@@ -573,7 +573,9 @@ else
 	#nullable disable
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	private List<string> usuarioJuegosSteam = new List<string>();
 
@@ -583,8 +585,10 @@ else
 
 	private List<Juegos.Juego> resultadosGestor = new List<Juegos.Juego>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		cargado = false;
 
 		if (usuario != null)

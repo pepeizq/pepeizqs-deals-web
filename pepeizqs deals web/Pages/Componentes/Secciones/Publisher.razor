@@ -1,7 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using System.Net
+@using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
 
 @if (cargado == false)
 {
@@ -222,7 +225,9 @@ else
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	[Parameter]
 	public string id { get; set; }
@@ -253,8 +258,10 @@ else
 	private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
 	private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
 
 		if (acepciones != null)

@@ -199,12 +199,12 @@
 		{
 			string colorSeleccionado = "var(--fondoOscuro)";
 
-			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
+			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
 			{
 				colorSeleccionado = "var(--fondoBien)";
 			}
 
-			if (Herramientas.Deseados.ComprobarSiEsta(usuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+			if (Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
 			{
 				colorSeleccionado = "var(--fondoAlerta)";
 			}
@@ -320,12 +320,12 @@
 
 				string fondoDestacado = "background-color: var(--fondoOscuro);";
 
-				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
 				{
 					fondoDestacado = "background-color: var(--fondoBien);";
 				}
 
-				if (Herramientas.Deseados.ComprobarSiEsta(usuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+				if (Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
 				{
 					fondoDestacado = "background-color: var(--fondoAlerta);";
 				}
@@ -521,7 +521,7 @@ else
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
 			@foreach (var juego in juegosMinimosMostrar)
 			{
-				<ResultadoJuego idioma="@idioma" juego="@juego" usuario="@usuario" usuarioJuegosSteam="@usuarioJuegosSteam" tipo="ResultadoJuego.Tipo.Portada" />
+				<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
 			}
 		</div>
 
@@ -677,14 +677,18 @@ else
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	private SqlConnection conexion = new SqlConnection();
 
 	private List<string> usuarioJuegosSteam = new List<string>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		if (usuario != null)
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)

@@ -90,7 +90,7 @@
 				</a>
 			</div>		
 
-			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" usuario="@usuario" tipo="@Bundle.Tipo.Bundles" />
+			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" usuarioId="@usuarioId" tipo="@Bundle.Tipo.Bundles" />
 		}
 	}
 }
@@ -215,7 +215,9 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	private List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	private List<Bundles2.Bundle> bundlesPasados = new List<Bundles2.Bundle>();
@@ -227,8 +229,10 @@
 	private List<string> años = new List<string>();
 	private string añoSeleccionado = string.Empty;
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		if (usuario != null)
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)

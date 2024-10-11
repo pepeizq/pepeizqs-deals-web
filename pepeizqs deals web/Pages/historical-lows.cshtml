@@ -25,6 +25,6 @@
 	@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new
 	{
 		idioma = Model.idioma,
-		usuario = usuario
+		usuarioId = usuario?.Id
 	}))
 }

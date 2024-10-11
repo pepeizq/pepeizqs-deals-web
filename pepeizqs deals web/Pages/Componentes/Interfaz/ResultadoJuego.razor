@@ -1,7 +1,6 @@
 ﻿@using Blazored.Video
 @using Juegos
 @using Microsoft.VisualBasic
-@using pepeizqs_deals_web.Areas.Identity.Data
 
 <style>
 	.minimo-fuente {
@@ -82,7 +81,7 @@
 		}
 	}
 
-	bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
+	bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
 	bool usuarioTieneDeseado = false;
 
 	string fondoColor = string.Empty;
@@ -95,7 +94,7 @@
 	}
 	else
 	{
-		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuarioDeseadosSteam, usuarioDeseadosWeb, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
 
 		if (usuarioTieneDeseado == true)
 		{
@@ -106,7 +105,7 @@
 
 	bool usuarioConectado = false;
 
-	if (usuario != null)
+	if (usuarioJuegosSteam.Count > 0)
 	{
 		usuarioConectado = true;
 	}
@@ -261,10 +260,13 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public List<string> usuarioJuegosSteam { get; set; }
 
 	[Parameter]
-	public List<string> usuarioJuegosSteam { get; set; }
+	public string usuarioDeseadosSteam { get; set; }
+
+	[Parameter]
+	public string usuarioDeseadosWeb { get; set; }
 
 	[Parameter]
 	public Juego juego { get; set; }

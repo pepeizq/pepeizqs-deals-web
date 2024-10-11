@@ -29,7 +29,7 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; justify-items: center;">
         @foreach (var juego in juegosActuales)
         {
-            bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego.Juego, juego.DRM);
+            bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego.Juego, juego.DRM);
             bool usuarioTieneDeseado = false;
 
             string fondoColor = string.Empty;
@@ -40,7 +40,7 @@
             }
             else
             {
-                usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego.Juego, juego.DRM);
+                usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego.Juego, juego.DRM);
 
                 if (usuarioTieneDeseado == true)
                 {
@@ -266,7 +266,9 @@
     public string idioma { get; set; }
 
     [Parameter]
-    public Usuario usuario { get; set; }
+    public string usuarioId { get; set; }
+
+    private Usuario usuario = new Usuario();
 
     private List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
     private List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
@@ -276,8 +278,10 @@
     private List<string> años = new List<string>();
     private string añoSeleccionado = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        usuario = await UserManager.FindByIdAsync(usuarioId);
+
         if (usuario != null)
         {
             if (string.IsNullOrEmpty(usuario.SteamGames) == false)

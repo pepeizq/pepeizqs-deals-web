@@ -105,7 +105,7 @@
             @(await Html.RenderComponentAsync<Componentes.Secciones.Publisher>(RenderMode.Server, new
             {
                 idioma = Model.idioma,
-                usuario = usuario,
+                usuarioId = usuario?.Id,
                 id = Model.publisher.Id,
                 nombre = Model.publisher.Nombre,
                 descripcion = Model.publisher.Descripcion,

@@ -24,7 +24,7 @@
         @(await Html.RenderComponentAsync<Componentes.Cuenta.Recompensas>(RenderMode.Server, new
         {
             idioma = Model.idioma,
-            usuario = usuario
+            usuarioId = usuario?.Id
         }))
     }
 }

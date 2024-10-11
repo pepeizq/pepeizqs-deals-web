@@ -50,7 +50,7 @@
         @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new
         {
             idioma = Model.idioma,
-            usuario = usuario
+            usuarioId = usuario?.Id
         }))
     }
 }

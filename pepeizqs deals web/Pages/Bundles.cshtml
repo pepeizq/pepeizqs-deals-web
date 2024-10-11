@@ -95,7 +95,7 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundles>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			usuario = usuario
+			usuarioId = usuario?.Id
 		}))
 	}
 }

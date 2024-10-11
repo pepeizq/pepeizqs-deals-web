@@ -159,7 +159,7 @@
         @(await Html.RenderComponentAsync<Componentes.Secciones.Gratis>(RenderMode.Server, new
         {
             idioma = Model.idioma,
-            usuario = usuario
+            usuarioId = usuario?.Id
         }))
     }
 }

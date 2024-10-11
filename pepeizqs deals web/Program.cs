@@ -47,12 +47,15 @@ builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
-builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => opciones.UseSqlServer(conexionTexto));
+builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => { 
+	opciones.UseSqlServer(conexionTexto); 
+	opciones.EnableSensitiveDataLogging();
+});
 builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
 
-//builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
+builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
-builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
+//builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 builder.Services.AddRazorPages();
 

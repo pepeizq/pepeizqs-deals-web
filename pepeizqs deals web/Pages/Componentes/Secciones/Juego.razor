@@ -400,7 +400,7 @@
 
 								if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
 								{
-									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, drm.Id);
+									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juego, drm.Id);
 
 									if (usuarioTieneDeseado == true)
 									{
@@ -529,17 +529,11 @@
 										</div>
 
 										<div style="display: flex; flex-direction: column; gap: 20px;">
-											@if (usuario != null)
+											@if (HistoricoComprobar(drm.Id) == true)
 											{
-												if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
-												{
-													if (HistoricoComprobar(drm.Id) == true)
-													{
-														<button @onclick="(e => HistoricoEnseñar(e, drm.Id))" class="boton-pequeño" style="width: 200px; text-align: center; font-size: 14px; padding: 10px 12px;">
-															@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
-														</button>
-													}
-												}
+												<button @onclick="(e => HistoricoEnseñar(e, drm.Id))" class="boton-pequeño" style="width: 200px; text-align: center; font-size: 14px; padding: 10px 12px;">
+													@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
+												</button>
 											}
 
 											@if (drm.Id == JuegoDRM.Steam)
@@ -1655,7 +1649,9 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	[Parameter]
 	public Juegos.Juego juego { get; set; }
@@ -1667,6 +1663,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		if (juego != null)
 		{
 			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
@@ -2153,6 +2151,10 @@
 						nuevoTexto = nuevoTexto.Replace("Microsoft Store", null);
 						nuevoTexto = nuevoTexto.Replace("Row", null);
 						nuevoTexto = nuevoTexto.Replace("Mac", null);
+					}
+					else
+					{
+						nuevoTexto = oferta;
 					}
 
 					return nuevoTexto;
@@ -2766,7 +2768,6 @@
 	private bool HistoricoComprobar(JuegoDRM drm)
 	{
 		bool tiene = false;
-		int cantidad = 0;
 
 		if (juego.Historicos != null)
 		{
@@ -2776,13 +2777,8 @@
 				{
 					if (historico.DRM == drm)
 					{
-						cantidad += 1;
-
-						if (cantidad > 1)
-						{
-							tiene = true;
-							break;
-						}
+						tiene = true;
+						break;
 					}
 				}
 			}
@@ -2842,6 +2838,8 @@
 		{
 			if (juego.Historicos.Count > 0)
 			{
+				#region Añadir Años
+
 				foreach (var historico in juego.Historicos)
 				{
 					if (drm == historico.DRM)
@@ -2850,21 +2848,11 @@
 						{
 							Punto año = new Punto();
 							año.Año = historico.Fecha.Year;
-
-							List<PuntoDatos> datos = new List<PuntoDatos> {
-								new PuntoDatos
-								{
-									Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
-									Precio = (double)historico.Precio,
-									Tienda = historico.Tienda
-								} 
-							};
-
-							año.Puntos = datos;
+							año.Puntos = new List<PuntoDatos>();
 
 							puntos.Add(año);
-						}
-						else
+						}		
+						else if (puntos.Count > 0)
 						{
 							bool añadirAño = true;
 
@@ -2880,40 +2868,62 @@
 							{
 								Punto año = new Punto();
 								año.Año = historico.Fecha.Year;
-
-								List<PuntoDatos> datos = new List<PuntoDatos> {
-									new PuntoDatos
-									{
-										Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
-										Precio = (double)historico.Precio,
-										Tienda = historico.Tienda
-									} 
-								};
-
-								año.Puntos = datos;
+								año.Puntos = new List<PuntoDatos>();
 
 								puntos.Add(año);
 							}
-							else
-							{
-								foreach (var punto in puntos)
-								{
-									if (punto.Año == historico.Fecha.Year)
-									{
-										PuntoDatos nuevoPunto = new PuntoDatos
-										{
-											Fecha = new DateTime(2000, historico.Fecha.Month, historico.Fecha.Day),
-											Precio = (double)historico.Precio,
-											Tienda = historico.Tienda
-										};
+						}
+					}
+				}
 
-										punto.Puntos.Add(nuevoPunto);
-									}
+				#endregion
+
+				#region Añadir Puntos
+
+				foreach (var historico in juego.Historicos)
+				{
+					if (drm == historico.DRM)
+					{
+						bool añadir = true;
+
+						var historico2 = historico;
+
+						foreach (var historico3 in juego.Historicos)
+						{
+							if (drm == historico3.DRM && drm == historico2.DRM && 
+								historico3.Fecha.Day == historico2.Fecha.Day && 
+								historico3.Fecha.Month == historico2.Fecha.Month && 
+								historico3.Fecha.Year == historico2.Fecha.Year &&
+								historico3.Precio != historico2.Precio)
+							{
+								if (historico3.Precio < historico2.Precio)
+								{
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							foreach (var punto in puntos)
+							{
+								if (historico2.Fecha.Year == punto.Año)
+								{
+									PuntoDatos nuevoPunto = new PuntoDatos
+									{
+										Fecha = new DateTime(2000, historico2.Fecha.Month, historico2.Fecha.Day),
+										Precio = (double)historico2.Precio,
+										Tienda = historico2.Tienda
+									};
+
+									punto.Puntos.Add(nuevoPunto);
 								}
 							}
 						}
 					}
 				}
+
+				#endregion
 			}
 		}
 	}

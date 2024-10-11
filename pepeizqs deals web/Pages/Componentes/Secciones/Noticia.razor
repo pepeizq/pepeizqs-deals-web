@@ -1,11 +1,13 @@
 ﻿@using Bundles2
 @using Gratis2
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 @using Noticias
 @using Suscripciones2
 @using pepeizqs_deals_web.Areas.Identity.Data
 
+@inject UserManager<Usuario> UserManager
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
@@ -200,7 +202,9 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	[Parameter]
 	public int noticiaId { get; set; }
@@ -219,8 +223,10 @@
 
 	private List<Juegos.Juego> juegos = new List<Juegos.Juego>();
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		if (noticiaId > 0)
 		{
 			noticia = BaseDatos.Noticias.Buscar.UnaNoticia(noticiaId);

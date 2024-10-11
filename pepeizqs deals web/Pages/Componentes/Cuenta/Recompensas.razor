@@ -81,7 +81,7 @@
 
 											if (juego != null)
 											{
-												bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuario, juegosUsuario, juego, recompensaJuego.DRM);
+												bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego, recompensaJuego.DRM);
 												bool usuarioTieneDeseado = false;
 
 												string fondoColor = "background-color: var(--fondoBotonPequeño)";
@@ -92,7 +92,7 @@
 												}
 												else
 												{
-													usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario, juego, recompensaJuego.DRM);
+													usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juego, recompensaJuego.DRM);
 
 													if (usuarioTieneDeseado == true)
 													{
@@ -262,7 +262,9 @@ else
 	public string idioma { get; set; }
 
 	[Parameter]
-	public Usuario usuario { get; set; }
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
 
 	private List<string> juegosUsuario = new List<string>();
 
@@ -280,8 +282,10 @@ else
 
 	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
 		mostrarJuegos = true;
 		estiloJuegos = fondo;
 
