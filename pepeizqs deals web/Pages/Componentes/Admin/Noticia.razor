@@ -90,6 +90,18 @@
 				<textarea @onchange="(e => TextoCambiaContenidoEs(e))" class="entrada-texto" rows="10">@textoContenidoEs</textarea>
 			</div>
 		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Correo de Prueba
+			</div>
+
+			<div style="width: 85%;">
+				<button @onclick="(e => EnviarCorreoPrueba(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Enviar
+				</button>
+			</div>
+		</div>
 	</div>
 }
 
@@ -262,6 +274,16 @@
 			{
 				BaseDatos.Noticias.Actualizar.ContenidoEs(noticiaId.ToString(), nuevoTexto, conexion);
 			}
+		}
+	}
+
+	private void EnviarCorreoPrueba(MouseEventArgs e)
+	{
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			Herramientas.Correos.EnviarNuevaNoticia(noticia, "pepeizq@msn.com", conexion, "es-ES");
 		}
 	}
 }

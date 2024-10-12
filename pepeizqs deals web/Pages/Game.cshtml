@@ -38,7 +38,7 @@
 
 	if (usuarioLogeado == true)
 	{
-		@if (adminLogeado == true)
+		if (adminLogeado == true)
 		{
 			@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new
 			{

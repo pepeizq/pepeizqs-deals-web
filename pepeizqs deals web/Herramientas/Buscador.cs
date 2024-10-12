@@ -17,6 +17,7 @@ namespace Herramientas
 
 				nombre = nombre.Replace("&#39;", "'");
 				nombre = nombre.Replace("&amp;", "&");
+				nombre = nombre.Replace("&quot;", Strings.ChrW(34).ToString());
 
 				List<string> caracteres = new List<string>
 				{

@@ -57,6 +57,12 @@
 				Deseados
 			</button>
 		</div>
+
+		<div style="width: auto; margin-left: 20px;">
+			<button @onclick="(e => MostrarPestaña(e, 8))" class="boton-pequeño" style="padding: 10px 15px;">
+				Históricos
+			</button>
+		</div>
 	</div>
 
 	@if (pestañaMostrar > 0)
@@ -210,7 +216,11 @@
 		else if (pestañaMostrar == 7)
 		{
 			<textarea @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" rows="16">@textoDeseados</textarea>
-		}	
+		}
+		else if (pestañaMostrar == 8)
+		{
+			<textarea @onchange="(e => TextoCambiaHistoricos(e))" class="entrada-texto" rows="16">@textoHistoricos</textarea>
+		}
 	}
 </div>
 
@@ -287,6 +297,11 @@
 		if (juego.UsuariosInteresados != null)
 		{
 			textoDeseados = JsonConvert.SerializeObject(juego.UsuariosInteresados);
+		}
+
+		if (juego.Historicos != null)
+		{
+			textoHistoricos = JsonConvert.SerializeObject(juego.Historicos);
 		}
 	}
 
@@ -712,6 +727,30 @@
 			using (conexion)
 			{
 				BaseDatos.Juegos.Actualizar.Deseados(juego, conexion);
+			}
+		}
+	}
+
+	#endregion
+
+	#region Historicos
+
+	private string textoHistoricos = string.Empty;
+
+	private void TextoCambiaHistoricos(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoHistoricos = nuevoTexto;
+			juego.Historicos = JsonConvert.DeserializeObject<List<global::Juegos.JuegoHistorico>>(textoHistoricos);
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Juegos.Actualizar.Historicos(juego, conexion);
 			}
 		}
 	}

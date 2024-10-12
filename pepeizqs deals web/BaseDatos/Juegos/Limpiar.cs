@@ -6,18 +6,29 @@ namespace BaseDatos.Juegos
 {
 	public static class Limpiar
 	{
-		public static void Ejecutar()
+		public static void Minimos(SqlConnection conexion = null)
 		{
-			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string conexionTexto = builder.Configuration.GetConnectionString("pepeizqs_deals_webContextConnection");
-
-			using (SqlConnection conexion = new SqlConnection(conexionTexto))
+			if (conexion == null)
 			{
-				string limpiar = "TRUNCATE TABLE juegos";
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
 
-				using (SqlCommand comando = new SqlCommand(limpiar, conexion))
+			using (conexion)
+			{
+				string sqlActualizar = "TRUNCATE TABLE seccionMinimos";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
+
 					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
 				}
 			}
 		}

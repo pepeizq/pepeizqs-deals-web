@@ -147,10 +147,8 @@
 
     // private SqlConnection conexion = new SqlConnection();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await Task.Delay(100);
-
         ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos2")));
         ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "pendientes")));
         ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "errores")));

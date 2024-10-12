@@ -339,7 +339,7 @@ namespace BaseDatos.Tiendas
 					}
 					catch (Exception ex)
 					{
-						Errores.Insertar.Mensaje("Insertar Tienda", ex);
+						Errores.Insertar.Mensaje("Insertar Tienda: " + oferta?.Enlace, ex);
 					}
 				}
 			}

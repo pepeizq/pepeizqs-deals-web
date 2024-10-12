@@ -204,7 +204,7 @@
 				colorSeleccionado = "var(--fondoBien)";
 			}
 
-			if (Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+			if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
 			{
 				colorSeleccionado = "var(--fondoAlerta)";
 			}
@@ -325,7 +325,7 @@
 					fondoDestacado = "background-color: var(--fondoBien);";
 				}
 
-				if (Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+				if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
 				{
 					fondoDestacado = "background-color: var(--fondoAlerta);";
 				}
@@ -519,10 +519,11 @@ else
 		</div>
 
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
-			@foreach (var juego in juegosMinimosMostrar)
-			{
-				<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
-			}
+			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
+				<ItemContent>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
+				</ItemContent>
+			</Virtualize>
 		</div>
 
 		<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">

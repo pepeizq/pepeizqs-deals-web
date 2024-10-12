@@ -400,7 +400,7 @@
 
 								if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
 								{
-									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario.SteamWishlist, usuario.Wishlist, juego, drm.Id);
+									usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego, drm.Id);
 
 									if (usuarioTieneDeseado == true)
 									{
@@ -462,16 +462,6 @@
 											</div>
 										}
 									}
-								}
-								else
-								{
-									<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-										<div class="perfil-flexible-centrado">
-											<i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
-
-											<label style="text-align: left; padding-left: 25px; width: 100%;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String63", "Game"), drm.Nombre)</label>
-										</div>
-									</div>
 								}
 
 								@if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
@@ -1352,26 +1342,27 @@
 		@if (DLCs.Count > 0)
 		{
 			<div id="dlcs" style="margin-top: 50px; padding: 40px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
-				<div style="margin-bottom: 20px;">
+				<div>
 					<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@DLCs.Count.ToString())</label>
 				</div>
 
 				<div style="display: flex; flex-direction: column; gap: 20px;">
-					@foreach (var dlc in DLCs)
-					{
-						<a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
-							<div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
-								<div>
-									<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
-								</div>
+					<Virtualize Context="dlc" Items="DLCs" ItemSize="107">
+						<ItemContent>
+							<a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
+								<div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
+									<div>
+										<img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
+									</div>
 
-								<div style="width: 100%;">
-									<div>@dlc.Nombre</div>
-									<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
+									<div style="width: 100%;">
+										<div>@dlc.Nombre</div>
+										<div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
+									</div>
 								</div>
-							</div>
-						</a>
-					}
+							</a>
+						</ItemContent>
+					</Virtualize>
 				</div>
 			</div>
 		}

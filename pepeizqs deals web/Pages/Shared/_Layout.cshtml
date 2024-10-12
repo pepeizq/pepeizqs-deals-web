@@ -9,8 +9,6 @@
 @{
     #nullable disable
 
-    // Context.Response.Headers["Cache-Control"] = "no-store";
-
     string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
@@ -148,7 +146,7 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
-    <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
+    <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="Server" param-Theme="@("material")" />
 
     <base href="/" />
 </head>
@@ -275,20 +273,20 @@
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
     <script>
-        Blazor.start({
-            reconnectionOptions: {
-                maxRetries: 100,
-                retryIntervalMilliseconds: 2000
-            },
-            configureSignalR: function (builder) {
-                let c = builder.build();
-                c.serverTimeoutInMilliseconds = 30000;
-                c.keepAliveIntervalInMilliseconds = 10000;
-                builder.build = () => {
-                    return c;
-                };
-            }
-        });
+        // Blazor.start({
+        //     reconnectionOptions: {
+        //         maxRetries: 100,
+        //         retryIntervalMilliseconds: 2000
+        //     },
+        //     configureSignalR: function (builder) {
+        //         let c = builder.build();
+        //         c.serverTimeoutInMilliseconds = 30000;
+        //         c.keepAliveIntervalInMilliseconds = 10000;
+        //         builder.build = () => {
+        //             return c;
+        //         };
+        //     }
+        // });
     </script>
     <script>
         // _reconnectCallback = function (d) {
@@ -298,7 +296,7 @@
     </script>
 
 
-   @*   <script src="_framework/blazor.server.js" autostart="false"></script>
+    @*   <script src="_framework/blazor.server.js" autostart="false"></script>*@
     <script>
         async function boot() {
             await Blazor.start()
@@ -314,7 +312,7 @@
         }
 
         boot()
-    </script>*@
+    </script>
 
     <script>
         function hoverTooltip(e, id) {

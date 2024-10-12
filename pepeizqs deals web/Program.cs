@@ -1,10 +1,13 @@
+using Autofac.Core;
 using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Radzen;
@@ -51,7 +54,9 @@ builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => {
 	opciones.UseSqlServer(conexionTexto); 
 	opciones.EnableSensitiveDataLogging();
 });
-builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => opciones.UseSqlite(conexionTexto));
+builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => { 
+	opciones.UseSqlite(conexionTexto); 
+});
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
@@ -94,6 +99,7 @@ builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.Solicitudes>();
+builder.Services.AddSingleton<Tareas.LimpiarMinimos>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
@@ -103,6 +109,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Solicitudes>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.LimpiarMinimos>());
 
 #endregion
 
@@ -152,13 +159,13 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-//builder.Services.AddSignalR(opciones =>
-//{
-//	opciones.EnableDetailedErrors = true;
-//	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-//	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
-//	//opciones.MaximumReceiveMessageSize = 102400000;
-//});
+builder.Services.AddSignalR(opciones =>
+{
+	opciones.EnableDetailedErrors = true;
+	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
+	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
+	opciones.MaximumReceiveMessageSize = 102400000;
+});
 
 builder.Services.Configure<HubOptions>(opciones =>
 {
@@ -280,7 +287,7 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
+	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
 });
 
 //app.UseSession();
