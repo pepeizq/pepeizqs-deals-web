@@ -146,7 +146,7 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
-    <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="Server" param-Theme="@("material")" />
+    <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
 
     <base href="/" />
 </head>
@@ -155,7 +155,7 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
             <div class="cabecera-poner cuerpo-ancho">
-                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.Server, new { 
+                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { 
                     idioma = idioma, 
                     usuarioLogeado = usuarioLogeado,
                     adminLogeado = adminLogeado, 
@@ -212,7 +212,7 @@
 
         @if (piscinaTiendas == piscinaUsada)
         {
-            @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.ServerPrerendered))
+            @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.Server))
         }
 
         @RenderBody()
@@ -299,7 +299,12 @@
     @*   <script src="_framework/blazor.server.js" autostart="false"></script>*@
     <script>
         async function boot() {
-            await Blazor.start()
+            await Blazor.start({
+                reconnectionOptions: {
+                    maxRetries: 100,
+                    retryIntervalMilliseconds: 2000
+                }
+            });
 
             if (document.location.href != "https://pepeizqdeals.com/admin") {
                 while (Blazor.defaultReconnectionHandler === undefined) {

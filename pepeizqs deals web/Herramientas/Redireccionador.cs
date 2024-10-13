@@ -267,18 +267,9 @@ namespace Herramientas
 
 		[ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
-		public IActionResult CogerAcortador(int Id)
+		public IActionResult CogerAcortador2(string Id)
 		{
-			Enlace enlace = global::BaseDatos.Enlaces.Buscar.Id(Id.ToString());
-
-			if (enlace != null) 
-			{
-				return Redirect(enlace.Base);
-			}
-			else
-			{
-				return Redirect("~/");
-			}			
+			return Redirect(Herramientas.EnlaceAcortador.AlargarEnlace(Id));
 		}
 
 		[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)]

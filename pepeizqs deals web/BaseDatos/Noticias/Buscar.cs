@@ -140,7 +140,7 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static List<global::Noticias.Noticia> Actuales(SqlConnection conexion = null)
+		public static List<global::Noticias.Noticia> Actuales(SqlConnection conexion = null, bool ultimos3dias = false)
 		{
 			if (conexion == null)
 			{
@@ -159,6 +159,11 @@ namespace BaseDatos.Noticias
 			using (conexion)
 			{
 				string busqueda = "SELECT * FROM noticias WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
+
+				if (ultimos3dias == true)
+				{
+					busqueda = "SELECT * FROM noticias WHERE (GETDATE() BETWEEN fechaEmpieza AND fechaTermina) AND (GETDATE() - 3 < fechaEmpieza)";
+                }
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

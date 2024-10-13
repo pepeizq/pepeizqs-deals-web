@@ -22,8 +22,6 @@ builder.Services.AddResponseCompression(options =>
 {
     options.Providers.Add<BrotliCompressionProvider>();
     options.Providers.Add<GzipCompressionProvider>();
-    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-        new[] { "image/svg+xml", "image/jpeg" });
     options.EnableForHttps = true;
 });
 
@@ -68,7 +66,10 @@ builder.Services.AddRazorPages();
 
 #region Detallado en Componentes Razor
 
-builder.Services.AddServerSideBlazor().AddCircuitOptions(x => x.DetailedErrors = true);
+builder.Services.AddServerSideBlazor(options =>
+{
+	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(1);
+}).AddCircuitOptions(x => x.DetailedErrors = true);
 
 #endregion
 
@@ -162,9 +163,9 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddSignalR(opciones =>
 {
 	opciones.EnableDetailedErrors = true;
-	//opciones.ClientTimeoutInterval = TimeSpan.FromMinutes(30);
-	//opciones.KeepAliveInterval = TimeSpan.FromMinutes(20);
-	opciones.MaximumReceiveMessageSize = 102400000;
+	//opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+	//opciones.MaximumReceiveMessageSize = 102400000;
 });
 
 builder.Services.Configure<HubOptions>(opciones =>
@@ -268,27 +269,29 @@ app.UseStaticFiles();
 
 //#endregion
 
-#region Redireccionador
-
-app.MapControllers();
-
-#endregion
-
 //app.MapHealthChecks("/vida");
 
 //app.UseAuthorization();
 
 //app.UseRateLimiter();
 
-app.UseRouting();
+app.MapBlazorHub(opciones =>
+{
+	//opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+});
 
 app.MapRazorPages();
 
-app.MapBlazorHub(opciones =>
-{
-	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
-});
+app.UseRouting();
+
+#region Redireccionador
+
+app.MapControllers();
+
+#endregion
+
+//app.UseWebSockets();
 
 //app.UseSession();
 

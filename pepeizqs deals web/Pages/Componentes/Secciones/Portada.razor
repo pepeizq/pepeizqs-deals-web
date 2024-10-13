@@ -209,7 +209,7 @@
 				colorSeleccionado = "var(--fondoAlerta)";
 			}
 
-			<a href="game/@juegoSeleccionado.IdMaestra/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/">
+			<button @onclick="@(e => AbrirEnlace(e, "/game/" + juegoSeleccionado.IdMaestra.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre) + "/"))" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
 				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
 					<div class="destacado-mostrar">
 						@{
@@ -300,7 +300,7 @@
 						</div>
 					</div>
 				</div>
-			</a>
+			</button>
 		}
 
 		<div class="destacados-galeria-fila">
@@ -501,7 +501,7 @@ else
 @if (juegosMinimosMostrar.Count > 0)
 {
 	<div style="max-width: 1000px; margin: auto;">
-		<div style="display: flex; font-size: 20px; align-items: center; justify-content: center; margin-bottom: 20px;">
+		<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
 			<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
 				<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.CogerCadena(idioma, "LastLows", "Index")</a>
 
@@ -750,51 +750,11 @@ else
 
 			try
 			{
-				noticiasGestor = BaseDatos.Noticias.Buscar.Actuales(conexion);
+				noticiasMostrar = BaseDatos.Noticias.Buscar.Actuales(conexion, true);
 			}
 			catch (Exception ex)
 			{
 				BaseDatos.Errores.Insertar.Mensaje("Portada Noticias", ex);
-			}
-
-			if (noticiasGestor != null)
-			{
-				if (noticiasGestor.Count > 0)
-				{
-					noticiasGestor = noticiasGestor.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
-
-					foreach (Noticias.Noticia noticia in noticiasGestor)
-					{
-						DateTime fechaTemporal = noticia.FechaEmpieza;
-						fechaTemporal = fechaTemporal.AddDays(3);
-
-						if (fechaTemporal > DateTime.Now)
-						{
-							bool añadir = true;
-
-							if (DateTime.Now > noticia.FechaTermina)
-							{
-								añadir = false;
-							}
-
-							if (noticiasMostrar.Count > 0)
-							{
-								foreach (var noticiaMostrar in noticiasMostrar)
-								{
-									if (noticiaMostrar.Id == noticia.Id)
-									{
-										añadir = false;
-									}
-								}
-							}
-
-							if (añadir == true)
-							{
-								noticiasMostrar.Add(noticia);
-							}
-						}
-					}
-				}
 			}
 
 			#endregion
@@ -1135,7 +1095,6 @@ else
 	#region Noticias
 
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
-	private List<Noticias.Noticia> noticiasGestor = new List<Noticias.Noticia>();
 	private int noticiaMostrarId = 0;
 	private string noticiaMostrarTitulo = null;
 	private string noticiaMostrarAncho = "1000px";
@@ -1172,4 +1131,9 @@ else
 	}
 
 	#endregion
+
+	private void AbrirEnlace(MouseEventArgs e, string enlace)
+	{
+		NavManager.NavigateTo(enlace, true);
+	}
 }

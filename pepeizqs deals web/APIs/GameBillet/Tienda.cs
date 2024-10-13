@@ -32,6 +32,11 @@ namespace APIs.GameBillet
 			return tienda;
 		}
 
+		public static string Referido(string enlace)
+		{
+			return enlace + "?affiliate=64e186aa-fb0e-436f-a000-069090c06fe9";
+		}
+
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);

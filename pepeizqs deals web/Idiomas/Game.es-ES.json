@@ -262,5 +262,13 @@
   {
     "Id": "String66",
     "Valor": "Precios"
+  },
+  {
+    "Id": "String67",
+    "Valor": "Estuvo en la suscripción {0} {1} veces"
+  },
+  {
+    "Id": "String68",
+    "Valor": "Estuvo gratis para reclamar {0} veces en {1}"
   }
 ]

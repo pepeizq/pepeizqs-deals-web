@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Enlaces;
 using Bundles2;
 using Gratis2;
 using Suscripciones2;
@@ -9,6 +8,53 @@ namespace Herramientas
 {
 	public static class EnlaceAcortador
 	{
+		private static readonly char[] _chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+		private static Dictionary<string, string> diccionario { get; set; } = [];
+
+		private static string GenerarCodigo()
+		{
+			return string.Create(8, _chars, (codigoCorto, charsEstado) => Random.Shared.GetItems(charsEstado, codigoCorto));
+		}
+
+		public static string AcortarEnlace(string enlaceLargo)
+		{
+			foreach (var pareja in diccionario)
+			{
+				if (pareja.Value == enlaceLargo)
+				{
+					return pareja.Key;
+				}
+			}
+
+			string codigoCorto;
+
+			while (true)
+			{
+				codigoCorto = GenerarCodigo();
+
+				if (diccionario.TryAdd(codigoCorto, enlaceLargo))
+				{
+					break;
+				}
+			}
+
+			return codigoCorto;
+		}
+
+		#nullable enable
+
+		public static string? AlargarEnlace(string codigoCorto)
+		{
+			if (diccionario.TryGetValue(codigoCorto, out string? enlaceLargo))
+			{
+				return enlaceLargo;
+			}
+
+			return default;
+		}
+
+		#nullable disable
+
 		private static string dominio = "https://pepeizqdeals.com";
 
 		public static string Generar(string enlace, string tienda = null)
@@ -62,18 +108,13 @@ namespace Herramientas
                 {
                     enlace = APIs._2Game.Tienda.Referido(enlace);
                 }
-            }
-
-			//----------------------------------------
-
-			Enlace enlaceFinal = Buscar.Base(enlace);
-
-			if (enlaceFinal == null)
-			{
-				enlaceFinal = Insertar.Ejecutar(enlace);
+				else if (tienda == APIs.GameBillet.Tienda.Generar().Id)
+				{
+					enlace = APIs.GameBillet.Tienda.Referido(enlace);
+				}
 			}
 
-			return dominio + "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
 		public static string Generar(string enlace, BundleTipo tipo)
@@ -89,21 +130,7 @@ namespace Herramientas
 
 			//----------------------------------------
 
-			Enlace enlaceFinal = Buscar.Base(enlace);
-
-			if (enlaceFinal == null && string.IsNullOrEmpty(enlace) == false)
-			{
-				enlaceFinal = Insertar.Ejecutar(enlace);
-			}
-
-			if (enlaceFinal != null)
-			{
-				return dominio + "/link/" + enlaceFinal.Id + "/";
-			}
-			else
-			{
-				return null;
-			}
+			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
 		public static string Generar(string enlace, GratisTipo tipo)
@@ -125,16 +152,9 @@ namespace Herramientas
                 enlace = APIs.IndieGala.Gratis.Referido(enlace);
             }
 
-            //----------------------------------------
+			//----------------------------------------
 
-            Enlace enlaceFinal = Buscar.Base(enlace);
-
-			if (enlaceFinal == null)
-			{
-				enlaceFinal = Insertar.Ejecutar(enlace);
-			}
-
-			return dominio + "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
 		public static string Generar(string enlace, SuscripcionTipo tipo)
@@ -146,20 +166,7 @@ namespace Herramientas
 
 			//----------------------------------------
 
-			Enlace enlaceFinal = Buscar.Base(enlace);
-
-			if (enlaceFinal == null)
-			{
-				enlaceFinal = Insertar.Ejecutar(enlace);
-			}
-
-			return dominio + "/link/" + enlaceFinal.Id + "/";
+			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
-	}
-
-	public class Enlace
-	{
-		public string Id;
-		public string Base;
 	}
 }

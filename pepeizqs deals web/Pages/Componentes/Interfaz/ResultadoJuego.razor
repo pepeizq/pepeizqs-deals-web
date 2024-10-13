@@ -1,6 +1,9 @@
 ﻿@using Blazored.Video
 @using Juegos
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.VisualBasic
+
+@inject NavigationManager NavManager
 
 <style>
 	.minimo-fuente {
@@ -20,6 +23,14 @@
 			font-size: 10px;
 		}
 	}
+
+	.boton-expandir {
+		transition: transform .2s;
+	}
+
+		.boton-expandir:hover {
+			transform: scale(1.01);
+		}
 </style>
 
 @{
@@ -179,26 +190,53 @@
 			</div>
 		</div>
 
-		<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
-			<div class="perfil-flexible-centrado">
-				<div style="max-width: 230px;">
-					<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
-				</div>
+		@if (tipo == Tipo.Portada)
+		{
+			if (string.IsNullOrEmpty(fondoColor) == true)
+			{
+				fondoColor = "background-color: var(--fondoBotonPequeño);";
+			}
 
-				<div style="width: 100%; display: flex; flex-flow: column wrap; padding: 10px 20px;">
-					<div class="minimo-fuente">@juego.Nombre</div>
+			<button @onclick="@(e => AbrirEnlace(e, enlace))" class="boton-expandir" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%; color: var(--colorTexto); @fondoColor; text-align: left;">
+				<div class="perfil-flexible-centrado">
+					<div style="max-width: 230px;">
+						<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+					</div>
 
-					@if (tipo == Tipo.Portada)
-					{
+					<div style="width: 100%; display: flex; flex-flow: column wrap; padding: 10px 20px;">
+						<div class="minimo-fuente">@juego.Nombre</div>
+
 						<div style="margin-top: 15px; display: flex; align-items: center;">
 							<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" />
 							<img src="@iconoTienda" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" />
 							<div class="minimo-fuentefecha">@Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma)</div>
 						</div>
-					}
+					</div>
 
-					@if (tipo == Tipo.MinimosHistoricos)
-					{
+					<div style="display: flex; align-items: center;">
+						<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px; @fondoDescuento">
+							@descuento
+						</div>
+
+						<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
+							@precio
+						</div>
+					</div>
+				</div>
+			</button>
+		}
+
+		@if (tipo == Tipo.MinimosHistoricos)
+		{
+			<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
+				<div class="perfil-flexible-centrado">
+					<div style="max-width: 230px;">
+						<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
+					</div>
+
+					<div style="width: 100%; display: flex; flex-flow: column wrap; padding: 10px 20px;">
+						<div class="minimo-fuente">@juego.Nombre</div>
+
 						<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
 							<div style="width: 20px; height: 20px;">
 								<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="width: 100%; height: 100%;" />
@@ -235,20 +273,20 @@
 								}
 							}
 						</div>
-					}					
-				</div>
-
-				<div style="display: flex; align-items: center;">
-					<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px; @fondoDescuento">
-						@descuento
 					</div>
 
-					<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
-						@precio
+					<div style="display: flex; align-items: center;">
+						<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px; @fondoDescuento">
+							@descuento
+						</div>
+
+						<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
+							@precio
+						</div>
 					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		}
 	</div>
 }
 
@@ -278,5 +316,10 @@
 	{
 		Portada,
 		MinimosHistoricos
+	}
+
+	private void AbrirEnlace(MouseEventArgs e, string enlace)
+	{
+		NavManager.NavigateTo(enlace, true);
 	}
 }

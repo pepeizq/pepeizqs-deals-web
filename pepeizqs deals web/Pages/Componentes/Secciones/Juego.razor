@@ -30,6 +30,7 @@
 </script>
 
 <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+<link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
 
 <style>
 	.rz-tick-text {
@@ -2148,7 +2149,10 @@
 						nuevoTexto = oferta;
 					}
 
-					return nuevoTexto;
+					if (nuevoTexto.Length > 4)
+					{
+						return nuevoTexto;
+					}
 				}				
 			}
 		}
@@ -2419,7 +2423,29 @@
 				}
 				else if (gratis.Count > 1)
 				{
-					return string.Format(Idiomas.CogerCadena(idioma, "String62", "Game"), gratis.Count);
+					bool mismo = false;
+					GratisTipo nombreMismo = gratis[0].Tipo;
+
+					foreach (var subgratis in gratis)
+					{
+						if (subgratis.Tipo == nombreMismo)
+						{
+							mismo = true;
+						}
+						else
+						{
+							mismo = false;
+						}
+					}
+
+					if (mismo == false)
+					{
+						return string.Format(Idiomas.CogerCadena(idioma, "String62", "Game"), gratis.Count);
+					}
+					else if (mismo == true)
+					{
+						return string.Format(Idiomas.CogerCadena(idioma, "String68", "Game"), gratis.Count, Gratis2.GratisCargar.DevolverGratis(gratis[0].Tipo).Nombre);
+					}
 				}
 			}
 		}
@@ -2548,7 +2574,29 @@
 				}
 				else if (suscripciones.Count > 1)
 				{
-					return string.Format(Idiomas.CogerCadena(idioma, "String56", "Game"), suscripciones.Count);
+					bool misma = false;
+					SuscripcionTipo nombreMisma = suscripciones[0].Tipo;
+
+					foreach (var suscripcion in suscripciones)
+					{
+						if (suscripcion.Tipo == nombreMisma)
+						{
+							misma = true;
+						}
+						else
+						{
+							misma = false;
+						}
+					}
+
+					if (misma == false)
+					{
+						return string.Format(Idiomas.CogerCadena(idioma, "String56", "Game"), suscripciones.Count);
+					}
+					else if (misma == true)
+					{
+						return string.Format(Idiomas.CogerCadena(idioma, "String67", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre, suscripciones.Count);
+					}
 				}
 			}
 		}

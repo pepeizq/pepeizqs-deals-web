@@ -51,7 +51,7 @@ namespace APIs.Humble
             enlace = enlace.Replace("?", "%3F");
             enlace = enlace.Replace("=", "%3D");
 
-            return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
+            return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace + "&refc=gXsa9X";
         }
 
 		public static Suscripciones2.Suscripcion GenerarAntiguo()

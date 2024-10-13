@@ -122,10 +122,13 @@ namespace APIs.IndieGala
 											FechaActualizacion = DateTime.Now
 										};
 
-										if (juego.Fecha != null)
+										if (string.IsNullOrEmpty(juego.Fecha) == false)
 										{
-											DateTime fechaTermina = DateTime.Parse(juego.Fecha);
-											oferta.FechaTermina = fechaTermina;
+											if (juego.Fecha != "None")
+											{
+                                                DateTime fechaTermina = DateTime.Parse(juego.Fecha);
+                                                oferta.FechaTermina = fechaTermina;
+                                            }
 										}
 
 										try

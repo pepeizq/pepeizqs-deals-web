@@ -262,5 +262,13 @@
   {
     "Id": "String66",
     "Valor": "Prices"
+  },
+  {
+    "Id": "String67",
+    "Valor": "It was on {0} subscription {1} times"
+  },
+  {
+    "Id": "String68",
+    "Valor": "It was free to claim {0} times on {1}"
   }
 ]
