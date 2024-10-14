@@ -267,7 +267,7 @@ namespace Herramientas
 
 		[ResponseCache(Duration = 2000)]
 		[HttpGet("link/{id}")]
-		public IActionResult CogerAcortador2(string Id)
+		public IActionResult CogerAcortador(string Id)
 		{
 			return Redirect(Herramientas.EnlaceAcortador.AlargarEnlace(Id));
 		}

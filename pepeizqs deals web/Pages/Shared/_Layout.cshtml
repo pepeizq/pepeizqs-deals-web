@@ -272,6 +272,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="boot.js"></script>
     <script>
         // Blazor.start({
         //     reconnectionOptions: {
@@ -298,25 +299,31 @@
 
     @*   <script src="_framework/blazor.server.js" autostart="false"></script>*@
     <script>
-        async function boot() {
-            await Blazor.start({
-                reconnectionOptions: {
-                    maxRetries: 100,
-                    retryIntervalMilliseconds: 2000
-                }
-            });
+        // function delay(milliseconds) {
+        //     return new Promise(resolve => {
+        //         setTimeout(resolve, milliseconds)
+        //     });
+        // }
 
-            if (document.location.href != "https://pepeizqdeals.com/admin") {
-                while (Blazor.defaultReconnectionHandler === undefined) {
-                    await delay(100)
-                }
-                Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                    document.location.reload()
-                }
-            }
-        }
+        // async function boot() {
+        //     await Blazor.start({
+        //         reconnectionOptions: {
+        //             maxRetries: 100,
+        //             retryIntervalMilliseconds: 2000
+        //         }
+        //     })
 
-        boot()
+        //     if (document.location.href != "https://pepeizqdeals.com/admin") {
+        //         while (Blazor.defaultReconnectionHandler === undefined) {
+        //             await delay(100)
+        //         }
+        //         Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+        //             document.location.reload()
+        //         }
+        //     }
+        // }
+
+        // boot()
     </script>
 
     <script>

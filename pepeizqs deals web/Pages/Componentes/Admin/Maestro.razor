@@ -145,14 +145,19 @@
 
     #nullable disable
 
-    // private SqlConnection conexion = new SqlConnection();
+    private SqlConnection conexion = new SqlConnection();
 
     protected override void OnInitialized()
     {
-        ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos2")));
-        ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "pendientes")));
-        ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "errores")));
-        ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null).Count);
+        conexion = Herramientas.BaseDatos.Conectar();
+
+        using (conexion)
+        {
+            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
+            ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
+            ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
+            ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null, conexion).Count);
+        }
 
         CerrarPestañas();
         mostrarEnlaces = true;

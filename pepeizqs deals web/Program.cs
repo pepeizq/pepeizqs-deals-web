@@ -68,7 +68,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddServerSideBlazor(options =>
 {
-	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(1);
+	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
 }).AddCircuitOptions(x => x.DetailedErrors = true);
 
 #endregion
@@ -163,7 +163,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddSignalR(opciones =>
 {
 	opciones.EnableDetailedErrors = true;
-	//opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
 	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
 	//opciones.MaximumReceiveMessageSize = 102400000;
 });
@@ -220,7 +220,7 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 
 //builder.WebHost.ConfigureKestrel(opciones =>
 //{
-//	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
+//	opciones.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(30);
 //	opciones.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
 //	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
 //	opciones.AllowSynchronousIO = true;
@@ -291,7 +291,19 @@ app.MapControllers();
 
 #endregion
 
-//app.UseWebSockets();
+app.Use(async (context, next) =>
+{
+	context.Response.GetTypedHeaders().CacheControl =
+		new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+		{
+			Public = true,
+			MaxAge = TimeSpan.FromSeconds(60)
+		};
+	context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] = new string[] { "Accept-Encoding" };
+	await next();
+});
+
+app.UseWebSockets();
 
 //app.UseSession();
 

@@ -13,7 +13,7 @@ namespace Herramientas
 
 		private static string GenerarCodigo()
 		{
-			return string.Create(8, _chars, (codigoCorto, charsEstado) => Random.Shared.GetItems(charsEstado, codigoCorto));
+			return string.Create(6, _chars, (codigoCorto, charsEstado) => Random.Shared.GetItems(charsEstado, codigoCorto));
 		}
 
 		public static string AcortarEnlace(string enlaceLargo)
