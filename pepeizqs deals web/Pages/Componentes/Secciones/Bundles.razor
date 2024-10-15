@@ -183,7 +183,7 @@
 								{
 									bundlesMensual = bundlesMensual.OrderBy(x => x.NombreBundle).ToList();
 
-									<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
+									<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
 
 									<ul>
 										@foreach (var bundleMensual in bundlesMensual)

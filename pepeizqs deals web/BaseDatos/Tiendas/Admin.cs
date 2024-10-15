@@ -374,35 +374,20 @@ namespace BaseDatos.Tiendas
 
 		public static string LeerDato(SqlConnection conexion = null, string id = null)
 		{
-			if (conexion == null)
+			string seleccionarDato = "SELECT * FROM adminDatos WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(seleccionarDato, conexion))
 			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
-			else
-			{
-				if (conexion.State != System.Data.ConnectionState.Open)
+				comando.Parameters.AddWithValue("@id", id);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
-					conexion = Herramientas.BaseDatos.Conectar();
+					if (lector.Read() == true)
+					{
+						return lector.GetString(1);
+					}
 				}
 			}
-
-			using (conexion)
-			{
-                string seleccionarDato = "SELECT * FROM adminDatos WHERE id=@id";
-
-                using (SqlCommand comando = new SqlCommand(seleccionarDato, conexion))
-                {
-                    comando.Parameters.AddWithValue("@id", id);
-
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-                        if (lector.Read() == true)
-                        {
-                            return lector.GetString(1);
-                        }
-                    }
-                }
-            }
 
 			return null;
 		}

@@ -32,7 +32,7 @@ namespace Noticias
                 }
 
                 plantilla.Fecha = bundle.FechaTermina;
-                plantilla.Enlace = EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
+                //plantilla.Enlace = EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
 
                 #region Titulo
 
@@ -69,9 +69,9 @@ namespace Noticias
                         {
                             if (juego.Tier.Posicion == tier.Posicion)
                             {
-                                plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
-                                plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
-                            }
+                                plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+                                plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+							}
                         }
 
                         plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
@@ -98,8 +98,8 @@ namespace Noticias
 
                     foreach (var juego in bundle.Juegos)
                     {
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</a></li>";
+                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
                     }
 
                     plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
@@ -236,24 +236,24 @@ namespace Noticias
 
                     if (gratis != null)
                     {
-                        if (lista.Count == 1)
-                        {
-                            plantilla.Enlace = EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo);
-                        }
-                        else
-                        {
-                            plantilla.Enlace = null;
-                        }
+                        //if (lista.Count == 1)
+                        //{
+                        //    plantilla.Enlace = EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo);
+                        //}
+                        //else
+                        //{
+                        //    plantilla.Enlace = null;
+                        //}
 
                         if (GratisCargar.DevolverGratis(tipoSeleccionado).DRMEnseñar == true)
                         {
-                            plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
-                            plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</a></li>" + Environment.NewLine;
+                            plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</li>" + Environment.NewLine;
+                            plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</li>" + Environment.NewLine;
                         }
                         else
                         {
-                            plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
-                            plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + gratis.Nombre + "</a></li>" + Environment.NewLine;
+                            plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + gratis.Nombre + "</li>" + Environment.NewLine;
+                            plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + gratis.Nombre + "</li>" + Environment.NewLine;
                         }
                     }
                 }
@@ -381,19 +381,19 @@ namespace Noticias
                             }
                         }
 
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<li><a href=" + Strings.ChrW(34) + EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo) + Strings.ChrW(34) + " target=" + Strings.ChrW(34) + "_blank" + Strings.ChrW(34) + ">" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</a></li>" + Environment.NewLine;
+                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</li>" + Environment.NewLine;
+                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</li>" + Environment.NewLine;
                     }
                 }
 
-                if (mismoEnlace == true)
-                {
-                    plantilla.Enlace = enlaceSuscripcion;
-                }
-                else
-                {
-                    plantilla.Enlace = null;
-                }
+                //if (mismoEnlace == true)
+                //{
+                //    plantilla.Enlace = enlaceSuscripcion;
+                //}
+                //else
+                //{
+                //    plantilla.Enlace = null;
+                //}
 
                 plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul>";
                 plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul>";
@@ -439,7 +439,7 @@ namespace Noticias
 
             plantilla.Fecha = sorteosActivos[0].FechaTermina;
 
-            plantilla.Enlace = "https://pepeizqdeals.com/Giveaways";
+            //plantilla.Enlace = "https://pepeizqdeals.com/Giveaways";
 
             plantilla.ContenidoEn = "<div>" + Idiomas.CogerCadena("en-US", "News.Giveaways2") + "</div><br/>";
             plantilla.ContenidoEs = "<div>" + Idiomas.CogerCadena("es-ES", "News.Giveaways2") + "</div><br/>";

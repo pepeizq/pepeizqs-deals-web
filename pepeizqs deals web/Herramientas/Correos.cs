@@ -5,14 +5,10 @@ using MailKit.Net.Imap;
 using MailKit.Search;
 using MailKit.Security;
 using MailKit;
+using Microsoft.Data.SqlClient;
 using MimeKit;
 using Noticias;
 using Sorteos2;
-using Microsoft.Data.SqlClient;
-using Azure.Core;
-using Humanizer;
-using MimeKit.Text;
-using MailKit.Net.Smtp;
 
 namespace Herramientas
 {
@@ -24,12 +20,32 @@ namespace Herramientas
 			{
 				string titulo = "You have won the giveaway with the " + juego.Tipo.ToString().ToLower() + " " + juego.Nombre;
 
-				string html = string.Empty;
+				string html = @"<!DOCTYPE html>
+								<html>
+								<head>
+									<meta charset=""utf-8"" />
+									<title></title>
+								</head>
+								<body>
+									<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+										<div>
+											{{titulo}}
+										</div>
 
-				using (StreamReader r = new StreamReader("Plantillas/GanadorSorteo.html"))
-				{
-					html = r.ReadToEnd();
-				}
+										<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px; margin-top: 30px;"">
+											<div>
+												<div>
+													{{clave}}
+												</div>
+											</div>
+										</div>
+
+										<div style=""margin-top: 40px;"">
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+									</div>
+								</body>
+								</html>";
 
 				html = html.Replace("{{titulo}}", titulo);
 				html = html.Replace("{{clave}}", sorteo.Clave);
@@ -57,10 +73,40 @@ namespace Herramientas
 
                 if (string.IsNullOrEmpty(noticia.Enlace) == false)
                 {
-                    using (StreamReader r = new StreamReader("Plantillas/NuevaNoticiaConEnlace.html"))
-                    {
-                        html = r.ReadToEnd();
-                    }
+					html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										{{titulo}}
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										<a href=""{{enlace}}"" style=""color: #f5f5f5; user-select: none; width: 100%; text-align: left; font-size: 16px; text-decoration: none; "">
+											<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px;"">
+												<div>
+													<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
+														<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 100%; margin-top: 10px;"" />
+													</div>
+
+													<div style=""margin-top: 30px"">
+														{{contenido}}
+													</div>
+												</div>
+											</div>
+										</a>
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
                     string enlace = noticia.Enlace;
 
@@ -73,10 +119,36 @@ namespace Herramientas
                 }
                 else
                 {
-                    using (StreamReader r = new StreamReader("Plantillas/NuevaNoticia.html"))
-                    {
-                        html = r.ReadToEnd();
-                    }
+					html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										{{titulo}}
+									</div>
+
+									<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px; margin-top: 40px;"">
+										<div>
+											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
+												<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 100%; margin-top: 10px;"" />
+											</div>
+
+											<div style=""margin-top: 30px"">
+												{{contenido}}
+											</div>
+										</div>
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
                 }
 
                 string contenido = noticia.ContenidoEn;
@@ -109,12 +181,24 @@ namespace Herramientas
 
         public static void EnviarContraseñaReseteada(string correoHacia)
         {
-            string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										Your account password has been successfully reset.
+									</div>
 
-            using (StreamReader r = new StreamReader("Plantillas/ContraseñaReseteada.html"))
-            {
-                html = r.ReadToEnd();
-            }
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
@@ -123,12 +207,24 @@ namespace Herramientas
 
         public static void EnviarContraseñaOlvidada(string codigo, string correoHacia)
         {
-            string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										To reset your account password click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
+									</div>
 
-            using (StreamReader r = new StreamReader("Plantillas/ContraseñaOlvidada.html"))
-            {
-                html = r.ReadToEnd();
-            }
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
             html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
@@ -138,12 +234,24 @@ namespace Herramientas
 
         public static void EnviarCambioContraseña(string correoHacia)
         {
-            string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										The account password has been changed, if you have not changed it, contact admin@pepeizqdeals.com immediately.
+									</div>
 
-            using (StreamReader r = new StreamReader("Plantillas/CambioContraseña.html"))
-            {
-                html = r.ReadToEnd();
-            }
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
@@ -152,12 +260,24 @@ namespace Herramientas
 
         public static void EnviarCambioCorreo(string codigo, string correoHacia)
 		{
-            string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										To confirm your email click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
+									</div>
 
-            using (StreamReader r = new StreamReader("Plantillas/CambioCorreo.html"))
-            {
-                html = r.ReadToEnd();
-            }
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
             html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
@@ -167,12 +287,24 @@ namespace Herramientas
 
         public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
 		{
-			string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										To confirm your email click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
+									</div>
 
-			using (StreamReader r = new StreamReader("Plantillas/ConfirmacionCorreo.html"))
-			{
-				html = r.ReadToEnd();
-			}
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
 			html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
@@ -182,18 +314,55 @@ namespace Herramientas
 
 		public static void EnviarNuevoMinimo(int idJuego, JuegoPrecio precio, string correoHacia)
 		{
-			Juegos.Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
 			EnviarNuevoMinimo(juego, precio, correoHacia);
 		}
 
 		public static void EnviarNuevoMinimo(Juego juego, JuegoPrecio precio, string correoHacia)
 		{
-			string html = string.Empty;
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										{{descripcion}}
+									</div>
 
-			using (StreamReader r = new StreamReader("Plantillas/NuevoMinimo.html"))
-			{
-				html = r.ReadToEnd();
-			}
+									<div style=""margin-top: 40px;"">
+										<a href=""{{enlace}}"" style=""color: #f5f5f5; background-color: #0d1621; display: inline-block; user-select: none; width: 100%; padding: 6px; text-align: left; font-size: 16px; border: 0px; text-decoration: none; "">
+											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
+												<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 100%; margin-top: 10px;"" />
+											</div>
+											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px; margin-top: 10px;"">
+												<img src=""{{imagenTienda}}"" style=""width: 120px; margin-right: 10px;"" />
+												<div class=""juego-descuento"" style=""margin: 10px; padding: 10px; background-color: darkgreen;"">
+													{{descuento}}
+												</div>
+												<div style=""padding: 5px 10px;"">
+													{{precio}}
+												</div>
+											</div>
+										</a>
+									</div>
+
+									<div style=""margin-top: 20px;"">
+										<a href=""{{enlace}}"" style=""color: #f5f5f5; background-color: #0d1621; display: inline-block; user-select: none; width: 100%; padding: 6px; text-align: center; border: 0px; text-decoration: none; "">
+											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 17px; margin: 15px;"">
+												{{mensaje}}
+											</div>
+										</a>
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+									</div>
+								</div>
+							</body>
+							</html>";
 
 			string descripcion = juego.Nombre + " has reached a new minimum price registered on pepeizqdeals.com:";
 			string imagen = juego.Imagenes.Header_460x215;

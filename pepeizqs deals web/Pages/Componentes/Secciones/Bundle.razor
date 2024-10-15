@@ -47,6 +47,13 @@
 		</div>
 	}
 
+	if (tipo == Tipo.Noticia)
+	{
+		<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 20px;" target="_blank">
+			@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
+		</a>
+	}
+
 	if (bundle.Tiers != null)
 	{
 		decimal totalMinimos = 0;
@@ -145,7 +152,7 @@
 									}
 								</div>
 
-								<hr/>
+								<hr style="margin: 20px 0px 35px 0px;"/>
 							}
 							else
 							{

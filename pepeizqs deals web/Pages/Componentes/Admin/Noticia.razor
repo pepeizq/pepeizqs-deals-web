@@ -209,17 +209,14 @@
 
 	private void TextoCambiaEnlace(ChangeEventArgs texto)
 	{
-		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		string nuevoTexto = texto.Value.ToString().Trim();
+		textoEnlace = nuevoTexto;
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
 		{
-			string nuevoTexto = texto.Value.ToString().Trim();
-			textoEnlace = nuevoTexto;
-
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				BaseDatos.Noticias.Actualizar.Enlace(noticiaId.ToString(), nuevoTexto, conexion);
-			}
+			BaseDatos.Noticias.Actualizar.Enlace(noticiaId.ToString(), nuevoTexto, conexion);
 		}
 	}
 

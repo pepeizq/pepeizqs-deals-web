@@ -647,12 +647,27 @@ else
         {
             adminMensaje = "Admin";
 
-            int nuevosCorreosDeals = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos"));
-            int nuevosCorreosApps = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(null, "correos2"));
-
-            if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
+            if (conexion == null)
             {
-                adminMensaje = adminMensaje + " - Correo Nuevo";
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            using (conexion)
+            {
+                int nuevosCorreosDeals = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos"));
+                int nuevosCorreosApps = int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2"));
+
+                if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
+                {
+                    adminMensaje = adminMensaje + " - Correo Nuevo";
+                }
             }
         }
     }

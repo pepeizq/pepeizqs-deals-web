@@ -63,9 +63,9 @@
 									@texto
 								</div>
 
-								<button @onclick="(e => BundleAbrir(e, noticiaMostrar.BundleId))" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
+								<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
 									@Herramientas.Idiomas.CogerCadena(idioma, "String2", "LastNews")
-								</button>
+								</a>
 							}
 							else
 							{
@@ -135,7 +135,7 @@
 						noticiasMensual.Reverse();
 
 						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString())</label>
+							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
 							<hr />
 
 							<ul>
@@ -154,56 +154,6 @@
 			}
 		</div>
 	}
-}
-
-@if (bundleId > 0)
-{
-	<div class="opciones-panel">
-		<div style="max-width: 1320px; margin: 20px auto; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
-			@{
-				Bundles2.Bundle bundleSeleccionado = global::BaseDatos.Bundles.Buscar.UnBundle(bundleId);
-			}
-
-			<div style="margin-bottom: 20px;">
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
-					<button @onclick="@(e => BundleCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-						<i class="fa-solid fa-arrow-left"></i>
-					</button>
-
-					<div style="display: flex; align-items: center; flex-direction: row;">
-						<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" style="width: auto;" target="_blank">
-							<div style="height: 60px; padding-left: 40px; padding-right: 20px;">
-								<img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
-							</div>
-						</a>
-
-						<div style="padding-left: 20px; padding-right: 20px;">
-							<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
-								@bundleSeleccionado.NombreBundle
-							</a>
-
-							<div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-								<a href="/bundle/@bundleSeleccionado.Id/@Herramientas.EnlaceAdaptador.Nombre(bundleSeleccionado.NombreBundle)/" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
-									<i class="fa-solid fa-link"></i>
-								</a>
-
-								@bundleSeleccionado.FechaEmpieza.Day.ToString()/@bundleSeleccionado.FechaEmpieza.Month.ToString()/@bundleSeleccionado.FechaEmpieza.Year.ToString() • @bundleSeleccionado.FechaTermina.Day.ToString()/@bundleSeleccionado.FechaTermina.Month.ToString()/@bundleSeleccionado.FechaTermina.Year.ToString()
-							</div>
-						</div>
-					</div>
-				</div>
-
-				@if (DateTime.Today < bundleSeleccionado.FechaTermina)
-				{
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Bundle")
-					</a>
-				}
-			</div>
-
-			<Bundle bundleId="@bundleId" idioma="@idioma" tipo="@Bundle.Tipo.Juego" />
-		</div>
-	</div>
 }
 
 @code {
@@ -249,17 +199,4 @@
 
 		noticiasAntiguas = BaseDatos.Noticias.Buscar.Año(añoSeleccionado);
 	}
-
-	private int bundleId = 0;
-
-	private void BundleAbrir(MouseEventArgs e, int nuevoBundleId)
-	{
-		bundleId = nuevoBundleId;
-	}
-
-	private void BundleCerrar(MouseEventArgs e)
-	{
-		bundleId = 0;
-	}
-
 }

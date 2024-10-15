@@ -272,7 +272,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
-    <script src="boot.js"></script>
     <script>
         // Blazor.start({
         //     reconnectionOptions: {
@@ -289,41 +288,33 @@
         //     }
         // });
     </script>
+
     <script>
-        // _reconnectCallback = function (d) {
-        //     document.location.reload();
-        // }
-        // Blazor.defaultReconnectionHandler._reconnectCallback = function (d) { document.location.reload(); }
-    </script>
+        function delay(milliseconds) {
+            return new Promise(resolve => {
+                setTimeout(resolve, milliseconds)
+            });
+        }
 
+        async function boot() {
+            await Blazor.start({
+                reconnectionOptions: {
+                    maxRetries: 100,
+                    retryIntervalMilliseconds: 2000
+                }
+            })
 
-    @*   <script src="_framework/blazor.server.js" autostart="false"></script>*@
-    <script>
-        // function delay(milliseconds) {
-        //     return new Promise(resolve => {
-        //         setTimeout(resolve, milliseconds)
-        //     });
-        // }
+            if (document.location.href != "https://pepeizqdeals.com/admin") {
+                while (Blazor.defaultReconnectionHandler === undefined) {
+                    await delay(100)
+                }
+                Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                    document.location.reload()
+                }
+            }
+        }
 
-        // async function boot() {
-        //     await Blazor.start({
-        //         reconnectionOptions: {
-        //             maxRetries: 100,
-        //             retryIntervalMilliseconds: 2000
-        //         }
-        //     })
-
-        //     if (document.location.href != "https://pepeizqdeals.com/admin") {
-        //         while (Blazor.defaultReconnectionHandler === undefined) {
-        //             await delay(100)
-        //         }
-        //         Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-        //             document.location.reload()
-        //         }
-        //     }
-        // }
-
-        // boot()
+        boot()
     </script>
 
     <script>

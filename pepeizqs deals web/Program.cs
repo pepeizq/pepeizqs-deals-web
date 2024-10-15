@@ -1,7 +1,11 @@
 using Autofac.Core;
 using Herramientas;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +17,8 @@ using pepeizqs_deals_web.Data;
 using Radzen;
 using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using System.Net.WebSockets;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,22 +66,32 @@ builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webCo
 
 //builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
 
 //----------------------------------------------------------------------------------
 
 #region Detallado en Componentes Razor
 
-builder.Services.AddServerSideBlazor(options =>
-{
-	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
-}).AddCircuitOptions(x => x.DetailedErrors = true);
+//builder.Services.AddServerSideBlazor(options =>
+//{
+//	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
+//}).AddCircuitOptions(x => x.DetailedErrors = true).AddHubOptions(options =>
+//{
+//	options.ClientTimeoutInterval = TimeSpan.FromSeconds(180);
+//	options.KeepAliveInterval = TimeSpan.FromSeconds(90);
+//});
 
 #endregion
 
 #region Redireccionador
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddMvcOptions(options =>
+    options.Filters.Add(
+        new ResponseCacheAttribute
+        {
+            NoStore = true,
+            Location = ResponseCacheLocation.None
+        }));
 
 #endregion
 
@@ -87,9 +103,9 @@ builder.Services.AddHeadElementHelper();
 
 #region Tareas
 
-builder.Services.Configure<HostOptions>(hostOptions =>
+builder.Services.Configure<HostOptions>(opciones =>
 {
-	hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+	opciones.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
 builder.Services.AddSingleton<Tareas.Pings>();
@@ -116,7 +132,6 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 
 #region Acceder Usuario en Codigo y RSS
 
-builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddHttpContextAccessor();
 
@@ -133,12 +148,6 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(opciones => opcio
 builder.Services.AddHealthChecks();
 
 #endregion
-
-//#region Cache
-
-//builder.Services.AddResponseCaching();
-
-//#endregion
 
 #region Decompilador
 
@@ -160,19 +169,23 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-builder.Services.AddSignalR(opciones =>
-{
-	opciones.EnableDetailedErrors = true;
-	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
-	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-	//opciones.MaximumReceiveMessageSize = 102400000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//	opciones.EnableDetailedErrors = true;
+//	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//	//opciones.MaximumReceiveMessageSize = 102400000;
+//});
+
+#region Necesario para Juegos
 
 builder.Services.Configure<HubOptions>(opciones =>
 {
 	opciones.MaximumReceiveMessageSize = null;
 	opciones.EnableDetailedErrors = true;
 });
+
+#endregion
 
 //builder.Services.Configure<IdentityOptions>(opciones =>
 //{
@@ -205,10 +218,6 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 //});
 
-
-
-
-
 //builder.Services.AddRateLimiter(_ => _
 //    .AddFixedWindowLimiter(policyName: "fixed", options =>
 //    {
@@ -224,9 +233,16 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //	opciones.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(60);
 //	//serverOptions.Limits.MaxRequestBodySize = 100_000_000;
 //	opciones.AllowSynchronousIO = true;
+//	opciones.ConfigureHttpsDefaults(opciones2 => {
+//		opciones2.SslProtocols = System.Security.Authentication.SslProtocols.Tls13;
+//	});
 //});
 
+#region Radzen Graficos
+
 builder.Services.AddRadzenComponents();
+
+#endregion
 
 var app = builder.Build();
 
@@ -254,20 +270,8 @@ app.UseResponseCompression();
 
 #endregion
 
-#region Seo
-
-app.UseHeadElementServerPrerendering();
-
-#endregion
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-//#region Cache
-
-//app.UseResponseCaching();
-
-//#endregion
 
 //app.MapHealthChecks("/vida");
 
@@ -278,12 +282,18 @@ app.UseStaticFiles();
 app.MapBlazorHub(opciones =>
 {
 	//opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets || Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
 });
 
 app.MapRazorPages();
 
 app.UseRouting();
+
+#region Seo
+
+app.UseHeadElementServerPrerendering();
+
+#endregion
 
 #region Redireccionador
 
@@ -291,19 +301,15 @@ app.MapControllers();
 
 #endregion
 
-app.Use(async (context, next) =>
-{
-	context.Response.GetTypedHeaders().CacheControl =
-		new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
-		{
-			Public = true,
-			MaxAge = TimeSpan.FromSeconds(60)
-		};
-	context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] = new string[] { "Accept-Encoding" };
-	await next();
-});
+//var webSocketOptions = new WebSocketOptions
+//{
+//	KeepAliveInterval = TimeSpan.FromMinutes(2)
+//};
 
-app.UseWebSockets();
+//webSocketOptions.AllowedOrigins.Add("https://pepeizqdeals.com");
+//webSocketOptions.AllowedOrigins.Add("https://www.pepeizqdeals.com");
+
+//app.UseWebSockets(webSocketOptions);
 
 //app.UseSession();
 

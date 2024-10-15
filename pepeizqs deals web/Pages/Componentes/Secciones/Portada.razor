@@ -20,56 +20,16 @@
 @inject NavigationManager NavManager
 
 <style>
-	.noticia-fuente {
-		font-size: 18px;
-	}
-
-	.noticia-categoria {
-		font-size: 15px;
-	}
-
-	.noticia-fecha {
-		font-size: 15px;
+	.noticia-enlaces {
+		flex-direction: row;
+		gap: 80px;
 	}
 
 	@@media (max-width: 800px) {
-		.noticia-fuente {
-			font-size: 13px;
+		.noticia-enlaces {
+			flex-direction: column;
+			gap: 30px;
 		}
-
-		.noticia-categoria {
-			font-size: 11px;
-		}
-
-		.noticia-fecha {
-			font-size: 11px;
-		}
-	}
-</style>
-
-<style>
-	.tooltip4 {
-		text-decoration: none;
-		position: relative;
-	}
-
-		.tooltip4 .tooltip-relleno {
-			display: none;
-		}
-
-		.tooltip4:hover .tooltip-relleno {
-			display: block;
-			position: fixed;
-			overflow: hidden;
-			z-index: 1;
-		}
-
-	.tooltip-relleno {
-		background-color: var(--fondoBotonPequeño);
-		color: var(--colorTexto);
-		border: 1px solid var(--fondoBoton);
-		border-radius: 2px;
-		z-index: 1;
 	}
 </style>
 
@@ -209,7 +169,7 @@
 				colorSeleccionado = "var(--fondoAlerta)";
 			}
 
-			<button @onclick="@(e => AbrirEnlace(e, "/game/" + juegoSeleccionado.IdMaestra.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre) + "/"))" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
+			<a href="/game/@juegoSeleccionado.IdMaestra.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
 				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
 					<div class="destacado-mostrar">
 						@{
@@ -300,7 +260,7 @@
 						</div>
 					</div>
 				</div>
-			</button>
+			</a>
 		}
 
 		<div class="destacados-galeria-fila">
@@ -370,7 +330,7 @@
 							@titulo
 						</div>
 
-						<div @onclick="(e => GestionarNoticia(e, noticia.Enlace, noticia.Id, titulo, noticia.Tipo))" style="height: 100%; cursor: pointer;">
+						<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="height: 100%; cursor: pointer;">
 							<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
 								<div style="display: flex; align-items: center;">
 									@if (usuario != null)
@@ -445,13 +405,13 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</a>
 					</div>
 				</div>
 			}
 		</div>
 
-		<div style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto; gap: 80px;">
+		<div class="noticia-enlaces" style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto;">
 			<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
 				@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
 			</a>
@@ -466,7 +426,7 @@
 }
 else
 {
-	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto; display: flex; align-items: center; justify-content: center; gap: 80px;">
+	<div class="noticia-enlaces" style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto; display: flex; align-items: center; justify-content: center;">
 		<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
 			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
 		</a>
@@ -476,25 +436,6 @@ else
 
 			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px"/>
 		</div>
-	</div>
-}
-
-@if (noticiaMostrarId > 0)
-{
-	<div class="opciones-panel">
-		<div style="max-width: @noticiaMostrarAncho; margin: 20px auto; position: relative; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 20px; display: flex; align-items: center; gap: 40px;">
-				<button class="boton-pequeño" @onclick="CerrarNoticia" style="width: auto; padding: 5px 15px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
-					<i class="fa-solid fa-arrow-left"></i>
-				</button>
-
-				<div style="font-size: 20px;">
-					@noticiaMostrarTitulo
-				</div>
-			</div>
-			
-			<Noticia idioma="@idioma" noticiaId="@noticiaMostrarId" cambiarEnlace="false" tipo="Noticia.Tipo.Portada"/>
-		</div>		
 	</div>
 }
 
@@ -518,12 +459,17 @@ else
 			</button>
 		</div>
 
-		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
-			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
+		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: 20px; margin-bottom: 25px;">
+@* 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
 					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
 				</ItemContent>
-			</Virtualize>
+			</Virtualize> *@
+
+			@foreach (var juego in juegosMinimosMostrar)
+			{
+				<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
+			}
 		</div>
 
 		<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
@@ -1095,40 +1041,6 @@ else
 	#region Noticias
 
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
-	private int noticiaMostrarId = 0;
-	private string noticiaMostrarTitulo = null;
-	private string noticiaMostrarAncho = "1000px";
-
-	private async void GestionarNoticia(MouseEventArgs e, string noticiaEnlace, int noticiaId, string noticiaTitulo, NoticiaTipo noticiaTipo)
-	{
-		if (string.IsNullOrEmpty(noticiaEnlace) == false)
-		{
-			await JavaScript.InvokeVoidAsync("open", noticiaEnlace, "_blank");
-		}
-		else
-		{
-			if (noticiaId > 0)
-			{
-				noticiaMostrarId = noticiaId;
-			}
-		}
-
-		if (noticiaTipo == NoticiaTipo.Bundles)
-		{
-			noticiaMostrarAncho = "1200px";
-		}
-		else
-		{
-			noticiaMostrarAncho = "1000px";
-		}
-
-		noticiaMostrarTitulo = noticiaTitulo;
-	}
-
-	private void CerrarNoticia(MouseEventArgs e)
-	{
-		noticiaMostrarId = 0;
-	}
 
 	#endregion
 
