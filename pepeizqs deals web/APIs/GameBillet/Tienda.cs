@@ -9,7 +9,8 @@
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.GameBillet
 {
@@ -45,7 +46,7 @@ namespace APIs.GameBillet
 
 			if (string.IsNullOrEmpty(html) == false)
 			{
-				GameBilletProductos juegos = JsonConvert.DeserializeObject<GameBilletProductos>(html);
+				GameBilletProductos juegos = JsonSerializer.Deserialize<GameBilletProductos>(html);
 
 				if (juegos != null)
 				{
@@ -132,31 +133,31 @@ namespace APIs.GameBillet
 
 	public class GameBilletProductos
 	{
-		[JsonProperty("product")]
+		[JsonPropertyName("product")]
 		public List<GameBilletJuego> Juegos { get; set; }
 	}
 
 	public class GameBilletJuego
 	{
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("url")]
+		[JsonPropertyName("url")]
 		public string Enlace { get; set; }
 
-		[JsonProperty("price")]
+		[JsonPropertyName("price")]
 		public string PrecioBase { get; set; }
 
-		[JsonProperty("special_price")]
+		[JsonPropertyName("special_price")]
 		public string PrecioRebajado { get; set; }
 
-		[JsonProperty("sku")]
+		[JsonPropertyName("sku")]
 		public string Id { get; set; }
 
-		[JsonProperty("filters1")]
+		[JsonPropertyName("filters1")]
 		public string DRM1 { get; set; }
 
-		[JsonProperty("filters2")]
+		[JsonPropertyName("filters2")]
 		public string DRM2 { get; set; }
 	}
 

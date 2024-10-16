@@ -1,9 +1,10 @@
 ﻿#nullable disable
 
 using Herramientas;
-using Newtonsoft.Json;
 using System.Globalization;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.Steam
 {
@@ -28,7 +29,7 @@ namespace APIs.Steam
 
 				try
 				{
-					datos = JsonConvert.DeserializeObject<SteamJuegoAPI>(html);
+					datos = JsonSerializer.Deserialize<SteamJuegoAPI>(html);
 				}
 				catch { }
 
@@ -266,7 +267,7 @@ namespace APIs.Steam
 						
 					try
 					{
-						api = JsonConvert.DeserializeObject<SteamDeckAPI>(html);
+						api = JsonSerializer.Deserialize<SteamDeckAPI>(html);
 					}
 					catch { }
 					
@@ -330,141 +331,141 @@ namespace APIs.Steam
 
 	public class SteamJuegoAPI
 	{
-		[JsonProperty("data")]
+		[JsonPropertyName("data")]
 		public SteamJuegoAPIDatos Datos { get; set; }
 	}
 
 	public class SteamJuegoAPIDatos
 	{
-		[JsonProperty("type")]
+		[JsonPropertyName("type")]
 		public string Tipo { get; set; }
 
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("steam_appid")]
+		[JsonPropertyName("steam_appid")]
 		public string Id { get; set; }
 
-		[JsonProperty("is_free")]
+		[JsonPropertyName("is_free")]
 		public string Free2Play { get; set; }
 
-		[JsonProperty("required_age")]
+		[JsonPropertyName("required_age")]
 		public string MayorEdad {  get; set; }
 
-		[JsonProperty("short_description")]
+		[JsonPropertyName("short_description")]
 		public string DescripcionCorta { get; set; }
 
-		[JsonProperty("header_image")]
+		[JsonPropertyName("header_image")]
 		public string ImagenHeader_460x215 { get; set; }
 
-		[JsonProperty("capsule_image")]
+		[JsonPropertyName("capsule_image")]
 		public string ImagenCapsule_231x87 { get; set; }
 
-		[JsonProperty("publishers")]
+		[JsonPropertyName("publishers")]
 		public List<string> Publishers { get; set; }
 
-		[JsonProperty("developers")]
+		[JsonPropertyName("developers")]
 		public List<string> Desarrolladores { get; set; }
 
-		[JsonProperty("dlc")]
+		[JsonPropertyName("dlc")]
 		public List<string> DLCs { get; set; }
 
-		[JsonProperty("price_overview")]
+		[JsonPropertyName("price_overview")]
 		public SteamJuegoAPIPrecio Precio { get; set; }
 
-		[JsonProperty("platforms")]
+		[JsonPropertyName("platforms")]
 		public SteamJuegoAPISistemas Sistemas { get; set; }
 
-		[JsonProperty("screenshots")]
+		[JsonPropertyName("screenshots")]
 		public List<SteamJuegoAPICaptura> Capturas { get; set; }
 
-		[JsonProperty("movies")]
+		[JsonPropertyName("movies")]
 		public List<SteamJuegoAPIVideo> Videos { get; set; }
 
-		[JsonProperty("fullgame")]
+		[JsonPropertyName("fullgame")]
 		public SteamJuegoAPIMaestro Maestro { get; set; }
 
-		[JsonProperty("categories")]
+		[JsonPropertyName("categories")]
 		public List<SteamJuegoAPICategoria> Categorias { get; set; }
 
-		[JsonProperty("genres")]
+		[JsonPropertyName("genres")]
 		public List<SteamJuegoAPIGenero> Generos { get; set; }
 	}
 
 	public class SteamJuegoAPIPrecio
 	{
-		[JsonProperty("final_formatted")]
+		[JsonPropertyName("final_formatted")]
 		public string Formateado { get; set; }
 
-		[JsonProperty("discount_percent")]
+		[JsonPropertyName("discount_percent")]
 		public string Descuento { get; set; }
 	}
 
 	public class SteamJuegoAPISistemas
 	{
-		[JsonProperty("windows")]
+		[JsonPropertyName("windows")]
 		public bool Windows { get; set; }
 
-		[JsonProperty("mac")]
+		[JsonPropertyName("mac")]
 		public bool Mac { get; set; }
 
-		[JsonProperty("linux")]
+		[JsonPropertyName("linux")]
 		public bool Linux { get; set; }
 	}
 
 	public class SteamJuegoAPICaptura
 	{
 
-		[JsonProperty("path_thumbnail")]
+		[JsonPropertyName("path_thumbnail")]
 		public string Miniatura { get; set; }
 
-		[JsonProperty("path_full")]
+		[JsonPropertyName("path_full")]
 		public string Enlace { get; set; }
 	}
 
 	public class SteamJuegoAPIVideo
 	{
 
-		[JsonProperty("id")]
+		[JsonPropertyName("id")]
 		public string Id { get; set; }
 
-		[JsonProperty("mp4")]
+		[JsonPropertyName("mp4")]
 		public SteamJuegoAPIVideoDatos Mp4 { get; set; }
 
-		[JsonProperty("webm")]
+		[JsonPropertyName("webm")]
 		public SteamJuegoAPIVideoDatos Webm { get; set; }
 	}
 
 	public class SteamJuegoAPIVideoDatos
 	{
-		[JsonProperty("max")]
+		[JsonPropertyName("max")]
 		public string Enlace { get; set; }
 	}
 
 	public class SteamJuegoAPIMaestro
 	{
-		[JsonProperty("appid")]
+		[JsonPropertyName("appid")]
 		public string Id { get; set; }
 
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Nombre { get; set; }
 	}
 
 	public class SteamJuegoAPICategoria
 	{
-		[JsonProperty("id")]
+		[JsonPropertyName("id")]
 		public string Id { get; set; }
 
-		[JsonProperty("description")]
+		[JsonPropertyName("description")]
 		public string Descripcion { get; set; }
 	}
 
 	public class SteamJuegoAPIGenero
 	{
-		[JsonProperty("id")]
+		[JsonPropertyName("id")]
 		public string Id { get; set; }
 
-		[JsonProperty("description")]
+		[JsonPropertyName("description")]
 		public string Descripcion { get; set; }
 	}
 
@@ -474,28 +475,28 @@ namespace APIs.Steam
 
 	public class SteamDeckAPI
 	{
-		[JsonProperty("results")]
+		[JsonPropertyName("results")]
 		public SteamDeckAPIResultado Datos { get; set; }
 	}
 
 	public class SteamDeckAPIResultado
 	{
-		[JsonProperty("appid")]
+		[JsonPropertyName("appid")]
 		public string Id { get; set; }
 
-		[JsonProperty("resolved_category")]
+		[JsonPropertyName("resolved_category")]
 		public int Resultado { get; set; }
 
-		[JsonProperty("resolved_items")]
+		[JsonPropertyName("resolved_items")]
 		public List<SteamDeckAPIToken> Tokens { get; set; }
 	}
 
 	public class SteamDeckAPIToken
 	{
-		[JsonProperty("display_type")]
+		[JsonPropertyName("display_type")]
 		public int Tipo { get; set; }
 
-		[JsonProperty("loc_token")]
+		[JsonPropertyName("loc_token")]
 		public string Token { get; set; }
 	}
 

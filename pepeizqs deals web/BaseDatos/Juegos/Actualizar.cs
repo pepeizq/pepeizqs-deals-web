@@ -2,7 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Juegos
 {
@@ -99,11 +99,11 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@id", juego.Id);
 					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
-					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
-					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
-					comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
+					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonSerializer.Serialize(juego.PrecioMinimosHistoricos));
+					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonSerializer.Serialize(juego.PrecioActualesTiendas));
+					comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-					comando.Parameters.AddWithValue("@historicos", JsonConvert.SerializeObject(juego.Historicos));
+					comando.Parameters.AddWithValue("@historicos", JsonSerializer.Serialize(juego.Historicos));
 
 					if (juego.UltimaModificacion != null)
                     {
@@ -114,7 +114,7 @@ namespace BaseDatos.Juegos
 					{
 						if (juego.Etiquetas.Count > 0)
 						{
-							comando.Parameters.AddWithValue("@etiquetas", JsonConvert.SerializeObject(juego.Etiquetas));
+							comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
 						}
 					}
 
@@ -127,15 +127,15 @@ namespace BaseDatos.Juegos
 					{
 						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
 						comando.Parameters.AddWithValue("@tipo", juego.Tipo);
-						comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+						comando.Parameters.AddWithValue("@imagenes", JsonSerializer.Serialize(juego.Imagenes));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
-						comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
-						comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-						comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+						comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
+						comando.Parameters.AddWithValue("@caracteristicas", JsonSerializer.Serialize(juego.Caracteristicas));
+						comando.Parameters.AddWithValue("@media", JsonSerializer.Serialize(juego.Media));
 						comando.Parameters.AddWithValue("@maestro", juego.Maestro);
 						comando.Parameters.AddWithValue("@freeToPlay", juego.FreeToPlay);
-						comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));						
+						comando.Parameters.AddWithValue("@categorias", JsonSerializer.Serialize(juego.Categorias));
+						comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));						
 					}
 
 					if (string.IsNullOrEmpty(juego.SlugGOG) == false)
@@ -202,9 +202,9 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", id);
-				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(ofertasHistoricas));
-				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(ofertasActuales));
-				comando.Parameters.AddWithValue("@historicos", JsonConvert.SerializeObject(historicos));
+				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonSerializer.Serialize(ofertasHistoricas));
+				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonSerializer.Serialize(ofertasActuales));
+				comando.Parameters.AddWithValue("@historicos", JsonSerializer.Serialize(historicos));
 
 				if (ultimaModificacion != null)
 				{
@@ -241,7 +241,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", idJuego);
-				comando.Parameters.AddWithValue("@usuariosInteresados", JsonConvert.SerializeObject(usuariosInteresados));
+				comando.Parameters.AddWithValue("@usuariosInteresados", JsonSerializer.Serialize(usuariosInteresados));
 
 				try
 				{
@@ -262,7 +262,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
+				comando.Parameters.AddWithValue("@imagenes", JsonSerializer.Serialize(juego.Imagenes));
 
 				try
 				{
@@ -283,7 +283,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
+				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonSerializer.Serialize(juego.PrecioActualesTiendas));
 
 				try
 				{
@@ -304,7 +304,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
+				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonSerializer.Serialize(juego.PrecioMinimosHistoricos));
 
 				try
 				{
@@ -328,7 +328,7 @@ namespace BaseDatos.Juegos
 
 				if (juego.Bundles != null)
 				{
-					comando.Parameters.AddWithValue("@bundles", JsonConvert.SerializeObject(juego.Bundles));
+					comando.Parameters.AddWithValue("@bundles", JsonSerializer.Serialize(juego.Bundles));
 				}
 				else
 				{
@@ -357,7 +357,7 @@ namespace BaseDatos.Juegos
 
 				if (juego.Gratis != null)
 				{
-					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(juego.Gratis));
+					comando.Parameters.AddWithValue("@gratis", JsonSerializer.Serialize(juego.Gratis));
 				}
 				else
 				{
@@ -383,7 +383,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(juego.Suscripciones));
+				comando.Parameters.AddWithValue("@suscripciones", JsonSerializer.Serialize(juego.Suscripciones));
 
 				try
 				{
@@ -562,12 +562,12 @@ namespace BaseDatos.Juegos
 					{
 						comando.Parameters.AddWithValue("@id", juego.Id);
 						comando.Parameters.AddWithValue("@nombre", juego.Nombre);
-						comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
-						comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-						comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+						comando.Parameters.AddWithValue("@imagenes", JsonSerializer.Serialize(juego.Imagenes));
+						comando.Parameters.AddWithValue("@caracteristicas", JsonSerializer.Serialize(juego.Caracteristicas));
+						comando.Parameters.AddWithValue("@media", JsonSerializer.Serialize(juego.Media));
 						comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-						comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-						comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
+						comando.Parameters.AddWithValue("@categorias", JsonSerializer.Serialize(juego.Categorias));
+						comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
 
 						try
@@ -633,7 +633,7 @@ namespace BaseDatos.Juegos
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@usuariosInteresados", JsonConvert.SerializeObject(juego.UsuariosInteresados));
+				comando.Parameters.AddWithValue("@usuariosInteresados", JsonSerializer.Serialize(juego.UsuariosInteresados));
 
 				try
 				{
@@ -684,7 +684,7 @@ namespace BaseDatos.Juegos
 				{
 					comando.Parameters.AddWithValue("@id", juego.Id);
 					comando.Parameters.AddWithValue("@deck", juego.Deck);
-					comando.Parameters.AddWithValue("@deckTokens", JsonConvert.SerializeObject(juego.DeckTokens));
+					comando.Parameters.AddWithValue("@deckTokens", JsonSerializer.Serialize(juego.DeckTokens));
 					comando.Parameters.AddWithValue("@deckComprobacion", juego.DeckComprobacion);
 
 					comando.ExecuteNonQuery();
@@ -745,7 +745,7 @@ namespace BaseDatos.Juegos
 				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", juego.Id);
-					comando.Parameters.AddWithValue("@historicos", JsonConvert.SerializeObject(juego.Historicos));
+					comando.Parameters.AddWithValue("@historicos", JsonSerializer.Serialize(juego.Historicos));
 
 					comando.ExecuteNonQuery();
 					try

@@ -10,5 +10,9 @@
   {
     "Id": "String2",
     "Valor": "Open Bundle"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Open News"
   }
 ]

@@ -8,8 +8,9 @@ using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.Steam
 {
@@ -94,14 +95,14 @@ namespace APIs.Steam
 
 					try
 					{
-						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+						SteamQueryAPI datos = JsonSerializer.Deserialize<SteamQueryAPI>(html2);
 
 						if (datos != null)
 						{
 							html = datos.Html;
 						}
 
-						tope = int.Parse(datos.Total);
+						tope = datos.Total;
 					}
 					catch { }
 
@@ -134,7 +135,7 @@ namespace APIs.Steam
 
 					try
 					{
-						SteamQueryAPI datos = JsonConvert.DeserializeObject<SteamQueryAPI>(html2);
+						SteamQueryAPI datos = JsonSerializer.Deserialize<SteamQueryAPI>(html2);
 
 						if (datos != null)
 						{
@@ -378,10 +379,10 @@ namespace APIs.Steam
 
 	public class SteamQueryAPI
 	{
-		[JsonProperty("results_html")]
+		[JsonPropertyName("results_html")]
 		public string Html { get; set; }
 
-		[JsonProperty("total_count")]
-		public string Total { get; set; }
+		[JsonPropertyName("total_count")]
+		public int Total { get; set; }
 	}
 }

@@ -3,8 +3,8 @@
 using Juegos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using pepeizqs_deals_web.Areas.Identity.Data;
+using System.Text.Json;
 
 namespace Herramientas
 {
@@ -102,7 +102,7 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(deseadosWebEnBruto) == false)
 			{
-				deseadosWeb = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosWebEnBruto);
+				deseadosWeb = JsonSerializer.Deserialize<List<JuegoDeseado>>(deseadosWebEnBruto);
 			}
 
 			if (deseadosWeb != null)
@@ -144,7 +144,7 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 			{
-				deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+				deseados = JsonSerializer.Deserialize<List<JuegoDeseado>>(usuario.Wishlist);
 			}
 
 			ActualizarJuegoConUsuarios(juego.Id, juego.UsuariosInteresados, drm, usuario, estado);
@@ -173,7 +173,7 @@ namespace Herramientas
 					deseados.Add(deseado);
 				}
 
-				usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+				usuario.Wishlist = JsonSerializer.Serialize(deseados);
 
 				await UserManager.UpdateAsync(usuario);
 			}
@@ -197,7 +197,7 @@ namespace Herramientas
 					deseados.RemoveAt(posicion);
 				}
 
-				usuario.Wishlist = JsonConvert.SerializeObject(deseados);
+				usuario.Wishlist = JsonSerializer.Serialize(deseados);
 
 				await UserManager.UpdateAsync(usuario);
 			}

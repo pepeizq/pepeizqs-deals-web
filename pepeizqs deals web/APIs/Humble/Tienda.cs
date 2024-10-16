@@ -14,8 +14,10 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Tweetinvi.Core.Events;
 
 namespace APIs.Humble
 {
@@ -32,7 +34,7 @@ namespace APIs.Humble
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Color = "#ea9192",
 				AdminEnseñar = true,
-				AdminInteractuar = false
+				AdminInteractuar = true
 			};
 
 			return tienda;
@@ -89,7 +91,7 @@ namespace APIs.Humble
 
 					using (conexion)
 					{
-						HumbleJuegos juegos = JsonConvert.DeserializeObject<HumbleJuegos>(html);
+						HumbleJuegos juegos = JsonSerializer.Deserialize<HumbleJuegos>(html);
 
 						if (juegos != null)
 						{
@@ -101,7 +103,7 @@ namespace APIs.Humble
 
 								using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 								{
-									comando.Parameters.AddWithValue("@contenido", JsonConvert.SerializeObject(juego));
+									comando.Parameters.AddWithValue("@contenido", JsonSerializer.Serialize(juego));
 									comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
 									comando.Parameters.AddWithValue("@enlace", juego.Enlace);
 
@@ -121,7 +123,7 @@ namespace APIs.Humble
 			}	         
         }
 
-		public static async Task BuscarOfertas(SqlConnection conexion, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion)
 		{
 			await Task.Delay(1000);
 
@@ -143,7 +145,7 @@ namespace APIs.Humble
 							if (string.IsNullOrEmpty(lector.GetString(1)) == false)
 							{
 								HumbleJuego juego = new HumbleJuego();
-								juego = JsonConvert.DeserializeObject<HumbleJuego>(lector.GetString(1));
+								juego = JsonSerializer.Deserialize<HumbleJuego>(lector.GetString(1));
 
 								juegos.Add(juego);
 							}
@@ -174,9 +176,9 @@ namespace APIs.Humble
 
 					if (juego.PrecioBase != null && juego.PrecioRebajado != null)
 					{
-						decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad);
+						decimal precioRebajado = decimal.Parse(juego.PrecioRebajado.Cantidad.ToString());
 
-						int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioRebajado);
+						int descuento = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad.ToString()), precioRebajado);
 
 						if (descuento > 0)
 						{
@@ -229,14 +231,14 @@ namespace APIs.Humble
 
 								if (añadirChoice == true)
 								{
-									decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
+									decimal tempChoice = decimal.Parse(juego.PrecioRebajado.Cantidad.ToString()) * Convert.ToDecimal(DescuentoChoice(juego.DescuentoChoice));
 
-									decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad) - tempChoice;
+									decimal precioChoice = decimal.Parse(juego.PrecioRebajado.Cantidad.ToString()) - tempChoice;
 									precioChoice = Math.Round(precioChoice, 2);
 
 									if (precioChoice < precioRebajado)
 									{
-										int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad), precioChoice);
+										int descuentoChoice = Calculadora.SacarDescuento(decimal.Parse(juego.PrecioBase.Cantidad.ToString()), precioChoice);
 
 										JuegoPrecio choice = new JuegoPrecio
 										{
@@ -335,63 +337,60 @@ namespace APIs.Humble
 		}
 	}
 
-	public class HumblePaginas
-	{
-		[JsonProperty("num_pages")]
-		public string Numero { get; set; }
-	}
-
 	public class HumbleJuegos
 	{
-		[JsonProperty("results")]
+		[JsonPropertyName("num_pages")]
+		public int Numero { get; set; }
+
+		[JsonPropertyName("results")]
 		public List<HumbleJuego> Resultados { get; set; }
 	}
 
 	public class HumbleJuego
 	{
-		[JsonProperty("human_name")]
+		[JsonPropertyName("human_name")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("machine_name")]
+		[JsonPropertyName("machine_name")]
 		public string Id { get; set; }
 
-		[JsonProperty("standard_carousel_image")]
+		[JsonPropertyName("standard_carousel_image")]
 		public string ImagenPequeña { get; set; }
 
-		[JsonProperty("large_capsule")]
+		[JsonPropertyName("large_capsule")]
 		public string ImagenGrande { get; set; }
 
-		[JsonProperty("current_price")]
+		[JsonPropertyName("current_price")]
 		public HumbleJuegoPrecio PrecioRebajado { get; set; }
 
-		[JsonProperty("full_price")]
+		[JsonPropertyName("full_price")]
 		public HumbleJuegoPrecio PrecioBase { get; set; }
 
-		[JsonProperty("human_url")]
+		[JsonPropertyName("human_url")]
 		public string Enlace { get; set; }
 
-		[JsonProperty("delivery_methods")]
+		[JsonPropertyName("delivery_methods")]
 		public List<string> DRMs { get; set; }
 
-		[JsonProperty("platforms")]
+		[JsonPropertyName("platforms")]
 		public List<string> Sistemas { get; set; }
 
-		[JsonProperty("sale_end")]
+		[JsonPropertyName("sale_end")]
 		public double FechaTermina { get; set; }
 
-		[JsonProperty("rewards_split")]
+		[JsonPropertyName("rewards_split")]
 		public double DescuentoChoice { get; set; }
 
-		[JsonProperty("incompatible_features")]
+		[JsonPropertyName("incompatible_features")]
 		public List<string> CosasIncompatibles { get; set; }
 	}
 
 	public class HumbleJuegoPrecio
 	{
-		[JsonProperty("currency")]
+		[JsonPropertyName("currency")]
 		public string Moneda { get; set; }
 
-		[JsonProperty("amount")]
-		public string Cantidad { get; set; }
+		[JsonPropertyName("amount")]
+		public object Cantidad { get; set; }
 	}
 }

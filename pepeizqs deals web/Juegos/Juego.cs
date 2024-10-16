@@ -153,6 +153,7 @@ namespace Juegos
 		public string Enlace { get; set; }
 		public string ImagenNoticia { get; set; }
 		public Juego Juego { get; set; }
+		public int Id {get; set;}
 	}
 
 	public class JuegoSuscripcion
@@ -167,6 +168,7 @@ namespace Juegos
 		public string Enlace { get; set; }
 		public string ImagenNoticia { get; set; }
         public Juego Juego { get; set; }
+        public int Id { get; set; }
     }
 
 	public class JuegoHistorico

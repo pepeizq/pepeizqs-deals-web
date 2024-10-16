@@ -9,7 +9,6 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic
-@using Newtonsoft.Json
 @using Radzen
 @using Radzen.Blazor
 @using Suscripciones2
@@ -1659,8 +1658,6 @@
 
 		if (juego != null)
 		{
-			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
 			if (juego.Media != null)
 			{
 				if (string.IsNullOrEmpty(juego.Media.Video) == false)
@@ -1680,105 +1677,7 @@
 						}
 					}
 				}
-			}
-
-			if (juego.IdSteam > 0)
-			{
-				bool actualizarDatosAPI = false;
-
-				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
-				{
-					actualizarDatosAPI = true;
-				}
-
-				if (juego.Categorias == null && juego.Generos == null)
-				{
-					actualizarDatosAPI = true;
-
-					if (juego.Tipo == JuegoTipo.Music)
-					{
-						actualizarDatosAPI = false;
-					}
-				}
-
-				if (actualizarDatosAPI == true)
-				{
-					global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-					if (nuevoJuego != null)
-					{		
-						global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-					}
-				}
-
-				if (juego.Tipo == JuegoTipo.Game)
-				{
-					bool actualizarDeckAPI = false;
-
-					if (juego.DeckComprobacion == null)
-					{
-						actualizarDeckAPI = true;
-					}
-					else
-					{
-						if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
-						{
-							actualizarDeckAPI = true;
-						}
-					}
-
-					if (juego.DeckTokens == null)
-					{
-						actualizarDeckAPI = true;
-					}
-
-					if (actualizarDeckAPI == true)
-					{
-						APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
-						bool vacio = true;
-
-						if (deckAPI != null)
-						{
-							if (deckAPI.Datos != null)
-							{
-								juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
-								juego.DeckComprobacion = DateTime.Now;
-
-								if (deckAPI.Datos.Tokens != null)
-								{
-									if (deckAPI.Datos.Tokens.Count > 0)
-									{
-										List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
-
-										foreach (var token in deckAPI.Datos.Tokens)
-										{
-											if (string.IsNullOrEmpty(token.Token) == false)
-											{
-												JuegoDeckToken nuevoToken = new JuegoDeckToken();
-												nuevoToken.Tipo = token.Tipo;
-												nuevoToken.Mensaje = token.Token;
-
-												tokens.Add(nuevoToken);
-											}
-										}
-
-										juego.DeckTokens = tokens;
-									}
-								}
-
-								vacio = false;
-								global::BaseDatos.Juegos.Actualizar.Deck(juego);
-							}
-						}
-
-						if (vacio == true)
-						{
-							juego.DeckComprobacion = DateTime.Now;
-							global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
-						}
-					}
-				}
-			}				
+			}			
 		}
 	}
 
@@ -1788,6 +1687,106 @@
 		{
 			if (juego != null)
 			{
+				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+
+				if (juego.IdSteam > 0)
+				{
+					bool actualizarDatosAPI = false;
+
+					if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
+					{
+						actualizarDatosAPI = true;
+					}
+
+					if (juego.Categorias == null && juego.Generos == null)
+					{
+						actualizarDatosAPI = true;
+
+						if (juego.Tipo == JuegoTipo.Music)
+						{
+							actualizarDatosAPI = false;
+						}
+					}
+
+					if (actualizarDatosAPI == true)
+					{
+						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+						if (nuevoJuego != null)
+						{
+							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+						}
+					}
+
+					if (juego.Tipo == JuegoTipo.Game)
+					{
+						bool actualizarDeckAPI = false;
+
+						if (juego.DeckComprobacion == null)
+						{
+							actualizarDeckAPI = true;
+						}
+						else
+						{
+							if (juego.DeckComprobacion + TimeSpan.FromDays(180) < DateTime.Now)
+							{
+								actualizarDeckAPI = true;
+							}
+						}
+
+						if (juego.DeckTokens == null)
+						{
+							actualizarDeckAPI = true;
+						}
+
+						if (actualizarDeckAPI == true)
+						{
+							APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
+							bool vacio = true;
+
+							if (deckAPI != null)
+							{
+								if (deckAPI.Datos != null)
+								{
+									juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
+									juego.DeckComprobacion = DateTime.Now;
+
+									if (deckAPI.Datos.Tokens != null)
+									{
+										if (deckAPI.Datos.Tokens.Count > 0)
+										{
+											List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
+
+											foreach (var token in deckAPI.Datos.Tokens)
+											{
+												if (string.IsNullOrEmpty(token.Token) == false)
+												{
+													JuegoDeckToken nuevoToken = new JuegoDeckToken();
+													nuevoToken.Tipo = token.Tipo;
+													nuevoToken.Mensaje = token.Token;
+
+													tokens.Add(nuevoToken);
+												}
+											}
+
+											juego.DeckTokens = tokens;
+										}
+									}
+
+									vacio = false;
+									global::BaseDatos.Juegos.Actualizar.Deck(juego);
+								}
+							}
+
+							if (vacio == true)
+							{
+								juego.DeckComprobacion = DateTime.Now;
+								global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
+							}
+						}
+					}
+				}
+
 				await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
 			}
 		}

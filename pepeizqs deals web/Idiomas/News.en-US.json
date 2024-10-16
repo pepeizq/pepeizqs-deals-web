@@ -6,5 +6,41 @@
   {
     "Id": "Back",
     "Valor": "Back to Last News"
+  },
+  {
+    "Id": "Back2",
+    "Valor": "Back to Home Page"
+  },
+  {
+    "Id": "String1",
+    "Valor": "This promotion ends in {0} days"
+  },
+  {
+    "Id": "String2",
+    "Valor": "This promotion ends in {0} day"
+  },
+  {
+    "Id": "String3",
+    "Valor": "This promotion ends today"
+  },
+  {
+    "Id": "String4",
+    "Valor": "This promotion has ended"
+  },
+  {
+    "Id": "String5",
+    "Valor": "This bundle ends in {0} days"
+  },
+  {
+    "Id": "String6",
+    "Valor": "This bundle ends in {0} day"
+  },
+  {
+    "Id": "String7",
+    "Valor": "This bundle ends today"
+  },
+  {
+    "Id": "String8",
+    "Valor": "This bundle has ended"
   }
 ]

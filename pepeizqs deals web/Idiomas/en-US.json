@@ -32,40 +32,12 @@
     "Valor": "Others"
   },
   {
-    "Id": "News.String1",
-    "Valor": "This promotion ends in {0} days"
-  },
-  {
-    "Id": "News.String2",
-    "Valor": "This promotion ends in {0} day"
-  },
-  {
-    "Id": "News.String3",
-    "Valor": "This promotion ends today"
-  },
-  {
-    "Id": "News.String4",
-    "Valor": "This promotion has ended"
-  },
-  {
     "Id": "News.String5",
     "Valor": "Games in the database:"
   },
   {
     "Id": "News.String6",
     "Valor": "Added"
-  },
-  {
-    "Id": "News.String7",
-    "Valor": "Open Bundle"
-  },
-  {
-    "Id": "News.String8",
-    "Valor": "Open Free"
-  },
-  {
-    "Id": "News.String9",
-    "Valor": "Open Subscription"
   },
   {
     "Id": "News.String10",

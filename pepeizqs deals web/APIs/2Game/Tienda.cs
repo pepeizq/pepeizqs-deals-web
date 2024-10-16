@@ -6,10 +6,8 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
 using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace APIs._2Game
 {

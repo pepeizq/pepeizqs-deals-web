@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
 @using Microsoft.JSInterop
-@using Newtonsoft.Json
+@using System.Text.Json
 @using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
@@ -346,18 +346,18 @@
 
 			if (string.IsNullOrEmpty(usuario.HistoricalLowsDRMs) == false)
 			{
-				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.HistoricalLowsDRMs);
+				drms = JsonSerializer.Deserialize<List<MostrarJuegoDRM>>(usuario.HistoricalLowsDRMs);
 			}
 
 			if (string.IsNullOrEmpty(usuario.HistoricalLowsStores) == false)
 			{
-				tiendas = JsonConvert.DeserializeObject<List<MostrarJuegoTienda>>(usuario.HistoricalLowsStores);
+				tiendas = JsonSerializer.Deserialize<List<MostrarJuegoTienda>>(usuario.HistoricalLowsStores);
 				tiendas = GenerarListaTiendas(tiendas);
 			}
 
 			if (string.IsNullOrEmpty(usuario.HistoricalLowsCategories) == false)
 			{
-				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.HistoricalLowsCategories);
+				categorias = JsonSerializer.Deserialize<List<MostrarJuegoCategoria>>(usuario.HistoricalLowsCategories);
 			}
 
 			#endregion
@@ -832,7 +832,7 @@
 
 		if (usuario != null)
 		{
-			usuario.HistoricalLowsDRMs = JsonConvert.SerializeObject(drms);
+			usuario.HistoricalLowsDRMs = JsonSerializer.Serialize(drms);
 
 			try
 			{
@@ -897,7 +897,7 @@
 
 		if (usuario != null)
 		{
-			usuario.HistoricalLowsStores = JsonConvert.SerializeObject(tiendas);
+			usuario.HistoricalLowsStores = JsonSerializer.Serialize(tiendas);
 
 			try
 			{
@@ -968,7 +968,7 @@
 
 		if (usuario != null)
 		{
-			usuario.HistoricalLowsCategories = JsonConvert.SerializeObject(categorias);
+			usuario.HistoricalLowsCategories = JsonSerializer.Serialize(categorias);
 
 			try
 			{

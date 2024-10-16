@@ -24,6 +24,8 @@ namespace Noticias
 		public DateTime FechaTermina;
 		public int IdMaestra;
 		public int BundleId;
+		public string GratisIds;
+		public string SuscripcionesIds;
 	}
 
 	public class NoticiaMostrar

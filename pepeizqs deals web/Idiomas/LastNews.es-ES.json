@@ -10,5 +10,9 @@
   {
     "Id": "String2",
     "Valor": "Abrir Bundle"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Abrir Noticia"
   }
 ]

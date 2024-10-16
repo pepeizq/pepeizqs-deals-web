@@ -2,7 +2,6 @@
 
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using pepeizqs_deals_web.Pages.Componentes.Admin;
 
 namespace BaseDatos.Bundles
 {

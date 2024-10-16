@@ -94,6 +94,16 @@ namespace BaseDatos.Noticias
 			}
 			catch { }
 
+			if (lector.IsDBNull(16) == false)
+			{
+				noticia.GratisIds = lector.GetString(16);
+			}
+
+			if (lector.IsDBNull(17) == false)
+			{
+				noticia.SuscripcionesIds = lector.GetString(17);
+			}
+
 			return noticia;
 		}
 

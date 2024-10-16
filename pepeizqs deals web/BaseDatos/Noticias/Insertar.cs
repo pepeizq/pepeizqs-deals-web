@@ -92,9 +92,27 @@ namespace BaseDatos.Noticias
 					añadirBundleId2 = ", @bundleId";
 				}
 
-				string sqlInsertar = "INSERT INTO noticias " +
-					"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + añadirJuegos1 + añadirBundle1 + añadirGratis1 + añadirSuscripcion1 + añadirBundleId1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
-					"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + añadirJuegos2 + añadirBundle2 + añadirGratis2 + añadirSuscripcion2 + añadirBundleId2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
+				string añadirGratisIds1 = string.Empty;
+				string añadirGratisIds2 = string.Empty;
+
+				if (string.IsNullOrEmpty(noticia.GratisIds) == false)
+				{
+					añadirGratisIds1 = ", gratisIds";
+					añadirGratisIds2 = ", @gratisIds";
+				}
+
+				string añadirSuscripcionesIds1 = string.Empty;
+                string añadirSuscripcionesIds2 = string.Empty;
+
+				if (string.IsNullOrEmpty(noticia.SuscripcionesIds) == false)
+				{
+					añadirSuscripcionesIds1 = ", suscripcionesIds";
+                    añadirSuscripcionesIds2 = ", @suscripcionesIds";
+                }
+
+                string sqlInsertar = "INSERT INTO noticias " +
+					"(noticiaTipo" + añadirImagen1 + añadirEnlace1 + añadirJuegos1 + añadirBundle1 + añadirGratis1 + añadirSuscripcion1 + añadirBundleId1 + añadirGratisIds1 + añadirSuscripcionesIds1 + ", fechaEmpieza, fechaTermina, tituloEn, tituloEs, contenidoEn, contenidoEs) VALUES " +
+					"(@noticiaTipo" + añadirImagen2 + añadirEnlace2 + añadirJuegos2 + añadirBundle2 + añadirGratis2 + añadirSuscripcion2 + añadirBundleId2 + añadirGratisIds2 + añadirSuscripcionesIds2 + ", @fechaEmpieza, @fechaTermina, @tituloEn, @tituloEs, @contenidoEn, @contenidoEs) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
 				{
@@ -135,7 +153,17 @@ namespace BaseDatos.Noticias
 						comando.Parameters.AddWithValue("@bundleId", noticia.BundleId);
 					}
 
-					comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
+                    if (string.IsNullOrEmpty(noticia.GratisIds) == false)
+					{
+						comando.Parameters.AddWithValue("@gratisIds", noticia.GratisIds);
+					}
+
+                    if (string.IsNullOrEmpty(noticia.SuscripcionesIds) == false)
+                    {
+                        comando.Parameters.AddWithValue("@suscripcionesIds", noticia.SuscripcionesIds);
+                    }
+
+                    comando.Parameters.AddWithValue("@fechaEmpieza", noticia.FechaEmpieza.ToString());
 					comando.Parameters.AddWithValue("@fechaTermina", noticia.FechaTermina.ToString());
 					comando.Parameters.AddWithValue("@tituloEn", WebUtility.HtmlDecode(noticia.TituloEn));
 					comando.Parameters.AddWithValue("@tituloEs", WebUtility.HtmlDecode(noticia.TituloEs));

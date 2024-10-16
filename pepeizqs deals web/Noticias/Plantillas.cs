@@ -121,7 +121,7 @@ namespace Noticias
             return plantilla;
         }
 
-        public static Plantilla Gratis(Plantilla plantilla, int juegoId, string tipoSeleccionado)
+        public static Plantilla Gratis(Plantilla plantilla, int juegoId, int id, string tipoSeleccionado)
         {
             if (string.IsNullOrEmpty(plantilla.Juegos) == true)
             {
@@ -235,17 +235,8 @@ namespace Noticias
                     Juegos.JuegoGratis gratis = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(juego));
 
                     if (gratis != null)
-                    {
-                        //if (lista.Count == 1)
-                        //{
-                        //    plantilla.Enlace = EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo);
-                        //}
-                        //else
-                        //{
-                        //    plantilla.Enlace = null;
-                        //}
-
-                        if (GratisCargar.DevolverGratis(tipoSeleccionado).DRMEnseñar == true)
+                    {					
+						if (GratisCargar.DevolverGratis(tipoSeleccionado).DRMEnseñar == true)
                         {
                             plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</li>" + Environment.NewLine;
                             plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + gratis.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(gratis.DRM) + ")</li>" + Environment.NewLine;
@@ -271,6 +262,15 @@ namespace Noticias
                 }
 
                 plantilla.Fecha = BaseDatos.Gratis.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina;
+
+                if (string.IsNullOrEmpty(plantilla.GratisIds) == true)
+                {
+                    plantilla.GratisIds = id.ToString();
+                }
+                else
+                {
+                    plantilla.GratisIds = plantilla.GratisIds + "," + id.ToString();
+                }
             }
             else
             {
@@ -280,7 +280,7 @@ namespace Noticias
             return plantilla;
         }
 
-        public static Plantilla Suscripciones(Plantilla plantilla, int juegoId, string tipoSeleccionado)
+        public static Plantilla Suscripciones(Plantilla plantilla, int juegoId, int id, string tipoSeleccionado)
         {
             if (string.IsNullOrEmpty(plantilla.Juegos) == true)
             {
@@ -360,40 +360,16 @@ namespace Noticias
                 plantilla.ContenidoEn = plantilla.ContenidoEn + Environment.NewLine + "<ul>" + Environment.NewLine;
                 plantilla.ContenidoEs = plantilla.ContenidoEs + Environment.NewLine + "<ul>" + Environment.NewLine;
 
-                bool mismoEnlace = true;
-                string enlaceSuscripcion = string.Empty;
-
                 foreach (var juego in lista)
                 {
                     Juegos.JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(juego));
 
                     if (suscripcion != null)
                     {
-                        if (enlaceSuscripcion == string.Empty)
-                        {
-                            enlaceSuscripcion = EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo);
-                        }
-                        else
-                        {
-                            if (enlaceSuscripcion != EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo))
-                            {
-                                mismoEnlace = false;
-                            }
-                        }
-
                         plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</li>" + Environment.NewLine;
                         plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + suscripcion.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(suscripcion.DRM) + ")</li>" + Environment.NewLine;
                     }
                 }
-
-                //if (mismoEnlace == true)
-                //{
-                //    plantilla.Enlace = enlaceSuscripcion;
-                //}
-                //else
-                //{
-                //    plantilla.Enlace = null;
-                //}
 
                 plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul>";
                 plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul>";
@@ -419,6 +395,15 @@ namespace Noticias
                 plantilla.Fecha = BaseDatos.Suscripciones.Buscar.UnJuego(int.Parse(lista[0])).FechaTermina;
 
                 #endregion
+
+                if (string.IsNullOrEmpty(plantilla.SuscripcionesIds) == true)
+                {
+                    plantilla.SuscripcionesIds = id.ToString();
+                }
+                else
+                {
+                    plantilla.SuscripcionesIds = plantilla.SuscripcionesIds + "," + id.ToString();
+                }
             }
             else
             {
@@ -504,5 +489,7 @@ namespace Noticias
         public string Enlace;
         public string Imagen;
         public string BundleId;
+        public string GratisIds;
+        public string SuscripcionesIds;
     }
 }

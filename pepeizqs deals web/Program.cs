@@ -66,34 +66,37 @@ builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webCo
 
 //builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory())).SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
-//builder.Services.AddRazorPages();
+builder.Services.AddRazorPages();
 
 //----------------------------------------------------------------------------------
 
 #region Detallado en Componentes Razor
 
-//builder.Services.AddServerSideBlazor(options =>
-//{
-//	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
-//}).AddCircuitOptions(x => x.DetailedErrors = true).AddHubOptions(options =>
-//{
-//	options.ClientTimeoutInterval = TimeSpan.FromSeconds(180);
-//	options.KeepAliveInterval = TimeSpan.FromSeconds(90);
-//});
+builder.Services.AddServerSideBlazor(options =>
+{
+	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(90);
+}).AddCircuitOptions(x => x.DetailedErrors = true).AddHubOptions(options =>
+{
+	options.ClientTimeoutInterval = TimeSpan.FromMinutes(60);
+	options.KeepAliveInterval = TimeSpan.FromMinutes(90);
+});
 
 #endregion
 
 #region Redireccionador
 
-builder.Services.AddControllersWithViews().AddMvcOptions(options =>
-    options.Filters.Add(
-        new ResponseCacheAttribute
-        {
-            NoStore = true,
-            Location = ResponseCacheLocation.None
-        }));
+builder.Services.AddControllersWithViews();
 
 #endregion
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromSeconds(10);
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
+});
 
 #region Seo
 
@@ -169,13 +172,13 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-//builder.Services.AddSignalR(opciones =>
-//{
-//	opciones.EnableDetailedErrors = true;
-//	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
-//	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-//	//opciones.MaximumReceiveMessageSize = 102400000;
-//});
+builder.Services.AddSignalR(opciones =>
+{
+	opciones.EnableDetailedErrors = true;
+	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+	//opciones.MaximumReceiveMessageSize = 102400000;
+});
 
 #region Necesario para Juegos
 
@@ -204,28 +207,11 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 	opciones.SlidingExpiration = true;
 });
 
-//builder.Services.AddMemoryCache();
-//builder.Services.AddSession(opciones =>
-//{
-//	opciones.IdleTimeout = TimeSpan.FromSeconds(10);
-//	opciones.Cookie.HttpOnly = true;
-//	opciones.Cookie.IsEssential = true;
-//});
-
 //builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
 //{
 //    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
 //    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
 //});
-
-//builder.Services.AddRateLimiter(_ => _
-//    .AddFixedWindowLimiter(policyName: "fixed", options =>
-//    {
-//        options.PermitLimit = 2;
-//        options.Window = TimeSpan.FromSeconds(10);
-//        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-//        options.QueueLimit = 5;
-//    }));
 
 //builder.WebHost.ConfigureKestrel(opciones =>
 //{
@@ -273,21 +259,19 @@ app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseRouting();
+app.UseAuthorization();
+
+app.UseSession();
+
 //app.MapHealthChecks("/vida");
 
-//app.UseAuthorization();
-
-//app.UseRateLimiter();
-
+app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
-	//opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
+	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets || Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
 });
-
-app.MapRazorPages();
-
-app.UseRouting();
 
 #region Seo
 
@@ -306,11 +290,6 @@ app.MapControllers();
 //	KeepAliveInterval = TimeSpan.FromMinutes(2)
 //};
 
-//webSocketOptions.AllowedOrigins.Add("https://pepeizqdeals.com");
-//webSocketOptions.AllowedOrigins.Add("https://www.pepeizqdeals.com");
-
 //app.UseWebSockets(webSocketOptions);
-
-//app.UseSession();
 
 app.Run();

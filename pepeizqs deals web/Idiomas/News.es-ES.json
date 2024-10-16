@@ -6,5 +6,41 @@
   {
     "Id": "Back",
     "Valor": "Volver a Últimas Noticias"
+  },
+  {
+    "Id": "Back2",
+    "Valor": "Volver a Portada"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Esta promoción termina en {0} días"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Esta promoción termina en {0} día"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Esta promoción termina hoy"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Esta promoción ha terminado"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Este bundle termina en {0} días"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Este bundle termina en {0} día"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Este bundle termina hoy"
+  },
+  {
+    "Id": "String8",
+    "Valor": "Este bundle ha terminado"
   }
 ]

@@ -3,7 +3,7 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Juegos
 {
@@ -50,7 +50,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(3)) == false)
                     {
-                        juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(3));
+                        juego.Imagenes = JsonSerializer.Deserialize<JuegoImagenes>(lector.GetString(3));
                     }
                 }
             }
@@ -62,7 +62,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(4)) == false)
                     {
-                        juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+                        juego.PrecioMinimosHistoricos = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(4));
                     }
                 }
             }
@@ -74,7 +74,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(5)) == false)
                     {
-                        juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(5));
+                        juego.PrecioActualesTiendas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(5));
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(6)) == false)
                     {
-                        juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(6));
+                        juego.Analisis = JsonSerializer.Deserialize<JuegoAnalisis>(lector.GetString(6));
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(7)) == false)
                     {
-                        juego.Caracteristicas = JsonConvert.DeserializeObject<JuegoCaracteristicas>(lector.GetString(7));
+                        juego.Caracteristicas = JsonSerializer.Deserialize<JuegoCaracteristicas>(lector.GetString(7));
                     }
                 }
             }
@@ -110,7 +110,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(8)) == false)
                     {
-                        juego.Media = JsonConvert.DeserializeObject<JuegoMedia>(lector.GetString(8));
+                        juego.Media = JsonSerializer.Deserialize<JuegoMedia>(lector.GetString(8));
                     }
                 }
             }
@@ -144,7 +144,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(12)) == false)
                     {
-                        juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(12));
+                        juego.Suscripciones = JsonSerializer.Deserialize<List<JuegoSuscripcion>>(lector.GetString(12));
                     }
                 }
             }
@@ -156,7 +156,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(13)) == false)
                     {
-                        juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(13));
+                        juego.Bundles = JsonSerializer.Deserialize<List<JuegoBundle>>(lector.GetString(13));
                     }
                 }
             }
@@ -168,7 +168,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(14)) == false)
                     {
-                        juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(14));
+                        juego.Gratis = JsonSerializer.Deserialize<List<JuegoGratis>>(lector.GetString(14));
                     }
                 }
             }
@@ -201,7 +201,7 @@ namespace BaseDatos.Juegos
                 {
                     if (string.IsNullOrEmpty(lector.GetString(17)) == false)
                     {
-                        juego.UsuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(17));
+                        juego.UsuariosInteresados = JsonSerializer.Deserialize<List<JuegoUsuariosInteresados>>(lector.GetString(17));
                     }
                 }
             }
@@ -282,7 +282,7 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(lector.GetString(24)) == false)
 					{
-						juego.Categorias = JsonConvert.DeserializeObject<List<string>>(lector.GetString(24));
+						juego.Categorias = JsonSerializer.Deserialize<List<string>>(lector.GetString(24));
 					}
 				}
 			}
@@ -294,7 +294,7 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(lector.GetString(25)) == false)
 					{
-						juego.Generos = JsonConvert.DeserializeObject<List<string>>(lector.GetString(25));
+						juego.Generos = JsonSerializer.Deserialize<List<string>>(lector.GetString(25));
 					}
 				}
 			}
@@ -306,7 +306,7 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(lector.GetString(26)) == false)
 					{
-						juego.Etiquetas = JsonConvert.DeserializeObject<List<string>>(lector.GetString(26));
+						juego.Etiquetas = JsonSerializer.Deserialize<List<string>>(lector.GetString(26));
 					}
 				}
 			}
@@ -327,7 +327,7 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(lector.GetString(28)) == false)
 					{
-						juego.DeckTokens = JsonConvert.DeserializeObject<List<JuegoDeckToken>>(lector.GetString(28));
+						juego.DeckTokens = JsonSerializer.Deserialize<List<JuegoDeckToken>>(lector.GetString(28));
 					}
 				}
 			}
@@ -348,7 +348,7 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(lector.GetString(30)) == false)
 					{
-						juego.Historicos = JsonConvert.DeserializeObject<List<JuegoHistorico>>(lector.GetString(30));
+						juego.Historicos = JsonSerializer.Deserialize<List<JuegoHistorico>>(lector.GetString(30));
 					}
 				}
 			}
@@ -628,7 +628,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(2)) == false)
 								{
-									juego.Imagenes = JsonConvert.DeserializeObject<JuegoImagenes>(lector.GetString(2));
+									juego.Imagenes = JsonSerializer.Deserialize<JuegoImagenes>(lector.GetString(2));
 								}
 							}
 
@@ -636,7 +636,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(3)) == false)
 								{
-									juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(3));
+									juego.PrecioMinimosHistoricos = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(3));
 								}
 							}
 
@@ -644,7 +644,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(4)) == false)
 								{
-									juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(4));
+									juego.PrecioActualesTiendas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(4));
 								}
 							}
 
@@ -652,7 +652,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(5)) == false)
 								{
-									juego.Bundles = JsonConvert.DeserializeObject<List<JuegoBundle>>(lector.GetString(5));
+									juego.Bundles = JsonSerializer.Deserialize<List<JuegoBundle>>(lector.GetString(5));
 								}
 							}
 
@@ -660,7 +660,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
 								{
-									juego.Gratis = JsonConvert.DeserializeObject<List<JuegoGratis>>(lector.GetString(6));
+									juego.Gratis = JsonSerializer.Deserialize<List<JuegoGratis>>(lector.GetString(6));
 								}
 							}
 
@@ -668,7 +668,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(7)) == false)
 								{
-									juego.Suscripciones = JsonConvert.DeserializeObject<List<JuegoSuscripcion>>(lector.GetString(7));
+									juego.Suscripciones = JsonSerializer.Deserialize<List<JuegoSuscripcion>>(lector.GetString(7));
 								}
 							}
 
@@ -681,7 +681,7 @@ namespace BaseDatos.Juegos
 							{
 								if (string.IsNullOrEmpty(lector.GetString(9)) == false)
 								{
-									juego.Analisis = JsonConvert.DeserializeObject<JuegoAnalisis>(lector.GetString(9));
+									juego.Analisis = JsonSerializer.Deserialize<JuegoAnalisis>(lector.GetString(9));
 								}
 							}
 

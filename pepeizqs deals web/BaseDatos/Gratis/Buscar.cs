@@ -22,6 +22,11 @@ namespace BaseDatos.Gratis
                 FechaTermina = Convert.ToDateTime(lector.GetString(7))
             };
 
+            if (lector.IsDBNull(8) == false)
+            {
+                gratis.Id = lector.GetInt32(8);
+            }
+
             if (lector.IsDBNull(9) == false)
             {
                 gratis.ImagenNoticia = lector.GetString(9);
@@ -154,6 +159,41 @@ namespace BaseDatos.Gratis
 			}
 
 			return listaGratis;
+		}
+
+		public static JuegoGratis UnJuego(int id, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM gratis WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", id);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							return Cargar(lector);
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 
 		public static JuegoGratis UnJuego(int juegoId)

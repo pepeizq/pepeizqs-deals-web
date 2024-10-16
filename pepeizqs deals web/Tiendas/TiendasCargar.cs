@@ -51,6 +51,10 @@ namespace Tiendas2
 				{
 					await APIs.GamersGate.Tienda.BuscarOfertas(conexion, decompilador);
 				}
+				else if (id == APIs.Humble.Tienda.Generar().Id)
+				{
+					await APIs.Humble.Tienda.BuscarOfertas(conexion);
+				}
 				else if (id == APIs.Gamesplanet.Tienda.GenerarUk().Id)
 				{
 					await APIs.Gamesplanet.Tienda.BuscarOfertasUk(conexion, decompilador);

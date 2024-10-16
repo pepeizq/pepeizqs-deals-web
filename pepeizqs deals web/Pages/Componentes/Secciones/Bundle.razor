@@ -80,9 +80,12 @@
 
 						foreach (var juego in bundle.Juegos)
 						{
-							if (juego.Tier.Posicion == tier.Posicion)
+							if (juego.Tier != null)
 							{
-								juegosTier.Add(juego);
+								if (juego.Tier.Posicion == tier.Posicion)
+								{
+									juegosTier.Add(juego);
+								}
 							}
 						}
 
@@ -530,9 +533,9 @@
 
 	private List<string> juegosUsuario = new List<string>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        usuario = await UserManager.FindByIdAsync(usuarioId);
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
 
 		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
@@ -540,8 +543,11 @@
 		{
 			foreach (var juego in bundle.Juegos)
 			{
-				juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());
-				juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+				if (string.IsNullOrEmpty(juego.JuegoId) == false)
+				{
+					juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
+					juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+				}
 			}
 		}
 

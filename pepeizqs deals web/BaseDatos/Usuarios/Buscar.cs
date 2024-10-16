@@ -3,7 +3,7 @@
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Usuarios
 {
@@ -185,7 +185,7 @@ namespace BaseDatos.Usuarios
                                           
                                             try
 											{
-												deseados = JsonConvert.DeserializeObject<List<JuegoDeseado>>(deseadosTexto);
+												deseados = JsonSerializer.Deserialize<List<JuegoDeseado>>(deseadosTexto);
 											}
 											catch { }
 

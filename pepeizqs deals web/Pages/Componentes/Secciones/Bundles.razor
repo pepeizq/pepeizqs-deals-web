@@ -307,7 +307,10 @@
 
 		foreach (var juego in bundleSeleccionado.Juegos)
 		{
-			juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId.ToString());		
+			if (string.IsNullOrEmpty(juego.JuegoId) == false)
+			{
+				juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
+			}		
 		}
 
 		mostrarBundleSeleccionado = true;

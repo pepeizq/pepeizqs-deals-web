@@ -9,8 +9,8 @@
 @using Microsoft.Data.SqlClient
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic
-@using Newtonsoft.Json
 @using Noticias
+@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
@@ -330,7 +330,7 @@
 							@titulo
 						</div>
 
-						<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="height: 100%; cursor: pointer;">
+						<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="height: 100%; cursor: pointer; text-decoration: none;">
 							<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
 								<div style="display: flex; align-items: center;">
 									@if (usuario != null)
@@ -459,17 +459,12 @@ else
 			</button>
 		</div>
 
-		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: 20px; margin-bottom: 25px;">
-@* 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
+		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
+			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
 					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
 				</ItemContent>
-			</Virtualize> *@
-
-			@foreach (var juego in juegosMinimosMostrar)
-			{
-				<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" tipo="ResultadoJuego.Tipo.Portada" />
-			}
+			</Virtualize>
 		</div>
 
 		<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
@@ -634,6 +629,8 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		await Task.Delay(100);
+
 		usuario = await UserManager.FindByIdAsync(usuarioId);
 
 		if (usuario != null)
@@ -656,12 +653,12 @@ else
 
 			if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
 			{
-				drms = JsonConvert.DeserializeObject<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
+				drms = JsonSerializer.Deserialize<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
 			}
 
 			if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
 			{
-				categorias = JsonConvert.DeserializeObject<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
+				categorias = JsonSerializer.Deserialize<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
 			}
 
 			#endregion
@@ -686,12 +683,6 @@ else
 
 			#endregion
 
-			#region Minimos
-
-			Filtros();
-
-			#endregion
-
 			#region Noticias
 
 			try
@@ -702,6 +693,12 @@ else
 			{
 				BaseDatos.Errores.Insertar.Mensaje("Portada Noticias", ex);
 			}
+
+			#endregion
+
+			#region Minimos
+
+			Filtros();
 
 			#endregion
 		}
@@ -727,6 +724,7 @@ else
 	private async void CronometroDestacados()
 	{
 		cronometro = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
 		while (await cronometro.WaitForNextTickAsync())
 		{
 			cronometroContador += 1;
@@ -930,7 +928,7 @@ else
 
 		if (usuario != null)
 		{
-			usuario.IndexDRMs = JsonConvert.SerializeObject(drms);
+			usuario.IndexDRMs = JsonSerializer.Serialize(drms);
 
 			try
 			{
@@ -995,7 +993,7 @@ else
 
 		if (usuario != null)
 		{
-			usuario.IndexCategories = JsonConvert.SerializeObject(categorias);
+			usuario.IndexCategories = JsonSerializer.Serialize(categorias);
 
 			try
 			{

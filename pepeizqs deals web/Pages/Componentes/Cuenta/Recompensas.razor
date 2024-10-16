@@ -1,7 +1,7 @@
 ﻿@using BaseDatos.Recompensas
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
-@using Newtonsoft.Json
+@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -358,7 +358,7 @@ else
 
 		if (string.IsNullOrEmpty(usuario.Keys) == false)
 		{
-			claves = JsonConvert.DeserializeObject<List<BaseDatos.Usuarios.Clave>>(usuario.Keys);
+			claves = JsonSerializer.Deserialize<List<BaseDatos.Usuarios.Clave>>(usuario.Keys);
 		}
 
 		BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave();
@@ -373,7 +373,7 @@ else
 
 		claves.Add(nuevaClave);
 
-		usuario.Keys = JsonConvert.SerializeObject(claves);
+		usuario.Keys = JsonSerializer.Serialize(claves);
 
 		claveJuegoSeleccionado = juegoSeleccionado.Clave;
 

@@ -93,6 +93,36 @@
 
 		<div style="display: flex; align-items: center; margin-bottom: 20px;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Bundle Id
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaBundleId(e))" class="entrada-texto" rows="1">@textoBundleId</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Gratis Ids
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaGratisIds(e))" class="entrada-texto" rows="1">@textoGratisIds</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Suscripciones Ids
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaSuscripcionesIds(e))" class="entrada-texto" rows="1">@textoSuscripcionesIds</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Correo de Prueba
 			</div>
 
@@ -133,6 +163,9 @@
 			textoFechaTermina = noticia.FechaTermina.ToString();
 			textoContenidoEn = noticia.ContenidoEn;
 			textoContenidoEs = noticia.ContenidoEs;
+			textoBundleId = noticia.BundleId.ToString();
+			textoGratisIds = noticia.GratisIds;
+			textoSuscripcionesIds = noticia.SuscripcionesIds;
 		}
 	}
 
@@ -271,6 +304,51 @@
 			{
 				BaseDatos.Noticias.Actualizar.ContenidoEs(noticiaId.ToString(), nuevoTexto, conexion);
 			}
+		}
+	}
+
+	private string textoBundleId = string.Empty;
+
+	private void TextoCambiaBundleId(ChangeEventArgs texto)
+	{
+		string nuevoTexto = texto.Value.ToString().Trim();
+		textoBundleId = nuevoTexto;
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Noticias.Actualizar.BundleId(noticiaId.ToString(), nuevoTexto, conexion);
+		}
+	}
+
+	private string textoGratisIds = string.Empty;
+
+	private void TextoCambiaGratisIds(ChangeEventArgs texto)
+	{
+		string nuevoTexto = texto.Value.ToString().Trim();
+		textoGratisIds = nuevoTexto;
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Noticias.Actualizar.GratisIds(noticiaId.ToString(), nuevoTexto, conexion);
+		}
+	}
+
+	private string textoSuscripcionesIds = string.Empty;
+
+	private void TextoCambiaSuscripcionesIds(ChangeEventArgs texto)
+	{
+		string nuevoTexto = texto.Value.ToString().Trim();
+		textoSuscripcionesIds = nuevoTexto;
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Noticias.Actualizar.SuscripcionesIds(noticiaId.ToString(), nuevoTexto, conexion);
 		}
 	}
 

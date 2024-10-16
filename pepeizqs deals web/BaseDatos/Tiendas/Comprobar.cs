@@ -2,7 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Tiendas
 {
@@ -241,7 +241,7 @@ namespace BaseDatos.Tiendas
 						{
 							if (string.IsNullOrEmpty(lector.GetString(1)) == false)
 							{
-								ofertasHistoricas = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(1));
+								ofertasHistoricas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(1));
 							}
 						}
 						
@@ -260,7 +260,7 @@ namespace BaseDatos.Tiendas
 						{
 							if (string.IsNullOrEmpty(lector.GetString(2)) == false)
 							{
-								ofertasActuales = JsonConvert.DeserializeObject<List<JuegoPrecio>>(lector.GetString(2));
+								ofertasActuales = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(2));
 							}
 						}
 
@@ -279,7 +279,7 @@ namespace BaseDatos.Tiendas
 						{
 							if (string.IsNullOrEmpty(lector.GetString(3)) == false)
 							{
-								usuariosInteresados = JsonConvert.DeserializeObject<List<JuegoUsuariosInteresados>>(lector.GetString(3));
+								usuariosInteresados = JsonSerializer.Deserialize<List<JuegoUsuariosInteresados>>(lector.GetString(3));
 							}
 						}
 
@@ -294,7 +294,7 @@ namespace BaseDatos.Tiendas
 						{
 							if (string.IsNullOrEmpty(lector.GetString(5)) == false)
 							{
-								historicos = JsonConvert.DeserializeObject<List<JuegoHistorico>>(lector.GetString(5));
+								historicos = JsonSerializer.Deserialize<List<JuegoHistorico>>(lector.GetString(5));
 							}
 						}
 

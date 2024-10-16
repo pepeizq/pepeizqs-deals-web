@@ -55,8 +55,15 @@
     @if (bundleSeleccionadoNoticias != null)
     {
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-            <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            <div>
+                <label style="margin-left: 10px; margin-bottom: 10px;">Bundle Id:</label>
+                <input type="text" class="entrada-texto" value="@noticia.BundleId" />
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            </div>
         </div>
     }
 }
@@ -77,7 +84,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
             <div style="margin-top: 20px;">
                 @foreach (var gratis in BaseDatos.Gratis.Buscar.UnTipo(gratisSeleccionadoNoticias, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
                 {
-                    <button @onclick="@(e => ClickearGratisJuegoNoticias(e, gratis.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+                    <button @onclick="@(e => ClickearGratisJuegoNoticias(e, gratis.JuegoId, gratis.Id))" class="boton-pequeño" style="margin: 10px 0px;">
                         <div style="display: flex; align-items: center;">
                             @if (noticia.Juegos != null)
                             {
@@ -99,8 +106,15 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
     @if (gratisSeleccionadoNoticias != null)
     {
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-            <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            <div>
+                <label style="margin-left: 10px; margin-bottom: 10px;">Gratis Ids:</label>
+                <input type="text" class="entrada-texto" value="@noticia.GratisIds" />
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            </div>
         </div>
     }
 }
@@ -124,7 +138,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             <div style="margin-top: 20px;">
                 @foreach (var suscripcion in BaseDatos.Suscripciones.Buscar.UnTipo(suscripcionSeleccionadaNoticias, Herramientas.Tiempo.Actual).OrderBy(x => x.FechaEmpieza).Reverse().ToList())
                 {
-                    <button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId))" class="boton-pequeño" style="margin: 10px 0px;">
+                    <button @onclick="@(e => ClickearSuscripcionJuego(e, suscripcion.JuegoId, suscripcion.Id))" class="boton-pequeño" style="margin: 10px 0px;">
                         <div style="display: flex; align-items: center;">
                             @if (noticia.Juegos != null)
                             {
@@ -146,8 +160,15 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     @if (suscripcionSeleccionadaNoticias != null)
     {
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-            <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
-            <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            <div>
+                <label style="margin-left: 10px; margin-bottom: 10px;">Suscripciones Ids:</label>
+                <input type="text" class="entrada-texto" value="@noticia.SuscripcionesIds" />
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label style="margin-left: 10px; margin-bottom: 10px;">Juegos:</label>
+                <input type="text" class="entrada-texto" value="@noticia.Juegos" />
+            </div>
         </div>
     }
 }
@@ -334,6 +355,11 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 
     private Plantilla noticia = new Plantilla();
 
+    protected override void OnInitialized()
+    {
+        noticiaTipoSeleccionada = NoticiaTipo.Bundles.ToString();
+    }
+
     private void CambiarNoticiaTipo(ChangeEventArgs texto)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
@@ -422,6 +448,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
                     noticiaAñadir.Tipo = NoticiaTipo.Gratis;
                     noticiaAñadir.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
+
                 }
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
@@ -490,9 +517,9 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         gratisSeleccionadoNoticias = texto.Value.ToString();
     }
 
-    private void ClickearGratisJuegoNoticias(MouseEventArgs e, int juegoId)
+    private void ClickearGratisJuegoNoticias(MouseEventArgs e, int juegoId, int id)
     {
-        noticia = Plantillas.Gratis(noticia, juegoId, gratisSeleccionadoNoticias);
+        noticia = Plantillas.Gratis(noticia, juegoId, id, gratisSeleccionadoNoticias);
     }
 
     private void CambiarSuscripcion(ChangeEventArgs texto)
@@ -500,9 +527,9 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         suscripcionSeleccionadaNoticias = texto.Value.ToString();
     }
 
-    private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId)
+    private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId, int id)
     {
-        noticia = Plantillas.Suscripciones(noticia, juegoId, suscripcionSeleccionadaNoticias);
+        noticia = Plantillas.Suscripciones(noticia, juegoId, id, suscripcionSeleccionadaNoticias);
     }
 
     private void GenerarSorteos(SqlConnection conexion)

@@ -145,11 +145,13 @@
 
     #nullable disable
 
-    private SqlConnection conexion = new SqlConnection();
-
     protected override void OnInitialized()
     {
-        conexion = Herramientas.BaseDatos.Conectar();
+        CerrarPestañas();
+        mostrarEnlaces = true;
+        estiloEnlaces = fondo;
+
+        SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
         using (conexion)
         {
@@ -158,10 +160,6 @@
             ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
             ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null, conexion).Count);
         }
-
-        CerrarPestañas();
-        mostrarEnlaces = true;
-        estiloEnlaces = fondo;
     }
 
     private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";

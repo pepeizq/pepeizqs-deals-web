@@ -32,40 +32,12 @@
     "Valor": "Otros"
   },
   {
-    "Id": "News.String1",
-    "Valor": "Esta promoción termina en {0} días"
-  },
-  {
-    "Id": "News.String2",
-    "Valor": "Esta promoción termina en {0} día"
-  },
-  {
-    "Id": "News.String3",
-    "Valor": "Esta promoción termina hoy"
-  },
-  {
-    "Id": "News.String4",
-    "Valor": "Esta promoción ha terminado"
-  },
-  {
     "Id": "News.String5",
     "Valor": "Juegos en la base de datos:"
   },
   {
     "Id": "News.String6",
     "Valor": "Añadido"
-  },
-  {
-    "Id": "News.String7",
-    "Valor": "Abrir Bundle"
-  },
-  {
-    "Id": "News.String8",
-    "Valor": "Abrir Gratis"
-  },
-  {
-    "Id": "News.String9",
-    "Valor": "Abrir Suscripción"
   },
   {
     "Id": "News.String10",

@@ -27,7 +27,12 @@ namespace BaseDatos.Suscripciones
 				suscripcion.ImagenNoticia = lector.GetString(8);
 			}
 
-			return suscripcion;
+            if (lector.IsDBNull(9) == false)
+            {
+                suscripcion.Id = lector.GetInt32(9);
+            }
+
+            return suscripcion;
 		}
 
 		public static List<JuegoSuscripcion> Actuales(SqlConnection conexion = null)
@@ -159,6 +164,41 @@ namespace BaseDatos.Suscripciones
 			}
 
 			return suscripciones;
+		}
+
+		public static JuegoSuscripcion UnJuego(int id, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string busqueda = "SELECT * FROM suscripciones WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", id);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							return Cargar(lector);
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 
 		public static JuegoSuscripcion UnJuego(int juegoId)

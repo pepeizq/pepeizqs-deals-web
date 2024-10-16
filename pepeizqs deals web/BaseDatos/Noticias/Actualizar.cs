@@ -187,5 +187,74 @@ namespace BaseDatos.Noticias
 				}
 			}
 		}
+
+		public static void BundleId(string id, string nuevoValor, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET bundleId=@bundleId " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@bundleId", nuevoValor);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void GratisIds(string id, string nuevoValor, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET gratisIds=@gratisIds " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@gratisIds", nuevoValor);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void SuscripcionesIds(string id, string nuevoValor, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE noticias " +
+					"SET suscripcionesIds=@suscripcionesIds " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@suscripcionesIds", nuevoValor);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }
