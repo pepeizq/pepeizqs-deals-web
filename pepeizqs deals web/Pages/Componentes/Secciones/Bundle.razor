@@ -16,6 +16,18 @@
 	}
 </script>
 
+<style>
+	.bundle-tabla {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+	}
+
+	@@media (max-width: 800px) {
+		.bundle-tabla {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+</style>
+
 @if (bundle != null)
 {
 	if (tipo == Tipo.Bundle)
@@ -188,7 +200,7 @@
 								<hr/>
 							}
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-gap: 30px; margin-top: 10px;">
+							<div class="bundle-tabla" style="display: grid; grid-gap: 30px; margin-top: 10px;">
 								@foreach (var juego in juegosTier)
 								{
 									bool mostrar = true;

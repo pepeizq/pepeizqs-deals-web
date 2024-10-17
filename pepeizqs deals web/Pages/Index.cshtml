@@ -66,13 +66,5 @@
 			idioma = Model.idioma,
 			usuarioId = usuario?.Id
 		}))
-
-		if (BaseDatos.Usuarios.Buscar.RolDios(usuario?.Id) == true)
-		{
-			@(await Html.RenderComponentAsync<Componentes.Secciones.PortadaNoticias>(RenderMode.Server, new
-			{
-				idioma = Model.idioma
-			}))
-		}
 	}
 }

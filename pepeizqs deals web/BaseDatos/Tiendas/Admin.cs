@@ -296,7 +296,17 @@ namespace BaseDatos.Tiendas
 
         public static bool ComprobarTiendaUso(SqlConnection conexion, TimeSpan tiempo, string tiendaId)
 		{
-			bool usar = false;
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			string seleccionarTarea = "SELECT * FROM adminTiendas WHERE id=@id";
 
@@ -310,15 +320,15 @@ namespace BaseDatos.Tiendas
 					{
 						DateTime ultimaComprobacion = DateTime.Parse(lector.GetString(1));
 
-						if ((DateTime.Now - ultimaComprobacion) < tiempo)
+						if ((DateTime.Now - ultimaComprobacion) > tiempo)
 						{
-							usar = true;
+							return true;
 						}
 					}
 				}
 			}
 			
-			return usar;
+			return false;
 		}
 
 

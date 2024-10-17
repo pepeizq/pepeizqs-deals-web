@@ -208,13 +208,6 @@
     }
 
     <main role="main" class="cuerpo-ancho cuerpo-espacio">
-        @(await Html.RenderComponentAsync<Componentes.Tareas.Minimos>(RenderMode.Server))
-
-        @if (piscinaTiendas == piscinaUsada)
-        {
-            @(await Html.RenderComponentAsync<Componentes.Tareas.Tiendas>(RenderMode.Server))
-        }
-
         @RenderBody()
     </main>
 

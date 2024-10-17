@@ -58,8 +58,10 @@ builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => {
 	opciones.UseSqlServer(conexionTexto); 
 	opciones.EnableSensitiveDataLogging();
 });
+
 builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => { 
-	opciones.UseSqlite(conexionTexto); 
+	opciones.UseSqlite(conexionTexto);
+    opciones.EnableSensitiveDataLogging();
 });
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
@@ -111,6 +113,7 @@ builder.Services.Configure<HostOptions>(opciones =>
 	opciones.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
+builder.Services.AddSingleton<Tareas.Minimos>();
 builder.Services.AddSingleton<Tareas.Pings>();
 builder.Services.AddSingleton<Tareas.Divisas>();
 builder.Services.AddSingleton<Tareas.Sorteos>();
@@ -121,6 +124,28 @@ builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.Solicitudes>();
 builder.Services.AddSingleton<Tareas.LimpiarMinimos>();
 
+builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
+builder.Services.AddSingleton<Tareas.Tiendas.HumbleStore>();
+builder.Services.AddSingleton<Tareas.Tiendas.GOG>();
+builder.Services.AddSingleton<Tareas.Tiendas.Fanatical>();
+builder.Services.AddSingleton<Tareas.Tiendas.GreenManGaming>();
+builder.Services.AddSingleton<Tareas.Tiendas.Gamersgate>();
+builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetUk>();
+builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetFr>();
+builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetDe>();
+builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetUs>();
+builder.Services.AddSingleton<Tareas.Tiendas.WinGameStore>();
+builder.Services.AddSingleton<Tareas.Tiendas.IndieGala>();
+builder.Services.AddSingleton<Tareas.Tiendas.GameBillet>();
+builder.Services.AddSingleton<Tareas.Tiendas._2Game>();
+builder.Services.AddSingleton<Tareas.Tiendas.DLGamer>();
+builder.Services.AddSingleton<Tareas.Tiendas.Voidu>();
+builder.Services.AddSingleton<Tareas.Tiendas.JoyBuggy>();
+builder.Services.AddSingleton<Tareas.Tiendas.Battlenet>();
+builder.Services.AddSingleton<Tareas.Tiendas.EA>();
+builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
+
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Sorteos>());
@@ -130,6 +155,27 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Solicitudes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.LimpiarMinimos>());
+
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.HumbleStore>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GOG>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Fanatical>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GreenManGaming>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Gamersgate>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetUk>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetFr>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetDe>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetUs>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.WinGameStore>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.IndieGala>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GameBillet>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas._2Game>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.DLGamer>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Voidu>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.JoyBuggy>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Battlenet>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
 
 #endregion
 

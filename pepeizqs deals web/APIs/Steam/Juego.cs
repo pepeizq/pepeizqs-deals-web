@@ -115,7 +115,7 @@ namespace APIs.Steam
 					{
 						Juegos.Juego juego = new Juegos.Juego
 						{
-							IdSteam = int.Parse(datos.Datos.Id),
+							IdSteam = int.Parse(datos.Datos.Id.ToString()),
 							Nombre = nombre,
 							Imagenes = imagenes,
 							Caracteristicas = caracteristicas,
@@ -127,7 +127,7 @@ namespace APIs.Steam
 						{
 							juego.Tipo = Juegos.JuegoTipo.DLC;
 
-							Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id);
+							Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id.ToString());
 
 							if (maestro != null)
 							{
@@ -150,9 +150,9 @@ namespace APIs.Steam
 							juego.Tipo = Juegos.JuegoTipo.Game;
 						}
 
-						if (string.IsNullOrEmpty(datos.Datos.Free2Play) == false)
+						if (string.IsNullOrEmpty(datos.Datos.Free2Play.ToString()) == false)
 						{
-							juego.FreeToPlay = datos.Datos.Free2Play;
+							juego.FreeToPlay = datos.Datos.Free2Play.ToString();
 						}
 
 						juego.MayorEdad = "false";
@@ -177,7 +177,7 @@ namespace APIs.Steam
 
 								foreach (var categoria in datos.Datos.Categorias)
 								{
-									categorias.Add(categoria.Id);
+									categorias.Add(categoria.Id.ToString());
 								}
 
 								juego.Categorias = categorias;
@@ -192,7 +192,7 @@ namespace APIs.Steam
 
 								foreach (var categoria in datos.Datos.Generos)
 								{
-									generos.Add(categoria.Id);
+									generos.Add(categoria.Id.ToString());
 								}
 
 								juego.Generos = generos;
@@ -203,7 +203,7 @@ namespace APIs.Steam
 						{
 							if (datos.Datos.Precio != null)
 							{
-								string descuento = datos.Datos.Precio.Descuento;
+								string descuento = datos.Datos.Precio.Descuento.ToString();
 
 								if (descuento != null)
 								{
@@ -344,13 +344,13 @@ namespace APIs.Steam
 		public string Nombre { get; set; }
 
 		[JsonPropertyName("steam_appid")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("is_free")]
-		public string Free2Play { get; set; }
+		public object Free2Play { get; set; }
 
 		[JsonPropertyName("required_age")]
-		public string MayorEdad {  get; set; }
+		public object MayorEdad { get; set; }
 
 		[JsonPropertyName("short_description")]
 		public string DescripcionCorta { get; set; }
@@ -368,7 +368,7 @@ namespace APIs.Steam
 		public List<string> Desarrolladores { get; set; }
 
 		[JsonPropertyName("dlc")]
-		public List<string> DLCs { get; set; }
+		public List<object> DLCs { get; set; }
 
 		[JsonPropertyName("price_overview")]
 		public SteamJuegoAPIPrecio Precio { get; set; }
@@ -398,7 +398,7 @@ namespace APIs.Steam
 		public string Formateado { get; set; }
 
 		[JsonPropertyName("discount_percent")]
-		public string Descuento { get; set; }
+		public object Descuento { get; set; }
 	}
 
 	public class SteamJuegoAPISistemas
@@ -427,7 +427,7 @@ namespace APIs.Steam
 	{
 
 		[JsonPropertyName("id")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("mp4")]
 		public SteamJuegoAPIVideoDatos Mp4 { get; set; }
@@ -445,7 +445,7 @@ namespace APIs.Steam
 	public class SteamJuegoAPIMaestro
 	{
 		[JsonPropertyName("appid")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("name")]
 		public string Nombre { get; set; }
@@ -454,7 +454,7 @@ namespace APIs.Steam
 	public class SteamJuegoAPICategoria
 	{
 		[JsonPropertyName("id")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("description")]
 		public string Descripcion { get; set; }
@@ -463,7 +463,7 @@ namespace APIs.Steam
 	public class SteamJuegoAPIGenero
 	{
 		[JsonPropertyName("id")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("description")]
 		public string Descripcion { get; set; }

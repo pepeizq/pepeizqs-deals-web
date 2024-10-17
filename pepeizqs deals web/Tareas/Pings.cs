@@ -1,6 +1,8 @@
 ﻿#nullable disable
 
+using AngleSharp.Dom;
 using Herramientas;
+using System.Net.Http;
 
 namespace Tareas
 {
@@ -29,12 +31,21 @@ namespace Tareas
 
                 if (piscinaApp == piscinaUsada)
                 {
-                    HttpClient httpClient = new HttpClient();
+					HttpClient httpClient = new HttpClient();
 
-                    HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
-                    HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
+					using var request = new HttpRequestMessage(HttpMethod.Get, new Uri("http://tiendas.pepeizqdeals.com/"));
+					request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
+					request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
+					request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+					request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
 
-                    respuesta2.EnsureSuccessStatusCode();
+					using var response = await httpClient.SendAsync(request, default).ConfigureAwait(false);
+					response.EnsureSuccessStatusCode();
+
+					//HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
+     //               HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
+
+     //               respuesta2.EnsureSuccessStatusCode();
 
                     //---------------------------------------------------------------------------------------
 

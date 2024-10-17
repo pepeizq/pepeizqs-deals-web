@@ -1,37 +1,14 @@
-﻿@using APIs.Steam
-@using BaseDatos.Juegos
-@using Blazored.Video
-@using Blazored.Video.Support
-@using Juegos
+﻿@using Juegos
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
-@using Microsoft.JSInterop
-@using Microsoft.VisualBasic
-@using Noticias
 @using System.Text.Json
+@using Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
 @inject UserManager<Usuario> UserManager
-@inject IHttpContextAccessor HttpContextAccessor
-@inject IJSRuntime JavaScript
-@inject NavigationManager NavManager
-
-<style>
-	.noticia-enlaces {
-		flex-direction: row;
-		gap: 80px;
-	}
-
-	@@media (max-width: 800px) {
-		.noticia-enlaces {
-			flex-direction: column;
-			gap: 30px;
-		}
-	}
-</style>
 
 <style>
 	.destacado-fondo {
@@ -42,7 +19,7 @@
 		display: none;
 	}
 
-	.destacado-mostrar:hover .destacado-fondo{
+	.destacado-mostrar:hover .destacado-fondo {
 		display: none;
 	}
 
@@ -80,10 +57,10 @@
 		transition: transform .2s;
 	}
 
-	.destacados-galeria-captura:hover {
-		opacity: 1;
-		transform: scale(1.01);
-	}
+		.destacados-galeria-captura:hover {
+			opacity: 1;
+			transform: scale(1.01);
+		}
 
 	.destacado-hueco {
 		padding: 80px 60px 30px 60px;
@@ -130,24 +107,6 @@
 		.destacado-icono {
 			width: 24px;
 			height: 24px;
-		}
-	}
-
-	.noticia-expandir {
-		transition: transform .2s;
-	}
-
-		.noticia-expandir:hover {
-			transform: scale(1.01);
-		}
-
-	.noticia-ancho {
-		width: calc(33% - 16px);
-	}
-
-	@@media (max-width: 800px) {
-		.noticia-ancho {
-			width: calc(50% - 16px);
 		}
 	}
 </style>
@@ -307,6 +266,20 @@
 	</div>
 }
 
+<style>
+	.noticia-enlaces {
+		flex-direction: row;
+		gap: 80px;
+	}
+
+	@@media (max-width: 800px) {
+		.noticia-enlaces {
+			flex-direction: column;
+			gap: 30px;
+		}
+	}
+</style>
+
 @if (noticiasMostrar.Count > 0)
 {
 	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
@@ -333,16 +306,6 @@
 						<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="height: 100%; cursor: pointer; text-decoration: none;">
 							<div class="noticia-expandir" style="display: flex; flex-direction: column; color: var(--colorTexto); font-size: 14px; height: 100%; margin: 0 auto;">
 								<div style="display: flex; align-items: center;">
-									@if (usuario != null)
-									{
-										if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
-										{
-											<div style="width: auto;">
-												<a href="/news/@noticia.Id">Editar</a>
-											</div>
-										}
-									}
-
 									<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
 										@if (noticia.Tipo == NoticiaTipo.Bundles)
 										{
@@ -419,7 +382,7 @@
 			<div style="display: flex; flex-direction: column; gap: 10px">
 				<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
 
-				<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px"/>
+				<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px" />
 			</div>
 		</div>
 	</div>
@@ -434,7 +397,7 @@ else
 		<div style="display: flex; flex-direction: column; gap: 10px">
 			<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
 
-			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px"/>
+			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px" />
 		</div>
 	</div>
 }
@@ -593,24 +556,6 @@ else
 	</div>
 }
 
-<script>
-	function hover(e, id) {
-		var x = e.clientX,
-			y = e.clientY;
-
-		var tooltip = document.getElementById(id);
-
-		if (screen.width / 2 > x) {
-			tooltip.style.top = (y + 10) + 'px';
-			tooltip.style.left = (x + 20) + 'px';
-		}
-		else {
-			tooltip.style.top = (y - 10) + 'px';
-			tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
-		};
-	};
-</script>
-
 @code {
 
 	#nullable disable
@@ -627,41 +572,44 @@ else
 
 	private List<string> usuarioJuegosSteam = new List<string>();
 
+	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
+
 	protected override async Task OnInitializedAsync()
 	{
-		await Task.Delay(100);
-
-		usuario = await UserManager.FindByIdAsync(usuarioId);
-
-		if (usuario != null)
+		if (string.IsNullOrEmpty(usuarioId) == false)
 		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-			{
-				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-			}
+			usuario = await UserManager.FindByIdAsync(usuarioId);
 
-			#region Filtrado
-
-			if (usuario.IndexOption1 == true)
+			if (usuario != null)
 			{
-				estadoOcultarJuegosUsuario = "checked";
-			}
-			else
-			{
-				estadoOcultarJuegosUsuario = null;
-			}
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
 
-			if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
-			{
-				drms = JsonSerializer.Deserialize<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
-			}
+				#region Filtrado
 
-			if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
-			{
-				categorias = JsonSerializer.Deserialize<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
-			}
+				if (usuario.IndexOption1 == true)
+				{
+					estadoOcultarJuegosUsuario = "checked";
+				}
+				else
+				{
+					estadoOcultarJuegosUsuario = null;
+				}
 
-			#endregion
+				if (string.IsNullOrEmpty(usuario.IndexDRMs) == false)
+				{
+					drms = JsonSerializer.Deserialize<List<MostrarJuegoDRM>>(usuario.IndexDRMs);
+				}
+
+				if (string.IsNullOrEmpty(usuario.IndexCategories) == false)
+				{
+					categorias = JsonSerializer.Deserialize<List<MostrarJuegoCategoria>>(usuario.IndexCategories);
+				}
+
+				#endregion
+			}
 		}
 
 		//------------------------------------------------
@@ -1035,15 +983,4 @@ else
 	}
 
 	#endregion
-
-	#region Noticias
-
-	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
-
-	#endregion
-
-	private void AbrirEnlace(MouseEventArgs e, string enlace)
-	{
-		NavManager.NavigateTo(enlace, true);
-	}
 }
