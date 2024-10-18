@@ -46,6 +46,11 @@ namespace Tareas.Tiendas
 					{
 						TimeSpan siguienteComprobacion = TimeSpan.FromHours(3);
 
+						if (DateTime.Now.Hour == 17 || DateTime.Now.Hour == 18)
+						{
+							siguienteComprobacion = TimeSpan.FromHours(6);
+						}
+
 						if (DateTime.Now.Hour == 19 || DateTime.Now.Hour == 20)
 						{
 							siguienteComprobacion = TimeSpan.FromMinutes(30);

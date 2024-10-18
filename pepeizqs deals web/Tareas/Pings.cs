@@ -31,47 +31,52 @@ namespace Tareas
 
                 if (piscinaApp == piscinaUsada)
                 {
-					HttpClient httpClient = new HttpClient();
-
-					using var request = new HttpRequestMessage(HttpMethod.Get, new Uri("http://tiendas.pepeizqdeals.com/"));
-					request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
-					request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
-					request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
-					request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
-
-					using var response = await httpClient.SendAsync(request, default).ConfigureAwait(false);
-					response.EnsureSuccessStatusCode();
-
-					//HttpRequestMessage peticion2 = new HttpRequestMessage(HttpMethod.Post, "http://tiendas.pepeizqdeals.com/");
-     //               HttpResponseMessage respuesta2 = await httpClient.SendAsync(peticion2);
-
-     //               respuesta2.EnsureSuccessStatusCode();
-
-                    //---------------------------------------------------------------------------------------
-
-                    string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
-
-					string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
-
-                    Juegos.Juego aleatorio = BaseDatos.Juegos.Buscar.Aleatorio();
-
-                    if (aleatorio != null)
+                    try
                     {
-                        Juegos.Juego aleatorio2 = BaseDatos.Juegos.Buscar.UnJuego(aleatorio.Id);
+						HttpClientHandler clientHandler = new HttpClientHandler();
+						clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-						BingApi nuevoAleatorio = new BingApi("https://pepeizqdeals.com/game/" + aleatorio2.Id.ToString() + "/" + EnlaceAdaptador.Nombre(aleatorio2.Nombre) + "/");
-
-						HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, bingEnlace)
-						{
-							Content = JsonContent.Create(nuevoAleatorio)
-						};
-
-						HttpResponseMessage respuesta = await httpClient.SendAsync(peticion);
-
-						respuesta.EnsureSuccessStatusCode();
+						HttpClient httpClient = new HttpClient(clientHandler);
+						HttpRequestMessage mensaje = new HttpRequestMessage();
+						mensaje.RequestUri = new Uri("http://tiendas.pepeizqdeals.com/");
+						mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+						mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
+						mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
+						mensaje.Headers.Connection.ParseAdd("keep-alive");
+						mensaje.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Linux; Android 10; Generic Android-x86_64 Build/QD1A.190821.014.C2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/79.0.3945.36 Safari/537.36");
+						HttpResponseMessage respuesta2 = await httpClient.SendAsync(mensaje);
+						respuesta2.EnsureSuccessStatusCode();
 					}
-				}                    
-            }
+                    catch (Exception ex)
+                    {
+						BaseDatos.Errores.Insertar.Mensaje("Ping Tiendas", ex);
+					}
+
+					//---------------------------------------------------------------------------------------
+
+					//               string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
+
+					//string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
+
+					//               Juegos.Juego aleatorio = BaseDatos.Juegos.Buscar.Aleatorio();
+
+					//               if (aleatorio != null)
+					//               {
+					//                   Juegos.Juego aleatorio2 = BaseDatos.Juegos.Buscar.UnJuego(aleatorio.Id);
+
+					//	BingApi nuevoAleatorio = new BingApi("https://pepeizqdeals.com/game/" + aleatorio2.Id.ToString() + "/" + EnlaceAdaptador.Nombre(aleatorio2.Nombre) + "/");
+
+					//	HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, bingEnlace)
+					//	{
+					//		Content = JsonContent.Create(nuevoAleatorio)
+					//	};
+
+					//	HttpResponseMessage respuesta = await httpClient.SendAsync(peticion);
+
+					//	respuesta.EnsureSuccessStatusCode();
+					//}
+				}
+			}
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)

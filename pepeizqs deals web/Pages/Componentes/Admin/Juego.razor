@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.Data.SqlClient
 @using Newtonsoft.Json
+@using global::Juegos
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 <div style="padding: 20px; background: var(--fondoCuerpo); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 50px;">
@@ -141,75 +142,90 @@
 		}
 		else if (pestañaMostrar == 6)
 		{
-			@if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
-			{
-				<div style="display: flex; align-items: center; margin-top: 20px;">
+			<div style="display: flex; flex-direction: column; gap: 20px;">
+				@if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
+				{
+					<div style="display: flex; align-items: center;">
+						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+							<label>Maestro</label>
+						</div>
+						<div style="width: 20%;">
+							<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" value="@textoDlcMaestro" />
+						</div>
+						<div style="width: 65%; padding: 0px 30px;">
+							<button @onclick="(async () => await ActualizarMediaSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Buscar
+							</button>
+						</div>
+					</div>
+				}
+
+				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Maestro</label>
+						<label>FreeToPlay</label>
+					</div>
+					<div class="checkbox-caja">
+						<input type="checkbox" class="checkbox-interior" checked="@textoF2P" @onchange="@(e => TextoCambiaF2P(e))">
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Mayor Edad</label>
+					</div>
+					<div class="checkbox-caja">
+						<input type="checkbox" class="checkbox-interior" checked="@textoEdad" @onchange="@(e => TextoCambiaEdad(e))">
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Id Steam</label>
 					</div>
 					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" value="@textoDlcMaestro" />
+						<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+
+					</div>
+
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<button @onclick="(async () => await ActualizarMediaSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+							Actualizar Media
+						</button>
+
+						<label>@juego.FechaSteamAPIComprobacion.ToString()</label>
+
+						<button @onclick="(async () => await ActualizarDeckSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+							Actualizar Deck
+						</button>
+
+						<label>@juego.DeckComprobacion.ToString()</label>
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Slug GOG</label>
+					</div>
+					<div style="width: 20%;">
+						<input type="text" @oninput="TextoCambiaSlugGOG" class="entrada-texto" value="@slugGOG" />
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Tipo</label>
+					</div>
+					<div style="width: 20%;">
+						<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
 					</div>
 					<div style="width: 65%; padding: 0px 30px;">
-						<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Buscar
-						</button>
+						<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
 					</div>
-				</div>
-			}
-
-			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					<label>FreeToPlay</label>
-				</div>
-				<div class="checkbox-caja">
-					<input type="checkbox" class="checkbox-interior" checked="@textoF2P" @onchange="@(e => TextoCambiaF2P(e))">
-				</div>
-			</div>
-
-			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					<label>Mayor Edad</label>
-				</div>
-				<div class="checkbox-caja">
-					<input type="checkbox" class="checkbox-interior" checked="@textoEdad" @onchange="@(e => TextoCambiaEdad(e))">
-				</div>
-			</div>
-
-			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					<label>Id Steam</label>
-				</div>
-				<div style="width: 20%;">
-					<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
-				</div>
-				<div style="width: 65%; padding: 0px 30px; display: flex; align-items: center; gap: 20px;">
-					<button @onclick="(async () => await ActualizarDatosSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-						Actualizar
-					</button>
-
-					<label>@juego.FechaSteamAPIComprobacion.ToString()</label>
-				</div>
-			</div>
-
-			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					<label>Slug GOG</label>
-				</div>
-				<div style="width: 20%;">
-					<input type="text" @oninput="TextoCambiaSlugGOG" class="entrada-texto" value="@slugGOG" />
-				</div>
-			</div>
-
-			<div style="display: flex; align-items: center; margin-top: 20px;">
-				<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					<label>Tipo</label>
-				</div>
-				<div style="width: 20%;">
-					<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
-				</div>
-				<div style="width: 65%; padding: 0px 30px;">
-					<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
 				</div>
 			</div>
 		}
@@ -635,7 +651,7 @@
 
 				BaseDatos.Juegos.Actualizar.IdSteam(juego, conexion);
 
-				await ActualizarDatosSteamApi();
+				await ActualizarMediaSteamApi();
 			}
 		}
 	}
@@ -658,13 +674,59 @@
 		}
 	}
 
-	private async Task ActualizarDatosSteamApi()
+	private async Task ActualizarMediaSteamApi()
 	{
 		global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
 
 		if (nuevoJuego != null)
 		{
 			BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+		}
+	}
+
+	private async Task ActualizarDeckSteamApi()
+	{
+		APIs.Steam.SteamDeckAPI deckAPI = await APIs.Steam.Juego.CargarDatosDeck(juego.IdSteam);
+		bool vacio = true;
+
+		if (deckAPI != null)
+		{
+			if (deckAPI.Datos != null)
+			{
+				juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
+				juego.DeckComprobacion = DateTime.Now;
+
+				if (deckAPI.Datos.Tokens != null)
+				{
+					if (deckAPI.Datos.Tokens.Count > 0)
+					{
+						List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
+
+						foreach (var token in deckAPI.Datos.Tokens)
+						{
+							if (string.IsNullOrEmpty(token.Token) == false)
+							{
+								JuegoDeckToken nuevoToken = new JuegoDeckToken();
+								nuevoToken.Tipo = token.Tipo;
+								nuevoToken.Mensaje = token.Token;
+
+								tokens.Add(nuevoToken);
+							}
+						}
+
+						juego.DeckTokens = tokens;
+					}
+				}
+
+				vacio = false;
+				global::BaseDatos.Juegos.Actualizar.Deck(juego);
+			}
+		}
+
+		if (vacio == true)
+		{
+			juego.DeckComprobacion = DateTime.Now;
+			global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
 		}
 	}
 

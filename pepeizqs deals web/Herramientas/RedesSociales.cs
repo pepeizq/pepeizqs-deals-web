@@ -34,15 +34,7 @@ namespace Herramientas
 
 				foreach (Noticias.Noticia noticia in noticias)
 				{
-					string enlace = noticia.Enlace;
-
-					if (enlace != null)
-					{
-						if (enlace.Contains(dominio) == false)
-						{
-							enlace = dominio + noticia.Enlace;
-						}
-					}
+					string enlace = dominio + "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/";
 
 					string titulo = noticia.TituloEn;
 					string contenido = noticia.ContenidoEn;
@@ -107,15 +99,7 @@ namespace Herramientas
 
 				foreach (Noticias.Noticia noticia in noticias)
 				{
-					string enlace = noticia.Enlace;
-
-					if (enlace != null)
-					{
-						if (enlace.Contains(dominio) == false)
-						{
-							enlace = dominio + noticia.Enlace;
-						}
-					}
+					string enlace = dominio + "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEs) + "/";
 
 					string titulo = noticia.TituloEs;
 					string contenido = noticia.ContenidoEs;

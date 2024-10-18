@@ -448,12 +448,14 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
                     noticiaAñadir.Tipo = NoticiaTipo.Gratis;
                     noticiaAñadir.GratisTipo = GratisCargar.DevolverGratis(gratisSeleccionadoNoticias).Tipo;
+                    noticiaAñadir.GratisIds = noticia.GratisIds;
 
                 }
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
                     noticiaAñadir.Tipo = NoticiaTipo.Suscripciones;
                     noticiaAñadir.SuscripcionTipo = SuscripcionesCargar.DevolverSuscripcion(suscripcionSeleccionadaNoticias).Id;
+                    noticiaAñadir.SuscripcionesIds = noticia.SuscripcionesIds;
                 }
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Rumores.ToString())
                 {

@@ -60,20 +60,20 @@ namespace Herramientas
 			try
 			{
                 string titulo = noticia.TituloEn;
+                string enlace = "https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/";
 
-				if (string.IsNullOrEmpty(idioma) == false)
+                if (string.IsNullOrEmpty(idioma) == false)
 				{
 					if (idioma == "es-ES" || idioma == "es")
 					{
 						titulo = noticia.TituloEs;
-					}
+                        enlace = "https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEs) + "/";
+                    }
 				}
 
                 string html = string.Empty;
 
-                if (string.IsNullOrEmpty(noticia.Enlace) == false)
-                {
-					html = @"<!DOCTYPE html>
+                html = @"<!DOCTYPE html>
 							<html>
 							<head>
 								<meta charset=""utf-8"" />
@@ -108,48 +108,7 @@ namespace Herramientas
 							</body>
 							</html>";
 
-                    string enlace = noticia.Enlace;
-
-                    if (enlace.Contains("https://pepeizqdeals.com") == false)
-                    {
-                        enlace = enlace.Replace("/link/", "https://pepeizqdeals.com/link/");
-                    }
-
-                    html = html.Replace("{{enlace}}", enlace);
-                }
-                else
-                {
-					html = @"<!DOCTYPE html>
-							<html>
-							<head>
-								<meta charset=""utf-8"" />
-								<title></title>
-							</head>
-							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-									<div>
-										{{titulo}}
-									</div>
-
-									<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px; margin-top: 40px;"">
-										<div>
-											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
-												<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 100%; margin-top: 10px;"" />
-											</div>
-
-											<div style=""margin-top: 30px"">
-												{{contenido}}
-											</div>
-										</div>
-									</div>
-
-									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
-									</div>
-								</div>
-							</body>
-							</html>";
-                }
+                html = html.Replace("{{enlace}}", enlace);
 
                 string contenido = noticia.ContenidoEn;
 
@@ -160,11 +119,6 @@ namespace Herramientas
 						contenido = noticia.ContenidoEs;
 					}
 				}
-
-				if (contenido.Contains("https://pepeizqdeals.com") == false)
-                {
-                    contenido = contenido.Replace("/link/", "https://pepeizqdeals.com/link/");
-                }
 
                 html = html.Replace("{{titulo}}", titulo);
                 html = html.Replace("{{imagen}}", noticia.Imagen);
@@ -382,7 +336,7 @@ namespace Herramientas
 
 			precio2 = precio2 + "€";
 
-			string enlace = "https://pepeizqdeals.com" + EnlaceAcortador.Generar(precio.Enlace, precio.Tienda);
+			string enlace = "https://pepeizqdeals.com/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
 			string imagenTienda = string.Empty;
 
 			List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();

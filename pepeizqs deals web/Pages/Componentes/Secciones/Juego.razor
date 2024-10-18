@@ -1679,15 +1679,37 @@
 				}
 			}	
 
-			try
-			{
-				
-			}
-			catch (Exception ex)
-			{
-				global::BaseDatos.Errores.Insertar.Mensaje("test", ex);
-			}
+			DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
 
+			if (juego.IdSteam > 0)
+			{
+				bool actualizarDatosAPI = false;
+
+				if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
+				{
+					actualizarDatosAPI = true;
+				}
+
+				if (juego.Categorias == null && juego.Generos == null)
+				{
+					actualizarDatosAPI = true;
+
+					if (juego.Tipo == JuegoTipo.Music)
+					{
+						actualizarDatosAPI = false;
+					}
+				}
+
+				if (actualizarDatosAPI == true)
+				{
+					global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+
+					if (nuevoJuego != null)
+					{
+						global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+					}
+				}
+			}
 		}
 	}
 
@@ -1696,38 +1718,9 @@
 		if (primerRender == true)
 		{
 			if (juego != null)
-			{
-				DLCs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
+			{			
 				if (juego.IdSteam > 0)
 				{
-					bool actualizarDatosAPI = false;
-
-					if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
-					{
-						actualizarDatosAPI = true;
-					}
-
-					if (juego.Categorias == null && juego.Generos == null)
-					{
-						actualizarDatosAPI = true;
-
-						if (juego.Tipo == JuegoTipo.Music)
-						{
-							actualizarDatosAPI = false;
-						}
-					}
-
-					if (actualizarDatosAPI == true)
-					{
-						global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
-
-						if (nuevoJuego != null)
-						{
-							global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-						}
-					}
-
 					if (juego.Tipo == JuegoTipo.Game)
 					{
 						bool actualizarDeckAPI = false;
