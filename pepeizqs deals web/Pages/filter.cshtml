@@ -53,7 +53,8 @@
 			@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
 			{
 				idioma = Model.idioma,
-				ids = Model.ids
+				ids = Model.ids,
+				usuarioId = usuario?.Id
 			}))
 		}
 	}

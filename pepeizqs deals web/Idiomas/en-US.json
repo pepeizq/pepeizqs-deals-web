@@ -32,18 +32,6 @@
     "Valor": "Others"
   },
   {
-    "Id": "News.String5",
-    "Valor": "Games in the database:"
-  },
-  {
-    "Id": "News.String6",
-    "Valor": "Added"
-  },
-  {
-    "Id": "News.String10",
-    "Valor": "DLCs in the database:"
-  },
-  {
     "Id": "News.BundleString1",
     "Valor": "{0} bundle has been released on {1}"
   },
@@ -126,23 +114,7 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "has added the following games:"
-  },
-  {
-    "Id": "News.Giveaways1",
-    "Valor": "New Weekly Giveaways on the web"
-  },
-  {
-    "Id": "News.Giveaways2",
-    "Valor": "This week you have the following games for giveaways:"
-  },
-  {
-    "Id": "News.Giveaways3",
-    "Valor": "Premium Group"
-  },
-  {
-    "Id": "News.Giveaways4",
-    "Valor": "Basic Group"
-  },
+  }
   {
     "Id": "Subscriptions.Title",
     "Valor": "Subscriptions"
@@ -154,57 +126,5 @@
   {
     "Id": "Subscriptions.String2",
     "Valor": "Subscriptions Archive"
-  },
-  {
-    "Id": "Giveaways.Title",
-    "Valor": "Giveaways"
-  },
-  {
-    "Id": "Giveaways.String1",
-    "Valor": "Premium Group"
-  },
-  {
-    "Id": "Giveaways.String2",
-    "Valor": "Basic Group"
-  },
-  {
-    "Id": "Giveaways.String3",
-    "Valor": "entry"
-  },
-  {
-    "Id": "Giveaways.String4",
-    "Valor": "entries"
-  },
-  {
-    "Id": "Giveaways.String7",
-    "Valor": "You already have this game"
-  },
-  {
-    "Id": "Giveaways.String8",
-    "Valor": "There are no giveaways available for this group."
-  },
-  {
-    "Id": "Giveaways.String9",
-    "Valor": "How to participate in the giveaways?"
-  },
-  {
-    "Id": "Giveaways.String14",
-    "Valor": "These giveaways"
-  },
-  {
-    "Id": "Giveaways.String15",
-    "Valor": "This giveaway"
-  },
-  {
-    "Id": "Giveaways.String16",
-    "Valor": "How to participate"
-  },
-  {
-    "Id": "Giveaways.String17",
-    "Valor": "To participate in the giveaways you must register an account."
-  },
-  {
-    "Id": "Giveaways.String18",
-    "Valor": "Check if you meet the requirements of each group from this section of your account."
   }
 ]

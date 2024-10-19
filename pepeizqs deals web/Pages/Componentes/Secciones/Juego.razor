@@ -13,6 +13,7 @@
 @using Radzen.Blazor
 @using Suscripciones2
 @using System.Net
+@using System.Text.Json
 @using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
 
@@ -1751,33 +1752,36 @@
 							{
 								if (deckAPI.Datos != null)
 								{
-									juego.Deck = (JuegoDeck)deckAPI.Datos.Resultado;
-									juego.DeckComprobacion = DateTime.Now;
-
-									if (deckAPI.Datos.Tokens != null)
+									if (deckAPI.Datos.Resultado != null)
 									{
-										if (deckAPI.Datos.Tokens.Count > 0)
+										juego.Deck = (JuegoDeck)int.Parse(deckAPI.Datos.Resultado.ToString());
+										juego.DeckComprobacion = DateTime.Now;
+
+										if (deckAPI.Datos.Tokens != null)
 										{
-											List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
-
-											foreach (var token in deckAPI.Datos.Tokens)
+											if (deckAPI.Datos.Tokens.Count > 0)
 											{
-												if (string.IsNullOrEmpty(token.Token) == false)
+												List<JuegoDeckToken> tokens = new List<JuegoDeckToken>();
+
+												foreach (var token in deckAPI.Datos.Tokens)
 												{
-													JuegoDeckToken nuevoToken = new JuegoDeckToken();
-													nuevoToken.Tipo = token.Tipo;
-													nuevoToken.Mensaje = token.Token;
+													if (string.IsNullOrEmpty(token.Token) == false)
+													{
+														JuegoDeckToken nuevoToken = new JuegoDeckToken();
+														nuevoToken.Tipo = int.Parse(token.Tipo.ToString());
+														nuevoToken.Mensaje = token.Token;
 
-													tokens.Add(nuevoToken);
+														tokens.Add(nuevoToken);
+													}
 												}
+
+												juego.DeckTokens = tokens;
 											}
-
-											juego.DeckTokens = tokens;
 										}
-									}
 
-									vacio = false;
-									global::BaseDatos.Juegos.Actualizar.Deck(juego);
+										vacio = false;
+										global::BaseDatos.Juegos.Actualizar.Deck(juego);
+									}
 								}
 							}
 
@@ -1932,18 +1936,28 @@
 			}
 		}
 
-		precioTexto = precioTexto.Replace(".", ",");
-
-		int int1 = precioTexto.IndexOf(",");
-
-		if (int1 == precioTexto.Length - 2)
+		if (precioTexto.Contains(".") == true)
 		{
-			precioTexto = precioTexto + "0";
+			precioTexto = precioTexto.Replace(".", ",");
 		}
 
-		if (precioTexto.Length > int1 + 3)
+		if (precioTexto.Contains(",") == true)
 		{
-			precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
+			int int1 = precioTexto.IndexOf(",");
+
+			if (int1 == precioTexto.Length - 2)
+			{
+				precioTexto = precioTexto + "0";
+			}
+
+			if (precioTexto.Length > int1 + 3)
+			{
+				precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
+			}
+		}
+		else
+		{
+			precioTexto = precioTexto + ",00";
 		}
 
 		precioTexto = precioTexto + "€";

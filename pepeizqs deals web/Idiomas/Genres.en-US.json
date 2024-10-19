@@ -106,5 +106,13 @@
   {
     "Id": "74",
     "Valor": "Gore"
+  },
+  {
+    "Id": "80",
+    "Valor": "Movie"
+  },
+  {
+    "Id": "80",
+    "Valor": "Documentary"
   }
 ]

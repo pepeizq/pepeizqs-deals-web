@@ -513,7 +513,7 @@ else
 
 		<div style="width: 100%;">
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 0px 20px; display: flex; flex-direction: column; gap: 20px;">
-				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="334" OverscanCount="6">
+				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="107" OverscanCount="6">
 					<ItemContent>
 						@{
 							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
@@ -533,6 +533,11 @@ else
 								{
 									fondoColor = "background-color: var(--fondoAlerta);";
 								}
+							}
+
+							if (string.IsNullOrEmpty(fondoColor) == true)
+							{
+								fondoColor = "background-color: var(--fondoBotonPequeño);";
 							}
 
 							<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px; @fondoColor">
@@ -587,9 +592,9 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await UserManager.FindByIdAsync(usuarioId);
-
 		cargado = false;
+
+		usuario = await UserManager.FindByIdAsync(usuarioId);			
 
 		if (usuario != null)
 		{

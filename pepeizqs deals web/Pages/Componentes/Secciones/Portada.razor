@@ -267,6 +267,10 @@
 }
 
 <style>
+	.noticias-caja {
+		padding: 30px;
+	}
+
 	.noticia-ancho {
 		width: calc(33% - 16px);
 	}
@@ -277,6 +281,10 @@
 	}
 
 	@@media (max-width: 800px) {
+		.noticias-caja {
+			padding: 15px;
+		}
+
 		.noticia-enlaces {
 			flex-direction: column;
 			gap: 30px;
@@ -290,7 +298,7 @@
 
 @if (noticiasMostrar.Count > 0)
 {
-	<div style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px;">
+	<div class="noticias-caja" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 60px;">
 		<div style="display: flex; overflow: auto; padding-bottom: 20px; gap: 30px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 			@foreach (var noticia in noticiasMostrar)
 			{

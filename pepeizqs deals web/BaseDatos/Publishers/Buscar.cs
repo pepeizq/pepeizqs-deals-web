@@ -140,7 +140,7 @@ namespace BaseDatos.Publishers
 			{
 				using (conexion)
 				{
-					string busqueda = "SELECT * FROM publishers WHERE nombre = '" + cadena + "'";
+					string busqueda = "SELECT * FROM publishers WHERE nombre = N'" + cadena + "'";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
@@ -200,7 +200,7 @@ namespace BaseDatos.Publishers
 			{
 				using (conexion)
 				{
-					string busqueda = "SELECT * FROM publishers WHERE acepciones LIKE '%" + cadena + "%'";
+					string busqueda = "SELECT * FROM publishers WHERE acepciones LIKE N'%" + cadena + "%'";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
@@ -232,7 +232,7 @@ namespace BaseDatos.Publishers
                 using (conexion)
                 {
                     string busqueda = @"SELECT id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo FROM juegos 
-                                        WHERE ISJSON(caracteristicas) > 0 AND JSON_QUERY(caracteristicas, '$.Publishers') LIKE '%" + Strings.ChrW(34) + publisher + Strings.ChrW(34) + "%'";
+                                        WHERE ISJSON(caracteristicas) > 0 AND JSON_QUERY(caracteristicas, '$.Publishers') LIKE N'%" + Strings.ChrW(34) + publisher + Strings.ChrW(34) + "%'";
 
                     using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                     {

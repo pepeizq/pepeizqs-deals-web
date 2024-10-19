@@ -36,6 +36,12 @@
     padding: 40px 0px 60px 0px;
 }
 
+@media(max-width: 800px) {
+    .cuerpo-espacio {
+        padding: 0px;
+    }
+}
+
 .pie {
     background-color: var(--fondoOscuro);
     font-size: var(--tamañoTexto);

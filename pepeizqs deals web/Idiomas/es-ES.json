@@ -32,18 +32,6 @@
     "Valor": "Otros"
   },
   {
-    "Id": "News.String5",
-    "Valor": "Juegos en la base de datos:"
-  },
-  {
-    "Id": "News.String6",
-    "Valor": "Añadido"
-  },
-  {
-    "Id": "News.String10",
-    "Valor": "DLCs en la base de datos:"
-  },
-  {
     "Id": "News.BundleString1",
     "Valor": "El bundle {0} ha sido lanzado en {1}"
   },
@@ -128,22 +116,6 @@
     "Valor": "ha añadido los siguientes juegos:"
   },
   {
-    "Id": "News.Giveaways1",
-    "Valor": "Nuevos Sorteos Semanales en la web"
-  },
-  {
-    "Id": "News.Giveaways2",
-    "Valor": "Esta semana tenéis los siguientes juegos para sortear:"
-  },
-  {
-    "Id": "News.Giveaways3",
-    "Valor": "Grupo Premium"
-  },
-  {
-    "Id": "News.Giveaways4",
-    "Valor": "Grupo Básico"
-  },
-  {
     "Id": "Subscriptions.Title",
     "Valor": "Suscripciones"
   },
@@ -154,57 +126,5 @@
   {
     "Id": "Subscriptions.String2",
     "Valor": "Suscripciones Archivo"
-  },
-  {
-    "Id": "Giveaways.Title",
-    "Valor": "Sorteos"
-  },
-  {
-    "Id": "Giveaways.String1",
-    "Valor": "Grupo Premium"
-  },
-  {
-    "Id": "Giveaways.String2",
-    "Valor": "Grupo Básico"
-  },
-  {
-    "Id": "Giveaways.String3",
-    "Valor": "participante"
-  },
-  {
-    "Id": "Giveaways.String4",
-    "Valor": "participantes"
-  },
-  {
-    "Id": "Giveaways.String7",
-    "Valor": "Ya tienes este juego"
-  },
-  {
-    "Id": "Giveaways.String8",
-    "Valor": "No hay sorteos disponibles para este grupo."
-  },
-  {
-    "Id": "Giveaways.String9",
-    "Valor": "¿Como participar en los sorteos?"
-  },
-  {
-    "Id": "Giveaways.String14",
-    "Valor": "Estos sorteos"
-  },
-  {
-    "Id": "Giveaways.String15",
-    "Valor": "Este sorteo"
-  },
-  {
-    "Id": "Giveaways.String16",
-    "Valor": "Como participar"
-  },
-  {
-    "Id": "Giveaways.String17",
-    "Valor": "Para participar en los sorteos es obligatorio registrar una cuenta."
-  },
-  {
-    "Id": "Giveaways.String18",
-    "Valor": "Consulta si cumples con los requisitos de cada grupo desde este apartado de tu cuenta."
   }
 ]

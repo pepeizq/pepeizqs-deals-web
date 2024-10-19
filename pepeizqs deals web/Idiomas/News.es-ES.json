@@ -42,5 +42,9 @@
   {
     "Id": "String8",
     "Valor": "Este bundle ha terminado"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Añadido"
   }
 ]

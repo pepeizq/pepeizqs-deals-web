@@ -88,6 +88,10 @@
     "Valor": "Notificaciones de turnos de Steam"
   },
   {
+    "Id": "33",
+    "Valor": "Compatibilidad total con Steam Controller"
+  },
+  {
     "Id": "35",
     "Valor": "Compras dentro de la aplicación"
   },

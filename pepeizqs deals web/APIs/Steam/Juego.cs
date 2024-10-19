@@ -482,10 +482,10 @@ namespace APIs.Steam
 	public class SteamDeckAPIResultado
 	{
 		[JsonPropertyName("appid")]
-		public string Id { get; set; }
+		public object Id { get; set; }
 
 		[JsonPropertyName("resolved_category")]
-		public int Resultado { get; set; }
+		public object Resultado { get; set; }
 
 		[JsonPropertyName("resolved_items")]
 		public List<SteamDeckAPIToken> Tokens { get; set; }
@@ -494,7 +494,7 @@ namespace APIs.Steam
 	public class SteamDeckAPIToken
 	{
 		[JsonPropertyName("display_type")]
-		public int Tipo { get; set; }
+		public object Tipo { get; set; }
 
 		[JsonPropertyName("loc_token")]
 		public string Token { get; set; }

@@ -88,6 +88,10 @@
     "Valor": "Steam Turn Notifications"
   },
   {
+    "Id": "33",
+    "Valor": "Native Steam Controller Support"
+  },
+  {
     "Id": "35",
     "Valor": "In-App Purchases"
   },
