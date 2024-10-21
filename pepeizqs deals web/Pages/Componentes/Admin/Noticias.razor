@@ -388,9 +388,9 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             {
                 suscripcionSeleccionadaNoticias = SuscripcionesCargar.GenerarListado()[0].Id.ToString();
             }
-            else if (noticiaTipoSeleccionada == NoticiaTipo.Sorteos.ToString())
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Web.ToString())
             {
-                GenerarSorteos(conexion);
+                noticia.Imagen = "/logo/logoentrada.webp";
             }
         }
     }
@@ -532,16 +532,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     private void ClickearSuscripcionJuego(MouseEventArgs e, int juegoId, int id)
     {
         noticia = Plantillas.Suscripciones(noticia, juegoId, id, suscripcionSeleccionadaNoticias);
-    }
-
-    private void GenerarSorteos(SqlConnection conexion)
-    {
-        List<Sorteos2.Sorteo> sorteosActivos = BaseDatos.Sorteos.Buscar.Activos(conexion);
-
-        if (sorteosActivos.Count > 0)
-        {
-            noticia = Plantillas.Sorteos(sorteosActivos);
-        }
     }
 
     #region Editor
