@@ -1066,124 +1066,7 @@
 										
 										<div>
                                             @{
-                                                List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
-
-                                                foreach (var publisher in listaPublishers)
-                                                {
-                                                    string publisherLimpio = publisher;
-													publisherLimpio = publisherLimpio.Replace(" ", null);
-													publisherLimpio = publisherLimpio.Replace("(", null);
-													publisherLimpio = publisherLimpio.Replace(")", null);
-													publisherLimpio = publisherLimpio.Replace("?", null);
-													publisherLimpio = publisherLimpio.Replace("/", null);
-													publisherLimpio = publisherLimpio.Replace("\"", null);
-													publisherLimpio = publisherLimpio.Replace("💘", null);
-													publisherLimpio = publisherLimpio.ToLower();
-													publisherLimpio = publisherLimpio.Trim();
-
-													global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
-													}
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-													}
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
-													}
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-													}
-
-													publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
-													}
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-													}
-
-													if (publisherFinal == null)
-													{
-														publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-													}
-
-													if (publisherFinal != null)
-													{
-														bool añadir = true;
-
-														if (publishersFinales.Count > 0)
-														{
-															foreach (var publisherFinal2 in publishersFinales)
-															{
-																if (publisherFinal2.Id == publisherFinal.Id)
-																{
-																	añadir = false;
-																}
-															}
-														}
-
-														if (añadir == true)
-														{
-															publishersFinales.Add(publisherFinal);
-														}
-													}
-													else
-													{
-														global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
-														publisherFinal2.Id = publisherLimpio;
-														publisherFinal2.Nombre = publisher;
-
-														if (publisherFinal2.Nombre.Contains("?") == true)
-														{
-															publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
-															publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
-														}
-
-														if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
-														{
-															bool añadirError = false;
-
-															if (juego.Analisis != null)
-															{
-																if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-																{
-																	if (juego.Analisis.Cantidad.Length > 2)
-																	{
-																		añadirError = true;
-																	}
-																}
-															}
-
-															if (añadirError == true && string.IsNullOrEmpty(publisherFinal2.Id) == false)
-															{
-																publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
-
-																publishersFinales.Add(publisherFinal2);
-
-																global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
-															}
-															else
-															{
-																publisherFinal2.Id = "noenlazar";
-
-																publishersFinales.Add(publisherFinal2);
-															}
-														}
-													}
-												}
+                                                List<global::BaseDatos.Publishers.Publisher> publishersFinales = PublisherBuscar(listaPublishers);
 
 												int i = 0;
 
@@ -2981,6 +2864,143 @@
 				#endregion
 			}
 		}
+	}
+
+	#endregion
+
+	#region Publisher
+
+	private List<global::BaseDatos.Publishers.Publisher> PublisherBuscar(List<string> listaPublishers)
+	{
+		List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
+
+		foreach (var publisher in listaPublishers)
+		{
+			string publisherLimpio = publisher;
+			publisherLimpio = publisherLimpio.Replace(" ", null);
+			publisherLimpio = publisherLimpio.Replace("(", null);
+			publisherLimpio = publisherLimpio.Replace(")", null);
+			publisherLimpio = publisherLimpio.Replace("?", null);
+			publisherLimpio = publisherLimpio.Replace("/", null);
+			publisherLimpio = publisherLimpio.Replace("\"", null);
+			publisherLimpio = publisherLimpio.Replace("💘", null);
+			publisherLimpio = publisherLimpio.ToLower();
+			publisherLimpio = publisherLimpio.Trim();
+
+			global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
+			}
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
+			}
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
+			}
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
+			}
+
+			publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
+			}
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
+			}
+
+			if (publisherFinal == null)
+			{
+				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
+			}
+
+			if (publisherFinal != null)
+			{
+				bool añadir = true;
+
+				if (publishersFinales.Count > 0)
+				{
+					foreach (var publisherFinal2 in publishersFinales)
+					{
+						if (publisherFinal2.Id == publisherFinal.Id)
+						{
+							añadir = false;
+						}
+					}
+				}
+
+				if (añadir == true)
+				{
+					publishersFinales.Add(publisherFinal);
+				}
+			}
+			else
+			{
+				global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
+				publisherFinal2.Id = publisherLimpio;
+				publisherFinal2.Nombre = publisher;
+
+				if (publisherFinal2.Nombre.Contains("?") == true)
+				{
+					publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
+					publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
+				}
+
+				if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
+				{
+					if (string.IsNullOrEmpty(publisherFinal2.Id) == false)
+					{
+						bool mandarError = false;
+
+						if (juego.Analisis != null)
+						{
+							if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+							{
+								if (juego.Analisis.Cantidad.Length > 3)
+								{
+									mandarError = true;
+								}
+							}
+						}
+
+						if (mandarError == true)
+						{
+							publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
+
+							publishersFinales.Add(publisherFinal2);
+
+							global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
+						}
+						else
+						{
+							publisherFinal2.Id = "noenlazar";
+
+							publishersFinales.Add(publisherFinal2);
+						}
+					}
+					else
+					{
+						publisherFinal2.Id = "noenlazar";
+
+						publishersFinales.Add(publisherFinal2);
+					}
+				}
+			}
+		}
+
+		return publishersFinales;
 	}
 
 	#endregion

@@ -48,8 +48,12 @@ else
 					{
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
+					else
+					{
+						fondo = "background-color: transparent;";
+					}
 
-					<button @onclick="(e => CambiarListado(e, 0))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 0))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Publisher") (@resultadosJuegos.Count.ToString())
 						</div>
@@ -64,8 +68,12 @@ else
 					{
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
+					else
+					{
+						fondo = "background-color: transparent;";
+					}
 
-					<button @onclick="(e => CambiarListado(e, 1))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 1))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Publisher") (@resultadosDLCs.Count.ToString())
 						</div>
@@ -80,8 +88,12 @@ else
 					{
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
+					else
+					{
+						fondo = "background-color: transparent;";
+					}
 
-					<button @onclick="(e => CambiarListado(e, 2))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 2))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Publisher") (@resultadosSoftware.Count.ToString())
 						</div>
@@ -96,8 +108,12 @@ else
 					{
 						fondo = "background-color: var(--fondoBotonPequeño);";
 					}
+					else
+					{
+						fondo = "background-color: transparent;";
+					}
 
-					<button @onclick="(e => CambiarListado(e, 3))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+					<button @onclick="(e => CambiarListado(e, 3))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
 							@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Publisher") (@resultadosBandasSonoras.Count.ToString())
 						</div>
@@ -116,8 +132,12 @@ else
 						{
 							fondo = "background-color: var(--fondoBotonPequeño);";
 						}
+						else
+						{
+							fondo = "background-color: transparent;";
+						}
 
-						<button @onclick="(e => CambiarListado(e, 4))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+						<button @onclick="(e => CambiarListado(e, 4))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
 								@Herramientas.Idiomas.CogerCadena(idioma, "String6", "Publisher") (@resultadosBundles.Count.ToString())
 							</div>
@@ -132,8 +152,12 @@ else
 						{
 							fondo = "background-color: var(--fondoBotonPequeño);";
 						}
+						else
+						{
+							fondo = "background-color: transparent;";
+						}
 
-						<button @onclick="(e => CambiarListado(e, 5))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+						<button @onclick="(e => CambiarListado(e, 5))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
 								@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Publisher") (@resultadosGratis.Count.ToString())
 							</div>
@@ -148,8 +172,12 @@ else
 						{
 							fondo = "background-color: var(--fondoBotonPequeño);";
 						}
+						else
+						{
+							fondo = "background-color: transparent;";  
+						}
 
-						<button @onclick="(e => CambiarListado(e, 6))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
+						<button @onclick="(e => CambiarListado(e, 6))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
 								@Herramientas.Idiomas.CogerCadena(idioma, "String8", "Publisher") (@resultadosSuscripciones.Count.ToString())
 							</div>
@@ -168,43 +196,63 @@ else
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column;">
 				@if (resultadosMostrar.Count > 0)
 				{
-					foreach (var juego in resultadosMostrar)
-					{
-						<div style="padding: 10px;">
-							<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px;">
-								<div style="display: flex; align-items: center;">
-									<div>
-										<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-									</div>
+					<Virtualize Context="juego" Items="resultadosMostrar" ItemSize="107">
+						<ItemContent>
+							<div style="padding: 10px;">
+								@{
+									string fondoColor = "var(--fondoBotonPequeño)";
 
-									<div style="padding: 0px 20px;">
+									if (resultadosModo == 0)
+									{
+										juego.Tipo = Juegos.JuegoTipo.Game;
+
+										if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, Juegos.JuegoDRM.Steam) == true)
+										{
+											fondoColor = "var(--fondoBien)";
+										}
+
+										if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego, Juegos.JuegoDRM.Steam, true) == true)
+										{
+											fondoColor = "var(--fondoAlerta)";
+										}
+									}
+								}
+
+								<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px; background-color: @fondoColor;">
+									<div style="display: flex; align-items: center;">
 										<div>
-											@juego.Nombre
+											<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
 										</div>
 
-										<div style="margin-top: 10px; font-size: 15px;">
-											@if (resultadosModo == 4)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
-											}
-											else if (resultadosModo == 5)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
-											}
-											else if (resultadosModo == 6)
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
-											}
-											else
-											{
-												@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
-											}
+										<div style="padding: 0px 20px;">
+											<div>
+												@juego.Nombre
+											</div>
+
+											<div style="margin-top: 10px; font-size: 15px;">
+												@if (resultadosModo == 4)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, false, false)
+												}
+												else if (resultadosModo == 5)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, true, false)
+												}
+												else if (resultadosModo == 6)
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, false, false, true)
+												}
+												else
+												{
+													@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+												}
+											</div>
 										</div>
 									</div>
-								</div>
-							</a>
-						</div>
-					}
+								</a>
+							</div>
+						</ItemContent>
+					</Virtualize>
 				}
 				else
 				{
@@ -228,6 +276,8 @@ else
 	public string usuarioId { get; set; }
 
 	private Usuario usuario = new Usuario();
+
+	private List<string> usuarioJuegosSteam = new List<string>();
 
 	[Parameter]
 	public string id { get; set; }
@@ -261,6 +311,14 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.FindByIdAsync(usuarioId);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+			{
+				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
+		}
 
 		resultadosGestor = BaseDatos.Publishers.Buscar.Juegos(nombre);
 

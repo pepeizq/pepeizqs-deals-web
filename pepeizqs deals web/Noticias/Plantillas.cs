@@ -16,107 +16,110 @@ namespace Noticias
 
             if (bundle != null)
             {
-                plantilla.BundleId = bundleId.ToString();
-                plantilla.Juegos = null;
-
-                for (int i = 0; i < bundle.Juegos.Count; i += 1)
+                if (bundle.Id > 0)
                 {
-                    if (i == 0)
-                    {
-                        plantilla.Juegos = bundle.Juegos[i].JuegoId;
-                    }
-                    else
-                    {
-                        plantilla.Juegos = plantilla.Juegos + "," + bundle.Juegos[i].JuegoId;
-                    }
-                }
+					plantilla.BundleId = bundleId.ToString();
+					plantilla.Juegos = null;
 
-                plantilla.Fecha = bundle.FechaTermina;
-                //plantilla.Enlace = EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
+					for (int i = 0; i < bundle.Juegos.Count; i += 1)
+					{
+						if (i == 0)
+						{
+							plantilla.Juegos = bundle.Juegos[i].JuegoId;
+						}
+						else
+						{
+							plantilla.Juegos = plantilla.Juegos + "," + bundle.Juegos[i].JuegoId;
+						}
+					}
 
-                #region Titulo
+					plantilla.Fecha = bundle.FechaTermina;
+					//plantilla.Enlace = EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo);
 
-                if (bundle.NombreBundle.ToLower().Contains("bundle") == false)
-                {
-                    plantilla.TituloEn = string.Format(Idiomas.CogerCadena("en-US", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
-                    plantilla.TituloEs = string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
-                }
-                else
-                {
-                    plantilla.TituloEn = string.Format(Idiomas.CogerCadena("en-US", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
-                    plantilla.TituloEs = string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
-                }
+					#region Titulo
 
-                #endregion
+					if (bundle.NombreBundle.ToLower().Contains("bundle") == false)
+					{
+						plantilla.TituloEn = string.Format(Idiomas.CogerCadena("en-US", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEs = string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString1"), bundle.NombreBundle, bundle.NombreTienda);
+					}
+					else
+					{
+						plantilla.TituloEn = string.Format(Idiomas.CogerCadena("en-US", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEs = string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString5"), bundle.NombreBundle, bundle.NombreTienda);
+					}
 
-                #region Contenido
+					#endregion
 
-                if (bundle.Pick == false)
-                {
-                    plantilla.ContenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div>";
-                    plantilla.ContenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString2"), bundle.NombreTienda) + "</div>";
+					#region Contenido
 
-                    foreach (var tier in bundle.Tiers.OrderBy(x => x.Posicion))
-                    {
-                        string precio = tier.Precio;
-                        precio = precio.Replace(".", ",");
-                        precio = precio + "€";
+					if (bundle.Pick == false)
+					{
+						plantilla.ContenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("en-US", "News.BundleString2"), bundle.NombreTienda) + "</div>";
+						plantilla.ContenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString2"), bundle.NombreTienda) + "</div>";
 
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
+						foreach (var tier in bundle.Tiers.OrderBy(x => x.Posicion))
+						{
+							string precio = tier.Precio;
+							precio = precio.Replace(".", ",");
+							precio = precio + "€";
 
-                        foreach (var juego in bundle.Juegos)
-                        {
-                            if (juego.Tier.Posicion == tier.Posicion)
-                            {
-                                plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
-                                plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+							plantilla.ContenidoEn = plantilla.ContenidoEn + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
+							plantilla.ContenidoEs = plantilla.ContenidoEs + "<div>Tier " + tier.Posicion + " (" + precio + "):<ul>";
+
+							foreach (var juego in bundle.Juegos)
+							{
+								if (juego.Tier.Posicion == tier.Posicion)
+								{
+									plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+									plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+								}
 							}
-                        }
 
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul></div>";
-                    }
-                }
-                else
-                {
-                    plantilla.ContenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("en-US", "News.BundleString3"), bundle.NombreTienda) + "</div>";
-                    plantilla.ContenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString3"), bundle.NombreTienda) + "</div>";
+							plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
+							plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul></div>";
+						}
+					}
+					else
+					{
+						plantilla.ContenidoEn = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("en-US", "News.BundleString3"), bundle.NombreTienda) + "</div>";
+						plantilla.ContenidoEs = "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + string.Format(Idiomas.CogerCadena("es-ES", "News.BundleString3"), bundle.NombreTienda) + "</div>";
 
-                    foreach (var tier in bundle.Tiers)
-                    {
-                        string precio = tier.Precio;
-                        precio = precio.Replace(".", ",");
-                        precio = precio + "€";
+						foreach (var tier in bundle.Tiers)
+						{
+							string precio = tier.Precio;
+							precio = precio.Replace(".", ",");
+							precio = precio + "€";
 
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Idiomas.CogerCadena("en-US", "News.BundleString4") + " (" + precio + ")</div>";
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Idiomas.CogerCadena("es-ES", "News.BundleString4") + " (" + precio + ")</div>";
-                    }
+							plantilla.ContenidoEn = plantilla.ContenidoEn + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Idiomas.CogerCadena("en-US", "News.BundleString4") + " (" + precio + ")</div>";
+							plantilla.ContenidoEs = plantilla.ContenidoEs + "<div style=" + Strings.ChrW(34) + "margin-bottom: 15px;" + Strings.ChrW(34) + ">" + tier.CantidadJuegos.ToString() + " " + Idiomas.CogerCadena("es-ES", "News.BundleString4") + " (" + precio + ")</div>";
+						}
 
-                    plantilla.ContenidoEn = plantilla.ContenidoEn + "<div><ul>";
-                    plantilla.ContenidoEs = plantilla.ContenidoEs + "<div><ul>";
+						plantilla.ContenidoEn = plantilla.ContenidoEn + "<div><ul>";
+						plantilla.ContenidoEs = plantilla.ContenidoEs + "<div><ul>";
 
-                    foreach (var juego in bundle.Juegos)
-                    {
-                        plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
-                        plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
-                    }
+						foreach (var juego in bundle.Juegos)
+						{
+							plantilla.ContenidoEn = plantilla.ContenidoEn + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+							plantilla.ContenidoEs = plantilla.ContenidoEs + "<li>" + juego.Nombre + " (" + Juegos.JuegoDRM2.DevolverDRM(juego.DRM) + ")</li>";
+						}
 
-                    plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
-                    plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul></div>";
-                }
+						plantilla.ContenidoEn = plantilla.ContenidoEn + "</ul></div>";
+						plantilla.ContenidoEs = plantilla.ContenidoEs + "</ul></div>";
+					}
 
-                #endregion
+					#endregion
 
-                #region Imagen
+					#region Imagen
 
-                if (bundle.ImagenNoticia != null)
-                {
-                    plantilla.Imagen = bundle.ImagenNoticia;
-                }
+					if (bundle.ImagenNoticia != null)
+					{
+						plantilla.Imagen = bundle.ImagenNoticia;
+					}
 
-                #endregion
-            }
+					#endregion
+				}
+			}
 
             return plantilla;
         }

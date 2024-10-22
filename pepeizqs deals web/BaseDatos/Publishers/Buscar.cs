@@ -231,7 +231,7 @@ namespace BaseDatos.Publishers
             {
                 using (conexion)
                 {
-                    string busqueda = @"SELECT id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo FROM juegos 
+                    string busqueda = @"SELECT id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, idSteam FROM juegos 
                                         WHERE ISJSON(caracteristicas) > 0 AND JSON_QUERY(caracteristicas, '$.Publishers') LIKE N'%" + Strings.ChrW(34) + publisher + Strings.ChrW(34) + "%'";
 
                     using (SqlCommand comando = new SqlCommand(busqueda, conexion))
@@ -308,6 +308,11 @@ namespace BaseDatos.Publishers
 								if (lector.IsDBNull(8) == false)
 								{
 									juego.Tipo = Enum.Parse<JuegoTipo>(lector.GetString(8));
+								}
+
+								if (lector.IsDBNull(9) == false)
+								{
+									juego.IdSteam = lector.GetInt32(9);
 								}
 
 								juegos.Add(juego);

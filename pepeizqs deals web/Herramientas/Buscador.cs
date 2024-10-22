@@ -271,13 +271,29 @@ namespace Herramientas
 				string precioTexto = string.Empty;
 
 				precioTexto = minimoCantidad.ToString();
-				precioTexto = precioTexto.Replace(".", ",");
 
-				int int1 = precioTexto.IndexOf(",");
-
-				if (int1 == precioTexto.Length - 2)
+				if (precioTexto.Contains(".") == true)
 				{
-					precioTexto = precioTexto + "0";
+					precioTexto = precioTexto.Replace(".", ",");
+				}
+
+				if (precioTexto.Contains(",") == true)
+				{
+					int int1 = precioTexto.IndexOf(",");
+
+					if (int1 == precioTexto.Length - 2)
+					{
+						precioTexto = precioTexto + "0";
+					}
+
+					if (precioTexto.Length > int1 + 3)
+					{
+						precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
+					}
+				}
+				else
+				{
+					precioTexto = precioTexto + ",00";
 				}
 
 				precioTexto = precioTexto + "€";
