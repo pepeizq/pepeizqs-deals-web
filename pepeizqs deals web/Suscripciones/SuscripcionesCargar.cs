@@ -7,7 +7,8 @@ namespace Suscripciones2
 		HumbleChoice,
 		PrimeGaming,
 		HumbleMonthly,
-		TwitchPrime
+		TwitchPrime,
+		EAPlay
 	}
 
 	public class SuscripcionesCargar
@@ -19,7 +20,8 @@ namespace Suscripciones2
 				APIs.Humble.Suscripcion.Generar(),
 				APIs.PrimeGaming.Suscripcion.Generar(),
 				APIs.Humble.Suscripcion.GenerarAntiguo(),
-				APIs.PrimeGaming.Suscripcion.GenerarAntiguo()
+				APIs.PrimeGaming.Suscripcion.GenerarAntiguo(),
+				APIs.EA.Suscripcion.Generar()
 			};
 
 			return suscripciones;

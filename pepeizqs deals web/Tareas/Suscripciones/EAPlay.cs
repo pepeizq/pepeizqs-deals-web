@@ -4,17 +4,17 @@ using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
-namespace Tareas.Tiendas
+namespace Tareas.Suscripciones
 {
-	public class Steam : BackgroundService
+	public class EAPlay : BackgroundService
 	{
-		private string id = APIs.Steam.Tienda.Generar().Id;
+		private string id = "eaplay";
 
-		private readonly ILogger<Steam> _logger;
+		private readonly ILogger<EAPlay> _logger;
 		private readonly IServiceScopeFactory _factoria;
 		private readonly IDecompiladores _decompilador;
 
-		public Steam(ILogger<Steam> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		public EAPlay(ILogger<EAPlay> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
 		{
 			_logger = logger;
 			_factoria = factory;
@@ -23,8 +23,7 @@ namespace Tareas.Tiendas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			Random azar = new Random();
-			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(azar.Next(5, 30)));
+			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(20));
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
@@ -46,23 +45,13 @@ namespace Tareas.Tiendas
 					{
 						TimeSpan siguienteComprobacion = TimeSpan.FromHours(4);
 
-						if (DateTime.Now.Hour == 17 || DateTime.Now.Hour == 18)
-						{
-							siguienteComprobacion = TimeSpan.FromHours(8);
-						}
-
-						if (DateTime.Now.Hour == 19 || DateTime.Now.Hour == 20)
-						{
-							siguienteComprobacion = TimeSpan.FromMinutes(30);
-						}
-
 						bool sePuedeUsar = Admin.ComprobarTiendaUso(conexion, siguienteComprobacion, id);
 
 						if (sePuedeUsar == true && Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60)) == null)
 						{
 							try
 							{
-								await Tiendas2.TiendasCargar.TareasGestionador(conexion, id);
+								await APIs.EA.Suscripcion.Buscar();
 
 								Environment.Exit(1);
 							}
@@ -74,11 +63,6 @@ namespace Tareas.Tiendas
 					}
 				}
 			}
-		}
-
-		public override async Task StopAsync(CancellationToken stoppingToken)
-		{
-			await base.StopAsync(stoppingToken);
 		}
 	}
 }

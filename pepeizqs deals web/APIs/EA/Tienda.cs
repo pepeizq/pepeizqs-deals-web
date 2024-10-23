@@ -4,8 +4,9 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace APIs.EA
@@ -29,7 +30,7 @@ namespace APIs.EA
             return tienda;
         }
 
-        public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+        public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
         {
 			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -37,9 +38,9 @@ namespace APIs.EA
 
 			string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
 
-			if (html != null)
+			if (string.IsNullOrEmpty(html) == false)
 			{
-				EABD basedatos = JsonConvert.DeserializeObject<EABD>(html);
+				EABD basedatos = JsonSerializer.Deserialize<EABD>(html);
 
 				if (basedatos != null)
 				{
@@ -156,42 +157,57 @@ namespace APIs.EA
 
     public class EABD
     {
-        [JsonProperty("offers")]
+        [JsonPropertyName("offers")]
         public List<EABDJuego> Juegos { get; set; }
     }
 
     public class EABDJuego 
     {
-        [JsonProperty("offerId")]
+        [JsonPropertyName("offerId")]
         public string Id { get; set; }
 
-        [JsonProperty("itemName")]
+        [JsonPropertyName("itemName")]
         public string Titulo { get; set; }
 
-        [JsonProperty("offerPath")]
+        [JsonPropertyName("offerPath")]
         public string Enlace { get; set; }
 
-        [JsonProperty("i18n")]
+        [JsonPropertyName("i18n")]
         public EABDJuegoi18n i18n { get; set; }
 
-        [JsonProperty("imageServer")]
+        [JsonPropertyName("imageServer")]
         public string ImagenServidor { get; set; }
-    }
+
+		[JsonPropertyName("vault")]
+		public EABDJuegoSuscripcion Suscripcion { get; set; }
+
+		[JsonPropertyName("premiumVault")]
+		public EABDJuegoSuscripcion SuscripcionPremium { get; set; }
+	}
 
     public class EABDJuegoi18n
     {
-        [JsonProperty("displayName")]
+        [JsonPropertyName("displayName")]
         public string Titulo { get; set; }
 
-        [JsonProperty("packArtMedium")]
+        [JsonPropertyName("packArtMedium")]
         public string ImagenPequeña { get; set; }
 
-        [JsonProperty("packArtLarge")]
+        [JsonPropertyName("packArtLarge")]
         public string ImagenGrande { get; set; }
     }
 
+    public class EABDJuegoSuscripcion
+    {
+        [JsonPropertyName("path")]
+        public string Enlace { get; set; }
 
-    [XmlRoot("offerRatingResults")]
+		[JsonPropertyName("vaultEndDate")]
+		public string FechaAcaba { get; set; }
+	}
+
+
+	[XmlRoot("offerRatingResults")]
     public class EAPrecio1
     {
         [XmlElement("offer")]
