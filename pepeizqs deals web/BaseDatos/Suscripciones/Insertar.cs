@@ -6,14 +6,14 @@ namespace BaseDatos.Suscripciones
 {
 	public static class Insertar
 	{
-		public static void Ejecutar(int id, List<JuegoSuscripcion> listaVecesSuscripciones, JuegoSuscripcion actual, SqlConnection conexion)
+		public static void Ejecutar(int juegoId, List<JuegoSuscripcion> listaVecesSuscripciones, JuegoSuscripcion actual, SqlConnection conexion)
 		{
 			string sqlActualizarJuego = "UPDATE juegos " +
 								"SET suscripciones=@suscripciones WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizarJuego, conexion))
 			{
-				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@id", juegoId);
 				comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(listaVecesSuscripciones));
 
 				try

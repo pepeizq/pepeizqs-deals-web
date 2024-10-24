@@ -145,6 +145,8 @@ builder.Services.AddSingleton<Tareas.Tiendas.Battlenet>();
 builder.Services.AddSingleton<Tareas.Tiendas.EA>();
 builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
 
+builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
+
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
@@ -176,6 +178,8 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Battlenet>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
+
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());
 
 #endregion
 

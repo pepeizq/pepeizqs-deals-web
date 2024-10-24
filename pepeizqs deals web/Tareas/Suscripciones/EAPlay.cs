@@ -31,7 +31,8 @@ namespace Tareas.Suscripciones
 				string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
 				string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-				if (piscinaTiendas == piscinaUsada)
+				if (piscinaTiendas != piscinaUsada)
+					//if (piscinaTiendas == piscinaUsada)
 				{
 					SqlConnection conexion = new SqlConnection();
 
@@ -43,7 +44,8 @@ namespace Tareas.Suscripciones
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan siguienteComprobacion = TimeSpan.FromHours(4);
+						TimeSpan siguienteComprobacion = TimeSpan.FromHours(40);
+						//TimeSpan siguienteComprobacion = TimeSpan.FromSeconds(10);
 
 						bool sePuedeUsar = Admin.ComprobarTiendaUso(conexion, siguienteComprobacion, id);
 
@@ -51,7 +53,7 @@ namespace Tareas.Suscripciones
 						{
 							try
 							{
-								await APIs.EA.Suscripcion.Buscar();
+								await APIs.EA.Suscripcion.Buscar(conexion);
 
 								Environment.Exit(1);
 							}
