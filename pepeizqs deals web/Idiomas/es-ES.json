@@ -114,17 +114,5 @@
   {
     "Id": "News.SubscriptionString7",
     "Valor": "ha añadido los siguientes juegos:"
-  },
-  {
-    "Id": "Subscriptions.Title",
-    "Valor": "Suscripciones"
-  },
-  {
-    "Id": "Subscriptions.String1",
-    "Valor": "Suscripciones Disponibles"
-  },
-  {
-    "Id": "Subscriptions.String2",
-    "Valor": "Suscripciones Archivo"
   }
 ]

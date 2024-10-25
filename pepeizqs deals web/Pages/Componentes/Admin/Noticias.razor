@@ -125,7 +125,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             <select @onchange="@(e => CambiarSuscripcion(e))">
                 @foreach (Suscripcion suscripcion in SuscripcionesCargar.GenerarListado())
                 {
-                    if (suscripcion.AdminInteracturar == true)
+                    if (suscripcion.AdminInteractuar == true)
                     {
                         <option value="@suscripcion.Id">@suscripcion.Nombre</option>
                     }

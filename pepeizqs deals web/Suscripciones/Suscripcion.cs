@@ -14,7 +14,9 @@ namespace Suscripciones2
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
 		public string ImagenNoticia;
-		public bool AdminInteracturar;
+		public bool AdminInteractuar;
+		public bool UsuarioInteractuar;
+		public bool ParaSiempre; //true si pagas juegos son para siempre
 	}
 
     public class SuscripcionComponente

@@ -270,5 +270,13 @@
   {
     "Id": "String68",
     "Valor": "Estuvo gratis para reclamar {0} veces en {1}"
+  },
+  {
+    "Id": "String69",
+    "Valor": "Esta suscripción pide pagar cada mes para acceder a este juego"
+  },
+  {
+    "Id": "String70",
+    "Valor": "En esta suscripción si pagas este mes, tendrás el juego para siempre"
   }
 ]

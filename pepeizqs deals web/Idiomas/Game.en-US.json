@@ -270,5 +270,13 @@
   {
     "Id": "String68",
     "Valor": "It was free to claim {0} times on {1}"
+  },
+  {
+    "Id": "String69",
+    "Valor": "This subscription requires paying every month to access this game"
+  },
+  {
+    "Id": "String70",
+    "Valor": "In this subscription if you pay this month, you will have the game forever"
   }
 ]

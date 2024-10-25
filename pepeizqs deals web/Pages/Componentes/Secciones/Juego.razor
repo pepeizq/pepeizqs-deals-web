@@ -858,32 +858,51 @@
 
 		@if (juego.Suscripciones != null)
 		{
-			<div id="suscripciones" class="perfil" style="margin-bottom: 50px;">
+			<div id="suscripciones" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 50px;">
 				@if (SuscripcionesDisponibles(juego.Suscripciones).Count > 0)
 				{
-					<div style="margin-bottom: 10px;">
+					<div style="margin-bottom: 20px;">
 						<label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String26", "Game")</label>
 					</div>
 
-					@foreach (var suscripcion2 in SuscripcionesDisponibles(juego.Suscripciones))
-					{
-						<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(suscripcion2.Enlace, suscripcion2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
-							<div style="display: flex; align-items: center;">
-								<div style="margin-right: 15px;">
-									<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription"/>
-								</div>
+					<div style="display: flex; flex-direction: column; gap: 20px;">
+						@foreach (var suscripcion2 in SuscripcionesDisponibles(juego.Suscripciones))
+						{
+							string enlace = suscripcion2.Enlace;
 
-								<div style="margin-right: 30px;">
-									<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
-								</div>
+							if (SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ParaSiempre == false)
+							{
+								enlace = SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Enlace;
+							}
 
-								<div style="margin-right: 20px; width: 100%;">
-									<label style="cursor: pointer;">@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Nombre</label><br/>
-									<label style="font-size: 13px; cursor: pointer;">@Calculadora.DiferenciaTiempo(suscripcion2.FechaTermina, idioma, 1)</label>
+							enlace = EnlaceAcortador.Generar(enlace, suscripcion2.Tipo);
+
+							<a class="juego-boton-pequeño" href="@enlace" target="_blank" style="font-size: 16px; padding: 20px 25px; cursor: pointer; display: block;">
+								<div style="display: flex; align-items: center;">
+									<div style="margin-right: 15px;">
+										<img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" />
+									</div>
+
+									<div style="margin-right: 30px;">
+										<img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" />
+									</div>
+
+									<div style="margin-right: 20px; width: 100%;">
+										<div>@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Nombre</div>
+
+										@if (SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ParaSiempre == true)
+										{
+											<div style="font-size: 14px; margin-top: 5px;">@Idiomas.CogerCadena(idioma, "String70", "Game") (@Calculadora.DiferenciaTiempo(suscripcion2.FechaTermina, idioma, 1)).</div>
+										}
+										else
+										{
+											<div style="font-size: 14px; margin-top: 5px;">@Idiomas.CogerCadena(idioma, "String69", "Game").</div>
+										}
+									</div>
 								</div>
-							</div>
-						</a>
-					}
+							</a>
+						}
+					</div>
 				}
 
 				@if (SuscripcionesAntiguas(juego.Suscripciones).Count > 0)

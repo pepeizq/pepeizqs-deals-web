@@ -14,7 +14,9 @@ namespace APIs.Humble
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam,
-				AdminInteracturar = true
+				AdminInteractuar = true,
+				UsuarioInteractuar = true,
+				ParaSiempre = true
 			};
 
 			DateTime fechaHumbleChoice = DateTime.Now;
@@ -64,8 +66,10 @@ namespace APIs.Humble
 				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam,
-				AdminInteracturar = false
-			};
+				AdminInteractuar = false,
+                UsuarioInteractuar = false,
+				ParaSiempre = true
+            };
 
 			DateTime fechaHumbleMonthly = DateTime.Now;
 			fechaHumbleMonthly = fechaHumbleMonthly.AddMonths(1);

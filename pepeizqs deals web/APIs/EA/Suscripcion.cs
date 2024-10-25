@@ -19,7 +19,9 @@ namespace APIs.EA
 				ImagenIcono = "/imagenes/tiendas/ea_icono.webp",
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
-				AdminInteracturar = false
+				AdminInteractuar = false,
+				UsuarioInteractuar = true,
+				ParaSiempre = false
 			};
 
 			return eaPlay;
@@ -35,7 +37,9 @@ namespace APIs.EA
 				ImagenIcono = "/imagenes/tiendas/ea_icono.webp",
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
-				AdminInteracturar = false
+				AdminInteractuar = false,
+                UsuarioInteractuar = true,
+                ParaSiempre = false
 			};
 
 			return eaPlayPro;
@@ -64,7 +68,7 @@ namespace APIs.EA
 								bool tieneSuscripcion = false;
 								bool tieneSuscripcionPremium = false;
 
-								if (juego.Suscripcion != null)
+								if (juego.Suscripcion != null && juego.Tipo == "Full Game")
 								{
 									bool dentroDeFecha = false;
 
@@ -74,30 +78,88 @@ namespace APIs.EA
 									}
 									else
 									{
-										Da
+										try
+										{
+											DateTime fecha = DateTime.Parse(juego.Suscripcion.FechaAcaba);
+
+											if (fecha > DateTime.Now)
+											{
+												dentroDeFecha = true;
+											}
+										}
+										catch 
+										{
+											dentroDeFecha = true;
+										}
 									}
 
-									if (string.IsNullOrEmpty(juego.Suscripcion.Enlace) == false)
+									if (dentroDeFecha == true)
 									{
-										tieneSuscripcion = true;
-									}
+										if (string.IsNullOrEmpty(juego.Suscripcion.Enlace) == false)
+										{
+											tieneSuscripcion = true;
+										}
+									}									
 								}
 
-								if (juego.SuscripcionPremium != null)
+								if (tieneSuscripcion == false)
 								{
-									if (string.IsNullOrEmpty(juego.SuscripcionPremium.Enlace) == false)
+									if (juego.SuscripcionPremium != null && juego.Tipo == "Full Game")
 									{
-										tieneSuscripcionPremium = true;
+										bool dentroDeFecha = false;
+
+										if (string.IsNullOrEmpty(juego.SuscripcionPremium.FechaAcaba) == false)
+										{
+											dentroDeFecha = true;
+										}
+										else
+										{
+											try
+											{
+												DateTime fecha = DateTime.Parse(juego.SuscripcionPremium.FechaAcaba);
+
+												if (fecha > DateTime.Now)
+												{
+													dentroDeFecha = true;
+												}
+											}
+											catch
+											{
+												dentroDeFecha = true;
+											}
+										}
+
+										if (dentroDeFecha == true)
+										{
+											if (string.IsNullOrEmpty(juego.SuscripcionPremium.Enlace) == false)
+											{
+												tieneSuscripcionPremium = true;
+											}
+										}
 									}
 								}
 
 								if (tieneSuscripcion == true || tieneSuscripcionPremium == true)
 								{
-									string sqlBuscar = "SELECT idJuegos from tiendaEa WHERE enlace=@enlace";
+									string enlace = string.Empty;
+
+									if (tieneSuscripcion == true)
+									{
+										enlace = "https://www.ea.com/games" + juego.Suscripcion.Enlace;
+									}
+
+									if (tieneSuscripcionPremium == true)
+									{
+										enlace = "https://www.ea.com/games" + juego.SuscripcionPremium.Enlace;
+									}
+
+									bool encontrado = false;
+
+									string sqlBuscar = "SELECT idJuegos FROM tiendaEa WHERE enlace=@enlace";
 
 									using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
 									{
-										comando.Parameters.AddWithValue("@enlace", "https://www.origin.com/store" + juego.Enlace);
+										comando.Parameters.AddWithValue("@enlace", enlace);
 
 										using (SqlDataReader lector = comando.ExecuteReader())
 										{
@@ -111,15 +173,17 @@ namespace APIs.EA
 													if (string.IsNullOrEmpty(lector.GetString(0)) == false)
 													{
 														string idJuegosTexto = lector.GetString(0);
-
+												
 														List<string> idJuegos = Herramientas.Listados.Generar(idJuegosTexto);
 
 														if (idJuegos.Count > 0)
 														{
+															encontrado = true;
+
 															foreach (var id in idJuegos)
 															{
 																Juego juegobd = BaseDatos.Juegos.Buscar.UnJuego(int.Parse(id));
-
+															
 																if (juegobd != null)
 																{
 																	bool añadirSuscripcion = true;
@@ -142,33 +206,37 @@ namespace APIs.EA
 																					nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
 																					suscripcion.FechaTermina = nuevaFecha;
 																				}
-
-																				if (suscripcion.Tipo == Suscripciones2.SuscripcionTipo.EAPlayPro && tieneSuscripcionPremium == true)
+																				else
 																				{
-																					añadirSuscripcion = false;
-																					actualizar = true;
+																					if (suscripcion.Tipo == Suscripciones2.SuscripcionTipo.EAPlayPro && tieneSuscripcionPremium == true)
+																					{
+																						añadirSuscripcion = false;
+																						actualizar = true;
 
-																					DateTime nuevaFecha = suscripcion.FechaTermina;
-																					nuevaFecha = DateTime.Now;
-																					nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
-																					suscripcion.FechaTermina = nuevaFecha;
+																						DateTime nuevaFecha = suscripcion.FechaTermina;
+																						nuevaFecha = DateTime.Now;
+																						nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
+																						suscripcion.FechaTermina = nuevaFecha;
+																					}
 																				}
 																			}
-
+																			
 																			if (actualizar == true)
 																			{
 																				BaseDatos.Juegos.Actualizar.Suscripciones(juegobd, conexion);
 
 																				if (tieneSuscripcion == true)
 																				{
-																					JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(juego.Suscripcion.Enlace);
+																					JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego("https://www.ea.com/games" + juego.Suscripcion.Enlace);
 																					BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion, conexion);
 																				}
-
-																				if (tieneSuscripcionPremium == true)
+																				else
 																				{
-																					JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego(juego.SuscripcionPremium.Enlace);
-																					BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion, conexion);
+																					if (tieneSuscripcionPremium == true)
+																					{
+																						JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego("https://www.ea.com/games" + juego.SuscripcionPremium.Enlace);
+																						BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion, conexion);
+																					}
 																				}
 																			}
 																		}
@@ -182,24 +250,35 @@ namespace APIs.EA
 																		JuegoSuscripcion nuevaSuscripcion = new JuegoSuscripcion
 																		{
 																			DRM = JuegoDRM.EA,
-																			Nombre = juego.Titulo,
+																			Nombre = juego.i18n.Titulo,
 																			FechaEmpieza = DateTime.Now,
 																			FechaTermina = nuevaFecha,
-																			Imagen = juegobd.Imagenes.Header_460x215
+																			Imagen = juegobd.Imagenes.Header_460x215,
+																			ImagenNoticia = juegobd.Imagenes.Header_460x215,
+																			JuegoId = juegobd.Id
 																		};
 
 																		if (tieneSuscripcion == true)
 																		{
 																			nuevaSuscripcion.Tipo = Suscripciones2.SuscripcionTipo.EAPlay;
-																			nuevaSuscripcion.Enlace = juego.Suscripcion.Enlace;
+																			nuevaSuscripcion.Enlace = enlace;
 																		}
-
-																		if (tieneSuscripcionPremium == true)
+																		else
 																		{
-																			nuevaSuscripcion.Tipo = Suscripciones2.SuscripcionTipo.EAPlayPro;
-																			nuevaSuscripcion.Enlace = juego.SuscripcionPremium.Enlace;
+																			if (tieneSuscripcionPremium == true)
+																			{
+																				nuevaSuscripcion.Tipo = Suscripciones2.SuscripcionTipo.EAPlayPro;
+																				nuevaSuscripcion.Enlace = enlace;
+																			}
 																		}
 
+																		if (juegobd.Suscripciones == null)
+																		{
+																			juegobd.Suscripciones = new List<JuegoSuscripcion>();
+																		}
+
+																		juegobd.Suscripciones.Add(nuevaSuscripcion);
+																		
 																		BaseDatos.Suscripciones.Insertar.Ejecutar(juegobd.Id, juegobd.Suscripciones, nuevaSuscripcion, conexion);
 																	}
 																}
@@ -208,17 +287,20 @@ namespace APIs.EA
 													}
 												}
 											}
-											else
+										}
+									}
+
+									if (encontrado == false)
+									{
+										if (tieneSuscripcion == true)
+										{
+											BaseDatos.Errores.Insertar.Mensaje("Suscripcion no encontrada", juego.i18n.Titulo + " " + enlace);
+										}
+										else
+										{
+											if (tieneSuscripcionPremium == true)
 											{
-												if (tieneSuscripcion == true)
-												{
-													BaseDatos.Errores.Insertar.Mensaje("Suscripcion no encontrada", juego.i18n.Titulo + " " + juego.Suscripcion.Enlace);
-												}
-												
-												if (tieneSuscripcionPremium == true)
-												{
-													BaseDatos.Errores.Insertar.Mensaje("Suscripcion no encontrada", juego.i18n.Titulo + " " + juego.SuscripcionPremium.Enlace);
-												}
+												BaseDatos.Errores.Insertar.Mensaje("Suscripcion premium no encontrada", juego.i18n.Titulo + " " + enlace);
 											}
 										}
 									}

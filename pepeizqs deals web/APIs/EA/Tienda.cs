@@ -183,6 +183,9 @@ namespace APIs.EA
 
 		[JsonPropertyName("premiumVault")]
 		public EABDJuegoSuscripcion SuscripcionPremium { get; set; }
+
+		[JsonPropertyName("mdmItemType")]
+		public string Tipo { get; set; }
 	}
 
     public class EABDJuegoi18n

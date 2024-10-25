@@ -11,8 +11,8 @@
 @{
     #nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Subscriptions.Title");
-	Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Subscriptions");
+    Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
     Usuario usuario = new Usuario();
