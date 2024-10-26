@@ -15,7 +15,7 @@ namespace BaseDatos.Suscripciones
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@enlace", suscripcion.Enlace);
-				comando.Parameters.AddWithValue("@fechaTermina", suscripcion.FechaTermina);
+				comando.Parameters.AddWithValue("@fechaTermina", suscripcion.FechaTermina.ToString());
 
 				try
 				{

@@ -2,5 +2,29 @@
   {
     "Id": "Title",
     "Valor": "Subscriptions"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Subscriptions Archive"
+  },
+  {
+    "Id": "String2",
+    "Valor": "With this subscription, if you pay for one month, you will have the games that are available forever."
+  },
+  {
+    "Id": "String3",
+    "Valor": "With this subscription you are forced to pay every month if you want to have the games that are available."
+  },
+  {
+    "Id": "String4",
+    "Valor": "{0} games"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Open subscription"
+  },
+  {
+    "Id": "String6",
+    "Valor": "This subscription also includes the games that are in the {0} subscription"
   }
 ]

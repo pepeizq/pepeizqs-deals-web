@@ -15,7 +15,7 @@ namespace APIs.Humble
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam,
 				AdminInteractuar = true,
-				UsuarioInteractuar = true,
+				UsuarioInteractuar = false,
 				ParaSiempre = true
 			};
 

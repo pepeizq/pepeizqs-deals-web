@@ -43,7 +43,7 @@ namespace Tareas.Suscripciones
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan siguienteComprobacion = TimeSpan.FromHours(12);
+						TimeSpan siguienteComprobacion = TimeSpan.FromHours(6);
 
 						bool sePuedeUsar = Admin.ComprobarTiendaUso(conexion, siguienteComprobacion, id);
 

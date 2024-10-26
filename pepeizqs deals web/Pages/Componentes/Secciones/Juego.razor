@@ -422,6 +422,12 @@
 								}
 							}
 						}
+						else
+						{
+							<button @onclick="(e => LogearEnseñar(e))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+								@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Game")
+							</button>
+						}
 
 						<div class="juego-drm-centrado" style="margin-bottom: 50px;">
 							<div style="width: 100%; display: flex; flex-direction: column; gap: 10px; padding: 10px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño);">
@@ -870,7 +876,7 @@
 						{
 							string enlace = suscripcion2.Enlace;
 
-							if (SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ParaSiempre == false)
+							if (SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).UsuarioInteractuar == false)
 							{
 								enlace = SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Enlace;
 							}
@@ -1317,7 +1323,7 @@
 				}
 			</div>
 
-			<Bundle bundleId="@bundleId" idioma="@idioma" tipo="@Bundle.Tipo.Juego" />
+			<Bundle bundleId="@bundleId" idioma="@idioma" tipo="@Bundle.Tipo.Juego" usuarioId="@usuarioId"/>
 		</div>		
 	</div>
 }
@@ -1530,6 +1536,31 @@
 						</RadzenValueAxis>
 					</RadzenChart>
 				</RadzenStack>
+			</div>
+		</div>
+	</div>
+}
+
+@if (enseñarLogear == true)
+{
+	<div class="opciones-panel">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 40px;">
+			<button @onclick="@(e => LogearCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+				<i class="fa-solid fa-arrow-left"></i>
+			</button>
+
+			<div style="display: flex; flex-direction: column; gap: 30px; max-width: 600px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "String63", "Game")
+
+				<div style="display: flex; align-items: center; gap: 20px;">
+					<button @onclick="@(e => LogearAbrirRegistrar(e))" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Register", "Header")
+					</button>
+
+					<button @onclick="@(e => LogearAbrirLogin(e))" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Login", "Header")
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -2883,6 +2914,39 @@
 				#endregion
 			}
 		}
+	}
+
+	#endregion
+
+	#region Ventana Logear
+
+	private bool enseñarLogear = false;
+
+	private void LogearEnseñar(MouseEventArgs e)
+	{
+		if (enseñarLogear == false)
+		{
+			enseñarLogear = true;
+		}
+		else
+		{
+			enseñarLogear = false;
+		}
+	}
+
+	private void LogearCerrar(MouseEventArgs e)
+	{
+		enseñarLogear = false;
+	}
+
+	private void LogearAbrirRegistrar(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/account/register", true);
+	}
+
+	private void LogearAbrirLogin(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/account/login", true);
 	}
 
 	#endregion

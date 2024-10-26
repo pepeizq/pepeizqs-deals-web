@@ -20,7 +20,7 @@ namespace APIs.EA
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
 				AdminInteractuar = false,
-				UsuarioInteractuar = true,
+				UsuarioInteractuar = false,
 				ParaSiempre = false
 			};
 
@@ -38,8 +38,9 @@ namespace APIs.EA
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
 				AdminInteractuar = false,
-                UsuarioInteractuar = true,
-                ParaSiempre = false
+				UsuarioInteractuar = false,
+				ParaSiempre = false,
+				IncluyeSuscripcion = Suscripciones2.SuscripcionTipo.EAPlay
 			};
 
 			return eaPlayPro;
@@ -220,24 +221,17 @@ namespace APIs.EA
 																					}
 																				}
 																			}
-																			
+
 																			if (actualizar == true)
 																			{
 																				BaseDatos.Juegos.Actualizar.Suscripciones(juegobd, conexion);
 
-																				if (tieneSuscripcion == true)
-																				{
-																					JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego("https://www.ea.com/games" + juego.Suscripcion.Enlace);
-																					BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion, conexion);
-																				}
-																				else
-																				{
-																					if (tieneSuscripcionPremium == true)
-																					{
-																						JuegoSuscripcion suscripcion = BaseDatos.Suscripciones.Buscar.UnJuego("https://www.ea.com/games" + juego.SuscripcionPremium.Enlace);
-																						BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion, conexion);
-																					}
-																				}
+																				JuegoSuscripcion suscripcion2 = BaseDatos.Suscripciones.Buscar.UnJuego(enlace);
+																				DateTime nuevaFecha = suscripcion2.FechaTermina;
+																				nuevaFecha = DateTime.Now;
+																				nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
+																				suscripcion2.FechaTermina = nuevaFecha;
+																				BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion2, conexion);
 																			}
 																		}
 																	}

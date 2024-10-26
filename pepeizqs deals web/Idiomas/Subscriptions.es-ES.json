@@ -2,5 +2,29 @@
   {
     "Id": "Title",
     "Valor": "Suscripciones"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Suscripciones Archivo"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Con esta suscripción si pagas un mes los juegos que estén disponibles los tendrás para siempre."
+  },
+  {
+    "Id": "String3",
+    "Valor": "Con esta suscripción estás obligado a pagar todos los meses si quieres tener los juegos que haya disponibles."
+  },
+  {
+    "Id": "String4",
+    "Valor": "{0} juegos"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Abrir suscripción"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Esta suscripción también incluye los juegos que hay en la suscripción {0}"
   }
 ]

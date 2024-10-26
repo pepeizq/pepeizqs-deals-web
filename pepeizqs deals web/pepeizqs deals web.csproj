@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="APIs\Humble\Suscripcion.cs~RFe6f926.TMP" />
     <None Remove="BaseDatos\Noticias\Insertar.cs~RF3b968c9c.TMP" />
     <None Remove="BaseDatos\Recompensas\Historial.cs~RF2c9f9c36.TMP" />
     <None Remove="BaseDatos\Suscripciones\Actualizar.cs~RF2da279d.TMP" />

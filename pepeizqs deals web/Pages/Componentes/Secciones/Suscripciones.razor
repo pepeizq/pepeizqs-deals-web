@@ -1,5 +1,7 @@
 ﻿@using APIs.Steam
+@using Juegos
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 
@@ -17,15 +19,91 @@
     }
 </script>
 
-@if (suscripcionesActuales != null)
+@if (suscripcionSeleccionada == false)
 {
-    if (suscripcionesActuales.Count > 0)
+    if (suscripcionesActuales != null)
     {
-        <h1 style="font-size: 23px;">
-            @Herramientas.Idiomas.CogerCadena(idioma, "Title", "Subscriptions")
-        </h1>
+        if (suscripcionesActuales.Count > 0)
+        {
+            <h1 style="font-size: 23px;">
+                @Herramientas.Idiomas.CogerCadena(idioma, "Title", "Subscriptions")
+            </h1>
 
-        <div>
+            <hr />
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 10px;">
+                @foreach (var suscripcionActual in suscripcionesActuales)
+                {
+                    <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño" style="padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <div style="max-width: 300px; height: 55px;">
+                            <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" style="width: 100%; height: 100%; object-fit: contain;" />
+                        </div>
+
+                        @if (suscripcionActual.Juegos != null)
+                        {
+                            if (suscripcionActual.Juegos.Count > 0)
+                            {
+                                List<JuegoDRM> drms = new List<JuegoDRM>();
+
+                                foreach (var juego in suscripcionActual.Juegos)
+                                {
+                                    bool añadirDRM = true;
+
+                                    if (drms.Count > 0)
+                                    {
+                                        foreach (var drm in drms)
+                                        {
+                                            if (drm == juego.DRM)
+                                            {
+                                                añadirDRM = false;
+                                            }
+                                        }
+                                    }
+
+                                    if (añadirDRM == true)
+                                    {
+                                        drms.Add(juego.DRM);
+                                    }
+                                }
+
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "Subscriptions"), suscripcionActual.Juegos.Count)
+
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        @foreach (var drm in drms)
+                                        {
+                                            <img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 20px; max-height: 20px;" />
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        <div>
+                            @if (suscripcionActual.Tipo.ParaSiempre == true)
+                            {
+                                @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Subscriptions")
+                            }
+                            else
+                            {
+                                @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Subscriptions")
+                            }
+                        </div>
+                    </button>
+                }
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            @*         <div>
             @foreach (var suscripcionActual in suscripcionesActuales)
             {
                 <hr>
@@ -115,116 +193,190 @@
                     </div>
                 </div>
             }
-        </div>
-    }
-}
-
-<div style="font-size: 23px; margin-top: 60px">
-	@Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions.String2")
-</div>
-
-<div style="display: flex; align-items: start; margin-top: 10px;">
-    @foreach (var año in años)
-    {
-        <div style="margin-right: 15px;">
-            <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style=" padding: 6px 10px; width: auto;">
-                @año
-            </button>
-
-            @if (añoSeleccionado == año)
-            {
-                <div style="margin-top: 10px; background: var(--colorTexto); padding: 1px;">
-                </div>
-
-                <div style="position: absolute; margin-top: 15px; display: flex; align-items: center;">
-                    @foreach (var suscripcionPasada in suscripcionesPasadas)
-                    {
-                        List<Juegos.JuegoSuscripcion> suscripcionAño = new List<Juegos.JuegoSuscripcion>();
-
-                        foreach (var juego in suscripcionPasada.Juegos)
-                        {
-                            if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado)
-                            {
-                                suscripcionAño.Add(juego);
-                            }
-                        }
-
-                        if (suscripcionAño.Count > 0)
-                        {
-                            <div style="margin-right: 15px; font-size: 14px;">
-                                <a onclick="moverScroll('pasado-@suscripcionPasada.Tipo.Id.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
-                                    <img src="@suscripcionPasada.Tipo.ImagenIcono" style="width: 22px; height: 22px;" alt="Store"/> (@suscripcionAño.Count.ToString())
-                                </a>
-                            </div>
-                        }
-                    }
-                </div>
-            }
-        </div>
-    }
-</div>
-
-<div style="margin-top: 55px;">
-    @foreach (var suscripcionPasada in suscripcionesPasadas)
-    {
-        List<Juegos.JuegoSuscripcion> suscripcionesAño = new List<Juegos.JuegoSuscripcion>();
-
-        foreach (var juego in suscripcionPasada.Juegos)
-        {
-            if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado)
-            {
-                suscripcionesAño.Add(juego);
-            }
+        </div> *@
         }
+    }
 
-        if (suscripcionesAño.Count > 0)
+    <div style="font-size: 23px; margin-top: 60px">
+        @Herramientas.Idiomas.CogerCadena(idioma, "String1", "Subscriptions")
+    </div>
+
+    <div style="display: flex; align-items: start; margin-top: 10px;">
+        @foreach (var año in años)
         {
-            <hr>
+            <div style="margin-right: 15px;">
+                <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style=" padding: 6px 10px; width: auto;">
+                    @año
+                </button>
 
-            <div id="pasado-@suscripcionPasada.Tipo.Id.ToString()" style="display: flex; align-items: start;">
-                <div class="perfil" style="width: 20%;">
-                    <img src="@suscripcionPasada.Tipo.ImagenLogo" alt="@suscripcionPasada.Tipo.Nombre"/>
-                </div>
+                @if (añoSeleccionado == año)
+                {
+                    <div style="margin-top: 10px; background: var(--colorTexto); padding: 1px;">
+                    </div>
 
-                <div class="perfil" style="width: 80%;">
-                    @{
-                        int i = 1;
-                        while (i < 13)
+                    <div style="position: absolute; margin-top: 15px; display: flex; align-items: center;">
+                        @foreach (var suscripcionPasada in suscripcionesPasadas)
                         {
-                            List<Juegos.JuegoSuscripcion> suscripcionesMensual = new List<Juegos.JuegoSuscripcion>();
+                            List<Juegos.JuegoSuscripcion> suscripcionAño = new List<Juegos.JuegoSuscripcion>();
 
-                            foreach (var juego in suscripcionesAño)
+                            foreach (var juego in suscripcionPasada.Juegos)
                             {
-                                if (juego.FechaEmpieza.Month == i)
+                                if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado)
                                 {
-                                    suscripcionesMensual.Add(juego);
+                                    suscripcionAño.Add(juego);
                                 }
                             }
 
-                            if (suscripcionesMensual.Count > 0)
+                            if (suscripcionAño.Count > 0)
                             {
-                                <label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
-
-                                <ul>
-                                    @foreach (var juegoMensual in suscripcionesMensual)
-                                    {
-                                        <li>
-                                            <a href="/game/@juegoMensual.JuegoId/@Herramientas.EnlaceAdaptador.Nombre(juegoMensual.Nombre)/" style="text-decoration: none;">
-                                                @juegoMensual.Nombre (@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
+                                <div style="margin-right: 15px; font-size: 14px;">
+                                    <a onclick="moverScroll('pasado-@suscripcionPasada.Tipo.Id.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
+                                        <img src="@suscripcionPasada.Tipo.ImagenIcono" style="width: 22px; height: 22px;" alt="Store" /> (@suscripcionAño.Count.ToString())
+                                    </a>
+                                </div>
                             }
-
-                            i += 1;
                         }
-                    }
-                </div>
+                    </div>
+                }
             </div>
         }
-    }
-</div>
+    </div>
+
+    <div style="margin-top: 55px;">
+        @foreach (var suscripcionPasada in suscripcionesPasadas)
+        {
+            List<Juegos.JuegoSuscripcion> suscripcionesAño = new List<Juegos.JuegoSuscripcion>();
+
+            foreach (var juego in suscripcionPasada.Juegos)
+            {
+                if (juego.FechaEmpieza.Year.ToString() == añoSeleccionado)
+                {
+                    suscripcionesAño.Add(juego);
+                }
+            }
+
+            if (suscripcionesAño.Count > 0)
+            {
+                <hr>
+
+                <div id="pasado-@suscripcionPasada.Tipo.Id.ToString()" style="display: flex; align-items: start;">
+                    <div class="perfil" style="width: 20%;">
+                        <img src="@suscripcionPasada.Tipo.ImagenLogo" alt="@suscripcionPasada.Tipo.Nombre" />
+                    </div>
+
+                    <div class="perfil" style="width: 80%;">
+                        @{
+                            int i = 1;
+                            while (i < 13)
+                            {
+                                List<Juegos.JuegoSuscripcion> suscripcionesMensual = new List<Juegos.JuegoSuscripcion>();
+
+                                foreach (var juego in suscripcionesAño)
+                                {
+                                    if (juego.FechaEmpieza.Month == i)
+                                    {
+                                        suscripcionesMensual.Add(juego);
+                                    }
+                                }
+
+                                if (suscripcionesMensual.Count > 0)
+                                {
+                                    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
+
+                                    <ul>
+                                        @foreach (var juegoMensual in suscripcionesMensual)
+                                        {
+                                            <li>
+                                                <a href="/game/@juegoMensual.JuegoId/@Herramientas.EnlaceAdaptador.Nombre(juegoMensual.Nombre)/" style="text-decoration: none;">
+                                                    @juegoMensual.Nombre (@Juegos.JuegoDRM2.DevolverDRM(juegoMensual.DRM))
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+
+                                i += 1;
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+else
+{
+    <div style="display: flex; flex-direction: column; gap: 30px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row; gap: 30px;">
+            <button @onclick="@(e => SuscripcionCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="max-width: 250px; height: 40px;">
+                    <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="width: 100%; height: 100%; object-fit: contain; object-position: 0 50%;" />
+                </div>
+
+                @if (suscripcionSeleccionadaTipo.IncluyeSuscripcion != null)
+                {
+                    Suscripciones2.SuscripcionComponente componenteBuscado = new Suscripciones2.SuscripcionComponente();
+
+                    foreach (var suscripcionActual in suscripcionesActuales)
+                    {
+                        if (suscripcionActual.Tipo.Id == suscripcionSeleccionadaTipo.IncluyeSuscripcion)
+                        {
+                            componenteBuscado = suscripcionActual;
+                        }
+                    }
+
+                    <button @onclick="@(e => SuscripcionAbrir(e, componenteBuscado))" class="boton-pequeño" style="padding: 10px 15px;">
+                        @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "Subscriptions"), componenteBuscado.Tipo.Nombre)
+                    </button>
+                }
+            </div>
+        </div>
+
+        @if (suscripcionSeleccionadaTipo.UsuarioInteractuar == false)
+        {
+            <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
+                @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Subscriptions")
+            </a>
+        }
+
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Publisher")" />
+        </div>
+
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px 30px; display: flex; flex-direction: column; gap: 20px;">
+            <Virtualize Context="juego" Items="suscripcionSeleccionadaJuegos" ItemSize="107">
+                <ItemContent>
+                    @{
+                        string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo);
+
+                        if (suscripcionSeleccionadaTipo.UsuarioInteractuar == false)
+                        {
+                            enlace = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id);
+                        }
+                    }
+
+                    <a href="@enlace" class="boton-pequeño" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
+                        <div class="boton-expandir" style="display: flex; align-items: center; gap: 20px;">
+                            <div>
+                                <img src="@juego.Juego.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@juego.Nombre" />
+                            </div>
+
+                            <div style="width: 100%;">
+                                <div>@juego.Nombre</div>
+                                <div style="margin-top: 10px;"><img src="@JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" /></div>
+                            </div>
+                        </div>
+                    </a>
+                </ItemContent>
+            </Virtualize>
+        </div>       
+    </div>
+}
 
 @code {
 
@@ -238,10 +390,8 @@
 
     private Usuario usuario = new Usuario();
 
-    List<Juegos.JuegoSuscripcion> juegos = new List<Juegos.JuegoSuscripcion>();
-
-    List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
-    List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
+    private List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
+    private List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
 
     private List<string> juegosUsuario = new List<string>();
 
@@ -284,24 +434,6 @@
 
         if (juegosActuales.Count > 0)
         {
-            foreach (var juegoActual in juegosActuales)
-            {
-                Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
-
-                if (juego2.Tipo == Juegos.JuegoTipo.Game)
-                {
-                    juegoActual.Imagen = juego2.Imagenes.Library_600x900;
-                }
-                else if (juego2.Tipo == Juegos.JuegoTipo.DLC)
-                {
-                    juegoActual.Imagen = juego2.Imagenes.Capsule_231x87;
-                }
-
-                juegoActual.Juego = juego2;
-            }
-
-            juegosActuales = juegosActuales.OrderBy(x => x.Nombre).ToList();
-
             foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
             {
                 List<Juegos.JuegoSuscripcion> juegos2 = new List<Juegos.JuegoSuscripcion>();
@@ -324,6 +456,45 @@
                 }
             }
         }
+    }
+
+    private bool suscripcionSeleccionada = false;
+    private Suscripciones2.Suscripcion suscripcionSeleccionadaTipo = new Suscripciones2.Suscripcion();
+    private List<Juegos.JuegoSuscripcion> suscripcionSeleccionadaJuegos = new List<Juegos.JuegoSuscripcion>();
+
+    private void SuscripcionAbrir(MouseEventArgs e, Suscripciones2.SuscripcionComponente componente)
+    {
+        if (componente != null)
+        {
+            suscripcionSeleccionada = true;
+
+            suscripcionSeleccionadaTipo = componente.Tipo;
+            suscripcionSeleccionadaJuegos.Clear();
+
+            foreach (var juegoActual in componente.Juegos)
+            {
+                Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
+                juegoActual.Juego = juego2;
+                suscripcionSeleccionadaJuegos.Add(juegoActual);
+            }
+
+            suscripcionSeleccionadaJuegos = suscripcionSeleccionadaJuegos.OrderBy(x => x.Nombre).ToList();
+        }
+    }
+
+    private void SuscripcionCerrar(MouseEventArgs e)
+    {
+        suscripcionSeleccionada = false;
+    }
+
+    private string textoBuscador = string.Empty;
+
+    private void TextoCambiaBuscador(ChangeEventArgs texto)
+    {
+        textoBuscador = texto.Value.ToString().Trim();
+
+        // resultadosMostrar.Clear();
+
     }
 
     private void CambiarAño(MouseEventArgs e, string nuevoAño)
