@@ -16,8 +16,9 @@ namespace APIs.PrimeGaming
 				DRMDefecto = JuegoDRM.Amazon,
 				AdminInteractuar = true,
 				UsuarioInteractuar = true,
-				ParaSiempre = true
-			};
+				ParaSiempre = true,
+                Precio = 4.99
+            };
 
 			DateTime fechaPrime = DateTime.Now;
 			fechaPrime = fechaPrime.AddMonths(1);

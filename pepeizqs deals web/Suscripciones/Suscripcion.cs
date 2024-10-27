@@ -18,6 +18,7 @@ namespace Suscripciones2
 		public bool UsuarioInteractuar; //true si son enlaces especificos
 		public bool ParaSiempre; //true si pagas juegos son para siempre
 		public SuscripcionTipo? IncluyeSuscripcion;
+		public double Precio;
     }
 
     public class SuscripcionComponente

@@ -25,6 +25,14 @@
   },
   {
     "Id": "String6",
-    "Valor": "This subscription also includes the games that are in the {0} subscription"
+    "Valor": "Also includes the games that are in the {0} subscription"
+  },
+  {
+    "Id": "String7",
+    "Valor": "The subscription prices I show you are the prices if you buy a single month, but these can go down if you wait for sales or if you buy longer periods of time for the subscription."
+  },
+  {
+    "Id": "String8",
+    "Valor": "{0} / each month"
   }
 ]

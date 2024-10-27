@@ -16,7 +16,8 @@ namespace APIs.Humble
 				DRMDefecto = JuegoDRM.Steam,
 				AdminInteractuar = true,
 				UsuarioInteractuar = false,
-				ParaSiempre = true
+				ParaSiempre = true,
+				Precio = 9.99
 			};
 
 			DateTime fechaHumbleChoice = DateTime.Now;

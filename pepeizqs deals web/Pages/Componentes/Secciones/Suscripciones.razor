@@ -31,7 +31,16 @@
 
             <hr />
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 10px;">
+            <div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; gap: 20px;">
+                <div>
+                    <i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
+                </div>
+                <div>
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String7", "Subscriptions")
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 30px;">
                 @foreach (var suscripcionActual in suscripcionesActuales)
                 {
                     <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño" style="padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
@@ -67,7 +76,20 @@
                                 }
 
                                 <div style="display: flex; align-items: center; gap: 20px;">
-                                    @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "Subscriptions"), suscripcionActual.Juegos.Count)
+                                    @if (suscripcionActual.Tipo.Precio > 0)
+                                    {
+                                        string precioTexto = suscripcionActual.Tipo.Precio.ToString();
+                                        precioTexto = precioTexto.Replace(".", ",");
+                                        precioTexto = precioTexto + "€";
+
+                                        <div>
+                                            @precioTexto
+                                        </div>
+                                    }
+
+                                    <div>
+                                        @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "Subscriptions"), suscripcionActual.Juegos.Count)
+                                    </div>
 
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         @foreach (var drm in drms)
@@ -78,122 +100,9 @@
                                 </div>
                             }
                         }
-
-                        <div>
-                            @if (suscripcionActual.Tipo.ParaSiempre == true)
-                            {
-                                @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Subscriptions")
-                            }
-                            else
-                            {
-                                @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Subscriptions")
-                            }
-                        </div>
                     </button>
                 }
             </div>
-
-
-
-
-
-
-
-
-
-
-
-            @*         <div>
-            @foreach (var suscripcionActual in suscripcionesActuales)
-            {
-                <hr>
-
-                <div style="display: flex; align-items: start;">
-                    <div class="perfil" style="width: 20%;">
-                        <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" />
-                    </div>
-
-                    <div class="perfil" style="width: 80%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
-                        @if (suscripcionActual.Juegos != null)
-                        {
-                            if (suscripcionActual.Juegos.Count > 0)
-                            {
-                                foreach (var juego in suscripcionActual.Juegos)
-                                {
-                                    bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego.Juego, juego.DRM);
-                                    bool usuarioTieneDeseado = false;
-
-                                    string fondoColor = string.Empty;
-
-                                    if (usuarioTieneJuego == true)
-                                    {
-                                        fondoColor = "background-color: var(--fondoBien);";
-                                    }
-                                    else
-                                    {
-                                        usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego.Juego, juego.DRM);
-
-                                        if (usuarioTieneDeseado == true)
-                                        {
-                                            fondoColor = "background-color: var(--fondoAlerta);";
-                                        }
-                                    }
-
-                                    bool usuarioConectado = false;
-
-                                    if (usuario != null)
-                                    {
-                                        usuarioConectado = true;
-                                    }
-
-                                    Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego.Juego, juego.DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
-
-                                    <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()')">
-                                        <div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno">
-                                            @if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
-                                            {
-                                                <video src="@tooltipDatos.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
-                                            }
-
-                                            <div style="padding: 15px; text-align: center;">
-                                                <div style="text-align: center;">
-                                                    @tooltipDatos.Nombre
-                                                </div>
-
-                                                @if (string.IsNullOrEmpty(tooltipDatos.ReviewsIcono) == false && string.IsNullOrEmpty(tooltipDatos.ReviewsCantidad) == false)
-                                                {
-                                                    <div style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; padding: 5px; text-align: center; justify-content: center;">
-                                                        <img src="@tooltipDatos.ReviewsIcono" style="width: 20px; height: 20px; margin-right: 15px;" alt="Reviews" />
-                                                        <label style="font-size: 14px;">@tooltipDatos.ReviewsCantidad</label>
-                                                    </div>
-                                                }
-
-                                                @if (string.IsNullOrEmpty(tooltipDatos.UsuarioMensaje) == false)
-                                                {
-                                                    <div style="text-align: center;">
-                                                        @tooltipDatos.UsuarioMensaje
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-
-                                        <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 2px; @fondoColor" target="_blank">
-                                            <div>
-                                                <img src="@juego.Imagen" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
-                                            </div>
-
-                                            <div style="display: flex; align-items: center; justify-content: right; height: 40px;">
-                                                <img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 24px; max-height: 24px; margin: 10px;" alt="DRM" />
-                                            </div>
-                                        </a>
-                                    </div>
-                                }
-                            }
-                        }
-                    </div>
-                </div>
-            }
-        </div> *@
         }
     }
 
@@ -312,27 +221,53 @@ else
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
 
-            <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 30px;">
                 <div style="max-width: 250px; height: 40px;">
                     <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="width: 100%; height: 100%; object-fit: contain; object-position: 0 50%;" />
                 </div>
 
-                @if (suscripcionSeleccionadaTipo.IncluyeSuscripcion != null)
-                {
-                    Suscripciones2.SuscripcionComponente componenteBuscado = new Suscripciones2.SuscripcionComponente();
-
-                    foreach (var suscripcionActual in suscripcionesActuales)
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    @if (suscripcionSeleccionadaTipo.Precio > 0)
                     {
-                        if (suscripcionActual.Tipo.Id == suscripcionSeleccionadaTipo.IncluyeSuscripcion)
-                        {
-                            componenteBuscado = suscripcionActual;
-                        }
+                        string precioTexto = suscripcionSeleccionadaTipo.Precio.ToString();
+                        precioTexto = precioTexto.Replace(".", ",");
+                        precioTexto = precioTexto + "€";
+
+                        <div>
+                            @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String8", "Subscriptions"), precioTexto)
+                        </div>
                     }
 
-                    <button @onclick="@(e => SuscripcionAbrir(e, componenteBuscado))" class="boton-pequeño" style="padding: 10px 15px;">
-                        @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "Subscriptions"), componenteBuscado.Tipo.Nombre)
-                    </button>
-                }
+                    @if (suscripcionSeleccionadaTipo.ParaSiempre == true)
+                    {
+                        <div>
+                            @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Subscriptions")
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Subscriptions")
+                        </div>
+                    }
+
+                    @if (suscripcionSeleccionadaTipo.IncluyeSuscripcion != null)
+                    {
+                        Suscripciones2.SuscripcionComponente componenteBuscado = new Suscripciones2.SuscripcionComponente();
+
+                        foreach (var suscripcionActual in suscripcionesActuales)
+                        {
+                            if (suscripcionActual.Tipo.Id == suscripcionSeleccionadaTipo.IncluyeSuscripcion)
+                            {
+                                componenteBuscado = suscripcionActual;
+                            }
+                        }
+
+                        <button @onclick="@(e => SuscripcionAbrir(e, componenteBuscado))" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+                            @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "Subscriptions"), componenteBuscado.Tipo.Nombre)
+                        </button>
+                    }
+                </div>
             </div>
         </div>
 
@@ -343,13 +278,13 @@ else
             </a>
         }
 
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Publisher")" />
         </div>
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px 30px; display: flex; flex-direction: column; gap: 20px;">
-            <Virtualize Context="juego" Items="suscripcionSeleccionadaJuegos" ItemSize="107">
+            <Virtualize Context="juego" Items="suscripcionSeleccionadaJuegosMostrar" ItemSize="107">
                 <ItemContent>
                     @{
                         string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo);
@@ -367,7 +302,7 @@ else
                             </div>
 
                             <div style="width: 100%;">
-                                <div>@juego.Nombre</div>
+                                <div>@juego.Juego.Nombre</div>
                                 <div style="margin-top: 10px;"><img src="@JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" /></div>
                             </div>
                         </div>
@@ -394,9 +329,6 @@ else
     private List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
 
     private List<string> juegosUsuario = new List<string>();
-
-    private List<string> años = new List<string>();
-    private string añoSeleccionado = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -460,7 +392,8 @@ else
 
     private bool suscripcionSeleccionada = false;
     private Suscripciones2.Suscripcion suscripcionSeleccionadaTipo = new Suscripciones2.Suscripcion();
-    private List<Juegos.JuegoSuscripcion> suscripcionSeleccionadaJuegos = new List<Juegos.JuegoSuscripcion>();
+    private List<Juegos.JuegoSuscripcion> suscripcionSeleccionadaJuegosGestor = new List<Juegos.JuegoSuscripcion>();
+    private List<Juegos.JuegoSuscripcion> suscripcionSeleccionadaJuegosMostrar = new List<Juegos.JuegoSuscripcion>();
 
     private void SuscripcionAbrir(MouseEventArgs e, Suscripciones2.SuscripcionComponente componente)
     {
@@ -469,16 +402,37 @@ else
             suscripcionSeleccionada = true;
 
             suscripcionSeleccionadaTipo = componente.Tipo;
-            suscripcionSeleccionadaJuegos.Clear();
+            suscripcionSeleccionadaJuegosGestor.Clear();
 
             foreach (var juegoActual in componente.Juegos)
             {
                 Juegos.Juego juego2 = BaseDatos.Juegos.Buscar.UnJuego(juegoActual.JuegoId.ToString());
-                juegoActual.Juego = juego2;
-                suscripcionSeleccionadaJuegos.Add(juegoActual);
+
+                bool añadir = true;
+
+                if (suscripcionSeleccionadaTipo.IncluyeSuscripcion != null)
+                {
+                    if (juego2.Suscripciones != null)
+                    {
+                        foreach (var suscripcion in juego2.Suscripciones)
+                        {
+                            if (suscripcion.Tipo == suscripcionSeleccionadaTipo.IncluyeSuscripcion)
+                            {
+                                añadir = false;
+                            }
+                        }
+                    }
+                }
+
+                if (añadir == true)
+                {
+                    juegoActual.Juego = juego2;
+                    suscripcionSeleccionadaJuegosGestor.Add(juegoActual);
+                }  
             }
 
-            suscripcionSeleccionadaJuegos = suscripcionSeleccionadaJuegos.OrderBy(x => x.Nombre).ToList();
+            suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosGestor;
+            suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
         }
     }
 
@@ -493,9 +447,33 @@ else
     {
         textoBuscador = texto.Value.ToString().Trim();
 
-        // resultadosMostrar.Clear();
+        suscripcionSeleccionadaJuegosMostrar.Clear();
 
+        if (string.IsNullOrEmpty(textoBuscador) == false)
+        {
+            if (string.IsNullOrEmpty(textoBuscador) == false)
+            {
+                foreach (var resultadoBuscador in suscripcionSeleccionadaJuegosGestor)
+                {
+                    if (Herramientas.Buscador.LimpiarNombre(resultadoBuscador.Nombre).Contains(Herramientas.Buscador.LimpiarNombre(textoBuscador)) == true)
+                    {
+                        suscripcionSeleccionadaJuegosMostrar.Add(resultadoBuscador);
+                    }
+                }
+            }
+        }
+        else
+        {
+            suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosGestor;
+        }
+
+        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
     }
+
+    #region Archivo
+
+    private List<string> años = new List<string>();
+    private string añoSeleccionado = string.Empty;
 
     private void CambiarAño(MouseEventArgs e, string nuevoAño)
     {
@@ -530,4 +508,6 @@ else
             }
         }
     }
+
+    #endregion
 }

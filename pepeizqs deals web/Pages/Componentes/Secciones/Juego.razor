@@ -2581,6 +2581,48 @@
 			}
 		}
 
+		if (suscripcionesDisponibles.Count > 0)
+		{
+			foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+			{
+				if (suscripcion.IncluyeSuscripcion != null)
+				{
+					bool tieneIncluye = false;
+					bool tieneMaestro = false;
+
+					foreach (var suscripcionJuego in suscripcionesDisponibles)
+					{
+						if (suscripcionJuego.Tipo == suscripcion.IncluyeSuscripcion)
+						{
+							tieneIncluye = true;
+						}
+
+						if (suscripcionJuego.Tipo == suscripcion.Id)
+						{
+							tieneMaestro = true;
+						}
+					}
+
+					if (tieneIncluye == true && tieneMaestro == true)
+					{
+						int i = 0;
+
+						foreach (var suscripcionJuego in suscripcionesDisponibles)
+						{
+							if (suscripcionJuego.Tipo == suscripcion.Id)
+							{
+								break;
+							}
+
+							i += 1;
+						}
+
+						suscripcionesDisponibles.RemoveAt(i);
+					}
+				}
+			}
+		}
+
 		return suscripcionesDisponibles;
 	}
 

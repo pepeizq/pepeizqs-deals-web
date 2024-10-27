@@ -215,12 +215,26 @@ namespace Herramientas
 				{
 					if (juego.Suscripciones.Count > 0)
 					{
+						double precio = 1000000;
+						string nombre = string.Empty;
+
 						foreach (var suscripcion in juego.Suscripciones)
 						{
 							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
 							{
-								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre);
+								Suscripciones2.Suscripcion suscripcion2 = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo);
+
+								if (suscripcion2.Precio < precio)
+								{
+									precio = suscripcion2.Precio;
+									nombre = suscripcion2.Nombre;
+								}
 							}
+						}
+
+						if (precio < 1000000)
+						{
+							return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header"), nombre);
 						}
 					}
 				}

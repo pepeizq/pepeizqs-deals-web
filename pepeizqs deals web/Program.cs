@@ -146,6 +146,7 @@ builder.Services.AddSingleton<Tareas.Tiendas.EA>();
 builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
 
 builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
+builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
@@ -180,6 +181,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
 
 #endregion
 

@@ -25,6 +25,14 @@
   },
   {
     "Id": "String6",
-    "Valor": "Esta suscripción también incluye los juegos que hay en la suscripción {0}"
+    "Valor": "También incluye los juegos que hay en la suscripción {0}"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Los precios de las suscripciones que os enseño son los precios si compráis un único mes, pero estos pueden bajar si esperáis a ofertas o si compráis periodos más largos de tiempo para la suscripción."
+  },
+  {
+    "Id": "String8",
+    "Valor": "{0} / cada mes"
   }
 ]
