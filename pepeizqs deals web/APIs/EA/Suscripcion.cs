@@ -71,7 +71,7 @@ namespace APIs.EA
 								bool tieneSuscripcion = false;
 								bool tieneSuscripcionPremium = false;
 
-								if (juego.Suscripcion != null && juego.Tipo == "Full Game")
+								if (juego.Suscripcion != null)
 								{
 									bool dentroDeFecha = false;
 
@@ -107,7 +107,7 @@ namespace APIs.EA
 
 								if (tieneSuscripcion == false)
 								{
-									if (juego.SuscripcionPremium != null && juego.Tipo == "Full Game")
+									if (juego.SuscripcionPremium != null)
 									{
 										bool dentroDeFecha = false;
 
@@ -176,15 +176,15 @@ namespace APIs.EA
 													if (string.IsNullOrEmpty(lector.GetString(0)) == false)
 													{
 														string idJuegosTexto = lector.GetString(0);
-												
+
+														encontrado = true;
+
 														if (idJuegosTexto != "0")
 														{
 															List<string> idJuegos = Herramientas.Listados.Generar(idJuegosTexto);
 
 															if (idJuegos.Count > 0)
 															{
-																encontrado = true;
-
 																foreach (var id in idJuegos)
 																{
 																	Juego juegobd = BaseDatos.Juegos.Buscar.UnJuego(int.Parse(id));

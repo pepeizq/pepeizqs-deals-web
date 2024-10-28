@@ -73,14 +73,14 @@ namespace APIs.XboxGamePass
                                         {
                                             string idJuegosTexto = lector.GetString(0);
 
+											encontrado = true;
+
 											if (idJuegosTexto != "0")
                                             {
 												List<string> idJuegos = Herramientas.Listados.Generar(idJuegosTexto);
 
 												if (idJuegos.Count > 0)
 												{
-													encontrado = true;
-
 													foreach (var id in idJuegos)
 													{
 														Juego juegobd = BaseDatos.Juegos.Buscar.UnJuego(int.Parse(id));

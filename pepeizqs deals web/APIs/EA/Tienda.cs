@@ -186,6 +186,9 @@ namespace APIs.EA
 
 		[JsonPropertyName("originDisplayType")]
 		public string Tipo { get; set; }
+
+		[JsonPropertyName("mdmItemType")]
+		public string Tipo2 { get; set; }
 	}
 
     public class EABDJuegoi18n
