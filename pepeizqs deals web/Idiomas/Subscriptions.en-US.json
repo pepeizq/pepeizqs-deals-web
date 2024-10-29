@@ -34,5 +34,13 @@
   {
     "Id": "String8",
     "Valor": "{0} / each month"
+  },
+  {
+    "Id": "String9",
+    "Valor": "All"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Filter by DRM"
   }
 ]

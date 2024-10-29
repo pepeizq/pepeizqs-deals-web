@@ -152,12 +152,12 @@
 				<video src="@tooltip.Video" autoplay="autoplay" loop muted style="width: 460px; height: 215px; object-fit: cover;" />
 			}
 
-			<div style="padding: 15px; text-align: left; max-width: 460px;">
+			<div style="padding: 15px; text-align: left; max-width: 460px; display: flex; flex-direction: column; gap: 5px;">
 				<div>
 					@tooltip.Nombre
 				</div>
 
-				<div style="display: flex; align-items: center; margin-top: 5px; padding: 5px; text-align: left; justify-content: left;">
+				<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
 					<div style="margin-right: 20px;">
 						<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="max-width: 20px; max-height: 20px;" alt="DRM" />
 					</div>
@@ -180,31 +180,61 @@
 					</div>
 				</div>
 
-				@if (string.IsNullOrEmpty(tooltip.Bundles) == false || string.IsNullOrEmpty(tooltip.Gratis) == false || string.IsNullOrEmpty(tooltip.Suscripciones) == false)
+				@if (string.IsNullOrEmpty(tooltip.BundlesActuales) == false || string.IsNullOrEmpty(tooltip.GratisActuales) == false || string.IsNullOrEmpty(tooltip.SuscripcionesActuales) == false)
 				{
-					<div style="font-size: 14px; margin-top: 5px; padding: 5px;">
-						<div>
+					<div style="font-size: 14px; padding: 5px;">
+						<div style="margin-bottom: 5px;">
+							@Herramientas.Idiomas.CogerCadena(idioma, "String11", "Tooltip")
+						</div>
+
+						@if (string.IsNullOrEmpty(tooltip.BundlesActuales) == false)
+						{
+							<div>
+								• @tooltip.BundlesActuales
+							</div>
+						}
+
+						@if (string.IsNullOrEmpty(tooltip.GratisActuales) == false)
+						{
+							<div>
+								• @tooltip.GratisActuales
+							</div>
+						}
+
+						@if (string.IsNullOrEmpty(tooltip.SuscripcionesActuales) == false)
+						{
+							<div>
+								• @tooltip.SuscripcionesActuales
+							</div>
+						}
+					</div>
+				}
+
+				@if (string.IsNullOrEmpty(tooltip.BundlesPasados) == false || string.IsNullOrEmpty(tooltip.GratisPasados) == false || string.IsNullOrEmpty(tooltip.SuscripcionesPasadas) == false)
+				{
+					<div style="font-size: 14px; padding: 5px;">
+						<div style="margin-bottom: 5px;">
 							@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Tooltip")
 						</div>
 
-						@if (string.IsNullOrEmpty(tooltip.Bundles) == false)
+						@if (string.IsNullOrEmpty(tooltip.BundlesPasados) == false)
 						{
 							<div>
-								• @tooltip.Bundles
+								• @tooltip.BundlesPasados
 							</div>
 						}
 
-						@if (string.IsNullOrEmpty(tooltip.Gratis) == false)
+						@if (string.IsNullOrEmpty(tooltip.GratisPasados) == false)
 						{
 							<div>
-								• @tooltip.Gratis
+								• @tooltip.GratisPasados
 							</div>
 						}
 
-						@if (string.IsNullOrEmpty(tooltip.Suscripciones) == false)
+						@if (string.IsNullOrEmpty(tooltip.SuscripcionesPasadas) == false)
 						{
 							<div>
-								• @tooltip.Suscripciones
+								• @tooltip.SuscripcionesPasadas
 							</div>
 						}
 					</div>

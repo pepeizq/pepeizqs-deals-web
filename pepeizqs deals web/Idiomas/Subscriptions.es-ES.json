@@ -34,5 +34,13 @@
   {
     "Id": "String8",
     "Valor": "{0} / cada mes"
+  },
+  {
+    "Id": "String9",
+    "Valor": "Todo"
+  },
+  {
+    "Id": "String10",
+    "Valor": "Filtrar por DRM"
   }
 ]

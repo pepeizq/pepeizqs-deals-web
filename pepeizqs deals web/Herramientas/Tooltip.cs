@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Juegos;
-using pepeizqs_deals_web.Areas.Identity.Data;
 
 namespace Herramientas
 {
@@ -16,9 +15,12 @@ namespace Herramientas
                 ReviewsIcono = null,
                 ReviewsCantidad = null,
                 UsuarioMensaje = null,
-                Bundles = null,
-                Gratis = null,
-                Suscripciones = null
+				BundlesActuales = null,
+                BundlesPasados = null,
+				GratisActuales = null,
+                GratisPasados = null,
+				SuscripcionesActuales = null,
+                SuscripcionesPasadas = null
             };
 
             if (juego.Media != null)
@@ -84,37 +86,109 @@ namespace Herramientas
 
 			if (juego.Bundles != null)
 			{
-				if (juego.Bundles.Count == 1)
+				int bundlesActuales = 0;
+                int bundlesPasados = 0;
+
+                foreach (var bundle in juego.Bundles)
 				{
-					datos.Bundles = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
+					if (bundle.FechaEmpieza < DateTime.Now && bundle.FechaTermina > DateTime.Now)
+					{
+						bundlesActuales += 1;
+					}
+					else
+					{
+                        bundlesPasados += 1;
+                    }
 				}
-				else if (juego.Bundles.Count > 1)
+
+                if (bundlesActuales == 1)
+                {
+                    datos.BundlesActuales = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
+                }
+                else if (bundlesActuales > 1)
+                {
+                    datos.BundlesActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
+                }
+
+                if (bundlesPasados == 1)
 				{
-					datos.Bundles = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
+					datos.BundlesPasados = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
+				}
+				else if (bundlesPasados > 1)
+				{
+					datos.BundlesPasados = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
 				}
 			}
 
 			if (juego.Gratis != null)
 			{
-				if (juego.Gratis.Count == 1)
+				int gratisActuales = 0;
+				int gratisPasados = 0;
+
+				foreach (var gratis in juego.Gratis)
 				{
-					datos.Gratis = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
+					if (gratis.FechaEmpieza < DateTime.Now && gratis.FechaTermina > DateTime.Now)
+					{
+						gratisActuales += 1;
+					}
+					else
+					{
+						gratisPasados += 1;
+					}
 				}
-				else if (juego.Gratis.Count > 1)
+
+				if (gratisActuales == 1)
 				{
-					datos.Gratis = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+					datos.GratisActuales = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
+				}
+				else if (gratisActuales > 1)
+				{
+					datos.GratisActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+				}
+
+				if (gratisPasados == 1)
+				{
+					datos.GratisPasados = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
+				}
+				else if (gratisPasados > 1)
+				{
+					datos.GratisPasados = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
 			}
 
 			if (juego.Suscripciones != null)
 			{
-				if (juego.Suscripciones.Count == 1)
+				int suscripcionesActuales = 0;
+				int suscripcionesPasados = 0;
+
+				foreach (var suscripcion in juego.Suscripciones)
 				{
-					datos.Suscripciones = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
+					if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
+					{
+						suscripcionesActuales += 1;
+					}
+					else
+					{
+						suscripcionesPasados += 1;
+					}
 				}
-				else if (juego.Suscripciones.Count > 1)
+
+				if (suscripcionesActuales == 1)
 				{
-					datos.Suscripciones = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+					datos.SuscripcionesActuales = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
+				}
+				else if (suscripcionesActuales > 1)
+				{
+					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+				}
+
+				if (suscripcionesPasados == 1)
+				{
+					datos.SuscripcionesPasadas = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
+				}
+				else if (suscripcionesPasados > 1)
+				{
+					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
 				}
 			}
 
@@ -154,8 +228,11 @@ namespace Herramientas
 		public string ReviewsIcono { get; set; }
 		public string ReviewsCantidad { get; set; }
 		public string UsuarioMensaje { get; set; }
-		public string Bundles { get; set; }
-		public string Gratis { get; set; }
-		public string Suscripciones { get; set; }
+        public string BundlesActuales { get; set; }
+        public string GratisActuales { get; set; }
+        public string SuscripcionesActuales { get; set; }
+        public string BundlesPasados { get; set; }
+		public string GratisPasados { get; set; }
+		public string SuscripcionesPasadas { get; set; }
 	}
 }

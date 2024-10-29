@@ -38,5 +38,9 @@
   {
     "Id": "String10",
     "Valor": "This game is on your wishlist"
+  },
+  {
+    "Id": "String11",
+    "Valor": "Available in:"
   }
 ]
