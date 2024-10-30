@@ -220,6 +220,8 @@ namespace BaseDatos.Publishers
 
 		public static List<Juego> Juegos(string publisher, SqlConnection conexion = null)
 		{
+			publisher = publisher.Replace("'", "''");
+
 			List<Juego> juegos = new List<Juego>();
 
 			if (conexion == null)

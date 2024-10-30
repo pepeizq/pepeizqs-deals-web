@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
+@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -43,8 +44,8 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 30px;">
                 @foreach (var suscripcionActual in suscripcionesActuales)
                 {
-                    <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño" style="padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                        <div style="max-width: 300px; height: 55px;">
+                    <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño" style="padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
+                        <div style="max-width: 200px; height: 70px;">
                             <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" style="width: 100%; height: 100%; object-fit: contain;" />
                         </div>
 
@@ -222,7 +223,7 @@ else
             </button>
 
             <div style="display: flex; align-items: center; gap: 30px; width: 100%;">
-                <div style="max-width: 250px; height: 40px;">
+                <div style="max-width: 150px; height: 40px;">
                     <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="width: 100%; height: 100%; object-fit: contain; object-position: 0 50%;" />
                 </div>
 
@@ -459,6 +460,35 @@ else
 
                 if (añadir == true)
                 {
+                    bool añadirVacioAnalisis = false;
+
+                    if (juego2.Analisis == null)
+                    {
+                        añadirVacioAnalisis = true;
+                    }
+                    else
+                    {
+                        if (JsonSerializer.Serialize(juego2.Analisis) == "null" || JsonSerializer.Serialize(juego2.Analisis) == "[]")
+                        {
+                            añadirVacioAnalisis = true;
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(juego2.Analisis.Cantidad) == true)
+                            {
+                                añadirVacioAnalisis = true;
+                            }
+                        }
+                    }
+
+                    if (añadirVacioAnalisis == true)
+                    {
+                        JuegoAnalisis analisis = new JuegoAnalisis();
+                        analisis.Cantidad = "0";
+                        analisis.Porcentaje = "0%";
+                        juego2.Analisis = analisis;
+                    }
+
                     juegoActual.Juego = juego2;
                     suscripcionSeleccionadaJuegosGestor.Add(juegoActual);
                 }  
@@ -485,7 +515,7 @@ else
             }
 
             suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosGestor;
-            suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
+            suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
         }
     }
 
@@ -520,7 +550,7 @@ else
             suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosGestor;
         }
 
-        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
+        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
     }
 
     private void FiltrarDRM(MouseEventArgs e)
@@ -532,7 +562,7 @@ else
             suscripcionSeleccionadaJuegosMostrar.Add(resultadoBuscador);
         }
 
-        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
+        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
     }
 
     private void FiltrarDRM(MouseEventArgs e, Juegos.JuegoDRM drm)
@@ -547,7 +577,7 @@ else
             }
         }
 
-        suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.OrderBy(x => x.Nombre).ToList();
+         suscripcionSeleccionadaJuegosMostrar = suscripcionSeleccionadaJuegosMostrar.AsParallel().OrderByDescending(x => int.Parse(x.Juego.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Juego.Nombre).ToList();
     }
 
     #region Archivo
