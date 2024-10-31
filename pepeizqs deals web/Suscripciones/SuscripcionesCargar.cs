@@ -10,7 +10,9 @@ namespace Suscripciones2
 		TwitchPrime,
 		EAPlay,
 		EAPlayPro,
-		XboxGamePass
+		XboxGamePass,
+		UbisoftPlusClassics,
+		UbisoftPlusPremium
 	}
 
 	public class SuscripcionesCargar
@@ -25,7 +27,9 @@ namespace Suscripciones2
 				APIs.PrimeGaming.Suscripcion.GenerarAntiguo(),
 				APIs.EA.Suscripcion.Generar(),
 				APIs.EA.Suscripcion.GenerarPro(),
-				APIs.XboxGamePass.Suscripcion.Generar()
+				APIs.XboxGamePass.Suscripcion.Generar(),
+				APIs.Ubisoft.Suscripcion.Generar(),
+				APIs.Ubisoft.Suscripcion.GenerarPremium()
 			};
 
 			return suscripciones;

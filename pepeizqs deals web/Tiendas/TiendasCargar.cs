@@ -31,7 +31,8 @@ namespace Tiendas2
 				APIs.Voidu.Tienda.Generar(),
 				APIs.EpicGames.Tienda.Generar(),
 				APIs._2Game.Tienda.Generar(),
-				APIs.GameBillet.Tienda.Generar()
+				APIs.GameBillet.Tienda.Generar(),
+				APIs.Ubisoft.Tienda.Generar()
             };
 
 			return tiendas;
@@ -123,7 +124,11 @@ namespace Tiendas2
 				{
 					await APIs.GameBillet.Tienda.BuscarOfertas(conexion, decompilador);
 				}
-			}
+                else if (id == APIs.Ubisoft.Tienda.Generar().Id)
+                {
+                    await APIs.Ubisoft.Tienda.BuscarOfertas(conexion, decompilador);
+                }
+            }
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador = null)
@@ -208,6 +213,10 @@ namespace Tiendas2
 			{
 				await APIs.GameBillet.Tienda.BuscarOfertas(conexion, decompilador);
 			}
-		}
+            else if (id == APIs.Ubisoft.Tienda.Generar().Id)
+            {
+                await APIs.Ubisoft.Tienda.BuscarOfertas(conexion, decompilador);
+            }
+        }
     }
 }

@@ -20,6 +20,20 @@
 	}
 </script>
 
+<style>
+	.bundles-grid {
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 40px;
+	}
+
+	@@media (max-width: 800px) {
+		.bundles-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+		}
+	}
+</style>
+
 @if (bundlesActuales.Count > 0)
 {
 	@if (mostrarBundleSeleccionado == false)
@@ -30,11 +44,11 @@
 
 		<hr>
 
-		<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
+		<div class="bundles-grid" style="display: grid; justify-items: center; margin-top: 40px; margin-bottom: 70px;">
 			@foreach (var bundle in bundlesActuales)
 			{
 				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">
-					<div style="width: 100%; text-align: center; padding: 5px;">
+					<div style="width: 100%; text-align: center; padding: 2px;">
 						@if (bundle.Tipo == Bundles2.BundleTipo.HumbleBundle)
 						{
 							<img src="@bundle.ImagenNoticia" style="max-width: 100%;" alt="@bundle.NombreBundle" />
@@ -44,7 +58,7 @@
 							<img src="@bundle.ImagenBundle" style="max-width: 100%;" alt="@bundle.NombreBundle" />
 						}
 
-						<div style="margin-top: 10px; margin-bottom: 5px; text-align: center; font-size: 14px;">
+						<div style="margin-top: 10px; margin-bottom: 5px; text-align: center;">
 							@MostrarFecha(bundle.FechaEmpieza, bundle.FechaTermina)
 						</div>
 					</div>

@@ -484,20 +484,46 @@ namespace BaseDatos.Juegos
 		{
 			if (nuevoJuego != null && juego != null)
 			{
-				if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
+				if (juego.Imagenes == null)
 				{
-					juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
+					juego.Imagenes = new JuegoImagenes();
 				}
 
-				if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
+				if (string.IsNullOrEmpty(juego.Imagenes.Library_600x900) == false)
 				{
-					juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
-				}
+                    if (juego.Imagenes.Library_600x900.Contains("i.imgur.com") == false)
+                    {
+                        juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
+                    }
+                }
+				else
+				{
+                    juego.Imagenes.Library_600x900 = nuevoJuego.Imagenes.Library_600x900;
+                }
 
-				if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
-				{
-					juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
-				}
+                if (string.IsNullOrEmpty(juego.Imagenes.Library_1920x620) == false)
+                {
+                    if (juego.Imagenes.Library_1920x620.Contains("i.imgur.com") == false)
+                    {
+                        juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
+                    }
+                }
+                else
+                {
+                    juego.Imagenes.Library_1920x620 = nuevoJuego.Imagenes.Library_1920x620;
+                }
+
+                if (string.IsNullOrEmpty(juego.Imagenes.Logo) == false)
+                {
+                    if (juego.Imagenes.Logo.Contains("i.imgur.com") == false)
+                    {
+                        juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
+                    }
+                }
+                else
+                {
+                    juego.Imagenes.Logo = nuevoJuego.Imagenes.Logo;
+                }
 
 				juego.Imagenes.Capsule_231x87 = nuevoJuego.Imagenes.Capsule_231x87;
 				juego.Imagenes.Header_460x215 = nuevoJuego.Imagenes.Header_460x215;

@@ -138,6 +138,8 @@ namespace BaseDatos.Publishers
 
 			if (string.IsNullOrEmpty(cadena) == false)
 			{
+				cadena = cadena.Replace("'", null);
+
 				using (conexion)
 				{
 					string busqueda = "SELECT * FROM publishers WHERE nombre = N'" + cadena + "'";
@@ -198,7 +200,9 @@ namespace BaseDatos.Publishers
 
 			if (string.IsNullOrEmpty(cadena) == false)
 			{
-				using (conexion)
+                cadena = cadena.Replace("'", null);
+
+                using (conexion)
 				{
 					string busqueda = "SELECT * FROM publishers WHERE acepciones LIKE N'%" + cadena + "%'";
 
