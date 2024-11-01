@@ -139,7 +139,7 @@
         @foreach (var año in años)
         {
             <div style="margin-right: 15px;">
-                <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style=" padding: 6px 10px; width: auto;">
+                <button @onclick="@(e => CambiarAño(e, año))" class="boton-pequeño" style="padding: 6px 10px; width: auto;">
                     @año
                 </button>
 
@@ -194,8 +194,10 @@
                 <hr>
 
                 <div id="pasado-@suscripcionPasada.Tipo.Id.ToString()" style="display: flex; align-items: start;">
-                    <div class="perfil" style="width: 20%;">
-                        <img src="@suscripcionPasada.Tipo.ImagenLogo" alt="@suscripcionPasada.Tipo.Nombre" />
+                    <div style="width: 20%; background-color: var(--fondoOscuro); padding: 40px;">
+                        <div style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                            <img src="@suscripcionPasada.Tipo.ImagenLogo" style="max-width: 100%; max-height: 100%;" alt="@suscripcionPasada.Tipo.Nombre" />
+                        </div>
                     </div>
 
                     <div class="perfil" style="width: 80%;">
@@ -480,6 +482,11 @@ else
                             }
                         }
                     }
+                }
+
+                if (juego2.Tipo != JuegoTipo.Game)
+                {
+                    añadir = false;
                 }
 
                 if (añadir == true)

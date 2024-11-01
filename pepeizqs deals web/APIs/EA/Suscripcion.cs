@@ -293,13 +293,13 @@ namespace APIs.EA
 									{
 										if (tieneSuscripcion == true)
 										{
-											BaseDatos.Errores.Insertar.Mensaje("Suscripcion no encontrada", juego.i18n.Titulo + " " + enlace);
+											BaseDatos.Errores.Insertar.Mensaje("EAPlay - Suscripción no encontrada", juego.i18n.Titulo + " " + enlace);
 										}
 										else
 										{
 											if (tieneSuscripcionPremium == true)
 											{
-												BaseDatos.Errores.Insertar.Mensaje("Suscripcion premium no encontrada", juego.i18n.Titulo + " " + enlace);
+												BaseDatos.Errores.Insertar.Mensaje("EAPlayPro - Suscripción no encontrada", juego.i18n.Titulo + " " + enlace);
 											}
 										}
 									}

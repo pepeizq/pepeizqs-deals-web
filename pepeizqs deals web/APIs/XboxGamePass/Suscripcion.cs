@@ -162,7 +162,7 @@ namespace APIs.XboxGamePass
 
 						if (encontrado == false)
                         {
-							BaseDatos.Errores.Insertar.Mensaje("Suscripcion no encontrada", enlace);
+							BaseDatos.Errores.Insertar.Mensaje("PCGamePass - Suscripción no encontrada", enlace);
 						}
 					}
                 }
