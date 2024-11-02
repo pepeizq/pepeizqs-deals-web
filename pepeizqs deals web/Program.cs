@@ -19,6 +19,11 @@ using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using System.Net.WebSockets;
 using System.Text;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
+using System.Security.Claims;
+using System.Globalization;
+using NuGet.Protocol.Core.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -150,6 +155,7 @@ builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
 builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusClassics>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusPremium>();
+builder.Services.AddSingleton<Tareas.Suscripciones.GeforceNOW>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
@@ -188,6 +194,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusClassics>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusPremium>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.GeforceNOW>());
 
 #endregion
 
@@ -217,7 +224,7 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
         new HttpClientHandler
         {
             AutomaticDecompression = System.Net.DecompressionMethods.GZip,
-			MaxConnectionsPerServer = 2
+			MaxConnectionsPerServer = 5
 		});
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
@@ -235,7 +242,7 @@ builder.Services.AddSignalR(opciones =>
 	opciones.EnableDetailedErrors = true;
 	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
 	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-	//opciones.MaximumReceiveMessageSize = 102400000;
+	opciones.MaximumReceiveMessageSize = 102400000;
 });
 
 #region Necesario para Juegos
@@ -287,6 +294,47 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 builder.Services.AddRadzenComponents();
 
 #endregion
+
+builder.Services.AddRateLimiter(opciones =>
+{
+	opciones.OnRejected = (contexto, _) =>
+	{
+		if (contexto.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+		{
+			contexto.HttpContext.Response.Headers.RetryAfter =
+				((int)retryAfter.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+		contexto.HttpContext.Response.WriteAsync("Too many requests. Please try again later. If you are a bot, go fuck yourself somewhere else.");
+
+		return new ValueTask();
+	};
+
+	opciones.GlobalLimiter = PartitionedRateLimiter.CreateChained(
+		PartitionedRateLimiter.Create<HttpContext, string>(contexto =>
+		{
+			string? usuario = contexto.User.Identity?.Name;
+
+			if (string.IsNullOrEmpty(usuario) == true)
+			{
+				return RateLimitPartition.GetFixedWindowLimiter(
+					partitionKey: contexto.Request.Headers.Host.ToString(),
+					factory: partition => new FixedWindowRateLimiterOptions
+					{
+						AutoReplenishment = true,
+						PermitLimit = 120,
+						QueueLimit = 0,
+						Window = TimeSpan.FromMinutes(1)
+					});
+			}
+			else
+			{
+				return RateLimitPartition.GetNoLimiter("");
+			}
+		})
+	);
+});
 
 var app = builder.Build();
 
@@ -349,5 +397,7 @@ app.MapControllers();
 //};
 
 //app.UseWebSockets(webSocketOptions);
+
+app.UseRateLimiter();
 
 app.Run();

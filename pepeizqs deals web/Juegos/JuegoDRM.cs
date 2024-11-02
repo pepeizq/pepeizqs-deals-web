@@ -106,7 +106,7 @@ namespace Juegos
 				Id = JuegoDRM.Microsoft,
 				Nombre = "Microsoft Store",
 				Imagen = "/imagenes/drm/microsoft.webp",
-				Acepciones = new List<string> { "microsoft store", "microsoft" }
+				Acepciones = new List<string> { "microsoft store", "microsoft", "xbox" }
 			};
 
 			drms.Add(microsoft);

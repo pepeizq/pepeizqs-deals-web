@@ -81,18 +81,14 @@ namespace APIs.Voidu
 												enlace = enlace.Remove(int1, enlace.Length - int1);
 											}
 
-											bool enlaceCorrecto = true;
+											bool enlaceCorrecto = false;
 
-                                            if (enlace.Contains("voidu.com/tr/") == true)
+                                            if (enlace.Contains("voidu.com/en/") == true)
                                             {
-												enlaceCorrecto = false;
+												enlaceCorrecto = true;
                                             }
-											else if (enlace.Contains("voidu.com/de/") == true)
-											{
-												enlaceCorrecto = false;
-											}
 
-											if (enlaceCorrecto == true)
+                                            if (enlaceCorrecto == true)
 											{
                                                 string imagen = "vacio";
 
