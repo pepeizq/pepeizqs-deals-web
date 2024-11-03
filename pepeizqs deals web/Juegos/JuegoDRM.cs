@@ -242,7 +242,7 @@ namespace Juegos
 			return CargarDRMs()[posicion];
 		}
 
-		public static JuegoDRM Traducir(string drmTexto, string tienda)
+		public static JuegoDRM Traducir(string drmTexto, string tienda = null)
 		{
 			JuegoDRM drmFinal = JuegoDRM.NoEspecificado;
 

@@ -82,5 +82,13 @@
   {
     "Id": "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection",
     "Valor": "El modo para un jugador requiere una conexión activa a Internet."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly",
+    "Valor": "Este juego no se cierra bien y puede que tengas que cerrarlo de forma manual desde la interfaz de Steam."
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault",
+    "Valor": "Este juego requiere que la compatibilidad del mando se active manualmente con los ajustes dentro del juego."
   }
 ]

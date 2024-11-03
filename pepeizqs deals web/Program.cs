@@ -126,7 +126,6 @@ builder.Services.AddSingleton<Tareas.CorreosDeals>();
 builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
-builder.Services.AddSingleton<Tareas.Solicitudes>();
 builder.Services.AddSingleton<Tareas.LimpiarMinimos>();
 
 builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
@@ -155,7 +154,8 @@ builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
 builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusClassics>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusPremium>();
-builder.Services.AddSingleton<Tareas.Suscripciones.GeforceNOW>();
+
+builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
@@ -165,7 +165,6 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Solicitudes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.LimpiarMinimos>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());
@@ -194,7 +193,8 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusClassics>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusPremium>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.GeforceNOW>());
+
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Streaming.GeforceNOW>());
 
 #endregion
 

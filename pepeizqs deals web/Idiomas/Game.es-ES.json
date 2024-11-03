@@ -278,5 +278,9 @@
   {
     "Id": "String70",
     "Valor": "En esta suscripción si pagas este mes, tendrás el juego para siempre"
+  },
+  {
+    "Id": "String71",
+    "Valor": "Jugable desde Geforce NOW"
   }
 ]

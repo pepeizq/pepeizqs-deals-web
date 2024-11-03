@@ -9,11 +9,24 @@ using System.Text.Json.Serialization;
 
 namespace APIs.GeforceNOW
 {
-    public static class Suscripcion
+    public static class Streaming
     {
+        public static Streaming2.Streaming Generar()
+        {
+            Streaming2.Streaming geforcenow = new Streaming2.Streaming
+            {
+                Id = Streaming2.StreamingTipo.GeforceNOW,
+                Nombre = "Geforce NOW",
+                ImagenLogo = "/imagenes/streaming/geforcenow_logo.webp",
+                ImagenIcono = "/imagenes/streaming/geforcenow_icono.webp"
+            };
+
+            return geforcenow;
+        }
+
         public static async Task Buscar(SqlConnection conexion)
         {
-            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, "0 suscripciones detectadas", conexion);
+            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, "0 streaming detectados", conexion);
 
             int cantidad = 0;
             string cadena = string.Empty;
@@ -104,14 +117,14 @@ namespace APIs.GeforceNOW
                                             encontrado = lector.Read();
 
                                             cantidad += 1;
-                                            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+                                            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, cantidad.ToString() + " streaming detectados", conexion);
                                         }
                                     }
 
                                     if (encontrado == true)
                                     {
                                         string sqlActualizar = "UPDATE streaminggeforcenow " +
-                                                                "SET fecha=@fecha WHERE id=@id";
+																"SET fecha=@fecha WHERE nombreCodigo=@nombreCodigo";
 
                                         if (conexion == null)
                                         {

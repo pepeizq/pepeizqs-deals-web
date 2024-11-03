@@ -278,5 +278,9 @@
   {
     "Id": "String70",
     "Valor": "In this subscription if you pay this month, you will have the game forever"
+  },
+  {
+    "Id": "String71",
+    "Valor": "Playable from Geforce NOW"
   }
 ]

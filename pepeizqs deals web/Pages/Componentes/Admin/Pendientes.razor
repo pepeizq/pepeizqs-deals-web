@@ -4,13 +4,13 @@
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; justify-content: space-between; flex-direction: row; gap: 40px;">
     <div style="min-width: 300px; margin: -10px 0px;">
-        @foreach (var pendiente in pendientes)
+        @foreach (var pendiente in pendientesTiendas)
         {
             if (pendiente.Pendientes.Count > 0)
             {
                 string fondo = string.Empty;
 
-                if (string.IsNullOrEmpty(idTiendaPendiente) == true)
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true)
                 {
                     idTiendaPendiente = pendiente.Tienda.Id;
 
@@ -29,9 +29,35 @@
                 </button>
             }
         }
+
+        @foreach (var pendiente in pendientesStreaming)
+        {
+            if (pendiente.Pendientes.Count > 0)
+            {
+                string fondo = string.Empty;
+
+                if (string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idTiendaPendiente) == true)
+                {
+                    idStreamingPendiente = pendiente.Streaming.Id.ToString();
+
+                    ClickearStreamingPendientes(idStreamingPendiente);
+                }
+                else
+                {
+                    if (idStreamingPendiente != pendiente.Streaming.Id.ToString())
+                    {
+                        fondo = "background-color: transparent;";
+                    }
+                }
+
+                <button @onclick="@(e => ClickearStreamingPendientes(e, pendiente.Streaming.Id.ToString(), pendiente.Streaming.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block; @fondo">
+                    <img src="@pendiente.Streaming.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Streaming.Nombre (@pendiente.Pendientes.Count)
+                </button>
+            }
+        }
     </div>
 
-    @if (string.IsNullOrEmpty(idTiendaPendiente) == false)
+    @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false)
     {
         <div style="width: 100%;">
             <div style="display: flex; justify-content: space-between;">
@@ -268,9 +294,12 @@
 
     private SqlConnection conexion = new SqlConnection();
 
-    private List<PendientesTienda> pendientes = new List<PendientesTienda>();
+    private List<PendientesTienda> pendientesTiendas = new List<PendientesTienda>();
+    private List<PendientesStreaming> pendientesStreaming = new List<PendientesStreaming>();
 
     private string idTiendaPendiente = null;
+    private string idStreamingPendiente = null;
+
     private string imagenPendiente = null;
     private string nombrePendiente = null;
     private string enlacePendiente = null;
@@ -284,7 +313,7 @@
             conexion = Herramientas.BaseDatos.Conectar();
         }
 
-        pendientes.Clear();
+        pendientesTiendas.Clear();
 
         foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
         {
@@ -296,8 +325,20 @@
 
                 if (pendienteTienda.Pendientes.Count > 0)
                 {
-                    pendientes.Add(pendienteTienda);
+                    pendientesTiendas.Add(pendienteTienda);
                 }
+            }
+        }
+
+        foreach (var streaming in Streaming2.StreamingCargar.GenerarListado())
+        {
+            PendientesStreaming pendienteStreaming = new PendientesStreaming();
+            pendienteStreaming.Streaming = streaming;
+            pendienteStreaming.Pendientes = BaseDatos.Pendientes.Buscar.Streaming(streaming.Id, conexion);
+
+            if (pendienteStreaming.Pendientes.Count > 0)
+            {
+                pendientesStreaming.Add(pendienteStreaming);
             }
         }
     }
@@ -305,6 +346,7 @@
     private void ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
     {
         idTiendaPendiente = id;
+        idStreamingPendiente = null;
 
         ClickearTiendaPendientes(idTiendaPendiente);
     }
@@ -320,7 +362,49 @@
 
             using (conexion)
             {
-                BaseDatos.Pendientes.Pendiente juego = BaseDatos.Pendientes.Buscar.PrimerJuego(id, conexion);
+                BaseDatos.Pendientes.Pendiente juego = BaseDatos.Pendientes.Buscar.PrimerJuegoTienda(id, conexion);
+
+                if (juego != null)
+                {
+                    nombrePendiente = juego.nombre;
+
+                    string imagen = juego.imagen;
+
+                    if (imagen != null)
+                    {
+                        imagen = imagen.Replace("&amp;", "&");
+                    }
+
+                    imagenPendiente = imagen;
+
+                    enlacePendiente = juego.enlace;
+
+                    idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
+                }
+            }
+        }
+    }
+
+    private void ClickearStreamingPendientes(MouseEventArgs e, string id, string nombre)
+    {
+        idTiendaPendiente = null;
+        idStreamingPendiente = id;
+
+        ClickearStreamingPendientes(idStreamingPendiente);
+    }
+
+    private void ClickearStreamingPendientes(string id)
+    {
+        if (string.IsNullOrEmpty(id) == false)
+        {
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Pendientes.Pendiente juego = BaseDatos.Pendientes.Buscar.PrimerJuegoStreaming(id, conexion);
 
                 if (juego != null)
                 {
@@ -352,17 +436,35 @@
 
         using (conexion)
         {
-            BaseDatos.Pendientes.Actualizar.Descartar(idTiendaPendiente, enlace, conexion);
-
-            foreach (var pendiente in pendientes)
+            if (string.IsNullOrEmpty(idTiendaPendiente) == false)
             {
-                if (pendiente.Tienda.Id == idTiendaPendiente)
+                BaseDatos.Pendientes.Actualizar.DescartarTienda(idTiendaPendiente, enlace, conexion);
+
+                foreach (var pendiente in pendientesTiendas)
                 {
-                    pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(idTiendaPendiente, conexion);
+                    if (pendiente.Tienda.Id == idTiendaPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(idTiendaPendiente, conexion);
+                    }
                 }
+
+                ClickearTiendaPendientes(idTiendaPendiente);
             }
 
-            ClickearTiendaPendientes(idTiendaPendiente);
+            if (string.IsNullOrEmpty(idStreamingPendiente) == false)
+            {
+                BaseDatos.Pendientes.Actualizar.DescartarStreaming(idStreamingPendiente, enlace, conexion);
+
+                foreach (var pendiente in pendientesStreaming)
+                {
+                    if (pendiente.Streaming.Id.ToString() == idStreamingPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Streaming(pendiente.Streaming.Id, conexion);
+                    }
+                }
+
+                ClickearStreamingPendientes(idStreamingPendiente);
+            }
         }
     }
 
@@ -388,17 +490,35 @@
 
         using (conexion)
         {
-            BaseDatos.Pendientes.Actualizar.Juego(idTiendaPendiente, enlace, idsPendiente, conexion);
-
-            foreach (var pendiente in pendientes)
+            if (string.IsNullOrEmpty(idTiendaPendiente) == false)
             {
-                if (pendiente.Tienda.Id == idTiendaPendiente)
-                {
-                    pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(idTiendaPendiente, conexion);
-                }
-            }
+                BaseDatos.Pendientes.Actualizar.Tienda(idTiendaPendiente, enlace, idsPendiente, conexion);
 
-            ClickearTiendaPendientes(idTiendaPendiente);
+                foreach (var pendiente in pendientesTiendas)
+                {
+                    if (pendiente.Tienda.Id == idTiendaPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(idTiendaPendiente, conexion);
+                    }
+                }
+
+                ClickearTiendaPendientes(idTiendaPendiente);
+            }
+           
+            if (string.IsNullOrEmpty(idStreamingPendiente) == false)
+            {
+                BaseDatos.Pendientes.Actualizar.Streaming(idStreamingPendiente, enlace, int.Parse(idsPendiente), conexion);
+
+                foreach (var pendiente in pendientesStreaming)
+                {
+                    if (pendiente.Streaming.Id.ToString() == idStreamingPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Streaming(pendiente.Streaming.Id, conexion);
+                    }
+                }
+
+                ClickearStreamingPendientes(idStreamingPendiente);
+            }
         }
     }
 

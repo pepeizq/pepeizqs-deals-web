@@ -345,7 +345,7 @@
         mostrarPendientes = true;
         estiloPendientes = fondo;
 
-        ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.Todos(null).Count);
+        ActualizarMensajePendientes(BaseDatos.Pendientes.Buscar.TiendasCantidad(null) + BaseDatos.Pendientes.Buscar.StreamingCantidad(null));
     }
 
     #endregion

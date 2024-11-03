@@ -82,5 +82,13 @@
   {
     "Id": "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection",
     "Valor": "Singleplayer gameplay requires an active Internet connection"
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly",
+    "Valor": "This game does not exit cleanly and may require you to manually quit via the Steam overlay"
+  },
+  {
+    "Id": "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault",
+    "Valor": "This game requires manually enabling controller support using in-game settings"
   }
 ]

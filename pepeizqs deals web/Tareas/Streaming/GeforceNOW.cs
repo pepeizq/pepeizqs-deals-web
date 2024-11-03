@@ -4,7 +4,7 @@ using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
-namespace Tareas.Suscripciones
+namespace Tareas.Streaming
 {
     public class GeforceNOW : BackgroundService
     {
@@ -51,7 +51,7 @@ namespace Tareas.Suscripciones
                         {
                             try
                             {
-                                await APIs.GeforceNOW.Suscripcion.Buscar(conexion);
+                                await APIs.GeforceNOW.Streaming.Buscar(conexion);
 
                                 Environment.Exit(1);
                             }

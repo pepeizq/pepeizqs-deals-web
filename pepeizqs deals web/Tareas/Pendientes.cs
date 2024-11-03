@@ -49,11 +49,13 @@ namespace Tareas
                             {
                                 Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
 
-                                List<BaseDatos.Pendientes.Pendiente> pendientes = BaseDatos.Pendientes.Buscar.Todos(conexion);
+                                int cantidadTiendas = BaseDatos.Pendientes.Buscar.TiendasCantidad(conexion);
 
-                                if (pendientes.Count > 0)
+                                int cantidadStreaming = BaseDatos.Pendientes.Buscar.StreamingCantidad(conexion);
+
+                                if (cantidadTiendas + cantidadStreaming > 0)
                                 {
-                                    Admin.ActualizarDato(conexion, "pendientes", pendientes.Count.ToString());
+                                    Admin.ActualizarDato(conexion, "pendientes", (cantidadTiendas + cantidadStreaming).ToString());
                                 }
                                 else
                                 {

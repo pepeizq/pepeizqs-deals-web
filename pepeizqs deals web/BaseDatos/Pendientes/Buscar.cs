@@ -26,7 +26,7 @@ namespace BaseDatos.Pendientes
             return "0";
 		}
 
-        public static List<Pendiente> Todos(SqlConnection conexion = null)
+        public static int TiendasCantidad(SqlConnection conexion = null)
         {
 			if (conexion == null)
 			{
@@ -40,7 +40,7 @@ namespace BaseDatos.Pendientes
 				}
 			}
 
-			List<Pendiente> listaPendientes = new List<Pendiente>();
+			int cantidad = 0;
 
 			using (conexion)
 			{
@@ -56,16 +56,9 @@ namespace BaseDatos.Pendientes
 
                             using (lector)
                             {
-                                while (lector.Read())
+                                while (lector.Read() == true)
                                 {
-                                    Pendiente pendiente = new Pendiente
-                                    {
-                                        enlace = lector.GetString(0),
-                                        nombre = lector.GetString(1),
-                                        imagen = lector.GetString(2)
-                                    };
-
-                                    listaPendientes.Add(pendiente);
+									cantidad += 1;
                                 }
                             }
                         }
@@ -73,8 +66,48 @@ namespace BaseDatos.Pendientes
                 }
             }
 
-            return listaPendientes;
+            return cantidad;
         }
+
+		public static int StreamingCantidad(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			int cantidad = 0;
+
+			using (conexion)
+			{
+                foreach (var streaming in Streaming2.StreamingCargar.GenerarListado())
+				{
+                    string busqueda = "SELECT * FROM streaming" + streaming.Id + " WHERE (idJuego IS NULL OR idJuego = '0') AND (descartado IS NULL OR descartado = 0)";
+
+                    using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                    {
+                        SqlDataReader lector = comando.ExecuteReader();
+
+                        using (lector)
+                        {
+                            while (lector.Read() == true)
+                            {
+                                cantidad += 1;
+                            }
+                        }
+                    }
+                } 
+            }
+
+			return cantidad;
+		}
 
 		public static List<Pendiente> Tienda(string tiendaId, SqlConnection conexion)
         {
@@ -105,7 +138,50 @@ namespace BaseDatos.Pendientes
 			return listaPendientes;
 		}
 
-		public static Pendiente PrimerJuego(string tiendaId, SqlConnection conexion)
+        public static List<Pendiente> Streaming(Streaming2.StreamingTipo id, SqlConnection conexion = null)
+        {
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            List<Pendiente> listaPendientes = new List<Pendiente>();
+
+            using (conexion)
+            {
+                string busqueda = "SELECT * FROM streaming" + id + " WHERE (idJuego IS NULL OR idJuego = '0') AND (descartado IS NULL OR descartado = 0)";
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    SqlDataReader lector = comando.ExecuteReader();
+
+                    using (lector)
+                    {
+                        while (lector.Read() == true)
+                        {
+                            Pendiente pendiente = new Pendiente
+                            {
+                                enlace = lector.GetString(0),
+                                nombre = lector.GetString(1)
+                            };
+
+                            listaPendientes.Add(pendiente);
+                        }
+                    }
+                }
+            }
+
+            return listaPendientes;
+        }
+
+        public static Pendiente PrimerJuegoTienda(string tiendaId, SqlConnection conexion)
 		{
 			string busqueda = "SELECT * FROM tienda" + tiendaId + " WHERE (idJuegos='0' AND descartado='no')";
 
@@ -131,7 +207,34 @@ namespace BaseDatos.Pendientes
 
 			return null;
 		}
-	}
+
+        public static Pendiente PrimerJuegoStreaming(string streamingId, SqlConnection conexion)
+        {
+            string busqueda = "SELECT * FROM streaming" + streamingId + " WHERE idJuego IS NULL AND descartado IS NULL";
+
+            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+            {
+                SqlDataReader lector = comando.ExecuteReader();
+
+                using (lector)
+                {
+                    while (lector.Read())
+                    {
+                        Pendiente pendiente = new Pendiente
+                        {
+                            enlace = lector.GetString(0),
+                            nombre = lector.GetString(1),
+                            imagen = "vacio"
+                        };
+
+                        return pendiente;
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
 
 	public class Pendiente
 	{
@@ -145,4 +248,10 @@ namespace BaseDatos.Pendientes
 		public List<Pendiente> Pendientes;
 		public Tiendas2.Tienda Tienda;
 	}
+
+    public class PendientesStreaming
+    {
+        public List<Pendiente> Pendientes;
+        public Streaming2.Streaming Streaming;
+    }
 }
