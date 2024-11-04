@@ -29,9 +29,6 @@
 	}
 </script>
 
-<script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-<link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
-
 <style>
 	.rz-tick-text {
 		fill: var(--colorTexto);
@@ -461,7 +458,7 @@
 											</div>
 										}
 
-										<div style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+										<div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
 											@if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
 											{
 												<div>
@@ -499,42 +496,9 @@
 													}
 												</div>
 											}
-										</div>
-
-										<div style="display: flex; flex-direction: column; gap: 20px; flex: 1 0 auto;">
-											@if (HistoricoComprobar(drm.Id) == true)
-											{
-												<button @onclick="(e => HistoricoEnseñar(e, drm.Id))" class="boton-pequeño" style="width: auto; min-width: fit-content; text-align: center; font-size: 14px; padding: 12px 15px;">
-													@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
-												</button>
-											}
 
 											@{
 												bool añadirDiv = false;
-
-												if (drm.Id == JuegoDRM.Steam)
-												{
-													if (juego.IdSteam > 0)
-													{
-														añadirDiv = true;
-													}
-												}
-
-												if (drm.Id == JuegoDRM.GOG)
-												{
-													if (string.IsNullOrEmpty(juego.SlugGOG) == false)
-													{
-														añadirDiv = true;
-													}
-												}
-
-												if (drm.Id == JuegoDRM.Epic)
-												{
-													if (string.IsNullOrEmpty(juego.SlugEpic) == false)
-													{
-														añadirDiv = true;
-													}
-												}
 
 												if (drm.Id == JuegoDRM.Steam && juego.Deck != JuegoDeck.Desconocido)
 												{
@@ -554,37 +518,7 @@
 
 												if (añadirDiv == true)
 												{
-													<div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
-														@if (drm.Id == JuegoDRM.Steam)
-														{
-															if (juego.IdSteam > 0)
-															{
-																<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank" style="text-align: center; padding: 5px 10px; height: 34px;" title="@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Steam")">
-																	<img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Steam)" style="max-width: 20px; max-height: 20px;"/>
-																</a>
-															}
-														}
-
-														@if (drm.Id == JuegoDRM.GOG)
-														{
-															if (string.IsNullOrEmpty(juego.SlugGOG) == false)
-															{
-																<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank" style="text-align: center; padding: 5px 10px; height: 34px;" title="@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "GOG")">
-																	<img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.GOG)" style="max-width: 20px; max-height: 20px;"/>
-																</a>
-															}
-														}
-
-														@if (drm.Id == JuegoDRM.Epic)
-														{
-															if (string.IsNullOrEmpty(juego.SlugEpic) == false)
-															{
-																<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, "epicgamesstore")" target="_blank" style="text-align: center; padding: 5px 10px; height: 34px;" title="@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Epic Games")">
-																	<img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Epic)" style="max-width: 20px; max-height: 20px;" />
-																</a>
-															}
-														}
-
+													<div style="display: flex; align-items: center; flex-direction: row; gap: 20px;">
 														@if (drm.Id == JuegoDRM.Steam && juego.Deck != JuegoDeck.Desconocido)
 														{
 															<button @onclick="(e => DeckEnseñar(e))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px;">
@@ -626,6 +560,45 @@
 															}
 														}
 													</div>
+												}
+											}
+										</div>
+
+										<div style="display: flex; flex-direction: column; gap: 15px;">
+											@if (HistoricoComprobar(drm.Id) == true)
+											{
+												<button @onclick="(e => HistoricoEnseñar(e, drm.Id))" class="boton-pequeño" style="width: auto; min-width: 200px; text-align: center; font-size: 14px; padding: 10px 12px;">
+													@Herramientas.Idiomas.CogerCadena(idioma, "String64", "Game")
+												</button>
+											}
+
+											@if (drm.Id == JuegoDRM.Steam)
+											{
+												if (juego.IdSteam > 0)
+												{
+													<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+														@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Steam")
+													</a>
+												}
+											}
+
+											@if (drm.Id == JuegoDRM.GOG)
+											{
+												if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+												{
+													<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+														@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "GOG")
+													</a>
+												}
+											}
+
+											@if (drm.Id == JuegoDRM.Epic)
+											{
+												if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+												{
+													<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, "epicgamesstore")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+														@string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Epic Games")
+													</a>
 												}
 											}
 										</div>

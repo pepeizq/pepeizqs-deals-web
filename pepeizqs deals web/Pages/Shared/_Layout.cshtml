@@ -146,6 +146,12 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
+    @{
+        string version2 = "_content/Radzen.Blazor/css/material-base.css?v=" + (typeof(Radzen.Colors).Assembly.GetName().Version).ToString();
+    }
+
+    <link rel="stylesheet" href="@version2">
+
     <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
 
     <base href="/" />
@@ -338,6 +344,8 @@
             document.getElementById(id).style.display = 'none';
         }
     </script>
+
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
 
     <div id="components-reconnect-modal" style="display: none"/>
 
