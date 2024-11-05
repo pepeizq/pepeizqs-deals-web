@@ -114,11 +114,15 @@ namespace APIs.XboxGamePass
 																		BaseDatos.Juegos.Actualizar.Suscripciones(juegobd, conexion);
 
 																		JuegoSuscripcion suscripcion2 = BaseDatos.Suscripciones.Buscar.UnJuego(enlace);
-																		DateTime nuevaFecha = suscripcion2.FechaTermina;
-																		nuevaFecha = DateTime.Now;
-																		nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
-																		suscripcion2.FechaTermina = nuevaFecha;
-																		BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion2, conexion);
+
+																		if (suscripcion2 != null)
+																		{
+                                                                            DateTime nuevaFecha = suscripcion2.FechaTermina;
+                                                                            nuevaFecha = DateTime.Now;
+                                                                            nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
+                                                                            suscripcion2.FechaTermina = nuevaFecha;
+                                                                            BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion2, conexion);
+                                                                        }
 																	}
 																}
 															}

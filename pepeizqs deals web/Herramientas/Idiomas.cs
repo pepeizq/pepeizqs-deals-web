@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Herramientas
 {
@@ -21,9 +20,17 @@ namespace Herramientas
 			}
 			else
 			{
-				if (idiomaUsuario == "es")
+				if (idiomaUsuario == "en" || idiomaUsuario == "en-US")
+				{
+					idiomaUsuario = "en-US";
+				}
+				else if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
 				{
 					idiomaUsuario = "es-ES";
+				}
+				else
+				{
+					idiomaUsuario = "en-US";
 				}
 			}
 
@@ -45,7 +52,7 @@ namespace Herramientas
 					try
 					{
 						string json = r.ReadToEnd();
-						items = JsonConvert.DeserializeObject<List<IdiomaCadena>>(json);
+						items = JsonSerializer.Deserialize<List<IdiomaCadena>>(json);
 					}
 					catch { }
 
@@ -124,7 +131,7 @@ namespace Herramientas
 					try
 					{
 						string json = r.ReadToEnd();
-						items = JsonConvert.DeserializeObject<List<IdiomaCadena>>(json);
+						items = JsonSerializer.Deserialize<List<IdiomaCadena>>(json);
 					}
 					catch { }
 
@@ -172,5 +179,4 @@ namespace Herramientas
 			return rss;
 		}
 	}
-	
 }

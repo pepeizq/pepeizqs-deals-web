@@ -135,6 +135,14 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" type="text/css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" type="text/css" />
 
+    @{
+        // string version1 = "_content/Radzen.Blazor/css/material.css?v=" + (typeof(Radzen.Colors).Assembly.GetName().Version)?.ToString();
+        // string version2 = "_content/Radzen.Blazor/css/material-base.css?v=" + (typeof(Radzen.Colors).Assembly.GetName().Version)?.ToString();
+    }
+
+    @* <link rel="stylesheet" href="@version1"> *@
+    @* <link rel="stylesheet" href="@version2"> *@
+
     <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-icon-180x180.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-icon-192x192.png" />
@@ -145,12 +153,6 @@
     <meta name="msapplication-TileColor" content="#002033" />
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
-
-    @{
-        string version2 = "_content/Radzen.Blazor/css/material-base.css?v=" + (typeof(Radzen.Colors).Assembly.GetName().Version).ToString();
-    }
-
-    <link rel="stylesheet" href="@version2">
 
     <component type="typeof(Radzen.Blazor.RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
 

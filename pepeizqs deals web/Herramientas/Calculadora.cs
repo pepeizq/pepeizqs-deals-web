@@ -74,12 +74,17 @@ namespace Herramientas
 			return cantidadFinal;
 		}
 
-		public static string DiferenciaTiempo(this DateTime fecha, string idioma, int modo = 0)
+		public static string DiferenciaTiempo(this DateTime fecha, string? idioma = null, int modo = 0)
 		{
             //modos
             //0 -> hace X tiempo
             //1 -> termina en X tiempo
             //2 -> terminan en X tiempo
+
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en-US";
+			}
 
             string mensaje = string.Empty;
 			TimeSpan diferenciaTiempo = new TimeSpan();

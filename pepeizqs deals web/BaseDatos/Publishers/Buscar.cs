@@ -138,7 +138,7 @@ namespace BaseDatos.Publishers
 
 			if (string.IsNullOrEmpty(cadena) == false)
 			{
-				cadena = cadena.Replace("'", null);
+				cadena = cadena.Replace("'", "''");
 
 				using (conexion)
 				{
@@ -200,7 +200,7 @@ namespace BaseDatos.Publishers
 
 			if (string.IsNullOrEmpty(cadena) == false)
 			{
-                cadena = cadena.Replace("'", null);
+                cadena = cadena.Replace("'", "''");
 
                 using (conexion)
 				{

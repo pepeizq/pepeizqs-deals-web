@@ -8,7 +8,7 @@
     <div>
         @foreach (Tienda tienda in TiendasCargar.GenerarListado())
         {
-            @if (tienda.AdminEnseñar == true)
+            if (tienda.AdminEnseñar == true)
             {
                 <div style="margin-top: 15px; margin-bottom: 15px;">
                     @if (tienda.AdminInteractuar == true)
@@ -36,6 +36,13 @@
                 </div>
             }
         }
+
+        
+
+        @foreach (var streaming in Streaming2.StreamingCargar.GenerarListado())
+        {
+            
+        }
     </div>
 
 </div>
@@ -55,7 +62,7 @@
     {
         tiendaElegida = id;
 
-        if (id != null)
+        if (string.IsNullOrEmpty(id) == false)
         {
             await TiendasCargar.AdminTiendas(id, decompilador);
         }
