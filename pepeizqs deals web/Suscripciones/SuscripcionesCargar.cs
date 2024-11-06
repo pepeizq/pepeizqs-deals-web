@@ -10,7 +10,7 @@ namespace Suscripciones2
 		TwitchPrime,
 		EAPlay,
 		EAPlayPro,
-		XboxGamePass,
+		PCGamePass,
 		UbisoftPlusClassics,
 		UbisoftPlusPremium
 	}

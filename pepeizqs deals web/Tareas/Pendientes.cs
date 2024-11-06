@@ -51,11 +51,13 @@ namespace Tareas
 
                                 int cantidadTiendas = BaseDatos.Pendientes.Buscar.TiendasCantidad(conexion);
 
+                                int cantidadSuscripcion = BaseDatos.Pendientes.Buscar.SuscripcionCantidad(conexion);
+
                                 int cantidadStreaming = BaseDatos.Pendientes.Buscar.StreamingCantidad(conexion);
 
-                                if (cantidadTiendas + cantidadStreaming > 0)
+                                if (cantidadTiendas + cantidadSuscripcion + cantidadStreaming > 0)
                                 {
-                                    Admin.ActualizarDato(conexion, "pendientes", (cantidadTiendas + cantidadStreaming).ToString());
+                                    Admin.ActualizarDato(conexion, "pendientes", (cantidadTiendas + cantidadSuscripcion + cantidadStreaming).ToString());
                                 }
                                 else
                                 {

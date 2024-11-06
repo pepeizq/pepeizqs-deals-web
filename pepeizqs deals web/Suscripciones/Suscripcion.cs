@@ -16,9 +16,10 @@ namespace Suscripciones2
 		public string ImagenNoticia;
 		public bool AdminInteractuar;
 		public bool UsuarioInteractuar; //true si son enlaces especificos
-		public bool ParaSiempre; //true si pagas juegos son para siempre
+		public bool ParaSiempre; //true si pagas los juegos son para siempre
 		public SuscripcionTipo? IncluyeSuscripcion;
 		public double Precio;
+		public bool AdminPendientes;
     }
 
     public class SuscripcionComponente

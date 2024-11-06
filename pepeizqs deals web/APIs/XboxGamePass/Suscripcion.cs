@@ -15,7 +15,7 @@ namespace APIs.XboxGamePass
         {
             Suscripciones2.Suscripcion xbox = new Suscripciones2.Suscripcion
             {
-                Id = Suscripciones2.SuscripcionTipo.XboxGamePass,
+                Id = Suscripciones2.SuscripcionTipo.PCGamePass,
                 Nombre = "PC Game Pass",
                 ImagenLogo = "/imagenes/suscripciones/pcgamepass.webp",
                 ImagenIcono = "/imagenes/suscripciones/pcgamepass_icono.webp",
@@ -24,7 +24,8 @@ namespace APIs.XboxGamePass
                 AdminInteractuar = true,
                 UsuarioInteractuar = true,
                 ParaSiempre = false,
-                Precio = 11.99
+                Precio = 11.99,
+				AdminPendientes = true
             };
 
             return xbox;
@@ -97,7 +98,7 @@ namespace APIs.XboxGamePass
 
 																	foreach (var suscripcion in juegobd.Suscripciones)
 																	{
-																		if (suscripcion.Tipo == Suscripciones2.SuscripcionTipo.XboxGamePass)
+																		if (suscripcion.Tipo == Suscripciones2.SuscripcionTipo.PCGamePass)
 																		{
 																			añadirSuscripcion = false;
 																			actualizar = true;
@@ -142,7 +143,7 @@ namespace APIs.XboxGamePass
 																	ImagenNoticia = juegobd.Imagenes.Header_460x215,
 																	JuegoId = juegobd.Id,
 																	Enlace = enlace,
-																	Tipo = Suscripciones2.SuscripcionTipo.XboxGamePass
+																	Tipo = Suscripciones2.SuscripcionTipo.PCGamePass
 																};
 
 																if (juegobd.Suscripciones == null)
@@ -166,7 +167,7 @@ namespace APIs.XboxGamePass
 
 						if (encontrado == false)
                         {
-							BaseDatos.Errores.Insertar.Mensaje("PCGamePass - Suscripción no encontrada", enlace);
+							BaseDatos.Suscripciones.Insertar.Temporal(conexion, Generar().Id.ToString(), enlace);
 						}
 					}
                 }

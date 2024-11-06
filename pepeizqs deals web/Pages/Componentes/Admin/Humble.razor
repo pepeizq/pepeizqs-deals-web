@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Data.SqlClient
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px">
+	<textarea id="humble-texto" @onchange="(e => TextoCambiaNombre(e))" class="entrada-texto" rows="20">@textoNombre</textarea>
+</div>
+
+@code {
+
+	#nullable disable
+
+	private string textoNombre = string.Empty;
+
+	private void TextoCambiaNombre(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				APIs.Humble.Tienda.RecopilarOfertas(nuevoTexto);
+			}
+		}
+	}
+}

@@ -69,6 +69,49 @@ namespace BaseDatos.Pendientes
             return cantidad;
         }
 
+		public static int SuscripcionCantidad(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			int cantidad = 0;
+
+			using (conexion)
+			{
+				foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+				{
+					if (suscripcion.AdminPendientes == true)
+					{
+						string busqueda = "SELECT * FROM temporal" + suscripcion.Id.ToString();
+
+						using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+						{
+							SqlDataReader lector = comando.ExecuteReader();
+
+							using (lector)
+							{
+								while (lector.Read() == true)
+								{
+									cantidad += 1;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return cantidad;
+		}
+
 		public static int StreamingCantidad(SqlConnection conexion = null)
 		{
 			if (conexion == null)
@@ -125,9 +168,9 @@ namespace BaseDatos.Pendientes
 					{
 						Pendiente pendiente = new Pendiente
 						{
-							enlace = lector.GetString(0),
-							nombre = lector.GetString(1),
-							imagen = lector.GetString(2)
+							Enlace = lector.GetString(0),
+							Nombre = lector.GetString(1),
+							Imagen = lector.GetString(2)
 						};
 
 						listaPendientes.Add(pendiente);
@@ -137,6 +180,50 @@ namespace BaseDatos.Pendientes
 
 			return listaPendientes;
 		}
+
+        public static List<Pendiente> Suscripcion(Suscripciones2.SuscripcionTipo id, SqlConnection conexion = null)
+        {
+            if (conexion == null)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+            }
+
+            List<Pendiente> listaPendientes = new List<Pendiente>();
+
+            using (conexion)
+            {
+                string busqueda = "SELECT * FROM temporal" + id;
+
+                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+                {
+                    SqlDataReader lector = comando.ExecuteReader();
+
+                    using (lector)
+                    {
+                        while (lector.Read() == true)
+                        {
+                            Pendiente pendiente = new Pendiente
+                            {
+                                Enlace = lector.GetString(0),
+                                Nombre = lector.GetString(1),
+                                Imagen = lector.GetString(2)
+                            };
+
+                            listaPendientes.Add(pendiente);
+                        }
+                    }
+                }
+            }
+
+            return listaPendientes;
+        }
 
         public static List<Pendiente> Streaming(Streaming2.StreamingTipo id, SqlConnection conexion = null)
         {
@@ -168,8 +255,8 @@ namespace BaseDatos.Pendientes
                         {
                             Pendiente pendiente = new Pendiente
                             {
-                                enlace = lector.GetString(0),
-                                nombre = lector.GetString(1)
+                                Enlace = lector.GetString(0),
+                                Nombre = lector.GetString(1)
                             };
 
                             listaPendientes.Add(pendiente);
@@ -195,9 +282,9 @@ namespace BaseDatos.Pendientes
 					{
 						Pendiente pendiente = new Pendiente
 						{
-							enlace = lector.GetString(0),
-							nombre = lector.GetString(1),
-							imagen = lector.GetString(2)
+							Enlace = lector.GetString(0),
+							Nombre = lector.GetString(1),
+							Imagen = lector.GetString(2)
 						};
 
 						return pendiente;
@@ -207,6 +294,33 @@ namespace BaseDatos.Pendientes
 
 			return null;
 		}
+
+        public static Pendiente PrimerJuegoSuscripcion(string suscripcionId, SqlConnection conexion)
+        {
+            string busqueda = "SELECT * FROM temporal" + suscripcionId ;
+
+            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+            {
+                SqlDataReader lector = comando.ExecuteReader();
+
+                using (lector)
+                {
+                    while (lector.Read())
+                    {
+                        Pendiente pendiente = new Pendiente
+                        {
+                            Enlace = lector.GetString(0),
+                            Nombre = lector.GetString(1),
+                            Imagen = lector.GetString(2)
+                        };
+
+                        return pendiente;
+                    }
+                }
+            }
+
+            return null;
+        }
 
         public static Pendiente PrimerJuegoStreaming(string streamingId, SqlConnection conexion)
         {
@@ -222,9 +336,9 @@ namespace BaseDatos.Pendientes
                     {
                         Pendiente pendiente = new Pendiente
                         {
-                            enlace = lector.GetString(0),
-                            nombre = lector.GetString(1),
-                            imagen = "vacio"
+                            Enlace = lector.GetString(0),
+                            Nombre = lector.GetString(1),
+                            Imagen = "vacio"
                         };
 
                         return pendiente;
@@ -238,9 +352,9 @@ namespace BaseDatos.Pendientes
 
 	public class Pendiente
 	{
-		public string enlace;
-		public string nombre;
-		public string imagen;
+		public string Enlace;
+		public string Nombre;
+		public string Imagen;
 	}
 
 	public class PendientesTienda
@@ -249,7 +363,13 @@ namespace BaseDatos.Pendientes
 		public Tiendas2.Tienda Tienda;
 	}
 
-    public class PendientesStreaming
+	public class PendientesSuscripcion
+	{
+		public List<Pendiente> Pendientes;
+		public Suscripciones2.Suscripcion Suscripcion;
+	}
+
+	public class PendientesStreaming
     {
         public List<Pendiente> Pendientes;
         public Streaming2.Streaming Streaming;

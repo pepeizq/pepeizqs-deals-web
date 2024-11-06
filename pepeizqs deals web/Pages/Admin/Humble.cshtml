@@ -32,15 +32,5 @@
 
 @if (adminLogeado == true)
 {
-    <div class="perfil perfil-espacio-bottom">
-        <form method="post">
-            <input id="humble-texto" asp-for="Input.Texto" class="entrada-texto" />
-
-            <button id="humble-cargar" type="submit" class="boton" style="margin-top: 30px;">Cargar</button>
-        </form>
-    </div>
-
-    <div class="perfil">
-        @ViewData["Mensaje"]
-    </div>
+    @(await Html.RenderComponentAsync<pepeizqs_deals_web.Pages.Componentes.Admin.Humble>(RenderMode.Server))
 }
