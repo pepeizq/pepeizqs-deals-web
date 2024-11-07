@@ -912,7 +912,7 @@
 							Suscripcion suscripcionUsar = SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo);
 							string enlace = suscripcion2.Enlace;
 
-							if (suscripcionUsar.UsuarioInteractuar == false)
+							if (suscripcionUsar.UsuarioEnlacesEspecificos == false)
 							{
 								enlace = suscripcionUsar.Enlace;
 							}

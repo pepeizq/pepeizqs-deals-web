@@ -56,7 +56,7 @@
 
                 <button class="boton-pestañas" @onclick="(e => MostrarEnlaces(e))" style="@estiloEnlaces;">Enlaces</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarAvisos(e))" style="@estiloAvisos;">Avisos</button>
-                <button class="boton-pestañas" @onclick="(e => MostrarTiendas(e))" style="@estiloTiendas;">Tiendas</button>
+                <button class="boton-pestañas" @onclick="(e => MostrarTareas(e))" style="@estiloTareas;">Tareas</button>
                 <button class="boton-pestañas" @onclick="(e => MostrarDivisas(e))" style="@estiloDivisas;">Divisas</button>          
             </div>
 
@@ -88,9 +88,9 @@
                 <Avisos/>
             }
 
-            @if (mostrarTiendas == true)
+            @if (mostrarTareas == true)
             {
-               <Tiendas/>
+                <Tareas/>
             }
 
             @if (mostrarDivisas == true)
@@ -169,7 +169,7 @@
         mostrarEnlaces = false;
         mostrarAvisos = false;
         mostrarErrores = false;
-        mostrarTiendas = false;
+        mostrarTareas = false;
         mostrarDivisas = false;
         mostrarDLCs = false;
         mostrarPendientes = false;
@@ -183,7 +183,7 @@
         estiloEnlaces = null;
         estiloAvisos = null;
         estiloErrores = null;
-        estiloTiendas = null;
+        estiloTareas = null;
         estiloDivisas = null;
         estiloDLCs = null;
         estiloPendientes = null;
@@ -266,16 +266,16 @@
 
     #endregion
 
-    #region Tiendas
+    #region Tareas
 
-    private bool mostrarTiendas = false;
-    private string estiloTiendas = null;
+    private bool mostrarTareas = false;
+    private string estiloTareas = null;
 
-    private void MostrarTiendas(MouseEventArgs e)
+    private void MostrarTareas(MouseEventArgs e)
     {
         CerrarPestañas();
-        mostrarTiendas = true;
-        estiloTiendas = fondo;
+        mostrarTareas = true;
+        estiloTareas = fondo;
     }
 
     #endregion

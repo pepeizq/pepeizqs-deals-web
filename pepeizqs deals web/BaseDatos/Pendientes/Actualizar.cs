@@ -6,44 +6,121 @@ namespace BaseDatos.Pendientes
 	{
 		public static void Tienda(string idTienda, string enlace, string idJuegos, SqlConnection conexion)
 		{
-			string sqlActualizar = "UPDATE tienda" + idTienda + " " +
-					"SET idJuegos=@idJuegos WHERE enlace=@enlace";
+            if (string.IsNullOrEmpty(idJuegos) == false)
+            {
+                if (idJuegos != "0")
+                {
+                    string sqlActualizar = "UPDATE tienda" + idTienda + " " +
+                    "SET idJuegos=@idJuegos WHERE enlace=@enlace";
 
-			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
-			{
-				comando.Parameters.AddWithValue("@idJuegos", idJuegos);
-				comando.Parameters.AddWithValue("@enlace", enlace);
+                    using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@idJuegos", idJuegos);
+                        comando.Parameters.AddWithValue("@enlace", enlace);
 
-				try
-				{
-					comando.ExecuteNonQuery();
-				}
-				catch
-				{
+                        try
+                        {
+                            comando.ExecuteNonQuery();
+                        }
+                        catch
+                        {
 
-				}
-			}
+                        }
+                    }
+                }
+            }
 		}
+
+        public static void Suscripcion(string tablaInsertar, string tablaBorrar, string enlace, string nombreJuego, string imagen, List<string> idJuegos, SqlConnection conexion)
+        {
+            foreach (var idJuego in idJuegos)
+            {
+                string descartado = "no";
+                global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(idJuego);
+
+                if (idJuego != "0")
+                {
+                    if (juego != null)
+                    {
+                        if (nombreJuego == "vacio")
+                        {
+                            nombreJuego = juego.Nombre;
+                        }
+
+                        if (imagen == "vacio")
+                        {
+                            imagen = juego.Imagenes.Header_460x215;
+                        }
+                    }
+                }
+                else
+                {
+                    descartado = "si";
+                }
+
+                string sqlInsertar = "INSERT INTO " + tablaInsertar +
+                        "(enlace, nombre, imagen, idJuegos, descartado) VALUES" +
+                        "(@enlace, @nombre, @imagen, @idJuegos, @descartado)";
+
+                using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+                {
+                    comando.Parameters.AddWithValue("@enlace", enlace);
+                    comando.Parameters.AddWithValue("@nombre", nombreJuego);
+                    comando.Parameters.AddWithValue("@imagen", imagen);
+                    comando.Parameters.AddWithValue("@idJuegos", idJuego);
+                    comando.Parameters.AddWithValue("@descartado", descartado);
+
+                    comando.ExecuteNonQuery();
+                    try
+                    {
+
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                string sqlBorrar = "DELETE FROM " + tablaBorrar + " WHERE enlace=@enlace";
+
+                using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+                {
+                    comando.Parameters.AddWithValue("@enlace", enlace);
+
+                    try
+                    {
+                        comando.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
 
         public static void Streaming(string idStreaming, string nombreCodigo, int idJuego, SqlConnection conexion)
         {
-            string sqlActualizar = "UPDATE streaming" + idStreaming + " " +
-                    "SET idJuego=@idJuego WHERE nombreCodigo=@nombreCodigo";
-
-            using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+            if (idJuego > 0)
             {
-                comando.Parameters.AddWithValue("@idJuego", idJuego);
-                comando.Parameters.AddWithValue("@nombreCodigo", nombreCodigo);
+                string sqlActualizar = "UPDATE streaming" + idStreaming + " " +
+                   "SET idJuego=@idJuego WHERE nombreCodigo=@nombreCodigo";
 
-                try
+                using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
                 {
-                    comando.ExecuteNonQuery();
-                }
-                catch
-                {
+                    comando.Parameters.AddWithValue("@idJuego", idJuego);
+                    comando.Parameters.AddWithValue("@nombreCodigo", nombreCodigo);
 
+                    try
+                    {
+                        comando.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+
+                    }
                 }
-            }
+            }         
         }
 
         public static void DescartarTienda(string idTienda, string enlace, SqlConnection conexion)

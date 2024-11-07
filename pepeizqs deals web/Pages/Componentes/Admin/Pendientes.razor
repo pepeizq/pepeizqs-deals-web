@@ -100,18 +100,15 @@
                         <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
                     </div>
 
-                    <div style="display: flex; align-items: center; margin-top: 20px;">
-                        <div>
+                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+                        @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false)
+                        {
                             <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
-                        </div>
+                        }
 
-                        <div>
-                            <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Buscar</button>
-                        </div>
+                        <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Buscar</button>
 
-                        <div>
-                            <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="margin-left: 20px; width: 130px; text-align: center;">Actualizar</button>
-                        </div>
+                        <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Actualizar</button>
                     </div>
                 </div>
             </div>
@@ -596,7 +593,22 @@
 
                 ClickearTiendaPendientes(idTiendaPendiente);
             }
-           
+
+            if (string.IsNullOrEmpty(idSuscripcionPendiente) == false)
+            {
+                BaseDatos.Pendientes.Actualizar.Suscripcion(Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(idSuscripcionPendiente).TablaPendientes, "temporal" + idSuscripcionPendiente, enlace, nombrePendiente, imagenPendiente, Herramientas.Listados.Generar(idsPendiente), conexion);
+
+                foreach (var pendiente in pendientesSuscripcion)
+                {
+                    if (pendiente.Suscripcion.Id.ToString() == idSuscripcionPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Suscripcion(pendiente.Suscripcion.Id, conexion);
+                    }
+                }
+
+                ClickearSuscripcionPendientes(idSuscripcionPendiente);
+            }
+
             if (string.IsNullOrEmpty(idStreamingPendiente) == false)
             {
                 BaseDatos.Pendientes.Actualizar.Streaming(idStreamingPendiente, enlace, int.Parse(idsPendiente), conexion);

@@ -329,7 +329,7 @@ else
             }
         </div>
 
-        @if (suscripcionSeleccionadaTipo.UsuarioInteractuar == false)
+        @if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
         {
             <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
                 @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Subscriptions")
@@ -347,7 +347,7 @@ else
                     @{
                         string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo);
 
-                        if (suscripcionSeleccionadaTipo.UsuarioInteractuar == false)
+                        if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
                         {
                             enlace = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id);
                         }

@@ -15,11 +15,12 @@ namespace Suscripciones2
 		public JuegoDRM DRMDefecto;
 		public string ImagenNoticia;
 		public bool AdminInteractuar;
-		public bool UsuarioInteractuar; //true si son enlaces especificos
+		public bool UsuarioEnlacesEspecificos;
 		public bool ParaSiempre; //true si pagas los juegos son para siempre
 		public SuscripcionTipo? IncluyeSuscripcion;
 		public double Precio;
 		public bool AdminPendientes;
+		public string TablaPendientes;
     }
 
     public class SuscripcionComponente

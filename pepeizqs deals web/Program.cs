@@ -24,6 +24,7 @@ using System.Threading.RateLimiting;
 using System.Security.Claims;
 using System.Globalization;
 using NuGet.Protocol.Core.Types;
+using Microsoft.AspNetCore.Http.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -376,7 +377,7 @@ app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	//opciones.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets || Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
+	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
 
 #region Seo
@@ -390,13 +391,6 @@ app.UseHeadElementServerPrerendering();
 app.MapControllers();
 
 #endregion
-
-//var webSocketOptions = new WebSocketOptions
-//{
-//	KeepAliveInterval = TimeSpan.FromMinutes(2)
-//};
-
-//app.UseWebSockets(webSocketOptions);
 
 app.UseRateLimiter();
 

@@ -20,7 +20,7 @@ namespace APIs.EA
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
 				AdminInteractuar = true,
-				UsuarioInteractuar = false,
+				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = false,
 				Precio = 5.99
 			};
@@ -39,7 +39,7 @@ namespace APIs.EA
 				Enlace = "https://www.ea.com/ea-play",
 				DRMDefecto = JuegoDRM.EA,
 				AdminInteractuar = true,
-				UsuarioInteractuar = false,
+				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = false,
 				IncluyeSuscripcion = Suscripciones2.SuscripcionTipo.EAPlay,
                 Precio = 16.99

@@ -15,7 +15,7 @@ namespace APIs.PrimeGaming
 				Enlace = "https://gaming.amazon.com/",
 				DRMDefecto = JuegoDRM.Amazon,
 				AdminInteractuar = true,
-				UsuarioInteractuar = true,
+				UsuarioEnlacesEspecificos = true,
 				ParaSiempre = true,
                 Precio = 4.99
             };
@@ -40,7 +40,7 @@ namespace APIs.PrimeGaming
 				Enlace = "https://gaming.amazon.com/",
 				DRMDefecto = JuegoDRM.Amazon,
 				AdminInteractuar = false,
-                UsuarioInteractuar = false,
+                UsuarioEnlacesEspecificos = false,
                 ParaSiempre = true
             };
 

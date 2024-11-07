@@ -15,7 +15,7 @@ namespace APIs.Humble
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam,
 				AdminInteractuar = true,
-				UsuarioInteractuar = false,
+				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = true,
 				Precio = 9.99
 			};
@@ -68,7 +68,7 @@ namespace APIs.Humble
 				Enlace = "https://www.humblebundle.com/membership/home",
 				DRMDefecto = JuegoDRM.Steam,
 				AdminInteractuar = false,
-                UsuarioInteractuar = false,
+                UsuarioEnlacesEspecificos = false,
 				ParaSiempre = true
             };
 

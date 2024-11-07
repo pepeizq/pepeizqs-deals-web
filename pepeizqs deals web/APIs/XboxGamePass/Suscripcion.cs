@@ -13,7 +13,7 @@ namespace APIs.XboxGamePass
     {
         public static Suscripciones2.Suscripcion Generar()
         {
-            Suscripciones2.Suscripcion xbox = new Suscripciones2.Suscripcion
+            Suscripciones2.Suscripcion gamepass = new Suscripciones2.Suscripcion
             {
                 Id = Suscripciones2.SuscripcionTipo.PCGamePass,
                 Nombre = "PC Game Pass",
@@ -22,18 +22,19 @@ namespace APIs.XboxGamePass
                 Enlace = "https://www.xbox.com/xbox-game-pass/pc-game-pass",
                 DRMDefecto = JuegoDRM.Microsoft,
                 AdminInteractuar = true,
-                UsuarioInteractuar = true,
+                UsuarioEnlacesEspecificos = true,
                 ParaSiempre = false,
                 Precio = 11.99,
-				AdminPendientes = true
+				AdminPendientes = true,
+				TablaPendientes = "tiendamicrosoftstore"
             };
 
-            return xbox;
+            return gamepass;
         }
 
         public static async Task Buscar(SqlConnection conexion)
         {
-            BaseDatos.Tiendas.Admin.Actualizar("pcgamepass", DateTime.Now, "0 suscripciones detectadas", conexion);
+            BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString(), DateTime.Now, "0 suscripciones detectadas", conexion);
 
             int cantidad = 0;
 
@@ -66,7 +67,7 @@ namespace APIs.XboxGamePass
                                 if (lector.Read() == true)
                                 {
 									cantidad += 1;
-									BaseDatos.Tiendas.Admin.Actualizar("pcgamepass", DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+									BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
 
                                     if (lector.IsDBNull(0) == false)
                                     {
