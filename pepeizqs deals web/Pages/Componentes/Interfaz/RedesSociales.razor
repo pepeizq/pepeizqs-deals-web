@@ -49,8 +49,7 @@
         reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
         twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
         steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
-        rss = Herramientas.Idiomas.CogerRSS(idioma);
+        rss = "/rss";
         bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
     }
-
 }

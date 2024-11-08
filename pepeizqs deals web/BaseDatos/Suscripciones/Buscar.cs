@@ -160,8 +160,8 @@ namespace BaseDatos.Suscripciones
 
 			if (suscripciones.Count > 0) 
 			{
-				suscripciones = suscripciones.OrderBy(x => x.Nombre).ToList();
-			}
+				suscripciones = suscripciones.OrderBy(x => x.FechaEmpieza).Reverse().ToList().Take(20).ToList();
+            }
 
 			return suscripciones;
 		}

@@ -249,7 +249,7 @@
 				fondoColor = "background-color: var(--fondoBotonPequeño);";
 			}
 
-			<button @onclick="@(e => AbrirEnlace(e, enlace))" class="boton-expandir" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%; color: var(--colorTexto); text-align: left; @fondoColor">
+			<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
 				<div class="perfil-flexible-centrado">
 					<div style="max-width: 230px;">
 						<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
@@ -275,7 +275,7 @@
 						</div>
 					</div>
 				</div>
-			</button>
+			</a>
 		}
 
 		@if (tipo == Tipo.MinimosHistoricos)

@@ -1,0 +1,14 @@
+﻿@page
+@model pepeizqs_deals_web.Pages.apiModel
+
+@{
+#nullable disable
+
+	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "RSS");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@(await Html.RenderComponentAsync<Componentes.Secciones.RSS>(RenderMode.ServerPrerendered, new
+{
+	idioma = Model.idioma
+}))

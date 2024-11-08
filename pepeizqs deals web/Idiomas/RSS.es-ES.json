@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "RSS"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Noticias"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Podéis seguir las ultimas noticias a través de estos feeds en varios idiomas:"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Inglés"
+  },
+  {
+    "Id": "String4",
+    "Valor": "Español"
+  },
+  {
+    "Id": "String5",
+    "Valor": "Últimas Ofertas"
+  },
+  {
+    "Id": "String6",
+    "Valor": "También podéis seguir las últimas ofertas y configurar el feed según tu gusto. Digamos que por ejemplo solo quieres saber los últimos precios mínimos históricos de juegos para Steam con al menos 1000 análisis, a través de este feed puedes consultar los juegos:"
+  },
+  {
+    "Id": "String7",
+    "Valor": "Si quieres añadir al anterior feed los juegos para GOG basta con usar este feed:"
+  },
+  {
+    "Id": "String8",
+    "Valor": "El feed se puede configurar editando el campo después de /rss/ escribiendo las plataformas donde quieras los juegos, como Steam, GOG, Epic, EA Play o cualquier otra plataforma que salga en el futuro, procurar que cada plataforma este separada por una coma y sin espacios como en el ejemplo anterior. El segundo campo en formato numérico representa la cantidad de análisis que tiene la oferta en la web, podéis cambiarlo entre 200 y 10000."
+  },
+  {
+    "Id": "String9",
+    "Valor": "También quiero señalar que hay varias restricciones, todo feed de ofertas que configuréis no puede retroceder más de 2 días en el pasado y ademas hay un limite de 50 ofertas en el feed. He tenido que poner estas restricciones para no apuñalar el servidor."
+  }
+]

@@ -25,6 +25,7 @@ using System.Security.Claims;
 using System.Globalization;
 using NuGet.Protocol.Core.Types;
 using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -296,6 +297,8 @@ builder.Services.AddRadzenComponents();
 
 #endregion
 
+#region Antibots
+
 builder.Services.AddRateLimiter(opciones =>
 {
 	opciones.OnRejected = (contexto, _) =>
@@ -337,6 +340,8 @@ builder.Services.AddRateLimiter(opciones =>
 	);
 });
 
+#endregion
+
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
@@ -346,16 +351,6 @@ app.UseDeveloperExceptionPage();
 
     app.UseHsts();
 //}
-
-//app.Use(async (context, next) =>
-//{
-//	await next();
-//	if (context.Response.StatusCode == 404)
-//	{
-//		context.Request.Path = "/";
-//		await next();
-//	}
-//});
 
 #region Compresion (Primero)
 
@@ -370,8 +365,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
-
-//app.MapHealthChecks("/vida");
 
 app.MapRazorPages();
 app.MapBlazorHub(opciones =>
@@ -392,6 +385,10 @@ app.MapControllers();
 
 #endregion
 
+#region Antibots
+
 app.UseRateLimiter();
+
+#endregion
 
 app.Run();

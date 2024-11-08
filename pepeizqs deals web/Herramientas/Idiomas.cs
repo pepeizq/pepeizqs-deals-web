@@ -163,20 +163,5 @@ namespace Herramientas
 				return textoIngles;
 			}
 		}
-
-		public static string CogerRSS(string idiomaUsuario)
-		{
-			string rss = "/rss-en.xml";
-
-			if (idiomaUsuario != null)
-			{
-				if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
-				{
-					rss = "/rss-es.xml";
-				}
-			}
-
-			return rss;
-		}
 	}
 }

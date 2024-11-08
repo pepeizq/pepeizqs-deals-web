@@ -56,7 +56,7 @@ namespace APIs.Ubisoft
 
         public static async Task Buscar(SqlConnection conexion)
         {
-            BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString(), DateTime.Now, "0 suscripciones detectadas", conexion);
+            BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString().ToLower(), DateTime.Now, "0 suscripciones detectadas", conexion);
 
             int cantidad = 0;
 
@@ -202,7 +202,7 @@ namespace APIs.Ubisoft
 
                             if (encontrado == false)
                             {
-                                BaseDatos.Suscripciones.Insertar.Temporal(conexion, Generar().Id.ToString(), enlace, juego.Nombre, juego.Imagen);
+                                BaseDatos.Suscripciones.Insertar.Temporal(conexion, Generar().Id.ToString().ToLower(), enlace, juego.Nombre, juego.Imagen);
                             }
                         }
                     }
@@ -212,7 +212,7 @@ namespace APIs.Ubisoft
 
 		public static async Task BuscarPremium(SqlConnection conexion)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar(GenerarPremium().Id.ToString(), DateTime.Now, "0 suscripciones detectadas", conexion);
+			BaseDatos.Tiendas.Admin.Actualizar(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, "0 suscripciones detectadas", conexion);
 
 			int cantidad = 0;
 
@@ -258,7 +258,7 @@ namespace APIs.Ubisoft
 								{
 									cantidad += 1;
 
-									BaseDatos.Tiendas.Admin.Actualizar(GenerarPremium().Id.ToString(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+									BaseDatos.Tiendas.Admin.Actualizar(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
 
 									if (lector.IsDBNull(0) == false)
 									{

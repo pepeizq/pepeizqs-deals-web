@@ -4,7 +4,6 @@ using Bundles2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Noticias;
-using System.Security.Claims;
 
 namespace Herramientas
 {
@@ -270,25 +269,5 @@ namespace Herramientas
 		{
 			return Redirect(Herramientas.EnlaceAcortador.AlargarEnlace(Id));
 		}
-
-		[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)]
-		[HttpGet("news-rss")]
-        public IActionResult CogerNoticiasRSS()
-        {
-            if (User.Identity.IsAuthenticated == true)
-            {
-                if (global::BaseDatos.Usuarios.Buscar.RolDios(User.FindFirst(ClaimTypes.NameIdentifier).Value) == true)
-                {
-					List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("10");
-
-					if (noticias.Count > 0)
-					{
-                        return Ok(noticias);
-                    }
-                }
-            }
-
-            return Redirect("~/");
-        }
     }
 }

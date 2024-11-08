@@ -194,26 +194,7 @@
 									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
 								</div>
 								<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
-									@{
-										string precioMensaje = juegoSeleccionado.PrecioMinimosHistoricos[0].Precio.ToString();
-										precioMensaje = precioMensaje.Replace(".", ",");
-
-										int int1 = precioMensaje.IndexOf(",");
-
-										if (int1 == precioMensaje.Length - 2)
-										{
-											precioMensaje = precioMensaje + "0";
-										}
-
-										if (precioMensaje.Length > int1 + 3)
-										{
-											precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
-										}
-
-										precioMensaje = precioMensaje + "€";
-
-										@precioMensaje
-									}
+									@Herramientas.Precios.Euro(juegoSeleccionado.PrecioMinimosHistoricos[0].Precio)
 								</div>
 							</div>
 						</div>
@@ -779,7 +760,7 @@ else
 				}
 			}
 
-			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(100, categoriasNumeros, drmsNumeros, conexion);
+			juegosMinimosGestor = BaseDatos.Portada.Buscar.UltimosMinimos(100, categoriasNumeros, drmsNumeros, conexion, 199);
 		}
 		catch (Exception ex)
 		{

@@ -3,12 +3,14 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
+@using Microsoft.JSInterop
 @using Microsoft.VisualBasic
 @using Suscripciones2
 @using global::Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
+@inject IJSRuntime JavaScript
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="opciones-combobox" style="width: 33%;">
@@ -192,7 +194,9 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 
         @if (string.IsNullOrEmpty(noticia.Imagen) == false)
         {
-            <img src="@noticia.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+            <div style="margin-top: 10px;">
+                <img src="@noticia.Imagen" style="max-width: 300px; max-height: 300px;" />
+            </div>
         }
     </div>
 </div>
@@ -333,10 +337,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                         Añadir
                     </button>
                 </div>
-
             </div>
-
-
         </div>
     </div>
 }

@@ -3,45 +3,63 @@
 @using Tiendas2
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-    <label>@TiendasInfo()</label>
+    <label>@TareasUso()</label>
     <hr />
-    <div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
         @foreach (Tienda tienda in TiendasCargar.GenerarListado())
         {
             if (tienda.AdminEnseñar == true)
             {
-                <div style="margin-top: 15px; margin-bottom: 15px;">
-                    @if (tienda.AdminInteractuar == true)
-                    {
-                        <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 40px;">
-                            <div style="display: flex; align-items: center;">
-                                <div style="width: 40%;">
-                                    <img src="@tienda.Imagen300x80" style="height: 40px;" />
-                                </div>
+                @if (tienda.AdminInteractuar == true)
+                {
+                    <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <img src="@tienda.ImagenIcono" style="height: 22px;" />
+                            <div>@tienda.Nombre</div>
 
-                                <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
-                            </div>
-                        </button>
-                    }
-                    else
-                    {
-                        <div style="display: flex; align-items: center; height: fit-content; padding: 20px 40px;">
-                            <div style="width: 40%;">
-                                <img src="@tienda.Imagen300x80" style="height: 40px;" />
-                            </div>
-
-                            <div class="admin-tiempohace" style="width: 60%; padding-left: 30px; text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
                         </div>
-                    }
-                </div>
+                    </button>
+                }
+                else
+                {
+                    <div style="display: flex; align-items: center; height: fit-content; padding: 20px 30px;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <img src="@tienda.ImagenIcono" style="height: 22px;" />
+                            <div>@tienda.Nombre</div>
+
+                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                        </div>
+                    </div>
+                }
             }
         }
 
-        
+        @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+        {
+            if (suscripcion.AdminPendientes == true)
+            {
+                <button @onclick="(e => ClickearSuscripcionStreaming(e, suscripcion.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <img src="@suscripcion.ImagenIcono" style="height: 22px;" />
+                        <div>@suscripcion.Nombre</div>
+
+                        <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(suscripcion.Id.ToString())</div>
+                    </div>
+                </button>
+            }
+        }
 
         @foreach (var streaming in Streaming2.StreamingCargar.GenerarListado())
         {
-            
+            <button @onclick="(e => ClickearSuscripcionStreaming(e, streaming.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <img src="@streaming.ImagenIcono" style="height: 22px;" />
+                    <div>@streaming.Nombre</div>
+
+                    <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(streaming.Id.ToString())</div>
+                </div>
+            </button>
         }
     </div>
 
@@ -56,23 +74,42 @@
 
     private SqlConnection conexion = new SqlConnection();
 
-    private string tiendaElegida = null;
-
-    private async Task ClickearTienda(MouseEventArgs e, string id)
+    private async void ClickearTienda(MouseEventArgs e, string id)
     {
-        tiendaElegida = id;
-
         if (string.IsNullOrEmpty(id) == false)
         {
             await TiendasCargar.AdminTiendas(id, decompilador);
         }
     }
 
-    private string TiendasInfo()
+    private void ClickearSuscripcionStreaming(MouseEventArgs e, string id)
+    {
+        if (string.IsNullOrEmpty(id) == false)
+        {
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Tiendas.AdminTarea tarea = BaseDatos.Tiendas.Admin.LeerTarea(id, conexion);
+
+                if (tarea != null)
+                {
+                    DateTime fecha = DateTime.Now;
+                    fecha = fecha - TimeSpan.FromDays(1);
+
+                    BaseDatos.Tiendas.Admin.Actualizar(tarea.Id, fecha, tarea.Mensaje, conexion);
+                }
+            }
+        }
+    }
+
+    private string TareasUso()
     {
         string info = String.Empty;
 
-        BaseDatos.Tiendas.AdminTarea siguiente = new BaseDatos.Tiendas.AdminTarea();
         BaseDatos.Tiendas.AdminTarea enUso = new BaseDatos.Tiendas.AdminTarea();
 
         if (conexion.State != System.Data.ConnectionState.Open)
@@ -82,18 +119,12 @@
 
         using (conexion)
         {
-            siguiente = BaseDatos.Tiendas.Admin.TiendaSiguiente(conexion);
             enUso = BaseDatos.Tiendas.Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60));
-        }
-
-        if (siguiente != null)
-        {
-            info = info + "Siguiente: " + siguiente.Id;
         }
 
         if (enUso != null)
         {
-            info = info + " - Comprobando: " + enUso.Id;
+            info = "Comprobando: " + enUso.Id;
         }
 
         return info;

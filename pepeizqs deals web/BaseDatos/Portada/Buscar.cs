@@ -137,7 +137,7 @@ namespace BaseDatos.Portada
 			return resultados;
 		}
 
-		public static List<Juego> UltimosMinimos(int cantidad, List<string> categorias = null, List<string> drms = null, SqlConnection conexion = null)
+		public static List<Juego> UltimosMinimos(int cantidadJuegos, List<string> categorias = null, List<string> drms = null, SqlConnection conexion = null, int cantidadAnalisis = 199)
 		{
 			List<Juego> resultados = new List<Juego>();
 
@@ -211,13 +211,14 @@ namespace BaseDatos.Portada
 					}
 				}
 
-				string busqueda = @"SELECT DISTINCT TOP @cantidad idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
-                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 199 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -3, CAST(GETDATE() AS date)) @categoria @drm
+				string busqueda = @"SELECT DISTINCT TOP @cantidadJuegos idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
+                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > @cantidadAnalisis AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -3, CAST(GETDATE() AS date)) @categoria @drm
                                     ORDER BY Fecha DESC";
 
-				busqueda = busqueda.Replace("@cantidad", cantidad.ToString());
+				busqueda = busqueda.Replace("@cantidadJuegos", cantidadJuegos.ToString());
 				busqueda = busqueda.Replace("@categoria", categoria);
 				busqueda = busqueda.Replace("@drm", drm);
+				busqueda = busqueda.Replace("@cantidadAnalisis", cantidadAnalisis.ToString());
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

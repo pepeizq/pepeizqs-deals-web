@@ -109,23 +109,27 @@ namespace BaseDatos.Tiendas
                     using (lector)
 					{
 						if (lector.Read() == true)
-						{	
-							try
-							{
-								if (lector.GetString(1) != null)
-								{
-									mensaje = Calculadora.DiferenciaTiempo(DateTime.Parse(lector.GetString(1)), "es-ES");
-								}
-
-                                if (lector.GetString(2) != null)
+						{
+                            if (lector.IsDBNull(1) == false)
+                            {
+                                if (string.IsNullOrEmpty(lector.GetString(1)) == false)
                                 {
-                                    mensaje = mensaje + " • " + lector.GetString(2);
+									try
+									{
+                                        mensaje = Calculadora.DiferenciaTiempo(DateTime.Parse(lector.GetString(1)), "es-ES");
+                                    }
+									catch { }
+                                    
                                 }
                             }
-							catch
-							{
 
-							}									
+							if (lector.IsDBNull(2) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+								{
+                                    mensaje = mensaje + " • " + lector.GetString(2);
+                                }
+							}								
 						}
 					}
 				}
@@ -134,104 +138,37 @@ namespace BaseDatos.Tiendas
 			return mensaje;
 		}
 
-		public static AdminTarea TiendaSiguiente(SqlConnection conexion)
+		public static AdminTarea LeerTarea(string id, SqlConnection conexion)
 		{
-			List<AdminTarea> tiendas = new List<AdminTarea>();
-
-			string seleccionarTarea = "SELECT * FROM adminTiendas";
+			string seleccionarTarea = "SELECT * FROM adminTiendas WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(seleccionarTarea, conexion))
 			{
-				using (SqlDataReader lector = comando.ExecuteReader())
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader lector = comando.ExecuteReader())
 				{
 					while (lector.Read())
 					{
-						AdminTarea tienda = new AdminTarea
+						if (lector.IsDBNull(0) == false)
 						{
-							Id = lector.GetString(0),
-							Fecha = DateTime.Parse(lector.GetString(1)),
-							Mensaje = lector.GetString(2),
-							MinimoHoras = true
-						};
-
-						bool añadir = true;
-
-						foreach (var tienda2 in TiendasCargar.GenerarListado())
-						{
-							if (tienda2.Id == tienda.Id)
+							if (string.IsNullOrEmpty(lector.GetString(0)) == false)
 							{
-								break;
-							}
-						}
+                                AdminTarea tarea = new AdminTarea
+                                {
+                                    Id = lector.GetString(0),
+                                    Fecha = DateTime.Parse(lector.GetString(1)),
+                                    Mensaje = lector.GetString(2)
+                                };
 
-						if (añadir == true)
-						{
-							tiendas.Add(tienda);
-						}
-					}
-				}
-			}
-
-			tiendas = tiendas.OrderBy(x => x.Fecha).ToList();
-
-			DateTime ahora = DateTime.Now;
-
-			if (ahora.Hour == 19 || ahora.Hour == 20)
-			{
-				foreach (var tienda in tiendas)
-				{
-					if (tienda.Id == APIs.Steam.Tienda.Generar().Id)
-					{
-                        if (ahora - tienda.Fecha > TimeSpan.FromMinutes(20))
-                        {
-							tienda.MinimoHoras = false;
-
-							return tienda;
-						}
-					}
-					else if (tienda.Id == APIs.Humble.Tienda.Generar().Id)
-					{
-						if (ahora - tienda.Fecha > TimeSpan.FromMinutes(20))
-						{
-                            tienda.MinimoHoras = false;
-
-                            return tienda;
+                                return tarea;
+                            }
 						}
 					}
 				}
 			}
-			else if (ahora.Hour == 17)
-			{
-                foreach (var tienda in tiendas)
-                {
-                    if (tienda.Id == APIs.Fanatical.Tienda.Generar().Id)
-                    {
-                        if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
-                        {
-                            tienda.MinimoHoras = false;
 
-                            return tienda;
-                        }
-                    }
-                }
-            }
-            else if (ahora.Hour == 15)
-            {
-                foreach (var tienda in tiendas)
-                {
-                    if (tienda.Id == APIs.GOG.Tienda.Generar().Id)
-                    {
-                        if (ahora - tienda.Fecha > TimeSpan.FromHours(1))
-                        {
-                            tienda.MinimoHoras = false;
-
-                            return tienda;
-                        }
-                    }
-                }
-            }
-
-            return tiendas[0];
+			return null;
         }
 
         public static AdminTarea ComprobarTiendasUso(SqlConnection conexion, TimeSpan tiempo)
