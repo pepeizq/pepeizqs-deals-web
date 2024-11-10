@@ -37,7 +37,7 @@
 
         @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
         {
-            if (suscripcion.AdminPendientes == true)
+            if (string.IsNullOrEmpty(BaseDatos.Tiendas.Admin.ComprobacionMensaje(suscripcion.Id.ToString())) == false)
             {
                 <button @onclick="(e => ClickearSuscripcionStreaming(e, suscripcion.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
                     <div style="display: flex; align-items: center; gap: 20px;">

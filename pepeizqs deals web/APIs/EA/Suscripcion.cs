@@ -22,7 +22,9 @@ namespace APIs.EA
 				AdminInteractuar = true,
 				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = false,
-				Precio = 5.99
+				Precio = 5.99,
+				AdminPendientes = true,
+				TablaPendientes = "tiendaea"
 			};
 
 			return eaPlay;
@@ -42,7 +44,9 @@ namespace APIs.EA
 				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = false,
 				IncluyeSuscripcion = Suscripciones2.SuscripcionTipo.EAPlay,
-                Precio = 16.99
+                Precio = 16.99,
+                AdminPendientes = false,
+                TablaPendientes = "tiendaea"
             };
 
 			return eaPlayPro;
@@ -50,7 +54,7 @@ namespace APIs.EA
 
 		public static async Task Buscar(SqlConnection conexion)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar("eaplay", DateTime.Now, "0 suscripciones detectadas", conexion);
+			BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString().ToLower(), DateTime.Now, "0 suscripciones detectadas", conexion);
 
 			int cantidad = 0;
 
@@ -169,7 +173,7 @@ namespace APIs.EA
 											if (lector.Read() == true)
 											{
 												cantidad += 1;
-												BaseDatos.Tiendas.Admin.Actualizar("eaplay", DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+												BaseDatos.Tiendas.Admin.Actualizar(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
 
 												if (lector.IsDBNull(0) == false)
 												{
@@ -231,11 +235,15 @@ namespace APIs.EA
 																					BaseDatos.Juegos.Actualizar.Suscripciones(juegobd, conexion);
 
 																					JuegoSuscripcion suscripcion2 = BaseDatos.Suscripciones.Buscar.UnJuego(enlace);
-																					DateTime nuevaFecha = suscripcion2.FechaTermina;
-																					nuevaFecha = DateTime.Now;
-																					nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
-																					suscripcion2.FechaTermina = nuevaFecha;
-																					BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion2, conexion);
+
+																					if (suscripcion2 != null)
+																					{
+                                                                                        DateTime nuevaFecha = suscripcion2.FechaTermina;
+                                                                                        nuevaFecha = DateTime.Now;
+                                                                                        nuevaFecha = nuevaFecha + TimeSpan.FromDays(1);
+                                                                                        suscripcion2.FechaTermina = nuevaFecha;
+                                                                                        BaseDatos.Suscripciones.Actualizar.FechaTermina(suscripcion2, conexion);
+                                                                                    }
 																				}
 																			}
 																		}
@@ -293,13 +301,13 @@ namespace APIs.EA
 									{
 										if (tieneSuscripcion == true)
 										{
-											BaseDatos.Errores.Insertar.Mensaje("EAPlay - Suscripción no encontrada", juego.i18n.Titulo + " " + enlace);
+                                            BaseDatos.Suscripciones.Insertar.Temporal(conexion, Generar().Id.ToString().ToLower(), enlace, juego.i18n.Titulo);
 										}
 										else
 										{
 											if (tieneSuscripcionPremium == true)
 											{
-												BaseDatos.Errores.Insertar.Mensaje("EAPlayPro - Suscripción no encontrada", juego.i18n.Titulo + " " + enlace);
+                                                BaseDatos.Suscripciones.Insertar.Temporal(conexion, GenerarPro().Id.ToString().ToLower(), enlace, juego.i18n.Titulo);
 											}
 										}
 									}

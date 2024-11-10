@@ -158,6 +158,14 @@ namespace Herramientas
 
                     if (noticias.Count > 0)
                     {
+                        foreach (var noticia in noticias)
+                        {
+                            if (noticia.Imagen.Contains("https://") == false)
+                            {
+                                noticia.Imagen = "https://pepeizqdeals.com" + noticia.Imagen;
+                            }
+                        }
+
                         return Ok(noticias);
                     }
                 }
