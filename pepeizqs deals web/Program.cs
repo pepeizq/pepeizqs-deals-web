@@ -1,31 +1,17 @@
-using Autofac.Core;
 using Herramientas;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Org.BouncyCastle.Pqc.Crypto.Lms;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using Radzen;
 using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-using System.Net.WebSockets;
-using System.Text;
-using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
-using System.Security.Claims;
 using System.Globalization;
-using NuGet.Protocol.Core.Types;
 using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,13 +67,18 @@ builder.Services.AddRazorPages();
 
 #region Detallado en Componentes Razor
 
-builder.Services.AddServerSideBlazor(options =>
+builder.Services.AddServerSideBlazor(opciones =>
 {
-	options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(90);
-}).AddCircuitOptions(x => x.DetailedErrors = true).AddHubOptions(options =>
+	opciones.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(90);
+})
+.AddCircuitOptions(opciones => 
 {
-	options.ClientTimeoutInterval = TimeSpan.FromMinutes(60);
-	options.KeepAliveInterval = TimeSpan.FromMinutes(90);
+	opciones.DetailedErrors = true;
+})
+.AddHubOptions(opciones =>
+{
+	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(20);
+	opciones.KeepAliveInterval = TimeSpan.FromSeconds(20);
 });
 
 #endregion
@@ -210,12 +201,6 @@ builder.Services.AddHttpContextAccessor();
 #region Tiempo Token Enlaces Correos 
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opciones => opciones.TokenLifespan = TimeSpan.FromHours(3));
-
-#endregion
-
-#region Estado Middlewares
-
-builder.Services.AddHealthChecks();
 
 #endregion
 
@@ -362,6 +347,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
