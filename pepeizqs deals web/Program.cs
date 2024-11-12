@@ -224,13 +224,13 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 #endregion
 
-builder.Services.AddSignalR(opciones =>
-{
-	opciones.EnableDetailedErrors = true;
-	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
-	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-	opciones.MaximumReceiveMessageSize = 102400000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//	opciones.EnableDetailedErrors = true;
+//	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//	opciones.MaximumReceiveMessageSize = 102400000;
+//});
 
 #region Necesario para Juegos
 

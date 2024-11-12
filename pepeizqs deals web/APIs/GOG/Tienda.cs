@@ -5,6 +5,8 @@ using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace APIs.GOG
@@ -39,7 +41,7 @@ namespace APIs.GOG
 			{
 				string html = await Decompiladores.Estandar("https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=" + i.ToString());
 
-				if (html != null)
+				if (string.IsNullOrEmpty(html) == false)
 				{
 					XmlSerializer xml = new XmlSerializer(typeof(GOGJuegos));
 					GOGJuegos listaJuegos = null;
@@ -61,25 +63,25 @@ namespace APIs.GOG
 							{
 								foreach (GOGJuego juego in listaJuegos.Catalogo.Juegos)
 								{
-									string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-									string enlace = juego.Enlace;
-
-									string slug = enlace;
-									slug = slug.Replace("https://www.gog.com/en/game/", null);
-
-									string imagen = "https:" + juego.ImagenVertical;
-
-									string tempPrecio = juego.Precio;
-									tempPrecio = tempPrecio.Replace("€", null);
-
-									decimal precioRebajado = decimal.Parse(tempPrecio);
-
 									int descuento = int.Parse(juego.Descuento);
 
 									if (descuento > 0)
 									{
-										JuegoPrecio oferta = new JuegoPrecio
+                                        string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+                                        string enlace = juego.Enlace;
+
+                                        string slug = enlace;
+                                        slug = slug.Replace("https://www.gog.com/en/game/", null);
+
+                                        string imagen = "https:" + juego.ImagenVertical;
+
+                                        string tempPrecio = juego.Precio;
+                                        tempPrecio = tempPrecio.Replace("€", null);
+
+                                        decimal precioRebajado = decimal.Parse(tempPrecio);
+
+                                        JuegoPrecio oferta = new JuegoPrecio
 										{
 											Nombre = nombre,
 											Enlace = enlace,
@@ -134,6 +136,51 @@ namespace APIs.GOG
 				i += 1;
 			}
 		}
+
+		public static async Task<JuegoGalaxyGOG> GalaxyDatos(string id)
+		{
+            JuegoGalaxyGOG galaxy = new JuegoGalaxyGOG();
+            string html = await Decompiladores.Estandar("https://api.gog.com/products/" + id + "?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog");
+
+            if (string.IsNullOrEmpty(html) == false)
+			{
+                GOGGalaxy datos = JsonSerializer.Deserialize<GOGGalaxy>(html);
+
+				if (datos != null)
+				{
+					galaxy.Windows = datos.Sistemas.Windows;
+					galaxy.Mac = datos.Sistemas.Mac;
+					galaxy.Linux = datos.Sistemas.Linux;
+				}
+            }
+
+            string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+            if (string.IsNullOrEmpty(html2) == false)
+            {
+                GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+                if (datos != null)
+                {
+                    foreach (var caracteristica in datos.Caracteristicas.Datos)
+					{
+						if (caracteristica.Id == "achievements")
+						{
+							galaxy.Logros = true;
+						}
+
+						if (caracteristica.Id == "cloud_saves")
+						{
+							galaxy.GuardadoNube = true;
+						}
+					}
+                }
+            }
+
+			galaxy.Fecha = DateTime.Now;
+
+			return galaxy;
+        }
 	}
 
 	[XmlRoot("catalogue")]
@@ -171,5 +218,41 @@ namespace APIs.GOG
 
 		[XmlElement("link")]
 		public string Enlace { get; set; }
-	}
+    }
+
+    public class GOGGalaxy
+    {
+        [JsonPropertyName("content_system_compatibility")]
+        public GOGGalaxySistemas Sistemas { get; set; }
+    }
+
+    public class GOGGalaxySistemas
+	{
+        [JsonPropertyName("windows")]
+        public bool Windows { get; set; }
+
+        [JsonPropertyName("osx")]
+        public bool Mac { get; set; }
+
+        [JsonPropertyName("linux")]
+        public bool Linux { get; set; }
+    }
+
+    public class GOGGalaxy2
+    {
+        [JsonPropertyName("_embedded")]
+        public GOGGalaxy2Caracteristicas Caracteristicas { get; set; }
+    }
+
+    public class GOGGalaxy2Caracteristicas
+    {
+        [JsonPropertyName("features")]
+        public List<GOGGalaxy2Caracteristica> Datos { get; set; }
+    }
+
+    public class GOGGalaxy2Caracteristica
+	{
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+    }
 }

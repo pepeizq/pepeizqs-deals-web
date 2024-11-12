@@ -282,5 +282,25 @@
   {
     "Id": "String71",
     "Valor": "Playable from Geforce NOW"
+  },
+  {
+    "Id": "String72",
+    "Valor": "Windows Compatible"
+  },
+  {
+    "Id": "String73",
+    "Valor": "Mac Compatible"
+  },
+  {
+    "Id": "String74",
+    "Valor": "Linux Compatible"
+  },
+  {
+    "Id": "String75",
+    "Valor": "Has achievements for this platform"
+  },
+  {
+    "Id": "String76",
+    "Valor": "Has cloud storage for this platform"
   }
 ]

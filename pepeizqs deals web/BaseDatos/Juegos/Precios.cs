@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Recompensas;
-using BaseDatos.Tiendas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 
@@ -436,7 +434,7 @@ namespace BaseDatos.Juegos
 					{
 						mismoDRM = true;
 
-						if (precioMasBajo2 > historico.Precio)
+						if (precioMasBajo2 >= historico.Precio)
 						{
 							precioMasBajo2 = historico.Precio;
 							fechaMasBajo2 = historico.Fecha;

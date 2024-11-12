@@ -354,7 +354,19 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
-			return juego;
+            try
+            {
+                if (lector.IsDBNull(31) == false)
+                {
+                    if (string.IsNullOrEmpty(lector.GetString(31)) == false)
+                    {
+                        juego.GalaxyGOG = JsonSerializer.Deserialize<JuegoGalaxyGOG>(lector.GetString(31));
+                    }
+                }
+            }
+            catch { }
+
+            return juego;
 		}
 
 		public static Juego UnJuego(int id)

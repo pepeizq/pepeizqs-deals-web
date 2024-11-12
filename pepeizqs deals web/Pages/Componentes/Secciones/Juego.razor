@@ -201,45 +201,23 @@
 						}						
 					}
 
-					<div style="display: flex; align-items: center; justify-content: right; gap: 20px;">
-						@if (juego.Caracteristicas != null)
+					@if (usuario != null)
+					{
+						if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 						{
-							<div style="display: flex; align-items: center; gap: 8px; padding: 5px 10px; height: 26px;">
-								@if (juego.Caracteristicas.Windows == true)
-								{
-									<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 15 15"><path d="M0 1h7v7H0zM0 9h7v7H0zM8 9h7v7H8zM8 1h7v7H8z" fill="var(--colorTexto)"></path></svg>
-								}
-
-								@if (juego.Caracteristicas.Mac == true)
-								{
-									<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 410 410"><path d="M361.05 137.57c-61 66-57 118 13 165-11 33-29 63-54 89-17 18-38 25-60 14-32-15-62-14-93 1-18 9-35 5-51-8-49-40-95-150-72-219 18-55 75-99 137-69 21 10 40 6 61-2 51-19 87-10 119 29zm-153-45c0-50 26-80 78-92 5 51-28 91-78 92z" fill="var(--colorTexto)"></path></svg>
-								}
-
-								@if (juego.Caracteristicas.Linux == true)
-								{
-									<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 16 16"><path d="M6.813.034C-.65.635 1.329 8.518 1.218 11.158 1.119 12.555.655 14.262 0 16h2.018c.207-.737.36-1.465.425-2.159.122.085.252.167.39.245.227.133.42.31.626.498.48.438 1.025.933 2.09.996.071.004.143.006.213.006 1.077 0 1.813-.471 2.404-.85.284-.181.529-.338.76-.413.654-.205 1.226-.536 1.654-.957.067-.066.128-.134.187-.202.238.873.565 1.855.926 2.835H16c-1.034-1.597-2.1-3.162-2.079-5.159.044-3.948.45-11.409-7.109-10.806zm3.17 10.145a12.94 12.94 0 0 0-.852-.328 2.08 2.08 0 0 0 .213-.894c.018-.819-.395-1.483-.922-1.485-.526 0-.967.662-.985 1.48v.08a4.609 4.609 0 0 0-.956-.324l-.004-.093c-.03-1.491.884-2.725 2.043-2.756C9.68 5.827 10.642 7.01 10.672 8.5a3.192 3.192 0 0 1-.474 1.777 3.108 3.108 0 0 0-.215-.099zm-1.276.488c.253.087.539.185.921.35l.007.002c.357.147.78.415.76.859-.03.68-.92 1.32-1.743 1.578l-.005.002c-.342.11-.647.306-.97.513-.543.347-1.104.706-1.915.706-.054 0-.107 0-.16-.004-.744-.043-1.09-.36-1.53-.76-.232-.212-.472-.43-.781-.612l-.007-.004c-.667-.377-1.081-.845-1.108-1.253-.013-.203.077-.379.269-.522.416-.312.695-.516.88-.651.204-.15.266-.195.312-.238l.106-.103c.382-.372 1.021-.993 2.002-.993.6 0 1.264.23 1.972.686.333.217.623.317.99.444zM5.6 12.046c-.954-.07-1.721-.33-2.058-.559a.455.455 0 0 0-.51.753c.542.367 1.501.64 2.503.712.17.013.356.02.557.02.871 0 1.978-.083 3.162-.634a.455.455 0 0 0-.383-.824c-1.28.596-2.471.59-3.27.532zM4.25 8.97c-.072-.732-.462-1.285-.873-1.234-.41.05-.686.684-.614 1.415.03.32.123.604.25.82-.031.025-.12.09-.224.166l-.286.21c-.312-.408-.524-.993-.562-1.654-.074-1.29.542-2.373 1.377-2.422.834-.048 1.57.957 1.645 2.245.004.07.006.139.006.207A3.25 3.25 0 0 0 4.25 9a.614.614 0 0 0-.001-.029z" fill="var(--colorTexto)"></path></svg>
-								}
-							</div>
-						}
-
-						@if (usuario != null)
-						{
-							if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+							if (juego.IdSteam > 0)
 							{
-								if (juego.IdSteam > 0)
-								{
-									<div>
-										<label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
+								<div style="display: flex; align-items: center; justify-content: right; gap: 20px;">
+									<label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
 
-										@if (juego.IdSteam > 0)
-										{
-											<a class="juego-boton-pequeño" style="margin-left: 10px;" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
-										}
-									</div>
-								}		
+									@if (juego.IdSteam > 0)
+									{
+										<a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+									}
+								</div>
 							}
-						}					
-					</div>
+						}
+					}
 				</div>				
 			</div>
 		</div>
@@ -500,7 +478,12 @@
 											@{
 												bool añadirDiv = false;
 
-												if (drm.Id == JuegoDRM.Steam && juego.Deck != JuegoDeck.Desconocido)
+												if (drm.Id == JuegoDRM.Steam)
+												{
+													añadirDiv = true;
+												}
+
+												if (drm.Id == JuegoDRM.GOG)
 												{
 													añadirDiv = true;
 												}
@@ -518,10 +501,125 @@
 
 												if (añadirDiv == true)
 												{
-													<div style="display: flex; align-items: center; flex-direction: row; gap: 20px;">
+													<div style="display: flex; align-items: center; flex-direction: row; gap: 20px; padding-left: 2px;">
+														@if (drm.Id == JuegoDRM.Steam)
+														{
+															if (juego.Caracteristicas != null)
+															{
+																<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																	@if (juego.Caracteristicas.Windows == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 15 15"><path d="M0 1h7v7H0zM0 9h7v7H0zM8 9h7v7H8zM8 1h7v7H8z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+
+																	@if (juego.Caracteristicas.Mac == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String73", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 410 410"><path d="M361.05 137.57c-61 66-57 118 13 165-11 33-29 63-54 89-17 18-38 25-60 14-32-15-62-14-93 1-18 9-35 5-51-8-49-40-95-150-72-219 18-55 75-99 137-69 21 10 40 6 61-2 51-19 87-10 119 29zm-153-45c0-50 26-80 78-92 5 51-28 91-78 92z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+
+																	@if (juego.Caracteristicas.Linux == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String74", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 16 16"><path d="M6.813.034C-.65.635 1.329 8.518 1.218 11.158 1.119 12.555.655 14.262 0 16h2.018c.207-.737.36-1.465.425-2.159.122.085.252.167.39.245.227.133.42.31.626.498.48.438 1.025.933 2.09.996.071.004.143.006.213.006 1.077 0 1.813-.471 2.404-.85.284-.181.529-.338.76-.413.654-.205 1.226-.536 1.654-.957.067-.066.128-.134.187-.202.238.873.565 1.855.926 2.835H16c-1.034-1.597-2.1-3.162-2.079-5.159.044-3.948.45-11.409-7.109-10.806zm3.17 10.145a12.94 12.94 0 0 0-.852-.328 2.08 2.08 0 0 0 .213-.894c.018-.819-.395-1.483-.922-1.485-.526 0-.967.662-.985 1.48v.08a4.609 4.609 0 0 0-.956-.324l-.004-.093c-.03-1.491.884-2.725 2.043-2.756C9.68 5.827 10.642 7.01 10.672 8.5a3.192 3.192 0 0 1-.474 1.777 3.108 3.108 0 0 0-.215-.099zm-1.276.488c.253.087.539.185.921.35l.007.002c.357.147.78.415.76.859-.03.68-.92 1.32-1.743 1.578l-.005.002c-.342.11-.647.306-.97.513-.543.347-1.104.706-1.915.706-.054 0-.107 0-.16-.004-.744-.043-1.09-.36-1.53-.76-.232-.212-.472-.43-.781-.612l-.007-.004c-.667-.377-1.081-.845-1.108-1.253-.013-.203.077-.379.269-.522.416-.312.695-.516.88-.651.204-.15.266-.195.312-.238l.106-.103c.382-.372 1.021-.993 2.002-.993.6 0 1.264.23 1.972.686.333.217.623.317.99.444zM5.6 12.046c-.954-.07-1.721-.33-2.058-.559a.455.455 0 0 0-.51.753c.542.367 1.501.64 2.503.712.17.013.356.02.557.02.871 0 1.978-.083 3.162-.634a.455.455 0 0 0-.383-.824c-1.28.596-2.471.59-3.27.532zM4.25 8.97c-.072-.732-.462-1.285-.873-1.234-.41.05-.686.684-.614 1.415.03.32.123.604.25.82-.031.025-.12.09-.224.166l-.286.21c-.312-.408-.524-.993-.562-1.654-.074-1.29.542-2.373 1.377-2.422.834-.048 1.57.957 1.645 2.245.004.07.006.139.006.207A3.25 3.25 0 0 0 4.25 9a.614.614 0 0 0-.001-.029z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+																</div>
+															}	
+
+															if (juego.Categorias != null)
+															{
+																bool añadirLogros = false;
+																bool añadirNube = false;
+
+																foreach (var categoria in juego.Categorias)
+																{
+																	if (categoria == "22")
+																	{
+																		añadirLogros = true;
+																	}
+
+																	if (categoria == "23")
+																	{
+																		añadirNube = true;
+																	}
+																}
+
+																if (añadirLogros == true || añadirNube == true)
+																{
+																	<div style="display: flex; align-items: center; gap: 10px;">
+																		@if (añadirLogros == true)
+																		{
+																			<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")">
+																				<i class="fa-solid fa-certificate"></i>
+																			</div>
+																		}
+
+																		@if (añadirNube == true)
+																		{
+																			<div title="@Idiomas.CogerCadena(idioma, "String76", "Game")">
+																				<i class="fa-solid fa-cloud"></i>
+																			</div>
+																		}
+																	</div>
+																}
+															}
+														}
+
+														@if (drm.Id == JuegoDRM.GOG)
+														{
+															if (juego.GalaxyGOG != null)
+															{
+																<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																	@if (juego.GalaxyGOG.Windows == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 15 15"><path d="M0 1h7v7H0zM0 9h7v7H0zM8 9h7v7H8zM8 1h7v7H8z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+
+																	@if (juego.GalaxyGOG.Mac == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String73", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 410 410"><path d="M361.05 137.57c-61 66-57 118 13 165-11 33-29 63-54 89-17 18-38 25-60 14-32-15-62-14-93 1-18 9-35 5-51-8-49-40-95-150-72-219 18-55 75-99 137-69 21 10 40 6 61-2 51-19 87-10 119 29zm-153-45c0-50 26-80 78-92 5 51-28 91-78 92z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+
+																	@if (juego.GalaxyGOG.Linux == true)
+																	{
+																		<div title="@Idiomas.CogerCadena(idioma, "String74", "Game")" style="width: 100%; height: 100%;">
+																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 16 16"><path d="M6.813.034C-.65.635 1.329 8.518 1.218 11.158 1.119 12.555.655 14.262 0 16h2.018c.207-.737.36-1.465.425-2.159.122.085.252.167.39.245.227.133.42.31.626.498.48.438 1.025.933 2.09.996.071.004.143.006.213.006 1.077 0 1.813-.471 2.404-.85.284-.181.529-.338.76-.413.654-.205 1.226-.536 1.654-.957.067-.066.128-.134.187-.202.238.873.565 1.855.926 2.835H16c-1.034-1.597-2.1-3.162-2.079-5.159.044-3.948.45-11.409-7.109-10.806zm3.17 10.145a12.94 12.94 0 0 0-.852-.328 2.08 2.08 0 0 0 .213-.894c.018-.819-.395-1.483-.922-1.485-.526 0-.967.662-.985 1.48v.08a4.609 4.609 0 0 0-.956-.324l-.004-.093c-.03-1.491.884-2.725 2.043-2.756C9.68 5.827 10.642 7.01 10.672 8.5a3.192 3.192 0 0 1-.474 1.777 3.108 3.108 0 0 0-.215-.099zm-1.276.488c.253.087.539.185.921.35l.007.002c.357.147.78.415.76.859-.03.68-.92 1.32-1.743 1.578l-.005.002c-.342.11-.647.306-.97.513-.543.347-1.104.706-1.915.706-.054 0-.107 0-.16-.004-.744-.043-1.09-.36-1.53-.76-.232-.212-.472-.43-.781-.612l-.007-.004c-.667-.377-1.081-.845-1.108-1.253-.013-.203.077-.379.269-.522.416-.312.695-.516.88-.651.204-.15.266-.195.312-.238l.106-.103c.382-.372 1.021-.993 2.002-.993.6 0 1.264.23 1.972.686.333.217.623.317.99.444zM5.6 12.046c-.954-.07-1.721-.33-2.058-.559a.455.455 0 0 0-.51.753c.542.367 1.501.64 2.503.712.17.013.356.02.557.02.871 0 1.978-.083 3.162-.634a.455.455 0 0 0-.383-.824c-1.28.596-2.471.59-3.27.532zM4.25 8.97c-.072-.732-.462-1.285-.873-1.234-.41.05-.686.684-.614 1.415.03.32.123.604.25.82-.031.025-.12.09-.224.166l-.286.21c-.312-.408-.524-.993-.562-1.654-.074-1.29.542-2.373 1.377-2.422.834-.048 1.57.957 1.645 2.245.004.07.006.139.006.207A3.25 3.25 0 0 0 4.25 9a.614.614 0 0 0-.001-.029z" fill="var(--colorTexto)"></path></svg>
+																		</div>
+																	}
+																</div>
+
+																if (juego.GalaxyGOG.Logros == true || juego.GalaxyGOG.GuardadoNube == true)
+																{
+																	<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																		@if (juego.GalaxyGOG.Logros == true)
+																		{
+																			<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")" style="width: 100%; height: 100%;">
+																				<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
+																			</div>
+																		}
+
+																		@if (juego.GalaxyGOG.GuardadoNube == true)
+																		{
+																			<div title="@Idiomas.CogerCadena(idioma, "String76", "Game")" style="width: 100%; height: 100%;">
+																				<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
+																			</div>
+																		}
+																	</div>
+																}
+															}															
+														}
+
 														@if (drm.Id == JuegoDRM.Steam && juego.Deck != JuegoDeck.Desconocido)
 														{
-															<button @onclick="(e => DeckEnseñar(e))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px;">
+															<button @onclick="(e => DeckEnseñar(e))" class="boton-expandir" title="Steam Deck" style="color: var(--colorTexto); text-decoration: none; border: 0px;">
 																<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; width: 75px; height: 32px;">
 																	<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.84" fill-rule="evenodd" clip-rule="evenodd" d="M7.77715 4.30197C10.9241 4.30197 13.4752 6.85305 13.4752 9.99997C13.4752 13.1469 10.9241 15.698 7.77715 15.698V18.8889C12.6864 18.8889 16.666 14.9092 16.666 9.99997C16.666 5.09078 12.6864 1.11108 7.77715 1.11108V4.30197ZM7.77756 13.8889C9.92533 13.8889 11.6664 12.1477 11.6664 9.99997C11.6664 7.8522 9.92533 6.11108 7.77756 6.11108C5.62979 6.11108 3.88867 7.8522 3.88867 9.99997C3.88867 12.1477 5.62979 13.8889 7.77756 13.8889Z" fill="var(--colorTexto)"></path></svg>
 
@@ -549,7 +647,7 @@
 															{
 																if (drmG == drm.Id)
 																{
-																	<div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px;" title="@Herramientas.Idiomas.CogerCadena(idioma, "String71", "Game")">
+																	<div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.CogerCadena(idioma, "String71", "Game")">
 																		<img src="@APIs.GeforceNOW.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" />
 
 																		<div style="width: 22px; height: 22px;">
@@ -1698,6 +1796,23 @@
 					if (nuevoJuego != null)
 					{
 						global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+					}
+				}
+			}
+
+			if (juego.IdGog > 0)
+			{
+				if (juego.GalaxyGOG == null)
+				{
+					juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
+					global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
+				}
+				else
+				{
+					if (juego.GalaxyGOG.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+					{
+						juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
+						global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
 					}
 				}
 			}

@@ -1,10 +1,9 @@
-﻿
-
-//https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity
+﻿//https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity
 //https://www.gog.com/games/feed?format=xml&country=ES&currency=EUR&page=0
 //https://catalog.gog.com/v1/catalog?countryCode=ES&currencyCode=EUR&limit=20&locale=en-US&order=desc:score&page=1&productType=in:game,pack,dlc,extras&query=like:warcraft
 //https://www.gog.com/api/products/1418669891
 //https://www.gog.com/api/products/1418669891/prices?countryCode=ES&currency=EUR
+//https://api.gog.com/products/1453375253?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog
 
 #nullable disable
 
@@ -58,7 +57,7 @@ namespace APIs.GOG
 					{
 						string htmlAPI = await Decompiladores.Estandar("https://www.gog.com/api/products/" + id);
 
-						if (htmlAPI != null) 
+						if (string.IsNullOrEmpty(htmlAPI) == false) 
 						{
 							GOGJuegoAPI datos = JsonConvert.DeserializeObject<GOGJuegoAPI>(htmlAPI);
 

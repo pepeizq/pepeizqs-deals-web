@@ -785,5 +785,35 @@ namespace BaseDatos.Juegos
 				}
 			}
 		}
+
+		public static void GalaxyGOG(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+					"SET galaxyGOG=@galaxyGOG WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@galaxyGOG", JsonSerializer.Serialize(juego.GalaxyGOG));
+
+					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
 	}
 }

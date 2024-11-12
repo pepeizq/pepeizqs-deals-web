@@ -282,5 +282,25 @@
   {
     "Id": "String71",
     "Valor": "Jugable desde Geforce NOW"
+  },
+  {
+    "Id": "String72",
+    "Valor": "Compatible con Windows"
+  },
+  {
+    "Id": "String73",
+    "Valor": "Compatible con Mac"
+  },
+  {
+    "Id": "String74",
+    "Valor": "Compatible con Linux"
+  },
+  {
+    "Id": "String75",
+    "Valor": "Tiene logros para esta plataforma"
+  },
+  {
+    "Id": "String76",
+    "Valor": "Tiene guardado en la nube para esta plataforma"
   }
 ]

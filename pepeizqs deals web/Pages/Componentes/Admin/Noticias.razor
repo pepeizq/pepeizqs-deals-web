@@ -432,12 +432,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 noticiaAñadir.TituloEn = noticia.TituloEn;
                 noticiaAñadir.TituloEs = noticia.TituloEs;
                 noticiaAñadir.Imagen = noticia.Imagen;
-
-                if (noticiaAñadir.Imagen.Contains("https://") == false || noticiaAñadir.Imagen.Contains("http://") == false)
-                {
-                    noticiaAñadir.Imagen = "https://pepeizqdeals.com" + noticiaAñadir.Imagen;
-                }
-
                 noticiaAñadir.ContenidoEn = noticia.ContenidoEn;
                 noticiaAñadir.ContenidoEs = noticia.ContenidoEs;
                 noticiaAñadir.Juegos = noticia.Juegos;

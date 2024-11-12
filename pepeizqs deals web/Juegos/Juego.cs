@@ -45,6 +45,7 @@ namespace Juegos
 		public List<JuegoDeckToken> DeckTokens { get; set; }
 		public DateTime? DeckComprobacion { get; set; }
 		public List<JuegoHistorico> Historicos { get; set; }
+		public JuegoGalaxyGOG GalaxyGOG { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -179,9 +180,19 @@ namespace Juegos
 		public string Tienda { get; set; }
 	}
 
-	//-------------------------------------------------------
+    public class JuegoGalaxyGOG
+    {
+        public bool Windows { get; set; }
+        public bool Mac { get; set; }
+        public bool Linux { get; set; }
+        public DateTime Fecha { get; set; }
+        public bool Logros { get; set; }
+        public bool GuardadoNube { get; set; }
+    }
 
-	public enum JuegoTipo
+    //-------------------------------------------------------
+
+    public enum JuegoTipo
 	{
 		Game,
 		DLC,
