@@ -506,7 +506,7 @@
 														{
 															if (juego.Caracteristicas != null)
 															{
-																<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
 																	@if (juego.Caracteristicas.Windows == true)
 																	{
 																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
@@ -529,51 +529,13 @@
 																	}
 																</div>
 															}	
-
-															if (juego.Categorias != null)
-															{
-																bool añadirLogros = false;
-																bool añadirNube = false;
-
-																foreach (var categoria in juego.Categorias)
-																{
-																	if (categoria == "22")
-																	{
-																		añadirLogros = true;
-																	}
-
-																	if (categoria == "23")
-																	{
-																		añadirNube = true;
-																	}
-																}
-
-																if (añadirLogros == true || añadirNube == true)
-																{
-																	<div style="display: flex; align-items: center; gap: 10px;">
-																		@if (añadirLogros == true)
-																		{
-																			<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")">
-																				<i class="fa-solid fa-certificate"></i>
-																			</div>
-																		}
-
-																		@if (añadirNube == true)
-																		{
-																			<div title="@Idiomas.CogerCadena(idioma, "String76", "Game")">
-																				<i class="fa-solid fa-cloud"></i>
-																			</div>
-																		}
-																	</div>
-																}
-															}
 														}
 
 														@if (drm.Id == JuegoDRM.GOG)
 														{
 															if (juego.GalaxyGOG != null)
 															{
-																<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
 																	@if (juego.GalaxyGOG.Windows == true)
 																	{
 																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
@@ -598,7 +560,9 @@
 
 																if (juego.GalaxyGOG.Logros == true || juego.GalaxyGOG.GuardadoNube == true)
 																{
-																	<div style="display: flex; align-items: center; gap: 8px; height: 16px;">
+																	<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
+																		<img src="/imagenes/otros/goggalaxy.ico" title="GOG Galaxy" style="width: 100%; height: 100%;" />
+
 																		@if (juego.GalaxyGOG.Logros == true)
 																		{
 																			<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")" style="width: 100%; height: 100%;">

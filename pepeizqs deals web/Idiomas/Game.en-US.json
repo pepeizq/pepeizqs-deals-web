@@ -297,10 +297,10 @@
   },
   {
     "Id": "String75",
-    "Valor": "Has achievements for this platform"
+    "Valor": "Has achievements for GOG Galaxy"
   },
   {
     "Id": "String76",
-    "Valor": "Has cloud storage for this platform"
+    "Valor": "Has cloud storage for GOG Galaxy"
   }
 ]
