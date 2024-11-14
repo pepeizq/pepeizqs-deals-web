@@ -52,10 +52,10 @@ builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => {
 	opciones.EnableSensitiveDataLogging();
 });
 
-builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => { 
-	opciones.UseSqlite(conexionTexto);
-    opciones.EnableSensitiveDataLogging();
-});
+//builder.Services.AddPooledDbContextFactory<pepeizqs_deals_webContext>(opciones => { 
+//	opciones.UseSqlite(conexionTexto);
+//    opciones.EnableSensitiveDataLogging();
+//});
 
 builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webContext>().SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
@@ -344,7 +344,7 @@ app.UseResponseCompression();
 #endregion
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.MapStaticAssets();
 
 app.UseRouting();
 app.UseAuthentication();

@@ -188,6 +188,7 @@ namespace Juegos
         public DateTime Fecha { get; set; }
         public bool Logros { get; set; }
         public bool GuardadoNube { get; set; }
+		public bool Preservacion { get; set; }
     }
 
     //-------------------------------------------------------

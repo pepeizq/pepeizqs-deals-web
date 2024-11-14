@@ -174,6 +174,14 @@ namespace APIs.GOG
 							galaxy.GuardadoNube = true;
 						}
 					}
+
+					foreach (var propiedad in datos.Caracteristicas.Propiedades)
+					{
+						if (propiedad.Slug == "good-old-game")
+						{
+							galaxy.Preservacion = true;
+						}
+					}
                 }
             }
 
@@ -248,11 +256,20 @@ namespace APIs.GOG
     {
         [JsonPropertyName("features")]
         public List<GOGGalaxy2Caracteristica> Datos { get; set; }
-    }
+
+		[JsonPropertyName("properties")]
+		public List<GOGGalaxy2Propiedad> Propiedades { get; set; }
+	}
 
     public class GOGGalaxy2Caracteristica
 	{
         [JsonPropertyName("id")]
         public string Id { get; set; }
     }
+
+	public class GOGGalaxy2Propiedad
+	{
+		[JsonPropertyName("slug")]
+		public string Slug { get; set; }
+	}
 }

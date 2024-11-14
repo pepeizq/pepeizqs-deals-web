@@ -132,6 +132,22 @@
 				</button>
 			</div>
 		</div>
+
+		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+			<div style="width: 15%; padding-right: 20px; text-align: right;">
+				Redes Sociales
+			</div>
+
+			<div style="width: 85%; display: flex; align-items: center; gap: 20px;">
+				<button @onclick="(e => EnviarTwitter(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Twitter
+				</button>
+
+				<button @onclick="(e => EnviarBlueSky(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					BlueSky
+				</button>
+			</div>
+		</div>
 	</div>
 }
 
@@ -360,5 +376,15 @@
 		{
 			Herramientas.Correos.EnviarNuevaNoticia(noticia, "pepeizq@msn.com", conexion, "es-ES");
 		}
+	}
+
+	private void EnviarTwitter(MouseEventArgs e)
+	{
+		Herramientas.Twitter.Twitear(noticia);
+	}
+
+	private void EnviarBlueSky(MouseEventArgs e)
+	{
+		Herramientas.Bluesky.Postear(noticia);
 	}
 }

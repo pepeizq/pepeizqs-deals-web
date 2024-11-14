@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>pepeizqs_deals_web</RootNamespace>
@@ -19,15 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="APIs\Humble\Suscripcion.cs~RFe6f926.TMP" />
-    <None Remove="BaseDatos\Noticias\Insertar.cs~RF3b968c9c.TMP" />
-    <None Remove="BaseDatos\Recompensas\Historial.cs~RF2c9f9c36.TMP" />
-    <None Remove="BaseDatos\Suscripciones\Actualizar.cs~RF2da279d.TMP" />
-    <None Remove="Noticias\wyogi0p5.3uv~" />
-    <None Remove="Pages\Componentes\Secciones\Portada.razor~RF1cd04c56.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>
@@ -35,33 +26,33 @@
   <ItemGroup>
     <PackageReference Include="Blazored.Video" Version="1.0.1" />
     <PackageReference Include="MailKit" Version="4.8.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Radzen.Blazor" Version="5.2.12" />
+    <PackageReference Include="Radzen.Blazor" Version="5.6.0" />
     <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
-    <PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="7.3.1" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement.Abstractions" Version="7.1.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement.ServerPrerendering" Version="7.3.1" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement.Services" Version="7.3.1" />
     <PackageReference Include="TweetinviAPI.AspNetPlugin" Version="5.0.4" />
-    <PackageReference Include="X.Bluesky" Version="1.0.3" />
+    <PackageReference Include="X.Bluesky" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

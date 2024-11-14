@@ -302,5 +302,9 @@
   {
     "Id": "String76",
     "Valor": "Tiene guardado en la nube para GOG Galaxy"
+  },
+  {
+    "Id": "String77",
+    "Valor": "Este juego forma parte del programa de preservación de GOG"
   }
 ]

@@ -302,5 +302,9 @@
   {
     "Id": "String76",
     "Valor": "Has cloud storage for GOG Galaxy"
+  },
+  {
+    "Id": "String77",
+    "Valor": "This game is part of GOG's preservation program"
   }
 ]

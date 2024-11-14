@@ -506,7 +506,7 @@
 														{
 															if (juego.Caracteristicas != null)
 															{
-																<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
+																<div style="display: flex; align-items: center; gap: 8px; height: 18px;">
 																	@if (juego.Caracteristicas.Windows == true)
 																	{
 																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
@@ -535,7 +535,7 @@
 														{
 															if (juego.GalaxyGOG != null)
 															{
-																<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
+																<div style="display: flex; align-items: center; gap: 8px; height: 18px;">
 																	@if (juego.GalaxyGOG.Windows == true)
 																	{
 																		<div title="@Idiomas.CogerCadena(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
@@ -558,25 +558,35 @@
 																	}
 																</div>
 
-																if (juego.GalaxyGOG.Logros == true || juego.GalaxyGOG.GuardadoNube == true)
+																if (juego.Tipo == JuegoTipo.Game)
 																{
-																	<div style="display: flex; align-items: center; gap: 8px; height: 20px;">
-																		<img src="/imagenes/otros/goggalaxy.ico" title="GOG Galaxy" style="width: 100%; height: 100%;" />
+																	if (juego.GalaxyGOG.Logros == true || juego.GalaxyGOG.GuardadoNube == true)
+																	{
+																		<div style="display: flex; align-items: center; gap: 8px; height: 18px;">
+																			<img src="/imagenes/otros/goggalaxy.ico" title="GOG Galaxy" style="width: 100%; height: 100%;" />
 
-																		@if (juego.GalaxyGOG.Logros == true)
-																		{
-																			<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")" style="width: 100%; height: 100%;">
-																				<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
-																			</div>
-																		}
+																			@if (juego.GalaxyGOG.Logros == true)
+																			{
+																				<div title="@Idiomas.CogerCadena(idioma, "String75", "Game")" style="width: 100%; height: 100%;">
+																					<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
+																				</div>
+																			}
 
-																		@if (juego.GalaxyGOG.GuardadoNube == true)
-																		{
-																			<div title="@Idiomas.CogerCadena(idioma, "String76", "Game")" style="width: 100%; height: 100%;">
-																				<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
-																			</div>
-																		}
-																	</div>
+																			@if (juego.GalaxyGOG.GuardadoNube == true)
+																			{
+																				<div title="@Idiomas.CogerCadena(idioma, "String76", "Game")" style="width: 100%; height: 100%;">
+																					<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
+																				</div>
+																			}
+																		</div>
+																	}
+
+																	if (juego.GalaxyGOG.Preservacion == true)
+																	{
+																		<div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.CogerCadena(idioma, "String77", "Game")">
+																			<img src="/imagenes/otros/gogpreserved.webp" style="max-width: 22px; max-height: 22px;" />
+																		</div>
+																	}
 																}
 															}															
 														}
@@ -613,10 +623,6 @@
 																{
 																	<div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.CogerCadena(idioma, "String71", "Game")">
 																		<img src="@APIs.GeforceNOW.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" />
-
-																		<div style="width: 22px; height: 22px;">
-																			<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
-																		</div>
 																	</div>
 																}
 															}
