@@ -9,6 +9,7 @@
 @using global::Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 
+@inject HttpClient ClienteHttp
 @inject UserManager<Usuario> UserManager
 @inject IJSRuntime JavaScript
 
@@ -254,10 +255,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 
         <div style="display: flex; align-items: center; gap: 10px;">
             <button @onclick="@(e => EditorDiv(e, noticia, "es"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
-				<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
-					<div style="font-size: 14px;">div</div>
-				</div>
-			</button>
+                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
+                    <div style="font-size: 14px;">div</div>
+                </div>
+            </button>
 
             <button @onclick="@(e => EditorUl(e, noticia, "es"))" class="boton-expandir" style="background-color: var(--fondoBotonPequeño); color: var(--colorTexto); text-decoration: none; border: 0px;">
                 <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px;">
@@ -287,6 +288,13 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     <div style="display: flex; width: 33%;">
         <button @onclick="@(e => AñadirNoticia(e))" class="boton" style="text-align: center;">Añadir Noticia</button>
     </div>
+
+    @if (string.IsNullOrEmpty(notificacionesEnviadas) == false)
+    {
+        <div style="margin-top: 20px;">
+            @notificacionesEnviadas
+        </div>
+    }
 </div>
 
 @if (abrirEnlace == true)
@@ -354,6 +362,8 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     private string gratisSeleccionadoNoticias = null;
     private string suscripcionSeleccionadaNoticias = null;
 
+    private string notificacionesEnviadas = null;
+
     private Plantilla noticia = new Plantilla();
 
     protected override void OnInitialized()
@@ -416,7 +426,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         noticia.Fecha = Convert.ToDateTime(texto.Value.ToString());
     }
 
-    private void AñadirNoticia(MouseEventArgs e)
+    private async void AñadirNoticia(MouseEventArgs e)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {

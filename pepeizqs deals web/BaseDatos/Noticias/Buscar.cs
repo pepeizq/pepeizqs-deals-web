@@ -132,8 +132,20 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static global::Noticias.Noticia Ultimo(SqlConnection conexion)
+		public static global::Noticias.Noticia Ultimo(SqlConnection conexion = null)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			string busqueda = "SELECT TOP 1 * FROM noticias ORDER BY id DESC";
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))

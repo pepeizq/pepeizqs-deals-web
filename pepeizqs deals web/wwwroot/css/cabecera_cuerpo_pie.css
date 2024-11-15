@@ -1,5 +1,5 @@
 ﻿.cabecera {
-    height: var(--alturaCabecera);
+    min-height: var(--alturaCabecera);
     background-color: var(--fondoOscuro);
     z-index: 9999;
     position: -webkit-sticky;

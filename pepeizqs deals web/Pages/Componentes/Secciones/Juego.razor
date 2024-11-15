@@ -1584,7 +1584,7 @@
 			<div>
 				<RadzenStack>
 					<RadzenChart Style="width: 100vh; height: 80vh;">
-						<RadzenChartTooltipOptions Shared="false" />
+						<RadzenChartTooltipOptions Shared="false"/>
 
 						@{
 							int añoMayor = 0;
@@ -1611,7 +1611,7 @@
 								<RadzenLineSeries Stroke="var(--colorTexto)" Smooth="true" Data="@punto.Puntos" CategoryProperty="Fecha" Title="@punto.Año.ToString()" LineType="@lineaTipo" ValueProperty="Precio" Hidden="@oculta">
 									<ChildContent>
 										<RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
-										<RadzenSeriesDataLabels Visible="true" />
+										<RadzenSeriesDataLabels Visible="true"/>
 									</ChildContent>
 
 									<TooltipTemplate Context="datos">
