@@ -426,7 +426,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         noticia.Fecha = Convert.ToDateTime(texto.Value.ToString());
     }
 
-    private async void AñadirNoticia(MouseEventArgs e)
+    private void AñadirNoticia(MouseEventArgs e)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {

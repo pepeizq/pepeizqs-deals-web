@@ -79,42 +79,37 @@ namespace APIs.Humble
             return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
 		}
 
-		public static void RecopilarOfertas(string html)
+		public static void RecopilarOfertas(string html, SqlConnection conexion)
 		{
 			if (string.IsNullOrEmpty(html) == false)
 			{
 				if (html != "null")
 				{
-					SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+					HumbleJuegos juegos = JsonSerializer.Deserialize<HumbleJuegos>(html);
 
-					using (conexion)
+					if (juegos != null)
 					{
-						HumbleJuegos juegos = JsonSerializer.Deserialize<HumbleJuegos>(html);
-
-						if (juegos != null)
+						foreach (HumbleJuego juego in juegos.Resultados)
 						{
-							foreach (HumbleJuego juego in juegos.Resultados)
+							string sqlAñadir = "INSERT INTO temporalhumble " +
+									"(contenido, fecha, enlace) VALUES " +
+									"(@contenido, @fecha, @enlace) ";
+
+							using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 							{
-								string sqlAñadir = "INSERT INTO temporalhumble " +
-										"(contenido, fecha, enlace) VALUES " +
-										"(@contenido, @fecha, @enlace) ";
+								comando.Parameters.AddWithValue("@contenido", JsonSerializer.Serialize(juego));
+								comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
+								comando.Parameters.AddWithValue("@enlace", juego.Enlace);
 
-								using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
+								try
 								{
-									comando.Parameters.AddWithValue("@contenido", JsonSerializer.Serialize(juego));
-									comando.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
-									comando.Parameters.AddWithValue("@enlace", juego.Enlace);
-
-									try
-									{
-                                        comando.ExecuteNonQuery();
-                                    }
-									catch (Exception ex) 
-									{
-                                        global::BaseDatos.Errores.Insertar.Mensaje("Humble Recopilación", ex, conexion);
-                                    }								
+									comando.ExecuteNonQuery();
 								}
-							}		
+								catch (Exception ex)
+								{
+									global::BaseDatos.Errores.Insertar.Mensaje("Humble Recopilación", ex);
+								}
+							}
 						}
 					}
 				}

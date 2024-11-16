@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using Radzen;
 using System.IO.Compression;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
+using ApexCharts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -276,9 +276,19 @@ builder.Services.ConfigureApplicationCookie(opciones =>
 //	});
 //});
 
-#region Radzen Graficos
+#region Linea Grafico
 
-builder.Services.AddRadzenComponents();
+builder.Services.AddApexCharts(e =>
+{
+	e.GlobalOptions = new ApexChartBaseOptions
+	{
+		Debug = false,
+		Theme = new Theme { 
+			Palette = PaletteType.Palette2,
+			Mode = Mode.Dark
+		}
+	};
+}); 
 
 #endregion
 
@@ -312,7 +322,7 @@ builder.Services.AddRateLimiter(opciones =>
 					factory: partition => new FixedWindowRateLimiterOptions
 					{
 						AutoReplenishment = true,
-						PermitLimit = 120,
+						PermitLimit = 200,
 						QueueLimit = 0,
 						Window = TimeSpan.FromMinutes(1)
 					});

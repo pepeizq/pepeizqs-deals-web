@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazor-ApexCharts" Version="4.0.0" />
     <PackageReference Include="Blazored.Video" Version="1.0.1" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0" />
@@ -44,7 +45,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Radzen.Blazor" Version="5.6.0" />
     <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="7.3.1" />
