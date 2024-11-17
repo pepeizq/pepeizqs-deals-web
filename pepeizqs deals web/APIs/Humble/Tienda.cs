@@ -79,8 +79,20 @@ namespace APIs.Humble
             return "https://humblebundleinc.sjv.io/c/1382810/2059850/25796?u=" + enlace;
 		}
 
-		public static void RecopilarOfertas(string html, SqlConnection conexion)
+		public static void RecopilarOfertas(string html, SqlConnection conexion = null)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			if (string.IsNullOrEmpty(html) == false)
 			{
 				if (html != "null")
