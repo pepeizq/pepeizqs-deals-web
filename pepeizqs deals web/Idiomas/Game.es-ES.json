@@ -306,5 +306,13 @@
   {
     "Id": "String77",
     "Valor": "Este juego forma parte del programa de preservación de GOG"
+  },
+  {
+    "Id": "String78",
+    "Valor": "Es una banda sonora del videojuego, esto significa que solo tendrás acceso a los archivos de audio del juego."
+  },
+  {
+    "Id": "String79",
+    "Valor": "Este juego solo puede ejecutarse con un dispositivo de realidad virtual."
   }
 ]

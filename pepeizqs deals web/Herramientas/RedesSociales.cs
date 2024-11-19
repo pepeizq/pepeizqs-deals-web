@@ -168,7 +168,7 @@ namespace Herramientas
                 }
 
                 Uri enlaceFinal = new Uri(enlace);
-
+			
                 await cliente.Post(noticia.TituloEn, enlaceFinal);
             }           
 		}
