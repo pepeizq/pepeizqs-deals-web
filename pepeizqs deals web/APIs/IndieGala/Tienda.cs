@@ -43,7 +43,7 @@ namespace APIs.IndieGala
 
 			int i = 1;
 			while (i < 10)
-			{				
+			{
 				string html = await Decompiladores.Estandar("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
 
 				if (html != null)
@@ -71,23 +71,23 @@ namespace APIs.IndieGala
 
 								foreach (IndieGalaJuego juego in listaJuegos.Canal.Buscador.Juegos)
 								{
-									string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-									string enlace = juego.Enlace;
-
-									string imagen = juego.Imagen;
-
-									if (imagen.Contains("https://www.indiegalacdn.com/") == false)
-									{
-										imagen = "https://www.indiegalacdn.com/" + imagen;
-									}
-
 									decimal precioBase = decimal.Parse(juego.PrecioBase);
 									decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
-									int descuento = Convert.ToInt32(Math.Round(decimal.Parse(juego.Descuento), MidpointRounding.AwayFromZero));
+									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
 									if (descuento > 0)
 									{
+										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+										string enlace = juego.Enlace;
+
+										string imagen = juego.Imagen;
+
+										if (imagen.Contains("https://www.indiegalacdn.com/") == false)
+										{
+											imagen = "https://www.indiegalacdn.com/" + imagen;
+										}
+
 										JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
 										if (nombre.Contains("(Epic)") == true)

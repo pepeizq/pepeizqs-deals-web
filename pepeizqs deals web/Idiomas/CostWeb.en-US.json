@@ -9,34 +9,66 @@
   },
   {
     "Id": "String2",
-    "Valor": "Server • $286.20 / Every 3 years (taxes not included)"
+    "Valor": "Server • $286.20"
   },
   {
     "Id": "String3",
-    "Valor": "Paid until 30/1/2027 hosted on SmarterASP hosting with the .NET Premium mode."
+    "Valor": "Paid until {0} hosted on SmarterASP hosting with the .NET Premium mode."
   },
   {
     "Id": "String4",
-    "Valor": "Domain • 70.95€ / Every 5 years (taxes not included)"
+    "Valor": "Domain • 70.95€"
   },
   {
     "Id": "String5",
-    "Valor": "Paid until 15/3/2028 on Webempresa hosting."
+    "Valor": "Paid until {0} on Webempresa hosting."
   },
   {
     "Id": "String6",
-    "Valor": "SSL • $29 / Every 1 year (taxes not included)"
+    "Valor": "SSL • $29"
   },
   {
     "Id": "String7",
-    "Valor": "Paid until 6/12/2024 on SmarterASP hosting."
+    "Valor": "Paid until {0} on SmarterASP hosting."
   },
   {
     "Id": "String8",
-    "Valor": "Extra 1 Static IP • $24 / Every 1 year (taxes not included)"
+    "Valor": "Extra 1 Static IP • $24"
   },
   {
     "Id": "String9",
-    "Valor": "Paid until 6/12/2024 on SmarterASP hosting."
+    "Valor": "Paid until {0} on SmarterASP hosting."
+  },
+  {
+    "Id": "String10",
+    "Valor": "It is paid every 3 years (taxes included)."
+  },
+  {
+    "Id": "String11",
+    "Valor": "It is paid every 5 years (taxes not included)."
+  },
+  {
+    "Id": "String12",
+    "Valor": "It is paid every 1 year (taxes included)."
+  },
+  {
+    "Id": "String13",
+    "Valor": "It is paid every 1 year (taxes included)."
+  },
+  {
+    "Id": "String14",
+    "Valor": "There is currently a positive balance of {0}€, when it is time to renew the expenses below will be deducted from this balance."
+  },
+  {
+    "Id": "String15",
+    "Valor": "Currently there is a negative balance of {0}€, as soon as there is an income the negative balance will be covered first and when there is a positive balance it will be used to extend the times of the expenses below."
+  },
+  {
+    "Id": "String16",
+    "Valor": "Current balance"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Expenses"
   }
 ]

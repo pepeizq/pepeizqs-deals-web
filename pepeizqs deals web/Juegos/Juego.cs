@@ -46,6 +46,7 @@ namespace Juegos
 		public DateTime? DeckComprobacion { get; set; }
 		public List<JuegoHistorico> Historicos { get; set; }
 		public JuegoGalaxyGOG GalaxyGOG { get; set; }
+		public JuegoCantidadJugadoresSteam CantidadJugadores { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -191,9 +192,16 @@ namespace Juegos
 		public bool Preservacion { get; set; }
     }
 
-    //-------------------------------------------------------
+	public class JuegoCantidadJugadoresSteam
+	{
+		public int Cantidad { get; set; }
 
-    public enum JuegoTipo
+		public DateTime Fecha { get; set; }
+	}
+
+	//-------------------------------------------------------
+
+	public enum JuegoTipo
 	{
 		Game,
 		DLC,

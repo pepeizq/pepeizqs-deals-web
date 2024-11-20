@@ -10,11 +10,11 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic
+@using pepeizqs_deals_web.Areas.Identity.Data
 @using Suscripciones2
 @using System.Net
 @using System.Text.Json
 @using Tiendas2
-@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
@@ -50,13 +50,13 @@
     }
 
     .boton-expandir {
-        transition: transform .2s;
-        background-color: var(--fondoBotonPequeño);
+    transition: transform .2s;
+    background-color: var(--fondoBotonPequeño);
     }
 
     .boton-expandir:hover {
-        transform: scale(1.01);
-        background-color: var(--fondoBotonPequeñoHover);
+    transform: scale(1.01);
+    background-color: var(--fondoBotonPequeñoHover);
     }
 </style>
 
@@ -70,16 +70,19 @@
         @{
             string fondoCabecera = "background-color: var(--fondoOscuroTransparente);";
             string fondoBoton = "background-color: var(--fondoBotonPequeño);";
+            string fondoCajas = "background-color: var(--fondoMinimo);";
 
             if (juego.Tipo == JuegoTipo.DLC)
             {
                 fondoCabecera = "background: color-mix(in srgb, var(--fondoOscuroTransparente), var(--fondoDlc) 70%);";
                 fondoBoton = "background: color-mix(in srgb, var(--fondoBotonPequeño) 70%, var(--fondoDlc));";
+                fondoCajas = "background: color-mix(in srgb, var(--fondoMinimo), var(--fondoDlc) 60%);";
             }
             else if (juego.Tipo == JuegoTipo.Music)
             {
                 fondoCabecera = "background: color-mix(in srgb, var(--fondoOscuroTransparente), var(--fondoBandaSonora));";
                 fondoBoton = "background: color-mix(in srgb, var(--fondoBotonPequeño) 70%, var(--fondoBandaSonora));";
+                fondoCajas = "background: color-mix(in srgb, var(--fondoMinimo), var(--fondoBandaSonora) 60%);";
             }
         }
 
@@ -163,58 +166,107 @@
                     </div>
                 </div>
 
-                <div style="text-align: right; padding: 10px 20px; display: flex; flex-direction: column; gap: 15px;">
-                    @if (juego.Analisis != null)
+                @{
+                    bool añadirDivAnalisisJugadores = false;
+
+                    if (juego.Analisis != null)
                     {
-                        @if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+                        if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                         {
-                            <div style="font-size: 14px; flex: 0 0 auto;">
-                                <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-reviews')">
-                                    <div style="display: flex; align-items: center; justify-content: right;">
-                                        @if (int.Parse(juego.Analisis.Porcentaje) > 74)
-                                        {
-                                            <img src="/imagenes/analisis/positive2.webp" class="juego-analisis-imagen" alt="Reviews" />
-                                        }
-
-                                        @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-                                        {
-                                            <img src="/imagenes/analisis/mixed2.webp" class="juego-analisis-imagen" alt="Reviews" />
-                                        }
-
-                                        @if (int.Parse(juego.Analisis.Porcentaje) < 50)
-                                        {
-                                            <img src="/imagenes/analisis/negative2.webp" class="juego-analisis-imagen" alt="Reviews" />
-                                        }
-
-                                        <div style="margin-left: 10px;">@juego.Analisis.Porcentaje% • @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)</div>
-                                    </div>
-
-                                    <div id="tooltip-reviews" class="tooltip-relleno">
-                                        <div style="margin: 8px;">@Idiomas.CogerCadena(idioma, "String2", "Game")</div>
-                                    </div>
-                                </div>
-                            </div>
+                            añadirDivAnalisisJugadores = true;
                         }
                     }
 
-                    @if (usuario != null)
+                    if (juego.Tipo == JuegoTipo.Game)
                     {
-                        if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                        if (juego.CantidadJugadores != null)
                         {
-                            if (juego.IdSteam > 0)
+                            if (juego.CantidadJugadores.Cantidad > -1)
                             {
-                                <div style="display: flex; align-items: center; justify-content: right; gap: 20px;">
-                                    <label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
-
-                                    @if (juego.IdSteam > 0)
-                                    {
-                                        <a class="juego-boton-pequeño" style="@fondoBoton" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
-                                    }
-                                </div>
+                                añadirDivAnalisisJugadores = true;
                             }
                         }
                     }
-                </div>
+
+                    if (añadirDivAnalisisJugadores == true)
+                    {
+                        <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-reviews')" style="padding: 10px 20px; display: flex; flex-direction: row; align-items: stretch; gap: 15px;">
+                            @if (juego.Analisis != null)
+                            {
+                                @if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+                                {
+                                    <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+                                        <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                            @if (int.Parse(juego.Analisis.Porcentaje) > 74)
+                                            {
+                                                <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                            }
+
+                                            @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
+                                            {
+                                                <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                            }
+
+                                            @if (int.Parse(juego.Analisis.Porcentaje) < 50)
+                                            {
+                                                <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                            }
+
+                                            <div style="font-size: 17px;">
+                                                @juego.Analisis.Porcentaje%
+                                            </div>
+                                        </div>
+
+                                        <div style="font-size: 14px;">
+                                            @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                            @if (juego.Tipo == JuegoTipo.Game)
+                            {
+                                if (juego.CantidadJugadores != null)
+                                {
+                                    if (juego.CantidadJugadores.Cantidad > -1)
+                                    {
+                                        <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px; min-height: 82px;">
+                                            <div style="font-size: 17px; text-align: center; line-height: 30px;">
+                                                @juego.CantidadJugadores.Cantidad.ToString("N0")
+                                            </div>
+
+                                            <div style="font-size: 14px;">
+                                                @Idiomas.CogerCadena(idioma, "String80", "Game")
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+
+                            @if (usuario != null)
+                            {
+                                if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                                {
+                                    if (juego.IdSteam > 0)
+                                    {
+                                        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: center;">
+                                            <label>@Idiomas.CogerCadena(idioma, "String1", "Game")</label>
+
+                                            @if (juego.IdSteam > 0)
+                                            {
+                                                <a class="juego-boton-pequeño" style="@fondoBoton" href="@EnlaceAcortador.Generar("https:store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            } 
+
+                            <div id="tooltip-reviews" class="tooltip-relleno">
+                                <div style="margin: 8px;">@Idiomas.CogerCadena(idioma, "String2", "Game")</div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
 
@@ -1649,6 +1701,13 @@
                                         {
                                             precioTexto = precioTexto + ".00";
                                         }
+                                        else
+                                        {
+                                            if (precioTexto.IndexOf(".") == precioTexto.Length - 2)
+                                            {
+                                                precioTexto = precioTexto + "0";
+                                            }
+                                        }
 
                                         precioTexto = precioTexto.Replace(".", ",");
                                         precioTexto = precioTexto + " €";
@@ -1795,6 +1854,36 @@
                         global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
                     }
                 }
+
+                //---------------------------
+
+                if (juego.Tipo == JuegoTipo.Game)
+                {
+                    bool actualizarCantidadJugadores = false;
+
+                    if (juego.CantidadJugadores == null)
+                    {
+                        actualizarCantidadJugadores = true;
+                    }
+                    else
+                    {
+                        if (juego.CantidadJugadores.Fecha.AddMinutes(5) < DateTime.Now)
+                        {
+                            actualizarCantidadJugadores = true;
+                        }
+                    }
+
+                    if (actualizarCantidadJugadores == true)
+                    {
+                        JuegoCantidadJugadoresSteam cantidadNueva = new JuegoCantidadJugadoresSteam();
+                        cantidadNueva.Cantidad = await APIs.Steam.Juego.CargarCantidadJugadores(juego.IdSteam.ToString());
+                        cantidadNueva.Fecha = DateTime.Now;
+
+                        juego.CantidadJugadores = cantidadNueva;
+
+                        global::BaseDatos.Juegos.Actualizar.CantidadJugadoresSteam(juego);
+                    }
+                } 
             }
 
             if (juego.IdGog > 0)

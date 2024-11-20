@@ -366,6 +366,18 @@ namespace BaseDatos.Juegos
             }
             catch { }
 
+			try
+			{
+				if (lector.IsDBNull(32) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(32)) == false)
+					{
+						juego.CantidadJugadores = JsonSerializer.Deserialize<JuegoCantidadJugadoresSteam>(lector.GetString(32));
+					}
+				}
+			}
+			catch { }
+
             return juego;
 		}
 

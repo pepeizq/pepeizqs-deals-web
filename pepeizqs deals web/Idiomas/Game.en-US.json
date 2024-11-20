@@ -5,7 +5,7 @@
   },
   {
     "Id": "String2",
-    "Valor": "Rating on Steam"
+    "Valor": "Data taken from Steam"
   },
   {
     "Id": "String3",
@@ -314,5 +314,9 @@
   {
     "Id": "String79",
     "Valor": "This game can only be run with a virtual reality device."
+  },
+  {
+    "Id": "String80",
+    "Valor": "in-game"
   }
 ]

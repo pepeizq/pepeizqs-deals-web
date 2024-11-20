@@ -9,34 +9,66 @@
   },
   {
     "Id": "String2",
-    "Valor": "Servidor • $286.20 / Cada 3 años (no incluye impuestos)"
+    "Valor": "Servidor • $286.20"
   },
   {
     "Id": "String3",
-    "Valor": "Pagado hasta 30/1/2027 hospedado en el hosting SmarterASP con la modalidad .NET Premium."
+    "Valor": "Pagado hasta {0} hospedado en el hosting SmarterASP con la modalidad .NET Premium."
   },
   {
     "Id": "String4",
-    "Valor": "Dominio • 70.95€ / Cada 5 años (no incluye impuestos)"
+    "Valor": "Dominio • 70.95€"
   },
   {
     "Id": "String5",
-    "Valor": "Pagado hasta 15/3/2028 en el hosting Webempresa."
+    "Valor": "Pagado hasta {0} en el hosting Webempresa."
   },
   {
     "Id": "String6",
-    "Valor": "SSL • $29 / Cada 1 año (no incluye impuestos)"
+    "Valor": "SSL • $29"
   },
   {
     "Id": "String7",
-    "Valor": "Pagado hasta 6/12/2024 en el hosting SmarterASP."
+    "Valor": "Pagado hasta {0} en el hosting SmarterASP."
   },
   {
     "Id": "String8",
-    "Valor": "Extra 1 Static IP • $24 / Cada 1 año (no incluye impuestos)"
+    "Valor": "Extra 1 Static IP • $24"
   },
   {
     "Id": "String9",
-    "Valor": "Pagado hasta 6/12/2024 en el hosting SmarterASP."
+    "Valor": "Pagado hasta {0} en el hosting SmarterASP."
+  },
+  {
+    "Id": "String10",
+    "Valor": "Se paga cada 3 años (incluye impuestos)."
+  },
+  {
+    "Id": "String11",
+    "Valor": "Se paga cada 5 años (no incluye impuestos)."
+  },
+  {
+    "Id": "String12",
+    "Valor": "Se paga cada 1 año (incluye impuestos)."
+  },
+  {
+    "Id": "String13",
+    "Valor": "Se paga cada 1 año (incluye impuestos)."
+  },
+  {
+    "Id": "String14",
+    "Valor": "Actualmente hay un saldo positivo de {0}€, cuando toque renovar los gastos de abajo se descontara del saldo."
+  },
+  {
+    "Id": "String15",
+    "Valor": "Actualmente hay un saldo negativo de {0}€, en cuanto haya un ingreso se cubrirá el balance negativo primero y cuando haya un balance positivo se usará para ampliar los tiempos de los gastos de abajo."
+  },
+  {
+    "Id": "String16",
+    "Valor": "Saldo actual"
+  },
+  {
+    "Id": "String17",
+    "Valor": "Gastos"
   }
 ]

@@ -281,6 +281,32 @@ namespace APIs.Steam
 			return null;
 		}
 
+		public static async Task<int> CargarCantidadJugadores(string id)
+		{
+			string html = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=" + id);
+		
+			if (string.IsNullOrEmpty(html) == false)
+			{
+				SteamCantidadJugadoresAPI api = null;
+
+				try
+				{
+					api = JsonSerializer.Deserialize<SteamCantidadJugadoresAPI>(html);
+				}
+				catch { }
+
+				if (api != null)
+				{
+					if (api.Datos != null)
+					{
+						return api.Datos.Cantidad;
+					}
+				}
+			}
+
+			return 0;
+		}
+
 		public static bool Detectar(string enlace)
 		{
 			bool resultado = false;
@@ -498,6 +524,22 @@ namespace APIs.Steam
 
 		[JsonPropertyName("loc_token")]
 		public string Token { get; set; }
+	}
+
+	#endregion
+
+	#region Clases Cantidad Jugadores
+
+	public class SteamCantidadJugadoresAPI
+	{
+		[JsonPropertyName("response")]
+		public SteamCantidadJugadoresAPIRespuesta Datos { get; set; }
+	}
+
+	public class SteamCantidadJugadoresAPIRespuesta
+	{
+		[JsonPropertyName("player_count")]
+		public int Cantidad { get; set; }
 	}
 
 	#endregion
