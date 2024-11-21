@@ -114,12 +114,12 @@ builder.Services.Configure<HostOptions>(opciones =>
 builder.Services.AddSingleton<Tareas.Minimos>();
 builder.Services.AddSingleton<Tareas.Pings>();
 builder.Services.AddSingleton<Tareas.Divisas>();
-builder.Services.AddSingleton<Tareas.Sorteos>();
 builder.Services.AddSingleton<Tareas.CorreosDeals>();
 builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.LimpiarMinimos>();
+builder.Services.AddSingleton<Tareas.Patreon>();
 
 builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
 builder.Services.AddSingleton<Tareas.Tiendas.HumbleStore>();
@@ -153,12 +153,12 @@ builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Sorteos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosDeals>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.LimpiarMinimos>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Patreon>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.HumbleStore>());

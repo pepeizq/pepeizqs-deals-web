@@ -1,6 +1,9 @@
 ﻿
 <div style="display: flex; align-items: center; justify-content: center; font-size: @tamañoFuente; text-align: center; gap: 12px;">
     <div>
+        <a href="@patreon" target="_blank"><i class="fa-brands fa-patreon"></i></a>
+    </div>
+    <div>
         <a href="@discord" target="_blank"><i class="fa-brands fa-discord"></i></a>
     </div>
     <div>
@@ -33,6 +36,7 @@
     [Parameter]
     public string tamañoFuente { get; set; }
 
+    private string patreon = string.Empty;
     private string discord = string.Empty;
     private string telegram = string.Empty;
     private string reddit = string.Empty;
@@ -44,6 +48,7 @@
     protected override void OnInitialized()
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        patreon = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
         discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
         telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
         reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");

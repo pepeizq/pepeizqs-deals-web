@@ -1,8 +1,6 @@
 ﻿#nullable disable
 
-using AngleSharp.Dom;
 using Herramientas;
-using System.Net.Http;
 
 namespace Tareas
 {

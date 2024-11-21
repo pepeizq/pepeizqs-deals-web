@@ -45,6 +45,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Patreon.Net" Version="1.0.2" />
     <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="7.3.1" />

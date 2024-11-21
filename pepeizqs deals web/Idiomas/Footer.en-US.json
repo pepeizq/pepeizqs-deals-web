@@ -30,9 +30,5 @@
   {
     "Id": "CostWeb",
     "Valor": "Cost of maintaining this website"
-  },
-  {
-    "Id": "Donations",
-    "Valor": "Donations"
   }
 ]

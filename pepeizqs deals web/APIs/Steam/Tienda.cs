@@ -3,6 +3,7 @@
 //https://store.steampowered.com/saleaction/ajaxgetdeckappcompatibilityreport?nAppID=1868140&l=spanish&cc=ES
 //https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=730
 //https://api.steampowered.com/IStoreService/GetAppList/v1/?key=[devkey]&max_results=50000
+//https://store.steampowered.com/appreviews/730?json=1
 
 #nullable disable
 

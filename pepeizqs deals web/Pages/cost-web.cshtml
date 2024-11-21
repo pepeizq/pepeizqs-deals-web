@@ -7,10 +7,6 @@
 }
 
 <div style="display: flex; flex-direction: column; gap: 20px;">
-	<div style="font-size: 22px; text-align: left;">
-		@Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "CostWeb")
-	</div>
-
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 		@Herramientas.Idiomas.CogerCadena(Model.idioma, "String1", "CostWeb")
 	</div>
@@ -26,12 +22,10 @@
 			if (saldo >= 0)
 			{
 				@string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String14", "CostWeb"), saldo.ToString().Replace(".", ","))
-				;
 			}
 			else
 			{
 				@string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String15", "CostWeb"), saldo.ToString().Replace(".", ","))
-				;
 			}
 		}
 	</div>
