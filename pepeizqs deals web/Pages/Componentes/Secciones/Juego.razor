@@ -254,7 +254,7 @@
 
                                             @if (juego.IdSteam > 0)
                                             {
-                                                <a class="juego-boton-pequeño" style="@fondoBoton" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank">Steam</a>
+                                                <a class="juego-boton-pequeño" style="@fondoBoton" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), APIs.Steam.Tienda.Generar().Id, usuarioPatreon)" target="_blank">Steam</a>
                                             }
                                         </div>
                                     }
@@ -727,7 +727,7 @@
                                             {
                                                 if (juego.IdSteam > 0)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), "steam")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), APIs.Steam.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
                                                         @string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Steam")
                                                     </a>
                                                 }
@@ -737,7 +737,7 @@
                                             {
                                                 if (string.IsNullOrEmpty(juego.SlugGOG) == false)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, "gog")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, APIs.GOG.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
                                                         @string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "GOG")
                                                     </a>
                                                 }
@@ -747,7 +747,7 @@
                                             {
                                                 if (string.IsNullOrEmpty(juego.SlugEpic) == false)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, "epicgamesstore")" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, APIs.EpicGames.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
                                                         @string.Format("{0} {1}", Herramientas.Idiomas.CogerCadena(idioma, "String1", "Game"), "Epic Games")
                                                     </a>
                                                 }
@@ -771,7 +771,7 @@
 
                                             if (precio.Descuento > descuentoMaximo - (descuentoMaximo / 2))
                                             {
-                                                <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda)" target="_blank">
+                                                <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda, usuarioPatreon)" target="_blank">
                                                     <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px;">
                                                         <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
                                                         <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
@@ -836,7 +836,7 @@
                                             {
                                                 foreach (var precioBajo in preciosBajos)
                                                 {
-                                                    <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precioBajo.Enlace, precioBajo.Tienda)" target="_blank">
+                                                    <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precioBajo.Enlace, precioBajo.Tienda, usuarioPatreon)" target="_blank">
                                                         <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px;">
                                                             <img src="@SacarImagenTienda(precioBajo.Tienda)" class="juego-imagen-boton" alt="@precioBajo.Tienda" />
                                                             <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precioBajo.Nombre)</span>
@@ -896,7 +896,7 @@
 
                             if (bundle3 != null)
                             {
-                                <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
+                                <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
                                     <div style="display: flex; align-items: center;">
                                         <div style="margin-right: 15px;">
                                             <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
@@ -981,7 +981,7 @@
 
                     @foreach (var gratis2 in GratisDisponibles(juego.Gratis))
                     {
-                        <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; width: 100%; display: block;">
+                        <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; width: 100%; display: block;">
                             <div style="display: flex; align-items: center;">
                                 <div style="margin-right: 15px;">
                                     <img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
@@ -1068,7 +1068,7 @@
                                 enlace = suscripcionUsar.Enlace;
                             }
 
-                            enlace = EnlaceAcortador.Generar(enlace, suscripcion2.Tipo);
+                            enlace = EnlaceAcortador.Generar(enlace, suscripcion2.Tipo, usuarioPatreon);
 
                             <a class="juego-boton-pequeño" href="@enlace" target="_blank" style="font-size: 16px; padding: 20px 25px; cursor: pointer; display: block;">
                                 <div style="display: flex; align-items: center;">
@@ -1495,14 +1495,14 @@
                     </button>
 
                     <div style="display: flex; align-items: center; flex-direction: row;">
-                        <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" style="width: auto;" target="_blank">
+                        <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo, usuarioPatreon)" style="width: auto;" target="_blank">
                             <div style="height: 60px; padding-left: 40px; padding-right: 20px;">
                                 <img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
                             </div>
                         </a>
 
                         <div style="padding-left: 20px; padding-right: 20px;">
-                            <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
+                            <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo, usuarioPatreon)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
                                 @bundleSeleccionado.NombreBundle
                             </a>
 
@@ -1519,7 +1519,7 @@
 
                 @if (DateTime.Today < bundleSeleccionado.FechaTermina)
                 {
-                    <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
+                    <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
                         @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Bundle")
                     </a>
                 }
@@ -1780,6 +1780,7 @@
     public string usuarioId { get; set; }
 
     private Usuario usuario = new Usuario();
+    private bool usuarioPatreon = false;
 
     [Parameter]
     public Juegos.Juego juego { get; set; }
@@ -1795,6 +1796,11 @@
     protected override async Task OnInitializedAsync()
     {
         usuario = await UserManager.FindByIdAsync(usuarioId);
+
+        if (usuario != null)
+        {
+            usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+        }
 
         if (juego != null)
         {

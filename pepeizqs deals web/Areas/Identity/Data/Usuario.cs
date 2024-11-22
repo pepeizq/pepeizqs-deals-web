@@ -148,5 +148,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(50)")]
 	public string? Language { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? PatreonLastCheck { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(128)")]
+	public string? PatreonMail { get; set; }
 }
 

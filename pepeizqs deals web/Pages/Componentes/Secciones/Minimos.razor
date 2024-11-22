@@ -83,7 +83,7 @@
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: -25px;">
 			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
 				<ItemContent>
-					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario.SteamWishlist" usuarioDeseadosWeb="@usuario.Wishlist" tipo="ResultadoJuego.Tipo.MinimosHistoricos"/>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario.SteamWishlist" usuarioDeseadosWeb="@usuario.Wishlist" tipo="ResultadoJuego.Tipo.MinimosHistoricos" usuarioPatreon="@usuarioPatreon"/>
 				</ItemContent>
 			</Virtualize>
 		</div>
@@ -125,7 +125,7 @@
 				<div style="padding-bottom: 15px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "String12", "HistoricalLows")
 				</div>
-		
+
 				<div style="display: flex; align-items: center;">
 					<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
 
@@ -280,6 +280,7 @@
 	public string usuarioId { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private bool usuarioPatreon = false;
 
 	private List<Juegos.Juego> juegosGestor = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosMostrar = new List<Juegos.Juego>();
@@ -300,6 +301,8 @@
 			{
 				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
 			}
+
+			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
 
 			#region Filtrado
 

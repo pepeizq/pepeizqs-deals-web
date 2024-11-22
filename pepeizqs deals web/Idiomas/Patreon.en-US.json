@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "Title",
+    "Valor": "Patreon"
+  },
+  {
+    "Id": "String1",
+    "Valor": "To help me with the monetary cost of maintaining this website, I have developed a series of perks for users who support me through Patreon. If you want to access the perks, you must pay the lowest tier each month."
+  },
+  {
+    "Id": "String2",
+    "Valor": "Advantages of paying monthly on Patreon"
+  },
+  {
+    "Id": "String3",
+    "Valor": "Navigation without affiliates"
+  },
+  {
+    "Id": "String4",
+    "Valor": "You can freely browse the website without affiliates being embedded in the links to deals, bundles or free games."
+  }
+]

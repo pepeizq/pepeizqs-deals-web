@@ -2,6 +2,8 @@
 
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using pepeizqs_deals_web.Areas.Identity.Data;
+using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 
 namespace BaseDatos.Usuarios
 {
@@ -52,7 +54,130 @@ namespace BaseDatos.Usuarios
                 }
             }
         }
-    }
+
+        public static void PatreonComprobacion(string correoBuscar, DateTime fechaActualizar, SqlConnection conexion = null)
+        {
+            if (conexion == null)
+            {
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+            else
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                {
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+            }
+
+            string id = null;
+
+			string busqueda = "SELECT Id FROM AspNetUsers WHERE Email=@Email OR PatreonMail=@PatreonMail";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@Email", correoBuscar);
+				comando.Parameters.AddWithValue("@PatreonMail", correoBuscar);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(0) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+							{
+                                id = lector.GetString(0);	
+							}
+						}
+					}
+				}
+			}
+
+            if (string.IsNullOrEmpty(id) == false)
+            {
+				string sqlActualizar = "UPDATE AspNetUsers " +
+					"SET PatreonLastCheck=@PatreonLastCheck WHERE Id=@Id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@Id", id);
+					comando.Parameters.AddWithValue("@PatreonLastCheck", fechaActualizar);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
+
+		public static bool PatreonCorreo(string usuarioId, string correoNuevo, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string id = null;
+
+			string busqueda = "SELECT Id FROM AspNetUsers WHERE Email=@Email OR PatreonMail=@PatreonMail";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@Email", correoNuevo);
+				comando.Parameters.AddWithValue("@PatreonMail", correoNuevo);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(0) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+							{
+								id = lector.GetString(0);
+							}
+						}
+					}
+				}
+			}
+
+			if (string.IsNullOrEmpty(id) == true)
+			{
+				string sqlActualizar = "UPDATE AspNetUsers " +
+					"SET PatreonMail=@PatreonMail WHERE Id=@Id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@Id", usuarioId);
+					comando.Parameters.AddWithValue("@PatreonMail", correoNuevo);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+						return false;
+					}
+					catch
+					{
+
+					}
+				}
+			}
+
+			return true;
+		}
+	}
 
     public class Clave
     {

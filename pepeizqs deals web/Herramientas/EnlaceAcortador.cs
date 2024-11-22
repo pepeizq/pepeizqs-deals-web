@@ -57,75 +57,95 @@ namespace Herramientas
 
 		private static string dominio = "https://pepeizqdeals.com";
 
-		public static string Generar(string enlace, string tienda = null)
+		public static string Generar(string enlace, string tienda = null, bool usuarioPatreon = false)
 		{
-			if (tienda != null)
+			bool usarReferido = true;
+
+			if (usuarioPatreon == true)
 			{
-				if (tienda == APIs.Steam.Tienda.Generar().Id)
-				{
-					enlace = APIs.Steam.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.GamersGate.Tienda.Generar().Id)
-				{
-					enlace = APIs.GamersGate.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.Humble.Tienda.Generar().Id || tienda == APIs.Humble.Tienda.GenerarChoice().Id)
-                {
-                    enlace = APIs.Humble.Tienda.Referido(enlace);
-                }
-				else if (tienda == APIs.Gamesplanet.Tienda.GenerarUk().Id ||
-					tienda == APIs.Gamesplanet.Tienda.GenerarFr().Id || 
-					tienda == APIs.Gamesplanet.Tienda.GenerarDe().Id || 
-					tienda == APIs.Gamesplanet.Tienda.GenerarUs().Id)
-				{
-					enlace = APIs.Gamesplanet.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.Fanatical.Tienda.Generar().Id)
-				{
-					enlace = APIs.Fanatical.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.GreenManGaming.Tienda.Generar().Id)
-				{
-					enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.IndieGala.Tienda.Generar().Id)
-				{
-					enlace = APIs.IndieGala.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.WinGameStore.Tienda.Generar().Id)
-				{
-					enlace = APIs.WinGameStore.Tienda.Referido(enlace);
-				}
-				else if (tienda == APIs.DLGamer.Tienda.Generar().Id)
-				{
-					enlace = APIs.DLGamer.Tienda.Referido(enlace);
-				}
-                else if (tienda == APIs.JoyBuggy.Tienda.Generar().Id)
-                {
-                    enlace = APIs.JoyBuggy.Tienda.Referido(enlace);
-                }
-                else if (tienda == APIs._2Game.Tienda.Generar().Id)
-                {
-                    enlace = APIs._2Game.Tienda.Referido(enlace);
-                }
-				else if (tienda == APIs.GameBillet.Tienda.Generar().Id)
-				{
-					enlace = APIs.GameBillet.Tienda.Referido(enlace);
-				}
+				usarReferido = false;
 			}
 
+			if (usarReferido == true)
+			{
+				if (tienda != null)
+				{
+					if (tienda == APIs.Steam.Tienda.Generar().Id)
+					{
+						enlace = APIs.Steam.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.GamersGate.Tienda.Generar().Id)
+					{
+						enlace = APIs.GamersGate.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.Humble.Tienda.Generar().Id || tienda == APIs.Humble.Tienda.GenerarChoice().Id)
+					{
+						enlace = APIs.Humble.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.Gamesplanet.Tienda.GenerarUk().Id ||
+						tienda == APIs.Gamesplanet.Tienda.GenerarFr().Id ||
+						tienda == APIs.Gamesplanet.Tienda.GenerarDe().Id ||
+						tienda == APIs.Gamesplanet.Tienda.GenerarUs().Id)
+					{
+						enlace = APIs.Gamesplanet.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.Fanatical.Tienda.Generar().Id)
+					{
+						enlace = APIs.Fanatical.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.GreenManGaming.Tienda.Generar().Id)
+					{
+						enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.IndieGala.Tienda.Generar().Id)
+					{
+						enlace = APIs.IndieGala.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.WinGameStore.Tienda.Generar().Id)
+					{
+						enlace = APIs.WinGameStore.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.DLGamer.Tienda.Generar().Id)
+					{
+						enlace = APIs.DLGamer.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.JoyBuggy.Tienda.Generar().Id)
+					{
+						enlace = APIs.JoyBuggy.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs._2Game.Tienda.Generar().Id)
+					{
+						enlace = APIs._2Game.Tienda.Referido(enlace);
+					}
+					else if (tienda == APIs.GameBillet.Tienda.Generar().Id)
+					{
+						enlace = APIs.GameBillet.Tienda.Referido(enlace);
+					}
+				}
+			}
+			
 			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
-		public static string Generar(string enlace, BundleTipo tipo)
+		public static string Generar(string enlace, BundleTipo tipo, bool usuarioPatreon = false)
 		{
-			if (tipo == BundleTipo.HumbleBundle)
+			bool usarReferido = true;
+
+			if (usuarioPatreon == true)
 			{
-				enlace = APIs.Humble.Bundle.Referido(enlace);
+				usarReferido = false;
 			}
-			else if (tipo == BundleTipo.Fanatical)
+
+			if (usarReferido == true)
 			{
-				enlace = APIs.Fanatical.Bundle.Referido(enlace);
+				if (tipo == BundleTipo.HumbleBundle)
+				{
+					enlace = APIs.Humble.Bundle.Referido(enlace);
+				}
+				else if (tipo == BundleTipo.Fanatical)
+				{
+					enlace = APIs.Fanatical.Bundle.Referido(enlace);
+				}
 			}
 
 			//----------------------------------------
@@ -133,35 +153,55 @@ namespace Herramientas
 			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
-		public static string Generar(string enlace, GratisTipo tipo)
+		public static string Generar(string enlace, GratisTipo tipo, bool usuarioPatreon = false)
 		{
-            if (tipo == APIs.Steam.Gratis.Generar().Tipo)
-            {
-                enlace = APIs.Steam.Gratis.Referido(enlace);
-            }
-			else if (tipo == APIs.Fanatical.Gratis.Generar().Tipo)
-            {
-                enlace = APIs.Fanatical.Gratis.Referido(enlace);
-            }
-            else if (tipo == APIs.Humble.Gratis.Generar().Tipo)
-            {
-                enlace = APIs.Humble.Gratis.Referido(enlace);
-            }
-            else if (tipo == APIs.IndieGala.Gratis.Generar().Tipo)
-            {
-                enlace = APIs.IndieGala.Gratis.Referido(enlace);
-            }
+			bool usarReferido = true;
+
+			if (usuarioPatreon == true)
+			{
+				usarReferido = false;
+			}
+
+			if (usarReferido == true)
+			{
+				if (tipo == APIs.Steam.Gratis.Generar().Tipo)
+				{
+					enlace = APIs.Steam.Gratis.Referido(enlace);
+				}
+				else if (tipo == APIs.Fanatical.Gratis.Generar().Tipo)
+				{
+					enlace = APIs.Fanatical.Gratis.Referido(enlace);
+				}
+				else if (tipo == APIs.Humble.Gratis.Generar().Tipo)
+				{
+					enlace = APIs.Humble.Gratis.Referido(enlace);
+				}
+				else if (tipo == APIs.IndieGala.Gratis.Generar().Tipo)
+				{
+					enlace = APIs.IndieGala.Gratis.Referido(enlace);
+				}
+			}
 
 			//----------------------------------------
 
 			return dominio + "/link/" + AcortarEnlace(enlace) + "/";
 		}
 
-		public static string Generar(string enlace, SuscripcionTipo tipo)
+		public static string Generar(string enlace, SuscripcionTipo tipo, bool usuarioPatreon = false)
 		{
-			if (tipo == SuscripcionTipo.HumbleChoice)
+			bool usarReferido = true;
+
+			if (usuarioPatreon == true)
 			{
-				enlace = APIs.Humble.Suscripcion.Referido(enlace);
+				usarReferido = false;
+			}
+
+			if (usarReferido == true)
+			{
+				if (tipo == SuscripcionTipo.HumbleChoice)
+				{
+					enlace = APIs.Humble.Suscripcion.Referido(enlace);
+				}
 			}
 
 			//----------------------------------------

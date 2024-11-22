@@ -29,10 +29,13 @@ namespace Herramientas
 					{
 						foreach (var usuario in usuarios.Resources)
 						{
-							if (string.IsNullOrEmpty(usuario.Email) == false)
+							if (usuario.PatronStatus == Member.PatronStatusValue.ActivePatron)
 							{
-
-							}
+								if (string.IsNullOrEmpty(usuario.Email) == false)
+								{
+									global::BaseDatos.Usuarios.Actualizar.PatreonComprobacion(usuario.Email, DateTime.Now);
+								}
+							}	
 						}
 
 						string siguientePagina = usuarios.Meta.Pagination.Cursor?.Next;
@@ -51,6 +54,19 @@ namespace Herramientas
 			}
 
 			cliente.Dispose();
+		}
+
+		public static bool VerificarComprobacion(DateTime? ultimoRegistro)
+		{
+			if (ultimoRegistro != null)
+			{
+				if (ultimoRegistro + TimeSpan.FromDays(1) > DateTime.Now)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

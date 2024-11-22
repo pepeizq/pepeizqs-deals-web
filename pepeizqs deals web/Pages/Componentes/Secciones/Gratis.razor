@@ -121,7 +121,7 @@
                     </div>
                 </div>
 
-                <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo)" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor" target="_blank">
+                <a href="@Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo, usuarioPatreon)" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor" target="_blank">
                     <div style="width: 100%; text-align: center; padding: 5px;">
                         <img src="@juego.Imagen" style="max-width: 100%; height: 100%;" alt="@juego.Nombre" />
 
@@ -269,6 +269,7 @@
     public string usuarioId { get; set; }
 
     private Usuario usuario = new Usuario();
+    private bool usuarioPatreon = false;
 
     private List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
     private List<Gratis2.GratisComponente> gratisPasados = new List<Gratis2.GratisComponente>();
@@ -288,6 +289,8 @@
             {
                 juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
             }
+
+            usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
         }
 
         //--------------------------------------------------------------------

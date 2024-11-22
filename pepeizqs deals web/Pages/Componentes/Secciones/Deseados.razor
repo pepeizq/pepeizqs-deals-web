@@ -138,7 +138,7 @@
 					<Virtualize Context="juego" Items="deseadosMostrar" ItemSize="alturaFila">
 						<ItemContent>
 							<div style="margin: 20px 0px;">
-								<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda)" target="_blank">
+								<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda, usuarioPatreon)" target="_blank">
 									<div style="display: flex; align-items: center;">
 										<div class="deseado-imagen">
 											<img src="@juego.Imagen" style="height: 100%; width: 100%;" />
@@ -290,6 +290,7 @@
 	public string usuarioId { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private bool usuarioPatreon = false;
 
 	private List<JuegoDeseadoMostrar> deseadosGestor = new List<JuegoDeseadoMostrar>();
 	private List<JuegoDeseadoMostrar> deseadosMostrar = new List<JuegoDeseadoMostrar>();
@@ -311,6 +312,8 @@
 
 		if (usuario != null)
 		{
+			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+
 			deseadosGestor = new List<JuegoDeseadoMostrar>();
 
 			#region Filtrado

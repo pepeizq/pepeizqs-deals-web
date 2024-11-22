@@ -2,20 +2,20 @@
 
 <style>
     .boton-pestañas {
-        color: var(--colorTexto);
-        background: transparent;
-        text-align: center;
-        border: 0;
-        width: 100%;
-        transition: transform .2s;
-        font-size: 17px;
-        padding: 10px;
+    color: var(--colorTexto);
+    background: transparent;
+    text-align: center;
+    border: 0;
+    width: 100%;
+    transition: transform .2s;
+    font-size: 17px;
+    padding: 10px;
     }
 
-        .boton-pestañas:hover {
-            color: var(--colorTextoHover);
-            transform: scale(1.01);
-        }
+    .boton-pestañas:hover {
+    color: var(--colorTextoHover);
+    transform: scale(1.01);
+    }
 </style>
 
 <div style="max-width: 1000px; margin: auto;">
@@ -42,6 +42,10 @@
                 </button>
 
                 <hr style="width: 100%;" />
+
+                <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas" style="@estiloPatreon;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "String8", "Account")
+                </button>
 
                 <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas" style="@estiloSteam;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Account")
@@ -72,6 +76,11 @@
             @if (mostrarDatosPersonales == true)
             {
                 <DatosPersonales idioma="@idioma" />
+            }
+
+            @if (mostrarPatreon == true)
+            {
+                <Patreon idioma="@idioma" />
             }
 
             @if (mostrarSteam == true)
@@ -109,6 +118,7 @@
         mostrarContraseña = false;
         mostrarNotificaciones = false;
         mostrarDatosPersonales = false;
+        mostrarPatreon = false;
         mostrarSteam = false;
         mostrarClaves = false;
 
@@ -116,6 +126,7 @@
         estiloContraseña = null;
         estiloNotificaciones = null;
         estiloDatosPersonales = null;
+        estiloPatreon = null;
         estiloSteam = null;
         estiloClaves = null;
     }
@@ -158,6 +169,16 @@
         CerrarPestañas();
         mostrarDatosPersonales = true;
         estiloDatosPersonales = fondo;
+    }
+
+    private bool mostrarPatreon = false;
+    private string estiloPatreon = null;
+
+    private void MostrarPatreon(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarPatreon = true;
+        estiloPatreon = fondo;
     }
 
     private bool mostrarSteam = false;

@@ -32,6 +32,10 @@
     "Valor": "Datos Personales"
   },
   {
+    "Id": "String8",
+    "Valor": "Patreon"
+  },
+  {
     "Id": "Mail1",
     "Valor": "Correo Actual"
   },
@@ -262,5 +266,33 @@
   {
     "Id": "PersonalData9",
     "Valor": "Borrar cuenta"
+  },
+  {
+    "Id": "Patreon1",
+    "Valor": "Gracias por ayudarme económicamente a mantener esta web, puedes ver la serie de ventajas de que dispones aquí:"
+  },
+  {
+    "Id": "Patreon2",
+    "Valor": "Puedes ayudarme económicamente a mantener esta web a través de Patreon, aquí tienes información de como hacerlo y aparte puedes ver la serie de ventajas que dispondrás si lo haces:"
+  },
+  {
+    "Id": "Patreon3",
+    "Valor": "Correo de Patreon"
+  },
+  {
+    "Id": "Patreon4",
+    "Valor": "En caso de que uses un correo diferente para Patreon puedes ponerlo aquí:"
+  },
+  {
+    "Id": "Patreon5",
+    "Valor": "Introduce tu correo"
+  },
+  {
+    "Id": "Patreon6",
+    "Valor": "Ese correo esta asociado a otra cuenta."
+  },
+  {
+    "Id": "Patreon7",
+    "Valor": "La web verifica automáticamente cada 6 horas los usuarios de Patreon, así que si decides ayudarme económicamente tendrás que esperar unas horas para recibir las ventajas."
   }
 ]

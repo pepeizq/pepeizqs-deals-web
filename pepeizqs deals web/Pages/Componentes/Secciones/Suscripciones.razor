@@ -331,7 +331,7 @@ else
 
         @if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
         {
-            <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
+            <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
                 @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Subscriptions")
             </a>
         }
@@ -345,11 +345,11 @@ else
             <Virtualize Context="juego" Items="suscripcionSeleccionadaJuegosMostrar" ItemSize="107">
                 <ItemContent>
                     @{
-                        string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo);
+                        string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo, usuarioPatreon);
 
                         if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
                         {
-                            enlace = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id);
+                            enlace = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon);
                         }
                     }
 
@@ -382,6 +382,7 @@ else
     public string usuarioId { get; set; }
 
     private Usuario usuario = new Usuario();
+    private bool usuarioPatreon = false;
 
     private List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
     private List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
@@ -398,6 +399,8 @@ else
             {
                 juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
             }
+
+            usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
         }
 
         //--------------------------------------------------------------------

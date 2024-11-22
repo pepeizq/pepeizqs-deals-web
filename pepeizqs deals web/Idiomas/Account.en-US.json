@@ -32,6 +32,10 @@
     "Valor": "Personal Data"
   },
   {
+    "Id": "String8",
+    "Valor": "Patreon"
+  },
+  {
     "Id": "Mail1",
     "Valor": "Current Email"
   },
@@ -262,5 +266,33 @@
   {
     "Id": "PersonalData9",
     "Valor": "Delete account"
+  },
+  {
+    "Id": "Patreon1",
+    "Valor": "Thank you for helping me financially to maintain this website, you can see the series of advantages available to you here:"
+  },
+  {
+    "Id": "Patreon2",
+    "Valor": "You can help me financially maintain this website through Patreon, here you have information on how to do it and you can also see the series of advantages that you will have if you do so:"
+  },
+  {
+    "Id": "Patreon3",
+    "Valor": "Patreon Mail"
+  },
+  {
+    "Id": "Patreon4",
+    "Valor": "In case you use a different email for Patreon you can put it here:"
+  },
+  {
+    "Id": "Patreon5",
+    "Valor": "Enter your email"
+  },
+  {
+    "Id": "Patreon6",
+    "Valor": "That email is associated with another account."
+  },
+  {
+    "Id": "Patreon7",
+    "Valor": "The site automatically verifies Patreon users every 6 hours, so if you decide to support me financially you will have to wait a few hours to receive the benefits."
   }
 ]

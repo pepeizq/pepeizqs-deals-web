@@ -96,7 +96,7 @@
 		}
 		else
 		{
-			enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda);
+			enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda, usuarioPatreon);
 			enlaceNuevaPestaña = "_blank";
 		}	
 
@@ -357,6 +357,9 @@
 
 	[Parameter]
 	public string usuarioDeseadosWeb { get; set; }
+
+	[Parameter]
+	public bool usuarioPatreon { get; set; }
 
 	[Parameter]
 	public Juego juego { get; set; }

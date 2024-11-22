@@ -77,7 +77,7 @@ namespace BaseDatos.Usuarios
 
 				using (conexion)
 				{
-					string busqueda = "SELECT * FROM AspNetUsers WHERE Id=@Id";
+					string busqueda = "SELECT NotificationLows, EmailConfirmed, SteamGames, SteamWishlist, Email, Wishlist FROM AspNetUsers WHERE Id=@Id";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
@@ -92,18 +92,18 @@ namespace BaseDatos.Usuarios
 								bool steam = true;
                             
                                 //Enseñar Notificaciones Minimos
-                                if (lector.IsDBNull(25) == false)
+                                if (lector.IsDBNull(0) == false)
 								{
-									if (lector.GetBoolean(25) == true)
+									if (lector.GetBoolean(0) == true)
 									{
 										notificaciones = true;
 									}
 								}
 
                                 //Correo Confirmado
-                                if (lector.IsDBNull(10) == false)
+                                if (lector.IsDBNull(1) == false)
 								{
-									if (lector.GetBoolean(10) == true)
+									if (lector.GetBoolean(1) == true)
 									{
 										correo = true;
                                     }
@@ -114,13 +114,13 @@ namespace BaseDatos.Usuarios
 								{
                                     if (drm == JuegoDRM.Steam)
                                     {
-                                        if (lector.IsDBNull(4) == false)
+                                        if (lector.IsDBNull(2) == false)
                                         {
 											string tempSteam = string.Empty;
 
 											try
 											{
-												tempSteam = lector.GetString(4);
+												tempSteam = lector.GetString(2);
 											}
 											catch { }
 
@@ -149,11 +149,11 @@ namespace BaseDatos.Usuarios
                                 if (correo == true && notificaciones == true && steam == true)
 								{
 									//Deseados Steam
-									if (drm == JuegoDRM.Steam && lector.IsDBNull(5) == false)
+									if (drm == JuegoDRM.Steam && lector.IsDBNull(3) == false)
 									{
-										if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+										if (string.IsNullOrEmpty(lector.GetString(3)) == false)
 										{
-											List<string> deseadosSteam = Listados.Generar(lector.GetString(5));
+											List<string> deseadosSteam = Listados.Generar(lector.GetString(3));
 
 											if (deseadosSteam.Count > 0)
 											{
@@ -162,11 +162,11 @@ namespace BaseDatos.Usuarios
 													if (juegoIdSteam.ToString() == deseadoSteam)
 													{
 														//Correo
-														if (lector.IsDBNull(8) == false)
+														if (lector.IsDBNull(4) == false)
 														{
-															if (string.IsNullOrEmpty(lector.GetString(8)) == false)
+															if (string.IsNullOrEmpty(lector.GetString(4)) == false)
 															{
-																return lector.GetString(8);
+																return lector.GetString(4);
 															}
 														}
 													}
@@ -176,11 +176,11 @@ namespace BaseDatos.Usuarios
 									}
 
 									//Deseados Web
-									if (lector.IsDBNull(20) == false)
+									if (lector.IsDBNull(5) == false)
 									{
-										if (string.IsNullOrEmpty(lector.GetString(20)) == false)
+										if (string.IsNullOrEmpty(lector.GetString(5)) == false)
 										{
-											string deseadosTexto = lector.GetString(20);
+											string deseadosTexto = lector.GetString(5);
 											List<JuegoDeseado> deseados = null;
                                           
                                             try
@@ -198,11 +198,11 @@ namespace BaseDatos.Usuarios
 														if (deseado.IdBaseDatos == juegoId && deseado.DRM == drm)
 														{
 															//Correo
-															if (lector.IsDBNull(8) == false)
+															if (lector.IsDBNull(4) == false)
 															{
-																if (string.IsNullOrEmpty(lector.GetString(8)) == false)
+																if (string.IsNullOrEmpty(lector.GetString(4)) == false)
 																{
-																	return lector.GetString(8);
+																	return lector.GetString(4);
 																}
 															}
 														}
@@ -227,7 +227,7 @@ namespace BaseDatos.Usuarios
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM AspNetUsers WHERE SteamId=@SteamId";
+				string busqueda = "SELECT Id FROM AspNetUsers WHERE SteamId=@SteamId";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

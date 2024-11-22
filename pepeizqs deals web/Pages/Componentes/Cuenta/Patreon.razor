@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using System.Net.Mail
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario != null)
+{
+    if (Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
+    {
+        <div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
+            <div style="display: flex; align-items: center; gap: 25px;">
+                <i class="fa-solid fa-check" style="font-size: 25px;"></i>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon1", "Account")</label>
+
+                    <div>
+                        <a href="/patreon">https://pepeizqdeals.com/patreon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
+                <div style="display: flex; align-items: center; gap: 25px;">
+                    <i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon2", "Account")</label>
+
+                        <div>
+                            <a href="/patreon">https://pepeizqdeals.com/patreon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
+                <label style="margin-left: 5px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon3", "Account")</label>
+                <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon4", "Account")</label>
+
+                <input value="@correoAlternativo" @onchange="@(e => CambiarCorreo(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Patreon5", "Account")" />
+            
+                @if (string.IsNullOrEmpty(correoAlternativo) == false && correoUsado == true)
+                {
+                    <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon6", "Account")</label>
+                }
+            </div>
+
+            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+                <div style="display: flex; align-items: center; gap: 25px;">
+                    <i class="fa-solid fa-info-circle" style="font-size: 25px;"></i>
+
+                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon7", "Account")</label>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private string correoAlternativo = null;
+    private bool correoUsado = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(usuario.PatreonMail) == false)
+            {
+                correoAlternativo = usuario.PatreonMail;
+            }
+        }
+    }
+
+    private void CambiarCorreo(ChangeEventArgs texto)
+    {
+        correoAlternativo = texto.Value.ToString();
+
+        if (string.IsNullOrEmpty(correoAlternativo) == false)
+        {
+            bool correoValido = true;
+
+            try
+            {
+                MailAddress comprobar = new MailAddress(correoAlternativo);
+            }
+            catch
+            {
+                correoValido = false;
+            }
+
+            if (correoValido == true)
+            {
+                correoUsado = BaseDatos.Usuarios.Actualizar.PatreonCorreo(usuario.Id, correoAlternativo);
+            }
+        }
+    }
+}

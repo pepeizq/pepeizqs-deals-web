@@ -35,14 +35,14 @@
 		<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
 				<div style="display: flex; align-items: center; flex-direction: row;">
-					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" style="width: auto;" target="_blank">
+					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" style="width: auto;" target="_blank">
 						<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
 							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).ImagenTienda" style="height: 100%;" alt="@bundle.NombreBundle" />
 						</div>
 					</a>
 
 					<div style="padding-left: 20px; padding-right: 20px;">
-						<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
+						<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="background-color: transparent; padding: 0px; font-size: 20px; margin-bottom: 10px;" target="_blank">
 							@bundle.NombreBundle
 						</a>
 
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 
-			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
+			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
 				@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
 			</a>
 		</div>
@@ -61,7 +61,7 @@
 
 	if (tipo == Tipo.Noticia)
 	{
-		<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 20px;" target="_blank">
+		<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 20px;" target="_blank">
 			@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
 		</a>
 	}
@@ -352,7 +352,7 @@
 	{
 		<div class="bundle-juego-panel">
 			<div style="max-width: 625px; margin: 20px auto; display: flex; align-items: center; gap: 20px;">
-				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo)" class="boton-pequeño" style="width: 100%; text-align: center;" target="_blank">
+				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="width: 100%; text-align: center;" target="_blank">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
 				</a>
 
@@ -534,6 +534,7 @@
 	public string usuarioId { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private bool usuarioPatreon = false;
 
 	[Parameter]
 	public int bundleId { get; set; }
@@ -548,6 +549,11 @@
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.FindByIdAsync(usuarioId);
+
+		if (usuario != null)
+		{
+			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+		}
 
 		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
