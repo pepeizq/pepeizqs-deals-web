@@ -70,6 +70,7 @@ namespace APIs.Voidu
 									if (descuento > 0)
 									{
 										string nombre = WebUtility.HtmlDecode(juego.Nombre);
+										nombre = nombre.Replace("'", null);
 
 										string enlace = juego.Enlace;
 
