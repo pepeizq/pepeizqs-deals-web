@@ -12,6 +12,10 @@
     "Valor": "Recompensas"
   },
   {
+    "Id": "Patreon",
+    "Valor": "Beneficios Patreon"
+  },
+  {
     "Id": "Logout",
     "Valor": "Cerrar Sesión"
   },

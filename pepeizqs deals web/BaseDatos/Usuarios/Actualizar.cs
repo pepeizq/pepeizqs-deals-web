@@ -2,8 +2,6 @@
 
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using pepeizqs_deals_web.Areas.Identity.Data;
-using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 
 namespace BaseDatos.Usuarios
 {

@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using pepeizqs_deals_web.Pages.Componentes.Admin;
 
 namespace BaseDatos.Recompensas
 {

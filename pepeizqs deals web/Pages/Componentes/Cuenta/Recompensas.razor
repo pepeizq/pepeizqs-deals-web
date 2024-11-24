@@ -33,10 +33,10 @@
 		}
 </style>
 
-@if (usuario.RewardsCoins != null)
+@if (usuario.PatreonCoins != null)
 {
 	<div style="margin: auto;">
-		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.RewardsCoins.ToString())</label>
+		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.PatreonCoins.ToString())</label>
 		<hr />
 
 		@if (usuario.RewardsCoins >= 30)

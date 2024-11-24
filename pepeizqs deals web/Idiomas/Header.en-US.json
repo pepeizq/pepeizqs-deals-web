@@ -12,6 +12,10 @@
     "Valor": "Rewards"
   },
   {
+    "Id": "Patreon",
+    "Valor": "Patreon Perks"
+  },
+  {
     "Id": "Logout",
     "Valor": "Logout"
   },

@@ -69,32 +69,28 @@
                         usuario.OfficialGroup = datos.GrupoPremium;
                         usuario.OfficialGroup2 = datos.GrupoNormal;
                     }
-                    else
+                }
+
+                if (usuario.EmailConfirmed == true)
+                {
+                    if (usuario.PatreonLastLogin == null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
                     {
-                        if (string.IsNullOrEmpty(usuario.RewardsLastLogin) == true)
+                        usuario.PatreonLastLogin = DateTime.Now;
+                        usuario.PatreonCoins = 1;
+
+                        global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+                    }
+
+                    if (usuario.PatreonLastLogin != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
+                    {
+                        if (usuario.PatreonCoins < 30)
                         {
-                            if (Herramientas.Listados.Generar(usuario.SteamGames).Count() > 50)
+                            if (usuario.PatreonLastLogin?.DayOfYear != DateTime.Now.DayOfYear)
                             {
-                                usuario.RewardsLastLogin = DateTime.Now.ToString();
-                                usuario.RewardsCoins = 1;
+                                usuario.PatreonLastLogin = DateTime.Now;
+                                usuario.PatreonCoins = usuario.PatreonCoins + 1;
 
                                 global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-                            }
-                        }
-                        else
-                        {
-                            if (usuario.RewardsCoins < 30)
-                            {
-                                if (Convert.ToDateTime(usuario.RewardsLastLogin).DayOfYear != DateTime.Now.DayOfYear)
-                                {
-                                    if (Herramientas.Listados.Generar(usuario.SteamGames).Count() > 50)
-                                    {
-                                        usuario.RewardsLastLogin = DateTime.Now.ToString();
-                                        usuario.RewardsCoins = usuario.RewardsCoins + 1;
-
-                                        global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
-                                    }
-                                }
                             }
                         }
                     }
@@ -153,14 +149,15 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
             <div class="cabecera-poner cuerpo-ancho">
-                @(await Html.RenderComponentAsync<Componentes.Secciones.Cabecera>(RenderMode.ServerPrerendered, new { 
+                @(await Html.RenderComponentAsync<Componentes.Interfaz.Cabecera>(RenderMode.ServerPrerendered, new { 
                     idioma = idioma, 
                     usuarioLogeado = usuarioLogeado,
+                    usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck),
                     adminLogeado = adminLogeado, 
                     usuarioAvatar = usuario?.Avatar,
                     usuarioNombre = usuario?.Nickname,
                     usuarioEmail = usuario?.Email,
-                    usuarioCoins = usuario?.RewardsCoins,
+                    usuarioCoins = usuario?.PatreonCoins,
                     ubicacionEnlace = Context.Request.Path.ToString()
                 }))
             </div>

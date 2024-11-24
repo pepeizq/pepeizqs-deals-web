@@ -219,6 +219,9 @@ namespace BaseDatos.Tiendas
 				END;
 				END;";
 
+			oferta.Tienda = oferta.Tienda.Replace("'", null);
+			oferta.Enlace = oferta.Enlace.Replace("'", null);
+
 			buscarJuegos = buscarJuegos.Replace("@oferta.Tienda", oferta.Tienda);
 			buscarJuegos = buscarJuegos.Replace("@oferta.Enlace", oferta.Enlace);
 

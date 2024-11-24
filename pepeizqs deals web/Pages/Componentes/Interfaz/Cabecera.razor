@@ -13,53 +13,53 @@
 
 <style>
     .buscador-panel {
-        height: calc(100% - var(--alturaCabecera));
-        width: 100%;
-        left: 0;
-        top: 0;
-        overflow-x: auto;
-        position: fixed;
-        z-index: 1000;
-        margin-top: var(--alturaCabecera);
-        padding: 10px;
-        background-color: var(--fondoOscuroTransparente);
+    height: calc(100% - var(--alturaCabecera));
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow-x: auto;
+    position: fixed;
+    z-index: 1000;
+    margin-top: var(--alturaCabecera);
+    padding: 10px;
+    background-color: var(--fondoOscuroTransparente);
     }
 
     .boton-superior {
-        display: block;
-        padding: 6px 12px;
-        margin: 0px;
-        transition: transform .2s;
+    display: block;
+    padding: 6px 12px;
+    margin: 0px;
+    transition: transform .2s;
     }
 
-        .boton-superior:hover {
-            transform: scale(1.01);
-        }
+    .boton-superior:hover {
+    transform: scale(1.01);
+    }
 
     @@media (max-width: 800px) {
-        .boton-superior {
-            float: none;
-        }
+    .boton-superior {
+    float: none;
+    }
     }
 
     .botones-superiores {
-        display: flex;
+    display: flex;
     }
 
     @@media (max-width: 1000px) {
-        .botones-superiores {
-            display: none;
-        }
+    .botones-superiores {
+    display: none;
+    }
     }
 
     .botones-superiores2 {
-        display: none;
+    display: none;
     }
 
     @@media (max-width: 1000px) {
-        .botones-superiores2 {
-            display: flex;
-        }
+    .botones-superiores2 {
+    display: flex;
+    }
     }
 </style>
 
@@ -257,7 +257,7 @@
                             {
                                 <hr />
                             }
-                            
+
                             if (resultadosBundles.Count > 0)
                             {
                                 int id = 4;
@@ -552,7 +552,7 @@
 {
     <div style="display: flex; align-items: center; flex: 1 auto 1;">
         <div class="menu-dropdown">
-            <div style="display: flex; align-items: center; font-size: 14px; cursor: pointer;">
+            <div style="display: flex; align-items: center; font-size: 14px; cursor: pointer; gap: 15px;">
                 @if (string.IsNullOrEmpty(usuarioAvatar) == true)
                 {
                     <div>@usuarioEmail</div>
@@ -561,15 +561,7 @@
                 {
                     @if (usuarioAvatar.ToLower().Contains(".jpg") == true || usuarioAvatar.ToLower().Contains(".jpeg") == true || usuarioAvatar.ToLower().Contains(".png") == true || usuarioAvatar.ToLower().Contains(".webp") == true)
                     {
-                        <img src="@usuarioAvatar" style="max-height: 32px; max-width: 32px;" />
-
-                        @if (usuarioNombre.Length > 30)
-                        {
-                            usuarioNombre = usuarioNombre.Remove(30, usuarioNombre.Length - 30);
-                            usuarioNombre = usuarioNombre + "...";
-                        }
-
-                        <div style="margin-left: 15px;">@usuarioNombre (@usuarioCoins.ToString())</div>
+                        <img src="@usuarioAvatar" style="max-height: 32px; max-width: 32px;" title="@usuarioNombre"/>
                     }
                     else
                     {
@@ -577,13 +569,30 @@
                     }
                 }
 
-                <i class="fa-solid fa-caret-down" style="margin-left: 15px;"></i>
+                @if (usuarioPatreon == true)
+                {
+                    <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 0px 10px; height: 32px;">
+                        @usuarioCoins.ToString()
+                    </div>
+                }
+
+                <i class="fa-solid fa-caret-down"></i>
             </div>
 
             <div class="menu-dropdown-contenido" style="right: -10px;">
                 <button @onclick="@(e => AbrirCuenta(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Account", "Header")
                 </button>
+
+                @if (usuarioPatreon == false)
+                {
+                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                    string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+
+                    <a href="@patreonEnlace" target="_blank" style="text-decoration: none; text-align: left; border: 0; width: 100%; font-size: 14px;" class="texto-cabecera menu-dropdown-item">
+                        @Herramientas.Idiomas.CogerCadena(idioma, "Patreon", "Header")
+                    </a>
+                }
 
                 <button @onclick="@(e => AbrirRecompensas(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.CogerCadena(idioma, "Rewards", "Header")
@@ -618,6 +627,9 @@ else
 
     [Parameter]
     public bool usuarioLogeado { get; set; }
+
+    [Parameter]
+    public bool usuarioPatreon { get; set; }
 
     [Parameter]
     public bool adminLogeado { get; set; }
