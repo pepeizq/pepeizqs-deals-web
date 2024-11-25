@@ -5,7 +5,7 @@
   },
   {
     "Id": "String1",
-    "Valor": "You have {0} pepecoins to spend"
+    "Valor": "You have {0} Patreon Coins to spend"
   },
   {
     "Id": "String2",
@@ -13,7 +13,7 @@
   },
   {
     "Id": "String3",
-    "Valor": "pepecoins History"
+    "Valor": "Historical"
   },
   {
     "Id": "Daily",
@@ -25,7 +25,7 @@
   },
   {
     "Id": "Denied",
-    "Valor": "Sorry but you do not have access. To access the rewards you must have an account with a confirmed email address and a Steam account associated with at least 50 games."
+    "Valor": "Sorry but you do not have access. To access the rewards you must contribute financially on Patreon to help keep this website ad-free."
   },
   {
     "Id": "Buy",
@@ -49,42 +49,14 @@
   },
   {
     "Id": "Poor",
-    "Valor": "You do not have enough pepecoins to get {0}."
-  },
-  {
-    "Id": "Web1",
-    "Valor": "You can get games by visiting the website every day, to do so you must meet the following points:"
-  },
-  {
-    "Id": "Web2",
-    "Valor": "Register an account on the website."
-  },
-  {
-    "Id": "Web3",
-    "Valor": "Confirm account via email."
-  },
-  {
-    "Id": "Web4",
-    "Valor": "Link a Steam account with at least 50 games to the web account."
-  },
-  {
-    "Id": "Web5",
-    "Valor": "If you meet these requirements, 1 pepecoin will automatically be added to your account every day you log in."
-  },
-  {
-    "Id": "Web6",
-    "Valor": "Open the rewards section in your account"
-  },
-  {
-    "Id": "Web7",
-    "Valor": "Examples of games to get with pepecoins:"
+    "Valor": "You do not have enough Patreon Coins to get {0}."
   },
   {
     "Id": "Problem",
-    "Valor": "All of these games come from Humble Bundle and Fanatical bundles, but if you have any problems with the key, send me an email to admin@pepeizqdeals.com so I can return the pepecoins you spend."
+    "Valor": "All of these games come from Humble Bundle and Fanatical bundles, but if you have any problems with the key, send me an email to admin@pepeizqdeals.com so I can return the Patreon Coins you spend."
   },
   {
     "Id": "Limit",
-    "Valor": "You have reached the limit of 30 pepecoins in the account, if you spend pepecoins in any game you will earn pepecoins again tomorrow."
+    "Valor": "You have reached the limit of 30 Patreon Coins in the account, if you spend Patreon Coins in any game you will earn coins again each day."
   }
 ]

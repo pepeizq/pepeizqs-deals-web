@@ -5,7 +5,7 @@
   },
   {
     "Id": "String1",
-    "Valor": "Tienes {0} pepecoins para gastar"
+    "Valor": "Tienes {0} Patreon Coins para gastar"
   },
   {
     "Id": "String2",
@@ -13,7 +13,7 @@
   },
   {
     "Id": "String3",
-    "Valor": "Historial de pepecoins"
+    "Valor": "Historial"
   },
   {
     "Id": "Daily",
@@ -25,7 +25,7 @@
   },
   {
     "Id": "Denied",
-    "Valor": "Lo siento pero no tienes acceso, para poder acceder a las recompensas debes tener la cuenta con el correo confirmado y una cuenta de Steam asociada con al menos 50 juegos."
+    "Valor": "Lo siento pero no tienes acceso, para poder acceder a las recompensas debes contribuir económicamente en Patreon para ayudar a mantener esta web sin anuncios."
   },
   {
     "Id": "Buy",
@@ -49,42 +49,14 @@
   },
   {
     "Id": "Poor",
-    "Valor": "No tienes las suficientes pepecoins para adquirir {0}."
-  },
-  {
-    "Id": "Web1",
-    "Valor": "Puedes obtener juegos visitando la web cada día, para ello debes cumplir los siguientes puntos:"
-  },
-  {
-    "Id": "Web2",
-    "Valor": "Registrar una cuenta en la web."
-  },
-  {
-    "Id": "Web3",
-    "Valor": "Confirmar la cuenta vía correo."
-  },
-  {
-    "Id": "Web4",
-    "Valor": "Asociar una cuenta de Steam con al menos 50 juegos a la cuenta de la web."
-  },
-  {
-    "Id": "Web5",
-    "Valor": "Si cumples con estos requisitos, automáticamente cada día que entres se te añadirá a tu cuenta 1 pepecoin."
-  },
-  {
-    "Id": "Web6",
-    "Valor": "Abre la sección de recompensas en tu cuenta"
-  },
-  {
-    "Id": "Web7",
-    "Valor": "Ejemplos de juegos para reclamar con pepecoins:"
+    "Valor": "No tienes las suficientes Patreon Coins para adquirir {0}."
   },
   {
     "Id": "Problem",
-    "Valor": "Todos estos juegos proceden de bundles de Humble Bundle y Fanatical, pero si tenéis algún problema con la clave mandar un correo a admin@pepeizqdeals.com para que os devuelva las pepecoins que gastéis."
+    "Valor": "Todos estos juegos proceden de bundles de Humble Bundle y Fanatical, pero si tenéis algún problema con la clave mandar un correo a admin@pepeizqdeals.com para que os devuelva las Patreon Coins que gastéis."
   },
   {
     "Id": "Limit",
-    "Valor": "Has llegado al limite de 30 pepecoins en la cuenta, si gastas pepecoins en cualquier juego volverás a ganar pepecoins mañana."
+    "Valor": "Has llegado al limite de 30 Patreon Coins en la cuenta, si gastas Patreon Coins en cualquier juego volverás a ganar coins cada día."
   }
 ]

@@ -18,5 +18,13 @@
   {
     "Id": "String4",
     "Valor": "You can freely browse the website without affiliates being embedded in the links to deals, bundles or free games."
+  },
+  {
+    "Id": "String5",
+    "Valor": "Free games"
+  },
+  {
+    "Id": "String6",
+    "Valor": "If you visit the website every day you will get coins that you can exchange for Steam games."
   }
 ]

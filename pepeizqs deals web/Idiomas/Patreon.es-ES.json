@@ -18,5 +18,13 @@
   {
     "Id": "String4",
     "Valor": "Puedes navegar libremente por la web sin que se incrusten afiliados en los enlaces a ofertas, bundles o juegos gratis."
+  },
+  {
+    "Id": "String5",
+    "Valor": "Juegos gratis"
+  },
+  {
+    "Id": "String6",
+    "Valor": "Si visitas la web cada día obtendrás monedas que podrás canjear por juegos para Steam."
   }
 ]

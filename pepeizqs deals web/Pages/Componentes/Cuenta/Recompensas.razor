@@ -33,148 +33,90 @@
 		}
 </style>
 
-@if (usuario.PatreonCoins != null)
+@if ((usuario.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 {
-	<div style="margin: auto;">
-		<label style="font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.PatreonCoins.ToString())</label>
+	<div style="max-width: 1000px; margin: auto;">
+		<div style="display: flex; align-items: center; gap: 20px;">
+			<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.PatreonCoins.ToString())</label>
+
+			<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Rewards")
+			</button>
+		</div>
+
 		<hr />
 
-		@if (usuario.RewardsCoins >= 30)
+		@if (usuario.PatreonCoins >= 30)
 		{
-			<div class="alert alert-danger alert-dismissible" style="padding: 20px, 40px; margin-bottom: 20px; border-radius: 0px; display: flex; align-items: center; gap: 20px;">
+			<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
 				<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
 				@Herramientas.Idiomas.CogerCadena(idioma, "Limit", "Rewards")
 			</div>
 		}
 
-		<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
-			<div style="width: 25%;">
-				<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
-					<button @onclick="@(e => MostrarJuegos(e))" class="boton-pestañas" style="@estiloJuegos;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Rewards")
-					</button>
-
-					<button @onclick="@(e => MostrarHistorial(e))" class="boton-pestañas" style="@estiloHistorial;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Rewards")
-					</button>
-				</div>
+		<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "Rewards")
 			</div>
 
-			<div style="width: 100%; display: flex; flex-direction: column; gap: 40px;">
-				@if (mostrarJuegos == true)
-				{
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "Rewards")
-					</div>
+			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				<div style="margin-bottom: 30px;">
+					@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Rewards")
+				</div>
 
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; justify-items: center;">
-							@if (juegos != null)
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; justify-items: center;">
+					@if (juegos != null)
+					{
+						if (juegos.Count > 0)
+						{
+							foreach (var recompensaJuego in juegos)
 							{
-								if (juegos.Count > 0)
+								if (string.IsNullOrEmpty(recompensaJuego.UsuarioId) == true)
 								{
-									foreach (var recompensaJuego in juegos)
+									global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensaJuego.JuegoId);
+
+									if (juego != null)
 									{
-										if (string.IsNullOrEmpty(recompensaJuego.UsuarioId) == true)
+										bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego, recompensaJuego.DRM);
+										bool usuarioTieneDeseado = false;
+
+										string fondoColor = "background-color: var(--fondoBotonPequeño)";
+
+										if (usuarioTieneJuego == true)
 										{
-											global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensaJuego.JuegoId);
+											fondoColor = "background-color: var(--fondoBien);";
+										}
+										else
+										{
+											usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego, recompensaJuego.DRM);
 
-											if (juego != null)
+											if (usuarioTieneDeseado == true)
 											{
-												bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego, recompensaJuego.DRM);
-												bool usuarioTieneDeseado = false;
-
-												string fondoColor = "background-color: var(--fondoBotonPequeño)";
-
-												if (usuarioTieneJuego == true)
-												{
-													fondoColor = "background-color: var(--fondoBien);";
-												}
-												else
-												{
-													usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego, recompensaJuego.DRM);
-
-													if (usuarioTieneDeseado == true)
-													{
-														fondoColor = "background-color: var(--fondoAlerta);";
-													}
-												}
-
-												<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;" title="@juego.Nombre">													
-													<div style="@fondoColor; display: flex; flex-direction: column;">
-														<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" />
-
-														<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
-															@{
-																string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
-															}
-
-															<img src="@imagen" style="width: 20px; height: 20px;" alt="@juego.Nombre"/>
-
-															<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() pepecoins</div>
-														</div>
-													</div>
-												</button>
+												fondoColor = "background-color: var(--fondoAlerta);";
 											}
 										}
+
+										<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;" title="@juego.Nombre">
+											<div style="@fondoColor; display: flex; flex-direction: column;">
+												<img src="@juego.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
+
+												<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
+													@{
+														string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
+													}
+
+													<img src="@imagen" style="width: 20px; height: 20px;" alt="@juego.Nombre" />
+
+													<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() Coins</div>
+												</div>
+											</div>
+										</button>
 									}
 								}
 							}
-						</div>
-					</div>
-				}
-
-				@if (mostrarHistorial == true)
-				{
-					@if (entradas != null)
-					{
-						if (entradas.Count > 0)
-						{
-							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-								<hr />
-								@foreach (var entrada in entradas)
-								{
-									<div style="display: flex; align-items: center; gap: 20px;">
-										<div style="width: 5%;">
-											@if (entrada.Coins >= 0)
-											{
-												<label>+@entrada.Coins</label>
-											}
-											else
-											{
-												<label>@entrada.Coins</label>
-											}
-
-										</div>
-
-										<div style="width: 100%;">
-											@if (string.IsNullOrEmpty(entrada.Razon) == false)
-											{
-												string cadena = entrada.Razon;
-												string juego = string.Empty;
-
-												if (cadena.Contains("Buy") == true)
-												{
-													juego = cadena.Remove(0, 4);
-													cadena = "Buy2";
-												}
-
-												<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "Rewards") @juego</label>
-											}											
-										</div>
-
-										<div style="width: 20%; text-align: right;">
-											@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
-										</div>
-									</div>
-
-									<hr />
-								}
-							</div>
-
 						}
 					}
-				}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -188,24 +130,9 @@ else
 	</div>
 }
 
-<style>
-	.aviso-panel {
-		height: calc(100% - var(--alturaCabecera));
-		width: 100%;
-		left: 0;
-		top: 0;
-		overflow-x: auto;
-		position: fixed;
-		z-index: 1001;
-		margin-top: var(--alturaCabecera);
-		padding: 10px;
-		background-color: var(--fondoOpcionesTransparente);
-	}
-</style>
-
 @if (mostrarAvisoCompra == true)
 {
-	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+	<div class="opciones-panel" style="display: flex; justify-content: center; align-items: center;">
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
 			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Buy", "Rewards"), nombreJuegoSeleccionado)
 
@@ -224,14 +151,14 @@ else
 
 @if (mostrarAvisoClave == true)
 {
-	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+	<div class="opciones-panel" style="display: flex; justify-content: center; align-items: center;">
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
 			@nombreJuegoSeleccionado
 			<div style="margin-top: 10px;">@claveJuegoSeleccionado</div>
 			<div style="margin-top: 10px;"><a href="https://store.steampowered.com/account/registerkey?key=@claveJuegoSeleccionado" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Redeem", "Rewards")</a></div>
 
-			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
-				<button @onclick="@(e => CerrarAvisoClave(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+			<div style="display: flex; align-items: center; gap: 30px; margin-top: 30px;">
+				<button @onclick="@(e => CerrarAvisoClave(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 6px 12px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
 				</button>
 			</div>
@@ -241,17 +168,76 @@ else
 
 @if (mostrarAvisoPobre == true)
 {
-	<div class="aviso-panel" style="display: flex; justify-content: center; align-items: center;">
+	<div class="opciones-panel" style="display: flex; justify-content: center; align-items: center;">
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
 			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Poor", "Rewards"), nombreJuegoSeleccionado)
 
-			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
-				<button @onclick="@(e => CerrarAvisoPobre(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
+			<div style="display: flex; align-items: center; gap: 30px; margin-top: 30px;">
+				<button @onclick="@(e => CerrarAvisoPobre(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 6px 12px;">
 					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
 				</button>
 			</div>
 		</div>
 	</div>
+}
+
+@if (mostrarHistorial == true)
+{
+	@if (entradas != null)
+	{
+		if (entradas.Count > 0)
+		{
+			<div class="opciones-panel">
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; width: 100%; padding: 30px; overflow-y: scroll; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro); display: flex; flex-direction: row; align-items: start; gap: 40px;">
+					<button @onclick="@(e => CerrarHistorial(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 10px 15px;">
+						@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
+					</button>
+
+					<div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
+						<hr/>
+						@foreach (var entrada in entradas)
+						{
+							<div style="display: flex; align-items: center; gap: 20px;">
+								<div>
+									@if (entrada.Coins >= 0)
+									{
+										<label>+@entrada.Coins</label>
+									}
+									else
+									{
+										<label>@entrada.Coins</label>
+									}
+
+								</div>
+
+								<div style="flex-grow: 1;">
+									@if (string.IsNullOrEmpty(entrada.Razon) == false)
+									{
+										string cadena = entrada.Razon;
+										string juego = string.Empty;
+
+										if (cadena.Contains("Buy") == true)
+										{
+											juego = cadena.Remove(0, 4);
+											cadena = "Buy2";
+										}
+
+										<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "Rewards") @juego</label>
+									}
+								</div>
+
+								<div style="text-align: right;">
+									@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
+								</div>
+							</div>
+
+							<hr />
+						}
+					</div>			
+				</div>
+			</div>
+		}
+	}
 }
 
 @code {
@@ -270,6 +256,7 @@ else
 
 	private List<RecompensaJuego> juegos = new List<RecompensaJuego>();
 
+	private bool mostrarHistorial = false;
 	private bool mostrarAvisoCompra = false;
 	private bool mostrarAvisoClave = false;
 	private bool mostrarAvisoPobre = false;
@@ -286,9 +273,6 @@ else
 	{
 		usuario = await UserManager.FindByIdAsync(usuarioId);
 
-		mostrarJuegos = true;
-		estiloJuegos = fondo;
-
 		if (usuario != null)
 		{
 			juegos = BaseDatos.Recompensas.Juegos.Todo();
@@ -300,41 +284,22 @@ else
 			}
 		}
 	}
-
-	private void CerrarPestañas()
-	{
-		mostrarJuegos = false;
-		mostrarHistorial = false;
-
-		estiloJuegos = null;
-		estiloHistorial = null;
-	}
-
-	private bool mostrarJuegos = false;
-	private string estiloJuegos = null;
-
-	private void MostrarJuegos(MouseEventArgs e)
-	{
-		CerrarPestañas();
-		mostrarJuegos = true;
-		estiloJuegos = fondo;
-	}
-
-	private bool mostrarHistorial = false;
-	private string estiloHistorial = null;
-
+	
 	private void MostrarHistorial(MouseEventArgs e)
 	{
-		CerrarPestañas();
 		mostrarHistorial = true;
-		estiloHistorial = fondo;
+	}
+
+	private void CerrarHistorial(MouseEventArgs e)
+	{
+		mostrarHistorial = false;
 	}
 
 	private void ComprarJuego(MouseEventArgs e, RecompensaJuego juego, string nombre)
 	{
 		nombreJuegoSeleccionado = nombre;
 
-		if (juego.Coins <= usuario.RewardsCoins)
+		if (juego.Coins <= usuario.PatreonCoins)
 		{
 			mostrarAvisoCompra = true;
 			juegoSeleccionado = juego;			
@@ -352,7 +317,7 @@ else
 		BaseDatos.Recompensas.Juegos.Actualizar(juegoSeleccionado.Id, usuario.Id);
 		BaseDatos.Recompensas.Historial.Insertar(usuario.Id, -juegoSeleccionado.Coins, "Buy " + juegoSeleccionado.JuegoNombre, DateTime.Now);
 
-		usuario.RewardsCoins = usuario.RewardsCoins - juegoSeleccionado.Coins;
+		usuario.PatreonCoins = usuario.PatreonCoins - juegoSeleccionado.Coins;
 
 		List<BaseDatos.Usuarios.Clave> claves = new List<BaseDatos.Usuarios.Clave>();
 
