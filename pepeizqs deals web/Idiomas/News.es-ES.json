@@ -4,6 +4,46 @@
     "Valor": "Comprueba las últimas noticias de la web pepeizqdeals.com"
   },
   {
+    "Id": "Type1",
+    "Valor": "Ofertas"
+  },
+  {
+    "Id": "Type2",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Type3",
+    "Valor": "Gratis"
+  },
+  {
+    "Id": "Type4",
+    "Valor": "Suscripciones"
+  },
+  {
+    "Id": "Type5",
+    "Valor": "Eventos"
+  },
+  {
+    "Id": "Type6",
+    "Valor": "Sorteos"
+  },
+  {
+    "Id": "Type7",
+    "Valor": "Rumores"
+  },
+  {
+    "Id": "Type8",
+    "Valor": "Otros"
+  },
+  {
+    "Id": "Type9",
+    "Valor": "Web"
+  },
+  {
+    "Id": "Type10",
+    "Valor": "Patreon"
+  },
+  {
     "Id": "Back",
     "Valor": "Volver a Últimas Noticias"
   },

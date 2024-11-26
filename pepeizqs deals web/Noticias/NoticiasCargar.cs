@@ -12,7 +12,8 @@ namespace Noticias
 		Sorteos,
 		Rumores,
 		Otros,
-		Web
+		Web,
+		Patreon
 	}
 
 	public static class NoticiasCargar
@@ -48,7 +49,7 @@ namespace Noticias
             NoticiaMostrar rumores = new NoticiaMostrar
             {
                 Tipo = NoticiaTipo.Rumores,
-                Mostrar = true
+                Mostrar = false
             };
 
             noticias.Add(rumores);
@@ -61,7 +62,15 @@ namespace Noticias
 
             noticias.Add(web);
 
-            return noticias;
+			NoticiaMostrar patreon = new NoticiaMostrar
+			{
+				Tipo = NoticiaTipo.Patreon,
+				Mostrar = true
+			};
+
+			noticias.Add(patreon);
+
+			return noticias;
 		}
 
         public static List<NoticiaTipo> CargarNoticiasTipo()
@@ -80,7 +89,7 @@ namespace Noticias
 			{ 
 				if (tipo2 == tipo)
 				{
-					return Herramientas.Idiomas.CogerCadena(idioma, "News.Type" + posicion.ToString());
+					return Herramientas.Idiomas.CogerCadena(idioma, "Type" + posicion.ToString(), "News");
 				}
 
 				posicion += 1;

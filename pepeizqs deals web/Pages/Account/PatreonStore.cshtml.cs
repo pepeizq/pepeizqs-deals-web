@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace pepeizqs_deals_web.Pages.Account
 {
-    public class RewardsModel : PageModel
+    public class PatreonStoreModel : PageModel
     {
         public string idioma = string.Empty;
 

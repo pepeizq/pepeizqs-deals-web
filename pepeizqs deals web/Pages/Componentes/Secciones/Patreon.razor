@@ -26,9 +26,9 @@
 		</div>
 	</div>
 
-	<h1 style="font-size: 18px; margin-top: 50px; margin-bottom: 15px;">
+	<div style="font-size: 18px; margin-top: 50px; margin-bottom: 15px;">
 		@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Patreon")
-	</h1>
+	</div>
 
 	<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
@@ -55,6 +55,17 @@
 			</div>
 		</div>
 	</div>
+
+	@if (noticias.Count > 0)
+	{
+		<div style="font-size: 18px; margin-top: 50px; margin-bottom: 15px;">
+			@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Patreon")
+		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+				
+		</div>
+	}
 </div>
 
 @code {
@@ -70,6 +81,8 @@
 	private Usuario usuario = new Usuario();
 	private bool usuarioPatreon = false;
 
+	List<Noticias.Noticia> noticias = new List<Noticias.Noticia>();
+
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.FindByIdAsync(usuarioId);
@@ -78,5 +91,7 @@
 		{
 			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
 		}
+
+		noticias = BaseDatos.Noticias.Buscar.Ultimas(10, Noticias.NoticiaTipo.Patreon);
 	}
 }

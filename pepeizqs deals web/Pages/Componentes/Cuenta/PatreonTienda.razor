@@ -37,10 +37,10 @@
 {
 	<div style="max-width: 1000px; margin: auto;">
 		<div style="display: flex; align-items: center; gap: 20px;">
-			<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "Rewards"), usuario.PatreonCoins.ToString())</label>
+			<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "PatreonStore"), usuario.PatreonCoins.ToString())</label>
 
 			<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Rewards")
+				@Herramientas.Idiomas.CogerCadena(idioma, "String3", "PatreonStore")
 			</button>
 		</div>
 
@@ -50,18 +50,18 @@
 		{
 			<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
 				<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
-				@Herramientas.Idiomas.CogerCadena(idioma, "Limit", "Rewards")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Limit", "PatreonStore")
 			</div>
 		}
 
 		<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "Rewards")
+				@Herramientas.Idiomas.CogerCadena(idioma, "Problem", "PatreonStore")
 			</div>
 
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 				<div style="margin-bottom: 30px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Rewards")
+					@Herramientas.Idiomas.CogerCadena(idioma, "String2", "PatreonStore")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; justify-items: center;">
@@ -125,7 +125,7 @@ else
 {
 	<div style="max-width: 800px; margin: auto;">
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Denied", "Rewards")
+			@Herramientas.Idiomas.CogerCadena(idioma, "Denied", "PatreonStore")
 		</div>
 	</div>
 }
@@ -134,15 +134,15 @@ else
 {
 	<div class="opciones-panel" style="display: flex; justify-content: center; align-items: center;">
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
-			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Buy", "Rewards"), nombreJuegoSeleccionado)
+			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Buy", "PatreonStore"), nombreJuegoSeleccionado)
 
 			<div style="display: flex; align-items: center; gap: 30px; margin-top: 20px;">
 				<button @onclick="@(e => ComprarJuegoSi(e, juegoSeleccionado))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Yes", "Rewards")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Yes", "PatreonStore")
 				</button>
 
 				<button @onclick="@(e => ComprarJuegoNo(e))" class="boton-pequeño" style="text-align: center; border: 0; width: 100%; font-size: 15px; padding: 6px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "No", "Rewards")
+					@Herramientas.Idiomas.CogerCadena(idioma, "No", "PatreonStore")
 				</button>
 			</div>
 		</div>
@@ -155,11 +155,11 @@ else
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
 			@nombreJuegoSeleccionado
 			<div style="margin-top: 10px;">@claveJuegoSeleccionado</div>
-			<div style="margin-top: 10px;"><a href="https://store.steampowered.com/account/registerkey?key=@claveJuegoSeleccionado" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Redeem", "Rewards")</a></div>
+			<div style="margin-top: 10px;"><a href="https://store.steampowered.com/account/registerkey?key=@claveJuegoSeleccionado" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Redeem", "PatreonStore")</a></div>
 
 			<div style="display: flex; align-items: center; gap: 30px; margin-top: 30px;">
 				<button @onclick="@(e => CerrarAvisoClave(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 6px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "PatreonStore")
 				</button>
 			</div>
 		</div>
@@ -170,11 +170,11 @@ else
 {
 	<div class="opciones-panel" style="display: flex; justify-content: center; align-items: center;">
 		<div style="max-width: 600px; background-color: var(--fondoOscuro); padding: 40px; text-align: center; margin: 80px auto; position: relative; -moz-box-shadow: 0 0 3px var(--fondoBotonPequeño); -webkit-box-shadow: 0 0 3px var(--fondoBotonPequeño); box-shadow: 0 0 3px var(--fondoBotonPequeño);">
-			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Poor", "Rewards"), nombreJuegoSeleccionado)
+			@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Poor", "PatreonStore"), nombreJuegoSeleccionado)
 
 			<div style="display: flex; align-items: center; gap: 30px; margin-top: 30px;">
 				<button @onclick="@(e => CerrarAvisoPobre(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 6px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
+					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "PatreonStore")
 				</button>
 			</div>
 		</div>
@@ -190,7 +190,7 @@ else
 			<div class="opciones-panel">
 				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; width: 100%; padding: 30px; overflow-y: scroll; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro); display: flex; flex-direction: row; align-items: start; gap: 40px;">
 					<button @onclick="@(e => CerrarHistorial(e))" class="boton-pequeño" style="text-align: center; border: 0; width: fit-content; font-size: 15px; padding: 10px 15px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Rewards")
+						@Herramientas.Idiomas.CogerCadena(idioma, "Close", "PatreonStore")
 					</button>
 
 					<div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
@@ -222,7 +222,7 @@ else
 											cadena = "Buy2";
 										}
 
-										<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "Rewards") @juego</label>
+										<label>@Herramientas.Idiomas.CogerCadena(idioma, cadena, "PatreonStore") @juego</label>
 									}
 								</div>
 
@@ -266,8 +266,6 @@ else
 	private string claveJuegoSeleccionado = null;
 
 	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
-
-	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
 
 	protected override async Task OnInitializedAsync()
 	{

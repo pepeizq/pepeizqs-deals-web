@@ -3,18 +3,19 @@
 using Bundles2;
 using Gratis2;
 using Microsoft.Data.SqlClient;
+using Noticias;
 using Suscripciones2;
 
 namespace BaseDatos.Noticias
 {
 	public static class Buscar
 	{
-		public static global::Noticias.Noticia Cargar(SqlDataReader lector, SqlConnection conexion)
+		public static Noticia Cargar(SqlDataReader lector, SqlConnection conexion)
 		{
-			global::Noticias.Noticia noticia = new global::Noticias.Noticia();
+			Noticia noticia = new Noticia();
 
 			noticia.Id = lector.GetInt32(0);
-			noticia.Tipo = global::Noticias.NoticiasCargar.CargarNoticiasTipo()[int.Parse(lector.GetString(1))];
+			noticia.Tipo = NoticiasCargar.CargarNoticiasTipo()[int.Parse(lector.GetString(1))];
 
 			if (lector.IsDBNull(2) == false)
 			{
@@ -107,7 +108,7 @@ namespace BaseDatos.Noticias
 			return noticia;
 		}
 
-		public static global::Noticias.Noticia UnaNoticia(int id)
+		public static Noticia UnaNoticia(int id)
 		{
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
@@ -132,7 +133,7 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static global::Noticias.Noticia Ultimo(SqlConnection conexion = null)
+		public static Noticia Ultimo(SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -162,7 +163,7 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static List<global::Noticias.Noticia> Actuales(SqlConnection conexion = null, bool ultimos3dias = false)
+		public static List<Noticia> Actuales(SqlConnection conexion = null, bool ultimos3dias = false)
 		{
 			if (conexion == null)
 			{
@@ -176,7 +177,7 @@ namespace BaseDatos.Noticias
 				}
 			}
 
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
+			List<Noticia> noticias = new List<Noticia>();
 
 			using (conexion)
 			{
@@ -207,7 +208,7 @@ namespace BaseDatos.Noticias
 			return noticias;
 		}
 
-		public static List<global::Noticias.Noticia> Año(string año, SqlConnection conexion = null)
+		public static List<Noticia> Año(string año, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -221,7 +222,7 @@ namespace BaseDatos.Noticias
 				}
 			}
 
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
+			List<Noticia> noticias = new List<Noticia>();
 
 			using (conexion)
 			{
@@ -247,7 +248,7 @@ namespace BaseDatos.Noticias
 			return noticias;
 		}
 
-		public static List<global::Noticias.Noticia> Ultimas(string cantidad, SqlConnection conexion = null)
+		public static List<Noticia> Ultimas(string cantidad, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -261,7 +262,7 @@ namespace BaseDatos.Noticias
 				}
 			}
 
-			List<global::Noticias.Noticia> noticias = new List<global::Noticias.Noticia>();
+			List<Noticia> noticias = new List<Noticia>();
 
 			using (conexion)
 			{
@@ -279,6 +280,43 @@ namespace BaseDatos.Noticias
 				}
 			}
 			
+			return noticias;
+		}
+
+		public static List<Noticia> Ultimas(int cantidad, NoticiaTipo tipo, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<Noticia> noticias = new List<Noticia>();
+
+			using (conexion)
+			{
+				string busqueda = "SELECT TOP " + cantidad.ToString() + " * FROM noticias WHERE noticiaTipo=@noticiaTipo ORDER BY id DESC";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@noticiaTipo", tipo);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							noticias.Add(Cargar(lector, conexion));
+						}
+					}
+				}
+			}
+
 			return noticias;
 		}
 	}

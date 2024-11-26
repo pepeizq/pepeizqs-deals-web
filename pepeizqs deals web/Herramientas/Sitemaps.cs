@@ -74,6 +74,14 @@ namespace Herramientas
 
 			sb.Append(textoAñadidos);
 
+			string textoPatreon = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/patreon/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoPatreon);
+
 			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("20");
 
 			if (noticias.Count > 0)

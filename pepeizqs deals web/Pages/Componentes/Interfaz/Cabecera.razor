@@ -594,8 +594,8 @@
                     </a>
                 }
 
-                <button @onclick="@(e => AbrirRecompensas(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Rewards", "Header")
+                <button @onclick="@(e => AbrirTiendaPatreon(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                    @Herramientas.Idiomas.CogerCadena(idioma, "PatreonStore", "Header")
                 </button>
 
                 <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
@@ -925,9 +925,9 @@ else
         NavManager.NavigateTo("/account/", true);
     }
 
-    private void AbrirRecompensas(MouseEventArgs e)
+    private void AbrirTiendaPatreon(MouseEventArgs e)
     {
-        NavManager.NavigateTo("/account/rewards/", true);
+        NavManager.NavigateTo("/account/patreonstore/", true);
     }
 }
 

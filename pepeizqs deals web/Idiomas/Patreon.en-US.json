@@ -21,10 +21,14 @@
   },
   {
     "Id": "String5",
-    "Valor": "Free games"
+    "Valor": "Access to the Patreon store"
   },
   {
     "Id": "String6",
     "Valor": "If you visit the website every day you will get coins that you can exchange for Steam games."
+  },
+  {
+    "Id": "String7",
+    "Valor": "Latest Updates"
   }
 ]

@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@model pepeizqs_deals_web.Pages.Account.RewardsModel
+@model pepeizqs_deals_web.Pages.Account.PatreonStoreModel
 
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
@@ -11,7 +11,7 @@
 @{
     #nullable disable
 
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Rewards");
+    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "PatreonStore");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -21,7 +21,7 @@
     {
         usuario = await UserManager.GetUserAsync(User);
 
-        @(await Html.RenderComponentAsync<Componentes.Cuenta.Recompensas>(RenderMode.Server, new
+        @(await Html.RenderComponentAsync<Componentes.Cuenta.PatreonTienda>(RenderMode.Server, new
         {
             idioma = Model.idioma,
             usuarioId = usuario?.Id

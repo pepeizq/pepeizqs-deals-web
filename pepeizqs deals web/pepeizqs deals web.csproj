@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Idiomas\News.es-ES.json~RF63e628.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>
@@ -77,7 +81,6 @@
     <_ContentIncludedByDefault Remove="Idiomas\Index.en-US.json" />
     <_ContentIncludedByDefault Remove="Pages\Account\Account.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Account\ResetPassword.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Account\Rewards.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Avisos.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\DLCs.razor" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Juegos.razor" />
@@ -112,10 +115,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\DLCs.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Account\Rewards.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

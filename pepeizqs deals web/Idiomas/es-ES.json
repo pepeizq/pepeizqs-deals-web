@@ -1,37 +1,5 @@
 [
   {
-    "Id": "News.Type1",
-    "Valor": "Ofertas"
-  },
-  {
-    "Id": "News.Type2",
-    "Valor": "Bundles"
-  },
-  {
-    "Id": "News.Type3",
-    "Valor": "Gratis"
-  },
-  {
-    "Id": "News.Type4",
-    "Valor": "Suscripciones"
-  },
-  {
-    "Id": "News.Type5",
-    "Valor": "Eventos"
-  },
-  {
-    "Id": "News.Type6",
-    "Valor": "Sorteos"
-  },
-  {
-    "Id": "News.Type7",
-    "Valor": "Rumores"
-  },
-  {
-    "Id": "News.Type8",
-    "Valor": "Otros"
-  },
-  {
     "Id": "News.BundleString1",
     "Valor": "El bundle {0} ha sido lanzado en {1}"
   },

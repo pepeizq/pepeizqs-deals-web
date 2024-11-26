@@ -21,10 +21,14 @@
   },
   {
     "Id": "String5",
-    "Valor": "Juegos gratis"
+    "Valor": "Acceso a la tienda de Patreon"
   },
   {
     "Id": "String6",
     "Valor": "Si visitas la web cada día obtendrás monedas que podrás canjear por juegos para Steam."
+  },
+  {
+    "Id": "String7",
+    "Valor": "Últimas Actualizaciones"
   }
 ]

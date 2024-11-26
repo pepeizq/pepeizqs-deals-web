@@ -403,6 +403,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             {
                 noticia.Imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
             }
+            else if (noticiaTipoSeleccionada == NoticiaTipo.Patreon.ToString())
+            {
+                noticia.Imagen = "https://pepeizqdeals.com/logo/logoentradapatreon.webp";
+            }
         }
     }
 
@@ -475,6 +479,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 else if (noticiaTipoSeleccionada == NoticiaTipo.Web.ToString())
                 {
                     noticiaAñadir.Tipo = NoticiaTipo.Web;
+                }
+                else if (noticiaTipoSeleccionada == NoticiaTipo.Patreon.ToString())
+                {
+                    noticiaAñadir.Tipo = NoticiaTipo.Patreon;
                 }
 
                 int id = BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);

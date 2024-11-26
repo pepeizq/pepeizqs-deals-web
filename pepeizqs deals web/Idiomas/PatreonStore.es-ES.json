@@ -1,7 +1,7 @@
 [
   {
     "Id": "Title",
-    "Valor": "Recompensas"
+    "Valor": "Tienda Patreon"
   },
   {
     "Id": "String1",
@@ -25,7 +25,7 @@
   },
   {
     "Id": "Denied",
-    "Valor": "Lo siento pero no tienes acceso, para poder acceder a las recompensas debes contribuir económicamente en Patreon para ayudar a mantener esta web sin anuncios."
+    "Valor": "Lo siento pero no tienes acceso, para poder acceder a la tienda de Patreon debes contribuir económicamente en Patreon para ayudar a mantener esta web sin anuncios."
   },
   {
     "Id": "Buy",

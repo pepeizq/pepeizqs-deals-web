@@ -4,6 +4,46 @@
     "Valor": "Check the latest news from the pepeizqdeals.com website"
   },
   {
+    "Id": "Type1",
+    "Valor": "Deals"
+  },
+  {
+    "Id": "Type2",
+    "Valor": "Bundles"
+  },
+  {
+    "Id": "Type3",
+    "Valor": "Free"
+  },
+  {
+    "Id": "Type4",
+    "Valor": "Subscriptions"
+  },
+  {
+    "Id": "Type5",
+    "Valor": "Events"
+  },
+  {
+    "Id": "Type6",
+    "Valor": "Giveaways"
+  },
+  {
+    "Id": "Type7",
+    "Valor": "Rumors"
+  },
+  {
+    "Id": "Type8",
+    "Valor": "Others"
+  },
+  {
+    "Id": "Type9",
+    "Valor": "Web"
+  },
+  {
+    "Id": "Type10",
+    "Valor": "Patreon"
+  },
+  {
     "Id": "Back",
     "Valor": "Back to Last News"
   },
