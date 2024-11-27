@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿//https://learn.microsoft.com/en-us/graph/search-concept-acceptlanguage-header
+
+#nullable disable
 
 using System.Text.Json;
 
@@ -20,11 +22,7 @@ namespace Herramientas
 			}
 			else
 			{
-				if (idiomaUsuario == "en" || idiomaUsuario == "en-US")
-				{
-					idiomaUsuario = "en-US";
-				}
-				else if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
+				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
 					idiomaUsuario = "es-ES";
 				}
@@ -109,7 +107,7 @@ namespace Herramientas
 			}
 			else
 			{
-				if (idiomaUsuario == "es")
+				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
 					idiomaUsuario = "es-ES";
 				}
@@ -149,7 +147,7 @@ namespace Herramientas
 		{
 			if (idiomaUsuario != null)
 			{
-				if (idiomaUsuario == "es" || idiomaUsuario == "es-ES")
+				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
 					return textoEspañol;
 				}
@@ -162,6 +160,52 @@ namespace Herramientas
 			{
 				return textoIngles;
 			}
+		}
+
+		//https://partner.steamgames.com/doc/store/localization/languages
+
+		public static string FormatoSteamAPI(string idiomaUsuario)
+		{
+			string idiomaSteam = string.Empty;
+
+			if (string.IsNullOrEmpty(idiomaUsuario) == false)
+			{
+				if (ComprobarEspañol(idiomaUsuario) == true)
+				{
+					idiomaSteam = "spanish";
+				}
+				else if (ComprobarEspañolLatino(idiomaUsuario) == true)
+				{
+					idiomaSteam = "latam";
+				}
+			}
+
+			if (string.IsNullOrEmpty(idiomaSteam) == true)
+			{
+				idiomaSteam = "english";
+			}
+
+			return idiomaSteam;
+		}
+
+		private static bool ComprobarEspañol(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "es" || idiomaUsuario == "es-ES" || idiomaUsuario == "ca" || idiomaUsuario == "ca-ES-valencia" || idiomaUsuario == "eu" || idiomaUsuario == "gl")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarEspañolLatino(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "es-MX" || idiomaUsuario == "es-US")
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

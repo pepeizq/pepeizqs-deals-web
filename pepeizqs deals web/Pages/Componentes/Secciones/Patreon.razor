@@ -62,8 +62,13 @@
 			@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Patreon")
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-				
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 15px;">
+			@foreach (var noticia in noticias)
+			{
+				<div>
+					<a href="/news/@noticia.Id/">@noticia.FechaEmpieza.Day/@noticia.FechaEmpieza.Month/@noticia.FechaEmpieza.Year • @Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs)</a>
+				</div>
+			}
 		</div>
 	}
 </div>

@@ -211,7 +211,7 @@ builder.Services.AddHttpClient<IDecompiladores, Decompiladores2>()
         new HttpClientHandler
         {
             AutomaticDecompression = System.Net.DecompressionMethods.GZip,
-			MaxConnectionsPerServer = 5
+			MaxConnectionsPerServer = 50
 		});
 
 builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();

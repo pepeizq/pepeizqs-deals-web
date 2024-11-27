@@ -539,7 +539,7 @@ else
 
             if (APIs.Steam.Juego.Detectar(enlacePrecargaAñadir) == true)
             {
-                juegoAñadir = await APIs.Steam.Juego.CargarDatos(APIs.Steam.Juego.LimpiarID(enlacePrecargaAñadir));
+                juegoAñadir = await APIs.Steam.Juego.CargarDatosJuego(APIs.Steam.Juego.LimpiarID(enlacePrecargaAñadir));
             }
             else if (APIs.GOG.Juego.Detectar(enlacePrecargaAñadir) == true)
             {

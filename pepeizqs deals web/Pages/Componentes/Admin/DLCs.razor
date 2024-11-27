@@ -46,7 +46,7 @@
             conexion = Herramientas.BaseDatos.Conectar();
         }
 
-        global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(dlcsPendientes[posicionDLC].IdSteam.ToString());
+        global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(dlcsPendientes[posicionDLC].IdSteam.ToString());
 
         if (nuevoJuego != null)
         {

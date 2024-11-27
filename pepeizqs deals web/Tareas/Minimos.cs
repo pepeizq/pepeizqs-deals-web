@@ -32,11 +32,11 @@ namespace Tareas
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
                 WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
-                string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+				string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
+				string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
-                if (piscinaApp == piscinaUsada)
-                {
+				if (piscinaTiendas == piscinaUsada)
+				{
                     SqlConnection conexion = new SqlConnection();
 
                     try

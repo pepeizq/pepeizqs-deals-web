@@ -1477,6 +1477,13 @@
                 </div>
             </div>
         }
+
+        @if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+        {
+            <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+
+            </div>
+        }
     </div>
 </div>
 
@@ -1853,7 +1860,7 @@
 
                 if (actualizarDatosAPI == true)
                 {
-                    global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+                    global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
 
                     if (nuevoJuego != null)
                     {
@@ -1890,6 +1897,13 @@
                         global::BaseDatos.Juegos.Actualizar.CantidadJugadoresSteam(juego);
                     }
                 } 
+
+                if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+                {
+                    string idiomaSteam = Herramientas.Idiomas.FormatoSteamAPI(idioma);
+
+
+                }
             }
 
             if (juego.IdGog > 0)

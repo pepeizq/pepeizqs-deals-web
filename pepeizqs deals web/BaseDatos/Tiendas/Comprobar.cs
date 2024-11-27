@@ -49,7 +49,7 @@ namespace BaseDatos.Tiendas
 							{
 								try
 								{
-									juego = await APIs.Steam.Juego.CargarDatos(idSteam);
+									juego = await APIs.Steam.Juego.CargarDatosJuego(idSteam);
 								}
 								catch
 								{
@@ -160,7 +160,7 @@ namespace BaseDatos.Tiendas
 				
 				try
 				{
-                    nuevoJuego = await APIs.Steam.Juego.CargarDatos(juego.IdSteam.ToString());
+                    nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
                 }
 				catch { }
 				

@@ -12,7 +12,7 @@ namespace APIs.Steam
 	{
 		public static string dominioImagenes = "https://cdn.cloudflare.steamstatic.com";
 
-		public static async Task<Juegos.Juego> CargarDatos(string enlace)
+		public static async Task<Juegos.Juego> CargarDatosJuego(string enlace)
 		{
 			string id = LimpiarID(enlace);
 
@@ -307,6 +307,34 @@ namespace APIs.Steam
 			return 0;
 		}
 
+		public static async Task<SteamAnalisisAPI> CargarDatosAnalisis(int id2, string idioma)
+		{
+			string id = id2.ToString();
+
+			if (string.IsNullOrEmpty(id) == false)
+			{
+				string html = await Decompiladores.Estandar("https://store.steampowered.com/appreviews/" + id + "?json=1&language=" + idioma);
+
+				if (string.IsNullOrEmpty(html) == false)
+				{
+					SteamAnalisisAPI api = null;
+
+					try
+					{
+						api = JsonSerializer.Deserialize<SteamAnalisisAPI>(html);
+					}
+					catch { }
+
+					if (api != null)
+					{
+						return api;
+					}
+				}
+			}
+
+			return null;
+		}
+
 		public static bool Detectar(string enlace)
 		{
 			bool resultado = false;
@@ -540,6 +568,85 @@ namespace APIs.Steam
 	{
 		[JsonPropertyName("player_count")]
 		public int Cantidad { get; set; }
+	}
+
+	#endregion
+
+	#region Clases Analisis
+
+	public class SteamAnalisisAPI
+	{
+		[JsonPropertyName("query_summary")]
+		public SteamAnalisisAPISumario Sumario { get; set; }
+
+		[JsonPropertyName("reviews")]
+		public List<SteamAnalisisAPIAnalisis> Analisis { get; set; }
+	}
+
+	public class SteamAnalisisAPISumario
+	{
+		[JsonPropertyName("total_positive")]
+		public int TotalPositivas { get; set; }
+
+		[JsonPropertyName("total_negative")]
+		public int TotalNegativas { get; set; }
+
+		[JsonPropertyName("total_reviews")]
+		public int TotalCantidad { get; set; }
+	}
+
+	public class SteamAnalisisAPIAnalisis
+	{
+		[JsonPropertyName("recommendationid")]
+		public int Id { get; set; }
+
+		[JsonPropertyName("author")]
+		public SteamAnalisisAPIAnalisisAutor Autor { get; set; }
+
+		[JsonPropertyName("language")]
+		public string Idioma { get; set; }
+
+		[JsonPropertyName("timestamp_created")]
+		public int TicksCreado { get; set; }
+
+		[JsonPropertyName("timestamp_updated")]
+		public int TicksActualizado { get; set; }
+
+		[JsonPropertyName("review")]
+		public string Contenido { get; set; }
+
+		[JsonPropertyName("votes_up")]
+		public int CantidadVotosPositivos { get; set; }
+
+		[JsonPropertyName("votes_funny")]
+		public int CantidadVotosDivertidos { get; set; }
+
+		[JsonPropertyName("steam_purchase")]
+		public bool FueComprado { get; set; }
+
+		[JsonPropertyName("received_for_free")]
+		public bool FueGratis { get; set; }
+
+		[JsonPropertyName("written_during_early_access")]
+		public bool FueAccesoAnticipado { get; set; }
+
+		[JsonPropertyName("primarily_steam_deck")]
+		public bool FueSteamDeck { get; set; }
+	}
+
+	public class SteamAnalisisAPIAnalisisAutor
+	{
+		[JsonPropertyName("steamid")]
+		public string SteamID { get; set; }
+
+		[JsonPropertyName("playtime_forever")]
+		public int TiempoJugadoSiempre { get; set; }
+
+		[JsonPropertyName("playtime_last_two_weeks")]
+		public int TiempoJugado2Semanas { get; set; }
+
+		[JsonPropertyName("playtime_at_review")]
+		public int TiempoJugadoCuandoHizoAnalisis { get; set; }
 	}
 
 	#endregion
