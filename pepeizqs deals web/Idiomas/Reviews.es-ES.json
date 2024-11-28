@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "Language.english",
+    "Valor": "Inglés"
+  },
+  {
+    "Id": "Language.spanish",
+    "Valor": "Español"
+  },
+  {
+    "Id": "Language.latam",
+    "Valor": "Español (Latinoamérica)"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Análisis"
+  },
+  {
+    "Id": "String2",
+    "Valor": "Los análisis están sacado directamente de Steam divididos por regiones."
+  }
+]

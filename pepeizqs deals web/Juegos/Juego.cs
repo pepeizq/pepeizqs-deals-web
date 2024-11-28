@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using APIs.Steam;
 using Bundles2;
 using Gratis2;
 using Herramientas;
@@ -195,8 +196,16 @@ namespace Juegos
 	public class JuegoCantidadJugadoresSteam
 	{
 		public int Cantidad { get; set; }
-
 		public DateTime Fecha { get; set; }
+	}
+
+	public class JuegoAnalisisAmpliado
+	{
+		public int CantidadPositivos { get; set; }
+		public int CantidadNegativos { get; set; }
+		public List<SteamAnalisisAPIAnalisis> ContenidoEspañol { get; set; }
+		public List<SteamAnalisisAPIAnalisis> ContenidoIngles { get; set; }
+		public List<SteamAnalisisAPIAnalisis> ContenidoLatino { get; set; }
 	}
 
 	//-------------------------------------------------------

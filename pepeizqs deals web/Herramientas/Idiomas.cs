@@ -164,6 +164,13 @@ namespace Herramientas
 
 		//https://partner.steamgames.com/doc/store/localization/languages
 
+		public static List<string> ListadoSteam()
+		{
+			List<string> idiomas = ["english", "spanish", "latam"];
+
+			return idiomas;
+		}
+
 		public static string FormatoSteamAPI(string idiomaUsuario)
 		{
 			string idiomaSteam = string.Empty;

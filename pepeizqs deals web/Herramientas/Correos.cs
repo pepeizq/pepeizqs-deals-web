@@ -406,7 +406,7 @@ namespace Herramientas
                     }
 					catch (Exception ex)
 					{
-						global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex);
+						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
 					}
 				}
 				else
@@ -421,7 +421,7 @@ namespace Herramientas
                     }
 					catch (Exception ex)
 					{
-						global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex);
+						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
 					}
 				}
 			}

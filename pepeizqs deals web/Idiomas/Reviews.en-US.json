@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "Language.english",
+    "Valor": "English"
+  },
+  {
+    "Id": "Language.spanish",
+    "Valor": "Spanish"
+  },
+  {
+    "Id": "Language.latam",
+    "Valor": "Spanish (Latin America)"
+  },
+  {
+    "Id": "String1",
+    "Valor": "Reviews"
+  },
+  {
+    "Id": "String2",
+    "Valor": "The reviews are taken directly from Steam and divided by regions."
+  }
+]

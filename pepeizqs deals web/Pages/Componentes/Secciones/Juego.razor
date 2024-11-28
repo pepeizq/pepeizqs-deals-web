@@ -193,34 +193,68 @@
                         <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-reviews')" style="padding: 10px 20px; display: flex; flex-direction: row; align-items: stretch; gap: 15px;">
                             @if (juego.Analisis != null)
                             {
-                                @if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+                                if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                                 {
-                                    <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
-                                        <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
-                                            @if (int.Parse(juego.Analisis.Porcentaje) > 74)
-                                            {
-                                                <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
-                                            }
+                                    if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+                                    {
+                                        <a onclick="moverScroll('reviews')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">
+                                            <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+                                                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                                    @if (int.Parse(juego.Analisis.Porcentaje) > 74)
+                                                    {
+                                                        <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    }
 
-                                            @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
-                                            {
-                                                <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
-                                            }
+                                                    @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
+                                                    {
+                                                        <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    }
 
-                                            @if (int.Parse(juego.Analisis.Porcentaje) < 50)
-                                            {
-                                                <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
-                                            }
+                                                    @if (int.Parse(juego.Analisis.Porcentaje) < 50)
+                                                    {
+                                                        <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    }
 
-                                            <div style="font-size: 17px;">
-                                                @juego.Analisis.Porcentaje%
+                                                    <div style="font-size: 17px;">
+                                                        @juego.Analisis.Porcentaje%
+                                                    </div>
+                                                </div>
+
+                                                <div style="font-size: 14px;">
+                                                    @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+                                            <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                                @if (int.Parse(juego.Analisis.Porcentaje) > 74)
+                                                {
+                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                }
+
+                                                @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
+                                                {
+                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                }
+
+                                                @if (int.Parse(juego.Analisis.Porcentaje) < 50)
+                                                {
+                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                }
+
+                                                <div style="font-size: 17px;">
+                                                    @juego.Analisis.Porcentaje%
+                                                </div>
+                                            </div>
+
+                                            <div style="font-size: 14px;">
+                                                @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)
                                             </div>
                                         </div>
-
-                                        <div style="font-size: 14px;">
-                                            @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)
-                                        </div>
-                                    </div>
+                                    }
                                 }
                             }
 
@@ -1480,8 +1514,70 @@
 
         @if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
         {
-            <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+            <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                <div>
+                    <div style="font-size: 18px; margin-bottom: 5px;">
+                        @Idiomas.CogerCadena(idioma, "String1", "Reviews")
+                    </div>
+                    <div style="font-size: 14px;">
+                        @Idiomas.CogerCadena(idioma, "String2", "Reviews")
+                    </div>
+                    <hr />
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 40px;">
+                    <div style="width: 25%; display: flex; flex-direction: column; gap: 10px;">
+                        @foreach (var idiomaSteam in Idiomas.ListadoSteam())
+                        {
+                            string subrayado = string.Empty;
 
+                            if (idiomaAnalisis == idiomaSteam)
+                            {
+                                subrayado = "border-bottom: 1px solid var(--colorEnlace);";
+                            }
+
+                            <button @onclick="(e => AnalisisIdioma(e, idiomaSteam))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+                                <div style="@subrayado padding-bottom: 5px;">
+                                    @Idiomas.CogerCadena(idioma, "Language." + idiomaSteam, "Reviews")
+                                </div>
+                            </button>
+                        }
+                    </div>
+
+                    <div style="width: 100%;">
+                        <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
+                            @{
+                                int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
+                                decimal porcentaje = 0;
+
+                                if (analisisAmpliado.CantidadPositivos > 0 && analisisAmpliado.CantidadNegativos > 0)
+                                {
+                                    porcentaje = (analisisAmpliado.CantidadPositivos / (analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos)) * 100;
+                                }
+                            }
+
+                            <div>
+                                @porcentaje
+                            </div>
+
+                            <div>
+                                @total.ToString("N0")
+                            </div>
+                            
+                            <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                @analisisAmpliado.CantidadPositivos.ToString("N0")
+                            </div>
+
+                            <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                                @analisisAmpliado.CantidadNegativos.ToString("N0")
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
             </div>
         }
     </div>
@@ -1796,6 +1892,7 @@
     public string userAgent { get; set; }
 
     private List<Juegos.Juego> dlcs = new List<Juegos.Juego>();
+    private JuegoAnalisisAmpliado analisisAmpliado = new JuegoAnalisisAmpliado();
     private List<Juegos.JuegoDRM> drmsGeforceNOW = new List<JuegoDRM>();
 
     private ApexChartOptions<PuntoGrafico> opcionesGrafico;
@@ -1901,8 +1998,26 @@
                 if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
                 {
                     string idiomaSteam = Herramientas.Idiomas.FormatoSteamAPI(idioma);
+                    idiomaAnalisis = idiomaSteam;
 
+                    if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
+                    {
+                        APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
 
+                        if (analisis != null)
+                        {
+                            if (analisis.Analisis != null)
+                            {
+                                global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
+
+                                analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                    }
                 }
             }
 
@@ -3233,19 +3348,19 @@
                                         }
                                     }
 
-									if (duplicado == false)
+                                    if (duplicado == false)
                                     {
                                         punto.Puntos.Add(nuevoPunto);
                                     }
-								}
-							}
-						}
-					}
-				}
+                                }
+                            }
+                        }
+                    }
+                }
 
-				#endregion
-			}
-		}
+                #endregion
+            }
+        }
 
         opcionesGrafico = new ApexChartOptions<PuntoGrafico>
         {
@@ -3329,178 +3444,208 @@
                 OffsetY = -25
             }
         };
-	}
+    }
 
-	#endregion
+    #endregion
 
-	#region Ventana Logear
+    #region Ventana Logear
 
-	private bool enseñarLogear = false;
+    private bool enseñarLogear = false;
 
-	private void LogearEnseñar(MouseEventArgs e)
-	{
-		if (enseñarLogear == false)
-		{
-			enseñarLogear = true;
-		}
-		else
-		{
-			enseñarLogear = false;
-		}
-	}
+    private void LogearEnseñar(MouseEventArgs e)
+    {
+        if (enseñarLogear == false)
+        {
+            enseñarLogear = true;
+        }
+        else
+        {
+            enseñarLogear = false;
+        }
+    }
 
-	private void LogearCerrar(MouseEventArgs e)
-	{
-		enseñarLogear = false;
-	}
+    private void LogearCerrar(MouseEventArgs e)
+    {
+        enseñarLogear = false;
+    }
 
-	private void LogearAbrirRegistrar(MouseEventArgs e)
-	{
-		NavManager.NavigateTo("/account/register", true);
-	}
+    private void LogearAbrirRegistrar(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/register", true);
+    }
 
-	private void LogearAbrirLogin(MouseEventArgs e)
-	{
-		NavManager.NavigateTo("/account/login", true);
-	}
+    private void LogearAbrirLogin(MouseEventArgs e)
+    {
+        NavManager.NavigateTo("/account/login", true);
+    }
 
-	#endregion
+    #endregion
 
-	#region Publisher
+    #region Publisher
 
-	private List<global::BaseDatos.Publishers.Publisher> PublisherBuscar(List<string> listaPublishers)
-	{
-		List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
+    private List<global::BaseDatos.Publishers.Publisher> PublisherBuscar(List<string> listaPublishers)
+    {
+        List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
 
-		foreach (var publisher in listaPublishers)
-		{
-			string publisherLimpio = publisher;
-			publisherLimpio = publisherLimpio.Replace(" ", null);
-			publisherLimpio = publisherLimpio.Replace("(", null);
-			publisherLimpio = publisherLimpio.Replace(")", null);
-			publisherLimpio = publisherLimpio.Replace("?", null);
-			publisherLimpio = publisherLimpio.Replace("/", null);
-			publisherLimpio = publisherLimpio.Replace("\"", null);
-			publisherLimpio = publisherLimpio.Replace("💘", null);
-			publisherLimpio = publisherLimpio.Replace("'", null);
-			publisherLimpio = publisherLimpio.ToLower();
-			publisherLimpio = publisherLimpio.Trim();
+        foreach (var publisher in listaPublishers)
+        {
+            string publisherLimpio = publisher;
+            publisherLimpio = publisherLimpio.Replace(" ", null);
+            publisherLimpio = publisherLimpio.Replace("(", null);
+            publisherLimpio = publisherLimpio.Replace(")", null);
+            publisherLimpio = publisherLimpio.Replace("?", null);
+            publisherLimpio = publisherLimpio.Replace("/", null);
+            publisherLimpio = publisherLimpio.Replace("\"", null);
+            publisherLimpio = publisherLimpio.Replace("💘", null);
+            publisherLimpio = publisherLimpio.Replace("'", null);
+            publisherLimpio = publisherLimpio.ToLower();
+            publisherLimpio = publisherLimpio.Trim();
 
-			global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
+            global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
+            }
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
+            }
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
+            }
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
+            }
 
-			publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
+            publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
+            }
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
+            }
 
-			if (publisherFinal == null)
-			{
-				publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-			}
+            if (publisherFinal == null)
+            {
+                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
+            }
 
-			if (publisherFinal != null)
-			{
-				bool añadir = true;
+            if (publisherFinal != null)
+            {
+                bool añadir = true;
 
-				if (publishersFinales.Count > 0)
-				{
-					foreach (var publisherFinal2 in publishersFinales)
-					{
-						if (publisherFinal2.Id == publisherFinal.Id)
-						{
-							añadir = false;
-						}
-					}
-				}
+                if (publishersFinales.Count > 0)
+                {
+                    foreach (var publisherFinal2 in publishersFinales)
+                    {
+                        if (publisherFinal2.Id == publisherFinal.Id)
+                        {
+                            añadir = false;
+                        }
+                    }
+                }
 
-				if (añadir == true)
-				{
-					publishersFinales.Add(publisherFinal);
-				}
-			}
-			else
-			{
-				global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
-				publisherFinal2.Id = publisherLimpio;
-				publisherFinal2.Nombre = publisher;
+                if (añadir == true)
+                {
+                    publishersFinales.Add(publisherFinal);
+                }
+            }
+            else
+            {
+                global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
+                publisherFinal2.Id = publisherLimpio;
+                publisherFinal2.Nombre = publisher;
 
-				if (publisherFinal2.Nombre.Contains("?") == true)
-				{
-					publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
-					publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
-				}
+                if (publisherFinal2.Nombre.Contains("?") == true)
+                {
+                    publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
+                    publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
+                }
 
-				if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
-				{
-					if (string.IsNullOrEmpty(publisherFinal2.Id) == false)
-					{
-						bool mandarError = false;
+                if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
+                {
+                    if (string.IsNullOrEmpty(publisherFinal2.Id) == false)
+                    {
+                        bool mandarError = false;
 
-						if (juego.Analisis != null)
-						{
-							if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-							{
-								if (juego.Analisis.Cantidad.Length > 3)
-								{
-									mandarError = true;
-								}
-							}
-						}
+                        if (juego.Analisis != null)
+                        {
+                            if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+                            {
+                                if (juego.Analisis.Cantidad.Length > 3)
+                                {
+                                    mandarError = true;
+                                }
+                            }
+                        }
 
-						if (mandarError == true)
-						{
-							publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
+                        if (mandarError == true)
+                        {
+                            publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
 
-							publishersFinales.Add(publisherFinal2);
+                            publishersFinales.Add(publisherFinal2);
 
-							global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
-						}
-						else
-						{
-							publisherFinal2.Id = "noenlazar";
+                            global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
+                        }
+                        else
+                        {
+                            publisherFinal2.Id = "noenlazar";
 
-							publishersFinales.Add(publisherFinal2);
-						}
-					}
-					else
-					{
-						publisherFinal2.Id = "noenlazar";
+                            publishersFinales.Add(publisherFinal2);
+                        }
+                    }
+                    else
+                    {
+                        publisherFinal2.Id = "noenlazar";
 
-						publishersFinales.Add(publisherFinal2);
-					}
-				}
-			}
-		}
+                        publishersFinales.Add(publisherFinal2);
+                    }
+                }
+            }
+        }
 
-		return publishersFinales;
-	}
+        return publishersFinales;
+    }
 
-	#endregion
+    #endregion
+
+    #region Analisis
+
+    private string idiomaAnalisis = string.Empty;
+
+    private async Task AnalisisIdioma(MouseEventArgs e, string idiomaSteam)
+    {
+        idiomaAnalisis = idiomaSteam;
+
+        if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
+        {
+            APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
+
+            if (analisis != null)
+            {
+                if (analisis.Analisis != null)
+                {
+                    global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
+
+                    analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                }
+            }
+        }
+        else
+        {
+            analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+        }
+    }
+
+    #endregion
 }

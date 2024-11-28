@@ -318,7 +318,7 @@ namespace APIs.Steam
 				if (string.IsNullOrEmpty(html) == false)
 				{
 					SteamAnalisisAPI api = null;
-
+					
 					try
 					{
 						api = JsonSerializer.Deserialize<SteamAnalisisAPI>(html);
@@ -598,7 +598,7 @@ namespace APIs.Steam
 	public class SteamAnalisisAPIAnalisis
 	{
 		[JsonPropertyName("recommendationid")]
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		[JsonPropertyName("author")]
 		public SteamAnalisisAPIAnalisisAutor Autor { get; set; }

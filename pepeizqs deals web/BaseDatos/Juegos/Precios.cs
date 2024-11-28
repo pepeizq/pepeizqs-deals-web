@@ -130,7 +130,14 @@ namespace BaseDatos.Juegos
 
                                                     if (correo != null)
                                                     {
-                                                        Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+														try
+														{
+															Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
+														}
                                                     }
                                                 }
                                             }
