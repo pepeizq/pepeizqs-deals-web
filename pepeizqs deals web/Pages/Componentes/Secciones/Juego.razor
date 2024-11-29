@@ -58,6 +58,14 @@
     transform: scale(1.01);
     background-color: var(--fondoBotonPequeñoHover);
     }
+
+    .boton-expandir2 {
+    transition: transform .2s;
+    }
+
+    .boton-expandir2:hover {
+    transform: scale(1.01);
+    }
 </style>
 
 <div>
@@ -1524,7 +1532,7 @@
                     </div>
                     <hr />
                 </div>
-                
+
                 <div style="display: flex; align-items: flex-start; gap: 40px;">
                     <div style="width: 25%; display: flex; flex-direction: column; gap: 10px;">
                         @foreach (var idiomaSteam in Idiomas.ListadoSteam())
@@ -1544,39 +1552,122 @@
                         }
                     </div>
 
-                    <div style="width: 100%;">
-                        <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
-                            @{
-                                int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
-                                decimal porcentaje = 0;
+                    @if (analisisAmpliado.CantidadPositivos > 0)
+                    {
+                        <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+                            <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+                                <div style="margin-bottom: 10px;">
+                                    @Idiomas.CogerCadena(idioma, "String3", "Reviews")
+                                </div>
 
-                                if (analisisAmpliado.CantidadPositivos > 0 && analisisAmpliado.CantidadNegativos > 0)
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    @{
+                                        int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
+                                        int porcentaje = Calculadora.SacarDescuento(analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos, analisisAmpliado.CantidadNegativos);
+
+                                        if (analisisAmpliado.CantidadPositivos > 0 && analisisAmpliado.CantidadNegativos == 0)
+                                        {
+                                            porcentaje = 99;
+                                        }
+                                    }
+
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div>
+                                            @if (porcentaje > 74)
+                                            {
+                                                <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                            }
+
+                                            @if (porcentaje > 49 && porcentaje < 75)
+                                            {
+                                                <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                            }
+
+                                            @if (porcentaje < 50)
+                                            {
+                                                <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                            }
+                                        </div>
+
+                                        <div>
+                                            @porcentaje%
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        @string.Format(Idiomas.CogerCadena(idioma, "String4", "Reviews"), total.ToString("N0"))
+                                    </div>
+
+                                    <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                        @analisisAmpliado.CantidadPositivos.ToString("N0")
+                                    </div>
+
+                                    <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                        @analisisAmpliado.CantidadNegativos.ToString("N0")
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (analisisAmpliado != null)
+                            {
+                                if (analisisAmpliado.Contenido != null)
                                 {
-                                    porcentaje = (analisisAmpliado.CantidadPositivos / (analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos)) * 100;
+                                    foreach (var analisis in analisisAmpliado.Contenido)
+                                    {
+                                        <a href="https://steamcommunity.com/profiles/@analisis.Autor.SteamID/recommended/@juego.IdSteam/" target="_blank" style="color: var(--colorTexto); text-decoration: none;">
+                                            <div class="boton-expandir2" style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+                                                <div style="display: flex; align-items: center; gap: 20px;">
+                                                    @if (analisis.Positiva == true)
+                                                    {
+                                                        <div style="color: var(--deckVerificado);">
+                                                            <i class="fa-solid fa-thumbs-up"></i>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="color: var(--colorTextoPeligro);">
+                                                            <i class="fa-solid fa-thumbs-down"></i>
+                                                        </div>
+                                                    }
+
+                                                    <div>
+                                                        @{
+                                                            TimeSpan tiempoSpan = TimeSpan.FromMinutes(analisis.Autor.TiempoJugadoSiempre);
+
+                                                            decimal tiempoD = Convert.ToDecimal(analisis.Autor.TiempoJugadoSiempre) / 60;
+                                                        }
+
+                                                        @string.Format(Idiomas.CogerCadena(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
+                                                    </div>
+
+                                                    <div>
+                                                        @{
+                                                            DateTimeOffset fecha = DateTimeOffset.FromUnixTimeSeconds(analisis.TicksCreado);
+                                                            DateTime fechaCreado = fecha.UtcDateTime;
+                                                        }
+
+                                                        @string.Format(Idiomas.CogerCadena(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <div style="white-space: pre-line;">
+                                                    @analisis.Contenido
+                                                </div>
+                                            </div>
+                                        </a> 
+                                    }
                                 }
                             }
-
-                            <div>
-                                @porcentaje
-                            </div>
-
-                            <div>
-                                @total.ToString("N0")
-                            </div>
-                            
-                            <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
-                                <i class="fa-solid fa-thumbs-up"></i>
-                                @analisisAmpliado.CantidadPositivos.ToString("N0")
-                            </div>
-
-                            <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
-                                <i class="fa-solid fa-thumbs-down"></i>
-                                @analisisAmpliado.CantidadNegativos.ToString("N0")
-                            </div>
                         </div>
-
-                        
-                    </div>
+                    }
+                    else
+                    {
+                        @Idiomas.CogerCadena(idioma, "String5", "Reviews")
+                    }
                 </div>
             </div>
         }

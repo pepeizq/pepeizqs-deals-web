@@ -41,7 +41,7 @@ namespace BaseDatos.Analisis
 							{
 								if (lector.IsDBNull(2) == false)
 								{
-									analisis.ContenidoEspañol = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(2));
+									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(2));
 								}
 
 								if (lector.IsDBNull(7) == false)
@@ -59,7 +59,7 @@ namespace BaseDatos.Analisis
 							{
 								if (lector.IsDBNull(4) == false)
 								{
-									analisis.ContenidoIngles = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(4));
+									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(4));
 								}
 
 								if (lector.IsDBNull(9) == false)
@@ -77,7 +77,7 @@ namespace BaseDatos.Analisis
 							{
 								if (lector.IsDBNull(6) == false)
 								{
-									analisis.ContenidoLatino = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(6));
+									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(6));
 								}
 
 								if (lector.IsDBNull(11) == false)

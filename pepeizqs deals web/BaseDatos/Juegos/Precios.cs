@@ -7,7 +7,7 @@ namespace BaseDatos.Juegos
 {
 	public static class Precios
 	{
-		public static void Actualizar(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion, bool actualizarAPI = false)
+		public static void Steam(Juego juego, JuegoPrecio nuevaOferta, SqlConnection conexion, bool actualizarAPI = false)
 		{
 			bool ultimaMoficacion = false;
 
@@ -204,7 +204,7 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);
 		}
 
-		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta, SqlConnection conexion, string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null)
+		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta, SqlConnection conexion, string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null, JuegoAnalisis analisis = null)
 		{
 			bool ultimaModificacion = false;
 
@@ -327,7 +327,17 @@ namespace BaseDatos.Juegos
 
 													if (correo != null)
 													{
-														Herramientas.Correos.EnviarNuevoMinimo(id, minimo, correo);
+														if (correo != null)
+														{
+															try
+															{
+																Herramientas.Correos.EnviarNuevoMinimo(id, minimo, correo);
+															}
+															catch (Exception ex)
+															{
+																BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
+															}
+														}
 													}
 												}
 											}
@@ -393,7 +403,7 @@ namespace BaseDatos.Juegos
 				ahora = DateTime.Now;
 			}
 
-			Juegos.Actualizar.Comprobacion(id, ofertasActuales, ofertasHistoricas, historicos, conexion, slugGOG, idGOG, slugEpic, ahora);
+			Juegos.Actualizar.Comprobacion(id, ofertasActuales, ofertasHistoricas, historicos, conexion, slugGOG, idGOG, slugEpic, ahora, analisis);
 		}
 
 		private static List<JuegoHistorico> ComprobarHistoricos(List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta)

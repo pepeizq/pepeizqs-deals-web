@@ -154,13 +154,13 @@ namespace BaseDatos.Juegos
 					}
 					catch (Exception ex)
 					{
-						Errores.Insertar.Mensaje("Actualizar Datos " + juego.Nombre, ex);
+						Errores.Insertar.Mensaje("Actualizar Datos " + juego.Nombre + " " + juego.Id.ToString(), ex);
 					}
 				}
 			}		
 		}
 
-		public static void Comprobacion(int id, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, SqlConnection conexion = null, string slugGOG = null, string idGOG = null, string slugEpic = null, DateTime? ultimaModificacion = null)
+		public static void Comprobacion(int id, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, SqlConnection conexion = null, string slugGOG = null, string idGOG = null, string slugEpic = null, DateTime? ultimaModificacion = null, JuegoAnalisis analisis = null)
 		{
 			if (conexion == null)
 			{
@@ -195,9 +195,16 @@ namespace BaseDatos.Juegos
 				añadirUltimaModificacion = ", ultimaModificacion=@ultimaModificacion";
 			}
 
+			string añadirAnalisis = null;
+
+			if (analisis != null)
+			{
+				añadirAnalisis = ", analisis=@analisis";
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, historicos=@historicos" +
-					añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic + " WHERE id=@id";
+					añadirUltimaModificacion + añadirSlugGog + añadirSlugEpic + añadirAnalisis + " WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
@@ -220,6 +227,11 @@ namespace BaseDatos.Juegos
 				if (string.IsNullOrEmpty(slugEpic) == false)
 				{
 					comando.Parameters.AddWithValue("@slugEpic", slugEpic);
+				}
+
+				if (analisis != null)
+				{
+					comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(analisis));
 				}
 
 				try

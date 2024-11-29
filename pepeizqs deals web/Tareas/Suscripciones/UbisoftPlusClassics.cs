@@ -8,7 +8,7 @@ namespace Tareas.Suscripciones
 {
     public class UbisoftPlusClassics : BackgroundService
     {
-        private string id = "ubisoftplusclassic";
+        private string id = "ubisoftplusclassics";
 
         private readonly ILogger<UbisoftPlusClassics> _logger;
         private readonly IServiceScopeFactory _factoria;

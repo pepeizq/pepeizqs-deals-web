@@ -313,7 +313,7 @@ namespace APIs.Steam
 
 			if (string.IsNullOrEmpty(id) == false)
 			{
-				string html = await Decompiladores.Estandar("https://store.steampowered.com/appreviews/" + id + "?json=1&language=" + idioma);
+				string html = await Decompiladores.Estandar("https://store.steampowered.com/appreviews/" + id + "?json=1&language=" + idioma + "&num_per_page=50&filter_offtopic_activity=0");
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
@@ -605,6 +605,9 @@ namespace APIs.Steam
 
 		[JsonPropertyName("language")]
 		public string Idioma { get; set; }
+
+		[JsonPropertyName("voted_up")]
+		public bool Positiva { get; set; }
 
 		[JsonPropertyName("timestamp_created")]
 		public int TicksCreado { get; set; }

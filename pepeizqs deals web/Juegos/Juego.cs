@@ -203,9 +203,7 @@ namespace Juegos
 	{
 		public int CantidadPositivos { get; set; }
 		public int CantidadNegativos { get; set; }
-		public List<SteamAnalisisAPIAnalisis> ContenidoEspañol { get; set; }
-		public List<SteamAnalisisAPIAnalisis> ContenidoIngles { get; set; }
-		public List<SteamAnalisisAPIAnalisis> ContenidoLatino { get; set; }
+		public List<SteamAnalisisAPIAnalisis> Contenido { get; set; }
 	}
 
 	//-------------------------------------------------------

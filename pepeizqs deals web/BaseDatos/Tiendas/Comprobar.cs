@@ -8,36 +8,57 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion, int deck = 0)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion = null, int deck = 0)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			Juego juego = JuegoCrear.Generar();
 
-			bool insertar = false;
-			bool actualizar = false;
-
-			string idSteam = string.Empty;
+			string idSteam2 = string.Empty;
 
 			if (oferta.Enlace.Contains("https://store.steampowered.com/app/") == true)
 			{
-				idSteam = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
+				idSteam2 = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
 			}
 
-			if (string.IsNullOrEmpty(idSteam) == false)
+			if (string.IsNullOrEmpty(idSteam2) == false)
 			{
-				int numeroId = 0;
+				int idSteam = 0;
 
 				try
 				{
-					numeroId = int.Parse(idSteam);
+					idSteam = int.Parse(idSteam2);
 				}
 				catch
 				{
 
 				}
 
-				if (numeroId > 0)
+				if (idSteam > 0)
 				{
-					string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+					if (analisis != null && juego != null)
+					{
+						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)
+						{
+							JuegoAnalisis nuevoAnalisis = new JuegoAnalisis();
+							nuevoAnalisis.Cantidad = analisis.Cantidad;
+							nuevoAnalisis.Porcentaje = analisis.Porcentaje;
+
+							juego.Analisis = nuevoAnalisis;
+						}
+					}
+
+					string buscarJuego = "SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, fechaSteamAPIComprobacion FROM juegos WHERE idSteam=@idSteam";
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
@@ -45,11 +66,101 @@ namespace BaseDatos.Tiendas
 
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{
-							if (lector.Read() == false)
+							if (lector.Read() == true)
+							{
+								if (lector.IsDBNull(6) == false)
+								{
+									if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+									{
+										DateTime fechaComprobacion = DateTime.Parse(lector.GetString(6));
+										fechaComprobacion = fechaComprobacion.AddDays(91);
+
+										if (fechaComprobacion < DateTime.Now)
+										{
+											ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, deck, conexion);
+										}
+										else
+										{
+											int id = 0;
+											if (lector.IsDBNull(0) == false)
+											{
+												id = lector.GetInt32(0);
+											}
+
+											List<JuegoPrecio> ofertasHistoricas = new List<JuegoPrecio>();
+											if (lector.IsDBNull(1) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+												{
+													ofertasHistoricas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(1));
+												}
+											}
+
+											if (ofertasHistoricas == null)
+											{
+												ofertasHistoricas = new List<JuegoPrecio>();
+											}
+
+											if (ofertasHistoricas.Count == 0)
+											{
+												ofertasHistoricas.Add(oferta);
+											}
+
+											List<JuegoPrecio> ofertasActuales = new List<JuegoPrecio>();
+											if (lector.IsDBNull(2) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(2)) == false)
+												{
+													ofertasActuales = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(2));
+												}
+											}
+
+											if (ofertasActuales == null)
+											{
+												ofertasActuales = new List<JuegoPrecio>();
+											}
+
+											if (ofertasActuales.Count == 0)
+											{
+												ofertasActuales.Add(oferta);
+											}
+
+											List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
+											if (lector.IsDBNull(3) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(3)) == false)
+												{
+													usuariosInteresados = JsonSerializer.Deserialize<List<JuegoUsuariosInteresados>>(lector.GetString(3));
+												}
+											}
+
+											if (lector.IsDBNull(4) == false)
+											{
+												idSteam = lector.GetInt32(4);
+											}
+
+											List<JuegoHistorico> historicos = new List<JuegoHistorico>();
+											if (lector.IsDBNull(5) == false)
+											{
+												if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+												{
+													historicos = JsonSerializer.Deserialize<List<JuegoHistorico>>(lector.GetString(5));
+												}
+											}
+
+											if (id > 0)
+											{
+												Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, historicos, oferta, conexion, null, null, null, usuariosInteresados, juego.Analisis);
+											}
+										}
+									}
+								}
+							}
+							else
 							{
 								try
 								{
-									juego = await APIs.Steam.Juego.CargarDatosJuego(idSteam);
+									juego = await APIs.Steam.Juego.CargarDatosJuego(idSteam2);
 								}
 								catch
 								{
@@ -70,120 +181,81 @@ namespace BaseDatos.Tiendas
 										juego.PrecioMinimosHistoricos.Add(oferta);
 									}
 
-									insertar = true;
-								}
-								else
-								{
-									insertar = false;
-								}
-							}
-							else
-							{
-								juego = Juegos.Buscar.Cargar(juego, lector);
-
-								actualizar = true;
-							}
-						}
-					}
-
-					if (analisis != null && juego != null)
-					{
-						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)
-						{
-							JuegoAnalisis nuevoAnalisis = new JuegoAnalisis();
-							nuevoAnalisis.Cantidad = analisis.Cantidad;
-							nuevoAnalisis.Porcentaje = analisis.Porcentaje;
-
-							juego.Analisis = nuevoAnalisis;
-						}						
-					}
-
-					if (insertar == true && actualizar == false)
-					{
-						bool insertar2 = true;
-						string buscarJuego2 = "SELECT * FROM juegos WHERE idSteam=@idSteam";
-
-						if (conexion.State == System.Data.ConnectionState.Closed)
-						{
-							conexion = Herramientas.BaseDatos.Conectar();
-						}
-
-						using (SqlCommand comando = new SqlCommand(buscarJuego2, conexion))
-						{
-							comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
-
-							using (SqlDataReader lector = comando.ExecuteReader())
-							{
-								if (lector.Read() == true)
-								{
-									insertar2 = false;
+									Juegos.Insertar.Ejecutar(juego, conexion);
 								}
 							}
 						}
-
-						if (insertar2 == true)
-						{
-							Juegos.Insertar.Ejecutar(juego, conexion);
-						}					
-					}
-
-					if (actualizar == true && insertar == false)
-					{
-						bool actualizarAPI = false;
-
-						DateTime fechaComprobacion = Convert.ToDateTime(juego.FechaSteamAPIComprobacion);
-						fechaComprobacion = fechaComprobacion.AddDays(91);
-
-						if (fechaComprobacion < DateTime.Now)
-						{
-							juego = await ActualizarDatosAPI(juego);
-						}
-
-						juego.Etiquetas = etiquetas;
-
-						if (deck > 0)
-						{
-							juego.Deck = Enum.Parse<JuegoDeck>(deck.ToString());
-						}
-
-						Juegos.Precios.Actualizar(juego, oferta, conexion, actualizarAPI);
 					}
 				}
 			}
 		}
 
-		private static async Task<Juego> ActualizarDatosAPI(Juego juego)
+		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, int deck = 0, SqlConnection conexion = null)
 		{
 			if (juego.IdSteam > 0)
 			{
-                Juego nuevoJuego = null;
-				
-				try
+				if (conexion == null)
 				{
-                    nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
-                }
-				catch { }
-				
-				if (nuevoJuego != null)
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+				else
 				{
-                    juego.Nombre = nuevoJuego.Nombre;
-                    juego.Media = nuevoJuego.Media;
-
-					if (juego.Tipo == JuegoTipo.DLC)
+					if (conexion.State != System.Data.ConnectionState.Open)
 					{
-						if (string.IsNullOrEmpty(juego.Maestro) == true)
-						{
-							juego.Maestro = nuevoJuego.Maestro;
-						}						
+						conexion = Herramientas.BaseDatos.Conectar();
 					}
-					
-					juego.FechaSteamAPIComprobacion = DateTime.Now;
-					juego.Categorias = nuevoJuego.Categorias;
-					juego.Generos = nuevoJuego.Generos;
-                }
-			}
+				}
 
-			return juego;
+				string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
+
+				using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
+				{
+					comando.Parameters.AddWithValue("@idSteam", juego.IdSteam);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read() == true)
+						{
+							juego = Juegos.Buscar.Cargar(juego, lector);
+
+							Juego nuevoJuego = null;
+
+							try
+							{
+								nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
+							}
+							catch { }
+
+							if (nuevoJuego != null)
+							{
+								juego.Nombre = nuevoJuego.Nombre;
+								juego.Media = nuevoJuego.Media;
+
+								if (juego.Tipo == JuegoTipo.DLC)
+								{
+									if (string.IsNullOrEmpty(juego.Maestro) == true)
+									{
+										juego.Maestro = nuevoJuego.Maestro;
+									}
+								}
+
+								juego.FechaSteamAPIComprobacion = DateTime.Now;
+								juego.Categorias = nuevoJuego.Categorias;
+								juego.Generos = nuevoJuego.Generos;
+							}
+
+							juego.Etiquetas = etiquetas;
+
+							if (deck > 0)
+							{
+								juego.Deck = Enum.Parse<JuegoDeck>(deck.ToString());
+							}
+
+							Juegos.Precios.Steam(juego, oferta, conexion, true);
+						}
+					}
+				}
+			}
 		}
 
 		public static void Resto(JuegoPrecio oferta, SqlConnection conexion, string idGog = null, string slugGOG = null, string slugEpic = null)
