@@ -77,8 +77,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Idiomas\Bundle.en-US.json" />
-    <_ContentIncludedByDefault Remove="Idiomas\Index.en-US.json" />
     <_ContentIncludedByDefault Remove="Pages\Account\Account.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Account\ResetPassword.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Componentes\Admin\Avisos.razor" />

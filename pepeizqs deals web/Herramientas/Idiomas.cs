@@ -18,17 +18,18 @@ namespace Herramientas
 		{
 			if (string.IsNullOrEmpty(idiomaUsuario) == true)
 			{
-				idiomaUsuario = "en-US";
+				idiomaUsuario = "en";
 			}
 			else
 			{
 				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
-					idiomaUsuario = "es-ES";
+					idiomaUsuario = "es";
 				}
+
 				else
 				{
-					idiomaUsuario = "en-US";
+					idiomaUsuario = "en";
 				}
 			}
 
@@ -78,9 +79,9 @@ namespace Herramientas
 				{
 					if (string.IsNullOrEmpty(cadena) == false)
 					{
-						if (idiomaUsuario != "en-US")
+						if (idiomaUsuario != "en")
 						{
-							return CogerCadena("en-US", cadena, nombreFichero);
+							return CogerCadena("en", cadena, nombreFichero);
 						}
 						else
 						{
@@ -99,17 +100,106 @@ namespace Herramientas
 			}
 		}
 
-		public static List<IdiomaCadena> CogerTodasCadenas(string idiomaUsuario, string nombreFichero)
+		public static string CogerCadena2(string idiomaUsuario, string cadena, string nombreFichero)
 		{
 			if (string.IsNullOrEmpty(idiomaUsuario) == true)
 			{
-				idiomaUsuario = "en-US";
+				idiomaUsuario = "en";
 			}
 			else
 			{
 				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
-					idiomaUsuario = "es-ES";
+					idiomaUsuario = "es";
+				}
+				else if (ComprobarFrances(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "fr";
+				}
+				else if (ComprobarAleman(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "de";
+				}
+				else if (ComprobarItaliano(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "it";
+				}
+				else if (ComprobarPortugues(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "pt";
+				}
+				else if (ComprobarSueco(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "sv";
+				}
+				else
+				{
+					idiomaUsuario = "en";
+				}
+			}
+
+			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
+
+			if (string.IsNullOrEmpty(nombreFichero) == false)
+			{
+				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
+			}
+
+			if (File.Exists(rutaFichero) == true)
+			{
+				using (StreamReader r = new StreamReader(rutaFichero))
+				{
+					List<IdiomaCadena> items = new List<IdiomaCadena>();
+
+					try
+					{
+						string json = r.ReadToEnd();
+						JsonElement elementos = JsonSerializer.Deserialize<JsonElement>(json);
+
+						if (elementos.TryGetProperty(cadena, out var resultado))
+						{
+							return resultado.GetString();
+						}
+					}
+					catch (Exception ex)
+					{
+						global::BaseDatos.Errores.Insertar.Mensaje("traduccion", ex);
+					}
+				}
+
+				if (string.IsNullOrEmpty(cadena) == false)
+				{
+					if (idiomaUsuario != "en")
+					{
+						return CogerCadena("en", cadena, nombreFichero);
+					}
+					else
+					{
+						return null;
+					}
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				return rutaFichero;
+			}
+		}
+
+		public static List<IdiomaCadena> CogerTodasCadenas(string idiomaUsuario, string nombreFichero)
+		{
+			if (string.IsNullOrEmpty(idiomaUsuario) == true)
+			{
+				idiomaUsuario = "en";
+			}
+			else
+			{
+				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
+				{
+					idiomaUsuario = "es";
 				}
 			}
 
@@ -166,7 +256,7 @@ namespace Herramientas
 
 		public static List<string> ListadoSteam()
 		{
-			List<string> idiomas = ["english", "spanish", "latam"];
+			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "swedish"];
 
 			return idiomas;
 		}
@@ -208,6 +298,56 @@ namespace Herramientas
 		private static bool ComprobarEspañolLatino(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "es-MX" || idiomaUsuario == "es-US")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarFrances(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "fr" || idiomaUsuario == "fr-FR" || idiomaUsuario == "fr-CA")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarAleman(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "de" || idiomaUsuario == "de-de")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarItaliano(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "it" || idiomaUsuario == "it-it")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarPortugues(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "pt-PT" || idiomaUsuario == "pt-BR")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarSueco(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "sv")
 			{
 				return true;
 			}

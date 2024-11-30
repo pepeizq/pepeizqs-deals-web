@@ -1492,43 +1492,15 @@
             }
         </div>
 
-        @if (dlcs.Count > 0)
-        {
-            <div id="dlcs" style="padding: 30px 40px 20px 40px; background: color-mix(in srgb, var(--fondoOscuro), var(--fondoDlc) 60%); border: 1px solid var(--fondoBotonPequeño);">
-                <div>
-                    <label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@dlcs.Count.ToString())</label>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <Virtualize Context="dlc" Items="dlcs" ItemSize="107">
-                        <ItemContent>
-                            <a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
-                                <div class="boton-expandir" style="background: color-mix(in srgb, var(--fondoBotonPequeño), var(--fondoDlc) 30%); display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
-                                    </div>
-
-                                    <div style="width: 100%;">
-                                        <div>@dlc.Nombre</div>
-                                        <div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </ItemContent>
-                    </Virtualize>
-                </div>
-            </div>
-        }
-
         @if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
         {
             <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                 <div>
                     <div style="font-size: 18px; margin-bottom: 5px;">
-                        @Idiomas.CogerCadena(idioma, "String1", "Reviews")
+                        @Idiomas.CogerCadena2(idioma, "String1", "Reviews")
                     </div>
                     <div style="font-size: 14px;">
-                        @Idiomas.CogerCadena(idioma, "String2", "Reviews")
+                        @Idiomas.CogerCadena2(idioma, "String2", "Reviews")
                     </div>
                     <hr />
                 </div>
@@ -1546,7 +1518,7 @@
 
                             <button @onclick="(e => AnalisisIdioma(e, idiomaSteam))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
                                 <div style="@subrayado padding-bottom: 5px;">
-                                    @Idiomas.CogerCadena(idioma, "Language." + idiomaSteam, "Reviews")
+                                    @Idiomas.CogerCadena2(idioma, "Language." + idiomaSteam, "Reviews")
                                 </div>
                             </button>
                         }
@@ -1557,7 +1529,7 @@
                         <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
                             <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
                                 <div style="margin-bottom: 10px;">
-                                    @Idiomas.CogerCadena(idioma, "String3", "Reviews")
+                                    @Idiomas.CogerCadena2(idioma, "String3", "Reviews")
                                 </div>
 
                                 <div style="display: flex; align-items: center; gap: 20px;">
@@ -1595,7 +1567,7 @@
                                     </div>
 
                                     <div>
-                                        @string.Format(Idiomas.CogerCadena(idioma, "String4", "Reviews"), total.ToString("N0"))
+                                        @string.Format(Idiomas.CogerCadena2(idioma, "String4", "Reviews"), total.ToString("N0"))
                                     </div>
 
                                     <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
@@ -1639,7 +1611,7 @@
                                                             decimal tiempoD = Convert.ToDecimal(analisis.Autor.TiempoJugadoSiempre) / 60;
                                                         }
 
-                                                        @string.Format(Idiomas.CogerCadena(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
+                                                        @string.Format(Idiomas.CogerCadena2(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
                                                     </div>
 
                                                     <div>
@@ -1648,7 +1620,7 @@
                                                             DateTime fechaCreado = fecha.UtcDateTime;
                                                         }
 
-                                                        @string.Format(Idiomas.CogerCadena(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
+                                                        @string.Format(Idiomas.CogerCadena2(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
                                                     </div>
                                                 </div>
 
@@ -1658,7 +1630,7 @@
                                                     @analisis.Contenido
                                                 </div>
                                             </div>
-                                        </a> 
+                                        </a>
                                     }
                                 }
                             }
@@ -1666,8 +1638,36 @@
                     }
                     else
                     {
-                        @Idiomas.CogerCadena(idioma, "String5", "Reviews")
+                        @Idiomas.CogerCadena2(idioma, "String5", "Reviews")
                     }
+                </div>
+            </div>
+        }
+
+        @if (dlcs.Count > 0)
+        {
+            <div id="dlcs" style="padding: 30px 40px 20px 40px; background: color-mix(in srgb, var(--fondoOscuro), var(--fondoDlc) 60%); border: 1px solid var(--fondoBotonPequeño);">
+                <div>
+                    <label style="font-size: 18px;">@Idiomas.CogerCadena(idioma, "String34", "Game") (@dlcs.Count.ToString())</label>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <Virtualize Context="dlc" Items="dlcs" ItemSize="107">
+                        <ItemContent>
+                            <a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
+                                <div class="boton-expandir" style="background: color-mix(in srgb, var(--fondoBotonPequeño), var(--fondoDlc) 30%); display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
+                                    </div>
+
+                                    <div style="width: 100%;">
+                                        <div>@dlc.Nombre</div>
+                                        <div style="margin-top: 10px; font-size: 14px;">@PrecioMinimoActual(dlc, idioma)</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </ItemContent>
+                    </Virtualize>
                 </div>
             </div>
         }
