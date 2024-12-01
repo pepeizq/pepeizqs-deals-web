@@ -124,7 +124,7 @@ namespace Herramientas
 				{
 					idiomaUsuario = "it";
 				}
-				else if (ComprobarPortugues(idiomaUsuario) == true)
+				else if (ComprobarPortugues(idiomaUsuario) == true || ComprobarBrasileño(idiomaUsuario) == true)
 				{
 					idiomaUsuario = "pt";
 				}
@@ -254,11 +254,33 @@ namespace Herramientas
 
 		//https://partner.steamgames.com/doc/store/localization/languages
 
-		public static List<string> ListadoSteam()
+		public class SteamIdioma
 		{
-			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "swedish"];
+			public string Id { get; set; }
+			public string Contenido { get; set; }
+		}
 
-			return idiomas;
+		public static List<SteamIdioma> ListadoSteam(string idiomaUsuario)
+		{
+			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "brazilian", "swedish", "greek", "polish", "norwegian", "romanian", "dutch", "danish", "czech", "finnish"];
+
+			List<SteamIdioma> idiomasFinal = new List<SteamIdioma>();
+
+			foreach (var idioma in idiomas)
+			{
+				SteamIdioma idiomaFinal = new SteamIdioma();
+				idiomaFinal.Id = idioma;
+				idiomaFinal.Contenido = Idiomas.CogerCadena2(idiomaUsuario, "Language." + idioma, "Reviews");
+
+				idiomasFinal.Add(idiomaFinal);
+			}
+
+			if (idiomasFinal.Count > 0)
+			{
+				idiomasFinal = idiomasFinal.OrderBy(x => x.Contenido).ToList();
+			}
+
+			return idiomasFinal;
 		}
 
 		public static string FormatoSteamAPI(string idiomaUsuario)
@@ -274,6 +296,62 @@ namespace Herramientas
 				else if (ComprobarEspañolLatino(idiomaUsuario) == true)
 				{
 					idiomaSteam = "latam";
+				}
+				else if (ComprobarFrances(idiomaUsuario) == true)
+				{
+					idiomaSteam = "french";
+				}
+				else if (ComprobarAleman(idiomaUsuario) == true)
+				{
+					idiomaSteam = "german";
+				}
+				else if (ComprobarItaliano(idiomaUsuario) == true)
+				{
+					idiomaSteam = "italian";
+				}
+				else if (ComprobarPortugues(idiomaUsuario) == true)
+				{
+					idiomaSteam = "portuguese";
+				}
+				else if (ComprobarBrasileño(idiomaUsuario) == true)
+				{
+					idiomaSteam = "brazilian";
+				}
+				else if (ComprobarSueco(idiomaUsuario) == true)
+				{
+					idiomaSteam = "swedish";
+				}
+				else if (ComprobarGriego(idiomaUsuario) == true)
+				{
+					idiomaSteam = "greek";
+				}
+				else if (ComprobarPolaco(idiomaUsuario) == true)
+				{
+					idiomaSteam = "polish";
+				}
+				else if (ComprobarNoruego(idiomaUsuario) == true)
+				{
+					idiomaSteam = "norwegian";
+				}
+				else if (ComprobarRumano(idiomaUsuario) == true)
+				{
+					idiomaSteam = "romanian";
+				}
+				else if (ComprobarHolandes(idiomaUsuario) == true)
+				{
+					idiomaSteam = "dutch";
+				}
+				else if (ComprobarDanes(idiomaUsuario) == true)
+				{
+					idiomaSteam = "danish";
+				}
+				else if (ComprobarCheco(idiomaUsuario) == true)
+				{
+					idiomaSteam = "czech";
+				}
+				else if (ComprobarFines(idiomaUsuario) == true)
+				{
+					idiomaSteam = "finnish";
 				}
 			}
 
@@ -337,7 +415,17 @@ namespace Herramientas
 
 		private static bool ComprobarPortugues(string idiomaUsuario)
 		{
-			if (idiomaUsuario == "pt-PT" || idiomaUsuario == "pt-BR")
+			if (idiomaUsuario == "pt-PT")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarBrasileño(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "pt-BR")
 			{
 				return true;
 			}
@@ -348,6 +436,86 @@ namespace Herramientas
 		private static bool ComprobarSueco(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "sv")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarGriego(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "el")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarPolaco(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "pl")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarNoruego(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "nb" || idiomaUsuario == "nn")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarRumano(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "ro")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarHolandes(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "nl" || idiomaUsuario == "nl-BE")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarDanes(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "da")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarCheco(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "cs")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool ComprobarFines(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "fi")
 			{
 				return true;
 			}

@@ -6,12 +6,22 @@
   "Language.german": "Alemán",
   "Language.italian": "Italiano",
   "Language.portuguese": "Portugués",
+  "Language.brazilian": "Portugués (Brasil)",
   "Language.swedish": "Sueco",
+  "Language.greek": "Griego",
+  "Language.polish": "Polaco",
+  "Language.norwegian": "Noruego",
+  "Language.romanian": "Rumano",
+  "Language.dutch": "Holandés",
+  "Language.danish": "Danés",
+  "Language.czech": "Checo",
+  "Language.finnish": "Finés",
   "String1": "Análisis",
   "String2": "Los análisis están sacado directamente de Steam divididos por regiones y os muestro los mejor valorados los últimos 30 días.",
   "String3": "Datos de la región:",
   "String4": "{0} análisis",
   "String5": "No hay análisis para esta región.",
   "String6": "Escrito {0}",
-  "String7": "{0} horas jugadas"
+  "String7": "{0} horas jugadas",
+  "String8": "Global"
 }

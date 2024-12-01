@@ -2,13 +2,14 @@
 
 using Herramientas;
 using Microsoft.Data.SqlClient;
+using System;
 using Tiendas2;
 
 namespace BaseDatos.Tiendas
 {
 	public static class Admin
 	{
-		public static void Actualizar(string tienda, DateTime fecha, string mensaje, SqlConnection conexion, string valorAdicional = "0", string valorAdicional2 = "0")
+		public static void Actualizar(string tienda, DateTime fecha, string mensaje, SqlConnection conexion, int valorAdicional = 0, int valorAdicional2 = 0)
 		{
 			bool insertar = false;
 			bool actualizar = false;
@@ -379,68 +380,40 @@ namespace BaseDatos.Tiendas
             }
 		}
 
-		public static string CargarValorAdicional(string tienda, SqlConnection conexion)
+		public static int CargarValorAdicional(string id, string valor, SqlConnection conexion = null)
 		{
-			string valor = string.Empty;
-
-			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
-			SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
-
-			using (comando)
+			if (conexion == null)
 			{
-				comando.Parameters.AddWithValue("@id", tienda);
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
-				SqlDataReader lector = comando.ExecuteReader();
+			string sqlBusqueda = "SELECT * FROM adminTiendas WHERE id=@id";
 
-				using (lector)
+			using (SqlCommand comando = new SqlCommand(sqlBusqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
 					if (lector.Read() == true)
 					{
-						try
+						if (lector.IsDBNull(lector.GetOrdinal(valor)) == false)
 						{
-							valor = lector.GetString(3);
-						}
-						catch
-						{
-
+							BaseDatos.Errores.Insertar.Mensaje(id, lector.GetInt32(3).ToString());
+							return lector.GetInt32(lector.GetOrdinal(valor));
 						}
 					}
 				}
 			}
 
-			return valor;
-		}
-
-		public static string CargarValorAdicional2(string tienda, SqlConnection conexion)
-		{
-			string valor = string.Empty;
-
-			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
-			SqlCommand comando = new SqlCommand(seleccionarJuego, conexion);
-
-			using (comando)
-			{
-				comando.Parameters.AddWithValue("@id", tienda);
-
-				SqlDataReader lector = comando.ExecuteReader();
-
-				using (lector)
-				{
-					if (lector.Read() == true)
-					{
-						try
-						{
-							valor = lector.GetString(4);
-						}
-						catch
-						{
-
-						}
-					}
-				}
-			}
-
-			return valor;
+			return 0;
 		}
 	}
 

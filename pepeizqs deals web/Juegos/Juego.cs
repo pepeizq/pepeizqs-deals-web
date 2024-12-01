@@ -206,6 +206,13 @@ namespace Juegos
 		public List<SteamAnalisisAPIAnalisis> Contenido { get; set; }
 	}
 
+	public class JuegoAnalisisAmpliadoIdioma
+	{
+		public int CantidadPositivos { get; set; }
+		public int CantidadNegativos { get; set; }
+		public string Idioma { get; set; }
+	}
+
 	//-------------------------------------------------------
 
 	public enum JuegoTipo

@@ -37,58 +37,19 @@ namespace BaseDatos.Analisis
 					{
 						if (lector.Read() == true)
 						{
-							if (idioma == "spanish")
+							if (lector.IsDBNull(lector.GetOrdinal("contenido" + idioma)) == false)
 							{
-								if (lector.IsDBNull(2) == false)
-								{
-									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(2));
-								}
-
-								if (lector.IsDBNull(7) == false)
-								{
-									analisis.CantidadPositivos = lector.GetInt32(7);
-								}
-
-								if (lector.IsDBNull(8) == false)
-								{
-									analisis.CantidadNegativos = lector.GetInt32(8);
-								}
+								analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(lector.GetOrdinal("contenido" + idioma)));
 							}
 
-							if (idioma == "english")
+							if (lector.IsDBNull(lector.GetOrdinal("positivos" + idioma)) == false)
 							{
-								if (lector.IsDBNull(4) == false)
-								{
-									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(4));
-								}
-
-								if (lector.IsDBNull(9) == false)
-								{
-									analisis.CantidadPositivos = lector.GetInt32(9);
-								}
-
-								if (lector.IsDBNull(10) == false)
-								{
-									analisis.CantidadNegativos = lector.GetInt32(10);
-								}
+								analisis.CantidadPositivos = lector.GetInt32(lector.GetOrdinal("positivos" + idioma));
 							}
 
-							if (idioma == "latam")
+							if (lector.IsDBNull(lector.GetOrdinal("negativos" + idioma)) == false)
 							{
-								if (lector.IsDBNull(6) == false)
-								{
-									analisis.Contenido = JsonSerializer.Deserialize<List<SteamAnalisisAPIAnalisis>>(lector.GetString(6));
-								}
-
-								if (lector.IsDBNull(11) == false)
-								{
-									analisis.CantidadPositivos = lector.GetInt32(11);
-								}
-
-								if (lector.IsDBNull(12) == false)
-								{
-									analisis.CantidadNegativos = lector.GetInt32(12);
-								}
+								analisis.CantidadNegativos = lector.GetInt32(lector.GetOrdinal("negativos" + idioma));
 							}
 						}
 					}
