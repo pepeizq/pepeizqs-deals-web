@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -56,9 +55,9 @@ namespace Tareas.Tiendas
                             siguienteComprobacion = TimeSpan.FromMinutes(30);
                         }
 
-                        bool sePuedeUsar = Admin.ComprobarTiendaUso(conexion, siguienteComprobacion, id);
+                        bool sePuedeUsar = BaseDatos.Admin.Buscar.TiendasPosibleUsar(siguienteComprobacion, id, conexion);
 
-						if (sePuedeUsar == true && Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60)) == null)
+						if (sePuedeUsar == true && BaseDatos.Admin.Buscar.TiendasEnUso(TimeSpan.FromSeconds(60), conexion) == null)
 						{
 							try
 							{

@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -45,19 +44,19 @@ namespace Tareas
                         {
                             TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            if (Admin.ComprobarTareaUso(conexion, "correos", tiempoSiguiente) == true)
+                            if (BaseDatos.Admin.Buscar.TareaPosibleUsar("correos", tiempoSiguiente, conexion) == true)
                             {
-                                Admin.ActualizarTareaUso(conexion, "correos", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("correos", DateTime.Now, conexion);
 
                                 List<CorreoConId> correosDeals = Correos.ComprobarNuevosCorreos(0);
 
                                 if (correosDeals.Count > 0)
                                 {
-                                    Admin.ActualizarDato(conexion, "correos", correosDeals.Count.ToString());
+									BaseDatos.Admin.Actualizar.Dato("correos", correosDeals.Count.ToString(), conexion);
                                 }
                                 else
                                 {
-                                    Admin.ActualizarDato(conexion, "correos", "0");
+									BaseDatos.Admin.Actualizar.Dato("correos", "0", conexion);
                                 }
                             }
                         }

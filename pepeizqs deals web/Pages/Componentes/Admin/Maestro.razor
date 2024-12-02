@@ -155,9 +155,9 @@
 
         using (conexion)
         {
-            ActualizarMensajeCorreos(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos")), int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "correos2")));
-            ActualizarMensajePendientes(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "pendientes")));
-            ActualizarMensajeErrores(int.Parse(BaseDatos.Tiendas.Admin.LeerDato(conexion, "errores")));
+            ActualizarMensajeCorreos(int.Parse(BaseDatos.Admin.Buscar.Dato("correos", conexion)), int.Parse(BaseDatos.Admin.Buscar.Dato("correos2", conexion)));
+            ActualizarMensajePendientes(int.Parse(BaseDatos.Admin.Buscar.Dato("pendientes", conexion)));
+            ActualizarMensajeErrores(int.Parse(BaseDatos.Admin.Buscar.Dato("errores", conexion)));
             ActualizarMensajeDLCs(global::BaseDatos.Juegos.Buscar.DLCs(null, conexion).Count);
         }
     }

@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -43,9 +42,9 @@ namespace Tareas
 					{
 						TimeSpan tiempoSiguiente = TimeSpan.FromHours(6);
 
-						if (Admin.ComprobarTareaUso(conexion, "limpiarMinimos", tiempoSiguiente) == true)
+						if (BaseDatos.Admin.Buscar.TareaPosibleUsar("limpiarMinimos", tiempoSiguiente, conexion) == true)
 						{
-							Admin.ActualizarTareaUso(conexion, "limpiarMinimos", DateTime.Now);
+							BaseDatos.Admin.Actualizar.TareaUso("limpiarMinimos", DateTime.Now, conexion);
 
 							BaseDatos.Juegos.Limpiar.Minimos(conexion);
 						}

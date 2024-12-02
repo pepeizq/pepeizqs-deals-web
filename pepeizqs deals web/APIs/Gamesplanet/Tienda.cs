@@ -86,7 +86,7 @@ namespace APIs.Gamesplanet
 
 		public static async Task BuscarOfertasUk(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarUk().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
 			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
@@ -163,7 +163,7 @@ namespace APIs.Gamesplanet
 
 					try
 					{
-						BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+						BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarUk().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 					}
 					catch (Exception ex)
 					{
@@ -175,7 +175,7 @@ namespace APIs.Gamesplanet
 
         public static async Task BuscarOfertasFr(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
         {
-			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarFr().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
 			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
@@ -252,7 +252,7 @@ namespace APIs.Gamesplanet
 
 					try
 					{
-						BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+						BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarFr().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 					}
 					catch (Exception ex)
 					{
@@ -264,7 +264,7 @@ namespace APIs.Gamesplanet
 
 		public static async Task BuscarOfertasDe(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarDe().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
 			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
@@ -341,7 +341,7 @@ namespace APIs.Gamesplanet
 
 					try
 					{
-						BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+						BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarDe().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 					}
 					catch (Exception ex)
 					{
@@ -353,7 +353,7 @@ namespace APIs.Gamesplanet
 
 		public static async Task BuscarOfertasUs(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarUs().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
 			List<JuegoPrecio> ofertas = new List<JuegoPrecio>();
 
@@ -430,7 +430,7 @@ namespace APIs.Gamesplanet
 
 					try
 					{
-						BaseDatos.Tiendas.Admin.Actualizar(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+						BaseDatos.Admin.Actualizar.Tiendas(Tienda.GenerarUs().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
 					}
 					catch (Exception ex)
 					{

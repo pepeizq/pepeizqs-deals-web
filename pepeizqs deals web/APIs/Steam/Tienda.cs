@@ -43,7 +43,7 @@ namespace APIs.Steam
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas)
 		{
-			BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
 			string añadirDeck = string.Empty;
 			int deck = 0;
@@ -68,17 +68,20 @@ namespace APIs.Steam
 
 			int juegos = 0;
 
-			int arranque = BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, "valorAdicional", conexion);
-			int tope = BaseDatos.Tiendas.Admin.CargarValorAdicional(Generar().Id, "valorAdicional2", conexion);
-
-			BaseDatos.Errores.Insertar.Mensaje(tope.ToString(), arranque.ToString());
+			int arranque = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional", conexion);
+			int tope = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional2", conexion);
 
 			if (tope == 0)
 			{
 				tope = 100000;
 			}
 
-            int i = arranque;
+			if (arranque >= tope - 100)
+			{
+				arranque = 0;
+			}
+
+			int i = arranque;
             while (i < tope)
             {
 				string html = null;
@@ -143,6 +146,8 @@ namespace APIs.Steam
 						html = html2;
 					}
 				}
+
+				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional2", tope);
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
@@ -353,7 +358,7 @@ namespace APIs.Steam
 
 													try
 													{
-														BaseDatos.Tiendas.Admin.Actualizar(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion, i, tope);
+														BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion);
 													}
 													catch (Exception ex)
 													{
@@ -376,12 +381,8 @@ namespace APIs.Steam
 				}
 
 				i += 50;
+				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional", i);
 			}
-
-   //         for (int i = arranque; i < tope; i += 50)
-			//{
-				
-			//}
 		}
 	}
 

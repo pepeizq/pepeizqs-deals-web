@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 using Sorteos2;
@@ -46,9 +45,9 @@ namespace Tareas
                         {
                             TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(20);
 
-                            if (Admin.ComprobarTareaUso(conexion, "sorteos", tiempoSiguiente) == true)
+                            if (BaseDatos.Admin.Buscar.TareaPosibleUsar("sorteos", tiempoSiguiente, conexion) == true)
                             {
-                                Admin.ActualizarTareaUso(conexion, "sorteos", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("sorteos", DateTime.Now, conexion);
 
                                 List<Sorteo> listaSorteos = BaseDatos.Sorteos.Buscar.Todos(conexion);
 

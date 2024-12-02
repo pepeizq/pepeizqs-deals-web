@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -45,9 +44,9 @@ namespace Tareas
 						{
 							TimeSpan tiempoSiguiente = TimeSpan.FromHours(6);
 
-							if (Admin.ComprobarTareaUso(conexion, "patreon", tiempoSiguiente) == true)
+							if (BaseDatos.Admin.Buscar.TareaPosibleUsar("patreon", tiempoSiguiente, conexion) == true)
 							{
-								Admin.ActualizarTareaUso(conexion, "patreon", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("patreon", DateTime.Now, conexion);
 
 								Herramientas.Patreon.Leer();
 							}

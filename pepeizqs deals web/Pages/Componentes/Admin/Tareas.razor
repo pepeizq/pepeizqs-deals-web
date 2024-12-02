@@ -17,7 +17,7 @@
                             <img src="@tienda.ImagenIcono" style="height: 22px;" />
                             <div>@tienda.Nombre</div>
 
-                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(tienda.Id)</div>
                         </div>
                     </button>
                 }
@@ -28,7 +28,7 @@
                             <img src="@tienda.ImagenIcono" style="height: 22px;" />
                             <div>@tienda.Nombre</div>
 
-                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(tienda.Id)</div>
+                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(tienda.Id)</div>
                         </div>
                     </div>
                 }
@@ -37,14 +37,14 @@
 
         @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
         {
-            if (string.IsNullOrEmpty(BaseDatos.Tiendas.Admin.ComprobacionMensaje(suscripcion.Id.ToString())) == false)
+            if (string.IsNullOrEmpty(BaseDatos.Admin.Buscar.TiendasMensaje(suscripcion.Id.ToString())) == false)
             {
                 <button @onclick="(e => ClickearSuscripcionStreaming(e, suscripcion.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <img src="@suscripcion.ImagenIcono" style="height: 22px;" />
                         <div>@suscripcion.Nombre</div>
 
-                        <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(suscripcion.Id.ToString())</div>
+                        <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(suscripcion.Id.ToString())</div>
                     </div>
                 </button>
             }
@@ -57,7 +57,7 @@
                     <img src="@streaming.ImagenIcono" style="height: 22px;" />
                     <div>@streaming.Nombre</div>
 
-                    <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Tiendas.Admin.ComprobacionMensaje(streaming.Id.ToString())</div>
+                    <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(streaming.Id.ToString())</div>
                 </div>
             </button>
         }
@@ -74,7 +74,7 @@
 
     private SqlConnection conexion = new SqlConnection();
 
-    private async void ClickearTienda(MouseEventArgs e, string id)
+    private async Task ClickearTienda(MouseEventArgs e, string id)
     {
         if (string.IsNullOrEmpty(id) == false)
         {
@@ -93,14 +93,14 @@
 
             using (conexion)
             {
-                BaseDatos.Tiendas.AdminTarea tarea = BaseDatos.Tiendas.Admin.LeerTarea(id, conexion);
+                BaseDatos.Admin.AdminTarea tarea = BaseDatos.Admin.Buscar.Tarea(id, conexion);
 
                 if (tarea != null)
                 {
                     DateTime fecha = DateTime.Now;
                     fecha = fecha - TimeSpan.FromDays(1);
 
-                    BaseDatos.Tiendas.Admin.Actualizar(tarea.Id, fecha, tarea.Mensaje, conexion);
+                    BaseDatos.Admin.Actualizar.Tiendas(tarea.Id, fecha, tarea.Mensaje, conexion);
                 }
             }
         }
@@ -110,7 +110,7 @@
     {
         string info = String.Empty;
 
-        BaseDatos.Tiendas.AdminTarea enUso = new BaseDatos.Tiendas.AdminTarea();
+        BaseDatos.Admin.AdminTarea enUso = new BaseDatos.Admin.AdminTarea();
 
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -119,7 +119,7 @@
 
         using (conexion)
         {
-            enUso = BaseDatos.Tiendas.Admin.ComprobarTiendasUso(conexion, TimeSpan.FromSeconds(60));
+            enUso = BaseDatos.Admin.Buscar.TiendasEnUso(TimeSpan.FromSeconds(60), conexion);
         }
 
         if (enUso != null)

@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -45,19 +44,19 @@ namespace Tareas
                         {
                             TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            if (Admin.ComprobarTareaUso(conexion, "errores", tiempoSiguiente) == true)
+                            if (BaseDatos.Admin.Buscar.TareaPosibleUsar("errores", tiempoSiguiente, conexion) == true)
                             {
-                                Admin.ActualizarTareaUso(conexion, "errores", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("errores", DateTime.Now, conexion);
 
                                 List<BaseDatos.Errores.Error> errores = BaseDatos.Errores.Buscar.Todos(conexion);
 
                                 if (errores.Count > 0)
                                 {
-                                    Admin.ActualizarDato(conexion, "errores", errores.Count.ToString());
+									BaseDatos.Admin.Actualizar.Dato("errores", errores.Count.ToString(), conexion);
                                 }
                                 else
                                 {
-                                    Admin.ActualizarDato(conexion, "errores", "0");
+									BaseDatos.Admin.Actualizar.Dato("errores", "0", conexion);
                                 }
                             }
                         }

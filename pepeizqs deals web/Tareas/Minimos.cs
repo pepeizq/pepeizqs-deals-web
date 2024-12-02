@@ -51,9 +51,9 @@ namespace Tareas
                         {
                             TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(5);
 
-                            if (BaseDatos.Tiendas.Admin.ComprobarTareaUso(conexion, "minimos", tiempoSiguiente) == true)
+                            if (BaseDatos.Admin.Buscar.TareaPosibleUsar("minimos", tiempoSiguiente, conexion) == true)
                             {
-                                BaseDatos.Tiendas.Admin.ActualizarTareaUso(conexion, "minimos", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("minimos", DateTime.Now, conexion);
 
                                 List<Juego> juegos = BaseDatos.Portada.Buscar.Minimos(conexion);
 

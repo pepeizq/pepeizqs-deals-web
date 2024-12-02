@@ -97,7 +97,7 @@ namespace BaseDatos.Analisis
 							{
 								DateTime fechaRegistrada = lector.GetDateTime(0);
 
-								if (fechaRegistrada + TimeSpan.FromDays(1) < DateTime.Now)
+								if (fechaRegistrada + TimeSpan.FromDays(7) < DateTime.Now)
 								{
 									return true;
 								}

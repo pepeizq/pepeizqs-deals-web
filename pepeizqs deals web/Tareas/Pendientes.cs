@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
@@ -45,9 +44,9 @@ namespace Tareas
                         {
                             TimeSpan tiempoSiguiente = TimeSpan.FromMinutes(30);
 
-                            if (Admin.ComprobarTareaUso(conexion, "pendientes", tiempoSiguiente) == true)
+                            if (BaseDatos.Admin.Buscar.TareaPosibleUsar("pendientes", tiempoSiguiente, conexion) == true)
                             {
-                                Admin.ActualizarTareaUso(conexion, "pendientes", DateTime.Now);
+								BaseDatos.Admin.Actualizar.TareaUso("pendientes", DateTime.Now, conexion);
 
                                 int cantidadTiendas = BaseDatos.Pendientes.Buscar.TiendasCantidad(conexion);
 
@@ -57,11 +56,11 @@ namespace Tareas
 
                                 if (cantidadTiendas + cantidadSuscripcion + cantidadStreaming > 0)
                                 {
-                                    Admin.ActualizarDato(conexion, "pendientes", (cantidadTiendas + cantidadSuscripcion + cantidadStreaming).ToString());
+                                    BaseDatos.Admin.Actualizar.Dato("pendientes", (cantidadTiendas + cantidadSuscripcion + cantidadStreaming).ToString(), conexion);
                                 }
                                 else
                                 {
-                                    Admin.ActualizarDato(conexion, "pendientes", "0");
+									BaseDatos.Admin.Actualizar.Dato("pendientes", "0", conexion);
                                 }
                             }
                         }

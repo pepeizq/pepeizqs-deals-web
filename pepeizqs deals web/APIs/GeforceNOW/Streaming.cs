@@ -26,7 +26,7 @@ namespace APIs.GeforceNOW
 
         public static async Task Buscar(SqlConnection conexion)
         {
-            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, "0 streaming detectados", conexion);
+            BaseDatos.Admin.Actualizar.Tiendas("geforcenow", DateTime.Now, "0 streaming detectados", conexion);
 
             int cantidad = 0;
             string cadena = string.Empty;
@@ -117,7 +117,7 @@ namespace APIs.GeforceNOW
                                             encontrado = lector.Read();
 
                                             cantidad += 1;
-                                            BaseDatos.Tiendas.Admin.Actualizar("geforcenow", DateTime.Now, cantidad.ToString() + " streaming detectados", conexion);
+											BaseDatos.Admin.Actualizar.Tiendas("geforcenow", DateTime.Now, cantidad.ToString() + " streaming detectados", conexion);
                                         }
                                     }
 
