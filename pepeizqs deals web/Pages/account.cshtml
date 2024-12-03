@@ -8,7 +8,7 @@
 @inject SignInManager<Usuario> SignInManager
 
 @{
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Account");
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Account");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);

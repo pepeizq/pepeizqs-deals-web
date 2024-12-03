@@ -301,7 +301,7 @@
 				<div class="noticia-ancho" style="float: left; flex: 0 0 auto; @marginExtra">
 					<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@noticia.Id.ToString()')" style="height: 100%;">
 						@{
-							string titulo = Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+							string titulo = Herramientas.Idiomas.ElegirTexto(idioma, noticia.TituloEn, noticia.TituloEs);
 						}
 
 						<div id="tooltip-@noticia.Id.ToString()" class="tooltip-relleno" style="padding: 15px; max-width: 400px;">

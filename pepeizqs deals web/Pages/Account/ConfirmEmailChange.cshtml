@@ -1,7 +1,7 @@
 ﻿@page
 @model ConfirmEmailChangeModel
 @{
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "ConfirmPassword");
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "ConfirmPassword");
 }
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
@@ -12,11 +12,11 @@
     <div class="row">
         @if (Model.completado == true)
         {
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "ConfirmPassword")</label>
+            <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "ConfirmPassword")</label>
         }
         else
         {
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "ConfirmPassword")</label>
+            <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "ConfirmPassword")</label>
         }
      </div>    
 </div>

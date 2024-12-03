@@ -100,7 +100,7 @@ namespace Herramientas
 			}
 		}
 
-		public static string CogerCadena2(string idiomaUsuario, string cadena, string nombreFichero)
+		public static string BuscarTexto(string idiomaUsuario, string cadena, string carpeta)
 		{
 			if (string.IsNullOrEmpty(idiomaUsuario) == true)
 			{
@@ -140,9 +140,9 @@ namespace Herramientas
 
 			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
-			if (string.IsNullOrEmpty(nombreFichero) == false)
+			if (string.IsNullOrEmpty(carpeta) == false)
 			{
-				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
+				rutaFichero = "Idiomas/" + carpeta + "/" + idiomaUsuario + ".json";
 			}
 
 			if (File.Exists(rutaFichero) == true)
@@ -171,7 +171,7 @@ namespace Herramientas
 				{
 					if (idiomaUsuario != "en")
 					{
-						return CogerCadena("en", cadena, nombreFichero);
+						return CogerCadena("en", cadena, carpeta);
 					}
 					else
 					{
@@ -233,7 +233,7 @@ namespace Herramientas
 			return null;
 		}
 
-		public static string MirarTexto(string idiomaUsuario, string textoIngles, string textoEspañol)
+		public static string ElegirTexto(string idiomaUsuario, string textoIngles, string textoEspañol)
 		{
 			if (idiomaUsuario != null)
 			{
@@ -270,7 +270,7 @@ namespace Herramientas
 			{
 				SteamIdioma idiomaFinal = new SteamIdioma();
 				idiomaFinal.Id = idioma;
-				idiomaFinal.Contenido = Idiomas.CogerCadena2(idiomaUsuario, "Language." + idioma, "Reviews");
+				idiomaFinal.Contenido = Idiomas.BuscarTexto(idiomaUsuario, "Language." + idioma, "Reviews");
 
 				idiomasFinal.Add(idiomaFinal);
 			}

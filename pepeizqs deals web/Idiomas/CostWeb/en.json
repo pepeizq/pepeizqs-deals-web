@@ -1,0 +1,20 @@
+{
+  "Title": "Cost of maintaining this website",
+  "String1": "Personally, I believe in being as transparent as possible with this project and all the money I have earned from this project I have used to pay in advance the various costs that I specify below. I have never used the money earned from referrals or donations to pay myself whims because I prefer that this project remains open source, without ads and without massive data collection.",
+  "String2": "Server • $286.20",
+  "String3": "Paid until {0} hosted on SmarterASP hosting with the .NET Premium mode.",
+  "String4": "Domain • 70.95€",
+  "String5": "Paid until {0} on Webempresa hosting.",
+  "String6": "SSL • $29",
+  "String7": "Paid until {0} on SmarterASP hosting.",
+  "String8": "Extra 1 Static IP • $24",
+  "String9": "Paid until {0} on SmarterASP hosting.",
+  "String10": "It is paid every 3 years (taxes included).",
+  "String11": "It is paid every 5 years (taxes not included).",
+  "String12": "It is paid every 1 year (taxes included).",
+  "String13": "It is paid every 1 year (taxes included).",
+  "String14": "There is currently a positive balance of {0}€, when it is time to renew the expenses below will be deducted from this balance.",
+  "String15": "Currently there is a negative balance of {0}€, as soon as there is an income the negative balance will be covered first and when there is a positive balance it will be used to extend the times of the expenses below.",
+  "String16": "Current balance",
+  "String17": "Expenses"
+}

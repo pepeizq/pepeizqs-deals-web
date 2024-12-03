@@ -9,13 +9,13 @@
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
         <div style="margin-bottom: 20px;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword1", "Account")</label>
-            <input value="@contraseñaActual" @onchange="@(e => CambiarActualContraseña(e))" type="password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword2", "Account")" />
+            <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword1", "Account")</label>
+            <input value="@contraseñaActual" @onchange="@(e => CambiarActualContraseña(e))" type="password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword2", "Account")" />
         </div>
 
         <div style="margin-bottom: 20px;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword3", "Account")</label>
-            <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword4", "Account")" />
+            <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword3", "Account")</label>
+            <input value="@contraseñaNueva1" @onchange="@(e => CambiarNuevaContraseña1(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword4", "Account")" />
 
             @if (string.IsNullOrEmpty(mensajeAviso1) == false)
             {
@@ -26,8 +26,8 @@
         </div>
 
         <div style="margin-bottom: 30px;">
-            <label class="texto-info-entrada">@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword5", "Account")</label>
-            <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword6", "Account")" />
+            <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword5", "Account")</label>
+            <input value="@contraseñaNueva2" @onchange="@(e => CambiarNuevaContraseña2(e))" type="password" class="entrada-texto" autocomplete="new-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword6", "Account")" />
 
             @if (string.IsNullOrEmpty(mensajeAviso2) == false)
             {
@@ -39,7 +39,7 @@
 
         <div style="display: flex; flex-direction: column;">
             <div class="perfil-flexible-izquierda">
-                <button @onclick="ClickearCambiarContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword7", "Account")</button>
+                <button @onclick="ClickearCambiarContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword7", "Account")</button>
             </div>
 
             @if (string.IsNullOrEmpty(mensajeExito) == false)
@@ -94,21 +94,21 @@
 
         if (contraseñaNueva1.Length > 0 && contraseñaNueva1.Length < 6)
         {
-            mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword8", "Account");
+            mensajeAviso1 = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword8", "Account");
         }
         else if (contraseñaNueva1.Length > 5)
         {
             if (contraseñaNueva1.Any(char.IsDigit) == false)
             {
-                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword9", "Account");
+                mensajeAviso1 = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword9", "Account");
             }
             else if (contraseñaNueva1.Any(char.IsUpper) == false)
             {
-                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword10", "Account");
+                mensajeAviso1 = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword10", "Account");
             }
             else if (contraseñaNueva1.Any(char.IsLetterOrDigit) == false)
             {
-                mensajeAviso1 = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword11", "Account");
+                mensajeAviso1 = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword11", "Account");
             }
             else
             {
@@ -141,7 +141,7 @@
             }
             else
             {
-                mensajeAviso2 = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword12", "Account");
+                mensajeAviso2 = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword12", "Account");
             }
         }
         else
@@ -161,7 +161,7 @@
 
             if (resultado1 == false)
             {
-                mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword13", "Account");
+                mensajeError = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword13", "Account");
             }
             else
             {
@@ -169,12 +169,12 @@
 
                 if (resultado2.Succeeded == true)
                 {
-                    mensajeExito = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword14", "Account");
+                    mensajeExito = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword14", "Account");
                     Herramientas.Correos.EnviarCambioContraseña(usuario.Email);
                 }
                 else
                 {
-                    mensajeError = Herramientas.Idiomas.CogerCadena(idioma, "ChangePassword15", "Account");
+                    mensajeError = Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword15", "Account");
 
                     foreach (var error in resultado2.Errors)
                     {

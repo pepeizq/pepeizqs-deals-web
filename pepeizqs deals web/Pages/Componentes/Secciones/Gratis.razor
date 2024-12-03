@@ -1,7 +1,7 @@
 ﻿@using APIs.Steam
-@using Microsoft.AspNetCore.Components.Web;
-@using Microsoft.AspNetCore.Identity;
-@using pepeizqs_deals_web.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
 @using Toolbelt.Blazor.HeadElement
 
 @inject UserManager<Usuario> UserManager
@@ -21,7 +21,7 @@
 @if (juegosActuales.Count > 0)
 {
 	<h1 style="font-size: 23px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Free")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Free")
 	</h1>
 
     <hr>
@@ -87,7 +87,7 @@
                                 <hr />
 
                                 <div style="text-align: left;">
-                                    @Herramientas.Idiomas.CogerCadena(idioma, "String12", "Free")
+                                    @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Free")
                                 </div>
                             }
                             else if (gratisEstado == 0)
@@ -95,7 +95,7 @@
                                 <hr />
 
                                 <div style="text-align: left;">
-                                    @Herramientas.Idiomas.CogerCadena(idioma, "String13", "Free")
+                                    @Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Free")
                                 </div>
                             }
                         }
@@ -147,7 +147,7 @@
 }
 
 <div style="font-size: 23px; margin-top: 60px;">
-    @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Free")
+    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Free")
 </div>
 
 <div style="display: flex; align-items: start; margin-top: 10px;">
@@ -230,7 +230,7 @@
 
                             if (gratisMensual.Count > 0)
                             {
-                                <label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
+                                <label>@Herramientas.Idiomas.BuscarTexto(idioma, "Month." + i.ToString(), "Months")</label>
 
                                 <ul>
                                     @foreach (var juegoMensual in gratisMensual)

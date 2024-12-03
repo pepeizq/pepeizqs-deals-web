@@ -8,7 +8,7 @@
 @inject SignInManager<Usuario> SignInManager
 
 @{
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Login");
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Login");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
@@ -18,7 +18,7 @@
 {
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
         <form id="account" method="post">
-            <div class="texto-info">@Herramientas.Idiomas.CogerCadena(Model.idioma, "String1", "Login")</div>
+            <div class="texto-info">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Login")</div>
 
             <hr />
 
@@ -26,17 +26,17 @@
 
             <div style="margin-bottom: 20px;">
                 <label asp-for="Input.Email" class="texto-info-entrada">
-                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "String2", "Login")
+                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Login")
                 </label>
-                <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "Login")" />
+                <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Login")" />
                 <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
             </div>
 
             <div style="margin-bottom: 20px;">
                 <label asp-for="Input.Password" class="texto-info-entrada">
-                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "String3", "Login")
+                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Login")
                 </label>
-                <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "Login")" />
+                <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Login")" />
                 <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
             </div>
 
@@ -48,7 +48,7 @@
                         </div>
 
                         <div style="margin-left: 15px; margin-bottom: 8px; cursor: pointer;">
-                            @Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "Login")
+                            @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Login")
                         </div>
                     </div>
                 </label>
@@ -56,7 +56,7 @@
 
             <div>
                 <button id="login-submit" type="submit" class="boton">
-                    @Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Login")
+                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Login")
                 </button>
             </div>
         </form>

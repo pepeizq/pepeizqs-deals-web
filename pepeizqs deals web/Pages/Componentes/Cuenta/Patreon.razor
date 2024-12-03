@@ -15,7 +15,7 @@
                 <i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon1", "Account")</label>
+                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon1", "Account")</label>
 
                     <div>
                         <a href="/patreon">https://pepeizqdeals.com/patreon</a>
@@ -32,7 +32,7 @@
                     <i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
                     <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon2", "Account")</label>
+                        <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon2", "Account")</label>
 
                         <div>
                             <a href="/patreon">https://pepeizqdeals.com/patreon</a>
@@ -44,14 +44,14 @@
             @if (usuario.PatreonLastCheck == null)
             {
                 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
-                    <label style="margin-left: 5px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon3", "Account")</label>
-                    <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon4", "Account")</label>
+                    <label style="margin-left: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon3", "Account")</label>
+                    <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon4", "Account")</label>
 
-                    <input value="@correoAlternativo" @onchange="@(e => CambiarCorreo(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "Patreon5", "Account")" />
+                    <input value="@correoAlternativo" @onchange="@(e => CambiarCorreo(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon5", "Account")" />
 
                     @if (string.IsNullOrEmpty(correoAlternativo) == false && correoUsado == true)
                     {
-                        <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon6", "Account")</label>
+                        <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon6", "Account")</label>
                     }
                 </div>
             }
@@ -60,7 +60,7 @@
                 <div style="display: flex; align-items: center; gap: 25px;">
                     <i class="fa-solid fa-info-circle" style="font-size: 25px;"></i>
 
-                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon7", "Account")</label>
+                    <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon7", "Account")</label>
                 </div>
             </div>
         </div>

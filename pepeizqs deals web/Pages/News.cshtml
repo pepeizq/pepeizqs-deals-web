@@ -13,7 +13,7 @@
 @{
 	#nullable disable
 
-	string titulo = Herramientas.Idiomas.MirarTexto(Model.idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
+	string titulo = Herramientas.Idiomas.ElegirTexto(Model.idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
 
 	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";

@@ -1,0 +1,11 @@
+{
+  "Title": "Register",
+  "String1": "Create a new account",
+  "String2": "Email",
+  "String3": "name@example.com",
+  "String4": "Password",
+  "String5": "password",
+  "String6": "Confirm Password",
+  "String7": "Register",
+  "String8": "The password and confirmation password do not match."
+}

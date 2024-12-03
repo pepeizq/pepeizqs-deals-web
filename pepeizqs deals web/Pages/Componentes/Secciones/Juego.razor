@@ -203,9 +203,9 @@
                             {
                                 if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                                 {
-                                    if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+                                    if (Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
                                     {
-                                        <a onclick="moverScroll('reviews')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">
+                                        <a onclick="moverScroll('reviews')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
                                             <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
                                                 <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
                                                     @if (int.Parse(juego.Analisis.Porcentaje) > 74)
@@ -1492,15 +1492,15 @@
             }
         </div>
 
-        @if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+        @if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
         {
             <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                 <div>
                     <div style="font-size: 18px; margin-bottom: 5px;">
-                        @Idiomas.CogerCadena2(idioma, "String1", "Reviews")
+                        @Idiomas.BuscarTexto(idioma, "String1", "Reviews")
                     </div>
                     <div style="font-size: 14px;">
-                        @Idiomas.CogerCadena2(idioma, "String2", "Reviews")
+                        @Idiomas.BuscarTexto(idioma, "String2", "Reviews")
                     </div>
                     <hr />
                 </div>
@@ -1519,7 +1519,7 @@
 
                         <button @onclick="(e => AnalisisIdioma(e, idiomaGlobal))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
                             <div style="@subrayadoGlobal padding-bottom: 5px;">
-                                @Idiomas.CogerCadena2(idioma, "String8", "Reviews")
+                                @Idiomas.BuscarTexto(idioma, "String8", "Reviews")
                             </div>
                         </button>
 
@@ -1592,7 +1592,7 @@
                             <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
                                 <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
                                     <div style="margin-bottom: 10px;">
-                                        @Idiomas.CogerCadena2(idioma, "String3", "Reviews")
+                                        @Idiomas.BuscarTexto(idioma, "String3", "Reviews")
                                     </div>
 
                                     <div style="display: flex; align-items: center; gap: 20px;">
@@ -1630,7 +1630,7 @@
                                         </div>
 
                                         <div>
-                                            @string.Format(Idiomas.CogerCadena2(idioma, "String4", "Reviews"), total.ToString("N0"))
+                                            @string.Format(Idiomas.BuscarTexto(idioma, "String4", "Reviews"), total.ToString("N0"))
                                         </div>
 
                                         <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
@@ -1674,7 +1674,7 @@
                                                                 decimal tiempoD = Convert.ToDecimal(analisis.Autor.TiempoJugadoSiempre) / 60;
                                                             }
 
-                                                            @string.Format(Idiomas.CogerCadena2(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
+                                                            @string.Format(Idiomas.BuscarTexto(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
                                                         </div>
 
                                                         <div>
@@ -1683,7 +1683,7 @@
                                                                 DateTime fechaCreado = fecha.UtcDateTime;
                                                             }
 
-                                                            @string.Format(Idiomas.CogerCadena2(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
+                                                            @string.Format(Idiomas.BuscarTexto(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
                                                         </div>
                                                     </div>
 
@@ -1701,7 +1701,7 @@
                         }
                         else
                         {
-                            @Idiomas.CogerCadena2(idioma, "String5", "Reviews")
+                            @Idiomas.BuscarTexto(idioma, "String5", "Reviews")
                         }
                     }              
                 </div>

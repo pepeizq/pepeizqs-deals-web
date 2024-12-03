@@ -6,14 +6,14 @@
 
 <div style="max-width: 1000px; margin: auto;">
 	<h1 style="font-size: 23px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "Title", "Patreon")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Patreon")
 	</h1>
 
 	<hr>
 
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
 		<div>
-			@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Patreon")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Patreon")
 		</div>
 
 		<div>
@@ -27,31 +27,43 @@
 	</div>
 
 	<div style="font-size: 18px; margin-top: 50px; margin-bottom: 15px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Patreon")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Patreon")
 	</div>
 
 	<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Patreon")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Patreon")
 			</div>
 
 			<hr />
 
 			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Patreon")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Patreon")
 			</div>
 		</div>
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "String5", "Patreon")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Patreon")
 			</div>
 
 			<hr />
 
 			<div>
-				@Herramientas.Idiomas.CogerCadena(idioma, "String6", "Patreon")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Patreon")
+			</div>
+		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Patreon")
+			</div>
+
+			<hr />
+
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Patreon")
 			</div>
 		</div>
 	</div>
@@ -59,14 +71,14 @@
 	@if (noticias.Count > 0)
 	{
 		<div style="font-size: 18px; margin-top: 50px; margin-bottom: 15px;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Patreon")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Patreon")
 		</div>
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 15px;">
 			@foreach (var noticia in noticias)
 			{
 				<div>
-					<a href="/news/@noticia.Id/">@noticia.FechaEmpieza.Day/@noticia.FechaEmpieza.Month/@noticia.FechaEmpieza.Year • @Herramientas.Idiomas.MirarTexto(idioma, noticia.TituloEn, noticia.TituloEs)</a>
+					<a href="/news/@noticia.Id/">@noticia.FechaEmpieza.Day/@noticia.FechaEmpieza.Month/@noticia.FechaEmpieza.Year • @Herramientas.Idiomas.ElegirTexto(idioma, noticia.TituloEn, noticia.TituloEs)</a>
 				</div>
 			}
 		</div>

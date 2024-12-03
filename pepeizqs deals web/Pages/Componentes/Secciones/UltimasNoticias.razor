@@ -35,7 +35,7 @@
 
 				<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
 					<div style="font-size: 20px;">
-						@Herramientas.Idiomas.MirarTexto(idioma, noticiaMostrar.TituloEn, noticiaMostrar.TituloEs)
+						@Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.TituloEn, noticiaMostrar.TituloEs)
 					</div>
 
 					<div style="font-size: 18px;">
@@ -44,7 +44,7 @@
 
 					<div>
 						@{
-							string texto = Herramientas.Idiomas.MirarTexto(idioma, noticiaMostrar.ContenidoEn, noticiaMostrar.ContenidoEs);
+							string texto = Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.ContenidoEn, noticiaMostrar.ContenidoEs);
 
 							if (string.IsNullOrEmpty(texto) == false)
 							{
@@ -154,7 +154,7 @@
 								@foreach (var noticiaMensual in noticiasMensual)
 								{
 									<li>
-										<a href="/news/@noticiaMensual.Id">@Herramientas.Idiomas.MirarTexto(idioma, noticiaMensual.TituloEn, noticiaMensual.TituloEs)</a> (@noticiaMensual.FechaEmpieza.Day/@noticiaMensual.FechaEmpieza.Month/@noticiaMensual.FechaEmpieza.Year)
+										<a href="/news/@noticiaMensual.Id">@Herramientas.Idiomas.ElegirTexto(idioma, noticiaMensual.TituloEn, noticiaMensual.TituloEs)</a> (@noticiaMensual.FechaEmpieza.Day/@noticiaMensual.FechaEmpieza.Month/@noticiaMensual.FechaEmpieza.Year)
 									</li>
 								}
 							</ul>

@@ -1,0 +1,17 @@
+{
+  "Title": "Boutique Patreon",
+  "String1": "Vous avez {0} Patreon Coins à dépenser",
+  "String2": "Jeux disponibles",
+  "String3": "Historique",
+  "Daily": "Entrée quotidienne",
+  "Buy2": "A obtenu",
+  "Denied": "Désolé mais vous n'y avez pas accès. ",
+  "Buy": "Êtes-vous sûr de vouloir obtenir {0} ?",
+  "Yes": "Oui",
+  "No": "Non",
+  "Close": "Fermer",
+  "Redeem": "Échanger sur Steam",
+  "Poor": "Vous n'avez pas assez de pièces Patreon pour obtenir {0}.",
+  "Problem": "Tous ces jeux proviennent des bundles Humble Bundle et Fanatical, mais si vous rencontrez des problèmes avec la clé, envoyez-moi un e-mail à admin@pepeizqdeals.com afin que je puisse vous rendre les pièces Patreon que vous dépensez.",
+  "Limit": "Vous avez atteint la limite de 30 Patreon Coins sur votre compte. Si vous dépensez des Patreon Coins dans n'importe quel jeu, vous gagnerez à nouveau des pièces chaque jour."
+}

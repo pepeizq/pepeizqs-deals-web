@@ -11,7 +11,7 @@
 @{
     #nullable disable
 
-    string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Free");
+    string titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Free");
 
     ViewData["Title"] = titulo;
     Layout = "/Pages/Shared/_Layout.cshtml";
@@ -64,61 +64,61 @@
             {
                 if (dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.CogerCadena(Model.idioma, "String8", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "Free");
                 }
                 else if (dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
             }
             else if (juegos > 0)
             {
                 if (juegos == 1 && dlcs == 0)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String3", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.CogerCadena(Model.idioma, "String8", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "Free");
                 }
                 else if (juegos > 1 && dlcs == 0)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
                 else if (juegos == 1 && dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
                 else if (juegos > 1 && dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
                 else if (juegos == 1 && dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
                 else if (juegos > 1 && dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.CogerCadena(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
                 }
             }
 
             if (string.IsNullOrEmpty(titulo) == true)
             {
-                titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "String10", "Free");
+                titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String10", "Free");
             }
         }
     }
 
-    string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "String11", "Free");
+    string descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String11", "Free");
 
     string enlace = "https://pepeizqdeals.com/free/";
 

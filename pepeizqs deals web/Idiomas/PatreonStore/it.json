@@ -1,0 +1,17 @@
+{
+  "Title": "Negozio Patreon",
+  "String1": "Hai {0} monete Patreon da spendere",
+  "String2": "Giochi disponibili",
+  "String3": "Storico",
+  "Daily": "Ingresso giornaliero",
+  "Buy2": "Avuto",
+  "Denied": "Siamo spiacenti ma non hai accesso. ",
+  "Buy": "Sei sicuro di voler ottenere {0}?",
+  "Yes": "SÌ",
+  "No": "NO",
+  "Close": "Vicino",
+  "Redeem": "Riscatta su Steam",
+  "Poor": "Non hai abbastanza monete Patreon per ottenere {0}.",
+  "Problem": "Tutti questi giochi provengono dai bundle Humble Bundle e Fanatical, ma se hai problemi con la chiave, inviami un'e-mail a admin@pepeizqdeals.com così posso restituirti i Patreon Coins che spendi.",
+  "Limit": "Hai raggiunto il limite di 30 monete Patreon nell'account, se spendi monete Patreon in qualsiasi gioco guadagnerai nuovamente monete ogni giorno."
+}

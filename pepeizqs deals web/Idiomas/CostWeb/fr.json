@@ -1,0 +1,20 @@
+{
+  "Title": "Coût de maintenance de ce site Web",
+  "String1": "Personnellement, je crois qu'il faut être aussi transparent que possible avec ce projet et tout l'argent que j'ai gagné grâce à ce projet, j'ai utilisé pour payer à l'avance les différents coûts que je précise ci-dessous. ",
+  "String2": "Serveur • 286,20 $",
+  "String3": "Payé jusqu'au {0} hébergé sur l'hébergement SmarterASP avec le mode .NET Premium.",
+  "String4": "Domaine • 70,95€",
+  "String5": "Payé jusqu'au {0} sur l'hébergement Webempresa.",
+  "String6": "SSL • 29 $",
+  "String7": "Payé jusqu'au {0} sur l'hébergement SmarterASP.",
+  "String8": "1 IP statique supplémentaire • 24 $",
+  "String9": "Payé jusqu'au {0} sur l'hébergement SmarterASP.",
+  "String10": "Elle est versée tous les 3 ans (taxes incluses).",
+  "String11": "Elle est versée tous les 5 ans (taxes en sus).",
+  "String12": "Il est payé tous les 1 an (taxes incluses).",
+  "String13": "Il est payé tous les 1 an (taxes incluses).",
+  "String14": "Il y a actuellement un solde positif de {0} €, au moment du renouvellement, les dépenses ci-dessous seront déduites de ce solde.",
+  "String15": "Actuellement, il y a un solde négatif de {0} €, dès qu'il y a un revenu, le solde négatif sera couvert en premier et lorsqu'il y aura un solde positif, il sera utilisé pour prolonger les délais des dépenses ci-dessous.",
+  "String16": "Solde courant",
+  "String17": "Dépenses"
+}

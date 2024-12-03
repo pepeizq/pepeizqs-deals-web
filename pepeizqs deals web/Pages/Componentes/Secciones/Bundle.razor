@@ -54,7 +54,7 @@
 			</div>
 
 			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "Open", "Bundle")
 			</a>
 		</div>
 	}
@@ -62,7 +62,7 @@
 	if (tipo == Tipo.Noticia)
 	{
 		<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 20px;" target="_blank">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "Open", "Bundle")
 		</a>
 	}
 
@@ -157,11 +157,11 @@
 										<div style="width: 100%; text-align: center;">
 											@if (tier2.CantidadJuegos == 1)
 											{
-												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String21", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
+												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String21", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
 											}
 											else if (tier2.CantidadJuegos > 1)
 											{
-												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String8", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> <label>/</label> <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.CogerCadena(idioma, "String20", "Bundle"))</label>
+												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label> <label>/</label> <label style="font-size: 14px;">@ArreglarPrecio(decimal.Parse(tier2.Precio) / tier2.CantidadJuegos) (@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Bundle"))</label>
 											}										
 										</div>
 									}
@@ -193,7 +193,7 @@
 									}
 
 									<div style="font-size: 14px;">
-										@Herramientas.Idiomas.CogerCadena(idioma, "String14", "Bundle"): @ArreglarPrecio(totalMinimos)
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Bundle"): @ArreglarPrecio(totalMinimos)
 									</div>
 								</div>
 
@@ -252,9 +252,9 @@
 
 										<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()')">
 											<div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno" style="max-width: 460px; padding: 10px; font-size: 14px;">
-												<div>@Herramientas.Idiomas.CogerCadena(idioma, "Tooltip", "Bundle")</div>
+												<div>@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip", "Bundle")</div>
 
-												<div style="margin-top: 5px;">@Herramientas.Idiomas.CogerCadena(idioma, "Tooltip2", "Bundle")</div>
+												<div style="margin-top: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip2", "Bundle")</div>
 											</div>
 
 											@{
@@ -286,7 +286,7 @@
 																	if (historico.DRM == juego.DRM)
 																	{
 																		<div style="text-align: center; font-size: 14px;">
-																			@Herramientas.Idiomas.CogerCadena(idioma, "Game1", "Bundle"): @ArreglarPrecio(historico.Precio)
+																			@Herramientas.Idiomas.BuscarTexto(idioma, "Game1", "Bundle"): @ArreglarPrecio(historico.Precio)
 																		</div>
 
 																		break;
@@ -302,11 +302,11 @@
 																<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; width: 42%;">
 																	@if (juego.DLCs.Count == 1)
 																	{
-																		@("+" + Herramientas.Idiomas.CogerCadena(idioma, "DLCs1", "Bundle"))
+																		@("+" + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs1", "Bundle"))
 																	}
 																	else if (juego.DLCs.Count > 1)
 																	{
-																		@string.Format("+ " + Herramientas.Idiomas.CogerCadena(idioma, "DLCs2", "Bundle"), juego.DLCs.Count)
+																		@string.Format("+ " + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs2", "Bundle"), juego.DLCs.Count)
 																	}
 																</div>
 															}
@@ -353,15 +353,15 @@
 		<div class="bundle-juego-panel">
 			<div style="max-width: 625px; margin: 20px auto; display: flex; align-items: center; gap: 20px;">
 				<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="width: 100%; text-align: center;" target="_blank">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Open", "Bundle")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Open", "Bundle")
 				</a>
 
 				<button class="boton-pequeño" @onclick="(e => AbrirJuegoDetalle(e))" style="width: 25%; font-size: 14px; text-align: center; padding: 7.5px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Open2", "Bundle")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Open2", "Bundle")
 				</button>
 
 				<button class="boton-pequeño" @onclick="(e => CerrarJuego(e))" style="width: 15%; font-size: 14px; text-align: center; padding: 7.5px 12px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Close", "Bundle")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Close", "Bundle")
 				</button>
 			</div>
 
@@ -433,45 +433,45 @@
 							<hr />
 
 							<div style="text-align: left;">
-								@string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded1", "Bundle"), bundlesEstado)
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded1", "Bundle"), bundlesEstado)
 							</div>
 
 							@if (bundlesEstado == 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded2", "Bundle"), bundlesEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded2", "Bundle"), bundlesEstado)
 								</div>
 							}
 							else if (bundlesEstado > 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded3", "Bundle"), bundlesEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded3", "Bundle"), bundlesEstado)
 								</div>
 							}
 
 							@if (gratisEstado == 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded4", "Bundle"), gratisEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded4", "Bundle"), gratisEstado)
 								</div>
 							}
 							else if (gratisEstado > 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded5", "Bundle"), gratisEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded5", "Bundle"), gratisEstado)
 								</div>
 							}
 
 							@if (suscripcionesEstado == 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded6", "Bundle"), suscripcionesEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded6", "Bundle"), suscripcionesEstado)
 								</div>
 							}
 							else if (suscripcionesEstado > 1)
 							{
 								<div style="text-align: left; margin-top: 5px;">
-									• @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "Expanded7", "Bundle"), suscripcionesEstado)
+									• @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Expanded7", "Bundle"), suscripcionesEstado)
 								</div>
 							}
 						}
@@ -480,7 +480,7 @@
 							<hr />
 
 							<div style="text-align: left;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "Expanded8", "Bundle")
+								@Herramientas.Idiomas.BuscarTexto(idioma, "Expanded8", "Bundle")
 							</div>
 						}
 					}
@@ -495,11 +495,11 @@
 								<div>
 									@if (dlcsExpandido.Count == 1)
 									{
-										@Herramientas.Idiomas.CogerCadena(idioma, "Expanded9", "Bundle")
+										@Herramientas.Idiomas.BuscarTexto(idioma, "Expanded9", "Bundle")
 									}
 									else if (dlcsExpandido.Count > 1)
 									{
-										@Herramientas.Idiomas.CogerCadena(idioma, "Expanded10", "Bundle")
+										@Herramientas.Idiomas.BuscarTexto(idioma, "Expanded10", "Bundle")
 									}
 								</div>
 

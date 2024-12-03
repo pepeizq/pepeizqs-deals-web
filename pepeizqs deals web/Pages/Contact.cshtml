@@ -2,12 +2,12 @@
 @model pepeizqs_deals_web.Pages.ContactModel
 
 @{
-	ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Contact");
+	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Contact");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
 <div style="font-size: 22px; text-align: left; margin-bottom: 30px;">
-	@Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Contact")
+	@Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Contact")
 </div>
 
 <div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; gap: 20px;">
@@ -15,11 +15,11 @@
 		<i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
 	</div>
 	<div>
-		@Herramientas.Idiomas.CogerCadena(Model.idioma, "String1", "Contact")
+		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Contact")
 	</div>	
 </div>
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-top: 30px; margin-bottom: 40px;">
-	@Herramientas.Idiomas.CogerCadena(Model.idioma, "String2", "Contact")
+	@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Contact")
 	admin@pepeizqdeals.com
 </div>

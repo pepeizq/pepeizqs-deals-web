@@ -25,21 +25,21 @@
         @if (mostrarLogin == true)
         {
             <button @onclick="@(e => AbrirLogin(e))" class="boton-accesos">
-                @Herramientas.Idiomas.CogerCadena(idioma, "String3", "AccountLinks")
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountLinks")
             </button>
         }
 
         @if (mostrarRegistro == true)
         {
             <button @onclick="@(e => AbrirRegistro(e))" class="boton-accesos">
-                @Herramientas.Idiomas.CogerCadena(idioma, "String2", "AccountLinks")
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountLinks")
             </button>
         }
 
         @if (mostrarContraseñaOlvidada == true)
         {
             <button @onclick="@(e => AbrirContraseñaOlvidada(e))" class="boton-accesos">
-                @Herramientas.Idiomas.CogerCadena(idioma, "String1", "AccountLinks")
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountLinks")
             </button>
         }
     </div>

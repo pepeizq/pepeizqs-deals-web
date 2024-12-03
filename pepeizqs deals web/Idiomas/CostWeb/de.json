@@ -1,0 +1,20 @@
+{
+  "Title": "Kosten für die Pflege dieser Website",
+  "String1": "Persönlich glaube ich daran, bei diesem Projekt so transparent wie möglich zu sein, und das gesamte Geld, das ich durch dieses Projekt verdient habe, habe ich verwendet, um die verschiedenen Kosten, die ich unten schreibe, im Voraus zu bezahlen. ",
+  "String2": "Server • 286,20 $",
+  "String3": "Bezahlt bis {0}, gehostet auf SmarterASP-Hosting mit dem .NET Premium-Modus.",
+  "String4": "Domain • 70,95€",
+  "String5": "Bezahlt bis {0} für Webempresa-Hosting.",
+  "String6": "SSL • 29 $",
+  "String7": "Bezahlt bis {0} für SmarterASP-Hosting.",
+  "String8": "Zusätzlich 1 statische IP • 24 $",
+  "String9": "Bezahlt bis {0} für SmarterASP-Hosting.",
+  "String10": "Die Zahlung erfolgt alle 3 Jahre (inkl. Steuern).",
+  "String11": "Die Zahlung erfolgt alle 5 Jahre (ohne Steuern).",
+  "String12": "Die Zahlung erfolgt alle 1 Jahr (inklusive Steuern).",
+  "String13": "Die Zahlung erfolgt alle 1 Jahr (inklusive Steuern).",
+  "String14": "Derzeit besteht ein positiver Saldo von {0}€. Wenn es Zeit für eine Verlängerung ist, werden die unten aufgeführten Ausgaben von diesem Saldo abgezogen.",
+  "String15": "Derzeit besteht ein negativer Saldo von {0}€. Sobald ein Einkommen vorliegt, wird zuerst der negative Saldo gedeckt und bei einem positiven Saldo wird dieser zur Verlängerung der unten aufgeführten Ausgabenzeiten verwendet.",
+  "String16": "Aktueller Kontostand",
+  "String17": "Kosten"
+}
