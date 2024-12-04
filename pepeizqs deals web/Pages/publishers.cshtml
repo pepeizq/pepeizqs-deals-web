@@ -2,7 +2,7 @@
 @model pepeizqs_deals_web.Pages.publishersModel
 
 @{
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "String11", "Publisher");
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String11", "Publisher");
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
     if (Model.publishers.Count > 0)
     {
         <h1 style="font-size: 23px;">
-            @Herramientas.Idiomas.CogerCadena(Model.idioma, "String11", "Publisher")
+            @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String11", "Publisher")
         </h1>
 
         <hr />
@@ -19,7 +19,7 @@
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
             <i class="fa-solid fa-circle-info"></i>
 
-            @string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String12", "Publisher"), Model.publishers.Count.ToString())
+            @string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String12", "Publisher"), Model.publishers.Count.ToString())
         </div>
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;">

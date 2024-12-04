@@ -16,7 +16,7 @@
 		<div style="background-color: var(--fondoCuerpo);">
 			<div style="display: flex; align-items: center; width: 100%;">
 				<div style="width: 100%; font-size: 23px; text-align: left;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String1", "LastAdded")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "LastAdded")
 				</div>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 		{
 			if (juego.FreeToPlay.ToLower() == "true")
 			{
-				return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage6", "Header");
+				return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage6", "Header");
 			}
 		}
 
@@ -110,7 +110,7 @@
 				{
 					if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
 					{
-						return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header");
+						return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage5", "Header");
 					}
 				}
 			}
@@ -124,7 +124,7 @@
 				{
 					if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
 					{
-						return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header");
+						return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage4", "Header");
 					}
 				}
 			}
@@ -138,7 +138,7 @@
 				{
 					if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
 					{
-						return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header");
+						return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage3", "Header");
 					}
 				}
 			}
@@ -189,14 +189,14 @@
 
 				precioTexto = precioTexto + "€";
 
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), precioTexto);
 			}
 			else
 			{
-				return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
+				return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage2", "Header");
 			}
 		}
 
-		return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
+		return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage2", "Header");
 	}
 }

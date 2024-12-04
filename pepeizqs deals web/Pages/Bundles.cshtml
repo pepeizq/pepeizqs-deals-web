@@ -11,7 +11,7 @@
 @{
 	#nullable disable
 
-	string titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Bundle");
+	string titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Bundle");
 
 	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
 	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Actuales();
@@ -30,16 +30,16 @@
 		{
 			if (bundlesActuales.Count == 1)
 			{
-				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
+				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
 			}
 			else if (bundlesActuales.Count > 1)
 			{
-				titulo = string.Format(Herramientas.Idiomas.CogerCadena(Model.idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
+				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
 			}
 		}
 		else if (bundlesActuales.Count == 0)
 		{
-			titulo = Herramientas.Idiomas.CogerCadena(Model.idioma, "String18", "Bundle");
+			titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String18", "Bundle");
 		}
 	}
 
@@ -56,7 +56,7 @@
 
 	string enlace = "https://pepeizqdeals.com/bundles/";
 
-	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "String19", "Bundle");
+	string descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String19", "Bundle");
 
 	bool seo = false;
 	string userAgent = string.Empty;

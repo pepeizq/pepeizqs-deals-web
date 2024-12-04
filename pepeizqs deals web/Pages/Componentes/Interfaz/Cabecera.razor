@@ -88,7 +88,7 @@
                 if (ubicacionEnlace.Contains("/wishlist") == false)
                 {
                     <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
-                        @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "Wishlist", "Header")
                     </a>
                 }
             }
@@ -96,28 +96,28 @@
             @if (ubicacionEnlace.Contains("/historical-lows") == false)
             {
                 <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "HistoricalLows", "Header")
                 </a>
             }
 
             @if (ubicacionEnlace.Contains("/bundles") == false)
             {
                 <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Bundles", "Header")
                 </a>
             }
 
             @if (ubicacionEnlace.Contains("/free") == false)
             {
                 <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Free", "Header")
                 </a>
             }
 
             @if (ubicacionEnlace.Contains("/subscriptions") == false)
             {
                 <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Subscriptions", "Header")
                 </a>
             }
         </div>
@@ -132,7 +132,7 @@
                         if (ubicacionEnlace.Contains("/wishlist") == false)
                         {
                             <a class="texto-cabecera boton-superior" href="/wishlist" style="font-size: 15px;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "Wishlist", "Header")
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "Wishlist", "Header")
                             </a>
                         }
                     }
@@ -140,28 +140,28 @@
                     @if (ubicacionEnlace.Contains("/historical-lows") == false)
                     {
                         <a class="texto-cabecera boton-superior" href="/historical-lows" style="font-size: 15px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "HistoricalLows", "Header")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "HistoricalLows", "Header")
                         </a>
                     }
 
                     @if (ubicacionEnlace.Contains("/bundles") == false)
                     {
                         <a class="texto-cabecera boton-superior" href="/bundles" style="font-size: 15px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "Bundles", "Header")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "Bundles", "Header")
                         </a>
                     }
 
                     @if (ubicacionEnlace.Contains("/free") == false)
                     {
                         <a class="texto-cabecera boton-superior" href="/free" style="font-size: 15px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "Free", "Header")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "Free", "Header")
                         </a>
                     }
 
                     @if (ubicacionEnlace.Contains("/subscriptions") == false)
                     {
                         <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "Subscriptions", "Header")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "Subscriptions", "Header")
                         </a>
                     }
                 </div>
@@ -174,7 +174,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "SearchPlaceholder", "Header")" />
+        <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "SearchPlaceholder", "Header")" />
 
         @if (encontroAlgo == true)
         {
@@ -196,7 +196,7 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
                             </button>
                         }
 
@@ -213,7 +213,7 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
                             </button>
                         }
 
@@ -230,7 +230,7 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
                             </button>
                         }
 
@@ -247,7 +247,7 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
                             </button>
                         }
 
@@ -269,7 +269,7 @@
                                 }
 
                                 <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
+                                    @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
                                 </button>
                             }
 
@@ -284,7 +284,7 @@
                                 }
 
                                 <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
+                                    @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
                                 </button>
                             }
 
@@ -299,7 +299,7 @@
                                 }
 
                                 <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                    @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
+                                    @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
                                 </button>
                             }
                         }
@@ -320,7 +320,7 @@
                             }
 
                             <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.CogerCadena(idioma, "SearchFilter8", "Header") (@resultadosPublishers.Count)
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter8", "Header") (@resultadosPublishers.Count)
                             </button>
                         }
                     }
@@ -581,7 +581,7 @@
 
             <div class="menu-dropdown-contenido" style="right: -10px;">
                 <button @onclick="@(e => AbrirCuenta(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Account", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Account", "Header")
                 </button>
 
                 @if (usuarioPatreon == false)
@@ -590,16 +590,16 @@
                     string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
 
                     <a href="@patreonEnlace" target="_blank" style="text-decoration: none; text-align: left; border: 0; width: 100%; font-size: 14px;" class="texto-cabecera menu-dropdown-item">
-                        @Herramientas.Idiomas.CogerCadena(idioma, "Patreon", "Header")
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "Patreon", "Header")
                     </a>
                 }
 
                 <button @onclick="@(e => AbrirTiendaPatreon(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "PatreonStore", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "PatreonStore", "Header")
                 </button>
 
                 <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.CogerCadena(idioma, "Logout", "Header")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Logout", "Header")
                 </button>
             </div>
         </div>
@@ -609,11 +609,11 @@ else
 {
     <div style="display: flex; align-items: center; flex: 1 auto 1;">
         <button class="texto-cabecera" @onclick="@(e => AbrirLogin(e))" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
-            @Herramientas.Idiomas.CogerCadena(idioma, "Login", "Header")
+            @Herramientas.Idiomas.BuscarTexto(idioma, "Login", "Header")
         </button>
 
         <button class="texto-cabecera" @onclick="@(e => AbrirRegistro(e))" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
-            @Herramientas.Idiomas.CogerCadena(idioma, "Register", "Header")
+            @Herramientas.Idiomas.BuscarTexto(idioma, "Register", "Header")
         </button>
     </div>
 }

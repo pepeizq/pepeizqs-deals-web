@@ -22,9 +22,9 @@
 
     if (ViewData["Title"] != null)
     {
-        if (ViewData["Title"].ToString() == Herramientas.Idiomas.CogerCadena(idioma, "Title", "Index"))
+        if (ViewData["Title"].ToString() == Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Index"))
         {
-            titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(idioma, "Subtitle", "Index");
+            titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
         }
         else
         {
@@ -216,17 +216,17 @@
                     
                     <div style="font-size: 16px; margin-top: 30px; display: flex; align-items: start;">
                         <div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
-                            <a href="@codigoFuente" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.CogerCadena(idioma, "SourceCode", "Footer")</a>
-                            <a href="/contact" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Contact", "Footer")</a>
-                            <a href="/privacy" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Privacy", "Footer")</a>
-                            <a href="@visitas" style="text-decoration: none;" target="_blank">@Herramientas.Idiomas.CogerCadena(idioma, "Visits", "Footer")</a>
+                            <a href="@codigoFuente" target="_blank" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size: 20px; margin-right: 10px;"></i>@Herramientas.Idiomas.BuscarTexto(idioma, "SourceCode", "Footer")</a>
+                            <a href="/contact" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "Contact", "Footer")</a>
+                            <a href="/privacy" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "Privacy", "Footer")</a>
+                            <a href="@visitas" style="text-decoration: none;" target="_blank">@Herramientas.Idiomas.BuscarTexto(idioma, "Visits", "Footer")</a>
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
-                            <a href="/patreon" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Patreon", "Footer")</a>
-                            <a href="/api" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "Api", "Footer")</a>
-                            <a href="/last-added" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "LastAdded", "Footer")</a>
-                            <a href="/cost-web" style="text-decoration: none;">@Herramientas.Idiomas.CogerCadena(idioma, "CostWeb", "Footer")</a>
+                            <a href="/patreon" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon", "Footer")</a>
+                            <a href="/api" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "Api", "Footer")</a>
+                            <a href="/last-added" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "LastAdded", "Footer")</a>
+                            <a href="/cost-web" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "CostWeb", "Footer")</a>
                         </div>
                     </div>
                 </div>

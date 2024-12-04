@@ -1,0 +1,23 @@
+{
+  "Bundle1": "{0} bundle has been released on {1}",
+  "Bundle2": "At {0} there is a new bundle with the following games:",
+  "Bundle3": "At {0} there is a new bundle where you can get the games you want for a certain price:",
+  "Bundle4": "games",
+  "Bundle5": "{0} has been released on {1}",
+  "Free1": "is free to claim on",
+  "Free2": "and",
+  "Free3": "are free to claim on",
+  "Free4": "and more games are free to claim on",
+  "Free5": "has set up the following game to claim at no cost:",
+  "Free6": "has set up the following games to claim at no cost:",
+  "Free7": "has set up the following DLC to claim at no cost:",
+  "Free8": "has set up the following DLCs to claim at no cost:",
+  "Free9": "and more DLCs are free to claim",
+  "Subscription1": "has been added to the {0} subscription",
+  "Subscription2": "and",
+  "Subscription3": "have been added to the {0} subscription",
+  "Subscription4": "and more games have been added to the {0} subscription",
+  "Subscription5": "The subscription service",
+  "Subscription6": "has added the following game:",
+  "Subscription7": "has added the following games:"
+}

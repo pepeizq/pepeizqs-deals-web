@@ -51,7 +51,7 @@
         if (suscripcionesActuales.Count > 0)
         {
             <h1 style="font-size: 23px;">
-                @Herramientas.Idiomas.CogerCadena(idioma, "Title", "Subscriptions")
+                @Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions")
             </h1>
 
             <hr />
@@ -61,7 +61,7 @@
                     <i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
                 </div>
                 <div>
-                    @Herramientas.Idiomas.CogerCadena(idioma, "String7", "Subscriptions")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Subscriptions")
                 </div>
             </div>
 
@@ -113,7 +113,7 @@
                                     }
 
                                     <div>
-                                        @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "Subscriptions"), suscripcionActual.Juegos.Count)
+                                        @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Subscriptions"), suscripcionActual.Juegos.Count)
                                     </div>
 
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -132,7 +132,7 @@
     }
 
     <div style="font-size: 23px; margin-top: 60px">
-        @Herramientas.Idiomas.CogerCadena(idioma, "String1", "Subscriptions")
+        @Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Subscriptions")
     </div>
 
     <div style="display: flex; align-items: start; margin-top: 10px;">
@@ -217,7 +217,7 @@
 
                                 if (suscripcionesMensual.Count > 0)
                                 {
-                                    <label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
+                                    <label>@Herramientas.Idiomas.BuscarTexto(idioma, "Month." + i.ToString(), "Months")</label>
 
                                     <ul>
                                         @foreach (var juegoMensual in suscripcionesMensual)
@@ -261,20 +261,20 @@ else
                         precioTexto = precioTexto + "€";
 
                         <div>
-                            @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String8", "Subscriptions"), precioTexto)
+                            @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Subscriptions"), precioTexto)
                         </div>
                     }
 
                     @if (suscripcionSeleccionadaTipo.ParaSiempre == true)
                     {
                         <div>
-                            @Herramientas.Idiomas.CogerCadena(idioma, "String2", "Subscriptions")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Subscriptions")
                         </div>
                     }
                     else
                     {
                         <div>
-                            @Herramientas.Idiomas.CogerCadena(idioma, "String3", "Subscriptions")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Subscriptions")
                         </div>
                     }
 
@@ -291,7 +291,7 @@ else
                         }
 
                         <button @onclick="@(e => SuscripcionAbrir(e, componenteBuscado))" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
-                            @string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "Subscriptions"), componenteBuscado.Tipo.Nombre)
+                            @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Subscriptions"), componenteBuscado.Tipo.Nombre)
                         </button>
                     }
                 </div>
@@ -302,7 +302,7 @@ else
                 <div class="menu-dropdown" style="width: auto; flex: 0 0 auto;">
                     <button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
                         <div style="padding-right: 15px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "String10", "Subscriptions")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Subscriptions")
                         </div>
 
                         <div>
@@ -312,7 +312,7 @@ else
 
                     <div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
                         <button @onclick="@(e => FiltrarDRM(e))" class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;">
-                            @Herramientas.Idiomas.CogerCadena(idioma, "String9", "Subscriptions")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Subscriptions")
                         </button>
                         <hr/>
                         @foreach (var drm in suscripcionSeleccionadaDRMs)
@@ -332,13 +332,13 @@ else
         @if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
         {
             <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
-                @Herramientas.Idiomas.CogerCadena(idioma, "String5", "Subscriptions")
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Subscriptions")
             </a>
         }
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Publisher")" />
+            <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Publisher")" />
         </div>
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px 30px; display: flex; flex-direction: column; gap: 20px;">

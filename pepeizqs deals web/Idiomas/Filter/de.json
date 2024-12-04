@@ -1,0 +1,22 @@
+{
+  "Title": "Filter",
+  "String1": "Genres",
+  "String2": "Kategorien",
+  "String3": "Schlagworte",
+  "String4": "Genre",
+  "String5": "Kategorie",
+  "String6": "Etikett",
+  "String7": "Systeme",
+  "String8": "System",
+  "String9": "Typ",
+  "Deck2": "Spielbar",
+  "Deck3": "Verifiziert",
+  "Deck4": "Steam-Deck",
+  "System1": "Windows",
+  "System2": "Mac",
+  "System3": "Linux",
+  "Type0": "Spiele",
+  "Type1": "DLCs",
+  "Type3": "Soundtracks",
+  "Type4": "Software"
+}

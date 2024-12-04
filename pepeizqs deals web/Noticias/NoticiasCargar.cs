@@ -89,7 +89,7 @@ namespace Noticias
 			{ 
 				if (tipo2 == tipo)
 				{
-					return Herramientas.Idiomas.CogerCadena(idioma, "Type" + posicion.ToString(), "News");
+					return Herramientas.Idiomas.BuscarTexto(idioma, "Type" + posicion.ToString(), "News");
 				}
 
 				posicion += 1;

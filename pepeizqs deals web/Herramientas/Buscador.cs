@@ -169,7 +169,7 @@ namespace Herramientas
 			{
 				if (juego.FreeToPlay.ToLower() == "true")
 				{
-					return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage6", "Header");
+					return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage6", "Header");
 				}
 			}
 
@@ -185,7 +185,7 @@ namespace Herramientas
 							{
 								Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle.BundleId);
 
-                                return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage4", "Header"), bundle2.NombreBundle, bundle2.NombreTienda);
+                                return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage4", "Header"), bundle2.NombreBundle, bundle2.NombreTienda);
 							}
 						}
 					}
@@ -202,7 +202,7 @@ namespace Herramientas
 						{
 							if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
 							{
-								return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage5", "Header"), Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre);
+								return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage5", "Header"), Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre);
 							}
 						}
 					}
@@ -234,7 +234,7 @@ namespace Herramientas
 
 						if (precio < 1000000)
 						{
-							return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage3", "Header"), nombre);
+							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage3", "Header"), nombre);
 						}
 					}
 				}
@@ -312,11 +312,11 @@ namespace Herramientas
 
 				precioTexto = precioTexto + "€";
 
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage1", "Header"), precioTexto);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), precioTexto);
 			}
 			else
 			{
-				return Herramientas.Idiomas.CogerCadena(idioma, "SearchMessage2", "Header");
+				return Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage2", "Header");
 			}
 		}
 	}

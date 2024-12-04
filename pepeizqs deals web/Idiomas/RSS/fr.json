@@ -1,0 +1,12 @@
+{
+  "Title": "RSS",
+  "String1": "Nouvelles",
+  "String2": "Vous pouvez suivre les dernières actualités grâce à ces flux en plusieurs langues :",
+  "String3": "Anglais",
+  "String4": "Espagnol",
+  "String5": "Dernières offres",
+  "String6": "Vous pouvez également suivre les dernières offres et configurer le flux à votre guise. ",
+  "String7": "Si vous souhaitez ajouter les jeux pour GOG au flux précédent, utilisez simplement ce flux :",
+  "String8": "Le flux peut être configuré en éditant le champ après /rss/ en tapant les plateformes pour lesquelles vous souhaitez les jeux, comme Steam, GOG, Epic, EA Play ou toute autre plateforme qui sortira dans le futur, en vous assurant que chaque plateforme ",
+  "String9": "Je tiens également à souligner qu'il existe plusieurs restrictions : tout flux d'offres que vous créez ne peut pas remonter à plus de 2 jours dans le passé et il y a également une limite de 50 offres dans le flux. "
+}

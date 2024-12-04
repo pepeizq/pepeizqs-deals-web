@@ -314,23 +314,23 @@
 									<div style="background-color: var(--fondoBotonPequeño); padding: 8px 12px; margin-left: auto;">
 										@if (noticia.Tipo == NoticiaTipo.Bundles)
 										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News1", "Index")
+											@Herramientas.Idiomas.BuscarTexto(idioma, "News1", "Index")
 										}
 										else if (noticia.Tipo == NoticiaTipo.Gratis)
 										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News2", "Index")
+											@Herramientas.Idiomas.BuscarTexto(idioma, "News2", "Index")
 										}
 										else if (noticia.Tipo == NoticiaTipo.Suscripciones)
 										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News3", "Index")
+											@Herramientas.Idiomas.BuscarTexto(idioma, "News3", "Index")
 										}
 										else if (noticia.Tipo == NoticiaTipo.Rumores)
 										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News4", "Index")
+											@Herramientas.Idiomas.BuscarTexto(idioma, "News4", "Index")
 										}
 										else if (noticia.Tipo == NoticiaTipo.Web)
 										{
-											@Herramientas.Idiomas.CogerCadena(idioma, "News5", "Index")
+											@Herramientas.Idiomas.BuscarTexto(idioma, "News5", "Index")
 										}
 										else
 										{
@@ -381,11 +381,11 @@
 
 		<div class="noticia-enlaces" style="display: flex; align-items: center; justify-content: center; margin: 20px auto 0px auto;">
 			<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
-				@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "LastNewsMore", "Index")
 			</a>
 
 			<div style="display: flex; flex-direction: column; gap: 10px">
-				<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+				<label>@Herramientas.Idiomas.BuscarTexto(idioma, "LastNewsSocial", "Index")</label>
 
 				<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px" />
 			</div>
@@ -396,11 +396,11 @@ else
 {
 	<div class="noticia-enlaces" style="background-color: var(--fondoOscuro); padding: 30px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto; display: flex; align-items: center; justify-content: center;">
 		<a class="boton-pequeño" style="padding: 15px 20px; font-size: 17px; text-align: center; min-width: 300px; width: auto;" href="/last-news">
-			@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsMore", "Index")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "LastNewsMore", "Index")
 		</a>
 
 		<div style="display: flex; flex-direction: column; gap: 10px">
-			<label>@Herramientas.Idiomas.CogerCadena(idioma, "LastNewsSocial", "Index")</label>
+			<label>@Herramientas.Idiomas.BuscarTexto(idioma, "LastNewsSocial", "Index")</label>
 
 			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="22px" />
 		</div>
@@ -412,18 +412,18 @@ else
 	<div style="max-width: 1000px; margin: auto;">
 		<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
 			<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
-				<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.CogerCadena(idioma, "LastLows", "Index")</a>
+				<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.BuscarTexto(idioma, "LastLows", "Index")</a>
 
 				<div class="tooltip2" style="margin-left: 20px;">
 					<i class="fa-solid fa-circle-info" style="font-size: 15px;"></i>
 					<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsInfo", "Index")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "LastLowsInfo", "Index")
 					</div>
 				</div>
 			</div>
 
 			<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-left: 30px; border: 0px; color: var(--colorTextoVisitado);">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Filter", "Index")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "Filter", "Index")
 			</button>
 		</div>
 
@@ -437,7 +437,7 @@ else
 
 		<div style="margin-bottom: 20px; margin-left: auto; margin-right: auto; width: 400px;">
 			<a class="boton-pequeño" style="width: 100%; padding: 15px 20px; font-size: 17px; text-align: center;" href="/historical-lows">
-				@Herramientas.Idiomas.CogerCadena(idioma, "LastLowsMore", "Index")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "LastLowsMore", "Index")
 			</a>
 		</div>
 	</div>	
@@ -453,7 +453,7 @@ else
 				</button>
 
 				<div style="font-size: 20px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "Filter", "Index")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Filter", "Index")
 				</div>
 			</div>
 
@@ -467,7 +467,7 @@ else
 					</div>
 
 					<div style="margin-left: 20px; padding-bottom: 5px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption1", "Index")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption1", "Index")
 					</div>
 				</div>
 
@@ -476,7 +476,7 @@ else
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption2", "Index")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption2", "Index")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
@@ -520,7 +520,7 @@ else
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3", "Index")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption3", "Index")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
@@ -530,19 +530,19 @@ else
 
 						if (categoria.Categoria == JuegoTipo.Game)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.1", "Index");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption3.1", "Index");
 						}
 						else if (categoria.Categoria == JuegoTipo.DLC)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.2", "Index");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption3.2", "Index");
 						}
 						else if (categoria.Categoria == JuegoTipo.Music)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.3", "Index");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption3.3", "Index");
 						}
 						else if (categoria.Categoria == JuegoTipo.Software)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "FilterOption3.4", "Index");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "FilterOption3.4", "Index");
 						}
 
 						<div style="display: flex; align-items: center;" title="@nombreCategoria">

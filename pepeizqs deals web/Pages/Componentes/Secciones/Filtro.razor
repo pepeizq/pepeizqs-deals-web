@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
+@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -38,7 +39,7 @@
 else
 {
 	<h1 style="font-size: 23px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "Title", "Filter")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Filter")
 	</h1>
 
 	<hr>
@@ -54,7 +55,7 @@ else
 					{
 						string letra = "d";
 						string cadena = id.Replace(letra, null);
-						string deck = Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "Deck" + cadena, "Filter");
+						string deck = Herramientas.Idiomas.BuscarTexto(idioma, "Deck4", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "Deck" + cadena, "Filter");
 
 						if (string.IsNullOrEmpty(deck) == false)
 						{
@@ -71,7 +72,7 @@ else
 					{
 						string letra = "i";
 						string cadena = id.Replace(letra, null);
-						string tipo = Herramientas.Idiomas.CogerCadena(idioma, "String9", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "Type" + cadena, "Filter");
+						string tipo = Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "Type" + cadena, "Filter");
 
 						if (string.IsNullOrEmpty(tipo) == false)
 						{
@@ -88,7 +89,7 @@ else
 					{
 						string letra = "s";
 						string cadena = id.Replace(letra, null);
-						string sistema = Herramientas.Idiomas.CogerCadena(idioma, "String8", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, "System" + cadena, "Filter");
+						string sistema = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "System" + cadena, "Filter");
 
 						if (string.IsNullOrEmpty(sistema) == false)
 						{
@@ -105,7 +106,7 @@ else
 					{
 						string letra = "t";
 						string cadena = id.Replace(letra, null);
-						string etiqueta = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Tags");
+						string etiqueta = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags");
 
 						if (string.IsNullOrEmpty(etiqueta) == false)
 						{
@@ -122,7 +123,7 @@ else
 					{
 						string letra = "c";
 						string cadena = id.Replace(letra, null);
-						string categoria = Herramientas.Idiomas.CogerCadena(idioma, "String5", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Categories");
+						string categoria = Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories");
 
 						if (string.IsNullOrEmpty(categoria) == false)
 						{
@@ -139,7 +140,7 @@ else
 					{
 						string letra = "g";
 						string cadena = id.Replace(letra, null);
-						string generos = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Filter") + " • " + Herramientas.Idiomas.CogerCadena(idioma, cadena, "Genres");
+						string generos = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Genres");
 
 						if (string.IsNullOrEmpty(generos) == false)
 						{
@@ -166,7 +167,7 @@ else
 					<button @onclick="(e => AbrirDeck(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "Deck4", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "Deck4", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -223,7 +224,7 @@ else
 					<button @onclick="(e => AbrirTipos(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -280,7 +281,7 @@ else
 					<button @onclick="(e => AbrirSistemas(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -337,7 +338,7 @@ else
 					<button @onclick="(e => AbrirEtiquetas(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -394,7 +395,7 @@ else
 					<button @onclick="(e => AbrirCategorias(e))" style="background-color: transparent; color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Filter") (@CantidadIDs(letra))
 							</div>
 							
 							<div>
@@ -461,7 +462,7 @@ else
 					<button @onclick="(e => AbrirGeneros(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
 						<div style="display: flex; align-items: center;">
 							<div style="width: 100%;">
-								@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Filter") (@CantidadIDs(letra))
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Filter") (@CantidadIDs(letra))
 							</div>
 
 							<div>
@@ -721,7 +722,7 @@ else
 		{
 			FiltroItem nuevoDeck = new FiltroItem();
 			nuevoDeck.Id = cadena;
-			nuevoDeck.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "Deck" + cadena, "Filter");
+			nuevoDeck.Contenido = Herramientas.Idiomas.BuscarTexto(idioma, "Deck" + cadena, "Filter");
 
 			decks.Add(nuevoDeck);
 		}
@@ -759,7 +760,7 @@ else
 		{
 			FiltroItem nuevoTipo = new FiltroItem();
 			nuevoTipo.Id = cadena;
-			nuevoTipo.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "Type" + cadena, "Filter");
+			nuevoTipo.Contenido = Herramientas.Idiomas.BuscarTexto(idioma, "Type" + cadena, "Filter");
 
 			tipos.Add(nuevoTipo);
 		}
@@ -796,7 +797,7 @@ else
 		{
 			FiltroItem nuevoSistema = new FiltroItem();
 			nuevoSistema.Id = cadena;
-			nuevoSistema.Contenido = Herramientas.Idiomas.CogerCadena(idioma, "System" + cadena, "Filter");
+			nuevoSistema.Contenido = Herramientas.Idiomas.BuscarTexto(idioma, "System" + cadena, "Filter");
 
 			sistemas.Add(nuevoSistema);
 		}
@@ -824,22 +825,19 @@ else
 
 	private void CargarEtiquetas()
 	{
-		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
+		string json = Herramientas.Idiomas.CogerTodo(idioma, "Tags");
 
-		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Tags");
-
-		if (cadenas != null)
+		if (string.IsNullOrEmpty(json) == false)
 		{
-			if (cadenas.Count > 0)
-			{
-				foreach (var cadena in cadenas)
-				{
-					FiltroItem nuevaEtiqueta = new FiltroItem();
-					nuevaEtiqueta.Id = cadena.Id;
-					nuevaEtiqueta.Contenido = cadena.Valor;
+			var items2 = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
 
-					etiquetas.Add(nuevaEtiqueta);
-				}
+			foreach (var item2 in items2)
+			{
+				FiltroItem nuevaEtiqueta = new FiltroItem();
+				nuevaEtiqueta.Id = item2.Key;
+				nuevaEtiqueta.Contenido = item2.Value.ToString();
+
+				etiquetas.Add(nuevaEtiqueta);
 			}
 		}
 	}
@@ -866,22 +864,19 @@ else
 
 	private void CargarCategorias()
 	{
-		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
+		string json = Herramientas.Idiomas.CogerTodo(idioma, "Categories");
 
-		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Categories");
-
-		if (cadenas != null)
+		if (string.IsNullOrEmpty(json) == false)
 		{
-			if (cadenas.Count > 0)
-			{
-				foreach (var cadena in cadenas)
-				{
-					FiltroItem nuevaCategoria = new FiltroItem();
-					nuevaCategoria.Id = cadena.Id;
-					nuevaCategoria.Contenido = cadena.Valor;
+			var items2 = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
 
-					categorias.Add(nuevaCategoria);
-				}
+			foreach (var item2 in items2)
+			{
+				FiltroItem nuevaEtiqueta = new FiltroItem();
+				nuevaEtiqueta.Id = item2.Key;
+				nuevaEtiqueta.Contenido = item2.Value.ToString();
+
+				categorias.Add(nuevaEtiqueta);
 			}
 		}
 	}
@@ -908,22 +903,19 @@ else
 
 	private void CargarGeneros()
 	{
-		List<Herramientas.IdiomaCadena> cadenas = new List<Herramientas.IdiomaCadena>();
+		string json = Herramientas.Idiomas.CogerTodo(idioma, "Genres");
 
-		cadenas = Herramientas.Idiomas.CogerTodasCadenas(idioma, "Genres");
-
-		if (cadenas != null)
+		if (string.IsNullOrEmpty(json) == false)
 		{
-			if (cadenas.Count > 0)
-			{
-				foreach (var cadena in cadenas)
-				{
-					FiltroItem nuevoGenero = new FiltroItem();
-					nuevoGenero.Id = cadena.Id;
-					nuevoGenero.Contenido = cadena.Valor;
+			var items2 = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
 
-					generos.Add(nuevoGenero);
-				}
+			foreach (var item2 in items2)
+			{
+				FiltroItem nuevaEtiqueta = new FiltroItem();
+				nuevaEtiqueta.Id = item2.Key;
+				nuevaEtiqueta.Contenido = item2.Value.ToString();
+
+				generos.Add(nuevaEtiqueta);
 			}
 		}
 	}

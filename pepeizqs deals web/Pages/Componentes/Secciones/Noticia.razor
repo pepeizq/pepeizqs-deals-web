@@ -18,15 +18,15 @@
 
 @if (cambiarEnlace == true)
 {
-	<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.CogerCadena(idioma, "SEO", "News")" video="@video" />
+	<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.BuscarTexto(idioma, "SEO", "News")" video="@video" />
 
 	<div style="display: flex; align-items: center; gap: 30px; margin-bottom: 40px;">
 		<a href="/last-news" class="boton-pequeño" style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 12px 20px; text-decoration: none; width: auto;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Back", "News")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "Back", "News")
 		</a>
 
 		<a href="/" class="boton-pequeño" style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 12px 20px; text-decoration: none; width: auto;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "Back2", "News")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "Back2", "News")
 		</a>
 	</div>
 }
@@ -72,7 +72,7 @@
 				</h1>
 
 				<div style="display: flex; align-items: center; font-size: 15px; margin-top: 20px; gap: 30px;">
-					<div>@Herramientas.Idiomas.CogerCadena(idioma, "String9", "News") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
+					<div>@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "News") @Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)</div>
 
 					@{
 						string fechaTermina = string.Empty;
@@ -82,38 +82,38 @@
 						{
 							if (diferenciaTiempo.Days > 1)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days == 1)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days == 0)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days < 0)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String8", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "News"), diferenciaTiempo.Days);
 							}
 						}
 						else
 						{
 							if (diferenciaTiempo.Days > 1)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String1", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String1", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days == 1)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String2", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String2", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days == 0)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "News"), diferenciaTiempo.Days);
 							}
 							else if (diferenciaTiempo.Days < 0)
 							{
-								fechaTermina = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "News"), diferenciaTiempo.Days);
+								fechaTermina = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "News"), diferenciaTiempo.Days);
 							}
 						}
 

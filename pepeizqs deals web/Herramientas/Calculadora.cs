@@ -68,7 +68,7 @@ namespace Herramientas
 
 				numCantidad = (int)(Math.Round(double.Parse(cantidad.Replace(",", null)) / divisor, 0) * divisor);
 
-				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.CogerCadena(idioma, "String9", "Game");
+				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.BuscarTexto(idioma, "String9", "Game");
 			}
 
 			return cantidadFinal;
@@ -102,33 +102,33 @@ namespace Herramientas
 			{
 				if (diferenciaTiempo.Seconds == 1)
 				{
-                    mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String0", "Calculator"), diferenciaTiempo.Seconds);
+                    mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String0", "Calculator"), diferenciaTiempo.Seconds);
                 }
 				else
 				{
-                    mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String1", "Calculator"), diferenciaTiempo.Seconds);
+                    mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String1", "Calculator"), diferenciaTiempo.Seconds);
                 }				
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromMinutes(60))
 			{
 				if (diferenciaTiempo.Minutes == 1)
 				{
-					mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String3", "Calculator");
+					mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String3", "Calculator");
 				}
 				else if (diferenciaTiempo.Minutes > 1)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String2", "Calculator"), diferenciaTiempo.Minutes);
+					mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String2", "Calculator"), diferenciaTiempo.Minutes);
 				}
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromHours(24))
 			{
 				if (diferenciaTiempo.Hours == 1)
 				{
-					mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String5", "Calculator");
+					mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String5", "Calculator");
 				}
 				else if (diferenciaTiempo.Hours > 1)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String4", "Calculator"), diferenciaTiempo.Hours);
+					mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String4", "Calculator"), diferenciaTiempo.Hours);
 				}
 			}
 			else if (diferenciaTiempo < TimeSpan.FromDays(31))
@@ -137,20 +137,20 @@ namespace Herramientas
 				{
 					if (diferenciaTiempo.Hours == 0)
 					{
-                        mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String17", "Calculator");
+                        mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String17", "Calculator");
                     }
 					else if (diferenciaTiempo.Hours == 1)
 					{
-						mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String16", "Calculator");
+						mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String16", "Calculator");
                     }
 					else if (diferenciaTiempo.Hours > 1)
 					{
-                        mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String7", "Calculator"), diferenciaTiempo.Hours);
+                        mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String7", "Calculator"), diferenciaTiempo.Hours);
                     }					
 				}
 				else if (diferenciaTiempo.Days > 1)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String6", "Calculator"), diferenciaTiempo.Days);
+					mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String6", "Calculator"), diferenciaTiempo.Days);
 				}
 			}
 			else if (diferenciaTiempo <= TimeSpan.FromDays(365))
@@ -161,20 +161,20 @@ namespace Herramientas
 
 					if (dias > 1)
 					{
-                        mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String9", "Calculator"), dias);
+                        mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String9", "Calculator"), dias);
                     }
                     else if (dias == 1)
 					{
-                        mensaje = Idiomas.CogerCadena(idioma,  modo.ToString() + ".String14", "Calculator");
+                        mensaje = Idiomas.BuscarTexto(idioma,  modo.ToString() + ".String14", "Calculator");
                     }
 					else
 					{
-                        mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String15", "Calculator");
+                        mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String15", "Calculator");
                     }
                 }
 				else if (diferenciaTiempo.Days >= 60)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String8", "Calculator"), diferenciaTiempo.Days / 30);
+					mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String8", "Calculator"), diferenciaTiempo.Days / 30);
 				}
 			}
 			else
@@ -185,20 +185,20 @@ namespace Herramientas
 
 					if (meses > 1) 
 					{
-                        mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String11", "Calculator"), meses);
+                        mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String11", "Calculator"), meses);
                     }
                     else if (meses == 1)
                     {
-						mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String12", "Calculator");
+						mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String12", "Calculator");
                     }
 					else
 					{
-						mensaje = Idiomas.CogerCadena(idioma, modo.ToString() + ".String13", "Calculator");
+						mensaje = Idiomas.BuscarTexto(idioma, modo.ToString() + ".String13", "Calculator");
                     }
                 }
 				else if (diferenciaTiempo.Days >= 730)
 				{
-					mensaje = string.Format(Idiomas.CogerCadena(idioma, modo.ToString() + ".String10", "Calculator"), diferenciaTiempo.Days / 365);
+					mensaje = string.Format(Idiomas.BuscarTexto(idioma, modo.ToString() + ".String10", "Calculator"), diferenciaTiempo.Days / 365);
 				}
 			}
 
@@ -213,15 +213,15 @@ namespace Herramientas
 
 			if (diferenciaTiempo.Days == 1)
 			{
-                mensaje = Idiomas.CogerCadena(idioma, "3.String1", "Calculator");
+                mensaje = Idiomas.BuscarTexto(idioma, "3.String1", "Calculator");
             }
 			else if (diferenciaTiempo.Days > 1)
 			{
-                mensaje = string.Format(Idiomas.CogerCadena(idioma, "3.String2", "Calculator"), diferenciaTiempo.Days);
+                mensaje = string.Format(Idiomas.BuscarTexto(idioma, "3.String2", "Calculator"), diferenciaTiempo.Days);
             }
 			else
 			{
-				mensaje = Idiomas.CogerCadena(idioma, "3.String1", "Calculator");
+				mensaje = Idiomas.BuscarTexto(idioma, "3.String1", "Calculator");
 			}
 
 			return mensaje;

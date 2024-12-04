@@ -39,7 +39,7 @@
 	@if (mostrarBundleSeleccionado == false)
 	{
 		<h1 style="font-size: 23px;">
-			@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Bundle")
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Bundle")
 		</h1>
 
 		<hr>
@@ -100,7 +100,7 @@
 				</div>
 
 				<a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 10px 15px;" target="_blank">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Bundle")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Bundle")
 				</a>
 			</div>		
 
@@ -112,7 +112,7 @@
 @if (mostrarBundleSeleccionado == false)
 {
 	<div id="bundles-archivo" style="font-size: 23px;">
-		@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Bundle")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Bundle")
 	</div>
 
 	<div style="display: flex; align-items: start; margin-top: 10px;">
@@ -197,7 +197,7 @@
 								{
 									bundlesMensual = bundlesMensual.OrderBy(x => x.NombreBundle).ToList();
 
-									<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
+									<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Month." + i.ToString(), "Months")</label>
 
 									<ul>
 										@foreach (var bundleMensual in bundlesMensual)
@@ -303,19 +303,19 @@
 
 			if (diferenciaTiempo.Days > 1)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String4", "Bundle"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Bundle"), diferenciaTiempo.Days);
 			}
 			else if (diferenciaTiempo.Days == 1)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Bundle"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Bundle"), diferenciaTiempo.Days);
 			}
 			else if (diferenciaTiempo.Days == 0 && diferenciaTiempo.Minutes > 0)
 			{
-				return string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String6", "Bundle"), diferenciaTiempo.Days);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Bundle"), diferenciaTiempo.Days);
 			}
 		}
 
-		return Herramientas.Idiomas.CogerCadena(idioma, "String7", "Bundle") + " • " + fechaEmpieza.Day.ToString() + "/" + fechaEmpieza.Month.ToString() + "/" + fechaEmpieza.Year.ToString() + " • " + fechaTermina.Day.ToString() + "/" + fechaTermina.Month.ToString() + "/" + fechaTermina.Year.ToString();
+		return Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Bundle") + " • " + fechaEmpieza.Day.ToString() + "/" + fechaEmpieza.Month.ToString() + "/" + fechaEmpieza.Year.ToString() + " • " + fechaTermina.Day.ToString() + "/" + fechaTermina.Month.ToString() + "/" + fechaTermina.Year.ToString();
 	}
 
 	private async void SeleccionarBundle(MouseEventArgs e, Bundles2.Bundle nuevoBundle)

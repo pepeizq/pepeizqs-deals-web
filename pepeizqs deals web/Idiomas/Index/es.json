@@ -1,0 +1,22 @@
+{
+  "Title": "Inicio",
+  "Subtitle": "Web de ofertas de videojuegos para PC procedentes de tiendas oficiales",
+  "News1": "Nuevo Bundle",
+  "News2": "Nuevo Gratis",
+  "News3": "Nueva Suscripción",
+  "News4": "Nuevo Rumor",
+  "News5": "Nuevo Web",
+  "LastNewsMore": "Cargar todas las noticias",
+  "LastNewsSocial": "Redes sociales para seguir las noticias",
+  "LastLows": "Últimos Mínimos Históricos",
+  "LastLowsInfo": "Estas ofertas son mínimos históricos que tienen por primera vez los juegos.",
+  "LastLowsMore": "Cargar más mínimos históricos",
+  "Filter": "Filtro",
+  "FilterOption1": "Ocultar los juegos que tienes en Steam",
+  "FilterOption2": "DRMs",
+  "FilterOption3": "Categorías",
+  "FilterOption3.1": "Juegos",
+  "FilterOption3.2": "DLCs",
+  "FilterOption3.3": "Bandas Sonoras",
+  "FilterOption3.4": "Software"
+}

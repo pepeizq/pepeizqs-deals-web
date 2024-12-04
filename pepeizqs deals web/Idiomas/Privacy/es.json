@@ -1,0 +1,11 @@
+{
+  "Title": "Privacidad y Vuestros Datos",
+  "String1": "Cookies",
+  "String2": "Como desarrollador de esta web y de otros proyectos, soy consciente del uso pernicioso que se puede hacer de la recolección de datos a través del uso de cookies. Al desarrollar desde cero esta web he podido mantener al mínimo necesario el uso de cookies, para que os hagáis una idea:",
+  "String3": "Si decidís usar esta web sin registrar una cuenta, la web no usará ninguna cookie.",
+  "String4": "Si decidís usar esta web registrando una cuenta, la web solo necesita 3 cookies para operar correctamente. Las necesito para que vuestro navegador y mi servidor no se olviden ninguno del otro cada vez que abras la web.",
+  "String5": "Nota: Esta web es multilenguaje pero la identificación del idioma del usuario no se hace con ninguna cookie, sino a través de la petición que envía el navegador web.",
+  "String6": "Vuestros Datos",
+  "String7": "Si decidís registraros una cuenta en la web quiero que ser lo más transparente posible y prometo que solo usaré vuestros datos 'dentro de la web, no fuera'. Pero si tienes dudas de que me pueda volver malvado puedes borrar tu cuenta en cualquier momento desde 'Personal Data' o descargar todos los datos que tengo sobre ti.",
+  "String8": "De hecho, en esta web no voy a usar servicios como Google Analytics, aunque seguramente Google me castigará en su buscador por ello."
+}

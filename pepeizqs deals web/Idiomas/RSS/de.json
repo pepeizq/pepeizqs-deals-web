@@ -1,0 +1,12 @@
+{
+  "Title": "RSS",
+  "String1": "Nachricht",
+  "String2": "Über diese Feeds können Sie die neuesten Nachrichten in mehreren Sprachen verfolgen:",
+  "String3": "Englisch",
+  "String4": "Spanisch",
+  "String5": "Aktuelle Angebote",
+  "String6": "Sie können auch die neuesten Angebote verfolgen und den Feed nach Ihren Wünschen konfigurieren. ",
+  "String7": "Wenn Sie die Spiele für GOG zum vorherigen Feed hinzufügen möchten, verwenden Sie einfach diesen Feed:",
+  "String8": "Der Feed kann konfiguriert werden, indem Sie das Feld nach /rss/ bearbeiten, indem Sie die Plattformen eingeben, für die Sie die Spiele haben möchten, z. B. Steam, GOG, Epic, EA Play oder jede andere Plattform, die in Zukunft erscheinen wird, und stellen Sie dabei sicher, dass jede Plattform ",
+  "String9": "Ich möchte auch darauf hinweisen, dass es mehrere Einschränkungen gibt: Jeder von Ihnen eingerichtete Deal-Feed darf nicht länger als 2 Tage zurückliegen und es gibt auch ein Limit von 50 Deals im Feed. "
+}

@@ -10,12 +10,12 @@
 @inject UserManager<Usuario> UserManager
 
 @{
-	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.CogerCadena(Model.idioma, "Subtitle", "Index");
+	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "Subtitle", "Index");
 
 	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	string descripcion = Herramientas.Idiomas.CogerCadena(Model.idioma, "Subtitle", "Index");
+	string descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Subtitle", "Index");
 
 	string enlace = "https://pepeizqdeals.com";
 

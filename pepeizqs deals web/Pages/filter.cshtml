@@ -11,7 +11,7 @@
 @{
 	#nullable disable
 
-    ViewData["Title"] = Herramientas.Idiomas.CogerCadena(Model.idioma, "Title", "Filter"); ;
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Filter"); ;
     Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);

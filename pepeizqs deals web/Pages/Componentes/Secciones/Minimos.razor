@@ -19,27 +19,27 @@
 	<div style="background-color: var(--fondoCuerpo);">
 		<div style="display: flex; align-items: center; width: 100%;">
 			<div style="width: 100%; font-size: 23px; text-align: left;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "String1", "HistoricalLows")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "HistoricalLows")
 			</div>
 
 			<div style="display: flex; align-items: center; width: 30%; justify-content: right;">
 				<div style="font-size: 14px; text-align: right;">
-					@juegosMostrar.Count.ToString() @Herramientas.Idiomas.CogerCadena(idioma, "String16", "HistoricalLows")
+					@juegosMostrar.Count.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "HistoricalLows")
 				</div>
 			</div>
 		</div>
 
 		<div style="display: flex; align-items: center; width: 100%; margin: 15px 0px;">
-			<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "HistoricalLows")" />
+			<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "HistoricalLows")" />
 
 			<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-right: 30px; border: 0px; color: var(--colorTextoVisitado);">
-				@Herramientas.Idiomas.CogerCadena(idioma, "String10", "HistoricalLows")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "HistoricalLows")
 			</button>
 
 			<div class="menu-dropdown" style="width: auto;">
 				<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
 					<div style="padding-right: 5px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String2", "HistoricalLows"):
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "HistoricalLows"):
 					</div>
 
 					<div style="color: var(--colorEnlace); padding-right: 15px;">
@@ -53,23 +53,23 @@
 
 				<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String3", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows")
 					</button>
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String4", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows")
 					</button>
 					<hr />
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String5", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "HistoricalLows")
 					</button>
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String6", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "HistoricalLows")
 					</button>
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String7", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "HistoricalLows")
 					</button>
 					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String8", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "HistoricalLows")
 					</button>
 				</div>
 			</div>
@@ -100,7 +100,7 @@
 				</button>
 
 				<div style="font-size: 20px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String10", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "HistoricalLows")
 				</div>
 			</div>
 
@@ -114,7 +114,7 @@
 					</div>
 
 					<div style="margin-left: 20px; padding-bottom: 5px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String11", "HistoricalLows")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "HistoricalLows")
 					</div>
 				</div>
 
@@ -123,7 +123,7 @@
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String12", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "HistoricalLows")
 				</div>
 
 				<div style="display: flex; align-items: center;">
@@ -135,7 +135,7 @@
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String13", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "HistoricalLows")
 				</div>
 
 				<div style="display: flex; align-items: center;">
@@ -149,7 +149,7 @@
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String14", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "HistoricalLows")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
@@ -193,7 +193,7 @@
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String15", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "HistoricalLows")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
@@ -228,7 +228,7 @@
 
 			<div style="margin-top: 30px;">
 				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.CogerCadena(idioma, "String17", "HistoricalLows")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String17", "HistoricalLows")
 				</div>
 
 				<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
@@ -238,19 +238,19 @@
 
 						if (categoria.Categoria == JuegoTipo.Game)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String18", "HistoricalLows");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "HistoricalLows");
 						}
 						else if (categoria.Categoria == JuegoTipo.DLC)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String19", "HistoricalLows");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String19", "HistoricalLows");
 						}
 						else if (categoria.Categoria == JuegoTipo.Music)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String20", "HistoricalLows");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String20", "HistoricalLows");
 						}
 						else if (categoria.Categoria == JuegoTipo.Software)
 						{
-							nombreCategoria = Herramientas.Idiomas.CogerCadena(idioma, "String21", "HistoricalLows");
+							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String21", "HistoricalLows");
 						}
 
 						<div style="display: flex; align-items: center;" title="@nombreCategoria">
@@ -422,7 +422,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String3", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -448,7 +448,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String4", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -474,7 +474,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String5", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String5", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -500,7 +500,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String6", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -526,7 +526,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String7", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String7", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -552,7 +552,7 @@
 	{
 		if (juegosGestor != null)
 		{
-			ordenamientoElegido = Herramientas.Idiomas.CogerCadena(idioma, "String8", "HistoricalLows");
+			ordenamientoElegido = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "HistoricalLows");
 
 			if (juegosGestor.Count > 0)
 			{
@@ -685,32 +685,32 @@
 
 	private void ElegirOrdenamiento()
 	{
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String3", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows"))
 		{
 			OrdenarReseñasPorcentaje();
 		}
 
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String4", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows"))
 		{
 			OrdenarReseñasCantidad();
 		}
 
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String5", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String5", "HistoricalLows"))
 		{
 			OrdenarNombreAZ();
 		}
 
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String6", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String6", "HistoricalLows"))
 		{
 			OrdenarNombreZA();
 		}
 
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String7", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String7", "HistoricalLows"))
 		{
 			OrdenarPrecio();
 		}
 
-		if (ordenamientoElegido == Herramientas.Idiomas.CogerCadena(idioma, "String8", "HistoricalLows"))
+		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String8", "HistoricalLows"))
 		{
 			OrdenarDescuento();
 		}

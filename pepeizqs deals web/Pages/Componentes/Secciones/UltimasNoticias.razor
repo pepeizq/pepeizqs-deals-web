@@ -16,7 +16,7 @@
 	<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
 		<div style="display: flex; align-items: center; width: 100%;">
 			<div style="width: 100%; font-size: 23px; text-align: left;">
-				@Herramientas.Idiomas.CogerCadena(idioma, "Title", "LastNews")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews")
 			</div>
 
 			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="20px" />
@@ -76,13 +76,13 @@
 							if (noticiaMostrar.Tipo == Noticias.NoticiaTipo.Bundles)
 							{
 								<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
-									@Herramientas.Idiomas.CogerCadena(idioma, "String2", "LastNews")
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "LastNews")
 								</a>
 							}
 							else
 							{
 								<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
-									@Herramientas.Idiomas.CogerCadena(idioma, "String3", "LastNews")
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "LastNews")
 								</a>
 							}
 						}
@@ -94,7 +94,7 @@
 }
 
 <div style="font-size: 23px; margin-top: 40px;">
-	@Herramientas.Idiomas.CogerCadena(idioma, "String1", "LastNews")
+	@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "LastNews")
 </div>
 
 <div style="display: flex; align-items: start; gap: 15px; margin: 10px 0px 20px 0px;">
@@ -147,7 +147,7 @@
 						noticiasMensual.Reverse();
 
 						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-							<label>@Herramientas.Idiomas.CogerCadena(idioma, "Month." + i.ToString(), "Months")</label>
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Month." + i.ToString(), "Months")</label>
 							<hr />
 
 							<ul>

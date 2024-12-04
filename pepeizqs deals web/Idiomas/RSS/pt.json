@@ -1,0 +1,12 @@
+{
+  "Title": "RSS",
+  "String1": "Notícias",
+  "String2": "Você pode acompanhar as últimas notícias através destes feeds em vários idiomas:",
+  "String3": "Inglês",
+  "String4": "Espanhol",
+  "String5": "Últimas ofertas",
+  "String6": "Você também pode acompanhar as últimas ofertas e configurar o feed ao seu gosto. ",
+  "String7": "Caso queira adicionar os jogos para GOG ao feed anterior, basta usar este feed:",
+  "String8": "O feed pode ser configurado editando o campo após /rss/ digitando as plataformas para as quais deseja os jogos, como Steam, GOG, Epic, EA Play ou qualquer outra plataforma que venha a ser lançada no futuro, certificando-se de que cada plataforma ",
+  "String9": "Também quero ressaltar que existem várias restrições, qualquer feed de negócios que você configurar não pode voltar mais de 2 dias no passado e também há um limite de 50 negócios no feed. "
+}

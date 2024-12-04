@@ -132,83 +132,53 @@ namespace APIs.Steam
 
 						string deseados = string.Empty;
 
-                        try
+						try
                         {
-                            List<SteamDeseadoJuego> juegosDeseadosTodos = new List<SteamDeseadoJuego>();
-                            int i = 0;
-                            while (i < 100)
-                            {
-                                string htmlDeseados = string.Empty;
+							string htmlDeseados = string.Empty;
 
-                                if (nuevaCuenta.CuentaTipo == 1)
-                                {
-                                    htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/id/" + nuevaCuenta.Usuario + "/wishlistdata/?p=" + i.ToString());
-                                }
-                                else if (nuevaCuenta.CuentaTipo == 2)
-                                {
-                                    htmlDeseados = await Decompiladores.Estandar("https://store.steampowered.com/wishlist/profiles/" + nuevaCuenta.ID64 + "/wishlistdata/?p=" + i.ToString());
-                                }
+							htmlDeseados = await Decompiladores.Estandar("https://api.steampowered.com/IWishlistService/GetWishlist/v1/?input_json={%22steamid%22:%20%22" + nuevaCuenta.ID64 + "%22}");
 
-                                if (htmlDeseados != null)
-                                {
-                                    if (htmlDeseados == "[]")
-                                    {
-                                        break;
-                                    }
+							if (string.IsNullOrEmpty(htmlDeseados) == false)
+							{
+								if (htmlDeseados != "[]" || htmlDeseados != "null")
+								{
+									SteamDeseadosRespuesta juegosDeseados = new SteamDeseadosRespuesta();
 
-                                    var juegosDeseados = new Dictionary<int, SteamDeseadoJuego>();
+									try
+									{
+										juegosDeseados = JsonConvert.DeserializeObject<SteamDeseadosRespuesta>(htmlDeseados);
+									}
+									catch (Exception ex)
+									{
+                                        BaseDatos.Errores.Insertar.Mensaje("Steam deseados", ex);
+									};
 
-                                    try
-                                    {
-                                        juegosDeseados = JsonConvert.DeserializeObject<Dictionary<int, SteamDeseadoJuego>>(htmlDeseados);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        break;
-                                    };
+									if (juegosDeseados != null)
+									{
+										if (juegosDeseados.Datos.Juegos.Count > 0)
+										{
+											foreach (var juegoDeseado in juegosDeseados.Datos.Juegos)
+											{
+												if (deseados == string.Empty)
+												{
+													deseados = juegoDeseado.Id.ToString();
+												}
+												else
+												{
+													deseados = deseados + "," + juegoDeseado.Id.ToString();
+												}
+											}
+										}
+									}
+								}
+							}
 
-                                    if (juegosDeseados != null)
-                                    {
-                                        if (juegosDeseados.Count > 0)
-                                        {
-                                            foreach (var juegoDeseado in juegosDeseados)
-                                            {
-                                                juegosDeseadosTodos.Add(juegoDeseado.Value);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                i += 1;
-                            }
-
-                            if (juegosDeseadosTodos.Count > 0)
-                            {
-                                foreach (var deseado in juegosDeseadosTodos)
-                                {
-                                    if (deseado.capsule != null)
-                                    {
-                                        string id = deseado.capsule;
-
-                                        int int1 = id.IndexOf("/apps/");
-                                        id = id.Remove(0, int1 + 6);
-
-                                        int int2 = id.IndexOf("/");
-                                        id = id.Remove(int2, id.Length - int2);
-
-                                        if (deseados == string.Empty)
-                                        {
-                                            deseados = id;
-                                        }
-                                        else
-                                        {
-                                            deseados = deseados + "," + id;
-                                        }
-                                    }
-                                }
-                            }
+							
+						}
+                        catch (Exception ex) 
+                        { 
+                            BaseDatos.Errores.Insertar.Mensaje("Steam deseados", ex);
                         }
-                        catch { }
 
 						//----------------------------------------------
 
@@ -216,7 +186,7 @@ namespace APIs.Steam
                         bool grupoNormal = false;
                         string htmlGrupos = await Decompiladores.Estandar("https://api.steampowered.com/ISteamUser/GetUserGroupList/v0001/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador[0].ID64);
 
-                        if (htmlGrupos != null)
+                        if (string.IsNullOrEmpty(htmlGrupos) == false)
                         {
                             SteamGruposAPI json = JsonConvert.DeserializeObject<SteamGruposAPI>(htmlGrupos);
 
@@ -241,8 +211,6 @@ namespace APIs.Steam
 
                         SteamUsuario datos = new SteamUsuario
                         {
-                            Juegos = juegos,
-                            Deseados = deseados,
                             Avatar = cuenta.Datos.Jugador[0].Avatar,
                             Nombre = cuenta.Datos.Jugador[0].Nombre,
                             GrupoPremium = grupoPremium.ToString(),
@@ -250,7 +218,17 @@ namespace APIs.Steam
                             SteamId = nuevaCuenta.ID64
                         };
 
-                        return datos;
+                        if (string.IsNullOrEmpty(juegos) == false)
+                        {
+                            datos.Juegos = juegos;
+                        }
+
+						if (string.IsNullOrEmpty(deseados) == false)
+						{
+							datos.Deseados = deseados;
+						}
+
+						return datos;
                     }
                 }
             }
@@ -343,15 +321,27 @@ namespace APIs.Steam
 
     //----------------------------------------------
 
-    public class SteamDeseadoJuego
-    {
-        public string name;
-        public string capsule;
-    }
+	public class SteamDeseadosRespuesta
+	{
+		[JsonProperty("response")]
+		public SteamDeseadosRespuestaJuegos Datos { get; set; }
+	}
 
-    //----------------------------------------------
+	public class SteamDeseadosRespuestaJuegos
+	{
+		[JsonProperty("items")]
+		public List<SteamDeseadosRespuestaJuego> Juegos { get; set; }
+	}
 
-    public class SteamCuentaID64
+	public class SteamDeseadosRespuestaJuego
+	{
+		[JsonProperty("appid")]
+		public int Id { get; set; }
+	}
+
+	//----------------------------------------------
+
+	public class SteamCuentaID64
     {
         public string ID64;
         public int CuentaTipo;

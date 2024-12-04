@@ -64,17 +64,17 @@ namespace Herramientas
 				{
 					if (usuarioTieneJuego == true)
 					{
-						datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String8", "Tooltip");
+						datos.UsuarioMensaje = Idiomas.BuscarTexto(idioma, "String8", "Tooltip");
 					}
 					else
 					{
 						if (usuarioDeseaJuego == true)
 						{
-							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String10", "Tooltip");
+							datos.UsuarioMensaje = Idiomas.BuscarTexto(idioma, "String10", "Tooltip");
 						}
 						else
 						{
-							datos.UsuarioMensaje = Idiomas.CogerCadena(idioma, "String9", "Tooltip");
+							datos.UsuarioMensaje = Idiomas.BuscarTexto(idioma, "String9", "Tooltip");
 						}
 					}
 				}
@@ -103,20 +103,20 @@ namespace Herramientas
 
                 if (bundlesActuales == 1)
                 {
-                    datos.BundlesActuales = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
+                    datos.BundlesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Tooltip");
                 }
                 else if (bundlesActuales > 1)
                 {
-                    datos.BundlesActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
+                    datos.BundlesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
                 }
 
                 if (bundlesPasados == 1)
 				{
-					datos.BundlesPasados = Herramientas.Idiomas.CogerCadena(idioma, "String2", "Tooltip");
+					datos.BundlesPasados = Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Tooltip");
 				}
 				else if (bundlesPasados > 1)
 				{
-					datos.BundlesPasados = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
+					datos.BundlesPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
 				}
 			}
 
@@ -139,20 +139,20 @@ namespace Herramientas
 
 				if (gratisActuales == 1)
 				{
-					datos.GratisActuales = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
+					datos.GratisActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Tooltip");
 				}
 				else if (gratisActuales > 1)
 				{
-					datos.GratisActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+					datos.GratisActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
 
 				if (gratisPasados == 1)
 				{
-					datos.GratisPasados = Herramientas.Idiomas.CogerCadena(idioma, "String4", "Tooltip");
+					datos.GratisPasados = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Tooltip");
 				}
 				else if (gratisPasados > 1)
 				{
-					datos.GratisPasados = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+					datos.GratisPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
 			}
 
@@ -175,20 +175,20 @@ namespace Herramientas
 
 				if (suscripcionesActuales == 1)
 				{
-					datos.SuscripcionesActuales = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
+					datos.SuscripcionesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
 				}
 				else if (suscripcionesActuales > 1)
 				{
-					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
 				}
 
 				if (suscripcionesPasados == 1)
 				{
-					datos.SuscripcionesPasadas = Herramientas.Idiomas.CogerCadena(idioma, "String6", "Tooltip");
+					datos.SuscripcionesPasadas = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
 				}
 				else if (suscripcionesPasados > 1)
 				{
-					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.CogerCadena(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
 				}
 			}
 

@@ -6,101 +6,9 @@ using System.Text.Json;
 
 namespace Herramientas
 {
-	public class IdiomaCadena
-	{
-		public string Id { get; set; }
-		public string Valor { get; set; }
-	}
-
 	public static class Idiomas
 	{
-        public static string CogerCadena(string idiomaUsuario, string cadena, string nombreFichero = null)
-		{
-			if (string.IsNullOrEmpty(idiomaUsuario) == true)
-			{
-				idiomaUsuario = "en";
-			}
-			else
-			{
-				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "es";
-				}
-
-				else
-				{
-					idiomaUsuario = "en";
-				}
-			}
-
-			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
-
-			if (string.IsNullOrEmpty(nombreFichero) == false)
-			{
-				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
-			}
-
-			if (File.Exists(rutaFichero) == true)
-			{
-				string devolver = null;
-
-				using (StreamReader r = new StreamReader(rutaFichero))
-				{
-					List<IdiomaCadena> items = new List<IdiomaCadena>();
-
-					try
-					{
-						string json = r.ReadToEnd();
-						items = JsonSerializer.Deserialize<List<IdiomaCadena>>(json);
-					}
-					catch { }
-
-					if (items != null)
-					{
-						if (items.Count > 0)
-						{
-							foreach (var item in items)
-							{
-								if (item.Id == cadena)
-								{
-									devolver = item.Valor;
-									break;
-								}
-							}
-						}
-					}
-				}
-
-				if (string.IsNullOrEmpty(devolver) == false)
-				{
-					return devolver;
-				}
-				else
-				{
-					if (string.IsNullOrEmpty(cadena) == false)
-					{
-						if (idiomaUsuario != "en")
-						{
-							return CogerCadena("en", cadena, nombreFichero);
-						}
-						else
-						{
-							return null;
-						}
-					}
-					else
-					{
-						return null;
-					}
-				}
-			}
-			else
-			{
-				return rutaFichero;
-			}
-		}
-
-		public static string BuscarTexto(string idiomaUsuario, string cadena, string carpeta)
+		public static string SacarIdiomaUsuario(string idiomaUsuario)
 		{
 			if (string.IsNullOrEmpty(idiomaUsuario) == true)
 			{
@@ -138,6 +46,13 @@ namespace Herramientas
 				}
 			}
 
+			return idiomaUsuario;
+		}
+
+		public static string BuscarTexto(string idiomaUsuario, string cadena, string carpeta)
+		{
+			idiomaUsuario = SacarIdiomaUsuario(idiomaUsuario);
+
 			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
 			if (string.IsNullOrEmpty(carpeta) == false)
@@ -149,8 +64,6 @@ namespace Herramientas
 			{
 				using (StreamReader r = new StreamReader(rutaFichero))
 				{
-					List<IdiomaCadena> items = new List<IdiomaCadena>();
-
 					try
 					{
 						string json = r.ReadToEnd();
@@ -171,7 +84,7 @@ namespace Herramientas
 				{
 					if (idiomaUsuario != "en")
 					{
-						return CogerCadena("en", cadena, carpeta);
+						return BuscarTexto("en", cadena, carpeta);
 					}
 					else
 					{
@@ -189,44 +102,26 @@ namespace Herramientas
 			}
 		}
 
-		public static List<IdiomaCadena> CogerTodasCadenas(string idiomaUsuario, string nombreFichero)
+		public static string CogerTodo(string idiomaUsuario, string carpeta)
 		{
-			if (string.IsNullOrEmpty(idiomaUsuario) == true)
-			{
-				idiomaUsuario = "en";
-			}
-			else
-			{
-				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "es";
-				}
-			}
+			idiomaUsuario = SacarIdiomaUsuario(idiomaUsuario);
 
 			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
-			if (string.IsNullOrEmpty(nombreFichero) == false)
+			if (string.IsNullOrEmpty(carpeta) == false)
 			{
-				rutaFichero = "Idiomas/" + nombreFichero + "." + idiomaUsuario + ".json";
+				rutaFichero = "Idiomas/" + carpeta + "/" + idiomaUsuario + ".json";
 			}
 
 			if (File.Exists(rutaFichero) == true)
 			{
 				using (StreamReader r = new StreamReader(rutaFichero))
 				{
-					List<IdiomaCadena> items = new List<IdiomaCadena>();
-
 					try
 					{
-						string json = r.ReadToEnd();
-						items = JsonSerializer.Deserialize<List<IdiomaCadena>>(json);
+						return r.ReadToEnd();
 					}
 					catch { }
-
-					if (items != null)
-					{
-						return items;
-					}
 				}
 			}
 
@@ -283,7 +178,7 @@ namespace Herramientas
 			return idiomasFinal;
 		}
 
-		public static string FormatoSteamAPI(string idiomaUsuario)
+		public static string SacarIdiomaSteamAPI(string idiomaUsuario)
 		{
 			string idiomaSteam = string.Empty;
 

@@ -1,0 +1,22 @@
+{
+  "Title": "Filter",
+  "String1": "Genres",
+  "String2": "Categories",
+  "String3": "Tags",
+  "String4": "Genre",
+  "String5": "Category",
+  "String6": "Tag",
+  "String7": "Systems",
+  "String8": "System",
+  "String9": "Type",
+  "Deck2": "Playable",
+  "Deck3": "Verified",
+  "Deck4": "Steam Deck",
+  "System1": "Windows",
+  "System2": "Mac",
+  "System3": "Linux",
+  "Type0": "Games",
+  "Type1": "DLCs",
+  "Type3": "Soundtracks",
+  "Type4": "Software"
+}

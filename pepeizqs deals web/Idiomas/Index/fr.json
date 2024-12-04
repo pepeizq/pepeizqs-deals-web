@@ -1,0 +1,22 @@
+{
+  "Title": "Page d'accueil",
+  "Subtitle": "Site d'offres de jeux vidéo PC des magasins officiels",
+  "News1": "Nouveau pack",
+  "News2": "Nouveau gratuit",
+  "News3": "Nouvel abonnement",
+  "News4": "Nouvelle rumeur",
+  "News5": "Nouveau site Internet",
+  "LastNewsMore": "Charger toutes les actualités",
+  "LastNewsSocial": "Les réseaux sociaux pour suivre l'actualité",
+  "LastLows": "Derniers plus bas historiques",
+  "LastLowsInfo": "Ces accords sont des plus bas historiques que les jeux atteignent pour la première fois.",
+  "LastLowsMore": "Charger plus de plus bas historiques",
+  "Filter": "Filtre",
+  "FilterOption1": "Cachez les jeux que vous avez sur Steam",
+  "FilterOption2": "DRM",
+  "FilterOption3": "Catégories",
+  "FilterOption3.1": "Jeux",
+  "FilterOption3.2": "DLC",
+  "FilterOption3.3": "Bandes sonores",
+  "FilterOption3.4": "Logiciel"
+}

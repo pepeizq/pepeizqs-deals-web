@@ -1,0 +1,12 @@
+{
+  "Title": "RSS",
+  "String1": "News",
+  "String2": "You can follow the latest news through these feeds in several languages:",
+  "String3": "English",
+  "String4": "Spanish",
+  "String5": "Latest Deals",
+  "String6": "You can also follow the latest deals and configure the feed to your liking. Let's say for example that you only want to know the latest historical low prices of Steam games with at least 1000 reviews, through this feed you can check the games:",
+  "String7": "If you want to add the games for GOG to the previous feed, just use this feed:",
+  "String8": "The feed can be configured by editing the field after /rss/ by typing the platforms for which you want the games, such as Steam, GOG, Epic, EA Play or any other platform that comes out in the future, making sure that each platform is separated by a comma and without spaces as in the previous example. The second field in numerical format represents the amount of reviews that the deal has on the website, you can change it between 200 and 10000.",
+  "String9": "I also want to point out that there are several restrictions, any deals feed you set up cannot go back more than 2 days in the past and there is also a limit of 50 deals in the feed. I had to put these restrictions in place so as not to stab the server."
+}

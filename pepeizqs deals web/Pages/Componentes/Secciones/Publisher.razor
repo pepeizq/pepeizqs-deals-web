@@ -17,7 +17,7 @@ else
 	if (string.IsNullOrEmpty(nombre) == false)
 	{
 		<div style="display: flex; align-items: center; gap: 12px;">
-			<a href="/publishers/">@Herramientas.Idiomas.CogerCadena(idioma, "String11", "Publisher")</a>
+			<a href="/publishers/">@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Publisher")</a>
 			<i class="fa-solid fa-chevron-right"></i>
 			<h1 style="font-size: 22px; margin: 0px;">@nombre</h1>
 		</div>
@@ -55,7 +55,7 @@ else
 
 					<button @onclick="(e => CambiarListado(e, 0))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String1", "Publisher") (@resultadosJuegos.Count.ToString())
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Publisher") (@resultadosJuegos.Count.ToString())
 						</div>
 					</button>
 				}
@@ -75,7 +75,7 @@ else
 
 					<button @onclick="(e => CambiarListado(e, 1))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String2", "Publisher") (@resultadosDLCs.Count.ToString())
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Publisher") (@resultadosDLCs.Count.ToString())
 						</div>
 					</button>
 				}
@@ -95,7 +95,7 @@ else
 
 					<button @onclick="(e => CambiarListado(e, 2))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String3", "Publisher") (@resultadosSoftware.Count.ToString())
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Publisher") (@resultadosSoftware.Count.ToString())
 						</div>
 					</button>
 				}
@@ -115,7 +115,7 @@ else
 
 					<button @onclick="(e => CambiarListado(e, 3))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 						<div>
-							@Herramientas.Idiomas.CogerCadena(idioma, "String4", "Publisher") (@resultadosBandasSonoras.Count.ToString())
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Publisher") (@resultadosBandasSonoras.Count.ToString())
 						</div>
 					</button>
 				}
@@ -139,7 +139,7 @@ else
 
 						<button @onclick="(e => CambiarListado(e, 4))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
-								@Herramientas.Idiomas.CogerCadena(idioma, "String6", "Publisher") (@resultadosBundles.Count.ToString())
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Publisher") (@resultadosBundles.Count.ToString())
 							</div>
 						</button>
 					}
@@ -159,7 +159,7 @@ else
 
 						<button @onclick="(e => CambiarListado(e, 5))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
-								@Herramientas.Idiomas.CogerCadena(idioma, "String7", "Publisher") (@resultadosGratis.Count.ToString())
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Publisher") (@resultadosGratis.Count.ToString())
 							</div>
 						</button>
 					}
@@ -179,7 +179,7 @@ else
 
 						<button @onclick="(e => CambiarListado(e, 6))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
 							<div>
-								@Herramientas.Idiomas.CogerCadena(idioma, "String8", "Publisher") (@resultadosSuscripciones.Count.ToString())
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Publisher") (@resultadosSuscripciones.Count.ToString())
 							</div>
 						</button>
 					}
@@ -190,7 +190,7 @@ else
 		<div style="width: 100%;">
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
 				<i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.CogerCadena(idioma, "String9", "Publisher")" />
+				<input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Publisher")" />
 			</div>
 
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column;">
@@ -257,7 +257,7 @@ else
 				else
 				{
 					<div style="padding: 10px;">
-						@Herramientas.Idiomas.CogerCadena(idioma, "String10", "Publisher")
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Publisher")
 					</div>					
 				}
 			</div>
