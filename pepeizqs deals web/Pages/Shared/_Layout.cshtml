@@ -9,7 +9,16 @@
 @{
     #nullable disable
 
-    string idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+    string idioma = Context.Request.Query["language"];
+
+    if (string.IsNullOrEmpty(idioma) == true)
+    {
+        try
+        {
+            idioma = Context.Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+        }
+        catch { }
+    }
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
     string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");

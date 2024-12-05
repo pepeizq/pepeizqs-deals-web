@@ -203,7 +203,7 @@
                             {
                                 if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                                 {
-                                    if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+                                    if ((Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
                                     {
                                         <a onclick="moverScroll('reviews')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
                                             <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
@@ -912,7 +912,10 @@
                                 }
                                 else
                                 {
-                                    <div style="padding: 30px 40px;">@Idiomas.BuscarTexto(idioma, "String12", "Game")</div>
+                                    if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+                                    {
+                                        <div style="padding: 30px 40px;">@Idiomas.BuscarTexto(idioma, "String12", "Game")</div>
+                                    }
                                 }
                             </div>
                         </div>
@@ -1492,7 +1495,7 @@
             }
         </div>
 
-        @if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+        @if ((Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
         {
             <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                 <div>

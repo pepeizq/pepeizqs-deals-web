@@ -119,4 +119,8 @@
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Recompensas.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BaseDatos\CorreosSumarios\" />
+  </ItemGroup>
+
 </Project>

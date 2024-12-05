@@ -8,67 +8,27 @@ using MailKit;
 using Microsoft.Data.SqlClient;
 using MimeKit;
 using Noticias;
-using Sorteos2;
 
 namespace Herramientas
 {
 	public static class Correos
 	{
-		public static void EnviarGanadorSorteo(Juego juego, Sorteo sorteo, string correoHacia)
-		{
-			if (juego != null)
-			{
-				string titulo = "You have won the giveaway with the " + juego.Tipo.ToString().ToLower() + " " + juego.Nombre;
-
-				string html = @"<!DOCTYPE html>
-								<html>
-								<head>
-									<meta charset=""utf-8"" />
-									<title></title>
-								</head>
-								<body>
-									<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-										<div>
-											{{titulo}}
-										</div>
-
-										<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px; margin-top: 30px;"">
-											<div>
-												<div>
-													{{clave}}
-												</div>
-											</div>
-										</div>
-
-										<div style=""margin-top: 40px;"">
-											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
-										</div>
-									</div>
-								</body>
-								</html>";
-
-				html = html.Replace("{{titulo}}", titulo);
-				html = html.Replace("{{clave}}", sorteo.Clave);
-				html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-
-                EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
-            }
-		}
-
 		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion, string idioma)
 		{
 			try
 			{
                 string titulo = noticia.TituloEn;
                 string enlace = "https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/";
+				string contenido = noticia.ContenidoEn;
 
-                if (string.IsNullOrEmpty(idioma) == false)
+				if (string.IsNullOrEmpty(idioma) == false)
 				{
-					if (idioma == "es-ES" || idioma == "es")
+					if (Herramientas.Idiomas.ComprobarEspañol(idioma) == true || Herramientas.Idiomas.ComprobarEspañolLatino(idioma) == true)
 					{
 						titulo = noticia.TituloEs;
                         enlace = "https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEs) + "/";
-                    }
+						contenido = noticia.ContenidoEs;
+					}
 				}
 
                 string html = string.Empty;
@@ -80,24 +40,28 @@ namespace Herramientas
 								<title></title>
 							</head>
 							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-									<div>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5; line-height: 22px;"">
+									<div style=""font-size: 18px; margin-bottom: 20px; line-height: 25px;"">
 										{{titulo}}
 									</div>
 
-									<div style=""margin-top: 40px;"">
-										<a href=""{{enlace}}"" style=""color: #f5f5f5; user-select: none; width: 100%; text-align: left; font-size: 16px; text-decoration: none; "">
-											<div style=""color: #f5f5f5; background-color: #0d1621; padding: 20px;"">
-												<div>
-													<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
-														<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 100%; margin-top: 10px;"" />
-													</div>
+									<hr/>
 
-													<div style=""margin-top: 30px"">
-														{{contenido}}
-													</div>
+									<div style=""margin-top: 20px; display: flex; flex-direction: column; gap: 40px; color: #f5f5f5; background-color: #0d1621; padding: 20px;"">
+										<a href=""{{enlace}}"" style=""color: #f5f5f5; user-select: none; width: 100%; text-align: left; font-size: 16px; text-decoration: none;"" target=""_blank"">
+											<div>
+												<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 18px;"">
+													<img src=""{{imagen}}"" style=""max-width: 100%; max-height: 300px; margin-top: 10px;"" />
+												</div>
+
+												<div style=""margin-top: 30px"">
+													{{contenido}}
 												</div>
 											</div>
+										</a>
+
+										<a href=""{{enlace}}"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">
+											{{texto1}}
 										</a>
 									</div>
 
@@ -109,23 +73,18 @@ namespace Herramientas
 							</html>";
 
                 html = html.Replace("{{enlace}}", enlace);
-
-                string contenido = noticia.ContenidoEn;
-
-				if (string.IsNullOrEmpty(idioma) == false)
-				{
-					if (idioma == "es-ES" || idioma == "es")
-					{
-						contenido = noticia.ContenidoEs;
-					}
-				}
-
                 html = html.Replace("{{titulo}}", titulo);
                 html = html.Replace("{{imagen}}", noticia.Imagen);
                 html = html.Replace("{{contenido}}", contenido);
                 html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+				html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "News1", "NewsTemplates"));
 
-                EnviarCorreo(html, titulo, "deals@pepeizqdeals.com", correoHacia);
+				if (html.Contains("<ul>") == true)
+				{
+					html = html.Replace("<ul>", @"<ul style=""line-height: 22px;"">");
+				}
+
+				global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "deals@pepeizqdeals.com", correoHacia);
             }
 			catch (Exception ex) 
 			{
@@ -156,7 +115,7 @@ namespace Herramientas
 
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-            EnviarCorreo(html, "Your account password has been reset", "admin@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Your account password has been reset", "admin@pepeizqdeals.com", correoHacia);
         }
 
         public static void EnviarContraseñaOlvidada(string codigo, string correoHacia)
@@ -183,7 +142,7 @@ namespace Herramientas
             html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-            EnviarCorreo(html, "Reset the password", "admin@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Reset the password", "admin@pepeizqdeals.com", correoHacia);
         }
 
         public static void EnviarCambioContraseña(string correoHacia)
@@ -209,7 +168,7 @@ namespace Herramientas
 
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-            EnviarCorreo(html, "Your account password has changed", "admin@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Your account password has changed", "admin@pepeizqdeals.com", correoHacia);
         }
 
         public static void EnviarCambioCorreo(string codigo, string correoHacia)
@@ -236,7 +195,7 @@ namespace Herramientas
             html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-            EnviarCorreo(html, "Confirm your email change", "admin@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Confirm your email change", "admin@pepeizqdeals.com", correoHacia);
         }
 
         public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
@@ -263,7 +222,7 @@ namespace Herramientas
 			html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-            EnviarCorreo(html, "Confirm your email", "admin@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Confirm your email", "admin@pepeizqdeals.com", correoHacia);
 		}
 
 		public static void EnviarNuevoMinimo(int idJuego, JuegoPrecio precio, string correoHacia)
@@ -369,10 +328,10 @@ namespace Herramientas
 			html = html.Replace("{{mensaje}}", mensajeAbrir);
 			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
 
-			EnviarCorreo(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
 		}
 
-        private static void EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
+        public static bool EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
 		{
 			if (string.IsNullOrEmpty(correoDesde) == false && string.IsNullOrEmpty(correoHacia) == false) 
 			{
@@ -399,14 +358,16 @@ namespace Herramientas
 					cliente.Port = 587;
 					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
 					cliente.EnableSsl = true;
-		
+
 					try
 					{
-                        cliente.Send(mensaje);
-                    }
+						cliente.Send(mensaje);
+						return true;
+					}
 					catch (Exception ex)
 					{
 						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
+						return false;
 					}
 				}
 				else
@@ -414,17 +375,21 @@ namespace Herramientas
 					cliente.Port = 8889;
 					cliente.Credentials = new System.Net.NetworkCredential(correoDesde, contraseña);
 					cliente.EnableSsl = false;
-                   
+
 					try
 					{
-                        cliente.Send(mensaje);
-                    }
+						cliente.Send(mensaje);
+						return true;
+					}
 					catch (Exception ex)
 					{
 						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
+						return false;
 					}
 				}
 			}
+
+			return false;
 		}
 
 		//tipos

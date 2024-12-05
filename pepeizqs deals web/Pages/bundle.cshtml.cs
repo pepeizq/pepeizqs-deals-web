@@ -19,13 +19,18 @@ namespace pepeizqs_deals_web.Pages
 
 		public void OnGet()
         {
-            try
-            {
-                idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
-            }
-            catch { }
+			idioma = Request.Query["language"];
 
-            if (id > 0)
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				try
+				{
+					idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+				}
+				catch { }
+			}
+
+			if (id > 0)
             {
                 bundle = BaseDatos.Bundles.Buscar.UnBundle(id);
 			}

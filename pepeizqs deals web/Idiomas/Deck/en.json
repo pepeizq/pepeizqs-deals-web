@@ -21,5 +21,6 @@
   "#SteamDeckVerified_TestResult_SteamOSDoesNotSupport": "Valve is still working on adding support for this game on Steam Deck",
   "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection": "Singleplayer gameplay requires an active Internet connection",
   "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly": "This game does not exit cleanly and may require you to manually quit via the Steam overlay",
-  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "This game requires manually enabling controller support using in-game settings"
+  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "This game requires manually enabling controller support using in-game settings",
+  "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "Some auxiliary functionality is not accessible on Steam Deck: map editor"
 }

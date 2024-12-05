@@ -113,6 +113,7 @@ builder.Services.Configure<HostOptions>(opciones =>
 
 builder.Services.AddSingleton<Tareas.Minimos>();
 builder.Services.AddSingleton<Tareas.Pings>();
+builder.Services.AddSingleton<Tareas.CorreosEnviar>();
 builder.Services.AddSingleton<Tareas.Divisas>();
 builder.Services.AddSingleton<Tareas.CorreosDeals>();
 builder.Services.AddSingleton<Tareas.CorreosApps>();
@@ -152,6 +153,7 @@ builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosEnviar>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Divisas>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosDeals>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());

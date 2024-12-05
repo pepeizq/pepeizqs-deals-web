@@ -164,5 +164,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "datetime(8)")]
 	public DateTime? PatreonLastLogin { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? MailSummary { get; set; }
 }
 

@@ -1,5 +1,4 @@
 {
-
   "Bundle1": "El bundle {0} ha sido lanzado en {1}",
   "Bundle2": "En {0} hay un nuevo bundle con los siguientes juegos:",
   "Bundle3": "En {0} hay un nuevo bundle donde puedes coger los juegos que quieras por un precio determinado:",
@@ -20,5 +19,6 @@
   "Subscription4": "y más juegos han sido añadidos a la suscripción de {0}",
   "Subscription5": "El servicio de suscripción",
   "Subscription6": "ha añadido el siguiente juego:",
-  "Subscription7": "ha añadido los siguientes juegos:"
+  "Subscription7": "ha añadido los siguientes juegos:",
+  "News1": "Abrir Noticia"
 }

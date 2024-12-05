@@ -53,7 +53,12 @@ namespace Tareas
 							{
 								BaseDatos.Admin.Actualizar.TareaUso("correosSumarios", DateTime.Now, conexion);
 
-								
+								List<string> usuariosId = BaseDatos.Usuarios.Buscar.UsuariosCorreoSumario(conexion);
+
+								if (usuariosId.Count > 0)
+								{
+
+								}
 							}
 						}
 						catch (Exception ex)

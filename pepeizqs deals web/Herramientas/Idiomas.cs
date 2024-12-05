@@ -258,7 +258,7 @@ namespace Herramientas
 			return idiomaSteam;
 		}
 
-		private static bool ComprobarEspañol(string idiomaUsuario)
+		public static bool ComprobarEspañol(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "es" || idiomaUsuario == "es-ES" || idiomaUsuario == "ca" || idiomaUsuario == "ca-ES-valencia" || idiomaUsuario == "eu" || idiomaUsuario == "gl")
 			{
@@ -268,7 +268,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarEspañolLatino(string idiomaUsuario)
+		public static bool ComprobarEspañolLatino(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "es-MX" || idiomaUsuario == "es-US")
 			{
@@ -278,7 +278,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarFrances(string idiomaUsuario)
+		public static bool ComprobarFrances(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "fr" || idiomaUsuario == "fr-FR" || idiomaUsuario == "fr-CA")
 			{
@@ -288,7 +288,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarAleman(string idiomaUsuario)
+		public static bool ComprobarAleman(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "de" || idiomaUsuario == "de-de")
 			{
@@ -298,7 +298,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarItaliano(string idiomaUsuario)
+		public static bool ComprobarItaliano(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "it" || idiomaUsuario == "it-it")
 			{
@@ -308,9 +308,9 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarPortugues(string idiomaUsuario)
+		public static bool ComprobarPortugues(string idiomaUsuario)
 		{
-			if (idiomaUsuario == "pt-PT")
+			if (idiomaUsuario == "pt" || idiomaUsuario == "pt-PT")
 			{
 				return true;
 			}
@@ -318,7 +318,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarBrasileño(string idiomaUsuario)
+		public static bool ComprobarBrasileño(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "pt-BR")
 			{
@@ -328,7 +328,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarSueco(string idiomaUsuario)
+		public static bool ComprobarSueco(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "sv")
 			{
@@ -338,7 +338,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarGriego(string idiomaUsuario)
+		public static bool ComprobarGriego(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "el")
 			{
@@ -348,7 +348,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarPolaco(string idiomaUsuario)
+		public static bool ComprobarPolaco(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "pl")
 			{
@@ -358,7 +358,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarNoruego(string idiomaUsuario)
+		public static bool ComprobarNoruego(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "nb" || idiomaUsuario == "nn")
 			{
@@ -368,7 +368,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarRumano(string idiomaUsuario)
+		public static bool ComprobarRumano(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "ro")
 			{
@@ -378,7 +378,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarHolandes(string idiomaUsuario)
+		public static bool ComprobarHolandes(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "nl" || idiomaUsuario == "nl-BE")
 			{
@@ -388,7 +388,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarDanes(string idiomaUsuario)
+		public static bool ComprobarDanes(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "da")
 			{
@@ -398,7 +398,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarCheco(string idiomaUsuario)
+		public static bool ComprobarCheco(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "cs")
 			{
@@ -408,7 +408,7 @@ namespace Herramientas
 			return false;
 		}
 
-		private static bool ComprobarFines(string idiomaUsuario)
+		public static bool ComprobarFines(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "fi")
 			{

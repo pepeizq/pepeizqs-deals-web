@@ -67,23 +67,23 @@ namespace Tareas
                                                         int ganador = rnd.Next(0, sorteo.Participantes.Count);
                                                         string usuarioId = sorteo.Participantes[ganador];
 
-                                                        string correo = BaseDatos.Usuarios.Buscar.UnUsuarioCorreo(conexion, usuarioId);
+                                                        //string correo = BaseDatos.Usuarios.Buscar.UsuarioCorreo(conexion, usuarioId);
 
-                                                        if (string.IsNullOrEmpty(correo) == false)
-                                                        {
-                                                            Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
+                                                        //if (string.IsNullOrEmpty(correo) == false)
+                                                        //{
+                                                        //    Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(sorteo.JuegoId.ToString());
 
-                                                            BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave
-                                                            {
-                                                                Nombre = juego.Nombre,
-                                                                JuegoId = juego.Id.ToString(),
-                                                                Codigo = sorteo.Clave
-                                                            };
+                                                        //    BaseDatos.Usuarios.Clave nuevaClave = new BaseDatos.Usuarios.Clave
+                                                        //    {
+                                                        //        Nombre = juego.Nombre,
+                                                        //        JuegoId = juego.Id.ToString(),
+                                                        //        Codigo = sorteo.Clave
+                                                        //    };
 
-                                                            BaseDatos.Usuarios.Actualizar.Claves(conexion, usuarioId, nuevaClave);
-                                                            BaseDatos.Sorteos.Actualizar.Ganador(sorteo, conexion, usuarioId);
-                                                            Correos.EnviarGanadorSorteo(juego, sorteo, correo);
-                                                        }
+                                                        //    BaseDatos.Usuarios.Actualizar.Claves(conexion, usuarioId, nuevaClave);
+                                                        //    BaseDatos.Sorteos.Actualizar.Ganador(sorteo, conexion, usuarioId);
+                                                        //    Correos.EnviarGanadorSorteo(juego, sorteo, correo);
+                                                        //}
                                                     }
                                                 }
                                             }

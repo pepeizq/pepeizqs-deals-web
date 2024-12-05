@@ -40,36 +40,7 @@ namespace BaseDatos.Usuarios
 			return false;
 		}
 
-		public static string UnUsuarioCorreo(SqlConnection conexion, string usuarioId)
-		{
-			if (string.IsNullOrEmpty(usuarioId) == false)
-			{
-                string busqueda = "SELECT * FROM AspNetUsers WHERE Id=@Id";
-
-                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-				{
-                    comando.Parameters.AddWithValue("@Id", usuarioId);
-
-					using (SqlDataReader lector = comando.ExecuteReader())
-					{
-						while (lector.Read()) 
-						{
-                            if (lector.IsDBNull(8) == false)
-                            {
-                                if (string.IsNullOrEmpty(lector.GetString(8)) == false)
-                                {
-                                    return lector.GetString(8);
-                                }
-                            }
-                        }
-					}
-                }
-            }
-
-			return null;
-		}
-
-		public static string UnUsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm, int juegoIdSteam = 0)
+		public static string UsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm, int juegoIdSteam = 0)
 		{
 			if (string.IsNullOrEmpty(usuarioId) == false)
 			{
@@ -251,5 +222,75 @@ namespace BaseDatos.Usuarios
 
 			return false;
         }
+
+		public static string UsuarioIdioma(string usuarioId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT Language FROM AspNetUsers WHERE Id=@Id";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					comando.Parameters.AddWithValue("@Id", usuarioId);
+
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(lector.GetOrdinal("Language")) == false)
+						{
+							return lector.GetString(lector.GetOrdinal("Language"));
+						}
+					}
+				}
+			}
+
+			return "en";
+		}
+
+		public static List<string> UsuariosCorreoSumario(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<string> usuariosId = new List<string>();
+
+			string busqueda = "SELECT Id FROM AspNetUsers WHERE MailSummary='true'";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(lector.GetOrdinal("Id")) == false)
+						{
+							usuariosId.Add(lector.GetString(lector.GetOrdinal("Id")));
+						}
+					}
+				}
+			}
+
+			return usuariosId;
+		}
     }
 }

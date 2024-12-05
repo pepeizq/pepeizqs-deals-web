@@ -20,11 +20,16 @@ namespace pepeizqs_deals_web.Pages
 
 		public void OnGet()
 		{
-			try
+			idioma = Request.Query["language"];
+
+			if (string.IsNullOrEmpty(idioma) == true)
 			{
-				idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+				try
+				{
+					idioma = Request.Headers["Accept-Language"].ToString().Split(";").FirstOrDefault()?.Split(",").FirstOrDefault();
+				}
+				catch { }
 			}
-			catch { }
 
 			if (string.IsNullOrEmpty(id) == false)
 			{
