@@ -100,7 +100,7 @@
 
             string enlaceFinal = "https://pepeizqdeals.com/Account/ConfirmEmail?userId=" + usuarioId + "&code=" + codigo;
 
-            Herramientas.Correos.EnviarConfirmacionCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correo);
+            Herramientas.Correos.EnviarConfirmacionCorreo(usuario.Language, HtmlEncoder.Default.Encode(enlaceFinal), correo);
             correoConfirmadoEnviado = true;
         }
     }
@@ -124,7 +124,7 @@
 
                 string enlaceFinal = "https://pepeizqdeals.com/Account/ConfirmEmailChange?userId=" + usuarioId + "&email=" + correoNuevo + "&code=" + codigo;
 
-                Herramientas.Correos.EnviarCambioCorreo(HtmlEncoder.Default.Encode(enlaceFinal), correoNuevo);
+                Herramientas.Correos.EnviarCambioCorreo(usuario.Language, HtmlEncoder.Default.Encode(enlaceFinal), correoNuevo);
                 correoCambioEnviado = true;
             }
         }      

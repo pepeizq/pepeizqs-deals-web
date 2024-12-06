@@ -70,7 +70,7 @@
 
                     string enlaceFinal = "https://pepeizqdeals.com/account/resetpassword?code=" + codigo;
 
-                    Herramientas.Correos.EnviarContraseñaOlvidada(enlaceFinal, correo);
+                    Herramientas.Correos.EnviarContraseñaOlvidada(idioma, enlaceFinal, correo);
                     mensajeExito = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "ForgotPassword");
                 }
             }

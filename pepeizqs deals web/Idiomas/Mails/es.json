@@ -1,0 +1,21 @@
+{
+  "Message": "Esto es un correo automatizado, si queréis contactar conmigo ir aquí:",
+  "News1": "Abrir Noticia",
+  "Lows1": "{0} tiene un nuevo precio mínimo de {1} en {2}",
+  "Lows2": "{0} ha alcanzado un nuevo precio mínimo en la tienda {1} que haya sido registrado en pepeizqdeals.com:",
+  "Lows3": "Abrir Juego",
+  "Lows4": "Abrir DLC",
+  "Lows5": "Abrir",
+  "Reset1": "La contraseña de tu cuenta se ha reiniciado con éxito",
+  "Reset2": "Reinicia tu contraseña",
+  "Reset3": "Para reiniciar la contraseña de tu cuenta clickea en el",
+  "Reset4": "siguiente enlace",
+  "Change1": "La contraseña de tu cuenta ha sido cambiada",
+  "Change2": "La contraseña de tu cuenta ha sido cambiada con éxito, si no has solicitado el cambio contacta con admin@pepeizqdeals de inmediato.",
+  "Mail1": "Confirma tu cambio de correo",
+  "Mail2": "Para confirmar tu cambio de correo clickea en el",
+  "Mail3": "siguiente enlace",
+  "Confirm1": "Confirma tu correo",
+  "Confirm2": "Para confirmar tu correo clickea en el",
+  "Confirm3": "siguiente enlace"
+}

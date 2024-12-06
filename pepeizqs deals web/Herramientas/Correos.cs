@@ -66,7 +66,12 @@ namespace Herramientas
 									</div>
 
 									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
 									</div>
 								</div>
 							</body>
@@ -77,7 +82,8 @@ namespace Herramientas
                 html = html.Replace("{{imagen}}", noticia.Imagen);
                 html = html.Replace("{{contenido}}", contenido);
                 html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-				html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "News1", "NewsTemplates"));
+				html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
+				html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "News1", "Mails"));
 
 				if (html.Contains("<ul>") == true)
 				{
@@ -92,8 +98,13 @@ namespace Herramientas
 			}
         }
 
-        public static void EnviarContraseñaReseteada(string correoHacia)
+        public static void EnviarContraseñaReseteada(string idioma, string correoHacia)
         {
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
 			string html = @"<!DOCTYPE html>
 							<html>
 							<head>
@@ -101,25 +112,39 @@ namespace Herramientas
 								<title></title>
 							</head>
 							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
 									<div>
-										Your account password has been successfully reset.
+										{{texto1}}.
 									</div>
 
 									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
 									</div>
 								</div>
 							</body>
 							</html>";
 
-            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "Reset1", "Mails"));
+			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
 
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Your account password has been reset", "admin@pepeizqdeals.com", correoHacia);
+			string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Reset1", "Mails");
+
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "admin@pepeizqdeals.com", correoHacia);
         }
 
-        public static void EnviarContraseñaOlvidada(string codigo, string correoHacia)
+        public static void EnviarContraseñaOlvidada(string idioma, string codigo, string correoHacia)
         {
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
 			string html = @"<!DOCTYPE html>
 							<html>
 							<head>
@@ -127,112 +152,41 @@ namespace Herramientas
 								<title></title>
 							</head>
 							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
 									<div>
-										To reset your account password click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
+										{{texto1}} <a href=""{{codigo}}"" target=""_blank"">{{texto2}}</a>.
 									</div>
 
 									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
 									</div>
 								</div>
 							</body>
 							</html>";
 
-            html = html.Replace("{{codigo}}", codigo);
-            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Reset the password", "admin@pepeizqdeals.com", correoHacia);
-        }
-
-        public static void EnviarCambioContraseña(string correoHacia)
-        {
-			string html = @"<!DOCTYPE html>
-							<html>
-							<head>
-								<meta charset=""utf-8"" />
-								<title></title>
-							</head>
-							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-									<div>
-										The account password has been changed, if you have not changed it, contact admin@pepeizqdeals.com immediately.
-									</div>
-
-									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
-									</div>
-								</div>
-							</body>
-							</html>";
-
-            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Your account password has changed", "admin@pepeizqdeals.com", correoHacia);
-        }
-
-        public static void EnviarCambioCorreo(string codigo, string correoHacia)
-		{
-			string html = @"<!DOCTYPE html>
-							<html>
-							<head>
-								<meta charset=""utf-8"" />
-								<title></title>
-							</head>
-							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-									<div>
-										To confirm your email click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
-									</div>
-
-									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
-									</div>
-								</div>
-							</body>
-							</html>";
-
-            html = html.Replace("{{codigo}}", codigo);
-            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
-
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Confirm your email change", "admin@pepeizqdeals.com", correoHacia);
-        }
-
-        public static void EnviarConfirmacionCorreo(string codigo, string correoHacia)
-		{
-			string html = @"<!DOCTYPE html>
-							<html>
-							<head>
-								<meta charset=""utf-8"" />
-								<title></title>
-							</head>
-							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
-									<div>
-										To confirm your email click on the <a href=""{{codigo}}"" target=""_blank"">following link</a>.
-									</div>
-
-									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
-									</div>
-								</div>
-							</body>
-							</html>";
-
+			html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "Reset3", "Mails"));
+			html = html.Replace("{{texto2}}", Herramientas.Idiomas.BuscarTexto(idioma, "Reset4", "Mails"));
 			html = html.Replace("{{codigo}}", codigo);
             html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
 
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, "Confirm your email", "admin@pepeizqdeals.com", correoHacia);
-		}
+			string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Reset2", "Mails");
 
-		public static void EnviarNuevoMinimo(int idJuego, JuegoPrecio precio, string correoHacia)
-		{
-			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
-			EnviarNuevoMinimo(juego, precio, correoHacia);
-		}
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "admin@pepeizqdeals.com", correoHacia);
+        }
 
-		public static void EnviarNuevoMinimo(Juego juego, JuegoPrecio precio, string correoHacia)
-		{
+        public static void EnviarCambioContraseña(string idioma, string correoHacia)
+        {
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
 			string html = @"<!DOCTYPE html>
 							<html>
 							<head>
@@ -240,8 +194,140 @@ namespace Herramientas
 								<title></title>
 							</head>
 							<body>
-								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: 'Lato'; font-size: 16px; color: #f5f5f5;"">
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
 									<div>
+										{{texto1}}
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
+									</div>
+								</div>
+							</body>
+							</html>";
+
+			html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "Change2", "Mails"));
+			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
+
+			string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Change1", "Mails");
+
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "admin@pepeizqdeals.com", correoHacia);
+        }
+
+        public static void EnviarCambioCorreo(string idioma, string codigo, string correoHacia)
+		{
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										{{texto1}} <a href=""{{codigo}}"" target=""_blank"">{{texto2}}</a>.
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
+									</div>
+								</div>
+							</body>
+							</html>";
+
+			html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "Mail2", "Mails"));
+			html = html.Replace("{{texto2}}", Herramientas.Idiomas.BuscarTexto(idioma, "Mail3", "Mails"));
+			html = html.Replace("{{codigo}}", codigo);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
+
+			string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Mail1", "Mails");
+
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "admin@pepeizqdeals.com", correoHacia);
+        }
+
+        public static void EnviarConfirmacionCorreo(string idioma, string codigo, string correoHacia)
+		{
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
+									<div>
+										{{texto1}} <a href=""{{codigo}}"" target=""_blank"">{{texto2}}</a>.
+									</div>
+
+									<div style=""margin-top: 40px;"">
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
+									</div>
+								</div>
+							</body>
+							</html>";
+
+			html = html.Replace("{{texto1}}", Herramientas.Idiomas.BuscarTexto(idioma, "Confirm2", "Mails"));
+			html = html.Replace("{{texto2}}", Herramientas.Idiomas.BuscarTexto(idioma, "Confirm3", "Mails"));
+			html = html.Replace("{{codigo}}", codigo);
+            html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
+
+			string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Confirm1", "Mails");
+
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "admin@pepeizqdeals.com", correoHacia);
+		}
+
+		public static void EnviarNuevoMinimo(string usuarioId, int idJuego, JuegoPrecio precio, string correoHacia)
+		{
+			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
+			EnviarNuevoMinimo(usuarioId, juego, precio, correoHacia);
+		}
+
+		public static void EnviarNuevoMinimo(string usuarioId, Juego juego, JuegoPrecio precio, string correoHacia)
+		{
+			string idioma = global::BaseDatos.Usuarios.Buscar.UsuarioIdioma(usuarioId);
+
+			if (string.IsNullOrEmpty(idioma) == true)
+			{
+				idioma = "en";
+			}
+
+			string html = @"<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset=""utf-8"" />
+								<title></title>
+							</head>
+							<body>
+								<div style=""min-width: 0; word-wrap: break-word; background-color: #002033; background-clip: border-box; border: 0px; padding: 40px; font-family: Roboto, Helevtica, Arial, sans-serif, serif, EmojiFont; font-size: 16px; color: #f5f5f5;"">
+									<div style=""line-height: 24px;"">
 										{{descripcion}}
 									</div>
 
@@ -263,23 +349,24 @@ namespace Herramientas
 									</div>
 
 									<div style=""margin-top: 20px;"">
-										<a href=""{{enlace}}"" style=""color: #f5f5f5; background-color: #0d1621; display: inline-block; user-select: none; width: 100%; padding: 6px; text-align: center; border: 0px; text-decoration: none; "">
+										<a href=""{{enlace}}"" style=""color: #95c0fe; background-color: #0d1621; display: inline-block; user-select: none; width: 100%; padding: 6px; text-align: center; border: 0px; "">
 											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 17px; margin: 15px;"">
-												{{mensaje}}
+												{{mensajeAbrir}}
 											</div>
 										</a>
 									</div>
 
 									<div style=""margin-top: 40px;"">
-										&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""text-decoration: none; color: #f5f5f5;"" target=""_blank"">pepeizq's deals</a>
+										<div>
+											&copy; {{año}} • <a href=""https://pepeizqapps.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's apps</a> • <a href=""https://pepeizqdeals.com/"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">pepeizq's deals</a>
+										</div>
+										<div style=""margin-top: 20px; font-size: 14px;"">
+											{{mensaje}} <a href=""https://pepeizqdeals.com/contact"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">/contact/</a>
+										</div>
 									</div>
 								</div>
 							</body>
 							</html>";
-
-			string descripcion = juego.Nombre + " has reached a new minimum price registered on pepeizqdeals.com:";
-			string imagen = juego.Imagenes.Header_460x215;
-			string descuento = precio.Descuento.ToString() + "%";
 
 			string precio2 = string.Empty;
 
@@ -295,28 +382,38 @@ namespace Herramientas
 
 			precio2 = precio2 + "€";
 
-			string enlace = "https://pepeizqdeals.com/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+			string tiendaFinal = string.Empty;
 			string imagenTienda = string.Empty;
-
 			List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
 
 			foreach (var tienda in tiendas)
 			{
 				if (tienda.Id == precio.Tienda)
 				{
+					tiendaFinal = tienda.Nombre;
 					imagenTienda = "https://pepeizqdeals.com/" + tienda.Imagen300x80;
 				}
 			}
 
+			string titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Lows1", "Mails"), juego.Nombre, precio2, tiendaFinal);
+			string descripcion = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Lows2", "Mails"), juego.Nombre, tiendaFinal);
+			string imagen = juego.Imagenes.Header_460x215;
+			string descuento = precio.Descuento.ToString() + "%";
+			string enlace = "https://pepeizqdeals.com/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+	
 			string mensajeAbrir = string.Empty;
 
 			if (juego.Tipo == JuegoTipo.Game)
 			{
-				mensajeAbrir = "Open Game";
+				mensajeAbrir = Herramientas.Idiomas.BuscarTexto(idioma, "Lows3", "Mails");
 			}
 			else if (juego.Tipo == JuegoTipo.DLC)
 			{
-				mensajeAbrir = "Open DLC";
+				mensajeAbrir = Herramientas.Idiomas.BuscarTexto(idioma, "Lows4", "Mails");
+			}
+			else
+			{
+				mensajeAbrir = Herramientas.Idiomas.BuscarTexto(idioma, "Lows5", "Mails");
 			}
 
 			html = html.Replace("{{descripcion}}", descripcion);
@@ -325,15 +422,19 @@ namespace Herramientas
 			html = html.Replace("{{precio}}", precio2);
 			html = html.Replace("{{enlace}}", enlace);
 			html = html.Replace("{{imagenTienda}}", imagenTienda);
-			html = html.Replace("{{mensaje}}", mensajeAbrir);
+			html = html.Replace("{{mensajeAbrir}}", mensajeAbrir);
 			html = html.Replace("{{año}}", DateTime.Now.Year.ToString());
+			html = html.Replace("{{mensaje}}", Herramientas.Idiomas.BuscarTexto(idioma, "Message", "Mails"));
 
-			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, descripcion + " • " + precio2, "deals@pepeizqdeals.com", correoHacia);
+			global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "deals@pepeizqdeals.com", correoHacia);
 		}
 
         public static bool EnviarCorreo(string html, string titulo, string correoDesde, string correoHacia)
 		{
-			if (string.IsNullOrEmpty(correoDesde) == false && string.IsNullOrEmpty(correoHacia) == false) 
+			if (string.IsNullOrEmpty(html) == false &&
+				string.IsNullOrEmpty(titulo) == false &&
+				string.IsNullOrEmpty(correoDesde) == false && 
+				string.IsNullOrEmpty(correoHacia) == false) 
 			{
 				WebApplicationBuilder builder = WebApplication.CreateBuilder();
 

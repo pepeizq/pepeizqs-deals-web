@@ -62,7 +62,10 @@ namespace Tareas
 										}
 										else
 										{
-											BaseDatos.Admin.Actualizar.TareaUso("correosEnviar", DateTime.Now + TimeSpan.FromMinutes(10), conexion);
+											DateTime nuevaFecha = DateTime.Now;
+											nuevaFecha = nuevaFecha.AddMinutes(10);
+
+											BaseDatos.Admin.Actualizar.TareaUso("correosEnviar", nuevaFecha, conexion);
 											break;
 										}
 									}

@@ -1,0 +1,21 @@
+{
+  "Message": "This is an automated email, if you want to contact me go here:",
+  "News1": "Open News",
+  "Lows1": "{0} has a new minimum price of {1} on {2}",
+  "Lows2": "{0} has reached a new minimum price in the {1} store that has been registered on pepeizqdeals.com:",
+  "Lows3": "Open Game",
+  "Lows4": "Open DLC",
+  "Lows5": "Open",
+  "Reset1": "Your account password has been successfully reset",
+  "Reset2": "Reset the password",
+  "Reset3": "To reset your account password click on the",
+  "Reset4": "following link",
+  "Change1": "Your account password has changed",
+  "Change2": "The account password has been changed, if you have not changed it, contact admin@pepeizqdeals.com immediately.",
+  "Mail1": "Confirm your email change",
+  "Mail2": "To confirm your email click on the",
+  "Mail3": "following link",
+  "Confirm1": "Confirm your email",
+  "Confirm2": "To confirm your email click on the",
+  "Confirm3": "following link"
+}

@@ -128,11 +128,11 @@ namespace BaseDatos.Juegos
                                                 {
                                                     string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
 
-                                                    if (correo != null)
-                                                    {
+													if (string.IsNullOrEmpty(correo) == false)
+													{
 														try
 														{
-															Herramientas.Correos.EnviarNuevoMinimo(juego, minimo, correo);
+															Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, juego, minimo, correo);
 														}
 														catch (Exception ex)
 														{
@@ -325,18 +325,15 @@ namespace BaseDatos.Juegos
 												{
 													string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, id.ToString(), usuarioInteresado.DRM, idSteam);
 
-													if (correo != null)
+													if (string.IsNullOrEmpty(correo) == false)
 													{
-														if (correo != null)
+														try
 														{
-															try
-															{
-																Herramientas.Correos.EnviarNuevoMinimo(id, minimo, correo);
-															}
-															catch (Exception ex)
-															{
-																BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
-															}
+															Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, id, minimo, correo);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
 														}
 													}
 												}

@@ -163,7 +163,7 @@
                 if (resultado.Succeeded == true)
                 {
                     mensajeExito = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "ResetPassword");
-                    Herramientas.Correos.EnviarContraseñaReseteada(usuario.Email);
+                    Herramientas.Correos.EnviarContraseñaReseteada(usuario.Language, usuario.Email);
                 }
                 else
                 {
