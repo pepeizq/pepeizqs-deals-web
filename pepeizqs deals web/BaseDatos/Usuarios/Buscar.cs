@@ -223,6 +223,44 @@ namespace BaseDatos.Usuarios
 			return false;
         }
 
+		public static bool CuentaGogUsada(string idGog, string idUsuario, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT Id FROM AspNetUsers WHERE GogId=@GogId";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@GogId", idGog);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(0) == false)
+						{
+							if (lector.GetString(0) != idUsuario)
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
 		public static string UsuarioIdioma(string usuarioId, SqlConnection conexion = null)
 		{
 			if (string.IsNullOrEmpty(usuarioId) == false)

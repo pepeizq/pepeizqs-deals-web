@@ -168,5 +168,25 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "bit(1)")]
 	public bool? MailSummary { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(256)")]
+	public string? GogAccount { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? GogId { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? GogWishlist { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? GogAccountLastCheck { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? GogGames { get; set; }
 }
 

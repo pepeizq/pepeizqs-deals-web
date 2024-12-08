@@ -51,6 +51,10 @@
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
                 </button>
 
+                <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas" style="@estiloGog;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
+                </button>
+
                 <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas" style="@estiloClaves;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Account")
                 </button>
@@ -88,6 +92,11 @@
                 <CuentaSteam idioma="@idioma" />
             }
 
+            @if (mostrarGog == true)
+            {
+                <CuentaGog idioma="@idioma"/>
+            }
+
             @if (mostrarClaves == true)
             {
                 <Claves idioma="@idioma"/>
@@ -120,6 +129,7 @@
         mostrarDatosPersonales = false;
         mostrarPatreon = false;
         mostrarSteam = false;
+        mostrarGog = false;
         mostrarClaves = false;
 
         estiloCorreo = null;
@@ -128,6 +138,7 @@
         estiloDatosPersonales = null;
         estiloPatreon = null;
         estiloSteam = null;
+        estiloGog = null;
         estiloClaves = null;
     }
 
@@ -189,6 +200,16 @@
         CerrarPestañas();
         mostrarSteam = true;
         estiloSteam = fondo;
+    }
+
+    private bool mostrarGog = false;
+    private string estiloGog = null;
+
+    private void MostrarGog(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarGog = true;
+        estiloGog = fondo;
     }
 
     private bool mostrarClaves = false;
