@@ -4,6 +4,8 @@
 //https://www.gog.com/api/products/1418669891
 //https://www.gog.com/api/products/1418669891/prices?countryCode=ES&currency=EUR
 //https://api.gog.com/products/1453375253?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog
+//https://reviews.gog.com/v1/products/1841195376/reviews?language=in:en-US&limit=5&order=desc:votes
+//https://reviews.gog.com/v1/products/1841195376/averageRating
 
 #nullable disable
 

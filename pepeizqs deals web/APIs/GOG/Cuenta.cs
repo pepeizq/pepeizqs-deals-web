@@ -46,5 +46,27 @@ namespace APIs.GOG
 
 			return null;
 		}
+
+		public static async Task<List<string>> ListadoJuegos(string usuario)
+		{
+			if (string.IsNullOrEmpty(usuario) == false)
+			{
+				usuario = usuario.Replace("https://www.gog.com/u/", null);
+				usuario = usuario.Replace("http://www.gog.com/u/", null);
+
+				if (usuario.Contains("?") == true)
+				{
+					int int1 = usuario.IndexOf("?");
+					usuario = usuario.Remove(int1, usuario.Length - int1);
+				}
+
+				string html = await Decompiladores.Estandar("https://www.gog.com/u/" + usuario + "/games/stats?page=1");
+
+				if (string.IsNullOrEmpty(html) == false)
+				{
+
+				}
+			}
+		}
 	}
 }
