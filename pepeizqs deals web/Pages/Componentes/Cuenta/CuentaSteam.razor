@@ -150,7 +150,7 @@
 @if (enseñarImagen == true)
 {
 	<div class="opciones-panel">
-		<div style="display: flex; align-items: start; margin: auto; justify-content: center;">
+		<div style="display: flex; align-items: start; margin: auto; justify-content: center; max-height: 100vh; max-width: 1000px;">
 			<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="ClickearEnseñarImagen">
 				<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
 			</button>
@@ -185,18 +185,21 @@
 
 		if (usuario != null)
 		{
-			if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) < DateTime.Now)
+			if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
 			{
-				ocupado = false;
-
-				if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+				if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) < DateTime.Now)
 				{
-					enlaceCuenta = usuario.SteamAccount;
+					ocupado = false;
+
+					if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+					{
+						enlaceCuenta = usuario.SteamAccount;
+					}
 				}
-			}			
-			else
-			{
-				ocupado = true;
+				else
+				{
+					ocupado = true;
+				}
 			}
 		}
 	}
@@ -222,6 +225,8 @@
 
 			while (i < j)
 			{
+				i += 1;
+
 				if (juegos.Contains(",") == true)
 				{
 					int int1 = juegos.IndexOf(",");
@@ -231,8 +236,6 @@
 				{
 					break;
 				}
-
-				i += 1;
 			}
 
 			if (i > 0)

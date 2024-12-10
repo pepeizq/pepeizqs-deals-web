@@ -54,34 +54,51 @@
         {
             if (usuario != null)
             {
-                if (usuario.EmailConfirmed == true && string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+                if (usuario.EmailConfirmed == true)
                 {
-                    bool tiempo = true;
-
-                    if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+                    if (string.IsNullOrEmpty(usuario.SteamAccount) == false && string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
                     {
-                        if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+                        bool tiempo = true;
+
+                        if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
                         {
-                            tiempo = false;
+                            if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromDays(7) > DateTime.Now)
+                            {
+                                tiempo = false;
+                            }
+                        }
+
+                        if (tiempo == true)
+                        {
+                            SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+
+                            usuario.SteamGames = datos.Juegos;
+                            usuario.SteamWishlist = datos.Deseados;
+                            usuario.Avatar = datos.Avatar;
+                            usuario.Nickname = datos.Nombre;
+                            usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+                            usuario.OfficialGroup = datos.GrupoPremium;
+                            usuario.OfficialGroup2 = datos.GrupoNormal;
                         }
                     }
 
-                    if (tiempo == true)
+                    if (string.IsNullOrEmpty(usuario.GogAccount) == false && usuario.GogAccountLastCheck != null)
                     {
-                        SteamUsuario datos = await APIs.Steam.Cuenta.CargarDatos(usuario.SteamAccount);
+                        bool tiempo = true;
 
-                        usuario.SteamGames = datos.Juegos;
-                        usuario.SteamWishlist = datos.Deseados;
-                        usuario.Avatar = datos.Avatar;
-                        usuario.Nickname = datos.Nombre;
-                        usuario.SteamAccountLastCheck = DateTime.Now.ToString();
-                        usuario.OfficialGroup = datos.GrupoPremium;
-                        usuario.OfficialGroup2 = datos.GrupoNormal;
+                        if (usuario.GogAccountLastCheck + TimeSpan.FromDays(7) > DateTime.Now)
+                        {
+                            tiempo = false;
+                        }
+
+                        if (tiempo == true)
+                        {
+                            usuario.GogGames = await APIs.GOG.Cuenta.BuscarJuegos(usuario.GogAccount);
+                            usuario.GogWishlist = await APIs.GOG.Cuenta.BuscarDeseados(usuario.GogId);
+                            usuario.GogAccountLastCheck = DateTime.Now;
+                        }
                     }
-                }
 
-                if (usuario.EmailConfirmed == true)
-                {
                     if (usuario.PatreonLastLogin == null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
                     {
                         usuario.PatreonLastLogin = DateTime.Now;

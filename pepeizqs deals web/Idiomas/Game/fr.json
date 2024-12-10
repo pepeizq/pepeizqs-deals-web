@@ -78,5 +78,9 @@
   "String77": "Ce jeu fait partie du programme de préservation de GOG",
   "String78": "Il s'agit d'une bande originale de jeu vidéo, cela signifie que vous n'aurez accès qu'aux fichiers audio du jeu.",
   "String79": "Ce jeu ne peut être exécuté qu'avec un appareil de réalité virtuelle.",
-  "String80": "dans le jeu"
+  "String80": "dans le jeu",
+  "String81": "Ce jeu a été automatiquement ajouté à votre liste de souhaits lorsque votre compte GOG a été associé",
+  "String82": "Ce DLC a été automatiquement ajouté à votre liste de souhaits lorsque votre compte GOG a été associé",
+  "String83": "Vous avez déjà ce jeu sur le compte GOG associé",
+  "String84": "Vous disposez déjà de ce DLC sur le compte GOG lié"
 }

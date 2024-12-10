@@ -7,14 +7,14 @@
 
 <style>
 	.cargando {
-	width: 48px;
-	height: 48px;
-	border: 5px solid var(--colorTexto);
-	border-bottom-color: transparent;
-	border-radius: 50%;
-	display: inline-block;
-	box-sizing: border-box;
-	animation: rotation 1s linear infinite;
+		width: 48px;
+		height: 48px;
+		border: 5px solid var(--colorTexto);
+		border-bottom-color: transparent;
+		border-radius: 50%;
+		display: inline-block;
+		box-sizing: border-box;
+		animation: rotation 1s linear infinite;
 	}
 
 	@@keyframes rotation {
@@ -39,7 +39,7 @@
 			}
 			else
 			{
-				<div>@usuario.SteamAccount</div>
+				<div>@usuario.GogAccount</div>
 			}
 
 			<div style="display: flex; align-items: start; margin: 20px 0px;">
@@ -63,7 +63,7 @@
 				</div>
 			}
 
-			@if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) > DateTime.Now)
+			@if (usuario.GogAccountLastCheck + TimeSpan.FromMinutes(10) > DateTime.Now)
 			{
 				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 30px; border-radius: 0px;" role="alert">
 					<div>
@@ -71,7 +71,7 @@
 					</div>
 
 					<div style="margin-top: 10px;">
-						<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+						<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)</label>
 					</div>
 				</div>
 			}
@@ -95,42 +95,28 @@
 			}
 		</div>
 
-		@if (string.IsNullOrEmpty(usuario.SteamId) == false && string.IsNullOrEmpty(usuario.Nickname) == false)
+		@if (string.IsNullOrEmpty(usuario.GogId) == false)
 		{
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; align-items: start;">
-				@if (string.IsNullOrEmpty(usuario.Avatar) == false)
-				{
-					<div style="padding-right: 40px">
-						<img src="@usuario.Avatar" style="max-width: 70px; max-height: 70px;" />
-					</div>
-				}
-
 				<div style="width: 100%;">
-					@if (string.IsNullOrEmpty(usuario.SteamId) == false)
+					@if (string.IsNullOrEmpty(usuario.GogId) == false)
 					{
 						<div>
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog6", "Account") @usuario.SteamId</label>
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog6", "Account") @usuario.GogId</label>
 						</div>
 					}
 
-					@if (string.IsNullOrEmpty(usuario.Nickname) == false)
+					@if (string.IsNullOrEmpty(usuario.GogGames) == false)
 					{
 						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog7", "Account") @usuario.Nickname</label>
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog8", "Account") @MensajeCantidad(usuario.GogGames)</label>
 						</div>
 					}
 
-					@if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+					@if (string.IsNullOrEmpty(usuario.GogWishlist) == false)
 					{
 						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog8", "Account") @MensajeCantidad(usuario.SteamGames)</label>
-						</div>
-					}
-
-					@if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
-					{
-						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog9", "Account") @MensajeCantidad(usuario.SteamWishlist)</label>
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog9", "Account") @MensajeCantidad(usuario.GogWishlist)</label>
 						</div>
 					}
 				</div>
@@ -150,7 +136,7 @@
 @if (enseñarImagen == true)
 {
 	<div class="opciones-panel">
-		<div style="display: flex; align-items: start; margin: auto; justify-content: center;">
+		<div style="display: flex; align-items: start; margin: auto; justify-content: center; max-height: 100vh; max-width: 1000px;">
 			<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="ClickearEnseñarImagen">
 				<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
 			</button>
@@ -183,18 +169,21 @@
 
 		if (usuario != null)
 		{
-			if (usuario.GogAccountLastCheck + TimeSpan.FromMinutes(10) < DateTime.Now)
+			if (usuario.GogAccountLastCheck != null)
 			{
-				ocupado = false;
-
-				if (string.IsNullOrEmpty(usuario.GogAccount) == false)
+				if (usuario.GogAccountLastCheck + TimeSpan.FromMinutes(10) < DateTime.Now)
 				{
-					enlaceCuenta = usuario.GogAccount;
+					ocupado = false;
+
+					if (string.IsNullOrEmpty(usuario.GogAccount) == false)
+					{
+						enlaceCuenta = usuario.GogAccount;
+					}
 				}
-			}
-			else
-			{
-				ocupado = true;
+				else
+				{
+					ocupado = true;
+				}
 			}
 		}
 	}
@@ -220,6 +209,8 @@
 
 			while (i < j)
 			{
+				i += 1;
+
 				if (juegos.Contains(",") == true)
 				{
 					int int1 = juegos.IndexOf(",");
@@ -229,8 +220,6 @@
 				{
 					break;
 				}
-
-				i += 1;
 			}
 
 			if (i > 0)
@@ -274,24 +263,19 @@
 					{
 						mensajeCargando = Herramientas.Idiomas.BuscarTexto(idioma, "Gog14", "Account");
 
-						datos = await APIs.Steam.Cuenta.CargarDatos(enlaceCuenta);
+						usuario.GogAccount = enlaceCuenta;
+						usuario.GogGames = await APIs.GOG.Cuenta.BuscarJuegos(enlaceCuenta);
+						usuario.GogWishlist = await APIs.GOG.Cuenta.BuscarDeseados(idCuenta);
+						usuario.GogAccountLastCheck = DateTime.Now;
+						usuario.GogId = idCuenta;
 
-						if (datos != null)
+						try
 						{
-							usuario.GogAccount = enlaceCuenta;
-							usuario.SteamGames = datos.Juegos;
-							usuario.SteamWishlist = datos.Deseados;
-							usuario.GogAccountLastCheck = DateTime.Now;
-							usuario.GogId = idCuenta;
-
-							try
-							{
-								await UserManager.UpdateAsync(usuario);
-							}
-							catch
-							{
-								BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Gog", usuario.Id + Environment.NewLine + enlaceCuenta);
-							}
+							await UserManager.UpdateAsync(usuario);
+						}
+						catch
+						{
+							BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Gog", usuario.Id + Environment.NewLine + enlaceCuenta);
 						}
 					}
 					else

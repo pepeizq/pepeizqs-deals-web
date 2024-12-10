@@ -78,5 +78,9 @@
   "String77": "This game is part of GOG's preservation program",
   "String78": "It is a video game soundtrack, this means that you will only have access to the audio files of the game.",
   "String79": "This game can only be run with a virtual reality device.",
-  "String80": "in-game"
+  "String80": "in-game",
+  "String81": "This game was automatically added to your wishlist when your GOG account was linked",
+  "String82": "This DLC was automatically added to your wishlist when your GOG account was linked",
+  "String83": "You already have this game on the linked GOG account",
+  "String84": "You already have this DLC on the linked GOG account"
 }

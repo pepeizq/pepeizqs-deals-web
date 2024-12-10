@@ -83,7 +83,7 @@
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: -25px;">
 			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
 				<ItemContent>
-					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario.SteamWishlist" usuarioDeseadosWeb="@usuario.Wishlist" tipo="ResultadoJuego.Tipo.MinimosHistoricos" usuarioPatreon="@usuarioPatreon"/>
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="ResultadoJuego.Tipo.MinimosHistoricos" usuarioPatreon="@usuarioPatreon"/>
 				</ItemContent>
 			</Virtualize>
 		</div>

@@ -78,5 +78,9 @@
   "String77": "Este juego forma parte del programa de preservación de GOG",
   "String78": "Es una banda sonora del videojuego, esto significa que solo tendrás acceso a los archivos de audio del juego.",
   "String79": "Este juego solo puede ejecutarse con un dispositivo de realidad virtual.",
-  "String80": "jugando ahora"
+  "String80": "jugando ahora",
+  "String81": "Este juego se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de GOG",
+  "String82": "Este DLC se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de GOG",
+  "String83": "Ya tienes este juego en la cuenta de GOG vinculada",
+  "String84": "Ya tienes este DLC en la cuenta de GOG vinculada"
 }

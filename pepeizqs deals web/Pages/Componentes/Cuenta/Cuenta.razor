@@ -2,108 +2,224 @@
 
 <style>
     .boton-pestañas {
-    color: var(--colorTexto);
-    background: transparent;
-    text-align: center;
-    border: 0;
-    width: 100%;
-    transition: transform .2s;
-    font-size: 17px;
-    padding: 10px;
+        color: var(--colorTexto);
+        background-color: var(--fondoOscuro);
+        border: 1px solid var(--fondoBotonPequeño);
+        width: 100%;
+        transition: transform .2s;
+        font-size: 17px;
+        padding: 15px 20px;
     }
 
     .boton-pestañas:hover {
-    color: var(--colorTextoHover);
-    transform: scale(1.01);
+        color: var(--colorTextoHover);
+        transform: scale(1.01);
+    }
+
+    .grid-estructura {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+        
+    @@media (max-width: 800px) {
+        .grid-estructura {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
     }
 </style>
 
-<div style="max-width: 1000px; margin: auto;">
+<div style="max-width: 1200px; margin: auto;">
     <label style="font-size: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Account")</label>
     <hr/>
 
-    <div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
-        <div style="width: 50%;">
-            <div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
-                <button @onclick="@(e => MostrarCorreo(e))" class="boton-pestañas" style="@estiloCorreo;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Account")
-                </button>
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+        <button @onclick="@(e => MostrarCorreo(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-share" style="font-size: 22px;"></i>
 
-                <button @onclick="@(e => MostrarContraseña(e))" class="boton-pestañas" style="@estiloContraseña;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Account")
-                </button>
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Account")
+                    </div>
 
-                <button @onclick="@(e => MostrarNotificaciones(e))" class="boton-pestañas" style="@estiloNotificaciones;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Account")
-                </button>
-
-                <button @onclick="@(e => MostrarDatosPersonales(e))" class="boton-pestañas" style="@estiloDatosPersonales;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Account")
-                </button>
-
-                <hr style="width: 100%;" />
-
-                <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas" style="@estiloPatreon;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account")
-                </button>
-
-                <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas" style="@estiloSteam;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
-                </button>
-
-                <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas" style="@estiloGog;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
-                </button>
-
-                <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas" style="@estiloClaves;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Account")
-                </button>
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Account")
+                    </div>
+                </div>
             </div>
-        </div>
+        </button>
 
-        <div style="width: 100%;">
-            @if (mostrarCorreo == true)
-            {
-                <Correo idioma="@idioma" />
-            }
+        <button @onclick="@(e => MostrarContraseña(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-unlock" style="font-size: 22px;"></i>
 
-            @if (mostrarContraseña == true)
-            {
-                <CambioContrasena idioma="@idioma" />
-            }
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Account")
+                    </div>
 
-            @if (mostrarNotificaciones == true)
-            {
-                <NotificacionesCorreo idioma="@idioma" />
-            }
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
 
-            @if (mostrarDatosPersonales == true)
-            {
-                <DatosPersonales idioma="@idioma" />
-            }
+        <button @onclick="@(e => MostrarDatosPersonales(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-download" style="font-size: 22px;"></i>
 
-            @if (mostrarPatreon == true)
-            {
-                <Patreon idioma="@idioma" />
-            }
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Account")
+                    </div>
 
-            @if (mostrarSteam == true)
-            {
-                <CuentaSteam idioma="@idioma" />
-            }
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
 
-            @if (mostrarGog == true)
-            {
-                <CuentaGog idioma="@idioma"/>
-            }
+        <button @onclick="@(e => MostrarNotificaciones(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-envelope" style="font-size: 22px;"></i>
 
-            @if (mostrarClaves == true)
-            {
-                <Claves idioma="@idioma"/>
-            }
-        </div>
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+        <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-brands fa-patreon" style="font-size: 22px;"></i>
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-key" style="font-size: 22px;"></i>
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
     </div>
 </div>
+
+@if (enseñarPestaña == true)
+{
+    <div class="opciones-panel">
+        <div style="display: flex; align-items: start; margin: auto; justify-content: center; max-height: 100vh; min-width: 800px; max-width: 1000px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
+            <button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="ClickearCerrarPestaña">
+                <i class="fa-solid fa-arrow-left" style="font-size: 30px;"></i>
+            </button>
+
+            <div style="width: 100%; margin-left: 40px;">
+                @if (mostrarCorreo == true)
+                {
+                    <Correo idioma="@idioma" />
+                }
+
+                @if (mostrarContraseña == true)
+                {
+                    <CambioContrasena idioma="@idioma" />
+                }
+
+                @if (mostrarNotificaciones == true)
+                {
+                    <NotificacionesCorreo idioma="@idioma" />
+                }
+
+                @if (mostrarDatosPersonales == true)
+                {
+                    <DatosPersonales idioma="@idioma" />
+                }
+
+                @if (mostrarPatreon == true)
+                {
+                    <Patreon idioma="@idioma" />
+                }
+
+                @if (mostrarSteam == true)
+                {
+                    <CuentaSteam idioma="@idioma" />
+                }
+
+                @if (mostrarGog == true)
+                {
+                    <CuentaGog idioma="@idioma" />
+                }
+
+                @if (mostrarClaves == true)
+                {
+                    <Claves idioma="@idioma" />
+                }
+            </div> 
+        </div>
+    </div>
+}
 
 
 @code {
@@ -113,13 +229,7 @@
     [Parameter]
     public string idioma { get; set; }
 
-    protected override void OnInitialized()
-    {
-        mostrarCorreo = true;
-        estiloCorreo = fondo;
-    }
-
-    private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
+    private bool enseñarPestaña = false;
 
     private void CerrarPestañas()
     {
@@ -131,94 +241,82 @@
         mostrarSteam = false;
         mostrarGog = false;
         mostrarClaves = false;
+    }
 
-        estiloCorreo = null;
-        estiloContraseña = null;
-        estiloNotificaciones = null;
-        estiloDatosPersonales = null;
-        estiloPatreon = null;
-        estiloSteam = null;
-        estiloGog = null;
-        estiloClaves = null;
+    private void ClickearCerrarPestaña()
+    {
+        enseñarPestaña = false;
     }
 
     private bool mostrarCorreo = false;
-    private string estiloCorreo = null;
 
     private void MostrarCorreo(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarCorreo = true;
-        estiloCorreo = fondo;
     }
 
     private bool mostrarContraseña = false;
-    private string estiloContraseña = null;
 
     private void MostrarContraseña(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarContraseña = true;
-        estiloContraseña = fondo;
     }
 
     private bool mostrarNotificaciones = false;
-    private string estiloNotificaciones = null;
 
     private void MostrarNotificaciones(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarNotificaciones = true;
-        estiloNotificaciones = fondo;
     }
 
     private bool mostrarDatosPersonales = false;
-    private string estiloDatosPersonales = null;
 
     private void MostrarDatosPersonales(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarDatosPersonales = true;
-        estiloDatosPersonales = fondo;
     }
 
     private bool mostrarPatreon = false;
-    private string estiloPatreon = null;
 
     private void MostrarPatreon(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarPatreon = true;
-        estiloPatreon = fondo;
     }
 
     private bool mostrarSteam = false;
-    private string estiloSteam = null;
 
     private void MostrarSteam(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarSteam = true;
-        estiloSteam = fondo;
     }
 
     private bool mostrarGog = false;
-    private string estiloGog = null;
 
     private void MostrarGog(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarGog = true;
-        estiloGog = fondo;
     }
 
     private bool mostrarClaves = false;
-    private string estiloClaves = null;
 
     private void MostrarClaves(MouseEventArgs e)
     {
         CerrarPestañas();
+        enseñarPestaña = true;
         mostrarClaves = true;
-        estiloClaves = fondo;
     }
 }

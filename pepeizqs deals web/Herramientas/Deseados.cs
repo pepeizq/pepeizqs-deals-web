@@ -75,29 +75,98 @@ namespace Herramientas
 			}
 		}
 
-		public static bool ComprobarSiEsta(string deseadosSteamEnBruto, string deseadosWebEnBruto, Juego juego, JuegoDRM drm, bool usarIdMaestra = false)
+		public static bool ComprobarSiEsta(string deseadosSteamEnBruto, string deseadosWebEnBruto, string deseadosGogEnBruto, Juego juego, JuegoDRM drm, bool usarIdMaestra = false)
 		{
-			List<string> deseadosSteam = new List<string>();
-
-			if (string.IsNullOrEmpty(deseadosSteamEnBruto) == false)
+			if (drm == JuegoDRM.Steam)
 			{
-				deseadosSteam = Listados.Generar(deseadosSteamEnBruto);
-			}
+				List<string> deseadosSteam = new List<string>();
 
-			if (deseadosSteam != null)
-			{
-				if (deseadosSteam.Count > 0)
+				if (string.IsNullOrEmpty(deseadosSteamEnBruto) == false)
 				{
-					foreach (var deseado in deseadosSteam)
+					deseadosSteam = Listados.Generar(deseadosSteamEnBruto);
+				}
+
+				if (deseadosSteam != null)
+				{
+					if (deseadosSteam.Count > 0)
 					{
-						if (juego.IdSteam.ToString() == deseado && drm == JuegoDRM.Steam)
+						foreach (var deseado in deseadosSteam)
 						{
-							return true;
+							if (juego.IdSteam.ToString() == deseado && drm == JuegoDRM.Steam)
+							{
+								return true;
+							}
 						}
 					}
 				}
 			}
 
+			if (drm == JuegoDRM.GOG)
+			{
+				List<string> deseadosGog = new List<string>();
+
+				if (string.IsNullOrEmpty(deseadosGogEnBruto) == false)
+				{
+					deseadosGog = Listados.Generar(deseadosSteamEnBruto);
+				}
+
+				if (deseadosGog != null)
+				{
+					if (deseadosGog.Count > 0)
+					{
+						foreach (var deseado in deseadosGog)
+						{
+							if (juego.IdGog.ToString() == deseado && drm == JuegoDRM.GOG)
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+
+			List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
+
+			if (string.IsNullOrEmpty(deseadosWebEnBruto) == false)
+			{
+				deseadosWeb = JsonSerializer.Deserialize<List<JuegoDeseado>>(deseadosWebEnBruto);
+			}
+
+			if (deseadosWeb != null)
+			{
+				if (deseadosWeb.Count > 0)
+				{
+					foreach (var deseado in deseadosWeb)
+					{
+						if (usarIdMaestra == false)
+						{
+							if (juego.Id == int.Parse(deseado.IdBaseDatos))
+							{
+								if (drm == deseado.DRM)
+								{
+									return true;
+								}
+							}
+						}
+						else
+						{
+							if (juego.IdMaestra == int.Parse(deseado.IdBaseDatos))
+							{
+								if (drm == deseado.DRM)
+								{
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static bool ComprobarSiEsta(string deseadosWebEnBruto, Juego juego, JuegoDRM drm, bool usarIdMaestra = false)
+		{
 			List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
 
 			if (string.IsNullOrEmpty(deseadosWebEnBruto) == false)

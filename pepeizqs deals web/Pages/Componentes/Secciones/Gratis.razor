@@ -40,7 +40,7 @@
             }
             else
             {
-                usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego.Juego, juego.DRM);
+                usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego.Juego, juego.DRM);
 
                 if (usuarioTieneDeseado == true)
                 {

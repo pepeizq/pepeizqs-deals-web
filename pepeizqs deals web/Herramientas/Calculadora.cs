@@ -74,7 +74,7 @@ namespace Herramientas
 			return cantidadFinal;
 		}
 
-		public static string DiferenciaTiempo(this DateTime fecha, string? idioma = null, int modo = 0)
+		public static string DiferenciaTiempo(this DateTime? fecha2, string? idioma = null, int modo = 0)
 		{
             //modos
             //0 -> hace X tiempo
@@ -84,6 +84,17 @@ namespace Herramientas
 			if (string.IsNullOrEmpty(idioma) == true)
 			{
 				idioma = "en-US";
+			}
+
+			DateTime fecha = new DateTime();
+
+			if (fecha2 == null)
+			{
+				fecha = DateTime.Now;
+			}
+			else
+			{
+				fecha = (DateTime)fecha2;
 			}
 
             string mensaje = string.Empty;

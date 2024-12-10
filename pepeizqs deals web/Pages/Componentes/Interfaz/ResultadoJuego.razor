@@ -127,7 +127,7 @@
 	}
 	else
 	{
-		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuarioDeseadosSteam, usuarioDeseadosWeb, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuarioDeseadosSteam, usuarioDeseadosWeb, usuarioDeseadosGog, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
 
 		if (usuarioTieneDeseado == true)
 		{
@@ -357,6 +357,9 @@
 
 	[Parameter]
 	public string usuarioDeseadosWeb { get; set; }
+
+	[Parameter]
+	public string usuarioDeseadosGog { get; set; }
 
 	[Parameter]
 	public bool usuarioPatreon { get; set; }

@@ -414,27 +414,53 @@
                 {
                     bool usuarioTieneJuego = false;
                     bool usuarioTieneDeseado = false;
-                    string usuarioTieneDeseadoSteam = string.Empty;
+                    string usuarioTieneDeseadoMensaje = string.Empty;
 
                     <div id="@drm.Id">
                         @if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
                         {
                             if (usuario != null)
                             {
-                                if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+                                if (drm.Id == JuegoDRM.Steam)
                                 {
-                                    List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-
-                                    if (juegosSteam.Count > 0)
+                                    if (string.IsNullOrEmpty(usuario.SteamGames) == false)
                                     {
-                                        if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Steam)
+                                        List<string> juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+
+                                        if (juegosSteam.Count > 0)
                                         {
-                                            foreach (var juegoUsuario in juegosSteam)
+                                            if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Steam)
                                             {
-                                                if (juegoUsuario == juego.IdSteam.ToString())
+                                                foreach (var juegoUsuario in juegosSteam)
                                                 {
-                                                    usuarioTieneJuego = true;
-                                                    break;
+                                                    if (juegoUsuario == juego.IdSteam.ToString())
+                                                    {
+                                                        usuarioTieneJuego = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (drm.Id == JuegoDRM.GOG)
+                                {
+                                    if (string.IsNullOrEmpty(usuario.GogGames) == false)
+                                    {
+                                        List<string> juegosGog = Herramientas.Listados.Generar(usuario.GogGames);
+
+                                        if (juegosGog.Count > 0)
+                                        {
+                                            if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.GOG)
+                                            {
+                                                foreach (var juegoUsuario in juegosGog)
+                                                {
+                                                    if (juegoUsuario == juego.IdGog.ToString())
+                                                    {
+                                                        usuarioTieneJuego = true;
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }
@@ -443,37 +469,71 @@
 
                                 if (usuarioTieneJuego == false)
                                 {
-                                    if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+                                    if (drm.Id == JuegoDRM.Steam)
                                     {
-                                        List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
-
-                                        if (deseadosSteam.Count > 0)
+                                        if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
                                         {
-                                            foreach (var deseado in deseadosSteam)
-                                            {
-                                                if (juego.IdSteam > 0)
-                                                {
-                                                    if (juego.IdSteam == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.Steam)
-                                                    {
-                                                        if (juego.Tipo == Juegos.JuegoTipo.Game)
-                                                        {
-                                                            usuarioTieneDeseadoSteam = Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Game");
-                                                        }
-                                                        else if (juego.Tipo == Juegos.JuegoTipo.DLC)
-                                                        {
-                                                            usuarioTieneDeseadoSteam = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Game");
-                                                        }
+                                            List<string> deseadosSteam = Listados.Generar(usuario.SteamWishlist);
 
-                                                        break;
+                                            if (deseadosSteam.Count > 0)
+                                            {
+                                                foreach (var deseado in deseadosSteam)
+                                                {
+                                                    if (juego.IdSteam > 0)
+                                                    {
+                                                        if (juego.IdSteam == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.Steam)
+                                                        {
+                                                            if (juego.Tipo == Juegos.JuegoTipo.Game)
+                                                            {
+                                                                usuarioTieneDeseadoMensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Game");
+                                                            }
+                                                            else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+                                                            {
+                                                                usuarioTieneDeseadoMensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Game");
+                                                            }
+
+                                                            break;
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
 
-                                    if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == true)
+                                    if (drm.Id == JuegoDRM.GOG)
                                     {
-                                        usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, juego, drm.Id);
+                                        if (string.IsNullOrEmpty(usuario.GogWishlist) == false)
+                                        {
+                                            List<string> deseadosGog = Listados.Generar(usuario.GogWishlist);
+
+                                            if (deseadosGog.Count > 0)
+                                            {
+                                                foreach (var deseado in deseadosGog)
+                                                {
+                                                    if (juego.IdGog > 0)
+                                                    {
+                                                        if (juego.IdGog == int.Parse(deseado) && drm.Id == Juegos.JuegoDRM.GOG)
+                                                        {
+                                                            if (juego.Tipo == Juegos.JuegoTipo.Game)
+                                                            {
+                                                                usuarioTieneDeseadoMensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String81", "Game");
+                                                            }
+                                                            else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+                                                            {
+                                                                usuarioTieneDeseadoMensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String82", "Game");
+                                                            }
+
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (string.IsNullOrEmpty(usuarioTieneDeseadoMensaje) == true)
+                                    {
+                                        usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.Wishlist, juego, drm.Id);
 
                                         if (usuarioTieneDeseado == true)
                                         {
@@ -510,13 +570,28 @@
                                     {
                                         string mensaje = string.Empty;
 
-                                        if (juego.Tipo == Juegos.JuegoTipo.Game)
+                                        if (drm.Id == JuegoDRM.Steam)
                                         {
-                                            mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Game");
+                                            if (juego.Tipo == Juegos.JuegoTipo.Game)
+                                            {
+                                                mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Game");
+                                            }
+                                            else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+                                            {
+                                                mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Game");
+                                            }
                                         }
-                                        else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+
+                                        if (drm.Id == JuegoDRM.GOG)
                                         {
-                                            mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Game");
+                                            if (juego.Tipo == Juegos.JuegoTipo.Game)
+                                            {
+                                                mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String83", "Game");
+                                            }
+                                            else if (juego.Tipo == Juegos.JuegoTipo.DLC)
+                                            {
+                                                mensaje = Herramientas.Idiomas.BuscarTexto(idioma, "String84", "Game");
+                                            }
                                         }
 
                                         <div>
@@ -531,13 +606,13 @@
                                     }
                                     else
                                     {
-                                        if (string.IsNullOrEmpty(usuarioTieneDeseadoSteam) == false)
+                                        if (string.IsNullOrEmpty(usuarioTieneDeseadoMensaje) == false)
                                         {
                                             <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
                                                 <div class="perfil-flexible-centrado">
                                                     <i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
 
-                                                    <label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoSteam</label>
+                                                    <label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoMensaje</label>
                                                 </div>
                                             </div>
                                         }
