@@ -33,69 +33,91 @@
 		}
 </style>
 
-@if ((usuario.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
-{
-	<div style="max-width: 1000px; margin: auto;">
-		<div style="display: flex; align-items: center; gap: 20px;">
-			<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String1", "PatreonStore"), usuario.PatreonCoins.ToString())</label>
-
-			<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "PatreonStore")
-			</button>
-		</div>
-
-		<hr />
-
-		@if (usuario.PatreonCoins >= 30)
-		{
-			<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
-				<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Limit", "PatreonStore")
-			</div>
-		}
-
+<div style="max-width: 1200px; margin: auto;">
+	@if ((usuario.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+	{
 		<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+			<div style="display: flex; align-items: center; gap: 20px;">
+				<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String1", "PatreonStore"), usuario.PatreonCoins.ToString())</label>
+
+				<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "PatreonStore")
+				</button>
+			</div>
+
+			<hr style="margin: 1px 0px;" />
+
+			@if (usuario.PatreonCoins >= 30)
+			{
+				<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
+					<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Limit", "PatreonStore")
+				</div>
+			}
+
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "Problem", "PatreonStore")
 			</div>
+		</div>
+	}
+	else
+	{
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "Denied", "PatreonStore")
+			</div>
 
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-				<div style="margin-bottom: 30px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "PatreonStore")
-				</div>
+			@{
+				WebApplicationBuilder builder = WebApplication.CreateBuilder();
+				string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+			}
 
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; justify-items: center;">
-					@if (juegos != null)
+			<div style="margin-top: 10px;">
+				<a href="@patreonEnlace">@patreonEnlace</a>
+			</div>	
+		</div>
+	}
+
+	<div style="width: 100%; display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="margin-bottom: 30px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "PatreonStore")
+			</div>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; justify-items: center;">
+				@if (juegos != null)
+				{
+					if (juegos.Count > 0)
 					{
-						if (juegos.Count > 0)
+						foreach (var recompensaJuego in juegos)
 						{
-							foreach (var recompensaJuego in juegos)
+							if (string.IsNullOrEmpty(recompensaJuego.UsuarioId) == true)
 							{
-								if (string.IsNullOrEmpty(recompensaJuego.UsuarioId) == true)
+								global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensaJuego.JuegoId);
+
+								if (juego != null)
 								{
-									global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(recompensaJuego.JuegoId);
+									bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego, recompensaJuego.DRM);
+									bool usuarioTieneDeseado = false;
 
-									if (juego != null)
+									string fondoColor = "background-color: var(--fondoBotonPequeño)";
+
+									if (usuarioTieneJuego == true)
 									{
-										bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego, recompensaJuego.DRM);
-										bool usuarioTieneDeseado = false;
+										fondoColor = "background-color: var(--fondoBien);";
+									}
+									else
+									{
+										usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, recompensaJuego.DRM);
 
-										string fondoColor = "background-color: var(--fondoBotonPequeño)";
-
-										if (usuarioTieneJuego == true)
+										if (usuarioTieneDeseado == true)
 										{
-											fondoColor = "background-color: var(--fondoBien);";
+											fondoColor = "background-color: var(--fondoAlerta);";
 										}
-										else
-										{
-											usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, recompensaJuego.DRM);
+									}
 
-											if (usuarioTieneDeseado == true)
-											{
-												fondoColor = "background-color: var(--fondoAlerta);";
-											}
-										}
-
+									@if ((usuario?.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+									{
 										<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;" title="@juego.Nombre">
 											<div style="@fondoColor; display: flex; flex-direction: column;">
 												<img src="@juego.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
@@ -112,23 +134,31 @@
 											</div>
 										</button>
 									}
+									else
+									{
+										<div style="@fondoColor; display: flex; flex-direction: column;">
+											<img src="@juego.Imagenes.Library_600x900" style="width: 100%; height: 100%;" />
+
+											<div style="display: flex; align-items: center; padding: 10px; color: var(--colorTexto);">
+												@{
+													string imagen = global::Juegos.JuegoDRM2.SacarImagen(recompensaJuego.DRM);
+												}
+
+												<img src="@imagen" style="width: 20px; height: 20px;" alt="@juego.Nombre" />
+
+												<div style="width: 100%; text-align: right;">@recompensaJuego.Coins.ToString() Coins</div>
+											</div>
+										</div>
+									}
 								}
 							}
 						}
 					}
-				</div>
+				}
 			</div>
 		</div>
 	</div>
-}
-else
-{
-	<div style="max-width: 800px; margin: auto;">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			@Herramientas.Idiomas.BuscarTexto(idioma, "Denied", "PatreonStore")
-		</div>
-	</div>
-}
+</div>
 
 @if (mostrarAvisoCompra == true)
 {

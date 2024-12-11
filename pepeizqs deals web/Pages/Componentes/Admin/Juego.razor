@@ -209,6 +209,15 @@
 
 				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Id GOG</label>
+					</div>
+					<div style="width: 20%;">
+						<input type="text" @oninput="TextoCambiaIdGOG" class="entrada-texto" value="@idGOG" />
+					</div>
+				</div>
+
+				<div style="display: flex; align-items: center;">
+					<div style="width: 15%; padding: 0px 30px; text-align: right;">
 						<label>Slug GOG</label>
 					</div>
 					<div style="width: 20%;">
@@ -251,6 +260,7 @@
 	public global::Juegos.Juego juego { get; set; }
 
 	private string idSteam = string.Empty;
+	private string idGOG = string.Empty;
 	private string slugGOG = string.Empty;
 
 	protected override void OnInitialized()
@@ -279,6 +289,11 @@
 		{
 			idSteam = juego.IdSteam.ToString();
 		}	
+
+		if (juego.IdGog > 0)
+		{
+			idGOG = juego.IdGog.ToString();
+		}
 
 		if (string.IsNullOrEmpty(juego.SlugGOG) == false)
 		{
@@ -652,6 +667,24 @@
 				BaseDatos.Juegos.Actualizar.IdSteam(juego, conexion);
 
 				await ActualizarMediaSteamApi();
+			}
+		}
+	}
+
+	private void TextoCambiaIdGOG(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			idGOG = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.IdGog = int.Parse(idGOG);
+				BaseDatos.Juegos.Actualizar.IdGOG(juego, conexion);
 			}
 		}
 	}

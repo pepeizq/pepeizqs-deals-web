@@ -21,6 +21,7 @@ namespace Tiendas2
 				APIs.Gamesplanet.Tienda.GenerarUs(),
 				APIs.Fanatical.Tienda.Generar(),
 				APIs.GreenManGaming.Tienda.Generar(),
+				APIs.GreenManGaming.Tienda.GenerarGold(),
 				APIs.GOG.Tienda.Generar(),
                 APIs.IndieGala.Tienda.Generar(),
                 APIs.WinGameStore.Tienda.Generar(),
@@ -79,6 +80,10 @@ namespace Tiendas2
 				else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
 				{
 					await APIs.GreenManGaming.Tienda.BuscarOfertas(conexion, decompilador);
+				}
+				else if (id == APIs.GreenManGaming.Tienda.GenerarGold().Id)
+				{
+					await APIs.GreenManGaming.Tienda.BuscarOfertasGold(conexion, decompilador);
 				}
 				else if (id == APIs.GOG.Tienda.Generar().Id)
 				{

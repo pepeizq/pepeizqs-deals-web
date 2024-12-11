@@ -2,9 +2,12 @@
 
 using Herramientas;
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace APIs.GreenManGaming
@@ -33,7 +36,24 @@ namespace APIs.GreenManGaming
 			return enlace + "?tap_a=1964-996bbb&tap_s=608263-a851ee";
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+		public static Tiendas2.Tienda GenerarGold()
+		{
+			Tiendas2.Tienda tienda = new Tiendas2.Tienda
+			{
+				Id = "greenmangaminggold",
+				Nombre = "Green Man Gaming Gold",
+				ImagenLogo = "/imagenes/tiendas/greenmangaming_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/greenmangaming_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/greenmangaming_icono.ico",
+				Color = "#97ff9a",
+				AdminEnseñar = true,
+				AdminInteractuar = true
+			};
+
+			return tienda;
+		}
+
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -112,7 +132,55 @@ namespace APIs.GreenManGaming
 				}
 			}
 		}
+
+		public static async Task BuscarOfertasGold(SqlConnection conexion, IDecompiladores decompilador)
+		{
+			int i = 0;
+			while (i < 10000)
+			{
+				HttpClient cliente = new HttpClient();
+				cliente.BaseAddress = new Uri("https://www.greenmangaming.com/");
+				cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+				HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, "https://sczizsp09z-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.5.1)%3B%20Browser%20(lite)%3B%20instantsearch.js%20(4.8.3)%3B%20JS%20Helper%20(3.2.2)&x-algolia-api-key=3bc4cebab2aa8cddab9e9a3cfad5aef3&x-algolia-application-id=SCZIZSP09Z");
+				peticion.Content = new StringContent("{\"requests\":[{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES&hitsPerPage=24&distinct=true&analytics=false&clickAnalytics=true&maxValuesPerFacet=10&facets=%5B%22Franchise%22%2C%22IsEarlyAccess%22%2C%22Genre%22%2C%22PlatformName%22%2C%22PublisherName%22%2C%22SupportedVrs%22%2C%22Regions.ES.ReleaseDateStatus%22%2C%22Regions.ES.Mrp%22%2C%22Regions.ES.IsOnSaleVip%22%2C%22Regions.ES.IsXpOffer%22%2C%22DrmName%22%5D&tagFilters=&facetFilters=%5B%5B%22Regions.ES.IsXpOffer%3Atrue%22%5D%5D\"},{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES&hitsPerPage=1&distinct=true&analytics=false&clickAnalytics=false&maxValuesPerFacet=10&page=0&attributesToRetrieve=%5B%5D&attributesToHighlight=%5B%5D&attributesToSnippet=%5B%5D&tagFilters=&facets=Regions.ES.IsXpOffer\"},{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES%20AND%20IsDlc%3Atrue&hitsPerPage=24&distinct=true&analytics=false&clickAnalytics=true&maxValuesPerFacet=10&highlightPreTag=__ais-highlight__&highlightPostTag=__%2Fais-highlight__&page=0&facets=%5B%22Franchise%22%2C%22IsEarlyAccess%22%2C%22Genre%22%2C%22PlatformName%22%2C%22PublisherName%22%2C%22SupportedVrs%22%2C%22Regions.ES.ReleaseDateStatus%22%2C%22Regions.ES.Mrp%22%2C%22Regions.ES.IsOnSaleVip%22%2C%22Regions.ES.IsXpOffer%22%2C%22DrmName%22%5D&tagFilters=&facetFilters=%5B%5B%22Regions.ES.IsXpOffer%3Atrue%22%5D%5D\"},{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES%20AND%20IsDlc%3Atrue&hitsPerPage=1&distinct=true&analytics=false&clickAnalytics=false&maxValuesPerFacet=10&highlightPreTag=__ais-highlight__&highlightPostTag=__%2Fais-highlight__&page=0&attributesToRetrieve=%5B%5D&attributesToHighlight=%5B%5D&attributesToSnippet=%5B%5D&tagFilters=&facets=Regions.ES.IsXpOffer\"},{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES%20AND%20IsDlc%3Afalse&hitsPerPage=24&distinct=true&analytics=false&clickAnalytics=true&maxValuesPerFacet=10&highlightPreTag=__ais-highlight__&highlightPostTag=__%2Fais-highlight__&page=1&facets=%5B%22Franchise%22%2C%22IsEarlyAccess%22%2C%22Genre%22%2C%22PlatformName%22%2C%22PublisherName%22%2C%22SupportedVrs%22%2C%22Regions.ES.ReleaseDateStatus%22%2C%22Regions.ES.Mrp%22%2C%22Regions.ES.IsOnSaleVip%22%2C%22Regions.ES.IsXpOffer%22%2C%22DrmName%22%5D&tagFilters=&facetFilters=%5B%5B%22Regions.ES.IsXpOffer%3Atrue%22%5D%5D\"},{\"indexName\":\"prod_ProductSearch_ES_LK\",\"params\":\"query=hot-deals-view-all&ruleContexts=%5B%22EUR%22%2C%22EUR_ES%22%2C%22ES%22%5D&filters=IsSellable%3Atrue%20AND%20AvailableRegions%3AES%20AND%20NOT%20ExcludeCountryCodes%3AES%20AND%20IsDlc%3Afalse&hitsPerPage=1&distinct=true&analytics=false&clickAnalytics=false&maxValuesPerFacet=10&highlightPreTag=__ais-highlight__&highlightPostTag=__%2Fais-highlight__&page=0&attributesToRetrieve=%5B%5D&attributesToHighlight=%5B%5D&attributesToSnippet=%5B%5D&tagFilters=&facets=Regions.ES.IsXpOffer\"}]}",
+													Encoding.UTF8, "application/json");
+
+				HttpResponseMessage respuesta = await cliente.SendAsync(peticion);
+
+				string html = string.Empty;
+
+				try
+				{
+					html = await respuesta.Content.ReadAsStringAsync();
+				}
+				catch { }
+
+				if (string.IsNullOrEmpty(html) == false)
+				{
+					GreenManGamingGold datos = JsonSerializer.Deserialize<GreenManGamingGold>(html);
+
+					if (datos != null)
+					{
+						if (datos.Resultados[0].Juegos.Count == 0)
+						{
+							break;
+						}
+
+						BaseDatos.Errores.Insertar.Mensaje("test", JsonSerializer.Serialize(datos));
+					}
+				}
+				else
+				{
+					break;
+				}
+
+				i += 1;
+			}
+		}
 	}
+
+	#region Normal
 
 	[XmlRoot("products")]
 	public class GreenManGamingJuegos
@@ -144,4 +212,31 @@ namespace APIs.GreenManGaming
 		[XmlElement("steamapp_id")]
 		public string SteamId { get; set; }
 	}
+
+	#endregion
+
+	#region Gold
+
+	public class GreenManGamingGold
+	{
+		[JsonPropertyName("results")]
+		public List<GreenManGamingGoldResultado> Resultados { get; set; }
+	}
+
+	public class GreenManGamingGoldResultado
+	{
+		[JsonPropertyName("hits")]
+		public List<GreenManGamingGoldJuego> Juegos { get; set; }
+	}
+
+	public class GreenManGamingGoldJuego
+	{
+		[JsonPropertyName("DisplayName")]
+		public string Nombre { get; set; }
+
+		[JsonPropertyName("Url")]
+		public string Enlace { get; set; }
+	}
+
+	#endregion
 }

@@ -446,7 +446,7 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
-		public static List<Juego> MultiplesJuegosSteam(List<string> ids)
+		public static List<Juego> MultiplesJuegosSteam(List<string> ids, SqlConnection conexion = null)
 		{
 			List<Juego> juegos = new List<Juego>();
 			string sqlBuscar = string.Empty;
@@ -478,25 +478,91 @@ namespace BaseDatos.Juegos
 
 			if (string.IsNullOrEmpty(sqlBuscar) == false)
 			{
-				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-				using (conexion)
+				if (conexion == null)
 				{
-					using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+				else
+				{
+					if (conexion.State != System.Data.ConnectionState.Open)
 					{
-						comando.CommandTimeout = 0;
+						conexion = Herramientas.BaseDatos.Conectar();
+					}
+				}
 
-						using (SqlDataReader lector = comando.ExecuteReader())
+				using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
 						{
-							while (lector.Read())
-							{
-								Juego juego = new Juego();
-								juego = Cargar(juego, lector);
-								juegos.Add(juego);
-							}
+							Juego juego = new Juego();
+							juego = Cargar(juego, lector);
+							juegos.Add(juego);
 						}
 					}
-				}					
+				}
+			}
+
+			return juegos;
+		}
+
+		public static List<Juego> MultiplesJuegosGOG(List<string> ids, SqlConnection conexion = null)
+		{
+			List<Juego> juegos = new List<Juego>();
+			string sqlBuscar = string.Empty;
+
+			if (ids != null)
+			{
+				if (ids.Count > 0)
+				{
+					sqlBuscar = "SELECT * FROM juegos WHERE idGOG IN (";
+
+					int i = 0;
+					while (i < ids.Count)
+					{
+						if (i == 0)
+						{
+							sqlBuscar = sqlBuscar + "'" + ids[i] + "'";
+						}
+						else
+						{
+							sqlBuscar = sqlBuscar + ", '" + ids[i] + "'";
+						}
+
+						i += 1;
+					}
+
+					sqlBuscar = sqlBuscar + ")";
+				}
+			}
+
+			if (string.IsNullOrEmpty(sqlBuscar) == false)
+			{
+				if (conexion == null)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+				else
+				{
+					if (conexion.State != System.Data.ConnectionState.Open)
+					{
+						conexion = Herramientas.BaseDatos.Conectar();
+					}
+				}
+
+				using (SqlCommand comando = new SqlCommand(sqlBuscar, conexion))
+				{
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						while (lector.Read())
+						{
+							Juego juego = new Juego();
+							juego = Cargar(juego, lector);
+							juegos.Add(juego);
+						}
+					}
+				}
 			}
 
 			return juegos;
