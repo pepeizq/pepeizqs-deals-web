@@ -33,7 +33,8 @@ namespace Tiendas2
 				APIs.EpicGames.Tienda.Generar(),
 				APIs._2Game.Tienda.Generar(),
 				APIs.GameBillet.Tienda.Generar(),
-				APIs.Ubisoft.Tienda.Generar()
+				APIs.Ubisoft.Tienda.Generar(),
+				APIs.Allyouplay.Tienda.Generar()
             };
 
 			return tiendas;
@@ -133,7 +134,11 @@ namespace Tiendas2
                 {
                     await APIs.Ubisoft.Tienda.BuscarOfertas(conexion, decompilador);
                 }
-            }
+				else if (id == APIs.Allyouplay.Tienda.Generar().Id)
+				{
+					await APIs.Allyouplay.Tienda.BuscarOfertas(conexion, decompilador);
+				}
+			}
         }
 
 		public static async Task TareasGestionador(SqlConnection conexion, string id, IDecompiladores decompilador = null)
@@ -173,6 +178,10 @@ namespace Tiendas2
 			else if (id == APIs.GreenManGaming.Tienda.Generar().Id)
 			{
 				await APIs.GreenManGaming.Tienda.BuscarOfertas(conexion, decompilador);
+			}
+			else if (id == APIs.GreenManGaming.Tienda.GenerarGold().Id)
+			{
+				await APIs.GreenManGaming.Tienda.BuscarOfertasGold(conexion, decompilador);
 			}
 			else if (id == APIs.GOG.Tienda.Generar().Id)
 			{

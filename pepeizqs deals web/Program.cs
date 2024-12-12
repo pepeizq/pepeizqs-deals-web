@@ -127,6 +127,7 @@ builder.Services.AddSingleton<Tareas.Tiendas.HumbleStore>();
 builder.Services.AddSingleton<Tareas.Tiendas.GOG>();
 builder.Services.AddSingleton<Tareas.Tiendas.Fanatical>();
 builder.Services.AddSingleton<Tareas.Tiendas.GreenManGaming>();
+builder.Services.AddSingleton<Tareas.Tiendas.GreenManGamingGold>();
 builder.Services.AddSingleton<Tareas.Tiendas.Gamersgate>();
 builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetUk>();
 builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetFr>();
@@ -167,6 +168,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GOG>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Fanatical>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GreenManGaming>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GreenManGamingGold>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Gamersgate>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetUk>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GamesplanetFr>());
