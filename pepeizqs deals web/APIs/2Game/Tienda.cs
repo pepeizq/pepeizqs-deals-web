@@ -38,7 +38,7 @@ namespace APIs._2Game
             enlace = enlace.Replace("?", "%3F");
             enlace = enlace.Replace("=", "%3D");
 
-            return "https://2game-europe.sjv.io/c/1382810/1813947/19711?u=" + enlace;
+            return "https://2game-europe.sjv.io/c/1382810/1697067/19711?u=" + enlace;
         }
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)

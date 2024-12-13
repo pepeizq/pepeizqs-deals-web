@@ -467,6 +467,11 @@ namespace Herramientas
 					}
 					catch (Exception ex)
 					{
+						DateTime nuevaFecha = DateTime.Now;
+						nuevaFecha = nuevaFecha.AddMinutes(10);
+
+						global::BaseDatos.Admin.Actualizar.TareaUso("correosEnviar", nuevaFecha);
+
 						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
 						return false;
 					}
@@ -484,6 +489,11 @@ namespace Herramientas
 					}
 					catch (Exception ex)
 					{
+						DateTime nuevaFecha = DateTime.Now;
+						nuevaFecha = nuevaFecha.AddMinutes(10);
+
+						global::BaseDatos.Admin.Actualizar.TareaUso("correosEnviar", nuevaFecha);
+
 						global::BaseDatos.Errores.Insertar.Mensaje("Correo Enviar", ex);
 						return false;
 					}
