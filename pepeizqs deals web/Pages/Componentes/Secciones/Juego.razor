@@ -1995,12 +1995,12 @@
 @if (enseñarHistorico == true)
 {
     <div class="opciones-panel">
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 30px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 30px; width: 100%; height: 100%; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
             <button @onclick="@(e => HistoricoCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
 
-            <div style="width: 100vh;">
+            <div style="width: 100%; height: 100%;">
                 <ApexChart TItem="PuntoGrafico" Title="@juego.Nombre" Options="@opcionesGrafico" >
                     <ApexPointTooltip>
                         <div style="background-color: var(--fondoOscuro); color: var(--colorTexto); padding: 10px; border: 1px solid var(--fondoCodigo)">
@@ -3601,7 +3601,12 @@
                 Labels = new XAxisLabels
                 {
                     Formatter = @"function (value) {
-                                return new Date(value).toLocaleString('" + idioma + "',{month:'short'})}"
+                                return new Date(value).toLocaleString('" + idioma + "',{month:'short'})}",
+                    Style = new AxisLabelStyle
+                    {
+                        FontSize = "14px",
+                        FontFamily = "Motiva Sans"
+                    }
                 }
             },
             Yaxis = new List<YAxis>() {
@@ -3614,7 +3619,12 @@
                                             style: 'currency',
                                             currency: 'EUR',
                                         });
-                                    return Euro.format(value)}"
+                                    return Euro.format(value)}",
+                        Style = new AxisLabelStyle
+                        {
+                            FontSize = "14px",
+                            FontFamily = "Motiva Sans"
+                        }
                     }
                 }
             )},
@@ -3640,7 +3650,9 @@
                 Zoom = new Zoom
                 {
                     Enabled = false
-                }
+                },
+                Width = "100%",
+                Height = "100%"
             },
             DataLabels = new ApexCharts.DataLabels
             {
@@ -3650,7 +3662,12 @@
                                     style: 'currency',
                                     currency: 'EUR',
                                 });
-                            return Euro.format(value)}"
+                            return Euro.format(value)}",
+                Style = new DataLabelsStyle
+                {
+                    FontSize = "14px",
+                    FontFamily = "Motiva Sans"
+                }
             },
             Grid = new Grid
             {
