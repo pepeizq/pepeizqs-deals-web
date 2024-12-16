@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Herramientas;
+using Juegos;
 using Microsoft.Data.SqlClient;
 using System.Net.Http.Headers;
 using System.Text;
@@ -17,10 +18,10 @@ namespace APIs.Allyouplay
 			{
 				Id = "allyouplay",
 				Nombre = "Allyouplay",
-				ImagenLogo = "/imagenes/tiendas/greenmangaming_logo.webp",
-				Imagen300x80 = "/imagenes/tiendas/greenmangaming_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/greenmangaming_icono.ico",
-				Color = "#97ff9a",
+				ImagenLogo = "/imagenes/tiendas/allyouplay_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/allyouplay_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/allyouplay_icono.webp",
+				Color = "#ff4081",
 				AdminEnseñar = true,
 				AdminInteractuar = true
 			};
@@ -35,7 +36,8 @@ namespace APIs.Allyouplay
 			int juegos2 = 0;
 
 			int i = 1;
-			while (i < 5)
+			int total = 10;
+			while (i < total)
 			{
 				HttpClient cliente = new HttpClient();
 				cliente.BaseAddress = new Uri("https://www.allyouplay.com");
@@ -49,9 +51,20 @@ namespace APIs.Allyouplay
 					Headers = { { "POST", "/api-frontend/Catalog/GetCategory/69" },
 								{ "Host", "sefim.allyouplay.com" },
 								{ "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0" },
-								{ "Accept", "application/json, text/plain, */*" }}
+								{ "Accept", "application/json, text/plain, */*" },
+								{ "Accept-Language", "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"},
+								{ "Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOiIxNzMzOTUwNjM2IiwiZXhwIjoiMTczNDU1NTQzNiIsIkN1c3RvbWVySWQiOiI1NjIyMTk1MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMmNkODI0MzUtNjRiMS00YmIwLTg1OWYtZjMzMzk3YzU5NTJlIn0.EUOoslhtBROeaHxBr5qbshw9EazbSq9bz0t7TuwHH9M" },
+								{ "Origin", "https://allyouplay.com" },
+								{ "DNT", "1" },
+								{ "Sec-GPC", "1" },
+								{ "Connection", "keep-alive" },
+								{ "Referer", "https://allyouplay.com/" },
+								{ "Cookie", "soundestID=20241211205715-T0d2Dm0lrpDbKX6EkVpfp6v7Gooz58jdx5h0gvBNE7wlpV6gZ; .Nop.Customer=2cd82435-64b1-4bb0-859f-f33397c5952e; .Nop.Culture=c%3Den-GB%7Cuic%3Den-GB" },
+								{ "Sec-Fetch-Dest", "empty" },
+								{ "Sec-Fetch-Mode", "cors" }
+					}
 				}; 
-			//(" \r\n: \r\n: \r\nAccept-Language: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate, br, zstd\r\nContent-Type: application/json\r\nAuthorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOiIxNzMzOTUwNjM2IiwiZXhwIjoiMTczNDU1NTQzNiIsIkN1c3RvbWVySWQiOiI1NjIyMTk1MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMmNkODI0MzUtNjRiMS00YmIwLTg1OWYtZjMzMzk3YzU5NTJlIn0.EUOoslhtBROeaHxBr5qbshw9EazbSq9bz0t7TuwHH9M\r\nContent-Length: 63\r\nOrigin: https://allyouplay.com\r\nDNT: 1\r\nSec-GPC: 1\r\nConnection: keep-alive\r\nReferer: https://allyouplay.com/\r\nCookie: soundestID=20241211205715-T0d2Dm0lrpDbKX6EkVpfp6v7Gooz58jdx5h0gvBNE7wlpV6gZ; .Nop.Customer=2cd82435-64b1-4bb0-859f-f33397c5952e; .Nop.Culture=c%3Den-GB%7Cuic%3Den-GB\r\nSec-Fetch-Dest: empty\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Site: same-site")}
+
 				HttpResponseMessage respuesta = await cliente.SendAsync(peticion);
 
 				string html = string.Empty;
@@ -64,27 +77,62 @@ namespace APIs.Allyouplay
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
-					BaseDatos.Errores.Insertar.Mensaje("test", html);
 					AllyouplayAPI datos = JsonSerializer.Deserialize<AllyouplayAPI>(html);
 
 					if (datos != null)
 					{
-						//if (datos.Datos.Catalogo.Juegos.Count == 0)
-						//{
-						//	break;
-						//}
-						//else
-						//{
-						//	BaseDatos.Errores.Insertar.Mensaje("test", JsonSerializer.Serialize(datos));
-						//	foreach (var juego in datos.Datos.Catalogo.Juegos)
-						//	{
+						total = datos.Datos.Catalogo.Paginas;
 
-						//	}
-						//}
-					}
-					else
-					{
-						break;
+						foreach (var juego in datos.Datos.Catalogo.Juegos)
+						{
+							if (juego.Precios != null)
+							{
+								if (juego.Precios.PrecioRebajado != null && juego.Precios.PrecioBase != null)
+								{
+									decimal precioBase = juego.Precios.PrecioBase.Value;
+									decimal precioRebajado = juego.Precios.PrecioRebajado.Value;
+
+									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+									if (descuento > 0)
+									{
+										JuegoPrecio oferta = new JuegoPrecio
+										{
+											Nombre = juego.Nombre,
+											Enlace = "https://allyouplay.com/" + juego.Slug,
+											Imagen = juego.Imagen,
+											Moneda = JuegoMoneda.Euro,
+											Precio = precioRebajado,
+											Descuento = descuento,
+											Tienda = Generar().Id,
+											DRM = JuegoDRM.Steam,
+											FechaDetectado = DateTime.Now,
+											FechaActualizacion = DateTime.Now
+										};
+
+										try
+										{
+											BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+										}
+										catch (Exception ex)
+										{
+											BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+										}
+
+										juegos2 += 1;
+
+										try
+										{
+											BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										}
+										catch (Exception ex)
+										{
+											BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 
@@ -97,18 +145,12 @@ namespace APIs.Allyouplay
 	{
 		[JsonPropertyName("category_model_dto")]
 		public AllyouplayAPIDatos Datos { get; set; }
-
-		[JsonPropertyName("template_view_path")]
-		public string Nombre { get; set; }
 	}
 
 	public class AllyouplayAPIDatos
 	{
 		[JsonPropertyName("catalog_products_model")]
 		public AllyouplayAPICatalogo Catalogo { get; set; }
-
-		[JsonPropertyName("name")]
-		public string Nombre { get; set; }
 	}
 
 	public class AllyouplayAPICatalogo
@@ -132,15 +174,15 @@ namespace APIs.Allyouplay
 		public string Imagen { get; set; }
 
 		[JsonPropertyName("product_price")]
-		public AllyouplayAPIJuegoPrecios Precios { get; set; }
+		public AllyouplayAPIJuegoPrecios? Precios { get; set; }
 	}
 
 	public class AllyouplayAPIJuegoPrecios
 	{
 		[JsonPropertyName("old_price_value")]
-		public decimal PrecioBase { get; set; }
+		public decimal? PrecioBase { get; set; }
 
 		[JsonPropertyName("price_value")]
-		public decimal PrecioRebajado { get; set; }
+		public decimal? PrecioRebajado { get; set; }
 	}
 }

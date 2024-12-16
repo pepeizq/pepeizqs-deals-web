@@ -231,6 +231,10 @@ namespace Tiendas2
             {
                 await APIs.Ubisoft.Tienda.BuscarOfertas(conexion, decompilador);
             }
-        }
+			else if (id == APIs.Allyouplay.Tienda.Generar().Id)
+			{
+				await APIs.Allyouplay.Tienda.BuscarOfertas(conexion, decompilador);
+			}
+		}
     }
 }
