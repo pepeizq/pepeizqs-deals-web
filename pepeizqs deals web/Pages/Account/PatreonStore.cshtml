@@ -20,11 +20,11 @@
     if (usuarioLogeado == true)
     {
         usuario = await UserManager.GetUserAsync(User);
-
-        @(await Html.RenderComponentAsync<Componentes.Cuenta.PatreonTienda>(RenderMode.Server, new
-        {
-            idioma = Model.idioma,
-            usuarioId = usuario?.Id
-        }))
     }
+  
+    @(await Html.RenderComponentAsync<Componentes.Cuenta.PatreonTienda>(RenderMode.Server, new
+    {
+        idioma = Model.idioma,
+        usuarioId = usuario?.Id
+    }))
 }

@@ -9,73 +9,85 @@
 
 <style>
 	.boton-pestañas {
-		color: var(--colorTexto);
-		background: transparent;
-		text-align: center;
-		border: 0;
-		width: 100%;
-		transition: transform .2s;
-		font-size: 17px;
-		padding: 10px;
+	color: var(--colorTexto);
+	background: transparent;
+	text-align: center;
+	border: 0;
+	width: 100%;
+	transition: transform .2s;
+	font-size: 17px;
+	padding: 10px;
 	}
 
-		.boton-pestañas:hover {
-			color: var(--colorTextoHover);
-			transform: scale(1.01);
-		}
+	.boton-pestañas:hover {
+	color: var(--colorTextoHover);
+	transform: scale(1.01);
+	}
 
 	.recompensa-expandir {
-		transition: transform .2s;
+	transition: transform .2s;
 	}
 
-		.recompensa-expandir:hover {
-			transform: scale(1.01);
-		}
+	.recompensa-expandir:hover {
+	transform: scale(1.01);
+	}
 </style>
 
 <div style="max-width: 1200px; margin: auto;">
-	@if ((usuario.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
-	{
-		<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
-			<div style="display: flex; align-items: center; gap: 20px;">
-				<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String1", "PatreonStore"), usuario.PatreonCoins.ToString())</label>
+	@{
+		bool aptoRegistro = false;
 
-				<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "PatreonStore")
-				</button>
-			</div>
-
-			<hr style="margin: 1px 0px;" />
-
-			@if (usuario.PatreonCoins >= 30)
+		if (usuario != null)
+		{
+			if ((usuario?.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 			{
-				<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
-					<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
-					@Herramientas.Idiomas.BuscarTexto(idioma, "Limit", "PatreonStore")
+				aptoRegistro = true;
+			}
+		}
+
+		if (aptoRegistro == true)
+		{
+			<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+				<div style="display: flex; align-items: center; gap: 20px;">
+					<label style="width: 100%; font-size: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String1", "PatreonStore"), usuario.PatreonCoins.ToString())</label>
+
+					<button @onclick="@(e => MostrarHistorial(e))" class="boton-pequeño" style="width: fit-content; padding: 8px 12px;">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "PatreonStore")
+					</button>
 				</div>
-			}
 
+				<hr style="margin: 1px 0px;" />
+
+				@if (usuario.PatreonCoins >= 30)
+				{
+					<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px, 40px; display: flex; align-items: center; gap: 20px;">
+						<i style="font-size: 25px;" class="fa-solid fa-circle-exclamation"></i>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "Limit", "PatreonStore")
+					</div>
+				}
+
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Problem", "PatreonStore")
+				</div>
+			</div>
+		}
+		else
+		{
 			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Problem", "PatreonStore")
-			</div>
-		</div>
-	}
-	else
-	{
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Denied", "PatreonStore")
-			</div>
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Denied", "PatreonStore")
+				</div>
 
-			@{
-				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
-			}
+				@{
+					WebApplicationBuilder builder = WebApplication.CreateBuilder();
+					string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+				}
 
-			<div style="margin-top: 10px;">
-				<a href="@patreonEnlace">@patreonEnlace</a>
-			</div>	
-		</div>
+				<div style="margin-top: 10px;">
+					<a href="@patreonEnlace">@patreonEnlace</a>
+				</div>
+			</div>
+		}
 	}
 
 	<div style="width: 100%; display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
@@ -116,7 +128,17 @@
 										}
 									}
 
-									@if ((usuario?.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+									bool aptoPoderComprar = false;
+
+									if (usuario != null)
+									{
+										if ((usuario?.PatreonCoins != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+										{
+											aptoPoderComprar = true;
+										}
+									}
+
+									if (aptoPoderComprar == true)
 									{
 										<button @onclick="@(e => ComprarJuego(e, recompensaJuego, juego.Nombre))" class="recompensa-expandir" style="text-align: left; border: 0; width: 100%; font-size: 15px; padding: 0px;" title="@juego.Nombre">
 											<div style="@fondoColor; display: flex; flex-direction: column;">
@@ -299,11 +321,12 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		juegos = BaseDatos.Recompensas.Juegos.Todo();
+
 		usuario = await UserManager.FindByIdAsync(usuarioId);
 
 		if (usuario != null)
 		{
-			juegos = BaseDatos.Recompensas.Juegos.Todo();
 			entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
 
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)

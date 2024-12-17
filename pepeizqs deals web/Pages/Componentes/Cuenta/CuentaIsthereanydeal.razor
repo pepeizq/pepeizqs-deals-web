@@ -1,0 +1,173 @@
+﻿@using Juegos
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using System.Text.Json
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div style="display: flex; flex-direction: column; gap: 40px;">
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+		<label style="font-size: 18px; margin-bottom: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal3", "Account")</label>
+
+		<div>
+			<ul style="display: flex; flex-direction: column; gap: 20px; margin: 0px;">
+				<li>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal7", "Account")
+				</li>
+
+				<li>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal6", "Account") <a href="https://isthereanydeal.com/waitlist/#!:backup">Waitlist/Backup</a>
+				</li>
+
+				<li>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal4", "Account")
+				</li>
+
+				<li>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal5", "Account")
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column;">
+		@if (string.IsNullOrEmpty(jsonDeseados) == false)
+		{
+			<button @onclick="CargarDeseados" class="boton" style="font-size: 18px; width: fit-content; margin-bottom: 40px; cursor: pointer; padding: 15px 30px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal1", "Account")
+			</button>
+		}
+
+		<label style="margin-bottom: 10px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal2", "Account")</label>
+
+		<textarea class="entrada-texto" value="@jsonDeseados" @oninput="TextoCambiaDeseados" />
+
+		@if (añadidos > 0)
+		{
+			<label style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "Isthereanydeal8", "Account"), añadidos)</label>
+		}
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private string jsonDeseados = string.Empty;
+	private List<string> listaDeseados = new List<string>();
+	private int añadidos = 0;
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+	}
+
+	private void TextoCambiaDeseados(ChangeEventArgs texto)
+	{
+		jsonDeseados = texto.Value.ToString();
+	}
+
+	private async void CargarDeseados()
+	{
+		añadidos = 0;
+
+		listaDeseados = Herramientas.Isthereanydeal.ImportarDeseados(jsonDeseados);
+
+		if (listaDeseados != null)
+		{
+			if (listaDeseados.Count > 0)
+			{
+				List<JuegoDeseado> deseados = new List<JuegoDeseado>();
+
+				if (string.IsNullOrEmpty(usuario.Wishlist) == false)
+				{
+					deseados = JsonSerializer.Deserialize<List<JuegoDeseado>>(usuario.Wishlist);
+				}
+
+				List<string> deseadosSteam = new List<string>();
+
+				if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+				{
+					deseadosSteam = Herramientas.Listados.Generar(usuario.SteamWishlist);
+				}
+
+				List<string> juegosSteam = new List<string>();
+
+				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+				{
+					juegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
+
+				foreach (var deseado in listaDeseados)
+				{
+					List<Juego> resultados = BaseDatos.Juegos.Buscar.Nombre(deseado);
+
+					if (resultados != null)
+					{
+						if (resultados.Count > 0)
+						{
+							bool seAñade = true;
+
+							if (deseados.Count > 0)
+							{
+								foreach (var deseado2 in deseados)
+								{
+									if (deseado2.IdBaseDatos == resultados[0].Id.ToString())
+									{
+										seAñade = false;
+									}
+								}
+							}
+
+							if (deseadosSteam.Count > 0)
+							{
+								foreach (var deseadoSteam in deseadosSteam)
+								{
+									if (deseadoSteam == resultados[0].IdSteam.ToString())
+									{
+										seAñade = false;
+									}
+								}
+							}
+
+							if (juegosSteam.Count > 0)
+							{
+								foreach (var juegoSteam in juegosSteam)
+								{
+									if (juegoSteam == resultados[0].IdSteam.ToString())
+									{
+										seAñade = false;
+									}
+								}
+							}
+
+							if (seAñade == true)
+							{
+								JuegoDeseado nuevoDeseado = new JuegoDeseado();
+								nuevoDeseado.IdBaseDatos = resultados[0].Id.ToString();
+								nuevoDeseado.DRM = JuegoDRM.Steam;
+
+								deseados.Add(nuevoDeseado);
+
+								añadidos += 1;
+							}
+						}
+					}
+				}
+
+				usuario.Wishlist = JsonSerializer.Serialize(deseados);
+
+				await UserManager.UpdateAsync(usuario);
+
+				jsonDeseados = null;
+			}
+		}
+	}
+}

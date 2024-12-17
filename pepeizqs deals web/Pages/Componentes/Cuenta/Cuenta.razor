@@ -35,7 +35,7 @@
     <label style="font-size: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Account")</label>
     <hr/>
 
-    <div class="grid-estructura" style="margin-top: 30px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
         <button @onclick="@(e => MostrarCorreo(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <i class="fa-solid fa-share" style="font-size: 22px;"></i>
@@ -99,9 +99,7 @@
                 </div>
             </div>
         </button>
-    </div>
 
-    <div class="grid-estructura" style="margin-top: 30px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
         <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <i class="fa-brands fa-patreon" style="font-size: 22px;"></i>
@@ -118,6 +116,27 @@
             </div>
         </button>
 
+        <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-key" style="font-size: 22px;"></i>
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Account")</label>
+    <hr />
+
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
         <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
@@ -150,17 +169,17 @@
             </div>
         </button>
 
-        <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas">
+        <button @onclick="@(e => MostrarIsthereanydeal(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <i class="fa-solid fa-key" style="font-size: 22px;"></i>
+                <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
 
                 <div>
                     <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Account")
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
                     </div>
 
                     <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Account")
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
                     </div>
                 </div>
             </div>
@@ -202,6 +221,11 @@
                     <Patreon idioma="@idioma" />
                 }
 
+                @if (mostrarClaves == true)
+                {
+                    <Claves idioma="@idioma" />
+                }
+
                 @if (mostrarSteam == true)
                 {
                     <CuentaSteam idioma="@idioma" />
@@ -212,9 +236,9 @@
                     <CuentaGog idioma="@idioma" />
                 }
 
-                @if (mostrarClaves == true)
+                @if (mostrarIsthereanydeal == true)
                 {
-                    <Claves idioma="@idioma" />
+                    <CuentaIsthereanydeal idioma="@idioma" />
                 }
             </div> 
         </div>
@@ -240,6 +264,7 @@
         mostrarPatreon = false;
         mostrarSteam = false;
         mostrarGog = false;
+        mostrarIsthereanydeal = false;
         mostrarClaves = false;
     }
 
@@ -309,6 +334,15 @@
         CerrarPestañas();
         enseñarPestaña = true;
         mostrarGog = true;
+    }
+
+    private bool mostrarIsthereanydeal = false;
+
+    private void MostrarIsthereanydeal(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarIsthereanydeal = true;
     }
 
     private bool mostrarClaves = false;
