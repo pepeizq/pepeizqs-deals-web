@@ -18,6 +18,8 @@ namespace APIs.GOG
 {
 	public static class Juego
 	{
+		public static string dominioImagenes = "https://images.gog-statics.com";
+
 		public static async Task<Juegos.Juego> CargarDatos(string enlace)
 		{
 			if (Detectar(enlace) == false)

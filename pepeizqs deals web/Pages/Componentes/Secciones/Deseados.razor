@@ -4,15 +4,30 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.JSInterop
-@using Newtonsoft.Json
+@using pepeizqs_deals_web.Areas.Identity.Data
+@using System.Text.Json
+@using System.Text
 @using Tiendas2
-@using pepeizqs_deals_web.Areas.Identity.Data;
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
+
+<script>
+	window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+	const arrayBuffer = await contentStreamReference.arrayBuffer();
+	const blob = new Blob([arrayBuffer]);
+	const url = URL.createObjectURL(blob);
+	const anchorElement = document.createElement('a');
+	anchorElement.href = url;
+	anchorElement.download = fileName ?? '';
+	anchorElement.click();
+	anchorElement.remove();
+	URL.revokeObjectURL(url);
+	}
+</script>
 
 <style>
 	.deseado-imagen {
@@ -75,11 +90,16 @@
 					<div style="display: flex; align-items: center; width: 100%;">
 						<div style="width: 100%; font-size: 23px; text-align: left;">
 							@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Wishlist")
+
+							@if (string.IsNullOrEmpty(otroUsuario) == false)
+							{
+								<label style="font-size: 14px; margin-left: 10px;">(@otroUsuario)</label>
+							}
 						</div>
 
 						<div style="display: flex; align-items: center; justify-content: right; width: 100%;">
 							<div style="font-size: 14px;">
-								@deseadosGestor.Count.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Wishlist") • @cantidadMinimos.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Wishlist")
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Wishlist"), deseadosGestor.Count.ToString()) • @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Wishlist"), cantidadMinimos.ToString())
 							</div>
 						</div>
 					</div>
@@ -87,9 +107,12 @@
 					<div style="display: flex; align-items: center; gap: 30px; width: 100%; margin: 15px 0px 25px 0px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
 						<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Wishlist")" />
 
-						<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; border: 0px; color: var(--colorTextoVisitado);">
-							@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Wishlist")
-						</button>
+						@if (string.IsNullOrEmpty(otroUsuario) == true)
+						{
+							<button class="boton-pequeño" @onclick="EnseñarOpciones" style="width: auto; padding: 10px 15px; border: 0px; color: var(--colorTextoVisitado);">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Wishlist")
+							</button>
+						}
 
 						<div class="menu-dropdown" style="width: auto;">
 							<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
@@ -142,7 +165,11 @@
 											@{
 												string imagen = juego.Imagen;
 
-												imagen = imagen.Replace("_glx_logo", null);
+												if (imagen.Contains(APIs.GOG.Juego.dominioImagenes) == true)
+												{
+													imagen = imagen.Replace("_glx_logo", null);
+													imagen = imagen.Replace(".png", ".webp");
+												}
 											}
 
 											<img src="@imagen" style="height: 100%; width: 100%;" />
@@ -206,7 +233,20 @@
 
 								@if (usuario.WishlistOption2 == true)
 								{
-									<div style="font-size: 14px; margin-top: 5px; text-align: right">@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Wishlist"): @juego.CantidadBundles.ToString() • @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Wishlist"): @juego.CantidadGratis • @Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Wishlist"): @juego.CantidadSuscripciones</div>
+									<div style="background-color: var(--fondoMinimo); border-left: 1px solid var(--fondoBotonPequeño); border-right: 1px solid var(--fondoBotonPequeño); border-bottom: 1px solid var(--fondoBotonPequeño); padding: 5px 10px; display: flex; align-items: center; gap: 10px;">
+										@if (juego.Importado == false)
+										{
+											<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" class="boton-pequeño" style="width: fit-content; font-size: 14px;">
+												@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
+											</button>
+										}
+
+										<a class="boton-pequeño" href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" style="width: fit-content; font-size: 14px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Wishlist")
+										</a>
+
+										<div style="width: 100%; font-size: 14px; text-align: right">@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Wishlist"): @juego.CantidadBundles.ToString() • @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Wishlist"): @juego.CantidadGratis • @Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Wishlist"): @juego.CantidadSuscripciones</div>
+									</div>
 								}
 							</div>
 						</ItemContent>
@@ -214,12 +254,12 @@
 				}
 			</div>
 
-			if (mostrarFiltrado == true)
+			if (mostrarOpciones == true)
 			{
 				<div class="opciones-panel">
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto; overflow-y: scroll;">
+					<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); max-width: 1200px; padding: 40px; display: flex; flex-direction: column; gap: 30px; overflow-y: scroll; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
 						<div style="display: flex; align-items: center;">
-							<button class="boton-pequeño" @onclick="OcultarFiltrado" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
+							<button class="boton-pequeño" @onclick="OcultarOpciones" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
 								<i class="fa-solid fa-arrow-left"></i>
 							</button>
 
@@ -228,58 +268,141 @@
 							</div>
 						</div>
 
-						<hr style="margin-top: 30px;">
-
-						<div style="display: flex; align-items: center; margin-top: 30px;">
-							<div class="checkbox-caja">
-								<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarSoloMinimos" @onchange="EnseñarSoloMinimos">
+						<div>
+							<div style="font-size: 18px;">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String27", "Wishlist")
 							</div>
 
-							<div style="margin-left: 20px; padding-bottom: 5px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Wishlist")
+							<hr/>
+
+							<div style="display: flex; flex-direction: column; gap: 20px;">
+								<div style="padding: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center; gap: 20px;">
+									<div class="checkbox-caja">
+										<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarSoloMinimos" @onchange="EnseñarSoloMinimos">
+									</div>
+
+									<div style="display: flex; flex-direction: column; gap: 10px;">
+										<div>
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Wishlist")
+										</div>
+
+										<div style="font-size: 14px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Wishlist")
+										</div>
+									</div>
+								</div>
+
+								<div style="padding: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center; gap: 20px;">
+									<div class="checkbox-caja">
+										<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarHistorial" @onchange="EnseñarHistorial">
+									</div>
+
+									<div style="display: flex; flex-direction: column; gap: 10px;">
+										<div>
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Wishlist")
+										</div>
+
+										<div style="font-size: 14px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Wishlist")
+										</div>
+									</div>
+								</div>
+
+								<div style="padding: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 15px;">
+									<div style="display: flex; flex-direction: column; gap: 10px;">
+										<div>
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Wishlist")
+										</div>
+
+										<div style="font-size: 14px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String30", "Wishlist")
+										</div>
+									</div>
+
+									<div style="display: flex; align-items: center; gap: 30px;">
+										<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
+
+										<label style="min-width: 65px; text-align: center;">@minimoDescuento%</label>
+									</div>
+								</div>
+
+								<div style="padding: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 15px;">
+									<div style="display: flex; flex-direction: column; gap: 10px;">
+										<div>
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Wishlist")
+										</div>
+
+										<div style="font-size: 14px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Wishlist")
+										</div>
+									</div>
+
+									<div style="display: flex; align-items: center; gap: 30px;">
+										<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
+
+										<label style="min-width: 65px; text-align: center;">@maximoPrecio€</label>
+									</div>
+								</div>
 							</div>
 						</div>
 
-						<div style="display: flex; align-items: center; margin-top: 30px;">
-							<div class="checkbox-caja">
-								<input type="checkbox" class="checkbox-interior" checked="@estadoEnseñarHistorial" @onchange="EnseñarHistorial">
+						<div style="margin-top: 20px;">
+							<div style="font-size: 18px;">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String32", "Wishlist")
 							</div>
 
-							<div style="margin-left: 20px; padding-bottom: 5px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Wishlist")
+							<hr />
+
+							<div style="padding: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center; gap: 20px;">
+								<div class="checkbox-caja">
+									<input type="checkbox" class="checkbox-interior" checked="@estadoCompartir" @onchange="CompartirDeseados">
+								</div>
+
+								<div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+									<div>
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String33", "Wishlist")
+									</div>
+
+									@if (estadoCompartir == true)
+									{
+										<div>
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String34", "Wishlist")
+										</div>
+
+										<input type="text" value="@compartirNombre" @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String35", "Wishlist")" />
+
+										@if (string.IsNullOrEmpty(compartirEnlace) == false)
+										{
+											<a href="@compartirEnlace" target="_blank">@compartirEnlace</a>
+										}
+									}		
+								</div>
 							</div>
 						</div>
 
-						<hr style="margin-top: 30px;">
-
-						<div style="margin-top: 30px;">
-							<div style="padding-bottom: 15px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Wishlist")
+						<div style="margin-top: 20px;">
+							<div style="font-size: 18px;">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Wishlist")
 							</div>
 
-							<div style="display: flex; align-items: center;">
-								<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
+							<hr />
 
-								<label style="padding-left: 30px; min-width: 65px; text-align: center;">@minimoDescuento%</label>
-							</div>
-						</div>
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+								<div>
+									<div style="margin-bottom: 15px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Wishlist")
+									</div>
 
-						<div style="margin-top: 30px;">
-							<div style="padding-bottom: 15px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Wishlist")
-							</div>
-
-							<div style="display: flex; align-items: center;">
-								<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
-
-								<label style="padding-left: 30px; min-width: 65px; text-align: center;">@maximoPrecio€</label>
+									<button @onclick="@(e => DescargarJson())" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String25", "Wishlist")
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			}
 		}
-
 	}
 }
 
@@ -292,6 +415,9 @@
 
 	[Parameter]
 	public string usuarioId { get; set; }
+
+	[Parameter]
+	public string otroUsuario { get; set; }
 
 	private Usuario usuario = new Usuario();
 	private bool usuarioPatreon = false;
@@ -313,13 +439,27 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		usuario = await UserManager.FindByIdAsync(usuarioId);
+		if (string.IsNullOrEmpty(otroUsuario) == true)
+		{
+			usuario = await UserManager.FindByIdAsync(usuarioId);
+		}
+		else
+		{
+			usuario = await UserManager.FindByIdAsync(BaseDatos.Usuarios.Buscar.UsuarioDeseadosNickname(otroUsuario));
+		}
 
 		if (usuario != null)
 		{
-			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
-
 			deseadosGestor = new List<JuegoDeseadoMostrar>();
+
+			if (string.IsNullOrEmpty(otroUsuario) == true)
+			{
+				usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+
+				estadoCompartir = usuario.WishlistPublic;
+				compartirNombre = usuario.WishlistNickname;
+				compartirEnlace = "https://pepeizqdeals.com/wishlist/" + compartirNombre + "/";
+			}
 
 			#region Filtrado
 
@@ -335,12 +475,12 @@
 			if (usuario.WishlistOption2 == true)
 			{
 				estadoEnseñarHistorial = "checked";
-				alturaFila = 114;
+				alturaFila = 108;
 			}
 			else
 			{
 				estadoEnseñarHistorial = null;
-				alturaFila = 88;
+				alturaFila = 78;
 			}
 
 			if (usuario.WishlistOption3 == null)
@@ -398,7 +538,7 @@
 
 						if (juego != null)
 						{
-							AñadirJuegoMostrar(juego, JuegoDRM.Steam);
+							AñadirJuegoMostrar(juego, JuegoDRM.Steam, true);
 						}
 					}
 				}
@@ -410,7 +550,7 @@
 
 			if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 			{
-				deseadosWeb = JsonConvert.DeserializeObject<List<JuegoDeseado>>(usuario.Wishlist);
+				deseadosWeb = JsonSerializer.Deserialize<List<JuegoDeseado>>(usuario.Wishlist);
 			}
 
 			if (deseadosWeb != null)
@@ -427,7 +567,7 @@
 
 						if (juego != null)
 						{
-							AñadirJuegoMostrar(juego, deseadoWeb.DRM);
+							AñadirJuegoMostrar(juego, deseadoWeb.DRM, false);
 						}
 					}
 				}
@@ -456,7 +596,7 @@
 
 						if (juego != null)
 						{
-							AñadirJuegoMostrar(juego, JuegoDRM.GOG);
+							AñadirJuegoMostrar(juego, JuegoDRM.GOG, true);
 						}
 					}
 				}
@@ -491,7 +631,7 @@
 		deseadosWeb.Clear();
 	}
 
-	private void AñadirJuegoMostrar(Juegos.Juego juego, JuegoDRM drm)
+	private void AñadirJuegoMostrar(Juegos.Juego juego, JuegoDRM drm, bool importado)
 	{
 		bool yaEsta = false;
 
@@ -525,11 +665,15 @@
 							{
 								JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 								nuevoDeseado.Id = juego.Id;
+								nuevoDeseado.IdSteam = juego.IdSteam;
+								nuevoDeseado.IdGog = juego.IdGog;
+								nuevoDeseado.SlugEpic = juego.SlugEpic;
 								nuevoDeseado.Nombre = juego.Nombre;
 								nuevoDeseado.Imagen = juego.Imagenes.Header_460x215;
 								nuevoDeseado.DRM = drm;
 								nuevoDeseado.Precio = historico;
 								nuevoDeseado.Historico = true;
+								nuevoDeseado.Importado = importado;
 
 								if (juego.Analisis != null)
 								{
@@ -607,12 +751,16 @@
 						{
 							JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 							nuevoDeseado.Id = juego.Id;
+							nuevoDeseado.IdSteam = juego.IdSteam;
+							nuevoDeseado.IdGog = juego.IdGog;
+							nuevoDeseado.SlugEpic = juego.SlugEpic;
 							nuevoDeseado.Nombre = juego.Nombre;
 							nuevoDeseado.Imagen = juego.Imagenes.Header_460x215;
 							nuevoDeseado.DRM = drm;
 							nuevoDeseado.Precio = precioFinal;
 							nuevoDeseado.Historico = false;
 							nuevoDeseado.HistoricoPrecio = MensajeMinimo(SacarMinimo(juego, drm), false);
+							nuevoDeseado.Importado = importado;
 
 							if (juego.Analisis != null)
 							{
@@ -659,6 +807,16 @@
 		}
 
 		return null;
+	}
+
+	private void QuitarJuego(MouseEventArgs e, int juegoId, Juegos.JuegoDRM drm)
+	{
+		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegoId);
+
+		if (juego != null)
+		{
+			Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, false, drm);
+		}
 	}
 
 	private string MensajeMinimo(JuegoPrecio precio, bool moneda)
@@ -728,11 +886,14 @@
 			{
 				usuario.WishlistSort = 0;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
@@ -754,11 +915,14 @@
 			{
 				usuario.WishlistSort = 1;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
@@ -780,11 +944,14 @@
 			{
 				usuario.WishlistSort = 2;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
@@ -806,11 +973,14 @@
 			{
 				usuario.WishlistSort = 5;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
@@ -832,11 +1002,14 @@
 			{
 				usuario.WishlistSort = 3;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
@@ -858,18 +1031,21 @@
 			{
 				usuario.WishlistSort = 4;
 
-				try
+				if (string.IsNullOrEmpty(otroUsuario) == true)
 				{
-					await UserManager.UpdateAsync(usuario);
+					try
+					{
+						await UserManager.UpdateAsync(usuario);
+					}
+					catch { }
 				}
-				catch { }
 			}
 		}
 	}
 
 	#endregion
 
-	#region Filtrado
+	#region Opciones
 
 	private List<JuegoDeseadoMostrar> Filtros()
 	{
@@ -985,16 +1161,16 @@
 		ElegirOrdenamiento();
 	}
 
-	private bool mostrarFiltrado = false;
+	private bool mostrarOpciones = false;
 
-	private void EnseñarFiltrado()
+	private void EnseñarOpciones()
 	{
-		mostrarFiltrado = true;
+		mostrarOpciones = true;
 	}
 
-	private void OcultarFiltrado()
+	private void OcultarOpciones()
 	{
-		mostrarFiltrado = false;
+		mostrarOpciones = false;
 	}
 
 	private string estadoEnseñarSoloMinimos = null;
@@ -1090,6 +1266,94 @@
 		catch { }
 
 		ElegirOrdenamiento();
+	}
+
+	private bool? estadoCompartir = false;
+
+	private async void CompartirDeseados()
+	{
+		if (estadoCompartir == false)
+		{
+			estadoCompartir = true;
+		}
+		else
+		{
+			estadoCompartir = false;
+		}
+
+		if (usuario != null)
+		{
+			usuario.WishlistPublic = estadoCompartir;
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+		}
+	}
+
+	private string compartirNombre = string.Empty;
+	private string compartirEnlace = string.Empty;
+
+	private async void TextoCambiaDeseados(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			compartirNombre = texto.Value.ToString().Trim();
+		}
+
+		if (string.IsNullOrEmpty(compartirNombre) == false)
+		{
+			string existe = BaseDatos.Usuarios.Buscar.UsuarioDeseadosNickname(Herramientas.Buscador.LimpiarNombre(compartirNombre, true));
+
+			if (string.IsNullOrEmpty(existe) == true)
+			{
+				compartirEnlace = "https://pepeizqdeals.com/wishlist/" + Herramientas.Buscador.LimpiarNombre(compartirNombre, true) + "/";
+
+				usuario.WishlistNickname = Herramientas.Buscador.LimpiarNombre(compartirNombre, true);
+
+				try
+				{
+					await UserManager.UpdateAsync(usuario);
+				}
+				catch { }
+			}
+		}
+	}
+
+	private async Task DescargarJson()
+	{
+		if (deseadosGestor != null)
+		{
+			if (deseadosGestor.Count > 0)
+			{
+				List<JuegoDeseadoExportar> deseadosExportar = new List<JuegoDeseadoExportar>();
+
+				foreach (var deseadoGestor in deseadosGestor)
+				{
+					JuegoDeseadoExportar nuevoDeseadoExportar = new JuegoDeseadoExportar();
+					nuevoDeseadoExportar.Nombre = deseadoGestor.Nombre;
+					nuevoDeseadoExportar.Id = deseadoGestor.Id;
+					nuevoDeseadoExportar.IdSteam = deseadoGestor.IdSteam;
+					nuevoDeseadoExportar.IdGog = deseadoGestor.IdGog;
+					nuevoDeseadoExportar.SlugEpic = deseadoGestor.SlugEpic;
+					nuevoDeseadoExportar.DRM = deseadoGestor.DRM;
+
+					deseadosExportar.Add(nuevoDeseadoExportar);
+				}
+
+				string contenido = JsonSerializer.Serialize(deseadosExportar);
+
+				MemoryStream ficheroStream = new MemoryStream(Encoding.UTF8.GetBytes(contenido));
+
+				string ficheroNombre = "wishlist.json";
+
+				using var streamRef = new DotNetStreamReference(stream: ficheroStream);
+
+				await JavaScript.InvokeVoidAsync("downloadFileFromStream", ficheroNombre, streamRef);
+			}
+		}
 	}
 
 	#endregion

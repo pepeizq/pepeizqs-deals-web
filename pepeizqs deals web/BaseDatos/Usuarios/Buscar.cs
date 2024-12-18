@@ -333,5 +333,40 @@ namespace BaseDatos.Usuarios
 
 			return usuariosId;
 		}
-    }
+
+		public static string UsuarioDeseadosNickname(string otroUsuario, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT Id FROM AspNetUsers WHERE WishlistPublic='true' AND WishlistNickname=@WishlistNickname";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@WishlistNickname", otroUsuario);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						if (lector.IsDBNull(lector.GetOrdinal("Id")) == false)
+						{
+							return lector.GetString(lector.GetOrdinal("Id"));
+						}
+					}
+				}
+			}
+
+			return null;
+		}
+	}
 }

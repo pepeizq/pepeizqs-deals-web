@@ -188,5 +188,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? GogGames { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? WishlistPublic { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(256)")]
+	public string? WishlistNickname { get; set; }
 }
 

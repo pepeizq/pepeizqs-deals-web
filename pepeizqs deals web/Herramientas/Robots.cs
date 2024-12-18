@@ -103,7 +103,9 @@ namespace Herramientas
 							User-agent: WWWOFFLE 
 							User-agent: Xaldon\ WebSpider 
 							User-agent: Zeus
-							Disallow: /
+
+							Disallow: /account/
+							Disallow: /link/*
 
 							Sitemap: https://pepeizqdeals.com/sitemap.xml");
 			}

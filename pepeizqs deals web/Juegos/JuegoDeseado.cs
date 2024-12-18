@@ -5,8 +5,6 @@ namespace Juegos
 	public class JuegoDeseado
 	{
 		public string IdBaseDatos { get; set; }
-		public Juego Juego { get; set; }
-		public string IdSteam { get; set; }
 		public JuegoDRM DRM { get; set; }
 	}
 
@@ -21,8 +19,22 @@ namespace Juegos
 		public string ReseñasPorcentaje { get; set; }
 		public string ReseñasCantidad { get; set; }
         public int Id { get; set; }
+		public int IdSteam { get; set; }
+		public int IdGog { get; set; }
+		public string SlugEpic { get; set; }
 		public int CantidadBundles { get; set; }
 		public int CantidadGratis { get; set; }
 		public int CantidadSuscripciones { get; set; }
+		public bool Importado { get; set; }
+	}
+
+	public class JuegoDeseadoExportar
+	{
+		public string Nombre { get; set; }
+		public int Id { get; set; }
+		public JuegoDRM DRM { get; set; }
+		public int IdSteam { get; set; }
+		public int IdGog { get; set; }
+		public string SlugEpic { get; set; }
 	}
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/wishlist/{otroUsuario?}"
 
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
@@ -25,6 +25,7 @@
     @(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new
     {
         idioma = Model.idioma,
-        usuarioId = usuario?.Id
+        usuarioId = usuario?.Id,
+        otroUsuario = Model.otroUsuario
     }))
 }
