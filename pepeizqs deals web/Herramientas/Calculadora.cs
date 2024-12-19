@@ -83,7 +83,7 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(idioma) == true)
 			{
-				idioma = "en-US";
+				idioma = "en";
 			}
 
 			DateTime fecha = new DateTime();

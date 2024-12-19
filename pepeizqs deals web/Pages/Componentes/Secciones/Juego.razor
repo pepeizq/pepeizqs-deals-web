@@ -3188,7 +3188,14 @@
             {
                 foreach (var suscripcion in listaSuscripciones)
                 {
-                    if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+                    DateTime fechaTermina = suscripcion.FechaTermina;
+
+                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
+                    {
+                        fechaTermina = fechaTermina.AddDays(1);
+                    }
+
+                    if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= fechaTermina)
                     {
                         if (drm != JuegoDRM.NoEspecificado)
                         {
@@ -3261,7 +3268,14 @@
             {
                 foreach (var suscripcion in listaSuscripciones)
                 {
-                    if (DateTime.Now > suscripcion.FechaTermina)
+                    DateTime fechaTermina = suscripcion.FechaTermina;
+
+                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
+                    {
+                        fechaTermina = fechaTermina.AddDays(1);
+                    }
+
+                    if (DateTime.Now > fechaTermina)
                     {
                         if (drm != JuegoDRM.NoEspecificado)
                         {

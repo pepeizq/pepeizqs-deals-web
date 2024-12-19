@@ -173,8 +173,10 @@ namespace APIs.Allyouplay
 		[JsonPropertyName("image_url")]
 		public string Imagen { get; set; }
 
+		#nullable enable
 		[JsonPropertyName("product_price")]
 		public AllyouplayAPIJuegoPrecios? Precios { get; set; }
+		#nullable disable
 	}
 
 	public class AllyouplayAPIJuegoPrecios

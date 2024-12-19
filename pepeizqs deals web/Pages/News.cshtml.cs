@@ -1,13 +1,8 @@
 #nullable disable
 
-using Bundles2;
-using Gratis2;
-using Juegos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.VisualBasic;
 using Noticias;
-using Suscripciones2;
 
 namespace pepeizqs_deals_web.Pages
 {
