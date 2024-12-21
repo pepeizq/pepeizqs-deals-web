@@ -9,9 +9,9 @@
   "String8": "Ce DLC a été automatiquement ajouté à votre liste de souhaits lorsque votre compte Steam a été lié",
   "String9": "avis",
   "String10": "Un plus bas historique pour",
-  "String11": "En vente maintenant",
+  "String11": "En vente maintenant le {0}",
   "String12": "Il n'y a actuellement aucune offre pour cette plateforme",
-  "String13": "sur",
+  "String13": "{0} le {1}",
   "String14": "Disponible sur abonnement",
   "String15": "Il était disponible sur abonnement",
   "String16": "Gratuit sur",
@@ -42,7 +42,7 @@
   "String41": "Choisir {0} jeux",
   "String42": "Il y a plus d'offres mais elles ont une très faible réduction (cliquez pour afficher)",
   "String43": "Cliquez pour masquer les offres avec une faible remise",
-  "String44": "Genres",
+  "String44": "Genre",
   "String45": "Ce jeu contient du contenu à caractère sexuel non adapté aux mineurs.",
   "String46": "Ce DLC contient du contenu sexuel non adapté aux mineurs.",
   "String47": "Balises",
@@ -82,5 +82,7 @@
   "String81": "Ce jeu a été automatiquement ajouté à votre liste de souhaits lorsque votre compte GOG a été associé",
   "String82": "Ce DLC a été automatiquement ajouté à votre liste de souhaits lorsque votre compte GOG a été associé",
   "String83": "Vous avez déjà ce jeu sur le compte GOG associé",
-  "String84": "Vous disposez déjà de ce DLC sur le compte GOG lié"
+  "String84": "Vous disposez déjà de ce DLC sur le compte GOG lié",
+  "String85": "{0} fois",
+  "String86": "{0} fois"
 }

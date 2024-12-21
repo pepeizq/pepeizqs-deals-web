@@ -81,53 +81,59 @@ namespace APIs.Allyouplay
 
 					if (datos != null)
 					{
-						total = datos.Datos.Catalogo.Paginas;
-
-						foreach (var juego in datos.Datos.Catalogo.Juegos)
+						if (datos.Datos != null)
 						{
-							if (juego.Precios != null)
+							if (datos.Datos.Catalogo != null)
 							{
-								if (juego.Precios.PrecioRebajado != null && juego.Precios.PrecioBase != null)
+								total = datos.Datos.Catalogo.Paginas;
+
+								foreach (var juego in datos.Datos.Catalogo.Juegos)
 								{
-									decimal precioBase = juego.Precios.PrecioBase.Value;
-									decimal precioRebajado = juego.Precios.PrecioRebajado.Value;
-
-									int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-									if (descuento > 0)
+									if (juego.Precios != null)
 									{
-										JuegoPrecio oferta = new JuegoPrecio
+										if (juego.Precios.PrecioRebajado != null && juego.Precios.PrecioBase != null)
 										{
-											Nombre = juego.Nombre,
-											Enlace = "https://allyouplay.com/" + juego.Slug,
-											Imagen = juego.Imagen,
-											Moneda = JuegoMoneda.Euro,
-											Precio = precioRebajado,
-											Descuento = descuento,
-											Tienda = Generar().Id,
-											DRM = JuegoDRM.Steam,
-											FechaDetectado = DateTime.Now,
-											FechaActualizacion = DateTime.Now
-										};
+											decimal precioBase = juego.Precios.PrecioBase.Value;
+											decimal precioRebajado = juego.Precios.PrecioRebajado.Value;
 
-										try
-										{
-											BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
-										}
+											int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-										juegos2 += 1;
+											if (descuento > 0)
+											{
+												JuegoPrecio oferta = new JuegoPrecio
+												{
+													Nombre = juego.Nombre,
+													Enlace = "https://allyouplay.com/" + juego.Slug,
+													Imagen = juego.Imagen,
+													Moneda = JuegoMoneda.Euro,
+													Precio = precioRebajado,
+													Descuento = descuento,
+													Tienda = Generar().Id,
+													DRM = JuegoDRM.Steam,
+													FechaDetectado = DateTime.Now,
+													FechaActualizacion = DateTime.Now
+												};
 
-										try
-										{
-											BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
-										}
-										catch (Exception ex)
-										{
-											BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+												try
+												{
+													BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+												}
+
+												juegos2 += 1;
+
+												try
+												{
+													BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+												}
+												catch (Exception ex)
+												{
+													BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+												}
+											}
 										}
 									}
 								}

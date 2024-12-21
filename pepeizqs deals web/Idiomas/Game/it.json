@@ -9,9 +9,9 @@
   "String8": "Questo DLC è stato aggiunto automaticamente alla tua lista dei desideri quando il tuo account Steam è stato collegato",
   "String9": "recensioni",
   "String10": "Minimo storico per",
-  "String11": "In vendita ora",
+  "String11": "In vendita ora su {0}",
   "String12": "Al momento non ci sono offerte per questa piattaforma",
-  "String13": "SU",
+  "String13": "{0} su {1}",
   "String14": "Disponibile su abbonamento",
   "String15": "Era disponibile in abbonamento",
   "String16": "Gratis",
@@ -56,7 +56,7 @@
   "String55": "Era nell'abbonamento {0}",
   "String56": "Era in {0} abbonamenti",
   "String57": "Era nel pacchetto: {0} da {1}",
-  "String58": "Era in {0} pacchetti",
+  "String58": "Era in {0} bundle",
   "String59": "Disponibile gratuitamente per la richiesta su {0}",
   "String60": "Disponibile gratuitamente per la richiesta su {0} siti",
   "String61": "La richiesta su {0} era gratuita",
@@ -82,5 +82,7 @@
   "String81": "Questo gioco è stato aggiunto automaticamente alla tua lista dei desideri quando il tuo account GOG è stato collegato",
   "String82": "Questo DLC è stato aggiunto automaticamente alla tua lista dei desideri quando il tuo account GOG è stato collegato",
   "String83": "Hai già questo gioco sull'account GOG collegato",
-  "String84": "Hai già questo DLC sull'account GOG collegato"
+  "String84": "Hai già questo DLC sull'account GOG collegato",
+  "String85": "{0} volta",
+  "String86": "{0} volte"
 }

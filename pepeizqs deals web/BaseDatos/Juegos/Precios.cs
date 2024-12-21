@@ -466,7 +466,7 @@ namespace BaseDatos.Juegos
 					if (precioMasBajo2 == nuevoHistorico.Precio)
 					{
 						DateTime historico2 = fechaMasBajo2;
-						historico2 = historico2.AddDays(30);
+						historico2 = historico2.AddDays(22);
 
 						if (historico2 < nuevoHistorico.Fecha)
 						{

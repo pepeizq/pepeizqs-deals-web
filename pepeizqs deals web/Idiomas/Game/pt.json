@@ -9,9 +9,9 @@
   "String8": "Este DLC foi adicionado automaticamente à sua lista de desejos quando sua conta Steam foi vinculada",
   "String9": "comentários",
   "String10": "Baixa histórica para",
-  "String11": "À venda agora",
+  "String11": "À venda agora em {0}",
   "String12": "Atualmente não há ofertas para esta plataforma",
-  "String13": "sobre",
+  "String13": "{0} em {1}",
   "String14": "Disponível na assinatura",
   "String15": "Estava disponível por assinatura",
   "String16": "Gratuito em",
@@ -31,7 +31,7 @@
   "String30": "Disponível gratuitamente",
   "String31": "Promoções gratuitas antigas",
   "String32": "Atenção, este é um DLC e requer que o jogo {0} funcione corretamente (clique para abrir o jogo).",
-  "String33": "Este jogo é Free To Play, o que significa que pode ser jogado gratuitamente, mas para desfrutá-lo ao máximo será necessário adquirir um ou mais downloads de conteúdo (ou DLCs, para abreviar).",
+  "String33": "Este jogo é Free To Play, o que significa que pode ser jogado de graça, mas para desfrutá-lo ao máximo será necessário adquirir um ou mais downloads de conteúdo (ou DLCs, para abreviar).",
   "String34": "DLCs",
   "String35": "Desenvolvido por:",
   "String36": "Publicado por:",
@@ -82,5 +82,7 @@
   "String81": "Este jogo foi adicionado automaticamente à sua lista de desejos quando sua conta GOG foi vinculada",
   "String82": "Este DLC foi adicionado automaticamente à sua lista de desejos quando sua conta GOG foi vinculada",
   "String83": "Você já tem este jogo na conta GOG vinculada",
-  "String84": "Você já possui este DLC na conta GOG vinculada"
+  "String84": "Você já possui este DLC na conta GOG vinculada",
+  "String85": "{0} vez",
+  "String86": "{0} vezes"
 }

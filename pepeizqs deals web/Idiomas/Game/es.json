@@ -9,9 +9,9 @@
   "String8": "Este DLC se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de Steam",
   "String9": "reseñas",
   "String10": "Mínimo histórico para",
-  "String11": "En oferta actualmente",
+  "String11": "En oferta actualmente en {0}",
   "String12": "Actualmente no hay ofertas para esta plataforma",
-  "String13": "en",
+  "String13": "{0} en {1}",
   "String14": "Disponible en la suscripción",
   "String15": "Estuvo disponible en la suscripción",
   "String16": "Gratis en",
@@ -82,5 +82,7 @@
   "String81": "Este juego se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de GOG",
   "String82": "Este DLC se agregó automáticamente a tu lista de deseados cuando se vinculó tu cuenta de GOG",
   "String83": "Ya tienes este juego en la cuenta de GOG vinculada",
-  "String84": "Ya tienes este DLC en la cuenta de GOG vinculada"
+  "String84": "Ya tienes este DLC en la cuenta de GOG vinculada",
+  "String85": "{0} vez",
+  "String86": "{0} veces"
 }

@@ -75,7 +75,7 @@ namespace Tareas
                                                     {
                                                         TimeSpan actualizado = DateTime.Now.Subtract(historico.FechaActualizacion);
 
-                                                        if (actualizado.Days == 0)
+                                                        if (actualizado.Hours <= 12)
                                                         {
                                                             bool añadir = true;
 

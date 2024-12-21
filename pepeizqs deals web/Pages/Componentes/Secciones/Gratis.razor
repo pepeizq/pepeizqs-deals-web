@@ -26,7 +26,7 @@
 
     <hr>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; justify-items: center;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); justify-items: center; gap: 40px;">
         @foreach (var juego in juegosActuales)
         {
             bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego.Juego, juego.DRM);

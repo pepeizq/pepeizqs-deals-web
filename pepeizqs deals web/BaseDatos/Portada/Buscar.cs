@@ -70,8 +70,9 @@ namespace BaseDatos.Portada
 			using (conexion)
 			{
 				string busqueda = @"SELECT TOP 6 idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video') as video, idSteam FROM seccionMinimos
-									WHERE tipo = 0 AND JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND (CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 4999 AND bundles IS NULL AND gratis IS NULL 
-										  AND (suscripciones IS NULL OR (suscripciones IS NOT NULL AND NOT suscripciones LIKE '%,""DRM"":0,%')) OR CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 49999)
+									WHERE tipo = 0 AND JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaActualizacion')) BETWEEN DATEADD(hh, -12, GETDATE()) AND GETDATE()
+										AND (CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 4999 AND bundles IS NULL AND gratis IS NULL 
+										AND (suscripciones IS NULL OR (suscripciones IS NOT NULL AND NOT suscripciones LIKE '%,""DRM"":0,%')) OR CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 49999)
 									ORDER BY NEWID()";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

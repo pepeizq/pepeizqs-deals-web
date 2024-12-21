@@ -9,9 +9,9 @@
   "String8": "This DLC was automatically added to your wishlist when your Steam account was linked",
   "String9": "reviews",
   "String10": "Historical low for",
-  "String11": "On sale now",
+  "String11": "On sale now on {0}",
   "String12": "There are currently no deals for this platform",
-  "String13": "on",
+  "String13": "{0} on {1}",
   "String14": "Available on subscription",
   "String15": "It was available on subscription",
   "String16": "Free on",
@@ -82,5 +82,7 @@
   "String81": "This game was automatically added to your wishlist when your GOG account was linked",
   "String82": "This DLC was automatically added to your wishlist when your GOG account was linked",
   "String83": "You already have this game on the linked GOG account",
-  "String84": "You already have this DLC on the linked GOG account"
+  "String84": "You already have this DLC on the linked GOG account",
+  "String85": "{0} time",
+  "String86": "{0} times"
 }

@@ -415,9 +415,10 @@
                     bool usuarioTieneJuego = false;
                     bool usuarioTieneDeseado = false;
                     string usuarioTieneDeseadoMensaje = string.Empty;
+                    string mensajeMinimoDRM = CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, juego.Historicos);
 
                     <div id="@drm.Id">
-                        @if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+                        @if (string.IsNullOrEmpty(mensajeMinimoDRM) == false)
                         {
                             if (usuario != null)
                             {
@@ -619,7 +620,7 @@
                                     }
                                 }
 
-                                @if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null || BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
+                                @if (string.IsNullOrEmpty(mensajeMinimoDRM) == false || BundlesComprobar(juego.Bundles, drm.Id) != null || GratisComprobar(juego.Gratis, drm.Id) != null || SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
                                 {
                                     <div style="text-align: left; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 30px;">
                                         @if (drm.Id == JuegoDRM.DRMFree)
@@ -634,14 +635,14 @@
                                         }
 
                                         <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
-                                            @if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+                                            @if (string.IsNullOrEmpty(mensajeMinimoDRM) == false)
                                             {
                                                 <div>
                                                     <div>@Idiomas.BuscarTexto(idioma, "String10", "Game") @JuegoDRM2.DevolverDRM(drm.Id):</div>
 
                                                     <div style="margin-top: 5px;">
                                                         <label>@PrepararPrecio(juego.PrecioMinimosHistoricos, drm.Id, true)</label>
-                                                        <label style="font-size: 14px;">@CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas)</label>
+                                                        <label style="font-size: 14px;">@mensajeMinimoDRM</label>
                                                     </div>
                                                 </div>
                                             }
@@ -987,7 +988,7 @@
                                 }
                                 else
                                 {
-                                    if (CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+                                    if (string.IsNullOrEmpty(mensajeMinimoDRM) == false)
                                     {
                                         <div style="padding: 30px 40px;">@Idiomas.BuscarTexto(idioma, "String12", "Game")</div>
                                     }
@@ -2374,7 +2375,7 @@
     {
         bool mostrar = false;
 
-        if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas) != null)
+        if (CogerMinimoDRM(idioma, drm, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, juego.Historicos) != null)
         {
             mostrar = true;
         }
@@ -2394,7 +2395,7 @@
         return mostrar;
     }
 
-    public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> historicos, List<JuegoPrecio> actuales)
+    public static string CogerMinimoDRM(string idioma, JuegoDRM drm, List<JuegoPrecio> historicos, List<JuegoPrecio> actuales, List<JuegoHistorico> listaHistoricos)
     {
         string drmPreparado = null;
 
@@ -2440,15 +2441,106 @@
                     }
                 }
 
-                if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(23) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
+                if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(11) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
                 {
-                    drmPreparado = drmPreparado + " (" + Idiomas.BuscarTexto(idioma, "String11", "Game") + " " + Idiomas.BuscarTexto(idioma, "String13", "Game") + " " + tiendaFinal + ")";
+                    drmPreparado = drmPreparado + " (" + string.Format(Idiomas.BuscarTexto(idioma, "String11", "Game"), tiendaFinal) + ")";
                 }
                 else
                 {
-                    drmPreparado = drmPreparado + " (" + Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma) + " " + Idiomas.BuscarTexto(idioma, "String13", "Game") + " " + tiendaFinal + ")";
+                    string mensaje = string.Empty;
+
+                    if (listaHistoricos != null)
+                    {
+                        if (listaHistoricos.Count > 0)
+                        {
+                            bool generarMensaje = false;
+                            JuegoHistorico ultimo = new JuegoHistorico();
+                            ultimo.Fecha = DateTime.Now - TimeSpan.FromDays(900);
+
+                            foreach (var historico in listaHistoricos)
+                            {
+                                if (historico.DRM == drm)
+                                {
+                                    if (ultimo.Fecha < historico.Fecha)
+                                    {
+                                        ultimo = historico;
+                                        generarMensaje = true;
+                                    }
+                                }
+                            }
+
+                            if (generarMensaje == true)
+                            {
+                                mensaje = " (" + string.Format(Idiomas.BuscarTexto(idioma, "String13", "Game"), Calculadora.DiferenciaTiempo(ultimo.Fecha, idioma), tiendaFinal) + ")";
+                            }
+                        }
+                    }                 
+
+                    if (string.IsNullOrEmpty(mensaje) == true)
+                    {
+                        mensaje = " (" + string.Format(Idiomas.BuscarTexto(idioma, "String13", "Game"), Calculadora.DiferenciaTiempo(historicosOrdenados[0].FechaDetectado, idioma), tiendaFinal) + ")";
+                    }
+
+                    drmPreparado = drmPreparado + mensaje;
                 }
 
+                if (listaHistoricos != null)
+                {
+                    if (listaHistoricos.Count > 0)
+                    {
+                        bool tieneDRM = false;
+
+                        foreach (var historico in listaHistoricos)
+                        {
+                            if (historico.DRM == drm)
+                            {
+                                tieneDRM = true;
+                                break;
+                            }
+                        }
+
+                        if (tieneDRM == true)
+                        {
+                            List<JuegoHistorico> mismoPrecio = new List<JuegoHistorico>();
+
+                            foreach (var historico in listaHistoricos)
+                            {
+                                if (historico.DRM == drm && historico.Precio == historicosOrdenados[0].Precio)
+                                {
+                                    bool sePuedeAñadir = true;
+
+                                    if (mismoPrecio.Count > 0)
+                                    {
+                                        foreach (var mismo in mismoPrecio)
+                                        {
+                                            if (historico.Fecha.Subtract(mismo.Fecha) < TimeSpan.FromDays(22))
+                                            {
+                                                sePuedeAñadir = false;
+                                            }
+                                        }
+                                    }
+
+                                    if (sePuedeAñadir == true)
+                                    {
+                                        mismoPrecio.Add(historico);
+                                    }
+                                }
+                            }
+
+                            if (mismoPrecio.Count > 0)
+                            {
+                                if (mismoPrecio.Count == 1)
+                                {
+                                    drmPreparado = drmPreparado + " (" + string.Format(Idiomas.BuscarTexto(idioma, "String85", "Game"), mismoPrecio.Count.ToString()) + ")";
+                                }
+                                else
+                                {
+                                    drmPreparado = drmPreparado + " (" + string.Format(Idiomas.BuscarTexto(idioma, "String86", "Game"), mismoPrecio.Count.ToString()) + ")";
+                                }
+                            }
+                        }
+                    }
+                }
             }		
         }
 
@@ -3588,7 +3680,7 @@
 
                                     foreach (var puntoPuesto in punto.Puntos)
                                     {
-                                        if (puntoPuesto.Precio == nuevoPunto.Precio && puntoPuesto.Fecha.AddDays(30) > nuevoPunto.Fecha)
+                                        if (puntoPuesto.Precio == nuevoPunto.Precio && puntoPuesto.Fecha.AddDays(21) > nuevoPunto.Fecha)
                                         {
                                             duplicado = true;
                                         }
