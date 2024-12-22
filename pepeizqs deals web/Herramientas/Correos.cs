@@ -373,11 +373,23 @@ namespace Herramientas
 			precio2 = precio.Precio.ToString();
 			precio2 = precio2.Replace(".", ",");
 
-			int int1 = precio2.IndexOf(",");
-
-			if (int1 == precio2.Length - 2)
+			if (precio2.Contains(",") == true)
 			{
-				precio2 = precio2 + "0";
+				int int1 = precio2.IndexOf(",");
+
+				if (int1 == precio2.Length - 2)
+				{
+					precio2 = precio2 + "0";
+				}
+
+				if (precio2.Length > int1 + 3)
+				{
+					precio2 = precio2.Remove(int1 + 3, precio2.Length - int1 - 3);
+				}
+			}
+			else
+			{
+				precio2 = precio2 + ",00";
 			}
 
 			precio2 = precio2 + "€";
