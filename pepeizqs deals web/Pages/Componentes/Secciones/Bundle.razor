@@ -224,7 +224,7 @@
 
 									if (mostrar == true)
 									{
-										bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuario, juego.Juego, juego.DRM);
+										bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego.Juego, juego.DRM);
 										bool usuarioTieneDeseado = false;
 
 										string fondoColor = string.Empty;
@@ -544,7 +544,8 @@
 
 	public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-	private List<string> juegosUsuario = new List<string>();
+	private List<string> juegosUsuarioSteam = new List<string>();
+	private List<string> juegosUsuarioGog = new List<string>();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -575,7 +576,12 @@
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+				juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
+
+			if (string.IsNullOrEmpty(usuario.GogGames) == false)
+			{
+				juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
 			}
 		}
 	}

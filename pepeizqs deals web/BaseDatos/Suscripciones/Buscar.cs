@@ -180,20 +180,17 @@ namespace BaseDatos.Suscripciones
 				}
 			}
 
-			using (conexion)
+			string busqueda = "SELECT * FROM suscripciones WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
-				string busqueda = "SELECT * FROM suscripciones WHERE id=@id";
+				comando.Parameters.AddWithValue("@id", id);
 
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
-					comando.Parameters.AddWithValue("@id", id);
-
-					using (SqlDataReader lector = comando.ExecuteReader())
+					while (lector.Read())
 					{
-						while (lector.Read())
-						{
-							return Cargar(lector);
-						}
+						return Cargar(lector);
 					}
 				}
 			}

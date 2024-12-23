@@ -118,7 +118,7 @@
 		{
 			string colorSeleccionado = "var(--fondoOscuro)";
 
-			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
+			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
 			{
 				colorSeleccionado = "var(--fondoBien)";
 			}
@@ -222,7 +222,7 @@
 
 				string fondoDestacado = "background-color: var(--fondoOscuro);";
 
-				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
 				{
 					fondoDestacado = "background-color: var(--fondoBien);";
 				}
@@ -434,7 +434,7 @@ else
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
-					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="ResultadoJuego.Tipo.Portada" />
+					<ResultadoJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@juegosUsuarioSteam" usuarioJuegosGog="@juegosUsuarioGog" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="ResultadoJuego.Tipo.Portada" />
 				</ItemContent>
 			</Virtualize>
 		</div>
@@ -579,7 +579,8 @@ else
 
 	private SqlConnection conexion = new SqlConnection();
 
-	private List<string> usuarioJuegosSteam = new List<string>();
+	private List<string> juegosUsuarioSteam = new List<string>();
+	private List<string> juegosUsuarioGog = new List<string>();
 
 	private List<Noticias.Noticia> noticiasMostrar = new List<Noticias.Noticia>();
 
@@ -593,7 +594,12 @@ else
 			{
 				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 				{
-					usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+					juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				}
+
+				if (string.IsNullOrEmpty(usuario.GogGames) == false)
+				{
+					juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
 				}
 
 				#region Filtrado
@@ -629,7 +635,7 @@ else
 		{
 			#region Destacados
 
-			juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
+			juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(juegosUsuarioSteam, conexion);
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
@@ -709,7 +715,7 @@ else
 
 				if (i == juegosDestacadosMostrar.Count)
 				{
-					juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(usuarioJuegosSteam, conexion);
+					juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(juegosUsuarioSteam, conexion);
 
 					if (juegosDestacadosMostrar.Count > 0)
 					{
@@ -809,7 +815,7 @@ else
 					{
 						if (estadoOcultarJuegosUsuario == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
 						{
-							foreach (var juegoUsuario in usuarioJuegosSteam)
+							foreach (var juegoUsuario in juegosUsuarioSteam)
 							{
 								if (juego.IdSteam.ToString() == juegoUsuario)
 								{

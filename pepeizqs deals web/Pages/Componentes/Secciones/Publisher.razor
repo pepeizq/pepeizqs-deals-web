@@ -206,7 +206,7 @@ else
 									{
 										juego.Tipo = Juegos.JuegoTipo.Game;
 
-										if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, Juegos.JuegoDRM.Steam) == true)
+										if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego, Juegos.JuegoDRM.Steam) == true)
 										{
 											fondoColor = "var(--fondoBien)";
 										}
@@ -277,7 +277,8 @@ else
 
 	private Usuario usuario = new Usuario();
 
-	private List<string> usuarioJuegosSteam = new List<string>();
+	private List<string> juegosUsuarioSteam = new List<string>();
+	private List<string> juegosUsuarioGog = new List<string>();
 
 	[Parameter]
 	public string id { get; set; }
@@ -316,7 +317,12 @@ else
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
+
+			if (string.IsNullOrEmpty(usuario.GogGames) == false)
+			{
+				juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
 			}
 		}
 

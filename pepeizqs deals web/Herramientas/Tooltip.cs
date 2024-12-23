@@ -195,19 +195,36 @@ namespace Herramientas
 			return datos;
         }
 
-        public static bool ComprobarUsuarioTieneJuego(List<string> juegosUsuario, Juego juego, JuegoDRM drm)
+        public static bool ComprobarUsuarioTieneJuego(List<string> juegosUsuarioSteam, List<string> juegosUsuarioGog, Juego juego, JuegoDRM drm)
         {
 			if (juego != null)
 			{
-				if (juegosUsuario != null)
+				if (juegosUsuarioSteam != null)
 				{
-					if (juegosUsuario.Count > 0)
+					if (juegosUsuarioSteam.Count > 0)
 					{
 						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
 						{
-							foreach (var juegoUsuario in juegosUsuario)
+							foreach (var juegoUsuario in juegosUsuarioSteam)
 							{
 								if (juegoUsuario == juego.IdSteam.ToString())
+								{
+									return true;
+								}
+							}
+						}
+					}
+				}
+
+				if (juegosUsuarioGog != null)
+				{
+					if (juegosUsuarioGog.Count > 0)
+					{
+						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.GOG)
+						{
+							foreach (var juegoUsuario in juegosUsuarioGog)
+							{
+								if (juegoUsuario == juego.IdGog.ToString())
 								{
 									return true;
 								}

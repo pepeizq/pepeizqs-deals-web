@@ -350,7 +350,28 @@ else
                 }
 
                 <a href="@enlace" class="boton-pequeño" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px; max-width: 235px;">
-                    <div class="boton-expandir" style="display: flex; flex-direction: column;">
+                   @{
+                        bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego.Juego, juego.DRM);
+                        bool usuarioTieneDeseado = false;
+
+                        string fondoColor = string.Empty;
+
+                        if (usuarioTieneJuego == true)
+                        {
+                            fondoColor = "background-color: var(--fondoBien);";
+                        }
+                        else
+                        {
+                            usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego.Juego, juego.DRM);
+
+                            if (usuarioTieneDeseado == true)
+                            {
+                                fondoColor = "background-color: var(--fondoAlerta);";
+                            }
+                        }
+                   }
+                    
+                    <div class="boton-expandir" style="@fondoColor display: flex; flex-direction: column;">
                         <div>
                             <img src="@juego.Juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
                         </div>
@@ -381,7 +402,8 @@ else
     private List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
     private List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
 
-    private List<string> juegosUsuario = new List<string>();
+    private List<string> juegosUsuarioSteam = new List<string>();
+    private List<string> juegosUsuarioGog = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -391,7 +413,12 @@ else
         {
             if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {
-                juegosUsuario = Herramientas.Listados.Generar(usuario.SteamGames);
+                juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+            }
+
+            if (string.IsNullOrEmpty(usuario.GogGames) == false)
+            {
+                juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
             }
 
             usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);

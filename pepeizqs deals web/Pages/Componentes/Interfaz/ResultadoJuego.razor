@@ -114,7 +114,7 @@
 		}
 	}
 
-	bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, juego, juego.PrecioMinimosHistoricos[0].DRM);
+	bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, usuarioJuegosGog, juego, juego.PrecioMinimosHistoricos[0].DRM);
 	bool usuarioTieneDeseado = false;
 
 	string fondoColor = string.Empty;
@@ -351,6 +351,9 @@
 
 	[Parameter]
 	public List<string> usuarioJuegosSteam { get; set; }
+
+	[Parameter]
+	public List<string> usuarioJuegosGog { get; set; }
 
 	[Parameter]
 	public string usuarioDeseadosSteam { get; set; }

@@ -22,10 +22,9 @@ namespace Juegos
 		public int IdSteam { get; set; }
 		public int IdGog { get; set; }
 		public string SlugEpic { get; set; }
-		public int CantidadBundles { get; set; }
-		public int CantidadGratis { get; set; }
-		public int CantidadSuscripciones { get; set; }
 		public bool Importado { get; set; }
+		public int IdBundle { get; set; }
+		public int IdSuscripcion { get; set; }
 	}
 
 	public class JuegoDeseadoExportar
