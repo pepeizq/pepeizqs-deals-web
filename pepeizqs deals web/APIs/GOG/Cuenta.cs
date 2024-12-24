@@ -5,7 +5,6 @@
 
 using Herramientas;
 using Microsoft.VisualBasic;
-using pepeizqs_deals_web.Areas.Identity.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -42,7 +41,7 @@ namespace APIs.GOG
 
 							int int2 = temp1.IndexOf(Strings.ChrW(34));
 							string temp2 = temp1.Remove(int2, temp1.Length - int2);
-							BaseDatos.Errores.Insertar.Mensaje("test", temp2);
+
 							return temp2;
 						}
 					}

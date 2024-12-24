@@ -12,6 +12,7 @@ using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 

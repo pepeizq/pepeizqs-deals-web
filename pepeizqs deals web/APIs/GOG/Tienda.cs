@@ -33,7 +33,7 @@ namespace APIs.GOG
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertasAntiguo(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
 
@@ -140,6 +140,93 @@ namespace APIs.GOG
 			}
 		}
 
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
+		{
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+
+			int juegos2 = 0;
+
+			int i = 1;
+			int limite = 100;
+			while (i < limite + 1)
+			{
+				string html = await Decompiladores.Estandar("https://catalog.gog.com/v1/catalog?limit=48&order=desc:trending&discounted=eq:true&productType=in:game,pack,dlc,extras&page=" + i.ToString() + "&countryCode=ES&locale=en-US&currencyCode=EUR");
+
+				if (string.IsNullOrEmpty(html) == false)
+				{
+					GOGOfertas datos = JsonSerializer.Deserialize<GOGOfertas>(html);
+
+					if (datos != null)
+					{
+						limite = datos.Paginas;
+
+						foreach (var juego in datos.Juegos)
+						{
+							string precioBaseTexto = juego.Precios.PrecioBase;
+							precioBaseTexto = precioBaseTexto.Replace("€", null);
+							string precioRebajadoTexto = juego.Precios.PrecioRebajado;
+							precioRebajadoTexto = precioRebajadoTexto.Replace("€", null);
+
+							decimal precioBase = decimal.Parse(precioBaseTexto);
+							decimal precioRebajado = decimal.Parse(precioRebajadoTexto);
+
+							int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+							if (descuento > 0)
+							{
+								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+								string enlace = "https://www.gog.com/en/game/" + juego.Slug;
+								string imagen = juego.Imagen;
+
+								JuegoPrecio oferta = new JuegoPrecio
+								{
+									Nombre = nombre,
+									Enlace = enlace,
+									Imagen = imagen,
+									Moneda = JuegoMoneda.Euro,
+									Precio = precioRebajado,
+									Descuento = descuento,
+									Tienda = Generar().Id,
+									DRM = JuegoDRM.GOG,
+									FechaDetectado = DateTime.Now,
+									FechaActualizacion = DateTime.Now
+								};
+
+								try
+								{
+									if (juego.Tipo == "game" || juego.Tipo == "dlc")
+									{
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion, juego.Id, juego.Slug);
+									}
+									else
+									{
+										BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+									}
+								}
+								catch (Exception ex)
+								{
+									BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+								}
+
+								juegos2 += 1;
+
+								try
+								{
+									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+								}
+								catch (Exception ex)
+								{
+									BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+								}
+							}
+						}
+					}
+				}
+
+				i += 1;
+			}
+		}
+
 		public static async Task<JuegoGalaxyGOG> GalaxyDatos(string id)
 		{
             JuegoGalaxyGOG galaxy = new JuegoGalaxyGOG();
@@ -194,6 +281,8 @@ namespace APIs.GOG
         }
 	}
 
+	#region Ofertas (Antiguo)
+
 	[XmlRoot("catalogue")]
 	public class GOGJuegos
 	{
@@ -231,7 +320,54 @@ namespace APIs.GOG
 		public string Enlace { get; set; }
     }
 
-    public class GOGGalaxy
+	#endregion
+
+	#region Ofertas (Nuevo)
+
+	public class GOGOfertas
+	{
+		[JsonPropertyName("pages")]
+		public int Paginas { get; set; }
+
+		[JsonPropertyName("products")]
+		public List<GOGOfertasJuego> Juegos { get; set; }
+	}
+
+	public class GOGOfertasJuego
+	{
+		[JsonPropertyName("id")]
+		public string Id { get; set; }
+
+		[JsonPropertyName("slug")]
+		public string Slug { get; set; }
+
+		[JsonPropertyName("title")]
+		public string Nombre { get; set; }
+
+		[JsonPropertyName("coverHorizontal")]
+		public string Imagen { get; set; }
+
+		[JsonPropertyName("productType")]
+		public string Tipo { get; set; }
+
+		[JsonPropertyName("price")]
+		public GOGOfertasJuegoPrecio Precios { get; set; }
+	}
+
+	public class GOGOfertasJuegoPrecio
+	{
+		[JsonPropertyName("final")]
+		public string PrecioRebajado { get; set; }
+
+		[JsonPropertyName("base")]
+		public string PrecioBase { get; set; }
+	}
+
+	#endregion
+
+	#region Datos
+
+	public class GOGGalaxy
     {
         [JsonPropertyName("content_system_compatibility")]
         public GOGGalaxySistemas Sistemas { get; set; }
@@ -275,4 +411,6 @@ namespace APIs.GOG
 		[JsonPropertyName("slug")]
 		public string Slug { get; set; }
 	}
+
+	#endregion
 }
