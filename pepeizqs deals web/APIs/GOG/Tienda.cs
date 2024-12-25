@@ -1,7 +1,4 @@
-﻿//Luna Amazon
-//https://catalog.gog.com/v1/filtered-catalog?limit=48&order=desc:discount&productType=in:game,pack,dlc,extras&page=2&pageId=2f70726f6d6f2f706c61792d6f6e2d6c756e61&sectionId=7efd2a6a-0831-43af-bc1f-616509912d24&countryCode=ES&locale=en-US&currencyCode=EUR
-
-#nullable disable
+﻿#nullable disable
 
 using Herramientas;
 using Juegos;

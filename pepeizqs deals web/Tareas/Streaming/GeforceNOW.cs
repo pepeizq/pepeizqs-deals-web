@@ -42,7 +42,7 @@ namespace Tareas.Streaming
 
                     if (conexion.State == System.Data.ConnectionState.Open)
                     {
-                        TimeSpan siguienteComprobacion = TimeSpan.FromHours(6);
+                        TimeSpan siguienteComprobacion = TimeSpan.FromHours(5);
 
                         bool sePuedeUsar = BaseDatos.Admin.Buscar.TiendasPosibleUsar(siguienteComprobacion, id, conexion);
 

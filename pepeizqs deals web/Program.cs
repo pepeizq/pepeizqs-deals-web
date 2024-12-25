@@ -153,6 +153,7 @@ builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusClassics>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusPremium>();
 
 builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
+builder.Services.AddSingleton<Tareas.Streaming.AmazonLuna>();
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
@@ -195,6 +196,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusPremium>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Streaming.GeforceNOW>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Streaming.AmazonLuna>());
 
 #endregion
 
@@ -393,5 +395,17 @@ app.MapControllers();
 app.UseRateLimiter();
 
 #endregion
+
+app.Use(async (context, next) =>
+{
+	var userAgent = context.Request.Headers["User-Agent"].ToString();
+
+	if (new BotsAgents().Comprobar(userAgent))
+	{
+		context.Response.Redirect("www.google.com");
+	}
+	await next();
+
+});
 
 app.Run();

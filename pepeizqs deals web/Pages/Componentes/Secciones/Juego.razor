@@ -415,6 +415,8 @@
                     bool usuarioTieneJuego = false;
                     bool usuarioTieneDeseado = false;
                     string usuarioTieneDeseadoMensaje = string.Empty;
+
+                    List<JuegoPrecio> preciosActualesDRM = OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id);
                     string mensajeMinimoDRM = CogerMinimoDRM(idioma, drm.Id, juego.PrecioMinimosHistoricos, juego.PrecioActualesTiendas, juego.Historicos);
 
                     <div id="@drm.Id">
@@ -675,6 +677,7 @@
 
                                             @{
                                                 bool añadirDiv = false;
+                                                bool amazonLuna = false;
 
                                                 if (drm.Id == JuegoDRM.Steam)
                                                 {
@@ -684,6 +687,16 @@
                                                 if (drm.Id == JuegoDRM.GOG && juego.GalaxyGOG != null)
                                                 {
                                                     if (juego.GalaxyGOG.Windows == true || juego.GalaxyGOG.Mac == true || juego.GalaxyGOG.Linux == true)
+                                                    {
+                                                        añadirDiv = true;
+                                                    }
+                                                }
+
+                                                if (drm.Id == JuegoDRM.GOG && juego.Tipo == JuegoTipo.Game)
+                                                {
+                                                    amazonLuna = global::BaseDatos.Streaming.Buscar.AmazonLuna(juego.Id);
+
+                                                    if (amazonLuna == true)
                                                     {
                                                         añadirDiv = true;
                                                     }
@@ -828,6 +841,16 @@
                                                                 }
                                                             }
                                                         }
+
+                                                        @if (amazonLuna == true)
+                                                        {
+                                                            if (drm.Id == JuegoDRM.GOG && juego.Tipo == JuegoTipo.Game)
+                                                            {
+                                                                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String87", "Game")">
+                                                                    <img src="@APIs.GOG.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+                                                                </div>
+                                                            }
+                                                        }
                                                     </div>
                                                 }
                                             }
@@ -874,13 +897,13 @@
                                     </div>
                                 }
 
-                                @if (OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id).Count > 0)
-                                {									
+                                @if (preciosActualesDRM.Count > 0)
+                                {
                                     List<JuegoPrecio> preciosBajos = new List<JuegoPrecio>();
                                     int descuentoMaximo = 0;
 
                                     <div style="display: flex; flex-direction: column; gap: 15px; padding: 20px;">
-                                        @foreach (JuegoPrecio precio in OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id))
+                                        @foreach (JuegoPrecio precio in preciosActualesDRM)
                                         {
                                             if (precio.Descuento > descuentoMaximo)
                                             {
@@ -2441,7 +2464,14 @@
                     }
                 }
 
-                if (historicosOrdenados[0].FechaActualizacion + TimeSpan.FromHours(11) > DateTime.Now && historicosOrdenados[0].Descuento > 0)
+                TimeSpan tiempo = TimeSpan.FromHours(11);
+
+                if (historicosOrdenados[0].Tienda == APIs.Humble.Tienda.Generar().Id || historicosOrdenados[0].Tienda == APIs.Humble.Tienda.GenerarChoice().Id)
+                {
+                    tiempo = TimeSpan.FromHours(24);
+                }
+
+                if (historicosOrdenados[0].FechaActualizacion + tiempo > DateTime.Now && historicosOrdenados[0].Descuento > 0)
                 {
                     drmPreparado = drmPreparado + " (" + string.Format(Idiomas.BuscarTexto(idioma, "String11", "Game"), tiendaFinal) + ")";
                 }

@@ -121,4 +121,14 @@ namespace Herramientas
 			};
 		}
 	}
+
+	public class BotsAgents
+	{
+		private readonly HashSet<string> bots = new HashSet<string>(StringComparer.Ordinal)
+		{
+			"MJ12bot"
+		};
+
+		public bool Comprobar(string cBot) => bots.Any(bot => cBot.IndexOf(bot, StringComparison.Ordinal) != -1);
+	}
 }

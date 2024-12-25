@@ -126,7 +126,7 @@
 
 					<button @onclick="(e => CambiarPestaña(e, 0))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
 						<div style="@subrayadoOfertas padding-bottom: 5px;">
-							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Wishlist"), deseadosOfertas.Count)
+							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Wishlist"), cantidadOfertas)
 						</div>
 					</button>
 
@@ -609,6 +609,7 @@
 	private List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
 	private List<string> deseadosGog = new List<string>();
 
+	private int cantidadOfertas = 0;
 	private int cantidadMinimos = 0;
 	private string ordenamientoElegido = string.Empty;
 
@@ -829,7 +830,7 @@
 							nuevoDeseadoSuscripcion.IdSuscripcion = juegoSuscripcion.Id;
 							nuevoDeseadoSuscripcion.DRM = deseado.DRM;
 							nuevoDeseadoSuscripcion.Imagen = deseado.Imagen;
-					
+
 							deseadosSuscripciones.Add(nuevoDeseadoSuscripcion);
 						}
 					}
@@ -911,6 +912,8 @@
 								}
 
 								deseadosGestor.Add(nuevoDeseado);
+
+								cantidadOfertas = cantidadOfertas + 1;
 								cantidadMinimos = cantidadMinimos + 1;
 								añadido = true;
 							}
@@ -983,6 +986,8 @@
 							}
 
 							deseadosGestor.Add(nuevoDeseado);
+
+							cantidadOfertas = cantidadOfertas + 1;
 						}
 					}
 				}

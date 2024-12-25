@@ -69,7 +69,7 @@
   "String68": "Il était gratuit de réclamer {0} fois sur {1}",
   "String69": "Cet abonnement nécessite de payer chaque mois pour accéder à ce jeu",
   "String70": "Dans cet abonnement si vous payez ce mois-ci, vous aurez le jeu pour toujours",
-  "String71": "Jouable depuis Geforce MAINTENANT",
+  "String71": "Jouable depuis Geforce NOW",
   "String72": "Compatible Windows",
   "String73": "Compatible Mac",
   "String74": "Compatible Linux",
@@ -84,5 +84,6 @@
   "String83": "Vous avez déjà ce jeu sur le compte GOG associé",
   "String84": "Vous disposez déjà de ce DLC sur le compte GOG lié",
   "String85": "{0} fois",
-  "String86": "{0} fois"
+  "String86": "{0} fois",
+  "String87": "Jouable depuis Amazon Luna"
 }
