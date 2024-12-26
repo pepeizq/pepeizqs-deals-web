@@ -1008,16 +1008,6 @@
 		return null;
 	}
 
-	private void QuitarJuego(MouseEventArgs e, int juegoId, Juegos.JuegoDRM drm)
-	{
-		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegoId);
-
-		if (juego != null)
-		{
-			Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, false, drm);
-		}
-	}
-
 	private string MensajeMinimo(JuegoPrecio precio, bool moneda)
 	{
 		if (precio.Precio >= 0)
@@ -1036,6 +1026,33 @@
 		}
 
 		return null;
+	}
+
+	private void QuitarJuego(MouseEventArgs e, int juegoId, Juegos.JuegoDRM drm)
+	{
+		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegoId);
+
+		if (juego != null)
+		{
+			Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, false, drm);
+		}
+
+		if (deseadosOfertas.Count > 0)
+		{
+			int i = 0;
+
+			foreach (var oferta in deseadosOfertas)
+			{
+				if (oferta.Id == juego.Id && oferta.DRM == drm)
+				{
+					break;
+				}
+
+				i += 1;
+			}
+
+			deseadosOfertas.RemoveAt(i);
+		}
 	}
 
 	#region Ordenar

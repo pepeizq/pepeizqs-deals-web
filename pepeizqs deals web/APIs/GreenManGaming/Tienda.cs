@@ -175,6 +175,7 @@ namespace APIs.GreenManGaming
 
 				try
 				{
+					await Task.Delay(2000);
 					html = await respuesta.Content.ReadAsStringAsync();
 				}
 				catch { }

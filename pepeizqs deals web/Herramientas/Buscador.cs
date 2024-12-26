@@ -262,7 +262,7 @@ namespace Herramientas
 					{
 						TimeSpan actualizado = DateTime.Now.Subtract(oferta.FechaActualizacion);
 
-						if (actualizado.Days == 0)
+						if (actualizado.Hours < 11)
 						{
 							decimal tempPrecio = oferta.Precio;
 
@@ -282,37 +282,7 @@ namespace Herramientas
 
 			if (minimoCantidad > 0 && minimoCantidad < 10000000)
 			{
-				string precioTexto = string.Empty;
-
-				precioTexto = minimoCantidad.ToString();
-
-				if (precioTexto.Contains(".") == true)
-				{
-					precioTexto = precioTexto.Replace(".", ",");
-				}
-
-				if (precioTexto.Contains(",") == true)
-				{
-					int int1 = precioTexto.IndexOf(",");
-
-					if (int1 == precioTexto.Length - 2)
-					{
-						precioTexto = precioTexto + "0";
-					}
-
-					if (precioTexto.Length > int1 + 3)
-					{
-						precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
-					}
-				}
-				else
-				{
-					precioTexto = precioTexto + ",00";
-				}
-
-				precioTexto = precioTexto + "€";
-
-				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), precioTexto);
+				return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), Herramientas.Precios.Euro(minimoCantidad));
 			}
 			else
 			{
