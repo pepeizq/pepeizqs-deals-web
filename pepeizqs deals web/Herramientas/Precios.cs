@@ -7,16 +7,23 @@
             string precioMensaje = precio.ToString();
             precioMensaje = precioMensaje.Replace(".", ",");
 
-            int int1 = precioMensaje.IndexOf(",");
-
-            if (int1 == precioMensaje.Length - 2)
+            if (precioMensaje.Contains(",") == true)
             {
-                precioMensaje = precioMensaje + "0";
-            }
+				int int1 = precioMensaje.IndexOf(",");
 
-            if (precioMensaje.Length > int1 + 3)
+				if (int1 == precioMensaje.Length - 2)
+				{
+					precioMensaje = precioMensaje + "0";
+				}
+
+				if (precioMensaje.Length > int1 + 3)
+				{
+					precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
+				}
+			}
+            else
             {
-                precioMensaje = precioMensaje.Remove(int1 + 3, precioMensaje.Length - int1 - 3);
+                precioMensaje = precioMensaje + ",00";
             }
 
             precioMensaje = precioMensaje + "€";

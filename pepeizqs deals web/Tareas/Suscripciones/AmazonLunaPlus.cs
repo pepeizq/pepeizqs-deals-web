@@ -1,20 +1,19 @@
 ﻿#nullable disable
 
-using BaseDatos.Tiendas;
 using Herramientas;
 using Microsoft.Data.SqlClient;
 
 namespace Tareas.Suscripciones
 {
-	public class EAPlay : BackgroundService
+	public class AmazonLunaPlus : BackgroundService
 	{
-		private string id = "eaplay";
+		private string id = "amazonlunaplus";
 
-		private readonly ILogger<EAPlay> _logger;
+		private readonly ILogger<AmazonLunaPlus> _logger;
 		private readonly IServiceScopeFactory _factoria;
 		private readonly IDecompiladores _decompilador;
 
-		public EAPlay(ILogger<EAPlay> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		public AmazonLunaPlus(ILogger<AmazonLunaPlus> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
 		{
 			_logger = logger;
 			_factoria = factory;
@@ -43,7 +42,7 @@ namespace Tareas.Suscripciones
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan siguienteComprobacion = TimeSpan.FromHours(3);
+						TimeSpan siguienteComprobacion = TimeSpan.FromHours(4);
 
 						bool sePuedeUsar = BaseDatos.Admin.Buscar.TiendasPosibleUsar(siguienteComprobacion, id, conexion);
 
@@ -51,7 +50,7 @@ namespace Tareas.Suscripciones
 						{
 							try
 							{
-								await APIs.EA.Suscripcion.Buscar(conexion);
+								await APIs.AmazonLuna.Suscripcion.Buscar(conexion);
 
 								Environment.Exit(1);
 							}

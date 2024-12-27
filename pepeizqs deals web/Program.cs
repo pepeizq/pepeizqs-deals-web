@@ -12,7 +12,6 @@ using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
-using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +48,10 @@ builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 
 builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => { 
-	opciones.UseSqlServer(conexionTexto); 
+	opciones.UseSqlServer(conexionTexto, opciones2 =>
+	{
+		opciones2.CommandTimeout(60);
+	}); 
 	opciones.EnableSensitiveDataLogging();
 });
 
@@ -151,6 +153,7 @@ builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
 builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusClassics>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusPremium>();
+builder.Services.AddSingleton<Tareas.Suscripciones.AmazonLunaPlus>();
 
 builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
 builder.Services.AddSingleton<Tareas.Streaming.AmazonLuna>();
@@ -194,6 +197,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusClassics>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusPremium>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.AmazonLunaPlus>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Streaming.GeforceNOW>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Streaming.AmazonLuna>());

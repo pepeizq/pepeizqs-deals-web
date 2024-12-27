@@ -19,7 +19,8 @@ namespace Juegos
 		BattleNet,
 		Giants,
 		PearlAbyss,
-		SquareEnix
+		SquareEnix,
+		AmazonLuna
 	}
 
 	public static class JuegoDRM2
@@ -194,6 +195,18 @@ namespace Juegos
 			};
 
 			drms.Add(square);
+
+			//----------------------------
+
+			DRM luna = new DRM
+			{
+				Id = JuegoDRM.AmazonLuna,
+				Nombre = "Amazon Luna",
+				Imagen = "/imagenes/drm/amazonluna.webp",
+				Acepciones = new List<string> { "amazonluna" }
+			};
+
+			drms.Add(luna);
 
 			//----------------------------
 

@@ -12,7 +12,8 @@ namespace Suscripciones2
 		EAPlayPro,
 		PCGamePass,
 		UbisoftPlusClassics,
-		UbisoftPlusPremium
+		UbisoftPlusPremium,
+		AmazonLunaPlus
 	}
 
 	public class SuscripcionesCargar
@@ -29,7 +30,8 @@ namespace Suscripciones2
 				APIs.EA.Suscripcion.GenerarPro(),
 				APIs.XboxGamePass.Suscripcion.Generar(),
 				APIs.Ubisoft.Suscripcion.Generar(),
-				APIs.Ubisoft.Suscripcion.GenerarPremium()
+				APIs.Ubisoft.Suscripcion.GenerarPremium(),
+				APIs.AmazonLuna.Suscripcion.Generar()
 			};
 
 			return suscripciones;

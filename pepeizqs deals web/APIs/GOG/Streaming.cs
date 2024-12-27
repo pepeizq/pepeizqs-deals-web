@@ -13,7 +13,7 @@ namespace APIs.GOG
 			Streaming2.Streaming amazonluna = new Streaming2.Streaming
 			{
 				Id = Streaming2.StreamingTipo.AmazonLuna,
-				Nombre = "Amazon Luna",
+				Nombre = "Amazon Luna (GOG)",
 				ImagenLogo = "/imagenes/streaming/amazonluna_logo.webp",
 				ImagenIcono = "/imagenes/streaming/amazonluna_icono.webp"
 			};
