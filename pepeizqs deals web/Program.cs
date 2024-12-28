@@ -66,6 +66,12 @@ builder.Services.AddDataProtection().PersistKeysToDbContext<pepeizqs_deals_webCo
 
 builder.Services.AddRazorPages();
 
+#region Quitar Logs en Compilacion
+
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization.*", LogLevel.None);
+
+#endregion
+
 //----------------------------------------------------------------------------------
 
 #region Detallado en Componentes Razor
