@@ -18,11 +18,14 @@ namespace Herramientas
 
 		public static string AcortarEnlace(string enlaceLargo)
 		{
-			foreach (var pareja in diccionario)
+			if (diccionario != null)
 			{
-				if (pareja.Value == enlaceLargo)
+				foreach (var pareja in diccionario)
 				{
-					return pareja.Key;
+					if (pareja.Value == enlaceLargo)
+					{
+						return pareja.Key;
+					}
 				}
 			}
 
