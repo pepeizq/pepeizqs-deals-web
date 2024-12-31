@@ -132,7 +132,7 @@ namespace APIs.Humble
 		{
 			await Task.Delay(1000);
 
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0", conexion);
 
 			DateTime fechaRecopilado = new DateTime();
 			List<HumbleJuego> juegos = new List<HumbleJuego>();
@@ -299,7 +299,7 @@ namespace APIs.Humble
 
 									try
 									{
-										BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString(), conexion);
 									}
 									catch (Exception ex)
 									{

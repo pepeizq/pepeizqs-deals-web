@@ -5,9 +5,9 @@
     <div>
         <button @onclick="@(e => ActualizarDivisas(e))" class="boton-pequeño" style="text-align: center; width: 200px;">Actualizar</button>
     </div>
-    <div style="padding-top: 20px;">
-        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeDolar()</div>
-        <div class="admin-tiempohace">@Herramientas.Divisas.MensajeLibra()</div>
+    <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+        <div>@Herramientas.Divisas.MensajeDolar()</div>
+        <div>@Herramientas.Divisas.MensajeLibra()</div>
     </div>
 </div>
 

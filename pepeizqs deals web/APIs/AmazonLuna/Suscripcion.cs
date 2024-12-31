@@ -34,7 +34,7 @@ namespace APIs.AmazonLuna
 
 		public static async Task Buscar(SqlConnection conexion)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0 suscripciones detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0", conexion);
 
 			int cantidad = 0;
 
@@ -91,7 +91,7 @@ namespace APIs.AmazonLuna
 										if (lector.Read() == true)
 										{
 											cantidad += 1;
-											BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+											BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString(), conexion);
 
 											if (lector.IsDBNull(0) == false)
 											{

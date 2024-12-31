@@ -1,68 +1,145 @@
-﻿@using Microsoft.AspNetCore.Components.Web
+﻿@using BaseDatos.Admin
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Data.SqlClient
 @using Tiendas2
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <label>@TareasUso()</label>
     <hr />
-    <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
         @foreach (Tienda tienda in TiendasCargar.GenerarListado())
         {
             if (tienda.AdminEnseñar == true)
             {
-                @if (tienda.AdminInteractuar == true)
-                {
-                    <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <img src="@tienda.ImagenIcono" style="height: 22px;" />
-                            <div>@tienda.Nombre</div>
+                AdminTarea tarea = BaseDatos.Admin.Buscar.Tarea(tienda.Id);
 
-                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(tienda.Id)</div>
+                if (tarea != null)
+                {
+                    string tiempo = Herramientas.Calculadora.DiferenciaTiempo(tarea.Fecha, "es-ES");
+
+                    <button @onclick="(e => ClickearTienda(e, tienda.Id))" class="boton-pequeño" style="height: fit-content; padding: 15px;">
+                        <div style="display: flex; align-items: center; gap: 20px; justify-content: space-between;">
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="@tienda.ImagenIcono" style="height: 22px;" />
+                                    <div>@tienda.Nombre</div>
+                                </div>
+
+                                <div>@tiempo</div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div>@tarea.Mensaje</div>
+
+                                @if (tarea.Valor1 > 0)
+                                {
+                                    <div style="display: flex; align-items: center; gap: 10px; justify-content: right;">
+                                        @if (tarea.Valor1 > 0)
+                                        {
+                                            <div style="font-size: 14px;">@tarea.Valor1</div>
+                                        }
+
+                                        @if (tarea.Valor2 > 0)
+                                        {
+                                            <div style="font-size: 14px;">@tarea.Valor2</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </button>
                 }
-                else
-                {
-                    <div style="display: flex; align-items: center; height: fit-content; padding: 20px 30px;">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <img src="@tienda.ImagenIcono" style="height: 22px;" />
-                            <div>@tienda.Nombre</div>
-
-                            <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(tienda.Id)</div>
-                        </div>
-                    </div>
-                }
             }
         }
-
+    </div>
+    <hr/>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
         @foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
         {
-            if (string.IsNullOrEmpty(BaseDatos.Admin.Buscar.TiendasMensaje(suscripcion.Id.ToString())) == false)
-            {
-                <button @onclick="(e => ClickearSuscripcionStreaming(e, suscripcion.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <img src="@suscripcion.ImagenIcono" style="height: 22px;" />
-                        <div>@suscripcion.Nombre</div>
+            AdminTarea tarea = BaseDatos.Admin.Buscar.Tarea(suscripcion.Id.ToString());
 
-                        <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(suscripcion.Id.ToString())</div>
+            if (tarea != null)
+            {
+                string tiempo = Herramientas.Calculadora.DiferenciaTiempo(tarea.Fecha, "es-ES");
+
+                <button @onclick="(e => ClickearSuscripcionStreaming(e, suscripcion.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 15px;">
+                    <div style="display: flex; align-items: center; gap: 20px; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="@suscripcion.ImagenIcono" style="height: 22px;" />
+                                <div>@suscripcion.Nombre</div>
+                            </div>
+
+                            <div>@tiempo</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div>@tarea.Mensaje</div>
+
+                            @if (tarea.Valor1 > 0)
+                            {
+                                <div style="display: flex; align-items: center; gap: 10px; justify-content: right;">
+                                    @if (tarea.Valor1 > 0)
+                                    {
+                                        <div style="font-size: 14px;">@tarea.Valor1</div>
+                                    }
+
+                                    @if (tarea.Valor2 > 0)
+                                    {
+                                        <div style="font-size: 14px;">@tarea.Valor2</div>
+                                    }
+                                </div>
+                            }
+                        </div>
                     </div>
                 </button>
             }
         }
-
+    </div>
+    <hr/>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
         @foreach (var streaming in Streaming2.StreamingCargar.GenerarListado())
         {
-            <button @onclick="(e => ClickearSuscripcionStreaming(e, streaming.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 20px 30px;">
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <img src="@streaming.ImagenIcono" style="height: 22px;" />
-                    <div>@streaming.Nombre</div>
+            AdminTarea tarea = BaseDatos.Admin.Buscar.Tarea(streaming.Id.ToString());
 
-                    <div class="admin-tiempohace" style="text-align: right;">@BaseDatos.Admin.Buscar.TiendasMensaje(streaming.Id.ToString())</div>
-                </div>
-            </button>
+            if (tarea != null)
+            {
+                string tiempo = Herramientas.Calculadora.DiferenciaTiempo(tarea.Fecha, "es-ES");
+
+                <button @onclick="(e => ClickearSuscripcionStreaming(e, streaming.Id.ToString()))" class="boton-pequeño" style="height: fit-content; padding: 15px;">
+                    <div style="display: flex; align-items: center; gap: 20px; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="@streaming.ImagenIcono" style="height: 22px;" />
+                                <div>@streaming.Nombre</div>
+                            </div>
+
+                            <div>@tiempo</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div>@tarea.Mensaje</div>
+
+                            @if (tarea.Valor1 > 0)
+                            {
+                                <div style="display: flex; align-items: center; gap: 10px; justify-content: right;">
+                                    @if (tarea.Valor1 > 0)
+                                    {
+                                        <div style="font-size: 14px;">@tarea.Valor1</div>
+                                    }
+
+                                    @if (tarea.Valor2 > 0)
+                                    {
+                                        <div style="font-size: 14px;">@tarea.Valor2</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </button>
+            }
         }
     </div>
-
 </div>
 
 @code {

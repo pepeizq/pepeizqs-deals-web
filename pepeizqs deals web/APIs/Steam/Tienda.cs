@@ -43,7 +43,7 @@ namespace APIs.Steam
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0", conexion);
 
 			string añadirDeck = string.Empty;
 			int deck = 0;
@@ -358,7 +358,7 @@ namespace APIs.Steam
 
 													try
 													{
-														BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos.ToString() + " ofertas detectadas", conexion);
+														BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos.ToString(), conexion);
 													}
 													catch (Exception ex)
 													{

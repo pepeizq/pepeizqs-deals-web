@@ -43,7 +43,7 @@ namespace APIs._2Game
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0", conexion);
 
             string html2 = await Decompiladores.GZipFormato("https://app.impact.com/secure/productservices/apps/catalog/download.irps?p=46x%7B%22networkId%22%3A%221%22%2C%22id%22%3A%221813947%22%2C%22mpId%22%3A%221382810%22%2C%22version%22%3A%22standard%22%7DRdI6oFUr5Kb9Dw0tR8044psFyU8%3D");
 
@@ -153,7 +153,7 @@ namespace APIs._2Game
 
                                         try
                                         {
-											BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+											BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString(), conexion);
                                         }
                                         catch (Exception ex)
                                         {

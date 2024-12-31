@@ -40,59 +40,6 @@ namespace BaseDatos.Admin
 			return null;
 		}
 
-		public static string TiendasMensaje(string tienda, SqlConnection conexion = null)
-		{
-			if (conexion == null)
-			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
-			else
-			{
-				if (conexion.State != System.Data.ConnectionState.Open)
-				{
-					conexion = Herramientas.BaseDatos.Conectar();
-				}
-			}
-
-			string mensaje = string.Empty;
-
-			string seleccionarJuego = "SELECT * FROM adminTiendas WHERE id=@id";
-
-			using (SqlCommand comando = new SqlCommand(seleccionarJuego, conexion))
-			{
-				comando.Parameters.AddWithValue("@id", tienda);
-
-				using (SqlDataReader lector = comando.ExecuteReader())
-				{
-					if (lector.Read() == true)
-					{
-						if (lector.IsDBNull(1) == false)
-						{
-							if (string.IsNullOrEmpty(lector.GetString(1)) == false)
-							{
-								try
-								{
-									mensaje = Calculadora.DiferenciaTiempo(DateTime.Parse(lector.GetString(1)), "es-ES");
-								}
-								catch { }
-
-							}
-						}
-
-						if (lector.IsDBNull(2) == false)
-						{
-							if (string.IsNullOrEmpty(lector.GetString(2)) == false)
-							{
-								mensaje = mensaje + " • " + lector.GetString(2);
-							}
-						}
-					}
-				}
-			}
-
-			return mensaje;
-		}
-
 		public static bool TiendasPosibleUsar(TimeSpan tiempo, string tiendaId, SqlConnection conexion = null)
 		{
 			if (conexion == null)
@@ -268,7 +215,9 @@ namespace BaseDatos.Admin
 								{
 									Id = lector.GetString(0),
 									Fecha = DateTime.Parse(lector.GetString(1)),
-									Mensaje = lector.GetString(2)
+									Mensaje = lector.GetString(2),
+									Valor1 = lector.GetInt32(3),
+									Valor2 = lector.GetInt32(4)
 								};
 
 								return tarea;
@@ -324,6 +273,7 @@ namespace BaseDatos.Admin
 		public string Id;
 		public DateTime Fecha;
 		public string Mensaje;
-		public bool MinimoHoras;
+		public int Valor1;
+		public int Valor2;
 	}
 }

@@ -12,6 +12,7 @@ using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
+using Tweetinvi.Core.Models.Properties;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,11 +84,6 @@ builder.Services.AddServerSideBlazor(opciones =>
 .AddCircuitOptions(opciones => 
 {
 	opciones.DetailedErrors = true;
-})
-.AddHubOptions(opciones =>
-{
-	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(20);
-	opciones.KeepAliveInterval = TimeSpan.FromSeconds(20);
 });
 
 #endregion
@@ -153,7 +149,7 @@ builder.Services.AddSingleton<Tareas.Tiendas.Battlenet>();
 builder.Services.AddSingleton<Tareas.Tiendas.EA>();
 builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
 builder.Services.AddSingleton<Tareas.Tiendas.Ubisoft>();
-builder.Services.AddSingleton<Tareas.Tiendas.Allyouplay>();
+//builder.Services.AddSingleton<Tareas.Tiendas.Allyouplay>();
 
 builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
 builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
@@ -197,7 +193,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Ubisoft>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Allyouplay>());
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Allyouplay>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
@@ -239,7 +235,7 @@ builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
 #region Blazor
 
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+//builder.Services.AddRazorComponents();
 
 #endregion
 
@@ -317,10 +313,10 @@ builder.Services.AddRateLimiter(opciones =>
 {
 	opciones.OnRejected = (contexto, _) =>
 	{
-		if (contexto.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+		if (contexto.Lease.TryGetMetadata(MetadataName.RetryAfter, out var reintento))
 		{
 			contexto.HttpContext.Response.Headers.RetryAfter =
-				((int)retryAfter.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
+				((int)reintento.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
 		}
 
 		contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
@@ -405,17 +401,5 @@ app.MapControllers();
 app.UseRateLimiter();
 
 #endregion
-
-app.Use(async (context, next) =>
-{
-	var userAgent = context.Request.Headers["User-Agent"].ToString();
-
-	if (new BotsAgents().Comprobar(userAgent))
-	{
-		context.Response.Redirect("www.google.com");
-	}
-	await next();
-
-});
 
 app.Run();

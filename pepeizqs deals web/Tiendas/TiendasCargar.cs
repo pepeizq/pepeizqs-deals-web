@@ -33,8 +33,7 @@ namespace Tiendas2
 				APIs.EpicGames.Tienda.Generar(),
 				APIs._2Game.Tienda.Generar(),
 				APIs.GameBillet.Tienda.Generar(),
-				APIs.Ubisoft.Tienda.Generar(),
-				APIs.Allyouplay.Tienda.Generar()
+				APIs.Ubisoft.Tienda.Generar()
             };
 
 			return tiendas;

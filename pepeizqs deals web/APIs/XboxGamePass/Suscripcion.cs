@@ -34,9 +34,11 @@ namespace APIs.XboxGamePass
 
         public static async Task Buscar(SqlConnection conexion)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0 suscripciones detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0", conexion);
 
             int cantidad = 0;
+
+			await Task.Delay(5000);
 
             string html = await Decompiladores.Estandar("https://catalog.gamepass.com/sigls/v2?id=fdd9e2a7-0fee-49f6-ad69-4354098401ff&language=en-us&market=US");
 
@@ -67,7 +69,7 @@ namespace APIs.XboxGamePass
                                 if (lector.Read() == true)
                                 {
 									cantidad += 1;
-									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString() + " suscripciones detectadas", conexion);
+									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString(), conexion);
 
                                     if (lector.IsDBNull(0) == false)
                                     {

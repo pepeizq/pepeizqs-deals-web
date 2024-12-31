@@ -63,7 +63,7 @@ namespace APIs.GreenManGaming
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0", conexion);
 
 			string html = await Decompiladores.Estandar("https://api.greenmangaming.com/api/productfeed/prices/current?cc=es&cur=eur&lang=en");
 
@@ -127,7 +127,7 @@ namespace APIs.GreenManGaming
 
 									try
 									{
-										BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2.ToString(), conexion);
 									}
 									catch (Exception ex)
 									{
@@ -143,7 +143,7 @@ namespace APIs.GreenManGaming
 
 		public static async Task BuscarOfertasGold(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(GenerarGold().Id, DateTime.Now, "0 ofertas detectadas", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(GenerarGold().Id, DateTime.Now, "0", conexion);
 
 			int juegos2 = 0;
 
@@ -229,7 +229,7 @@ namespace APIs.GreenManGaming
 
 									try
 									{
-										BaseDatos.Admin.Actualizar.Tiendas(GenerarGold().Id, DateTime.Now, juegos2.ToString() + " ofertas detectadas", conexion);
+										BaseDatos.Admin.Actualizar.Tiendas(GenerarGold().Id, DateTime.Now, juegos2.ToString(), conexion);
 									}
 									catch (Exception ex)
 									{

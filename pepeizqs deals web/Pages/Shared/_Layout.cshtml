@@ -278,24 +278,20 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
-    <script>
-        // Blazor.start({
-        //     reconnectionOptions: {
-        //         maxRetries: 100,
-        //         retryIntervalMilliseconds: 2000
-        //     },
-        //     configureSignalR: function (builder) {
-        //         let c = builder.build();
-        //         c.serverTimeoutInMilliseconds = 30000;
-        //         c.keepAliveIntervalInMilliseconds = 10000;
-        //         builder.build = () => {
-        //             return c;
-        //         };
-        //     }
-        // });
-    </script>
 
     <script>
+        Blazor.start({
+            reconnectionOptions: {
+                maxRetries: 5,
+                retryIntervalMilliseconds: 2000
+            },
+            configureSignalR: function (builder) {
+                builder.withServerTimeout(60000);
+            }
+        });
+    </script>
+
+@*     <script>
         function delay(milliseconds) {
             return new Promise(resolve => {
                 setTimeout(resolve, milliseconds)
@@ -321,7 +317,7 @@
         }
 
         boot()
-    </script>
+    </script> *@
 
     <script>
         function hoverTooltip(e, id) {
