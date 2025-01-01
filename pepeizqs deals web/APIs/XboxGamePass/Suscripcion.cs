@@ -34,7 +34,7 @@ namespace APIs.XboxGamePass
 
         public static async Task Buscar(SqlConnection conexion)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, 0, conexion);
 
             int cantidad = 0;
 
@@ -69,7 +69,7 @@ namespace APIs.XboxGamePass
                                 if (lector.Read() == true)
                                 {
 									cantidad += 1;
-									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString(), conexion);
+									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, cantidad, conexion);
 
                                     if (lector.IsDBNull(0) == false)
                                     {

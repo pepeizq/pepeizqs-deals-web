@@ -6,7 +6,7 @@ namespace BaseDatos.Admin
 {
 	public static class Actualizar
 	{
-		public static void Tiendas(string tienda, DateTime fecha, string mensaje, SqlConnection conexion = null)
+		public static void Tiendas(string tienda, DateTime fecha, int cantidad, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -27,7 +27,7 @@ namespace BaseDatos.Admin
 			{
 				comando.Parameters.AddWithValue("@id", tienda);
 				comando.Parameters.AddWithValue("@fecha", fecha.ToString());
-				comando.Parameters.AddWithValue("@mensaje", mensaje);
+				comando.Parameters.AddWithValue("@mensaje", cantidad);
 
 				SqlDataReader lector = comando.ExecuteReader();
 

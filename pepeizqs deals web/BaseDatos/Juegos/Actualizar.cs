@@ -240,7 +240,7 @@ namespace BaseDatos.Juegos
 				}
 				catch (Exception ex)
 				{
-					Errores.Insertar.Mensaje("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, ex);
+					Errores.Insertar.Mensaje("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, comando.ExecuteScalar().ToString());
 				}
 			}
 		}

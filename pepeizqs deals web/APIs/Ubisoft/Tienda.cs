@@ -32,7 +32,7 @@ namespace APIs.Ubisoft
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
 
             string html = await Decompiladores.Estandar("https://daisycon.io/datafeed/?media_id=350618&standard_id=1&language_code=es&locale_id=17&type=JSON&program_id=14538&html_transform=none&rawdata=false&encoding=utf8&general=false");
 
@@ -107,7 +107,7 @@ namespace APIs.Ubisoft
 
                                                 try
                                                 {
-													BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString(), conexion);
+													BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
                                                 }
                                                 catch (Exception ex)
                                                 {

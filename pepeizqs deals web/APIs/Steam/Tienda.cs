@@ -4,6 +4,7 @@
 //https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=730
 //https://api.steampowered.com/IStoreService/GetAppList/v1/?key=[devkey]&max_results=50000
 //https://store.steampowered.com/appreviews/730?json=1
+//https://store.steampowered.com/curator/185907/ajaxgetcreatorhomeinfo?get_appids=true
 
 #nullable disable
 
@@ -43,7 +44,7 @@ namespace APIs.Steam
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, bool mirarOfertas)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			string añadirDeck = string.Empty;
 			int deck = 0;
@@ -351,18 +352,18 @@ namespace APIs.Steam
 													}
 													catch (Exception ex)
 													{
-														BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+														BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 													}
 
 													juegos += 1;
 
 													try
 													{
-														BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos.ToString(), conexion);
+														BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos, conexion);
 													}
 													catch (Exception ex)
 													{
-														BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+														BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 													}
 												}
 											}

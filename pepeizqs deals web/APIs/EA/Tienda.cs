@@ -32,7 +32,7 @@ namespace APIs.EA
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
 
 			int juegos2 = 0;
 
@@ -138,7 +138,7 @@ namespace APIs.EA
 
 									try
 									{
-										BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2.ToString(), conexion);
+										BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
 									}
 									catch (Exception ex)
 									{

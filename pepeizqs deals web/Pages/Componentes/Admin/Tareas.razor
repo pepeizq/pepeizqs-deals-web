@@ -29,7 +29,7 @@
                             </div>
 
                             <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <div>@tarea.Mensaje</div>
+                                <div style="text-align: right;">@tarea.Cantidad</div>
 
                                 @if (tarea.Valor1 > 0)
                                 {
@@ -74,7 +74,7 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <div>@tarea.Mensaje</div>
+                            <div style="text-align: right;">@tarea.Cantidad</div>
 
                             @if (tarea.Valor1 > 0)
                             {
@@ -118,7 +118,7 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <div>@tarea.Mensaje</div>
+                            <div style="text-align: right;">@tarea.Cantidad</div>
 
                             @if (tarea.Valor1 > 0)
                             {
@@ -177,7 +177,7 @@
                     DateTime fecha = DateTime.Now;
                     fecha = fecha - TimeSpan.FromDays(1);
 
-                    BaseDatos.Admin.Actualizar.Tiendas(tarea.Id, fecha, tarea.Mensaje, conexion);
+                    BaseDatos.Admin.Actualizar.Tiendas(tarea.Id, fecha, tarea.Cantidad, conexion);
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Herramientas;
 using Microsoft.Data.SqlClient;
 using Tiendas2;
 
@@ -215,7 +214,7 @@ namespace BaseDatos.Admin
 								{
 									Id = lector.GetString(0),
 									Fecha = DateTime.Parse(lector.GetString(1)),
-									Mensaje = lector.GetString(2),
+									Cantidad = lector.GetInt32(2),
 									Valor1 = lector.GetInt32(3),
 									Valor2 = lector.GetInt32(4)
 								};
@@ -272,7 +271,7 @@ namespace BaseDatos.Admin
 	{
 		public string Id;
 		public DateTime Fecha;
-		public string Mensaje;
+		public int Cantidad;
 		public int Valor1;
 		public int Valor2;
 	}

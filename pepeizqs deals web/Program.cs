@@ -51,7 +51,7 @@ builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 builder.Services.AddDbContextPool<pepeizqs_deals_webContext>(opciones => { 
 	opciones.UseSqlServer(conexionTexto, opciones2 =>
 	{
-		opciones2.CommandTimeout(60);
+		opciones2.CommandTimeout(0);
 	}); 
 	opciones.EnableSensitiveDataLogging();
 });

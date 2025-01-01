@@ -56,7 +56,7 @@ namespace APIs.Ubisoft
 
         public static async Task Buscar(SqlConnection conexion)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString().ToLower(), DateTime.Now, 0, conexion);
 
             int cantidad = 0;
 
@@ -102,7 +102,7 @@ namespace APIs.Ubisoft
                                 {
                                     cantidad += 1;
 
-									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString(), DateTime.Now, cantidad.ToString(), conexion);
+									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id.ToString(), DateTime.Now, cantidad, conexion);
 
                                     if (lector.IsDBNull(0) == false)
                                     {
@@ -212,7 +212,7 @@ namespace APIs.Ubisoft
 
 		public static async Task BuscarPremium(SqlConnection conexion)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, "0", conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, 0, conexion);
 
 			int cantidad = 0;
 
@@ -258,7 +258,7 @@ namespace APIs.Ubisoft
 								{
 									cantidad += 1;
 
-									BaseDatos.Admin.Actualizar.Tiendas(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, cantidad.ToString(), conexion);
+									BaseDatos.Admin.Actualizar.Tiendas(GenerarPremium().Id.ToString().ToLower(), DateTime.Now, cantidad, conexion);
 
 									if (lector.IsDBNull(0) == false)
 									{
