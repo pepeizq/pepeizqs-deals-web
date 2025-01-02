@@ -332,6 +332,22 @@ namespace APIs.Steam
 														etiquetas = Herramientas.Listados.Generar(temp17);
 													}
 
+													List<string> curators = new List<string>();
+
+													if (temp4.Contains("data-ds-crtrids") == true)
+													{
+														int int18 = temp4.IndexOf("data-ds-crtrids");
+														string temp18 = temp4.Remove(0, int18);
+
+														int int19 = temp18.IndexOf("[");
+														string temp19 = temp18.Remove(0, int19 + 1);
+
+														int int20 = temp19.IndexOf("]");
+														string temp20 = temp19.Remove(int20, temp19.Length - int20);
+										
+														curators = Herramientas.Listados.Generar(temp20);
+													}
+
 													JuegoPrecio oferta = new JuegoPrecio
 													{
 														Nombre = titulo,
@@ -348,7 +364,7 @@ namespace APIs.Steam
 
 													try
 													{
-														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, etiquetas, conexion, deck);
+														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, etiquetas, curators, conexion, deck);
 													}
 													catch (Exception ex)
 													{

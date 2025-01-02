@@ -48,6 +48,7 @@ namespace Juegos
 		public List<JuegoHistorico> Historicos { get; set; }
 		public JuegoGalaxyGOG GalaxyGOG { get; set; }
 		public JuegoCantidadJugadoresSteam CantidadJugadores { get; set; }
+		public List<string> CuratorsSteam { get; set; }
 	}
 
 	public static class JuegoCrear

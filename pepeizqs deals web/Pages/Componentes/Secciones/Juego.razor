@@ -3737,7 +3737,8 @@
                         FontSize = "14px",
                         FontFamily = "Motiva Sans"
                     }
-                }
+                },
+                Type = XAxisType.Datetime
             },
             Yaxis = new List<YAxis>() {
                 (new YAxis
@@ -3813,14 +3814,15 @@
             },
             Markers = new Markers { Shape = ShapeEnum.Circle, Size = 5, FillOpacity = new Opacity(0.8d) },
             Stroke = new Stroke { Curve = Curve.Smooth },
-            Colors = new List<string> { "#345884", "#95c0fe" },
+            Colors = new List<string> { "#345884", "#3f62a0" },
             Legend = new Legend
             {
                 Position = LegendPosition.Top,
                 HorizontalAlign = ApexCharts.Align.Right,
                 Floating = true,
                 OffsetX = -5,
-                OffsetY = -25
+                OffsetY = -40,
+                FontSize = "16px"
             }
         };
     }

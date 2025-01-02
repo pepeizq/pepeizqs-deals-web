@@ -378,7 +378,19 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
-            return juego;
+			try
+			{
+				if (lector.IsDBNull(33) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(33)) == false)
+					{
+						juego.CuratorsSteam = JsonSerializer.Deserialize<List<string>>(lector.GetString(33));
+					}
+				}
+			}
+			catch { }
+
+			return juego;
 		}
 
 		public static Juego UnJuego(int id)

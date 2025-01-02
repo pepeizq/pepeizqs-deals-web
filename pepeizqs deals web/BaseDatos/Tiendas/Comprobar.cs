@@ -8,7 +8,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, SqlConnection conexion = null, int deck = 0)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, List<string> curators, SqlConnection conexion = null, int deck = 0)
 		{
 			if (conexion == null)
 			{
@@ -64,94 +64,105 @@ namespace BaseDatos.Tiendas
 					{
 						comando.Parameters.AddWithValue("@idSteam", idSteam);
 
+						if (juego.IdSteam == 1091500)
+						{
+							BaseDatos.Errores.Insertar.Mensaje("test0", "yolo");
+						}
+
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{
 							if (lector.Read() == true)
 							{
-								if (lector.IsDBNull(6) == false)
+								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
 								{
-									if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+									DateTime fechaComprobacion = DateTime.Parse(lector.GetString(6));
+
+									if (juego.IdSteam == 1091500)
 									{
-										DateTime fechaComprobacion = DateTime.Parse(lector.GetString(6));
-										fechaComprobacion = fechaComprobacion.AddDays(91);
+										BaseDatos.Errores.Insertar.Mensaje("test", DateTime.Now.Subtract(fechaComprobacion).Days.ToString());
+									}
 
-										if (fechaComprobacion < DateTime.Now)
+									if (DateTime.Now.Subtract(fechaComprobacion) > TimeSpan.FromDays(91))
+									{
+										if (juego.IdSteam == 1091500)
 										{
-											ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, deck, conexion);
+											BaseDatos.Errores.Insertar.Mensaje("test", "test1");
 										}
-										else
+
+										ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, curators, deck, conexion);
+									}
+									else
+									{
+										int id = 0;
+										if (lector.IsDBNull(0) == false)
 										{
-											int id = 0;
-											if (lector.IsDBNull(0) == false)
-											{
-												id = lector.GetInt32(0);
-											}
+											id = lector.GetInt32(0);
+										}
 
-											List<JuegoPrecio> ofertasHistoricas = new List<JuegoPrecio>();
-											if (lector.IsDBNull(1) == false)
+										List<JuegoPrecio> ofertasHistoricas = new List<JuegoPrecio>();
+										if (lector.IsDBNull(1) == false)
+										{
+											if (string.IsNullOrEmpty(lector.GetString(1)) == false)
 											{
-												if (string.IsNullOrEmpty(lector.GetString(1)) == false)
-												{
-													ofertasHistoricas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(1));
-												}
+												ofertasHistoricas = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(1));
 											}
+										}
 
-											if (ofertasHistoricas == null)
-											{
-												ofertasHistoricas = new List<JuegoPrecio>();
-											}
+										if (ofertasHistoricas == null)
+										{
+											ofertasHistoricas = new List<JuegoPrecio>();
+										}
 
-											if (ofertasHistoricas.Count == 0)
-											{
-												ofertasHistoricas.Add(oferta);
-											}
+										if (ofertasHistoricas.Count == 0)
+										{
+											ofertasHistoricas.Add(oferta);
+										}
 
-											List<JuegoPrecio> ofertasActuales = new List<JuegoPrecio>();
-											if (lector.IsDBNull(2) == false)
+										List<JuegoPrecio> ofertasActuales = new List<JuegoPrecio>();
+										if (lector.IsDBNull(2) == false)
+										{
+											if (string.IsNullOrEmpty(lector.GetString(2)) == false)
 											{
-												if (string.IsNullOrEmpty(lector.GetString(2)) == false)
-												{
-													ofertasActuales = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(2));
-												}
+												ofertasActuales = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(2));
 											}
+										}
 
-											if (ofertasActuales == null)
-											{
-												ofertasActuales = new List<JuegoPrecio>();
-											}
+										if (ofertasActuales == null)
+										{
+											ofertasActuales = new List<JuegoPrecio>();
+										}
 
-											if (ofertasActuales.Count == 0)
-											{
-												ofertasActuales.Add(oferta);
-											}
+										if (ofertasActuales.Count == 0)
+										{
+											ofertasActuales.Add(oferta);
+										}
 
-											List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
-											if (lector.IsDBNull(3) == false)
+										List<JuegoUsuariosInteresados> usuariosInteresados = new List<JuegoUsuariosInteresados>();
+										if (lector.IsDBNull(3) == false)
+										{
+											if (string.IsNullOrEmpty(lector.GetString(3)) == false)
 											{
-												if (string.IsNullOrEmpty(lector.GetString(3)) == false)
-												{
-													usuariosInteresados = JsonSerializer.Deserialize<List<JuegoUsuariosInteresados>>(lector.GetString(3));
-												}
+												usuariosInteresados = JsonSerializer.Deserialize<List<JuegoUsuariosInteresados>>(lector.GetString(3));
 											}
+										}
 
-											if (lector.IsDBNull(4) == false)
-											{
-												idSteam = lector.GetInt32(4);
-											}
+										if (lector.IsDBNull(4) == false)
+										{
+											idSteam = lector.GetInt32(4);
+										}
 
-											List<JuegoHistorico> historicos = new List<JuegoHistorico>();
-											if (lector.IsDBNull(5) == false)
+										List<JuegoHistorico> historicos = new List<JuegoHistorico>();
+										if (lector.IsDBNull(5) == false)
+										{
+											if (string.IsNullOrEmpty(lector.GetString(5)) == false)
 											{
-												if (string.IsNullOrEmpty(lector.GetString(5)) == false)
-												{
-													historicos = JsonSerializer.Deserialize<List<JuegoHistorico>>(lector.GetString(5));
-												}
+												historicos = JsonSerializer.Deserialize<List<JuegoHistorico>>(lector.GetString(5));
 											}
+										}
 
-											if (id > 0)
-											{
-												Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, historicos, oferta, conexion, null, null, null, usuariosInteresados, juego.Analisis);
-											}
+										if (id > 0)
+										{
+											Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, historicos, oferta, conexion, null, null, null, usuariosInteresados, juego.Analisis);
 										}
 									}
 								}
@@ -190,7 +201,7 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, int deck = 0, SqlConnection conexion = null)
+		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, List<string> curators, int deck = 0, SqlConnection conexion = null)
 		{
 			if (juego.IdSteam > 0)
 			{
@@ -204,6 +215,11 @@ namespace BaseDatos.Tiendas
 					{
 						conexion = Herramientas.BaseDatos.Conectar();
 					}
+				}
+
+				if (juego.IdSteam == 1091500)
+				{
+					BaseDatos.Errores.Insertar.Mensaje("test", "test2");
 				}
 
 				string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
@@ -224,7 +240,15 @@ namespace BaseDatos.Tiendas
 							{
 								nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
 							}
-							catch { }
+							catch (Exception ex)
+							{
+								BaseDatos.Errores.Insertar.Mensaje("API Steam", ex);
+							}
+
+							if (juego.IdSteam == 1091500)
+							{
+								BaseDatos.Errores.Insertar.Mensaje("test", "test3");
+							}
 
 							if (nuevoJuego != null)
 							{
@@ -245,6 +269,7 @@ namespace BaseDatos.Tiendas
 							}
 
 							juego.Etiquetas = etiquetas;
+							juego.CuratorsSteam = curators;
 
 							if (deck > 0)
 							{

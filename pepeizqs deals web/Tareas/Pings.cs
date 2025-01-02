@@ -36,7 +36,7 @@ namespace Tareas
 
 						HttpClient httpClient = new HttpClient(clientHandler);
 						HttpRequestMessage mensaje = new HttpRequestMessage();
-						mensaje.RequestUri = new Uri("http://tiendas.pepeizqdeals.com/");
+						mensaje.RequestUri = new Uri("https://tiendas.pepeizqdeals.com/");
 						mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
 						mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
 						mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
