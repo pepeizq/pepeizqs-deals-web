@@ -1,18 +1,21 @@
 #nullable disable
 
-using BaseDatos.Publishers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace pepeizqs_deals_web.Pages
 {
-    public class publishersModel : PageModel
+    public class curatorModel : PageModel
     {
+		public BaseDatos.Curators.Curator curator = new BaseDatos.Curators.Curator();
+
 		public string idioma = string.Empty;
 
-		public List<Publisher> publishers = new List<Publisher>();
+		[BindProperty(SupportsGet = true)]
+		public string id { get; set; }
 
-		public async Task OnGetAsync()
-		{
+		public void OnGet()
+        {
 			idioma = Request.Query["language"];
 
 			if (string.IsNullOrEmpty(idioma) == true)
@@ -24,15 +27,9 @@ namespace pepeizqs_deals_web.Pages
 				catch { }
 			}
 
-			await Task.Delay(1);
-			publishers = BaseDatos.Publishers.Buscar.Todos();
-
-			if (publishers != null)
+			if (string.IsNullOrEmpty(id) == false)
 			{
-				if (publishers.Count > 0)
-				{
-					publishers = publishers.OrderBy(x => x.Nombre).ToList();
-				}
+				curator = BaseDatos.Curators.Buscar.Uno(id);
 			}
 		}
     }

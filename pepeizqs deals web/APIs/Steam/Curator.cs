@@ -1,76 +1,87 @@
 ﻿#nullable disable
 
-using BaseDatos.Publishers;
 using Herramientas;
-using Microsoft.VisualBasic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.Steam
 {
     public static class Curator
     {
-        public static async Task<Publisher> SacarPublisher(string id)
+        public static async Task<SteamCuratorAPI> Extraer(string id)
         {
-            string html = await Decompiladores.Estandar("https://store.steampowered.com/publisher/" + id);
-
+            string html = await Decompiladores.Estandar("https://store.steampowered.com/curator/" + id + "/ajaxgetcreatorhomeinfo?get_appids=true");
+        
             if (string.IsNullOrEmpty(html) == false)
             {
-                Publisher publisher = new Publisher
+                SteamCuratorAPI api = JsonSerializer.Deserialize<SteamCuratorAPI>(html);
+
+                if (api != null)
                 {
-                    Id = id
-                };
-
-                if (html.Contains("<title>") == true)
-                {
-                    int int1 = html.IndexOf("<title>");
-                    string temp1 = html.Remove(0, int1 + 7);
-
-                    int int2 = temp1.IndexOf("</title>");
-                    string temp2 = temp1.Remove(int2, temp1.Length - int2);
-
-                    temp2 = temp2.Replace("Steam Publisher:", null);
-
-                    publisher.Nombre = temp2.Trim();
+                    return api;
                 }
-
-                if (publisher.Nombre == "Steam Search")
-                {
-                    return null;
-                }
-                else
-                {
-                    if (html.Contains("name=" + Strings.ChrW(34) + "Description" + Strings.ChrW(34)) == true)
-                    {
-                        int int1 = html.IndexOf("name=" + Strings.ChrW(34) + "Description" + Strings.ChrW(34));
-                        string temp1 = html.Remove(0, int1 + 10);
-
-                        int int2 = temp1.IndexOf("content=" + Strings.ChrW(34));
-                        string temp2 = temp1.Remove(0, int2 + 9);
-
-                        int int3 = temp2.IndexOf(Strings.ChrW(34));
-                        string temp3 = temp2.Remove(int3, temp2.Length - int3);
-
-                        publisher.Descripcion = temp3.Trim();
-                    }
-
-                    if (html.Contains("property=" + Strings.ChrW(34) + "og:image" + Strings.ChrW(34)) == true)
-                    {
-                        int int1 = html.IndexOf("property=" + Strings.ChrW(34) + "og:image" + Strings.ChrW(34));
-                        string temp1 = html.Remove(0, int1 + 10);
-
-                        int int2 = temp1.IndexOf("content=" + Strings.ChrW(34));
-                        string temp2 = temp1.Remove(0, int2 + 9);
-
-                        int int3 = temp2.IndexOf(Strings.ChrW(34));
-                        string temp3 = temp2.Remove(int3, temp2.Length - int3);
-
-                        publisher.Imagen = temp3.Trim();
-                    }
-
-                    return publisher;
-                }               
-            }
+			}
 
             return null;
         }
-    }
+
+		public static async Task<SteamCuratorAPIVanidad> ExtraerVanidad(string id)
+		{
+			string html = await Decompiladores.Estandar("https://steamcommunity.com/gid/" + id + "/ajaxgetvanityandclanid/");
+
+			if (string.IsNullOrEmpty(html) == false)
+			{
+				SteamCuratorAPIVanidad api = JsonSerializer.Deserialize<SteamCuratorAPIVanidad>(html);
+
+				if (api != null)
+				{
+					return api;
+				}
+			}
+
+			return null;
+		}
+	}
+
+    public class SteamCuratorAPI
+    {
+		[JsonPropertyName("creator_clan_id")]
+		public int Id { get; set; }
+
+		[JsonPropertyName("name")]
+		public string Nombre { get; set; }
+
+		[JsonPropertyName("avatar_url_full_size")]
+		public string Imagen { get; set; }
+
+		[JsonPropertyName("tag_line_localized")]
+		public string Descripcion { get; set; }
+
+		[JsonPropertyName("vanity")]
+		public string Slug { get; set; }
+
+		[JsonPropertyName("appids")]
+		public List<int> SteamIds { get; set; }
+
+		[JsonPropertyName("weblink")]
+		public SteamCuratorAPIWeb Web { get; set; }
+	}
+
+	public class SteamCuratorAPIWeb
+    {
+		[JsonPropertyName("url")]
+		public string Enlace { get; set; }
+
+		[JsonPropertyName("title")]
+		public string Nombre { get; set; }
+	}
+
+	public class SteamCuratorAPIVanidad
+	{
+		[JsonPropertyName("clanAccountID")]
+		public int Id { get; set; }
+
+		[JsonPropertyName("creator_page_bg_url")]
+		public string Imagen { get; set; }
+	}
 }

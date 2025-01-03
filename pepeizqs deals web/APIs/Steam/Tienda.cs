@@ -5,6 +5,7 @@
 //https://api.steampowered.com/IStoreService/GetAppList/v1/?key=[devkey]&max_results=50000
 //https://store.steampowered.com/appreviews/730?json=1
 //https://store.steampowered.com/curator/185907/ajaxgetcreatorhomeinfo?get_appids=true
+//https://steamcommunity.com/gid/103582791462511166/ajaxgetvanityandclanid/
 
 #nullable disable
 
@@ -72,12 +73,7 @@ namespace APIs.Steam
 			int arranque = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional", conexion);
 			int tope = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional2", conexion);
 
-			if (tope == 0)
-			{
-				tope = 100000;
-			}
-
-			if (arranque >= tope - 100)
+			if (arranque >= tope - 50)
 			{
 				arranque = 0;
 			}
@@ -109,13 +105,13 @@ namespace APIs.Steam
 						html = html2;
 					}
 
-					if (tope == 100000)
+					if (html2.Contains("total_count") == true)
 					{
 						int int1 = html2.IndexOf("total_count");
 
 						if (int1 != -1)
 						{
-							string temp1 = html.Remove(0, int1);
+							string temp1 = html2.Remove(0, int1);
 
 							int int2 = temp1.IndexOf(":");
 							string temp2 = temp1.Remove(0, int2 + 1);
@@ -124,6 +120,11 @@ namespace APIs.Steam
 							string temp3 = temp2.Remove(int3, temp2.Length - int3);
 
 							tope = int.Parse(temp3.Trim());
+
+							if (tope > i)
+							{
+								i = 0;
+							}
 						}
 					}
 				}

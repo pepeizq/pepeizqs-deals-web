@@ -1368,12 +1368,37 @@
 
                                                 foreach (var desarrollador in listaDesarrolladores)
                                                 {
+                                                    bool añadido = false;
+
                                                     if (i > 0)
                                                     {
                                                         <label style="margin-right: 5px;">,</label>
                                                     }
 
-                                                    <label>@desarrollador</label>
+                                                    if (curators.Count > 0)
+                                                    {
+                                                        foreach (var curator in curators)
+                                                        {
+                                                            if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
+                                                            {
+                                                                añadido = true;
+                                                                <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@desarrollador</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
+                                                                {
+                                                                    añadido = true;
+                                                                    <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@desarrollador</a>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (añadido == false)
+                                                    {
+                                                        @desarrollador
+                                                    }
 
                                                     i += 1;
                                                 }
@@ -1405,31 +1430,40 @@
 
                                         <div>
                                             @{
-                                                List<global::BaseDatos.Publishers.Publisher> publishersFinales = PublisherBuscar(listaPublishers);
-
                                                 int i = 0;
 
-                                                foreach (var publisher in publishersFinales)
+                                                foreach (var publisher in listaPublishers)
                                                 {
+                                                    bool añadido = false;
+
                                                     if (i > 0)
                                                     {
                                                         <label style="margin-right: 5px;">,</label>
                                                     }
 
-                                                    if (string.IsNullOrEmpty(publisher.Id) == false)
+                                                    if (curators.Count > 0)
                                                     {
-                                                        if (publisher.Id != "noenlazar")
+                                                        foreach (var curator in curators)
                                                         {
-                                                            <a href="/publisher/@publisher.Id/">@publisher.Nombre</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            @publisher.Nombre
+                                                            if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
+                                                            {
+                                                                añadido = true;
+                                                                <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                 if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
+                                                                 {
+                                                                     añadido = true;
+                                                                     <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
+                                                                 }
+                                                            }
                                                         }
                                                     }
-                                                    else
+
+                                                    if (añadido == false)
                                                     {
-                                                        @publisher.Nombre
+                                                        @publisher
                                                     }
 
                                                     i += 1;
@@ -1561,6 +1595,88 @@
                 }
             }
         </div>
+
+        @if (curators.Count > 0)
+        {
+            foreach (var curator in curators)
+            {
+                List<Juegos.Juego> juegosCurator = global::BaseDatos.Juegos.Buscar.MultiplesJuegosSteam(curator.Curator.SteamIds);
+
+                if (juegosCurator.Count > 0)
+                {
+                    int posicion = 0;
+
+                    foreach (var juegoCurator in juegosCurator)
+                    {
+                        if (juegoCurator.IdSteam == juego.IdSteam)
+                        {
+                            break;
+                        }
+
+                        posicion += 1;
+                    }
+
+                    juegosCurator.RemoveAt(posicion);
+
+                    if (juegosCurator.Count > 0)
+                    {
+                        juegosCurator = juegosCurator.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Nombre).ToList();
+
+                        <div id="curator-@curator.Curator.Id.ToString()" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <img src="@curator.Curator.Imagen" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" />
+
+                                    <a href="/curator/@curator.Curator.Slug.ToLower()/" target="_blank" style="text-decoration: none;">
+                                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                                            <div style="font-size: 18px;">
+                                                @string.Format(Idiomas.BuscarTexto(idioma, "String89", "Game"), curator.Curator.Nombre)
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <hr />
+
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+                                    @{
+                                        int i = curator.Posicion;
+
+                                        <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                            <i class="fa-solid fa-arrow-left"></i>
+                                        </button>
+
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; width: 100%;">
+                                            @while (i < (curator.Posicion + 4))
+                                            {
+                                                if (i < juegosCurator.Count)
+                                                {
+                                                    <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px;">
+                                                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px;" title="@juegosCurator[i].Nombre">
+                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-height: 115px; object-fit: cover;" />
+
+                                                            <div style="font-size: 14px; text-align: right; padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+                                                                @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                }
+
+                                                i += 1;
+                                            }
+                                        </div>
+
+                                        <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        }
 
         <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
             <div>
@@ -2147,6 +2263,7 @@
 
     private List<Juegos.Juego> dlcs = new List<Juegos.Juego>();
     private List<Juegos.JuegoDRM> drmsGeforceNOW = new List<JuegoDRM>();
+    private List<global::BaseDatos.Curators.CuratorFicha> curators = new List<global::BaseDatos.Curators.CuratorFicha>();
 
     private ApexChartOptions<PuntoGrafico> opcionesGrafico;
 
@@ -2284,6 +2401,33 @@
                     {
                         juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
                         global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
+                    }
+                }
+            }
+
+            if (juego.CuratorsSteam != null)
+            {
+                if (juego.CuratorsSteam.Count > 0)
+                {
+                    foreach (var curator in juego.CuratorsSteam)
+                    {
+                        if (string.IsNullOrEmpty(curator) == false)
+                        {
+                            global::BaseDatos.Curators.Curator curator2 = global::BaseDatos.Curators.Buscar.Uno(int.Parse(curator));
+
+                            if (curator2 == null)
+                            {
+                                global::BaseDatos.Curators.Insertar.Ejecutar(await APIs.Steam.Curator.Extraer(curator));
+                            }
+                            else
+                            {
+                                global::BaseDatos.Curators.CuratorFicha ficha = new global::BaseDatos.Curators.CuratorFicha();
+                                ficha.Curator = curator2;
+                                ficha.Posicion = 0;
+
+                                curators.Add(ficha);
+                            }
+                        }                     
                     }
                 }
             }
@@ -3862,144 +4006,6 @@
 
     #endregion
 
-    #region Publisher
-
-    private List<global::BaseDatos.Publishers.Publisher> PublisherBuscar(List<string> listaPublishers)
-    {
-        List<global::BaseDatos.Publishers.Publisher> publishersFinales = new List<global::BaseDatos.Publishers.Publisher>();
-
-        foreach (var publisher in listaPublishers)
-        {
-            string publisherLimpio = publisher;
-            publisherLimpio = publisherLimpio.Replace(" ", null);
-            publisherLimpio = publisherLimpio.Replace("(", null);
-            publisherLimpio = publisherLimpio.Replace(")", null);
-            publisherLimpio = publisherLimpio.Replace("?", null);
-            publisherLimpio = publisherLimpio.Replace("/", null);
-            publisherLimpio = publisherLimpio.Replace("\"", null);
-            publisherLimpio = publisherLimpio.Replace("💘", null);
-            publisherLimpio = publisherLimpio.Replace("'", null);
-            publisherLimpio = publisherLimpio.ToLower();
-            publisherLimpio = publisherLimpio.Trim();
-
-            global::BaseDatos.Publishers.Publisher publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio);
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisher.Trim());
-            }
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-            }
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisher.Trim());
-            }
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-            }
-
-            publisherLimpio = System.Text.RegularExpressions.Regex.Replace(publisherLimpio, @"[^\u0000-\u007F]+", "");
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.Id(publisherLimpio.Trim());
-            }
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.NombreExacto(publisherLimpio.Trim());
-            }
-
-            if (publisherFinal == null)
-            {
-                publisherFinal = global::BaseDatos.Publishers.Buscar.Acepcion(publisherLimpio.Trim());
-            }
-
-            if (publisherFinal != null)
-            {
-                bool añadir = true;
-
-                if (publishersFinales.Count > 0)
-                {
-                    foreach (var publisherFinal2 in publishersFinales)
-                    {
-                        if (publisherFinal2.Id == publisherFinal.Id)
-                        {
-                            añadir = false;
-                        }
-                    }
-                }
-
-                if (añadir == true)
-                {
-                    publishersFinales.Add(publisherFinal);
-                }
-            }
-            else
-            {
-                global::BaseDatos.Publishers.Publisher publisherFinal2 = new global::BaseDatos.Publishers.Publisher();
-                publisherFinal2.Id = publisherLimpio;
-                publisherFinal2.Nombre = publisher;
-
-                if (publisherFinal2.Nombre.Contains("?") == true)
-                {
-                    publisherFinal2.Nombre = publisherFinal2.Nombre.Replace("?", null);
-                    publisherFinal2.Nombre = publisherFinal2.Nombre.Trim();
-                }
-
-                if (string.IsNullOrEmpty(publisherFinal2.Nombre) == false)
-                {
-                    if (string.IsNullOrEmpty(publisherFinal2.Id) == false)
-                    {
-                        bool mandarError = false;
-
-                        if (juego.Analisis != null)
-                        {
-                            if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-                            {
-                                if (juego.Analisis.Cantidad.Length > 3)
-                                {
-                                    mandarError = true;
-                                }
-                            }
-                        }
-
-                        if (mandarError == true)
-                        {
-                            publisherFinal2.Nombre = publisherFinal2.Nombre + " (no check)";
-
-                            publishersFinales.Add(publisherFinal2);
-
-                            global::BaseDatos.Errores.Insertar.Mensaje("Publisher no encontrado", publisherFinal2.Nombre + " - " + juego.Nombre + userAgent, "/game/" + juego.Id.ToString() + "/");
-                        }
-                        else
-                        {
-                            publisherFinal2.Id = "noenlazar";
-
-                            publishersFinales.Add(publisherFinal2);
-                        }
-                    }
-                    else
-                    {
-                        publisherFinal2.Id = "noenlazar";
-
-                        publishersFinales.Add(publisherFinal2);
-                    }
-                }
-            }
-        }
-
-        return publishersFinales;
-    }
-
-    #endregion
-
     #region Analisis
 
     private JuegoAnalisisAmpliado analisisAmpliado = new JuegoAnalisisAmpliado();
@@ -4052,6 +4058,30 @@
         }
 
         return null;
+    }
+
+    #endregion
+
+    #region Curator
+
+    private void CuratorAtras(MouseEventArgs e, global::BaseDatos.Curators.CuratorFicha curator, int tope)
+    {
+        curator.Posicion = curator.Posicion - 4;
+
+        if (curator.Posicion < 0)
+        {
+            curator.Posicion = tope - 4;
+        }
+    }
+
+    private void CuratorAdelante(MouseEventArgs e, global::BaseDatos.Curators.CuratorFicha curator, int tope)
+    {
+        curator.Posicion = curator.Posicion + 4;
+
+        if (curator.Posicion > tope)
+        {
+            curator.Posicion = 0;
+        }
     }
 
     #endregion

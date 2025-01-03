@@ -303,26 +303,6 @@
                                 </button>
                             }
                         }
-
-                        if (resultadosPublishers.Count > 0)
-                        {
-                            if (contador > 0)
-                            {
-                                <hr />
-                            }
-
-                            int id = 7;
-                            string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
-
-                            if (pestañaSeleccionada == id)
-                            {
-                                fondo = "background-color: var(--fondoBotonPequeño);";
-                            }
-
-                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter8", "Header") (@resultadosPublishers.Count)
-                            </button>
-                        }
                     }
                 </div>
 
@@ -510,37 +490,6 @@
                                 </ItemContent>
                             </Virtualize>
                         }
-                        else if (pestañaSeleccionada == 7)
-                        {
-                            <Virtualize Context="publisher" Items="resultadosPublishers" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/publisher/@publisher.Id/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    @{
-                                                        string imagen = publisher.Imagen;
-
-                                                        if (string.IsNullOrEmpty(imagen) == true)
-                                                        {
-                                                            imagen = "/imagenes/otros/avatardefectosteam.jpg";
-                                                        }
-                                                    }
-
-                                                    <img src="@imagen" style="width: 107px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @publisher.Nombre
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
                     }
                 </div>
             </div>
@@ -704,7 +653,6 @@ else
     private List<Juegos.Juego> resultadosBundles = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
-    private List<BaseDatos.Publishers.Publisher> resultadosPublishers = new List<BaseDatos.Publishers.Publisher>();
 
     private bool enseñarBuscador = false;
 
@@ -797,9 +745,6 @@ else
                     }
                 }
 
-                resultadosPublishers.Clear();
-                resultadosPublishers = BaseDatos.Publishers.Buscar.NombreContiene(cadenaBusqueda, 5);
-
                 if (resultadosJuegos != null)
                 {
                     if (resultadosJuegos.Count > 0)
@@ -880,18 +825,6 @@ else
                 {
                     resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                     ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                }
-
-                if (resultadosPublishers.Count > 0)
-                {
-                    encontroAlgo = true;
-
-                    if (pestañaSeleccionada == -1)
-                    {
-                        pestañaSeleccionada = 7;
-                    }
-
-                    resultadosPublishers = resultadosPublishers.OrderBy(x => x.Nombre).ToList();
                 }
             }
         }

@@ -106,6 +106,7 @@ namespace Herramientas
 
 							Disallow: /account/
 							Disallow: /link/*
+							Disallow: /publisher/*
 
 							Sitemap: https://pepeizqdeals.com/sitemap.xml");
 			}

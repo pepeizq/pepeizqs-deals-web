@@ -64,31 +64,18 @@ namespace BaseDatos.Tiendas
 					{
 						comando.Parameters.AddWithValue("@idSteam", idSteam);
 
-						if (juego.IdSteam == 1091500)
-						{
-							BaseDatos.Errores.Insertar.Mensaje("test0", "yolo");
-						}
-
 						using (SqlDataReader lector = comando.ExecuteReader())
 						{
 							if (lector.Read() == true)
 							{
+								juego.IdSteam = idSteam;
+
 								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
 								{
 									DateTime fechaComprobacion = DateTime.Parse(lector.GetString(6));
 
-									if (juego.IdSteam == 1091500)
-									{
-										BaseDatos.Errores.Insertar.Mensaje("test", DateTime.Now.Subtract(fechaComprobacion).Days.ToString());
-									}
-
 									if (DateTime.Now.Subtract(fechaComprobacion) > TimeSpan.FromDays(91))
 									{
-										if (juego.IdSteam == 1091500)
-										{
-											BaseDatos.Errores.Insertar.Mensaje("test", "test1");
-										}
-
 										ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, curators, deck, conexion);
 									}
 									else
@@ -217,11 +204,6 @@ namespace BaseDatos.Tiendas
 					}
 				}
 
-				if (juego.IdSteam == 1091500)
-				{
-					BaseDatos.Errores.Insertar.Mensaje("test", "test2");
-				}
-
 				string buscarJuego = "SELECT * FROM juegos WHERE idSteam=@idSteam";
 
 				using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
@@ -243,11 +225,6 @@ namespace BaseDatos.Tiendas
 							catch (Exception ex)
 							{
 								BaseDatos.Errores.Insertar.Mensaje("API Steam", ex);
-							}
-
-							if (juego.IdSteam == 1091500)
-							{
-								BaseDatos.Errores.Insertar.Mensaje("test", "test3");
 							}
 
 							if (nuevoJuego != null)

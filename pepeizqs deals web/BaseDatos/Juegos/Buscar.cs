@@ -458,6 +458,18 @@ namespace BaseDatos.Juegos
 			return null;
 		}
 
+		public static List<Juego> MultiplesJuegosSteam(List<int> ids, SqlConnection conexion = null)
+		{
+			List<string> idsTexto = new List<string>();
+
+			foreach (var id in ids)
+			{
+				idsTexto.Add(id.ToString());
+			}
+
+			return MultiplesJuegosSteam(idsTexto, conexion);
+		}
+
 		public static List<Juego> MultiplesJuegosSteam(List<string> ids, SqlConnection conexion = null)
 		{
 			List<Juego> juegos = new List<Juego>();

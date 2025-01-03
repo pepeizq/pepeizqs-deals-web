@@ -1,0 +1,73 @@
+﻿@page "/curator/{id}/"
+
+@model pepeizqs_deals_web.Pages.curatorModel
+
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@{
+	#nullable disable
+
+	string titulo = Model.curator.Nombre;
+
+	ViewData["Title"] = titulo;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+	}
+
+	bool seo = false;
+	string? userAgent = string.Empty;
+
+	if (HttpContext != null)
+	{
+		userAgent = HttpContext.Request.Headers.UserAgent;
+
+		if (string.IsNullOrEmpty(userAgent) == false)
+		{
+			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
+			{
+				seo = true;
+			}
+		}
+	}
+
+	if (seo == true)
+	{
+		string enlace = "https://pepeizqdeals.com/curator/" + Model.curator.Slug.ToLower() + "/";
+
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = titulo,
+			enlace = enlace,
+			canonical = enlace,
+			descripcion = Model.curator.Descripcion,
+			imagen = Model.curator.Imagen
+		}))
+
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			curatorId = Model.curator.Id
+		}))
+	}
+	else
+	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Curator>(RenderMode.Server, new
+		{
+			idioma = Model.idioma,
+			curatorId = Model.curator.Id,
+			usuarioId = usuario?.Id
+		}))
+	}
+}

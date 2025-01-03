@@ -1,0 +1,69 @@
+﻿@using APIs.Steam
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
+
+@if (string.IsNullOrEmpty(curator.ImagenFondo) == false)
+{
+	<img src="@curator.ImagenFondo" style="object-fit: cover; width: 100%;" />
+}
+
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center;">
+	<img src="@curator.Imagen" style="width: 140px; height: 140px;" />
+	
+	<div style="display: flex; flex-direction: column; gap: 15px; padding: 25px;">
+		<div style="font-size: 18px;">
+			@curator.Nombre
+		</div>
+		
+		<div>
+			@curator.Descripcion
+		</div>
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public string usuarioId { get; set; }
+
+	[Parameter]
+	public int curatorId { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	public BaseDatos.Curators.Curator curator = new BaseDatos.Curators.Curator();
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
+		curator = BaseDatos.Curators.Buscar.Uno(curatorId);
+
+		if (curator != null)
+		{
+			if (string.IsNullOrEmpty(curator.ImagenFondo) == true)
+			{
+				SteamCuratorAPIVanidad api = await APIs.Steam.Curator.ExtraerVanidad(curator.Id.ToString());
+
+				if (api != null)
+				{
+					if (string.IsNullOrEmpty(api.Imagen) == false)
+					{
+						BaseDatos.Curators.Actualizar.ImagenFondo(api.Imagen, curator.Id);
+						curator.ImagenFondo = api.Imagen;
+					}
+				}
+			}
+		}
+		
+	}
+}

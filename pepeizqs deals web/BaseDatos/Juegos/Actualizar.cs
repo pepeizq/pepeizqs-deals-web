@@ -77,7 +77,7 @@ namespace BaseDatos.Juegos
 			}
 
 			string sqlActualizar = "UPDATE juegos " +
-					"SET idSteam=@idSteam, idGog=@idGog, analisis=@analisis, " +
+					"SET idSteam=@idSteam, idGog=@idGog, " +
 						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, historicos=@historicos, " +
                         "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirCurators + añadirDeck + añadirSlugGog + añadirSlugEpic;
 
@@ -111,7 +111,6 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@idGog", juego.IdGog);
 					comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonSerializer.Serialize(juego.PrecioMinimosHistoricos));
 					comando.Parameters.AddWithValue("@precioActualesTiendas", JsonSerializer.Serialize(juego.PrecioActualesTiendas));
-					comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
 					comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 					comando.Parameters.AddWithValue("@historicos", JsonSerializer.Serialize(juego.Historicos));
 
