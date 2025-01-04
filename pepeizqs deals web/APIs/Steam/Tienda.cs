@@ -85,7 +85,7 @@ namespace APIs.Steam
 
 				if (mirarOfertas == true)
 				{
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english" + añadirDeck);
+					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english&category1=998%2C21%2C990%2C994" + añadirDeck);
 
 					try
 					{
@@ -121,7 +121,7 @@ namespace APIs.Steam
 
 							tope = int.Parse(temp3.Trim());
 
-							if (tope > i)
+							if (arranque > tope)
 							{
 								i = 0;
 							}
@@ -149,7 +149,7 @@ namespace APIs.Steam
 					}
 				}
 
-				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional2", tope);
+				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional2", tope, conexion);
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
@@ -399,7 +399,7 @@ namespace APIs.Steam
 				}
 
 				i += 50;
-				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional", i);
+				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional", i, conexion);
 			}
 		}
 	}

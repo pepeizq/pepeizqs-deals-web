@@ -153,7 +153,7 @@
 			{
 				TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-				if (actualizado.Days == 0)
+				if (actualizado.TotalHours < 12)
 				{
 					decimal tempPrecio = precio.Precio;
 

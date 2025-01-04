@@ -81,6 +81,14 @@ namespace Herramientas
 
 			sb.Append(textoPatreon);
 
+			string textoCurators = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/curators/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoCurators);
+
 			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("20");
 
 			if (noticias.Count > 0)
@@ -293,6 +301,53 @@ namespace Herramientas
 						 "</url>";
 
 					sb.Append(textoNoticias);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-curators.xml")]
+		public IActionResult SitemapCurators()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			string textoIndex = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoIndex);
+
+			List<global::BaseDatos.Curators.Curator> curators = new List<global::BaseDatos.Curators.Curator>();
+
+			SqlConnection conexion = BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				curators = global::BaseDatos.Curators.Buscar.Todos();
+			}
+
+			if (curators.Count > 0)
+			{
+				foreach (var curator in curators)
+				{
+					string textoCurator = "<url>" + Environment.NewLine +
+						 "<loc>https://pepeizqdeals.com/curator/" + curator.Slug.ToLower() + "/</loc>" + Environment.NewLine +
+						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
+						 "<priority>0.9</priority> " + Environment.NewLine +
+						 "</url>";
+
+					sb.Append(textoCurator);
 				}
 			}
 

@@ -44,8 +44,6 @@
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
     Usuario usuario = new Usuario();
 
-    bool adminLogeado = false;
-
     if (usuarioLogeado == true)
     {
         usuario = await UserManager.GetUserAsync(User);
@@ -133,11 +131,6 @@
                 }
                 catch { }
             }
-
-            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
-            {
-                adminLogeado = true;
-            }
         }    
     }
 }
@@ -177,13 +170,8 @@
             <div class="cabecera-poner cuerpo-ancho">
                 @(await Html.RenderComponentAsync<Componentes.Interfaz.Cabecera>(RenderMode.ServerPrerendered, new { 
                     idioma = idioma, 
+                    usuario = usuario,
                     usuarioLogeado = usuarioLogeado,
-                    usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck),
-                    adminLogeado = adminLogeado, 
-                    usuarioAvatar = usuario?.Avatar,
-                    usuarioNombre = usuario?.Nickname,
-                    usuarioEmail = usuario?.Email,
-                    usuarioCoins = usuario?.PatreonCoins,
                     ubicacionEnlace = Context.Request.Path.ToString()
                 }))
             </div>

@@ -517,7 +517,7 @@ else
 				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="107" OverscanCount="6">
 					<ItemContent>
 						@{
-							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego, juego.PrecioMinimosHistoricos[0].DRM);
+							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego);
 							bool usuarioTieneDeseado = false;
 
 							string fondoColor = string.Empty;
@@ -528,7 +528,7 @@ else
 							}
 							else
 							{
-								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, Juegos.JuegoDRM.NoEspecificado, true);
 
 								if (usuarioTieneDeseado == true)
 								{

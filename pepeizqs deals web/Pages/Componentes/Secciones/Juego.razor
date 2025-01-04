@@ -873,45 +873,52 @@
                                     <div style="display: flex; flex-direction: column; gap: 15px; padding: 20px;">
                                         @foreach (JuegoPrecio precio in preciosActualesDRM)
                                         {
-                                            if (precio.Descuento > descuentoMaximo)
+                                            TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
+
+                                            if (actualizado.TotalHours < 12)
                                             {
-                                                descuentoMaximo = precio.Descuento;
-                                            }
+                                                if (precio.Descuento > descuentoMaximo)
+                                                {
+                                                    descuentoMaximo = precio.Descuento;
+                                                }
 
-                                            if (precio.Descuento > descuentoMaximo - (descuentoMaximo / 2))
-                                            {
-                                                <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda, usuarioPatreon)" target="_blank">
-                                                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px;">
-                                                        <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
-                                                        <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
+                                                if ((precio.Descuento > descuentoMaximo - (descuentoMaximo / 2)) || preciosActualesDRM.Count == 1)
+                                                {
+                                                    <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda, usuarioPatreon)" target="_blank">
+                                                        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px;">
+                                                            <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
+                                                            <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
+                                                            @{
+                                                            
+                                                            }
+                                                            <div class="juego-descuento-precio">
+                                                                <div style="font-size: 14px; margin: 20px;">
+                                                                    @Calculadora.DiferenciaTiempo(precio.FechaDetectado, idioma)
+                                                                </div>
 
-                                                        <div class="juego-descuento-precio">
-                                                            <div style="font-size: 14px; margin: 20px;">
-                                                                @Calculadora.DiferenciaTiempo(precio.FechaDetectado, idioma)
-                                                            </div>
+                                                                <div style="width: 75px; text-align: center;" class="juego-descuento">
+                                                                    @precio.Descuento.ToString()%
+                                                                </div>
 
-                                                            <div style="width: 75px; text-align: center;" class="juego-descuento">
-                                                                @precio.Descuento.ToString()%
-                                                            </div>
+                                                                <div class="juego-precio" style="text-align: center;">
+                                                                    @PrepararPrecio(precio, false)
 
-                                                            <div class="juego-precio" style="text-align: center;">
-                                                                @PrepararPrecio(precio, false)
+                                                                    @if (precio.Moneda != JuegoMoneda.Euro)
+                                                                    {
+                                                                        <br />
 
-                                                                @if (precio.Moneda != JuegoMoneda.Euro)
-                                                                {
-                                                                    <br />
-
-                                                                    <label style="font-size: 13px;">@Divisas.DevolverSimbolo(precio.Precio, precio.Moneda)</label>
-                                                                }
+                                                                        <label style="font-size: 13px;">@Divisas.DevolverSimbolo(precio.Precio, precio.Moneda)</label>
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                preciosBajos.Add(precio);
-                                            }
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    preciosBajos.Add(precio);
+                                                }
+                                            }           
                                         }
 
                                         @if (preciosBajos.Count > 0)
@@ -1452,11 +1459,11 @@
                                                             }
                                                             else
                                                             {
-                                                                 if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
-                                                                 {
-                                                                     añadido = true;
-                                                                     <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
-                                                                 }
+                                                                if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
+                                                                {
+                                                                    añadido = true;
+                                                                    <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -1646,14 +1653,38 @@
                                             <i class="fa-solid fa-arrow-left"></i>
                                         </button>
 
-                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; width: 100%;">
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; width: 100%;">
                                             @while (i < (curator.Posicion + 4))
                                             {
                                                 if (i < juegosCurator.Count)
                                                 {
+                                                    bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juegosCurator[i]);
+                                                    bool usuarioTieneDeseado = false;
+
+                                                    string fondoColor = string.Empty;
+
+                                                    if (usuarioTieneJuego == true)
+                                                    {
+                                                        fondoColor = "background-color: var(--fondoBien);";
+                                                    }
+                                                    else
+                                                    {
+                                                        usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juegosCurator[i], Juegos.JuegoDRM.NoEspecificado, true);
+
+                                                        if (usuarioTieneDeseado == true)
+                                                        {
+                                                            fondoColor = "background-color: var(--fondoAlerta);";
+                                                        }
+                                                    }
+
+                                                    if (string.IsNullOrEmpty(fondoColor) == true)
+                                                    {
+                                                        fondoColor = "background-color: var(--fondoBotonPequeño);";
+                                                    }
+
                                                     <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px;">
-                                                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px;" title="@juegosCurator[i].Nombre">
-                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-height: 115px; object-fit: cover;" />
+                                                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px; @fondoColor" title="@juegosCurator[i].Nombre">
+                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 250px; max-height: 115px; object-fit: cover;" />
 
                                                             <div style="font-size: 14px; text-align: right; padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
                                                                 @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
@@ -1876,7 +1907,7 @@
 
                                                 <hr />
 
-                                                <div style="white-space: pre-line;">
+                                                <div style="white-space: pre-line; max-width: 100vh; overflow-wrap: break-word;">
                                                     @analisis.Contenido
                                                 </div>
                                             </div>
@@ -2254,6 +2285,8 @@
 
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
+    private List<string> juegosUsuarioSteam = new List<string>();
+    private List<string> juegosUsuarioGog = new List<string>();
 
     [Parameter]
     public Juegos.Juego juego { get; set; }
@@ -2274,6 +2307,16 @@
         if (usuario != null)
         {
             usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+            {
+                juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+            }
+
+            if (string.IsNullOrEmpty(usuario.GogGames) == false)
+            {
+                juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
+            }
         }
 
         if (juego != null)
@@ -2421,6 +2464,18 @@
                             }
                             else
                             {
+                                if (curator2.Fecha == null)
+                                {
+                                    global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
+                                }
+                                else
+                                {
+                                    if (curator2.Fecha?.Subtract(DateTime.Now) > TimeSpan.FromDays(90))
+                                    {
+                                        global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
+                                    }
+                                }
+
                                 global::BaseDatos.Curators.CuratorFicha ficha = new global::BaseDatos.Curators.CuratorFicha();
                                 ficha.Curator = curator2;
                                 ficha.Posicion = 0;
@@ -2736,51 +2791,21 @@
 
     public static string PrepararPrecio(JuegoPrecio precio, bool historico)
     {
-        string precioTexto = string.Empty;
-
         if (historico == true)
         {
-            precioTexto = precio.Precio.ToString();
+            return Herramientas.Precios.Euro(precio.Precio);
         }
         else
         {
             if (precio.Moneda != JuegoMoneda.Euro)
             {
-                precioTexto = precio.PrecioCambiado.ToString();
+                return Herramientas.Precios.Euro(precio.PrecioCambiado);
             }
             else
             {
-                precioTexto = precio.Precio.ToString();
+                return Herramientas.Precios.Euro(precio.Precio);
             }
         }
-
-        if (precioTexto.Contains(".") == true)
-        {
-            precioTexto = precioTexto.Replace(".", ",");
-        }
-
-        if (precioTexto.Contains(",") == true)
-        {
-            int int1 = precioTexto.IndexOf(",");
-
-            if (int1 == precioTexto.Length - 2)
-            {
-                precioTexto = precioTexto + "0";
-            }
-
-            if (precioTexto.Length > int1 + 3)
-            {
-                precioTexto = precioTexto.Remove(int1 + 3, precioTexto.Length - int1 - 3);
-            }
-        }
-        else
-        {
-            precioTexto = precioTexto + ",00";
-        }
-
-        precioTexto = precioTexto + "€";
-
-        return precioTexto;
     }
 
     public static List<JuegoPrecio> OrdenarPrecios(List<JuegoPrecio> precios, JuegoDRM drm)
@@ -2797,7 +2822,7 @@
                     {
                         TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-                        if (actualizado.Days == 0)
+                        if (actualizado.TotalHours < 12)
                         {
                             JuegoPrecio nuevoPrecio = precio;
 
@@ -3608,7 +3633,7 @@
             {
                 TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
 
-                if (actualizado.Days == 0)
+                if (actualizado.TotalHours < 12)
                 {
                     decimal tempPrecio = precio.Precio;
 
@@ -3627,21 +3652,7 @@
 
         if (minimoCantidad > 0 && minimoCantidad < 10000000)
         {
-            string precioTexto = string.Empty;
-
-            precioTexto = minimoCantidad.ToString();
-            precioTexto = precioTexto.Replace(".", ",");
-
-            int int1 = precioTexto.IndexOf(",");
-
-            if (int1 == precioTexto.Length - 2)
-            {
-                precioTexto = precioTexto + "0";
-            }
-
-            precioTexto = precioTexto + "€";
-
-            return string.Format(Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), precioTexto);
+            return string.Format(Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), Herramientas.Precios.Euro(minimoCantidad));
         }
 
         return Idiomas.BuscarTexto(idioma, "SearchMessage2", "Header");

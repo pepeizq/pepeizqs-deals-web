@@ -195,7 +195,7 @@ namespace Herramientas
 			return datos;
         }
 
-        public static bool ComprobarUsuarioTieneJuego(List<string> juegosUsuarioSteam, List<string> juegosUsuarioGog, Juego juego, JuegoDRM drm)
+        public static bool ComprobarUsuarioTieneJuego(List<string> juegosUsuarioSteam, List<string> juegosUsuarioGog, Juego juego, JuegoDRM drm = JuegoDRM.NoEspecificado)
         {
 			if (juego != null)
 			{
@@ -203,7 +203,14 @@ namespace Herramientas
 				{
 					if (juegosUsuarioSteam.Count > 0)
 					{
-						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.Steam)
+						bool drmValido = false;
+
+						if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.Steam)
+						{
+							drmValido = true;
+						}
+
+						if (juego.Tipo == JuegoTipo.Game && drmValido == true)
 						{
 							foreach (var juegoUsuario in juegosUsuarioSteam)
 							{
@@ -220,7 +227,14 @@ namespace Herramientas
 				{
 					if (juegosUsuarioGog.Count > 0)
 					{
-						if (juego.Tipo == JuegoTipo.Game && drm == JuegoDRM.GOG)
+						bool drmValido = false;
+
+						if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.GOG)
+						{
+							drmValido = true;
+						}
+
+						if (juego.Tipo == JuegoTipo.Game && drmValido == true)
 						{
 							foreach (var juegoUsuario in juegosUsuarioGog)
 							{

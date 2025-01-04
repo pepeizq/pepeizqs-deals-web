@@ -644,7 +644,7 @@ namespace BaseDatos.Juegos
 
 			if (todo == false)
 			{
-				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis";
+				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis, idSteam, idGog";
 			}
 
 			if (nombre.Contains(" ") == true)
@@ -797,6 +797,16 @@ namespace BaseDatos.Juegos
 								{
 									juego.Analisis = JsonSerializer.Deserialize<JuegoAnalisis>(lector.GetString(9));
 								}
+							}
+
+							if (lector.IsDBNull(10) == false)
+							{
+								juego.IdSteam = lector.GetInt32(10);
+							}
+
+							if (lector.IsDBNull(11) == false)
+							{
+								juego.IdGog = lector.GetInt32(11);
 							}
 
 							juegos.Add(juego);

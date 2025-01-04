@@ -1,14 +1,14 @@
-﻿@using Microsoft.AspNetCore.Components;
-@using Microsoft.AspNetCore.Components.Web;
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Mvc;
-@using Microsoft.AspNetCore.Mvc.Razor;
-@using Microsoft.Data.SqlClient;
+@using Microsoft.Data.SqlClient
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inherits Juegos.Juego
 
+@inject UserManager<Usuario> UserManager
+@inject SignInManager<Usuario> SignInManager
 @inject NavigationManager NavManager
 
 <style>
@@ -69,7 +69,7 @@
 
 <div style="display: flex; align-items: center; gap: 10px; flex: 1 1 auto;">
 
-    @if (adminLogeado == true && ubicacionEnlace.Contains("/admin") == false)
+    @if (BaseDatos.Usuarios.Buscar.RolDios(usuario?.Id) == true && ubicacionEnlace.Contains("/admin") == false)
     {
         <a class="texto-cabecera boton-superior" href="/admin" style="font-size: 15px;">
             @adminMensaje
@@ -127,7 +127,7 @@
                 <i class="fa-solid fa-bars"></i>
 
                 <div class="menu-dropdown-contenido">
-                    @if (usuarioLogeado == true)
+                    @if (usuario != null)
                     {
                         if (ubicacionEnlace.Contains("/wishlist") == false)
                         {
@@ -174,7 +174,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <input type="text" @oninput="TextoCambiaBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "SearchPlaceholder", "Header")" />
+        <input type="text" @oninput="TextoCambiaBuscador" @onblur="AdiosFocusBuscador" class="entrada-texto" style="min-width: 50px; max-width: 400px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "SearchPlaceholder", "Header")" />
 
         @if (encontroAlgo == true)
         {
@@ -195,7 +195,7 @@
                                 fondo = "background-color: var(--fondoBotonPequeño);";
                             }
 
-                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                            <button @onclick="@(e => CambiarPestaña(e, id, resultadosJuegos))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter1", "Header") (@resultadosJuegos.Count)
                             </button>
                         }
@@ -212,7 +212,7 @@
                                 fondo = "background-color: var(--fondoBotonPequeño);";
                             }
 
-                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                            <button @onclick="@(e => CambiarPestaña(e, id, resultadosDLCs))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter2", "Header") (@resultadosDLCs.Count)
                             </button>
                         }
@@ -229,7 +229,7 @@
                                 fondo = "background-color: var(--fondoBotonPequeño);";
                             }
 
-                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                            <button @onclick="@(e => CambiarPestaña(e, id, resultadosBandasSonoras))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter3", "Header") (@resultadosBandasSonoras.Count)
                             </button>
                         }
@@ -246,7 +246,7 @@
                                 fondo = "background-color: var(--fondoBotonPequeño);";
                             }
 
-                            <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                            <button @onclick="@(e => CambiarPestaña(e, id, resultadosSoftware))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter4", "Header") (@resultadosSoftware.Count)
                             </button>
                         }
@@ -268,7 +268,7 @@
                                     fondo = "background-color: var(--fondoBotonPequeño);";
                                 }
 
-                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                <button @onclick="@(e => CambiarPestaña(e, id, resultadosBundles))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                     @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter5", "Header") (@resultadosBundles.Count)
                                 </button>
                             }
@@ -283,7 +283,7 @@
                                     fondo = "background-color: var(--fondoBotonPequeño);";
                                 }
 
-                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                <button @onclick="@(e => CambiarPestaña(e, id, resultadosGratis))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                     @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter6", "Header") (@resultadosGratis.Count)
                                 </button>
                             }
@@ -298,198 +298,92 @@
                                     fondo = "background-color: var(--fondoBotonPequeño);";
                                 }
 
-                                <button @onclick="@(e => CambiarPestaña(e, id))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                <button @onclick="@(e => CambiarPestaña(e, id, resultadosSuscripciones))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
                                     @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter7", "Header") (@resultadosSuscripciones.Count)
                                 </button>
                             }
+                        }
+
+                        if (resultadosCurators.Count > 0)
+                        {
+                            contador += 1;
+
+                            int id = 7;
+                            string fondo = "background-color: var(--fondoBotonPequeñoTransparente);";
+
+                            if (pestañaSeleccionada == id)
+                            {
+                                fondo = "background-color: var(--fondoBotonPequeño);";
+                            }
+
+                            <button @onclick="@(e => CambiarPestaña(e, id, resultadosCurators))" class="boton-pequeño" style="@fondo padding: 12px 15px; font-size: 16px; text-align: right;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "SearchFilter8", "Header") (@resultadosCurators.Count)
+                            </button>
                         }
                     }
                 </div>
 
                 <div style="width: 100%; padding-right: 10px;">
-                    @{
-                        if (pestañaSeleccionada == 0)
-                        {
-                            <Virtualize Context="juego" Items="resultadosJuegos" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@juego.Id/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
+                    @if (resultadosMostrar.Count > 0)
+                    {
+                        <Virtualize Context="juego" Items="resultadosMostrar" ItemSize="107">
+                            <ItemContent>
+                                @{
+                                    bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego);
+                                    bool usuarioTieneDeseado = false;
+
+                                    string fondoColor = string.Empty;
+
+                                    if (usuarioTieneJuego == true)
+                                    {
+                                        fondoColor = "background-color: var(--fondoBien);";
+                                    }
+                                    else
+                                    {
+                                        usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, Juegos.JuegoDRM.NoEspecificado);
+
+                                        if (usuarioTieneDeseado == true)
+                                        {
+                                            fondoColor = "background-color: var(--fondoAlerta);";
+                                        }
+                                    }
+                                }
+
+                                <div class="perfil-flexible-centrado" style="padding-top: 10px;">
+                                    @{
+                                        string imagen = "width: 230px; height: 107px;";
+                                        string enlace = "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+
+                                        if (pestañaSeleccionada == 7)
+                                        {
+                                            imagen = "width: 107px; height: 107px;";
+                                            enlace = "/curator/" + juego.NombreCodigo.ToLower() + "/";
+                                        }
+                                    }
+
+                                    <a class="boton-pequeño" href="@enlace" style="padding: 0px; @fondoColor">
+                                        <div class="perfil-flexible-centrado">
+                                            <div>
+                                                <img src="@juego.Imagenes.Header_460x215" style="@imagen" />
+                                            </div>
+
+                                            <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
                                                 <div>
-                                                    <img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
+                                                    @juego.Nombre
                                                 </div>
 
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @juego.Nombre
-                                                    </div>
-
+                                                @if (pestañaSeleccionada != 7)
+                                                {
                                                     <div style="margin-top: 5px; font-size: 15px;">
                                                         @Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
                                                     </div>
-                                                </div>
+                                                }
                                             </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 1)
-                        {
-                            <Virtualize Context="dlc" Items="resultadosDLCs" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@dlc.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @dlc.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, dlc, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 2)
-                        {
-                            <Virtualize Context="bandaSonora" Items="resultadosBandasSonoras" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@bandaSonora.Id/@Herramientas.EnlaceAdaptador.Nombre(bandaSonora.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@bandaSonora.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @bandaSonora.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, bandaSonora, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 3)
-                        {
-                            <Virtualize Context="software" Items="resultadosSoftware" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@software.Id/@Herramientas.EnlaceAdaptador.Nombre(software.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@software.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @software.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, software, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 4)
-                        {
-                            <Virtualize Context="bundle" Items="resultadosBundles" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@bundle.Id/@Herramientas.EnlaceAdaptador.Nombre(bundle.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@bundle.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @bundle.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, bundle, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 5)
-                        {
-                            <Virtualize Context="gratis" Items="resultadosGratis" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@gratis.Id/@Herramientas.EnlaceAdaptador.Nombre(gratis.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@gratis.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @gratis.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, gratis, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
-                        else if (pestañaSeleccionada == 6)
-                        {
-                            <Virtualize Context="suscripcion" Items="resultadosSuscripciones" ItemSize="107">
-                                <ItemContent>
-                                    <div class="perfil-flexible-centrado" style="padding-top: 10px;">
-                                        <a class="boton-pequeño" href="/game/@suscripcion.Id/@Herramientas.EnlaceAdaptador.Nombre(suscripcion.Nombre)/" style="padding: 0px;">
-                                            <div class="perfil-flexible-centrado">
-                                                <div>
-                                                    <img src="@suscripcion.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-                                                </div>
-
-                                                <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
-                                                    <div>
-                                                        @suscripcion.Nombre
-                                                    </div>
-
-                                                    <div style="margin-top: 5px; font-size: 15px;">
-                                                        @Herramientas.Buscador.GenerarMensaje(idioma, suscripcion, true, true, true)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ItemContent>
-                            </Virtualize>
-                        }
+                                        </div>
+                                    </a>
+                                </div>
+                            </ItemContent>
+                        </Virtualize>
                     }
                 </div>
             </div>
@@ -502,26 +396,26 @@
     <div style="display: flex; align-items: center; flex: 1 auto 1;">
         <div class="menu-dropdown">
             <div style="display: flex; align-items: center; font-size: 14px; cursor: pointer; gap: 15px;">
-                @if (string.IsNullOrEmpty(usuarioAvatar) == true)
+                @if (string.IsNullOrEmpty(usuario?.Avatar) == true)
                 {
-                    <div>@usuarioEmail</div>
+                    <div>@usuario?.Email</div>
                 }
                 else
                 {
-                    @if (usuarioAvatar.ToLower().Contains(".jpg") == true || usuarioAvatar.ToLower().Contains(".jpeg") == true || usuarioAvatar.ToLower().Contains(".png") == true || usuarioAvatar.ToLower().Contains(".webp") == true)
+                    @if (usuario?.Avatar.ToLower().Contains(".jpg") == true || usuario?.Avatar.ToLower().Contains(".jpeg") == true || usuario?.Avatar.ToLower().Contains(".png") == true || usuario?.Avatar.ToLower().Contains(".webp") == true)
                     {
-                        <img src="@usuarioAvatar" style="max-height: 32px; max-width: 32px;" title="@usuarioNombre"/>
+                        <img src="@usuario?.Avatar" style="max-height: 32px; max-width: 32px;" title="@usuario?.Nickname"/>
                     }
                     else
                     {
-                        <div>@usuarioEmail</div>
+                        <div>@usuario?.Email</div>
                     }
                 }
 
                 @if (usuarioPatreon == true)
                 {
                     <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 0px 10px; height: 32px;">
-                        @usuarioCoins.ToString()
+                        @usuario?.PatreonCoins.ToString()
                     </div>
                 }
 
@@ -575,25 +469,14 @@ else
     public string idioma { get; set; }
 
     [Parameter]
+    public Usuario usuario { get; set; }
+
+    [Parameter]
     public bool usuarioLogeado { get; set; }
 
-    [Parameter]
-    public bool usuarioPatreon { get; set; }
-
-    [Parameter]
-    public bool adminLogeado { get; set; }
-
-    [Parameter]
-    public string usuarioAvatar { get; set; }
-
-    [Parameter]
-    public string usuarioNombre { get; set; }
-
-    [Parameter]
-    public string usuarioEmail { get; set; }
-
-    [Parameter]
-    public int usuarioCoins { get; set; }
+    private bool usuarioPatreon = false;
+    private List<string> juegosUsuarioSteam = new List<string>();
+    private List<string> juegosUsuarioGog = new List<string>();
 
     [Parameter]
     public string ubicacionEnlace { get; set; }
@@ -604,30 +487,45 @@ else
 
     protected override void OnInitialized()
     {
-        if (adminLogeado == true)
+        if (usuarioLogeado == true)
         {
-            adminMensaje = "Admin";
+            usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
 
-            if (conexion == null)
+            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {
-                conexion = Herramientas.BaseDatos.Conectar();
+                juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
             }
-            else
+
+            if (string.IsNullOrEmpty(usuario.GogGames) == false)
             {
-                if (conexion.State != System.Data.ConnectionState.Open)
+                juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
+            }
+
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+            {
+                adminMensaje = "Admin";
+
+                if (conexion == null)
                 {
                     conexion = Herramientas.BaseDatos.Conectar();
                 }
-            }
-
-            using (conexion)
-            {
-                int nuevosCorreosDeals = int.Parse(BaseDatos.Admin.Buscar.Dato("correos", conexion));
-                int nuevosCorreosApps = int.Parse(BaseDatos.Admin.Buscar.Dato("correos2", conexion));
-
-                if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
+                else
                 {
-                    adminMensaje = adminMensaje + " - Correo Nuevo";
+                    if (conexion.State != System.Data.ConnectionState.Open)
+                    {
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                }
+
+                using (conexion)
+                {
+                    int nuevosCorreosDeals = int.Parse(BaseDatos.Admin.Buscar.Dato("correos", conexion));
+                    int nuevosCorreosApps = int.Parse(BaseDatos.Admin.Buscar.Dato("correos2", conexion));
+
+                    if (nuevosCorreosDeals > 0 || nuevosCorreosApps > 0)
+                    {
+                        adminMensaje = adminMensaje + " - Correo Nuevo";
+                    }
                 }
             }
         }
@@ -646,6 +544,7 @@ else
     #region Buscador
 
     private bool encontroAlgo = false;
+    private List<Juegos.Juego> resultadosMostrar = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosJuegos = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosDLCs = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosBandasSonoras = new List<Juegos.Juego>();
@@ -653,6 +552,7 @@ else
     private List<Juegos.Juego> resultadosBundles = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosGratis = new List<Juegos.Juego>();
     private List<Juegos.Juego> resultadosSuscripciones = new List<Juegos.Juego>();
+    private List<Juegos.Juego> resultadosCurators = new List<Juegos.Juego>();
 
     private bool enseñarBuscador = false;
 
@@ -663,6 +563,14 @@ else
             enseñarBuscador = true;
         }
         else
+        {
+            enseñarBuscador = false;
+        }
+    }
+
+    private void AdiosFocusBuscador()
+    {
+        if (string.IsNullOrEmpty(cadenaBusqueda) == true)
         {
             enseñarBuscador = false;
         }
@@ -703,6 +611,7 @@ else
                 resultadosBundles.Clear();
                 resultadosGratis.Clear();
                 resultadosSuscripciones.Clear();
+                resultadosCurators.Clear();
 
                 if (resultadosGestor != null)
                 {
@@ -751,13 +660,14 @@ else
                     {
                         encontroAlgo = true;
 
+                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
+
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 0;
+                            resultadosMostrar = resultadosJuegos;
                         }
-
-                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
                     }
                 }
 
@@ -767,13 +677,14 @@ else
                     {
                         encontroAlgo = true;
 
+                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
+
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 1;
+                            resultadosMostrar = resultadosDLCs;
                         }
-
-                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
                     }
                 }
 
@@ -783,13 +694,14 @@ else
                     {
                         encontroAlgo = true;
 
+                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
+
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 2;
+                            resultadosMostrar = resultadosBandasSonoras;
                         }
-
-                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
                     }
                 }
 
@@ -799,13 +711,14 @@ else
                     {
                         encontroAlgo = true;
 
+                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
+                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
+
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 3;
+                            resultadosMostrar = resultadosSoftware;
                         }
-
-                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
                     }
                 }
 
@@ -826,6 +739,33 @@ else
                     resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
                     ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
                 }
+
+                List<BaseDatos.Curators.Curator> resultadosCurators2 = BaseDatos.Curators.Buscar.Nombre(cadenaBusqueda, conexion);
+
+                if (resultadosCurators2.Count > 0)
+                {
+                    encontroAlgo = true;
+
+                    foreach (var curator in resultadosCurators2)
+                    {
+                        Juegos.Juego juego = new Juegos.Juego();
+                        juego = Juegos.JuegoCrear.Generar();
+
+                        juego.Nombre = curator.Nombre;
+                        juego.Imagenes.Header_460x215 = curator.Imagen;
+                        juego.NombreCodigo = curator.Slug;
+
+                        resultadosCurators.Add(juego);
+                    }
+
+                    resultadosCurators = resultadosCurators.OrderBy(x => x.Nombre).ToList();
+
+                    if (pestañaSeleccionada == -1)
+                    {
+                        pestañaSeleccionada = 7;
+                        resultadosMostrar = resultadosCurators;
+                    }
+                }
             }
         }
         else
@@ -836,9 +776,10 @@ else
 
     private int pestañaSeleccionada = 0;
 
-    private void CambiarPestaña(MouseEventArgs e, int pestaña)
+    private void CambiarPestaña(MouseEventArgs e, int pestaña, List<Juegos.Juego> resultadosElegidos)
     {
         pestañaSeleccionada = pestaña;
+        resultadosMostrar = resultadosElegidos;
     }
 
     #endregion

@@ -262,7 +262,7 @@ namespace Herramientas
 					{
 						TimeSpan actualizado = DateTime.Now.Subtract(oferta.FechaActualizacion);
 
-						if (actualizado.Hours < 11)
+						if (actualizado.TotalHours < 12)
 						{
 							decimal tempPrecio = oferta.Precio;
 

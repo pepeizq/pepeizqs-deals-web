@@ -886,7 +886,7 @@
 						{
 							TimeSpan actualizado = DateTime.Now.Subtract(historico.FechaActualizacion);
 
-							if (actualizado.Days == 0)
+							if (actualizado.TotalHours < 12)
 							{
 								JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 								nuevoDeseado.Id = juego.Id;
@@ -939,7 +939,7 @@
 							{
 								TimeSpan actualizado = DateTime.Now.Subtract(actual.FechaActualizacion);
 
-								if (actualizado.Days == 0)
+								if (actualizado.TotalHours < 12)
 								{
 									decimal tempPrecio = actual.Precio;
 

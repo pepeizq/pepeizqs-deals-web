@@ -75,9 +75,9 @@ namespace Herramientas
 			}
 		}
 
-		public static bool ComprobarSiEsta(string deseadosSteamEnBruto, string deseadosWebEnBruto, string deseadosGogEnBruto, Juego juego, JuegoDRM drm, bool usarIdMaestra = false)
+		public static bool ComprobarSiEsta(string deseadosSteamEnBruto, string deseadosWebEnBruto, string deseadosGogEnBruto, Juego juego, JuegoDRM drm = JuegoDRM.NoEspecificado, bool usarIdMaestra = false)
 		{
-			if (drm == JuegoDRM.Steam)
+			if (drm == JuegoDRM.Steam || drm == JuegoDRM.NoEspecificado)
 			{
 				List<string> deseadosSteam = new List<string>();
 
@@ -92,7 +92,7 @@ namespace Herramientas
 					{
 						foreach (var deseado in deseadosSteam)
 						{
-							if (juego.IdSteam.ToString() == deseado && drm == JuegoDRM.Steam)
+							if (juego.IdSteam.ToString() == deseado && (drm == JuegoDRM.Steam || drm == JuegoDRM.NoEspecificado))
 							{
 								return true;
 							}
@@ -101,13 +101,13 @@ namespace Herramientas
 				}
 			}
 
-			if (drm == JuegoDRM.GOG)
+			if (drm == JuegoDRM.GOG || drm == JuegoDRM.NoEspecificado)
 			{
 				List<string> deseadosGog = new List<string>();
 
 				if (string.IsNullOrEmpty(deseadosGogEnBruto) == false)
 				{
-					deseadosGog = Listados.Generar(deseadosSteamEnBruto);
+					deseadosGog = Listados.Generar(deseadosGogEnBruto);
 				}
 
 				if (deseadosGog != null)
@@ -116,7 +116,7 @@ namespace Herramientas
 					{
 						foreach (var deseado in deseadosGog)
 						{
-							if (juego.IdGog.ToString() == deseado && drm == JuegoDRM.GOG)
+							if (juego.IdGog.ToString() == deseado && (drm == JuegoDRM.GOG || drm == JuegoDRM.NoEspecificado))
 							{
 								return true;
 							}
@@ -142,7 +142,7 @@ namespace Herramientas
 						{
 							if (juego.Id == int.Parse(deseado.IdBaseDatos))
 							{
-								if (drm == deseado.DRM)
+								if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
 								{
 									return true;
 								}
@@ -152,7 +152,7 @@ namespace Herramientas
 						{
 							if (juego.IdMaestra == int.Parse(deseado.IdBaseDatos))
 							{
-								if (drm == deseado.DRM)
+								if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
 								{
 									return true;
 								}
