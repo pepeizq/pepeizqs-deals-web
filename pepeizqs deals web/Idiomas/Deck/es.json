@@ -22,5 +22,6 @@
   "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection": "El modo para un jugador requiere una conexión activa a Internet.",
   "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly": "Este juego no se cierra bien y puede que tengas que cerrarlo de forma manual desde la interfaz de Steam.",
   "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Este juego requiere que la compatibilidad del mando se active manualmente con los ajustes dentro del juego.",
-  "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "No se puede acceder a alguna funcionalidad en Steam Deck: editor de mapas."
+  "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "No se puede acceder a alguna funcionalidad en Steam Deck: editor de mapas.",
+  "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "Este juego no es compatible con Steam Deck porque utiliza un sistema antitrampas o un servicio multijugador incompatibles."
 }

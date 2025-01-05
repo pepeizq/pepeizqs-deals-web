@@ -11,7 +11,7 @@
 	<div>
 		@if (string.IsNullOrEmpty(curator.ImagenFondo) == false)
 		{
-			<img src="@curator.ImagenFondo" style="object-fit: cover; width: 100%;" />
+			<img src="@curator.ImagenFondo" style="object-fit: cover; width: 100%; max-height: 195px;" />
 		}
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center;">

@@ -8,7 +8,7 @@
   "#SteamDeckVerified_TestResult_ControllerGlyphsMatchDeckDevice": "Este jogo mostra ícones do controlador Steam Deck",
   "#SteamDeckVerified_TestResult_InterfaceTextIsLegible": "O texto da interface do jogo é legível no Steam Deck",
   "#SteamDeckVerified_TestResult_DefaultConfigurationIsPerformant": "A configuração gráfica padrão deste jogo funciona bem no Steam Deck",
-  "#SteamDeckVerified_TestResult_LauncherInteractionIssues": "A ferramenta de inicialização/configuração deste jogo pode exigir tela sensível ao toque ou teclado virtual, ou ter texto difícil de ler",
+  "#SteamDeckVerified_TestResult_LauncherInteractionIssues": "A ferramenta de inicialização/configuração deste jogo pode exigir tela sensível ao toque ou teclado virtual ou ter texto difícil de ler",
   "#SteamDeckVerified_TestResult_ControllerGlyphsDoNotMatchDeckDevice": "Este jogo às vezes mostra ícones de mouse, teclado ou controladores que não são do Steam Deck",
   "#SteamDeckVerified_TestResult_FirstTimeSetupRequiresActiveInternetConnection": "A primeira configuração deste jogo requer uma conexão ativa com a Internet",
   "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedPrimaryPlayer": "Este jogo não tem como padrão controladores Bluetooth/USB externos no deck e pode exigir a troca manual do controlador ativo por meio do menu de acesso rápido",
@@ -21,5 +21,7 @@
   "#SteamDeckVerified_TestResult_SteamOSDoesNotSupport": "A Valve ainda está trabalhando para adicionar suporte para este jogo no Steam Deck",
   "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection": "A jogabilidade singleplayer requer uma conexão ativa com a Internet",
   "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly": "Este jogo não sai corretamente e pode exigir que você saia manualmente por meio da sobreposição do Steam",
-  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Este jogo requer a ativação manual do suporte ao controlador usando as configurações do jogo"
+  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Este jogo requer a ativação manual do suporte ao controlador usando as configurações do jogo",
+  "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "Algumas funcionalidades auxiliares não estão acessíveis no Steam Deck: editor de mapas",
+  "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "Este jogo não é compatível com o Steam Deck devido ao uso de um serviço anti-cheat ou multijogador não compatível"
 }

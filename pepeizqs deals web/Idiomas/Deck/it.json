@@ -21,5 +21,7 @@
   "#SteamDeckVerified_TestResult_SteamOSDoesNotSupport": "Valve sta ancora lavorando per aggiungere il supporto per questo gioco su Steam Deck",
   "#SteamDeckVerified_TestResult_SingleplayerGameplayRequiresActiveInternetConnection": "Il gioco per giocatore singolo richiede una connessione Internet attiva",
   "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly": "Questo gioco non si chiude in modo corretto e potrebbe essere necessario uscire manualmente tramite l'overlay di Steam",
-  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Questo gioco richiede l'attivazione manuale del supporto del controller utilizzando le impostazioni del gioco"
+  "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Questo gioco richiede l'attivazione manuale del supporto del controller utilizzando le impostazioni del gioco",
+  "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "Alcune funzionalità ausiliarie non sono accessibili su Steam Deck: editor di mappe",
+  "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "Questo gioco non è supportato su Steam Deck a causa dell'utilizzo di un servizio anti-cheat o multiplayer non supportato"
 }

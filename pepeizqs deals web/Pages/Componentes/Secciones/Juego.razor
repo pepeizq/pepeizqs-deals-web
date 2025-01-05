@@ -280,99 +280,101 @@
             </div>
         </div>
 
-        @if (juego.Tipo == JuegoTipo.Game)
-        {
-            if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
+        <div style="margin-top: -30px; position: relative; display: flex; flex-direction: column; gap: 20px;">
+            @if (juego.Tipo == JuegoTipo.Game)
             {
-                if (juego.FreeToPlay.ToLower() == "true")
+                if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
                 {
-                    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; margin-top: -30px;">
-                        <i class="fa-solid fa-circle-info" style="font-size: 22px;"></i>
-
-                        <div style="width: 100%;">
-                            @Idiomas.BuscarTexto(idioma, "String33", "Game")
-                        </div>
-                    </div>
-                }
-            }
-
-            if (string.IsNullOrEmpty(juego.MayorEdad) == false)
-            {
-                if (juego.MayorEdad.ToLower() == "true")
-                {
-                    <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); margin-top: -30px;">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
-
-                        <div style="width: 100%;">
-                            @Idiomas.BuscarTexto(idioma, "String45", "Game")
-                        </div>
-                    </div>
-                }
-            }
-
-            if (juego.Categorias != null)
-            {
-                foreach (var categoria in juego.Categorias)
-                {
-                    if (categoria == "54")
+                    if (juego.FreeToPlay.ToLower() == "true")
                     {
-                        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; margin-top: -30px;">
-                            <i class="fa-solid fa-vr-cardboard" style="font-size: 22px;"></i>
+                        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
+                            <i class="fa-solid fa-circle-info" style="font-size: 22px;"></i>
 
                             <div style="width: 100%;">
-                                @Idiomas.BuscarTexto(idioma, "String79", "Game")
+                                @Idiomas.BuscarTexto(idioma, "String33", "Game")
+                            </div>
+                        </div>
+                    }
+                }
+
+                if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                {
+                    if (juego.MayorEdad.ToLower() == "true")
+                    {
+                        <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
+
+                            <div style="width: 100%;">
+                                @Idiomas.BuscarTexto(idioma, "String45", "Game")
+                            </div>
+                        </div>
+                    }
+                }
+
+                if (juego.Categorias != null)
+                {
+                    foreach (var categoria in juego.Categorias)
+                    {
+                        if (categoria == "54")
+                        {
+                            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
+                                <i class="fa-solid fa-vr-cardboard" style="font-size: 22px;"></i>
+
+                                <div style="width: 100%;">
+                                    @Idiomas.BuscarTexto(idioma, "String79", "Game")
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+
+            @if (juego.Tipo == JuegoTipo.DLC)
+            {
+                if (string.IsNullOrEmpty(juego.Maestro) == false)
+                {
+                    if (juego.Maestro != "no")
+                    {
+                        Juegos.Juego juegoMaestro = global::BaseDatos.Juegos.Buscar.UnJuego(juego.Maestro);
+
+                        <a href="/game/@juego.Maestro/@Herramientas.EnlaceAdaptador.Nombre(juegoMaestro.Nombre)/" style="text-decoration: none;">
+                            <div class="boton-expandir" style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background: color-mix(in srgb, var(--fondoOscuro), var(--fondoDlc) 70%); color: var(--colorTextoDlc); border: 1px solid var(--fondoBotonPequeño);">
+                                <i class="fa-solid fa-circle-arrow-down" style="font-size: 22px; opacity: 0.5;"></i>
+
+                                <div style="width: 100%;">
+                                    @string.Format(Idiomas.BuscarTexto(idioma, "String32", "Game"), juegoMaestro.Nombre)
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+
+                if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                {
+                    if (juego.MayorEdad.ToLower() == "true")
+                    {
+                        <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
+
+                            <div style="width: 100%;">
+                                @Idiomas.BuscarTexto(idioma, "String46", "Game")
                             </div>
                         </div>
                     }
                 }
             }
-        }
 
-        @if (juego.Tipo == JuegoTipo.DLC)
-        {
-            if (string.IsNullOrEmpty(juego.Maestro) == false)
+            @if (juego.Tipo == JuegoTipo.Music)
             {
-                if (juego.Maestro != "no")
-                {
-                    Juegos.Juego juegoMaestro = global::BaseDatos.Juegos.Buscar.UnJuego(juego.Maestro);
+                <div style="background: color-mix(in srgb, var(--fondoOscuro), var(--fondoBandaSonora)); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
+                    <i class="fa-solid fa-music" style="font-size: 22px;"></i>
 
-                    <a href="/game/@juego.Maestro/@Herramientas.EnlaceAdaptador.Nombre(juegoMaestro.Nombre)/" style="text-decoration: none;">
-                        <div class="boton-expandir" style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background: color-mix(in srgb, var(--fondoOscuro), var(--fondoDlc) 70%); color: var(--colorTextoDlc); border: 1px solid var(--fondoBotonPequeño); margin-top: -30px;">
-                            <i class="fa-solid fa-circle-arrow-down" style="font-size: 22px; opacity: 0.5;"></i>
-
-                            <div style="width: 100%;">
-                                @string.Format(Idiomas.BuscarTexto(idioma, "String32", "Game"), juegoMaestro.Nombre)
-                            </div>
-                        </div>
-                    </a>
-                }
-            }
-
-            if (string.IsNullOrEmpty(juego.MayorEdad) == false)
-            {
-                if (juego.MayorEdad.ToLower() == "true")
-                {
-                    <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
-
-                        <div style="width: 100%;">
-                            @Idiomas.BuscarTexto(idioma, "String46", "Game")
-                        </div>
+                    <div style="width: 100%;">
+                        @Idiomas.BuscarTexto(idioma, "String78", "Game")
                     </div>
-                }
-            }
-        }
-
-        @if (juego.Tipo == JuegoTipo.Music)
-        {
-            <div style="background: color-mix(in srgb, var(--fondoOscuro), var(--fondoBandaSonora)); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; margin-top: -30px;">
-                <i class="fa-solid fa-music" style="font-size: 22px;"></i>
-
-                <div style="width: 100%;">
-                    @Idiomas.BuscarTexto(idioma, "String78", "Game")
                 </div>
-            </div>
-        }
+            }
+        </div>
 
         @foreach (DRM drm in JuegoDRM2.GenerarListado())
         {
@@ -889,7 +891,7 @@
                                                             <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
                                                             <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
                                                             @{
-                                                            
+
                                                             }
                                                             <div class="juego-descuento-precio">
                                                                 <div style="font-size: 14px; margin: 20px;">
@@ -1682,11 +1684,11 @@
                                                         fondoColor = "background-color: var(--fondoBotonPequeño);";
                                                     }
 
-                                                    <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px;">
-                                                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px; @fondoColor" title="@juegosCurator[i].Nombre">
+                                                    <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
+                                                        <div style="display: flex; flex-direction: column; padding: 5px; height: 100%;" title="@juegosCurator[i].Nombre">
                                                             <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 250px; max-height: 115px; object-fit: cover;" />
 
-                                                            <div style="font-size: 14px; text-align: right; padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+                                                            <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
                                                                 @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
                                                             </div>
                                                         </div>
@@ -2197,28 +2199,17 @@
                             <div style="margin-top: 5px;">
                                 @{
                                     decimal? precio = puntosDatos.Items.FirstOrDefault()?.Precio;
-                                    string? precioTexto = precio.ToString();
 
-                                    if (string.IsNullOrEmpty(precioTexto) == false)
+                                    if (precio > 0)
                                     {
-                                        if (precioTexto.Contains(".") == false)
-                                        {
-                                            precioTexto = precioTexto + ".00";
-                                        }
-                                        else
-                                        {
-                                            if (precioTexto.IndexOf(".") == precioTexto.Length - 2)
-                                            {
-                                                precioTexto = precioTexto + "0";
-                                            }
-                                        }
+                                        string precioTexto = Herramientas.Precios.Euro(precio);
+                                        string fechaTexto = puntosDatos.Items.FirstOrDefault()?.DiaMes.Day.ToString() + "/" + puntosDatos.Items.FirstOrDefault()?.DiaMes.Month.ToString() + "/" + puntosDatos.Items.FirstOrDefault()?.Año.ToString();
 
-                                        precioTexto = precioTexto.Replace(".", ",");
-                                        precioTexto = precioTexto + " €";
+                                        <div>
+                                             <strong>@precioTexto</strong> - @fechaTexto
+                                        </div>
                                     }
                                 }
-
-                                <strong>@precioTexto</strong> - @puntosDatos.Items.FirstOrDefault()?.DiaMes.Day/@puntosDatos.Items.FirstOrDefault()?.DiaMes.Month/@puntosDatos.Items.FirstOrDefault()?.Año
                             </div>
                         </div>
                     </ApexPointTooltip>
@@ -2228,18 +2219,22 @@
                         {
                             List<PuntoGrafico> datos = new List<PuntoGrafico>();
 
-                            @foreach (var subpunto in punto.Puntos)
+                            foreach (var subpunto in punto.Puntos)
                             {
-                                datos.Add(new PuntoGrafico { DiaMes = subpunto.Fecha, Precio = (decimal)subpunto.Precio, Año = punto.Año.ToString(), Tienda = subpunto.Tienda });
+                                datos.Add(new PuntoGrafico { 
+                                    DiaMes = subpunto.Fecha, 
+                                    Precio = (decimal)subpunto.Precio, 
+                                    Año = punto.Año.ToString(), 
+                                    Tienda = subpunto.Tienda });
                             }
 
                             <ApexPointSeries TItem="PuntoGrafico"
-                            Items="datos"
-                            Name="@punto.Año.ToString()"
-                            SeriesType="SeriesType.Line"
-                            XValue="e => e.DiaMes"
-                            YValue="e => e.Precio"
-                            ShowDataLabels="true" />
+                                Items="datos"
+                                Name="@punto.Año.ToString()"
+                                SeriesType="SeriesType.Line"
+                                XValue="e => e.DiaMes"
+                                YValue="e => e.Precio"
+                                ShowDataLabels="true" />
                         }
                     </ChildContent>
                 </ApexChart>
