@@ -884,9 +884,7 @@
 					{
 						if (historico.DRM == drm)
 						{
-							TimeSpan actualizado = DateTime.Now.Subtract(historico.FechaActualizacion);
-
-							if (actualizado.TotalHours < 12)
+							if (Herramientas.OfertaActiva.Verificar(historico) == true)
 							{
 								JuegoDeseadoMostrar nuevoDeseado = new JuegoDeseadoMostrar();
 								nuevoDeseado.Id = juego.Id;
@@ -937,9 +935,7 @@
 						{
 							if (actual.DRM == drm)
 							{
-								TimeSpan actualizado = DateTime.Now.Subtract(actual.FechaActualizacion);
-
-								if (actualizado.TotalHours < 12)
+								if (Herramientas.OfertaActiva.Verificar(actual) == true)
 								{
 									decimal tempPrecio = actual.Precio;
 

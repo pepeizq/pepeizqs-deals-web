@@ -151,9 +151,7 @@
 		{
 			foreach (var precio in juego.PrecioActualesTiendas)
 			{
-				TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-				if (actualizado.TotalHours < 12)
+				if (Herramientas.OfertaActiva.Verificar(precio) == true)
 				{
 					decimal tempPrecio = precio.Precio;
 

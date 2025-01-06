@@ -290,7 +290,7 @@ namespace Juegos
 					}
 				}
 
-				if (tienda == "humblestore")
+				if (tienda == APIs.Humble.Tienda.Generar().Id || tienda == APIs.Humble.Tienda.GenerarChoice().Id)
 				{
 					if (drmTexto.ToLower() == "download")
 					{

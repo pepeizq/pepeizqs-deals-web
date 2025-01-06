@@ -875,9 +875,7 @@
                                     <div style="display: flex; flex-direction: column; gap: 15px; padding: 20px;">
                                         @foreach (JuegoPrecio precio in preciosActualesDRM)
                                         {
-                                            TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-                                            if (actualizado.TotalHours < 12)
+                                            if (Herramientas.OfertaActiva.Verificar(precio) == true)
                                             {
                                                 if (precio.Descuento > descuentoMaximo)
                                                 {
@@ -2225,7 +2223,8 @@
                                     DiaMes = subpunto.Fecha, 
                                     Precio = (decimal)subpunto.Precio, 
                                     Año = punto.Año.ToString(), 
-                                    Tienda = subpunto.Tienda });
+                                    Tienda = subpunto.Tienda
+                                });
                             }
 
                             <ApexPointSeries TItem="PuntoGrafico"
@@ -2234,7 +2233,7 @@
                                 SeriesType="SeriesType.Line"
                                 XValue="e => e.DiaMes"
                                 YValue="e => e.Precio"
-                                ShowDataLabels="true" />
+                                ShowDataLabels="true"/>
                         }
                     </ChildContent>
                 </ApexChart>
@@ -2815,9 +2814,7 @@
                 {
                     if (precio.DRM == drm && precio.Descuento > 0)
                     {
-                        TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-                        if (actualizado.TotalHours < 12)
+                        if (Herramientas.OfertaActiva.Verificar(precio) == true)
                         {
                             JuegoPrecio nuevoPrecio = precio;
 
@@ -3626,9 +3623,7 @@
         {
             foreach (var precio in minimo.PrecioActualesTiendas)
             {
-                TimeSpan actualizado = DateTime.Now.Subtract(precio.FechaActualizacion);
-
-                if (actualizado.TotalHours < 12)
+                if (Herramientas.OfertaActiva.Verificar(precio) == true)
                 {
                     decimal tempPrecio = precio.Precio;
 
@@ -3964,7 +3959,7 @@
             },
             Markers = new Markers { Shape = ShapeEnum.Circle, Size = 5, FillOpacity = new Opacity(0.8d) },
             Stroke = new Stroke { Curve = Curve.Smooth },
-            Colors = new List<string> { "#345884", "#3f62a0" },
+                Colors = new List<string> { "#345884", "#5C799C" },
             Legend = new Legend
             {
                 Position = LegendPosition.Top,
@@ -4084,7 +4079,7 @@
     {
         curator.Posicion = curator.Posicion + 4;
 
-        if (curator.Posicion > tope)
+        if (curator.Posicion > tope - 1)
         {
             curator.Posicion = 0;
         }

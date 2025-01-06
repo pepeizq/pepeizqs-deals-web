@@ -58,7 +58,7 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
-					string buscarJuego = "SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, fechaSteamAPIComprobacion FROM juegos WHERE idSteam=@idSteam";
+					string buscarJuego = "SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, fechaSteamAPIComprobacion, curatorsSteam FROM juegos WHERE idSteam=@idSteam";
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
@@ -72,9 +72,36 @@ namespace BaseDatos.Tiendas
 
 								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
 								{
+									bool actualizarAPI = false;
+
 									DateTime fechaComprobacion = DateTime.Parse(lector.GetString(6));
 
 									if (DateTime.Now.Subtract(fechaComprobacion) > TimeSpan.FromDays(91))
+									{
+										actualizarAPI = true;
+									}
+
+									if (lector.IsDBNull(7) == false)
+									{
+										if (string.IsNullOrEmpty(lector.GetString(7)) == false)
+										{
+											List<string> curators2 = JsonSerializer.Deserialize<List<string>>(lector.GetString(7));
+
+											if (curators2.Count == 0 && curators.Count > 0)
+											{
+												actualizarAPI = true;
+											}
+										}
+									}
+									else
+									{
+										if (curators.Count > 0)
+										{
+											actualizarAPI = true;
+										}
+									}
+
+									if (actualizarAPI == true)
 									{
 										ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, curators, deck, conexion);
 									}

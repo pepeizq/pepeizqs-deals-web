@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Juegos;
 using Microsoft.VisualBasic;
 
 namespace Herramientas
@@ -260,9 +261,7 @@ namespace Herramientas
 
 					if (drmAdecuado == true)
 					{
-						TimeSpan actualizado = DateTime.Now.Subtract(oferta.FechaActualizacion);
-
-						if (actualizado.TotalHours < 12)
+						if (Herramientas.OfertaActiva.Verificar(oferta) == true)
 						{
 							decimal tempPrecio = oferta.Precio;
 

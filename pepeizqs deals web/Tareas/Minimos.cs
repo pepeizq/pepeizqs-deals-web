@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Juegos;
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
@@ -73,9 +74,7 @@ namespace Tareas
 
                                                     foreach (var historico in juego.PrecioMinimosHistoricos)
                                                     {
-                                                        TimeSpan actualizado = DateTime.Now.Subtract(historico.FechaActualizacion);
-
-                                                        if (actualizado.Hours <= 12)
+                                                        if (Herramientas.OfertaActiva.Verificar(historico) == true)
                                                         {
                                                             bool añadir = true;
 
