@@ -2169,7 +2169,11 @@
             </button>
 
             <div style="width: 100%; height: 100%;">
-                <ApexChart TItem="PuntoGrafico" Title="@juego.Nombre" Options="@opcionesGrafico" >
+                @{
+                    string nombre = juego.Nombre + " (" + JuegoDRM2.DevolverDRM(drmGrafico) + ")";
+                }
+
+                <ApexChart TItem="PuntoGrafico" Title="@nombre" Options="@opcionesGrafico" >
                     <ApexPointTooltip>
                         <div style="background-color: var(--fondoOscuro); color: var(--colorTexto); padding: 10px; border: 1px solid var(--fondoCodigo)">
                             @{
@@ -2204,7 +2208,7 @@
                                         string fechaTexto = puntosDatos.Items.FirstOrDefault()?.DiaMes.Day.ToString() + "/" + puntosDatos.Items.FirstOrDefault()?.DiaMes.Month.ToString() + "/" + puntosDatos.Items.FirstOrDefault()?.Año.ToString();
 
                                         <div>
-                                             <strong>@precioTexto</strong> - @fechaTexto
+                                            <strong>@precioTexto</strong> - @fechaTexto
                                         </div>
                                     }
                                 }
@@ -2228,12 +2232,12 @@
                             }
 
                             <ApexPointSeries TItem="PuntoGrafico"
-                                Items="datos"
-                                Name="@punto.Año.ToString()"
-                                SeriesType="SeriesType.Line"
-                                XValue="e => e.DiaMes"
-                                YValue="e => e.Precio"
-                                ShowDataLabels="true"/>
+                            Items="datos"
+                            Name="@punto.Año.ToString()"
+                            SeriesType="SeriesType.Line"
+                            XValue="e => e.DiaMes"
+                            YValue="e => e.Precio"
+                            ShowDataLabels="true"/>
                         }
                     </ChildContent>
                 </ApexChart>
@@ -2293,6 +2297,7 @@
     private List<global::BaseDatos.Curators.CuratorFicha> curators = new List<global::BaseDatos.Curators.CuratorFicha>();
 
     private ApexChartOptions<PuntoGrafico> opcionesGrafico;
+    private JuegoDRM drmGrafico = JuegoDRM.NoEspecificado;
 
     protected override async Task OnInitializedAsync()
     {
@@ -3767,6 +3772,8 @@
         {
             if (juego.Historicos.Count > 0)
             {
+                drmGrafico = drm;
+
                 #region Añadir Años
 
                 foreach (var historico in juego.Historicos)
@@ -3912,8 +3919,10 @@
             {
                 Style = new TitleStyle
                 {
-                    FontWeight = 300
-                }
+                    FontSize = "16px",
+                    FontFamily = "Motiva Sans",
+                    FontWeight = "300"
+                },
             },
             Chart = new Chart
             {
@@ -3959,7 +3968,7 @@
             },
             Markers = new Markers { Shape = ShapeEnum.Circle, Size = 5, FillOpacity = new Opacity(0.8d) },
             Stroke = new Stroke { Curve = Curve.Smooth },
-                Colors = new List<string> { "#345884", "#5C799C" },
+            Colors = new List<string> { "#345884", "#5C799C" },
             Legend = new Legend
             {
                 Position = LegendPosition.Top,

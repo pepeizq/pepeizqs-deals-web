@@ -67,10 +67,7 @@
 
 		if (string.IsNullOrEmpty(userAgent) == false)
 		{
-			if (userAgent.Contains("http://www.google.com/bot.html") == true || userAgent.Contains("http://www.bing.com/bingbot.htm") == true)
-			{
-				seo = true;
-			}
+			seo = Herramientas.RobotsUserAgents.Autorizar(userAgent);
 		}
 	}
 

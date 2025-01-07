@@ -5,6 +5,21 @@ using System.Text;
 
 namespace Herramientas
 {
+	public static class RobotsUserAgents
+	{
+		public static bool Autorizar(string userAgent)
+		{
+			if (userAgent.Contains("http://www.google.com/bot.html") == true || 
+				userAgent.Contains("http://www.bing.com/bingbot.htm") == true ||
+				userAgent.Contains("http://duckduckgo.com/duckduckbot.html") == true)
+			{
+				return true;
+			}
+
+			return false;
+		}
+	}
+
 	public class Robots : Controller
 	{
 		[HttpGet("robots.txt")]

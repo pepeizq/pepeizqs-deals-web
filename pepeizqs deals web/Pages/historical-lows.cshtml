@@ -22,9 +22,43 @@
 		usuario = await UserManager.GetUserAsync(User);
 	}
 
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new
+	bool seo = false;
+	string userAgent = string.Empty;
+
+	if (HttpContext != null)
 	{
-		idioma = Model.idioma,
-		usuarioId = usuario?.Id
-	}))
+		userAgent = HttpContext.Request.Headers.UserAgent;
+
+		if (string.IsNullOrEmpty(userAgent) == false)
+		{
+			seo = Herramientas.RobotsUserAgents.Autorizar(userAgent);
+		}
+	}
+
+	if (seo == true)
+	{
+		string enlace = "https://pepeizqdeals.com/historical-lows/";
+
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma,
+			titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "HistoricalLows"),
+			enlace = enlace,
+			canonical = enlace,
+			descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String22", "HistoricalLows")
+		}))
+
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new
+		{
+			idioma = Model.idioma
+		}))
+	}
+	else
+	{
+		@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new
+		{
+			idioma = Model.idioma,
+			usuarioId = usuario?.Id
+		}))
+	}
 }
