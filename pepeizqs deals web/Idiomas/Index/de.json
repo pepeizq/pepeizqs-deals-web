@@ -1,16 +1,15 @@
 {
   "Title": "Startseite",
   "Subtitle": "Website mit Angeboten für PC-Videospiele aus offiziellen Geschäften",
-  "News1": "Neues Paket",
-  "News2": "Neu Kostenlos",
-  "News3": "Neues Abonnement",
-  "News4": "Neues Gerücht",
-  "News5": "Neues Web",
-  "LastNewsMore": "Alle Neuigkeiten laden",
-  "LastNewsSocial": "Soziale Netzwerke, um die Nachrichten zu verfolgen",
-  "LastLows": "Letzte historische Tiefststände",
-  "LastLowsInfo": "Diese Deals sind historische Tiefststände, die Spiele zum ersten Mal haben.",
-  "LastLowsMore": "Laden Sie weitere historische Tiefststände",
+  "String1": "Neuigkeiten der letzten drei Tage",
+  "String2": "Neuigkeiten der letzten Woche",
+  "String3": "Laden Sie Neuigkeiten der letzten Woche",
+  "String4": "Alle Neuigkeiten öffnen",
+  "String5": "Soziale Netzwerke, um die Nachrichten zu verfolgen:",
+  "String6": "Letzte historische Tiefststände",
+  "String7": "Diese Deals sind historische Tiefststände, die Spiele zum ersten Mal haben.",
+  "String8": "Laden Sie weitere historische Tiefststände",
+  "String9": "Öffnen Sie alle historischen Tiefststände",
   "Filter": "Filter",
   "FilterOption1": "Verstecken Sie die Spiele, die Sie auf Steam haben",
   "FilterOption2": "DRMs",
@@ -18,5 +17,6 @@
   "FilterOption3.1": "Spiele",
   "FilterOption3.2": "DLCs",
   "FilterOption3.3": "Soundtracks",
-  "FilterOption3.4": "Software"
+  "FilterOption3.4": "Software",
+  "FilterOption4": "Verstecken Sie die Spiele, die Sie auf GOG haben"
 }

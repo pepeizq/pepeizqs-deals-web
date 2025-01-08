@@ -20,9 +20,9 @@ namespace BaseDatos.Portada
                 }
             }
 
-            string limpiar = @"DELETE FROM seccionMinimos WHERE idMaestra IN (SELECT id FROM juegos
-                               WHERE ultimaModificacion < DATEADD(hour, -12, GETDATE()) AND JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
-                               ((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND (freeToPlay = 'false' OR freeToPlay IS NULL))";
+            string limpiar = @"DELETE FROM seccionMinimos WHERE ultimaModificacion > DATEADD(hour, -24, GETDATE()) 
+                                OR (mayorEdad = 'true' AND mayorEdad IS NOT NULL) 
+                                OR (freeToPlay = 'true' AND freeToPlay IS NOT NULL)";
 
 			using (SqlCommand comando = new SqlCommand(limpiar, conexion))
 			{

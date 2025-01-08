@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <None Remove="Idiomas\News.es-ES.json~RF63e628.TMP" />
+    <None Remove="Pages\Componentes\Secciones\am2uy0r2.1v5~" />
   </ItemGroup>
 
   <ItemGroup>

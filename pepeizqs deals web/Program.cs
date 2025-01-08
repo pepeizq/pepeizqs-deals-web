@@ -12,7 +12,6 @@ using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
-using Tweetinvi.Core.Models.Properties;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,6 +115,7 @@ builder.Services.Configure<HostOptions>(opciones =>
 	opciones.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
 });
 
+builder.Services.AddSingleton<Tareas.Mantenimiento>();
 builder.Services.AddSingleton<Tareas.Minimos>();
 builder.Services.AddSingleton<Tareas.Pings>();
 builder.Services.AddSingleton<Tareas.CorreosEnviar>();
@@ -124,7 +124,6 @@ builder.Services.AddSingleton<Tareas.CorreosDeals>();
 builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
-builder.Services.AddSingleton<Tareas.LimpiarMinimos>();
 builder.Services.AddSingleton<Tareas.Patreon>();
 
 builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
@@ -160,6 +159,7 @@ builder.Services.AddSingleton<Tareas.Suscripciones.AmazonLunaPlus>();
 builder.Services.AddSingleton<Tareas.Streaming.GeforceNOW>();
 builder.Services.AddSingleton<Tareas.Streaming.AmazonLuna>();
 
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Mantenimiento>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Minimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pings>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosEnviar>());
@@ -168,7 +168,6 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.CorreosApps>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.LimpiarMinimos>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Patreon>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());

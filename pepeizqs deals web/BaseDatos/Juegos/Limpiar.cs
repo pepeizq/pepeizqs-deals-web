@@ -12,6 +12,13 @@ namespace BaseDatos.Juegos
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
 			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
@@ -19,11 +26,9 @@ namespace BaseDatos.Juegos
 
 				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
-
-					comando.ExecuteNonQuery();
 					try
 					{
-
+						comando.ExecuteNonQuery();
 					}
 					catch
 					{

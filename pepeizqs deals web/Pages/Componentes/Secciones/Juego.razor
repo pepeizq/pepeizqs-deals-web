@@ -2407,27 +2407,30 @@
                     }
                 } 
 
-                string idiomaSteam = Herramientas.Idiomas.SacarIdiomaSteamAPI(idioma);
-                idiomaAnalisis = idiomaSteam;
-
-                if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
+                if (Herramientas.RobotsUserAgents.Autorizar(userAgent) == false)
                 {
-                    APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
+                    string idiomaSteam = Herramientas.Idiomas.SacarIdiomaSteamAPI(idioma);
+                    idiomaAnalisis = idiomaSteam;
 
-                    if (analisis != null)
+                    if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
                     {
-                        if (analisis.Analisis != null)
-                        {
-                            global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
+                        APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
 
-                            analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                        if (analisis != null)
+                        {
+                            if (analisis.Analisis != null)
+                            {
+                                global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
+
+                                analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
-                }
+                    else
+                    {
+                        analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                    }
+                }   
             }
 
             if (juego.IdGog > 0)

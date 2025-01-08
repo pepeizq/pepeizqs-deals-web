@@ -61,6 +61,7 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
+			usuarioLogeado = usuarioLogeado,
 			usuarioId = usuario?.Id
 		}))
 	}

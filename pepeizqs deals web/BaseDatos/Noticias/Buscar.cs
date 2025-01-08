@@ -163,7 +163,7 @@ namespace BaseDatos.Noticias
 			return null;
 		}
 
-		public static List<Noticia> Actuales(SqlConnection conexion = null, bool ultimos3dias = false)
+		public static List<Noticia> Actuales(SqlConnection conexion = null, int ultimosDias = 0)
 		{
 			if (conexion == null)
 			{
@@ -183,9 +183,9 @@ namespace BaseDatos.Noticias
 			{
 				string busqueda = "SELECT * FROM noticias WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
 
-				if (ultimos3dias == true)
+				if (ultimosDias > 0)
 				{
-					busqueda = "SELECT * FROM noticias WHERE (GETDATE() BETWEEN fechaEmpieza AND fechaTermina) AND (GETDATE() - 3 < fechaEmpieza)";
+					busqueda = "SELECT * FROM noticias WHERE (GETDATE() BETWEEN fechaEmpieza AND fechaTermina) AND (GETDATE() - " + ultimosDias.ToString() + " < fechaEmpieza)";
                 }
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))

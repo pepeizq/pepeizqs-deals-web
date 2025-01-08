@@ -5,13 +5,13 @@ using Microsoft.Data.SqlClient;
 
 namespace Tareas
 {
-	public class LimpiarMinimos : BackgroundService
+	public class Mantenimiento : BackgroundService
 	{
-		private readonly ILogger<Divisas> _logger;
+		private readonly ILogger<Mantenimiento> _logger;
 		private readonly IServiceScopeFactory _factoria;
 		private readonly IDecompiladores _decompilador;
 
-		public LimpiarMinimos(ILogger<Divisas> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
+		public Mantenimiento(ILogger<Mantenimiento> logger, IServiceScopeFactory factory, IDecompiladores decompilador)
 		{
 			_logger = logger;
 			_factoria = factory;
@@ -40,13 +40,26 @@ namespace Tareas
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan tiempoSiguiente = TimeSpan.FromHours(6);
-
-						if (BaseDatos.Admin.Buscar.TareaPosibleUsar("limpiarMinimos", tiempoSiguiente, conexion) == true)
+						try
 						{
-							BaseDatos.Admin.Actualizar.TareaUso("limpiarMinimos", DateTime.Now, conexion);
+							TimeSpan tiempoSiguiente = TimeSpan.FromHours(48);
 
-							BaseDatos.Juegos.Limpiar.Minimos(conexion);
+							if (DateTime.Now.Hour == 4)
+							{
+								tiempoSiguiente = TimeSpan.FromMinutes(30);
+							}
+
+							if (BaseDatos.Admin.Buscar.TareaPosibleUsar("mantenimiento", tiempoSiguiente, conexion) == true)
+							{
+								BaseDatos.Admin.Actualizar.TareaUso("mantenimiento", DateTime.Now, conexion);
+
+								BaseDatos.Analisis.Limpiar.Ejecutar();
+								BaseDatos.Juegos.Limpiar.Minimos();
+							}
+						}
+						catch (Exception ex)
+						{
+							BaseDatos.Errores.Insertar.Mensaje("Tarea - Mantenimiento", ex, conexion);
 						}
 					}
 				}

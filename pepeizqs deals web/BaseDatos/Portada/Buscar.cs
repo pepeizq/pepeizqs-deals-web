@@ -51,7 +51,7 @@ namespace BaseDatos.Portada
 			return resultados;
 		}
 
-		public static List<Juego> Destacados(List<string> idsSteam = null, SqlConnection conexion = null)
+		public static List<Juego> Destacados(SqlConnection conexion = null)
 		{
 			List<Juego> resultados = new List<Juego>();
 
@@ -70,7 +70,7 @@ namespace BaseDatos.Portada
 			using (conexion)
 			{
 				string busqueda = @"SELECT TOP 6 idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video') as video, idSteam FROM seccionMinimos
-									WHERE tipo = 0 AND JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaActualizacion')) BETWEEN DATEADD(hh, -12, GETDATE()) AND GETDATE()
+									WHERE tipo = 0 AND JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaActualizacion')) > GETDATE() - 12
 										AND (CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 4999 AND bundles IS NULL AND gratis IS NULL 
 										AND (suscripciones IS NULL OR (suscripciones IS NOT NULL AND NOT suscripciones LIKE '%,""DRM"":0,%')) OR CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 49999)
 									ORDER BY NEWID()";
@@ -213,7 +213,7 @@ namespace BaseDatos.Portada
 				}
 
 				string busqueda = @"SELECT DISTINCT TOP @cantidadJuegos idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
-                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > @cantidadAnalisis AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -3, CAST(GETDATE() AS date)) @categoria @drm
+                                    WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > @cantidadAnalisis AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -7, CAST(GETDATE() AS date)) @categoria @drm
                                     ORDER BY Fecha DESC";
 
 				busqueda = busqueda.Replace("@cantidadJuegos", cantidadJuegos.ToString());

@@ -1,16 +1,15 @@
 {
   "Title": "Home Page",
   "Subtitle": "Website of PC video game deals from official stores",
-  "News1": "New Bundle",
-  "News2": "New Free",
-  "News3": "New Subscription",
-  "News4": "New Rumor",
-  "News5": "New Web",
-  "LastNewsMore": "Load all news",
-  "LastNewsSocial": "Social networks to follow the news",
-  "LastLows": "Last Historical Lows",
-  "LastLowsInfo": "These deals are historical lows that games have for the first time.",
-  "LastLowsMore": "Load more historical lows",
+  "String1": "News in the last three days",
+  "String2": "News in the last week",
+  "String3": "Load news from the last week",
+  "String4": "Open all news",
+  "String5": "Social networks to follow the news:",
+  "String6": "Last Historical Lows",
+  "String7": "These deals are historical lows that games have for the first time.",
+  "String8": "Load more historical lows",
+  "String9": "Open all historical lows",
   "Filter": "Filter",
   "FilterOption1": "Hide the games you have on Steam",
   "FilterOption2": "DRMs",
@@ -18,5 +17,6 @@
   "FilterOption3.1": "Games",
   "FilterOption3.2": "DLCs",
   "FilterOption3.3": "Soundtracks",
-  "FilterOption3.4": "Software"
+  "FilterOption3.4": "Software",
+  "FilterOption4": "Hide the games you have on GOG"
 }

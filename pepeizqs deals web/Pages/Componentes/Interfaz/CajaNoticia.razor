@@ -1,0 +1,76 @@
+﻿@using Noticias
+
+<style>
+	.cnoticia-expandir {
+		transition: transform .2s;
+		border: 1px solid var(--fondoMinimo);
+	}
+
+		.cnoticia-expandir:hover {
+			transform: scale(1.01);
+			border: 1px solid var(--fondoCodigo);
+		}
+</style>
+
+@{
+	string titulo = Herramientas.Idiomas.ElegirTexto(idioma, noticia.TituloEn, noticia.TituloEs);
+}
+
+<div style="margin-top: 20px;">
+	<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="cursor: pointer; text-decoration: none; color: var(--colorTexto);">
+		<div class="cnoticia-expandir" style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center;">
+			<div style="position: relative;">
+				<img src="@noticia.Imagen" style="width: 175px; height: 100px; object-fit: cover; opacity: 0.8;" />
+
+				@{
+					string icono = string.Empty;
+
+					if (noticia.Tipo == NoticiaTipo.Bundles)
+					{
+						icono = Bundles2.BundlesCargar.DevolverBundle(noticia.BundleTipo).ImagenIcono;
+					}
+					else if (noticia.Tipo == NoticiaTipo.Gratis)
+					{
+						icono = Gratis2.GratisCargar.DevolverGratis(noticia.GratisTipo).ImagenIcono;
+					}
+					else if (noticia.Tipo == NoticiaTipo.Suscripciones)
+					{
+						icono = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(noticia.SuscripcionTipo).ImagenIcono;
+					}
+					else if (noticia.Tipo == NoticiaTipo.Web)
+					{
+						icono = "/favicons/favicon-96x96.png";
+					}
+
+					if (string.IsNullOrEmpty(icono) == false)
+					{
+						<div style="position: absolute; bottom: 0; right: 0; background-color: var(--fondoBotonPequeño); padding: 0px 2px;">
+							<img src="@icono" style="width: 18px; height: 18px;" alt="@Noticias.NoticiasCargar.Traduccion(noticia.Tipo, idioma)" />
+						</div>
+					}
+				}
+			</div>
+
+			<div style="padding: 10px 20px; display: flex; flex-direction: column; gap: 10px;">
+				<div style="font-size: 17px;">@titulo</div>
+
+				<div style="display: flex; align-items: center; gap: 20px;">
+					<div style="font-size: 14px;">
+						@Herramientas.Calculadora.DiferenciaTiempo(noticia.FechaEmpieza, idioma)
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public Noticias.Noticia noticia { get; set; }
+}
