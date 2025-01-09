@@ -10,16 +10,17 @@
   "String8": "Rabais",
   "String9": "Rechercher par nom",
   "String10": "Filtre",
-  "String11": "Cachez les jeux que vous avez sur Steam",
+  "String11": "Masquer les jeux que vous possédez déjà",
   "String12": "Remise minimale",
   "String13": "Prix ​​maximum",
   "String14": "DRM",
   "String15": "Magasins",
-  "String16": "résultats",
+  "String16": "{0} résultats",
   "String17": "Catégories",
   "String18": "Jeux",
   "String19": "DLC",
   "String20": "Bandes sonores",
   "String21": "Logiciel",
-  "String22": "Vérifiez les jeux avec des prix bas de tous les temps"
+  "String22": "Vérifiez les jeux avec des prix bas de tous les temps",
+  "String23": "{0} résultat"
 }

@@ -99,205 +99,345 @@
 					</div>
 				</div>
 
-				<div style="margin-top: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 20px;">
-					@{
-						string subrayadoOfertas = string.Empty;
-						string subrayadoMinimos = string.Empty;
-						string subrayadoBundles = string.Empty;
-						string subrayadoSuscripciones = string.Empty;
+				<div style="margin-top: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+					<div style="display: flex; align-items: center; gap: 20px;">
+						@{
+							string subrayadoOfertas = string.Empty;
+							string subrayadoMinimos = string.Empty;
+							string subrayadoBundles = string.Empty;
+							string subrayadoSuscripciones = string.Empty;
 
-						if (pestañaMostrar == 0)
-						{
-							subrayadoOfertas = "border-bottom: 1px solid var(--colorEnlace);";
+							if (pestañaMostrar == 0)
+							{
+								subrayadoOfertas = "border-bottom: 1px solid var(--colorEnlace);";
+							}
+							else if (pestañaMostrar == 1)
+							{
+								subrayadoMinimos = "border-bottom: 1px solid var(--colorEnlace);";
+							}
+							else if (pestañaMostrar == 2)
+							{
+								subrayadoBundles = "border-bottom: 1px solid var(--colorEnlace);";
+							}
+							else if (pestañaMostrar == 3)
+							{
+								subrayadoSuscripciones = "border-bottom: 1px solid var(--colorEnlace);";
+							}
 						}
-						else if (pestañaMostrar == 1)
-						{
-							subrayadoMinimos = "border-bottom: 1px solid var(--colorEnlace);";
-						}
-						else if (pestañaMostrar == 2)
-						{
-							subrayadoBundles = "border-bottom: 1px solid var(--colorEnlace);";
-						}
-						else if (pestañaMostrar == 3)
-						{
-							subrayadoSuscripciones = "border-bottom: 1px solid var(--colorEnlace);";
-						}
-					}
 
-					<button @onclick="(e => CambiarPestaña(e, 0))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-						<div style="@subrayadoOfertas padding-bottom: 5px;">
-							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Wishlist"), cantidadOfertas)
-						</div>
-					</button>
+						<button @onclick="(e => CambiarPestaña(e, 0))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+							<div style="@subrayadoOfertas padding-bottom: 5px;">
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Wishlist"), cantidadOfertas)
+							</div>
+						</button>
 
-					<button @onclick="(e => CambiarPestaña(e, 1))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-						<div style="@subrayadoMinimos padding-bottom: 5px;">
-							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Wishlist"), cantidadMinimos)
-						</div>
-					</button>
+						<button @onclick="(e => CambiarPestaña(e, 1))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+							<div style="@subrayadoMinimos padding-bottom: 5px;">
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Wishlist"), cantidadMinimos)
+							</div>
+						</button>
 
-					<button @onclick="(e => CambiarPestaña(e, 2))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-						<div style="@subrayadoBundles padding-bottom: 5px;">
-							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Wishlist"), deseadosBundles.Count)
-						</div>
-					</button>
+						<button @onclick="(e => CambiarPestaña(e, 2))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+							<div style="@subrayadoBundles padding-bottom: 5px;">
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Wishlist"), deseadosBundles.Count)
+							</div>
+						</button>
 
-					<button @onclick="(e => CambiarPestaña(e, 3))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-						<div style="@subrayadoSuscripciones padding-bottom: 5px;">
-							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Wishlist"), deseadosSuscripciones.Count)
+						<button @onclick="(e => CambiarPestaña(e, 3))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+							<div style="@subrayadoSuscripciones padding-bottom: 5px;">
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Wishlist"), deseadosSuscripciones.Count)
+							</div>
+						</button>
+					</div>
+
+					<div class="menu-dropdown" style="width: auto;">
+						<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+							<div style="font-size: 14px; padding-right: 5px;">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Wishlist"):
+							</div>
+
+							<div style="font-size: 14px; color: var(--colorEnlace); padding-right: 15px;">
+								@ordenamientoElegido
+							</div>
+
+							<div>
+								<i class="fa-solid fa-caret-down"></i>
+							</div>
+						</button>
+
+						<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Wishlist")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Wishlist")
+							</button>
+							<hr />
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Wishlist")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Wishlist")
+							</button>
+
+							@if (pestañaMostrar == 0 || pestañaMostrar == 1)
+							{
+								<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Wishlist")
+								</button>
+								<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Wishlist")
+								</button>
+							}			
 						</div>
-					</button>
+					</div>
 				</div>
 
 				@if (pestañaMostrar == 0 || pestañaMostrar == 1)
 				{
-					<div style="display: flex; align-items: center; gap: 30px; width: 100%; margin: 15px 0px 25px 0px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-						<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Wishlist")" />
+					<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; width: 100%; margin: 15px 0px 25px 0px; display: flex; flex-direction: column; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<i class="fa-solid fa-magnifying-glass" style="font-size: 20px;"></i>
 
-						@if (string.IsNullOrEmpty(otroUsuario) == true)
-						{
-							<button class="boton-pequeño" @onclick="EnseñarOpciones" style="width: auto; padding: 10px 15px; border: 0px; color: var(--colorTextoVisitado);">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Wishlist")
-							</button>
-						}
-
-						<div class="menu-dropdown" style="width: auto;">
-							<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
-								<div style="padding-right: 5px;">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Wishlist"):
-								</div>
-
-								<div style="color: var(--colorEnlace); padding-right: 15px;">
-									@ordenamientoElegido
-								</div>
-
-								<div>
-									<i class="fa-solid fa-caret-down"></i>
-								</div>
-							</button>
-
-							<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Wishlist")
-								</button>
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Wishlist")
-								</button>
-								<hr />
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Wishlist")
-								</button>
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Wishlist")
-								</button>
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Wishlist")
-								</button>
-								<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Wishlist")
-								</button>
-							</div>
+							<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Wishlist")" />
 						</div>
-					</div>
 
-					if (deseadosOfertas.Count > 0)
-					{
-						<Virtualize Context="juego" Items="deseadosOfertas" ItemSize="alturaFila">
-							<ItemContent>
-								@{
-									bool mostrar = true;
+						@if (string.IsNullOrEmpty(otroUsuario) == true && usuarioLogeado == true)
+						{
+							<div style="display: flex; flex-direction: column; gap: 10px;">
+								<div style="display: flex; align-items: center; gap: 15px; flex-flow: wrap;">
+									<button class="boton-pequeño" @onclick="OpcionesDescuentoMinimo" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+										<div style="display: flex; align-items: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String30", "Wishlist")">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Wishlist")
 
-									if (pestañaMostrar == 1 && juego.Historico == false)
-									{
-										mostrar = false;
-									}
-
-									if (mostrar == true)
-									{
-										<div style="margin: 20px 0px; display: flex; align-items: center; position: relative;">
-											<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda, usuarioPatreon)" target="_blank">
-												<div style="display: flex; align-items: stretch; justify-content: center; flex-direction: row;">
-													<div class="deseado-imagen">
-														@{
-															string imagen = juego.Imagen;
-
-															if (imagen.Contains(APIs.GOG.Juego.dominioImagenes) == true)
-															{
-																imagen = imagen.Replace("_glx_logo", null);
-																imagen = imagen.Replace(".png", ".webp");
-															}
-														}
-
-														<img src="@imagen" style="height: 100%; width: 100%;" />
-													</div>
-
-													<div style="width: 100%; padding: 5px 20px;">
-														<div style="margin-top: 5px;">@juego.Nombre</div>
-
-														<div style="display: flex; align-items: center; margin-top: 5px;">
-															<div style="width: 20px; height: 20px;">
-																<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 100%; height: 100%;" />
-															</div>
-
-															@{
-																if (juego.Precio.Precio > 0)
-																{
-																	List<Tiendas2.Tienda> tiendas = TiendasCargar.GenerarListado();
-
-																	foreach (var tienda in tiendas)
-																	{
-																		if (tienda.Id == juego.Precio.Tienda)
-																		{
-																			<div style="width: 20px; height: 20px; margin-left: 10px;">
-																				<img src="@tienda.ImagenIcono" style="width: 100%; height: 100%;" />
-																			</div>
-
-																			break;
-																		}
-																	}
-																}
-															}
-														</div>
-													</div>
-
-													<div>
-														<div style="display: flex; align-items: center;">
-															<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
-																@juego.Precio.Descuento.ToString()%
-															</div>
-
-															<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
-																@MensajeMinimo(juego.Precio, false)
-															</div>
-														</div>
-
-														@if (juego.Historico == true)
-														{
-															<div style="text-align: center; font-size: 14px; padding: 5px 15px; background-color: var(--fondoAlerta);">
-																@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Wishlist")
-															</div>
-														}
-														else
-														{
-															<div style="text-align: center; font-size: 14px; padding: 5px; background-color: var(--fondoOscuro);">
-																@juego.HistoricoPrecio
-															</div>
-														}
-													</div>
-												</div>
-											</a>
-
-											@if (string.IsNullOrEmpty(otroUsuario) == true && juego.Importado == false)
+											@if (enseñarDescuentoMinimo == false)
 											{
-												<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; right: -100px; position: absolute;">
-													<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
-														@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
-													</button>
-												</div>
+												<i class="fa-solid fa-caret-down"></i>
+											}
+											else
+											{
+												<i class="fa-solid fa-caret-up"></i>
 											}
 										</div>
-									}
+									</button>
+
+									<button class="boton-pequeño" @onclick="OpcionesPrecioMaximo" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+										<div style="display: flex; align-items: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Wishlist")">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Wishlist")
+
+											@if (enseñarPrecioMaximo == false)
+											{
+												<i class="fa-solid fa-caret-down"></i>
+											}
+											else
+											{
+												<i class="fa-solid fa-caret-up"></i>
+											}
+										</div>
+									</button>
+
+									<button class="boton-pequeño" @onclick="OpcionesCompartir" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+										<div style="display: flex; align-items: center; gap: 10px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String32", "Wishlist")
+
+											@if (enseñarCompartir == false)
+											{
+												<i class="fa-solid fa-caret-down"></i>
+											}
+											else
+											{
+												<i class="fa-solid fa-caret-up"></i>
+											}
+										</div>
+									</button>
+
+									<button class="boton-pequeño" @onclick="OpcionesExportar" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+										<div style="display: flex; align-items: center; gap: 10px;">
+											@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Wishlist")
+
+											@if (enseñarExportar == false)
+											{
+												<i class="fa-solid fa-caret-down"></i>
+											}
+											else
+											{
+												<i class="fa-solid fa-caret-up"></i>
+											}
+										</div>
+									</button>
+								</div>
+
+								@if (enseñarDescuentoMinimo == true)
+								{
+									<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+										<div style="display: flex; align-items: center; gap: 30px;">
+											<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
+
+											<label style="min-width: 65px; text-align: center;">@minimoDescuento%</label>
+										</div>
+									</div>
 								}
+
+								@if (enseñarPrecioMaximo == true)
+								{
+									<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+										<div style="display: flex; align-items: center; gap: 30px;">
+											<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
+
+											<label style="min-width: 65px; text-align: center;">@maximoPrecio€</label>
+										</div>
+									</div>
+								}
+
+								@if (enseñarCompartir == true)
+								{
+									<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+										<div style="display: flex; align-items: center; gap: 30px;">
+											<div class="checkbox-caja">
+												<input type="checkbox" class="checkbox-interior" checked="@estadoCompartir" @onchange="CompartirDeseados">
+											</div>
+
+											<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; font-size: 15px;">
+												@if (estadoCompartir == false)
+												{
+													<div>
+														@Herramientas.Idiomas.BuscarTexto(idioma, "String33", "Wishlist")
+													</div>
+												}
+												else
+												{
+													<div>
+														@Herramientas.Idiomas.BuscarTexto(idioma, "String34", "Wishlist")
+													</div>
+
+													<input type="text" value="@compartirNombre" @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String35", "Wishlist")" />
+
+													@if (string.IsNullOrEmpty(compartirEnlace) == false)
+													{
+														<a href="@compartirEnlace" target="_blank">@compartirEnlace</a>
+													}
+												}
+											</div>
+										</div>
+									</div>
+								}
+
+								@if (enseñarExportar == true)
+								{
+									<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+										<div style="font-size: 15px;">
+											<div style="margin-bottom: 15px;">
+												@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Wishlist")
+											</div>
+
+											<button @onclick="@(e => DescargarJson())" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+												@Herramientas.Idiomas.BuscarTexto(idioma, "String25", "Wishlist")
+											</button>
+										</div>
+									</div>
+								}
+							</div>
+						}
+					</div>
+
+					List<JuegoDeseadoMostrar> deseadosFinales = new List<JuegoDeseadoMostrar>();
+
+					if (pestañaMostrar == 0)
+					{
+						deseadosFinales = deseadosOfertas;
+					}
+					
+					if (pestañaMostrar == 1)
+					{
+						deseadosFinales = deseadosHistoricos;
+					}
+
+					if (deseadosFinales.Count > 0)
+					{
+						<Virtualize Context="juego" Items="deseadosFinales" ItemSize="alturaFila">
+							<ItemContent>
+								<div style="margin: 20px 0px; display: flex; align-items: center; position: relative;">
+									<a class="boton-pequeño" style="padding: 2px;" href="@Herramientas.EnlaceAcortador.Generar(juego.Precio.Enlace, juego.Precio.Tienda, usuarioPatreon)" target="_blank">
+										<div style="display: flex; align-items: stretch; justify-content: center; flex-direction: row;">
+											<div class="deseado-imagen">
+												@{
+													string imagen = juego.Imagen;
+
+													if (imagen.Contains(APIs.GOG.Juego.dominioImagenes) == true)
+													{
+														imagen = imagen.Replace("_glx_logo", null);
+														imagen = imagen.Replace(".png", ".webp");
+													}
+												}
+
+												<img src="@imagen" style="height: 100%; width: 100%;" />
+											</div>
+
+											<div style="width: 100%; padding: 5px 20px;">
+												<div style="margin-top: 5px;">@juego.Nombre</div>
+
+												<div style="display: flex; align-items: center; margin-top: 5px;">
+													<div style="width: 20px; height: 20px;">
+														<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="width: 100%; height: 100%;" />
+													</div>
+
+													@{
+														if (juego.Precio.Precio > 0)
+														{
+															List<Tiendas2.Tienda> tiendas = TiendasCargar.GenerarListado();
+
+															foreach (var tienda in tiendas)
+															{
+																if (tienda.Id == juego.Precio.Tienda)
+																{
+																	<div style="width: 20px; height: 20px; margin-left: 10px;">
+																		<img src="@tienda.ImagenIcono" style="width: 100%; height: 100%;" />
+																	</div>
+
+																	break;
+																}
+															}
+														}
+													}
+												</div>
+											</div>
+
+											<div>
+												<div style="display: flex; align-items: center;">
+													<div style="text-align: center; padding: 10px 15px; margin: 0px; min-width: 65px;" class="juego-descuento">
+														@juego.Precio.Descuento.ToString()%
+													</div>
+
+													<div style="padding: 5px 15px; min-width: 110px; text-align: center; font-size: 18px;">
+														@MensajeMinimo(juego.Precio, false)
+													</div>
+												</div>
+
+												@if (juego.Historico == true)
+												{
+													<div style="text-align: center; font-size: 14px; padding: 5px 15px; background-color: var(--fondoAlerta);">
+														@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Wishlist")
+													</div>
+												}
+												else
+												{
+													<div style="text-align: center; font-size: 14px; padding: 5px; background-color: var(--fondoOscuro);">
+														@juego.HistoricoPrecio
+													</div>
+												}
+											</div>
+										</div>
+									</a>
+
+									@if (string.IsNullOrEmpty(otroUsuario) == true && usuarioLogeado == true && juego.Importado == false)
+									{
+										<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; right: -100px; position: absolute;">
+											<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
+												@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
+											</button>
+										</div>
+									}
+								</div>
 							</ItemContent>
 						</Virtualize>
 					}
@@ -461,123 +601,6 @@
 					}
 				}
 			</div>
-
-			if (mostrarOpciones == true)
-			{
-				<div class="opciones-panel">
-					<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); max-width: 1200px; padding: 40px; display: flex; flex-direction: column; gap: 30px; overflow-y: scroll; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
-						<div style="display: flex; align-items: center;">
-							<button class="boton-pequeño" @onclick="OcultarOpciones" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
-								<i class="fa-solid fa-arrow-left"></i>
-							</button>
-
-							<div style="font-size: 20px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Wishlist")
-							</div>
-						</div>
-
-						<div>
-							<div style="font-size: 18px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String27", "Wishlist")
-							</div>
-
-							<hr/>
-
-							<div style="display: flex; flex-direction: column; gap: 20px;">
-								<div style="padding: 30px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 15px;">
-									<div style="display: flex; flex-direction: column; gap: 10px;">
-										<div>
-											@Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Wishlist")
-										</div>
-
-										<div style="font-size: 14px;">
-											@Herramientas.Idiomas.BuscarTexto(idioma, "String30", "Wishlist")
-										</div>
-									</div>
-
-									<div style="display: flex; align-items: center; gap: 30px;">
-										<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
-
-										<label style="min-width: 65px; text-align: center;">@minimoDescuento%</label>
-									</div>
-								</div>
-
-								<div style="padding: 30px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 15px;">
-									<div style="display: flex; flex-direction: column; gap: 10px;">
-										<div>
-											@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Wishlist")
-										</div>
-
-										<div style="font-size: 14px;">
-											@Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Wishlist")
-										</div>
-									</div>
-
-									<div style="display: flex; align-items: center; gap: 30px;">
-										<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
-
-										<label style="min-width: 65px; text-align: center;">@maximoPrecio€</label>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div style="margin-top: 20px;">
-							<div style="font-size: 18px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String32", "Wishlist")
-							</div>
-
-							<hr />
-
-							<div style="padding: 30px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; align-items: center; gap: 30px;">
-								<div class="checkbox-caja">
-									<input type="checkbox" class="checkbox-interior" checked="@estadoCompartir" @onchange="CompartirDeseados">
-								</div>
-
-								<div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
-									<div>
-										@Herramientas.Idiomas.BuscarTexto(idioma, "String33", "Wishlist")
-									</div>
-
-									@if (estadoCompartir == true)
-									{
-										<div>
-											@Herramientas.Idiomas.BuscarTexto(idioma, "String34", "Wishlist")
-										</div>
-
-										<input type="text" value="@compartirNombre" @onchange="(e => TextoCambiaDeseados(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String35", "Wishlist")" />
-
-										@if (string.IsNullOrEmpty(compartirEnlace) == false)
-										{
-											<a href="@compartirEnlace" target="_blank">@compartirEnlace</a>
-										}
-									}		
-								</div>
-							</div>
-						</div>
-
-						<div style="margin-top: 20px;">
-							<div style="font-size: 18px;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Wishlist")
-							</div>
-
-							<hr />
-
-							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
-								<div>
-									<div style="margin-bottom: 15px;">
-										@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Wishlist")
-									</div>
-
-									<button @onclick="@(e => DescargarJson())" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
-										@Herramientas.Idiomas.BuscarTexto(idioma, "String25", "Wishlist")
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
 		}
 	}
 }
@@ -593,6 +616,9 @@
 	public string usuarioId { get; set; }
 
 	[Parameter]
+	public bool usuarioLogeado { get; set; }
+
+	[Parameter]
 	public string otroUsuario { get; set; }
 
 	private Usuario usuario = new Usuario();
@@ -602,6 +628,7 @@
 
 	private List<JuegoDeseadoMostrar> deseadosGestor = new List<JuegoDeseadoMostrar>();
 	private List<JuegoDeseadoMostrar> deseadosOfertas = new List<JuegoDeseadoMostrar>();
+	private List<JuegoDeseadoMostrar> deseadosHistoricos = new List<JuegoDeseadoMostrar>();
 	private List<JuegoDeseadoMostrar> deseadosBundles = new List<JuegoDeseadoMostrar>();
 	private List<JuegoDeseadoMostrar> deseadosSuscripciones = new List<JuegoDeseadoMostrar>();
 
@@ -1049,6 +1076,23 @@
 
 			deseadosOfertas.RemoveAt(i);
 		}
+
+		if (deseadosHistoricos.Count > 0)
+		{
+			int i = 0;
+
+			foreach (var oferta in deseadosHistoricos)
+			{
+				if (oferta.Id == juego.Id && oferta.DRM == drm)
+				{
+					break;
+				}
+
+				i += 1;
+			}
+
+			deseadosHistoricos.RemoveAt(i);
+		}
 	}
 
 	#region Ordenar
@@ -1062,8 +1106,26 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosBundles.Count > 0)
+				{
+					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosSuscripciones.Count > 0)
+				{
+					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+				}
 			}
 
 			if (usuario != null)
@@ -1091,8 +1153,26 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+			
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosBundles.Count > 0)
+				{
+					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosSuscripciones.Count > 0)
+				{
+					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+				}			
 			}
 
 			if (usuario != null)
@@ -1120,8 +1200,26 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderBy(x => x.Nombre).ToList();
+
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosBundles.Count > 0)
+				{
+					deseadosBundles = deseadosBundles.AsParallel().OrderBy(x => x.Nombre).ToList();
+				}
+
+				if (deseadosSuscripciones.Count > 0)
+				{
+					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderBy(x => x.Nombre).ToList();
+				}
 			}
 
 			if (usuario != null)
@@ -1149,8 +1247,26 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+				}
+
+				if (deseadosBundles.Count > 0)
+				{
+					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+				}
+
+				if (deseadosSuscripciones.Count > 0)
+				{
+					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+				}
 			}
 
 			if (usuario != null)
@@ -1178,8 +1294,16 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderBy(x => x.Precio.Precio).ThenBy(x => x.Nombre).ToList();
+
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Precio.Precio).ThenBy(x => x.Nombre).ToList();
+				}
 			}
 
 			if (usuario != null)
@@ -1207,8 +1331,16 @@
 			if (deseadosGestor.Count > 0)
 			{
 				deseadosOfertas.Clear();
-				deseadosOfertas = Filtros();
+				deseadosOfertas = Filtros(false);
 				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => x.Precio.Descuento).ThenBy(x => x.Nombre).ToList();
+
+				deseadosHistoricos.Clear();
+				deseadosHistoricos = Filtros(true);
+
+				if (deseadosHistoricos.Count > 0)
+				{
+					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Precio.Descuento).ThenBy(x => x.Nombre).ToList();
+				}
 			}
 
 			if (usuario != null)
@@ -1231,47 +1363,64 @@
 
 	#region Opciones
 
-	private List<JuegoDeseadoMostrar> Filtros()
+	private List<JuegoDeseadoMostrar> Filtros(bool historico)
 	{
 		List<JuegoDeseadoMostrar> juegosFiltrados = new List<JuegoDeseadoMostrar>();
 
 		foreach (var juego in deseadosGestor)
 		{
-			bool buscador = false;
+			bool historico2 = false;
 
-			if (string.IsNullOrEmpty(textoBuscador) == false)
+			if (historico == true)
 			{
-				if (Herramientas.Buscador.LimpiarNombre(juego.Nombre, true).Contains(Herramientas.Buscador.LimpiarNombre(textoBuscador, true)))
+				if (juego.Historico == true)
 				{
-					buscador = true;
-				}
-				else
-				{
-					buscador = false;
+					historico2 = true;
 				}
 			}
 			else
 			{
-				buscador = true;
+				historico2 = true;
 			}
 
-			bool minimoDescuento2 = false;
-
-			if (juego.Precio.Descuento >= minimoDescuento)
+			if (historico2 == true)
 			{
-				minimoDescuento2 = true;
-			}
+				bool buscador = false;
 
-			bool maximoPrecio2 = false;
+				if (string.IsNullOrEmpty(textoBuscador) == false)
+				{
+					if (Herramientas.Buscador.LimpiarNombre(juego.Nombre, true).Contains(Herramientas.Buscador.LimpiarNombre(textoBuscador, true)))
+					{
+						buscador = true;
+					}
+					else
+					{
+						buscador = false;
+					}
+				}
+				else
+				{
+					buscador = true;
+				}
 
-			if (juego.Precio.Precio <= maximoPrecio)
-			{
-				maximoPrecio2 = true;
-			}
+				bool minimoDescuento2 = false;
 
-			if (buscador == true && minimoDescuento2 == true && maximoPrecio2 == true)
-			{
-				juegosFiltrados.Add(juego);
+				if (juego.Precio.Descuento >= minimoDescuento)
+				{
+					minimoDescuento2 = true;
+				}
+
+				bool maximoPrecio2 = false;
+
+				if (juego.Precio.Precio <= maximoPrecio)
+				{
+					maximoPrecio2 = true;
+				}
+
+				if (buscador == true && minimoDescuento2 == true && maximoPrecio2 == true)
+				{
+					juegosFiltrados.Add(juego);
+				}
 			}
 		}
 
@@ -1318,18 +1467,6 @@
 		}
 
 		ElegirOrdenamiento();
-	}
-
-	private bool mostrarOpciones = false;
-
-	private void EnseñarOpciones()
-	{
-		mostrarOpciones = true;
-	}
-
-	private void OcultarOpciones()
-	{
-		mostrarOpciones = false;
 	}
 
 	private int? minimoDescuento = 1;
@@ -1456,6 +1593,78 @@
 
 				await JavaScript.InvokeVoidAsync("downloadFileFromStream", ficheroNombre, streamRef);
 			}
+		}
+	}
+
+	private void OpcionesPestañas()
+	{
+		enseñarDescuentoMinimo = false;
+		enseñarPrecioMaximo = false;
+		enseñarCompartir = false;
+		enseñarExportar = false;
+	}
+
+	private bool enseñarDescuentoMinimo = false;
+
+	private void OpcionesDescuentoMinimo()
+	{
+		if (enseñarDescuentoMinimo == false)
+		{
+			OpcionesPestañas();
+
+			enseñarDescuentoMinimo = true;
+		}
+		else
+		{
+			enseñarDescuentoMinimo = false;
+		}
+	}
+
+	private bool enseñarPrecioMaximo = false;
+
+	private void OpcionesPrecioMaximo()
+	{
+		if (enseñarPrecioMaximo == false)
+		{
+			OpcionesPestañas();
+
+			enseñarPrecioMaximo = true;
+		}
+		else
+		{
+			enseñarPrecioMaximo = false;
+		}
+	}
+
+	private bool enseñarCompartir = false;
+
+	private void OpcionesCompartir()
+	{
+		if (enseñarCompartir == false)
+		{
+			OpcionesPestañas();
+
+			enseñarCompartir = true;
+		}
+		else
+		{
+			enseñarCompartir = false;
+		}
+	}
+
+	private bool enseñarExportar = false;
+
+	private void OpcionesExportar()
+	{
+		if (enseñarExportar == false)
+		{
+			OpcionesPestañas();
+
+			enseñarExportar = true;
+		}
+		else
+		{
+			enseñarExportar = false;
 		}
 	}
 

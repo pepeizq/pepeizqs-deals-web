@@ -106,6 +106,10 @@ public class Usuario : IdentityUser
 	public decimal? HistoricalLowsOption3 { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? HistoricalLowsOption4 { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? HistoricalLowsStores { get; set; }
 

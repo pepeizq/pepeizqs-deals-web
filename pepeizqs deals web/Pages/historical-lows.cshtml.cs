@@ -7,9 +7,10 @@ namespace pepeizqs_deals_web.Pages
     public class HistoricalLowModel : PageModel
     {
         public string idioma = string.Empty;
-        public string modo = string.Empty;
+        public string drm = string.Empty;
+		public string tienda = string.Empty;
 
-        public void OnGet()
+		public void OnGet()
         {
 			idioma = Request.Query["language"];
 
@@ -22,7 +23,8 @@ namespace pepeizqs_deals_web.Pages
 				catch { }
 			}
 
-			modo = Request.Query["mode"];
+			drm = Request.Query["drm"];
+			tienda = Request.Query["store"];
         }
     }
 }

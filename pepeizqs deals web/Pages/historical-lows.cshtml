@@ -58,7 +58,10 @@
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new
 		{
 			idioma = Model.idioma,
-			usuarioId = usuario?.Id
+			usuarioId = usuario?.Id,
+			usuarioLogeado = usuarioLogeado,
+			drmEscrito = Model.drm,
+			tiendaEscrita = Model.tienda
 		}))
 	}
 }

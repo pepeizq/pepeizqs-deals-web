@@ -10,16 +10,17 @@
   "String8": "Discount",
   "String9": "Search by name",
   "String10": "Filter",
-  "String11": "Hide the games you have on Steam",
+  "String11": "Hide games you already own",
   "String12": "Minimum Discount",
   "String13": "Maximum Price",
   "String14": "DRMs",
   "String15": "Stores",
-  "String16": "results",
+  "String16": "{0} results",
   "String17": "Categories",
   "String18": "Games",
   "String19": "DLCs",
   "String20": "Soundtracks",
   "String21": "Software",
-  "String22": "Check out the games with historical low prices"
+  "String22": "Check out the games with historical low prices",
+  "String23": "{0} result"
 }

@@ -10,16 +10,17 @@
   "String8": "Sconto",
   "String9": "Cerca per nome",
   "String10": "Filtro",
-  "String11": "Nascondi i giochi che hai su Steam",
+  "String11": "Nascondi i giochi che già possiedi",
   "String12": "Sconto minimo",
   "String13": "Prezzo massimo",
   "String14": "DRM",
   "String15": "Negozi",
-  "String16": "risultati",
+  "String16": "{0} risultati",
   "String17": "Categorie",
   "String18": "Giochi",
   "String19": "DLC",
   "String20": "Colonne sonore",
   "String21": "Software",
-  "String22": "Controlla i giochi con prezzi bassi di tutti i tempi"
+  "String22": "Controlla i giochi con prezzi bassi di tutti i tempi",
+  "String23": "{0} risultato"
 }

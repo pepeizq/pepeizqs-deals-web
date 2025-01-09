@@ -10,16 +10,17 @@
   "String8": "Rabatt",
   "String9": "Suche nach Namen",
   "String10": "Filter",
-  "String11": "Verstecken Sie die Spiele, die Sie auf Steam haben",
+  "String11": "Verstecken Sie Spiele, die Sie bereits besitzen",
   "String12": "Mindestrabatt",
   "String13": "Maximaler Preis",
   "String14": "DRMs",
   "String15": "Geschäfte",
-  "String16": "Ergebnisse",
+  "String16": "{0} Ergebnisse",
   "String17": "Kategorien",
   "String18": "Spiele",
   "String19": "DLCs",
   "String20": "Soundtracks",
   "String21": "Software",
-  "String22": "Schauen Sie sich Spiele mit Allzeit-Niedrigpreisen an"
+  "String22": "Schauen Sie sich Spiele mit Allzeit-Niedrigpreisen an",
+  "String23": "{0} Ergebnis"
 }

@@ -15,257 +15,374 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 
-<div style="max-width: 1000px; margin: auto;">
-	<div style="background-color: var(--fondoCuerpo);">
-		<div style="display: flex; align-items: center; width: 100%;">
-			<div style="width: 100%; font-size: 23px; text-align: left;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "HistoricalLows")
-			</div>
-
-			<div style="display: flex; align-items: center; width: 30%; justify-content: right;">
-				<div style="font-size: 14px; text-align: right;">
-					@juegosMostrar.Count.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "HistoricalLows")
-				</div>
-			</div>
-		</div>
-
-		<div style="display: flex; align-items: center; width: 100%; margin: 15px 0px;">
-			<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; margin-right: 30px; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "HistoricalLows")" />
-
-			<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-right: 30px; border: 0px; color: var(--colorTextoVisitado);">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "HistoricalLows")
-			</button>
-
-			<div class="menu-dropdown" style="width: auto;">
-				<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
-					<div style="padding-right: 5px;">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "HistoricalLows"):
-					</div>
-
-					<div style="color: var(--colorEnlace); padding-right: 15px;">
-						@ordenamientoElegido
-					</div>
-
-					<div>
-						<i class="fa-solid fa-caret-down"></i>
-					</div>
-				</button>
-
-				<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows")
-					</button>
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows")
-					</button>
-					<hr />
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "HistoricalLows")
-					</button>
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "HistoricalLows")
-					</button>
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "HistoricalLows")
-					</button>
-					<button class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "HistoricalLows")
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<hr />
-
-	@if (juegosMostrar.Count > 0)
-	{
-		<div style="display: flex; flex-direction: column; gap: 25px; margin-top: -25px;">
-			<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
-				<ItemContent>
-					<CajaJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@usuarioJuegosSteam" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.MinimosHistoricos" usuarioPatreon="@usuarioPatreon"/>
-				</ItemContent>
-			</Virtualize>
-		</div>
+<style>
+	.cargando {
+	width: 48px;
+	height: 48px;
+	border: 5px solid var(--colorTexto);
+	border-bottom-color: transparent;
+	border-radius: 50%;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
 	}
-</div>	
 
-@if (mostrarFiltrado == true)
+	@@keyframes rotation {
+	0% {
+	transform: rotate(0deg);
+	}
+
+	100% {
+	transform: rotate(360deg);
+	}
+	}
+</style>
+
+@if (cargado == false)
 {
-	<div class="opciones-panel">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 800px; padding: 30px; margin: 20px auto; overflow-y: scroll;">
-			<div style="display: flex; align-items: center;">
-				<button class="boton-pequeño" @onclick="OcultarFiltrado" style="width: auto; padding: 5px 15px; margin-right: 20px; border: 0px; color: var(--colorTextoVisitado); font-size: 22px;">
-					<i class="fa-solid fa-arrow-left"></i>
-				</button>
-
-				<div style="font-size: 20px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "HistoricalLows")
-				</div>
-			</div>
-
-			<hr style="margin-top: 30px;">
-
-			@if (usuario != null)
-			{
-				<div style="display: flex; align-items: center; margin-top: 30px;">
-					<div class="checkbox-caja">
-						<input type="checkbox" class="checkbox-interior" checked="@estadoOcultarJuegosUsuario" @onchange="OcultarJuegosUsuario">
-					</div>
-
-					<div style="margin-left: 20px; padding-bottom: 5px;">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "HistoricalLows")
-					</div>
+	<div style="text-align: center; width: 100%;">
+		<div class="cargando" />
+	</div>
+}
+else
+{
+	<div style="max-width: 1000px; margin: auto;">
+		<div style="background-color: var(--fondoCuerpo);">
+			<div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
+				<div style="font-size: 23px; text-align: left;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "HistoricalLows")
 				</div>
 
-				<hr style="margin-top: 30px;">
-			}
-
-			<div style="margin-top: 30px;">
-				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "HistoricalLows")
-				</div>
-
-				<div style="display: flex; align-items: center;">
-					<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
-
-					<label style="padding-left: 30px; min-width: 65px; text-align: center;">@minimoDescuento%</label>
-				</div>
-			</div>
-
-			<div style="margin-top: 30px;">
-				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "HistoricalLows")
-				</div>
-
-				<div style="display: flex; align-items: center;">
-					<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
-
-					<label style="padding-left: 30px; min-width: 65px; text-align: center;">@maximoPrecio€</label>
-				</div>
-			</div>
-
-			<hr style="margin-top: 30px;">
-
-			<div style="margin-top: 30px;">
-				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "HistoricalLows")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
-					@foreach (var drm in drms)
-					{
-						string iconoDRM = string.Empty;
-						string nombreDRM = string.Empty;
-
-						foreach (var drm2 in JuegoDRM2.GenerarListado())
-						{
-							if (drm2.Id == drm.DRMId)
-							{
-								iconoDRM = drm2.Imagen;
-								nombreDRM = drm2.Nombre;
-							}
-						}
-
-						<div style="display: flex; align-items: center;" title="@nombreDRM">
-							<div class="checkbox-caja">
-								<input type="checkbox" class="checkbox-interior" checked="@drm.Checkbox" @onchange="@(e => EnseñarJuegosDRM(e, drm.DRMId))">
+				<div style="display: flex; align-items: center; justify-content: right;">
+					<div class="menu-dropdown" style="width: auto;">
+						<button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+							<div style="font-size: 14px; padding-right: 5px;">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "HistoricalLows"):
 							</div>
 
-							@if (drm.DRMId != JuegoDRM.DRMFree)
+							<div style="font-size: 14px; color: var(--colorEnlace); padding-right: 15px;">
+								@ordenamientoElegido
+							</div>
+
+							<div>
+								<i class="fa-solid fa-caret-down"></i>
+							</div>
+						</button>
+
+						<div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasPorcentaje">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarReseñasCantidad">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows")
+							</button>
+							<hr />
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreAZ">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "HistoricalLows")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarNombreZA">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "HistoricalLows")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarPrecio">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "HistoricalLows")
+							</button>
+							<button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="OrdenarDescuento">
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "HistoricalLows")
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			@if (juegosGestor.Count > 0)
+			{
+				<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; width: 100%; margin: 15px 0px 25px 0px; display: flex; flex-direction: column; gap: 30px;">
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<i class="fa-solid fa-magnifying-glass" style="font-size: 20px;"></i>
+
+						<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "HistoricalLows")" />
+
+						<div style="font-size: 14px; text-align: right; padding-left: 20px;">
+							@if (juegosMostrar.Count == 1)
 							{
-								<div style="margin-left: 20px; padding-bottom: 10px;">
-									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" />
-								</div>
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "HistoricalLows"), juegosMostrar.Count)
 							}
 							else
 							{
-								<div style="margin-left: 20px; padding-bottom: 5px;">
-									<label style="font-size: 10px; max-width: 24px; text-align: center;">@nombreDRM</label>
-								</div>
+								@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String16", "HistoricalLows"), juegosMostrar.Count)
 							}
 						</div>
-					}
-				</div>
-			</div>
+					</div>
 
-			<hr style="margin-top: 30px;">
-
-			<div style="margin-top: 30px;">
-				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "HistoricalLows")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
-					@foreach (var tienda in tiendas)
-					{
-						string iconoTienda = string.Empty;
-						string nombreTienda = string.Empty;
-
-						foreach (var tienda2 in Tiendas2.TiendasCargar.GenerarListado())
-						{
-							if (tienda2.Id == tienda.TiendaId)
+					<div style="display: flex; flex-direction: column; gap: 10px;">
+						<div style="display: flex; align-items: center; gap: 15px; flex-flow: wrap;">
+							@if (usuarioLogeado == true)
 							{
-								iconoTienda = tienda2.ImagenIcono;
-								nombreTienda = tienda2.Nombre;
+								<button class="boton-pequeño" @onclick="OpcionesOcultar" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+									<div style="display: flex; align-items: center; gap: 10px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "HistoricalLows")
+
+										@if (enseñarOcultar == false)
+										{
+											<i class="fa-solid fa-caret-down"></i>
+										}
+										else
+										{
+											<i class="fa-solid fa-caret-up"></i>
+										}
+									</div>
+								</button>
 							}
-						}
 
-						<div style="display: flex; align-items: center;" title="@nombreTienda">
-							<div class="checkbox-caja">
-								<input type="checkbox" class="checkbox-interior" checked="@tienda.Checkbox" @onchange="@(e => EnseñarJuegosTienda(e, tienda.TiendaId))">
-							</div>
+							<button class="boton-pequeño" @onclick="OpcionesDescuentoMinimo" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "HistoricalLows")
 
-							<div style="margin-left: 20px; padding-bottom: 10px;">
-								<img src="@iconoTienda" style="width: 24px; height: 24px;" title="@nombreTienda" />
-							</div>
+									@if (enseñarDescuentoMinimo == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
+
+							<button class="boton-pequeño" @onclick="OpcionesPrecioMaximo" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "HistoricalLows")
+
+									@if (enseñarPrecioMaximo == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
+
+							<button class="boton-pequeño" @onclick="OpcionesDRMs" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "HistoricalLows")
+
+									@if (enseñarDRMs == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
+
+							<button class="boton-pequeño" @onclick="OpcionesTiendas" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "HistoricalLows")
+
+									@if (enseñarTiendas == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
+
+							<button class="boton-pequeño" @onclick="OpcionesCategorias" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String17", "HistoricalLows")
+
+									@if (enseñarCategorias == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
 						</div>
-					}
-				</div>
-			</div>
 
-			<hr style="margin-top: 30px;">
-
-			<div style="margin-top: 30px;">
-				<div style="padding-bottom: 15px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String17", "HistoricalLows")
-				</div>
-
-				<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-					@foreach (var categoria in categorias)
-					{
-						string nombreCategoria = string.Empty;
-
-						if (categoria.Categoria == JuegoTipo.Game)
+						@if (enseñarOcultar == true)
 						{
-							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "HistoricalLows");
-						}
-						else if (categoria.Categoria == JuegoTipo.DLC)
-						{
-							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String19", "HistoricalLows");
-						}
-						else if (categoria.Categoria == JuegoTipo.Music)
-						{
-							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String20", "HistoricalLows");
-						}
-						else if (categoria.Categoria == JuegoTipo.Software)
-						{
-							nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String21", "HistoricalLows");
-						}
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%;">
+								<div style="display: flex; align-items: center; gap: 20px;">
+									<div class="checkbox-caja">
+										<input type="checkbox" class="checkbox-interior" checked="@ocultarJuegosUsuarioSteam" @onchange="OcultarJuegosUsuarioSteam">
+									</div>
 
-						<div style="display: flex; align-items: center;" title="@nombreCategoria">
-							<div class="checkbox-caja">
-								<input type="checkbox" class="checkbox-interior" checked="@categoria.Checkbox" @onchange="@(e => EnseñarJuegosCategoria(e, categoria.Categoria))">
+									<div style="padding-bottom: 5px;">
+										Steam
+									</div>
+								</div>
+
+								<div style="display: flex; align-items: center; gap: 20px;">
+									<div class="checkbox-caja">
+										<input type="checkbox" class="checkbox-interior" checked="@ocultarJuegosUsuarioGog" @onchange="OcultarJuegosUsuarioGog">
+									</div>
+
+									<div style="padding-bottom: 5px;">
+										GOG
+									</div>
+								</div>
 							</div>
+						}
 
-							<div style="margin-left: 15px; padding-bottom: 8px;">
-								<label style="font-size: 14px;">@nombreCategoria</label>
+						@if (enseñarDescuentoMinimo == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: flex; align-items: center; gap: 30px;">
+									<input type="range" min="1" max="91" value="@minimoDescuento" step="5" @onchange="@(e => CambiarMinimoDescuento(e))" class="deslizador">
+
+									<label style="min-width: 65px; text-align: center;">@minimoDescuento%</label>
+								</div>
 							</div>
-						</div>
-					}
+						}
+
+						@if (enseñarPrecioMaximo == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: flex; align-items: center; gap: 30px;">
+									<input type="range" min="5" max="90" value="@maximoPrecio" step="1" @onchange="@(e => CambiarMaximoPrecio(e))" class="deslizador">
+
+									<label style="min-width: 65px; text-align: center;">@maximoPrecio€</label>
+								</div>
+							</div>
+						}
+
+						@if (enseñarDRMs == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 20px;">
+									@foreach (var drm in drms)
+									{
+										string iconoDRM = string.Empty;
+										string nombreDRM = string.Empty;
+
+										foreach (var drm2 in JuegoDRM2.GenerarListado())
+										{
+											if (drm2.Id == drm.DRMId)
+											{
+												iconoDRM = drm2.Imagen;
+												nombreDRM = drm2.Nombre;
+											}
+										}
+
+										<div style="display: flex; align-items: center;" title="@nombreDRM">
+											<div class="checkbox-caja">
+												<input type="checkbox" class="checkbox-interior" checked="@drm.Checkbox" @onchange="@(e => EnseñarJuegosDRM(e, drm.DRMId))">
+											</div>
+
+											@if (drm.DRMId != JuegoDRM.DRMFree)
+											{
+												<div style="margin-left: 20px; padding-bottom: 10px;">
+													<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" />
+												</div>
+											}
+											else
+											{
+												<div style="margin-left: 20px; padding-bottom: 5px;">
+													<label style="font-size: 10px; max-width: 24px; text-align: center;">@nombreDRM</label>
+												</div>
+											}
+										</div>
+									}
+								</div>
+							</div>
+						}
+
+						@if (enseñarTiendas == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 20px;">
+									@foreach (var tienda in tiendas)
+									{
+										string iconoTienda = string.Empty;
+										string nombreTienda = string.Empty;
+
+										foreach (var tienda2 in Tiendas2.TiendasCargar.GenerarListado())
+										{
+											if (tienda2.Id == tienda.TiendaId)
+											{
+												iconoTienda = tienda2.ImagenIcono;
+												nombreTienda = tienda2.Nombre;
+											}
+										}
+
+										<div style="display: flex; align-items: center; gap: 20px;" title="@nombreTienda">
+											<div class="checkbox-caja">
+												<input type="checkbox" class="checkbox-interior" checked="@tienda.Checkbox" @onchange="@(e => EnseñarJuegosTienda(e, tienda.TiendaId))">
+											</div>
+
+											<div style="padding-bottom: 10px;">
+												<img src="@iconoTienda" style="width: 24px; height: 24px;" title="@nombreTienda" />
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						}
+
+						@if (enseñarCategorias == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px;">
+									@foreach (var categoria in categorias)
+									{
+										string nombreCategoria = string.Empty;
+
+										if (categoria.Categoria == JuegoTipo.Game)
+										{
+											nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "HistoricalLows");
+										}
+										else if (categoria.Categoria == JuegoTipo.DLC)
+										{
+											nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String19", "HistoricalLows");
+										}
+										else if (categoria.Categoria == JuegoTipo.Music)
+										{
+											nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String20", "HistoricalLows");
+										}
+										else if (categoria.Categoria == JuegoTipo.Software)
+										{
+											nombreCategoria = Herramientas.Idiomas.BuscarTexto(idioma, "String21", "HistoricalLows");
+										}
+
+										<div style="display: flex; align-items: center;" title="@nombreCategoria">
+											<div class="checkbox-caja">
+												<input type="checkbox" class="checkbox-interior" checked="@categoria.Checkbox" @onchange="@(e => EnseñarJuegosCategoria(e, categoria.Categoria))">
+											</div>
+
+											<div style="margin-left: 15px; padding-bottom: 8px;">
+												<label style="font-size: 14px;">@nombreCategoria</label>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						}
+					</div>
 				</div>
-			</div>
+			}
 		</div>
+
+		@if (juegosMostrar.Count > 0)
+		{
+			<div style="display: flex; flex-direction: column; gap: 25px; margin-top: -25px;">
+				<Virtualize Context="juego" Items="juegosMostrar" ItemSize="107">
+					<ItemContent>
+						<CajaJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@juegosUsuarioSteam" usuarioJuegosGog="@juegosUsuarioGog" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.MinimosHistoricos" usuarioPatreon="@usuarioPatreon" />
+					</ItemContent>
+				</Virtualize>
+			</div>
+		}
 	</div>
 }
 
@@ -279,6 +396,15 @@
 	[Parameter]
 	public string usuarioId { get; set; }
 
+	[Parameter]
+	public bool usuarioLogeado { get; set; }
+
+	[Parameter]
+	public string drmEscrito { get; set; }
+
+	[Parameter]
+	public string tiendaEscrita { get; set; }
+
 	private Usuario usuario = new Usuario();
 	private bool usuarioPatreon = false;
 
@@ -289,17 +415,25 @@
 
 	private string textoBuscador { get; set; }
 
-	private List<string> usuarioJuegosSteam = new List<string>();
+	private List<string> juegosUsuarioSteam = new List<string>();
+	private List<string> juegosUsuarioGog = new List<string>();
+
+	private bool cargado = false;
 
 	protected override async Task OnInitializedAsync()
 	{
 		usuario = await UserManager.FindByIdAsync(usuarioId);
 
-		if (usuario != null)
+		if (usuario != null && usuarioLogeado == true)
 		{
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{
-				usuarioJuegosSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+				juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
+			}
+
+			if (string.IsNullOrEmpty(usuario.GogGames) == false)
+			{
+				juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
 			}
 
 			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
@@ -308,11 +442,20 @@
 
 			if (usuario.HistoricalLowsOption1 == true)
 			{
-				estadoOcultarJuegosUsuario = "checked";
+				ocultarJuegosUsuarioSteam = "checked";
 			}
 			else
 			{
-				estadoOcultarJuegosUsuario = null;
+				ocultarJuegosUsuarioSteam = null;
+			}
+
+			if (usuario.HistoricalLowsOption4 == true)
+			{
+				ocultarJuegosUsuarioGog = "checked";
+			}
+			else
+			{
+				ocultarJuegosUsuarioGog = null;
 			}
 
 			if (usuario.HistoricalLowsOption2 == null)
@@ -604,15 +747,15 @@
 
 			bool ocultar = false;
 
-			if (string.IsNullOrEmpty(estadoOcultarJuegosUsuario) == false)
+			if (string.IsNullOrEmpty(ocultarJuegosUsuarioSteam) == false)
 			{
-				if (estadoOcultarJuegosUsuario == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
+				if (ocultarJuegosUsuarioSteam == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
 				{
-					if (usuarioJuegosSteam != null)
+					if (juegosUsuarioSteam != null)
 					{
-						if (usuarioJuegosSteam.Count > 0)
+						if (juegosUsuarioSteam.Count > 0)
 						{
-							foreach (var juegoUsuario in usuarioJuegosSteam)
+							foreach (var juegoUsuario in juegosUsuarioSteam)
 							{
 								if (juego.IdSteam.ToString() == juegoUsuario)
 								{
@@ -622,6 +765,27 @@
 							}
 						}
 					}					
+				}
+			}
+
+			if (string.IsNullOrEmpty(ocultarJuegosUsuarioGog) == false)
+			{
+				if (ocultarJuegosUsuarioGog == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.GOG)
+				{
+					if (juegosUsuarioGog != null)
+					{
+						if (juegosUsuarioGog.Count > 0)
+						{
+							foreach (var juegoUsuario in juegosUsuarioGog)
+							{
+								if (juego.IdGog.ToString() == juegoUsuario)
+								{
+									ocultar = true;
+									break;
+								}
+							}
+						}
+					}
 				}
 			}
 
@@ -644,6 +808,42 @@
 
 			bool drm2 = false;
 
+			#region Usuario añade DRM en enlace
+
+			if (string.IsNullOrEmpty(drmEscrito) == false)
+			{
+				foreach (var drm3 in JuegoDRM2.GenerarListado())
+				{
+					bool añadir = false;
+
+					if (Herramientas.Buscador.LimpiarNombre(drmEscrito, true) == Herramientas.Buscador.LimpiarNombre(drm3.Nombre, true))
+					{
+						añadir = true;
+					}
+
+					foreach (var drm4 in drm3.Acepciones)
+					{
+						if (Herramientas.Buscador.LimpiarNombre(drmEscrito, true) == Herramientas.Buscador.LimpiarNombre(drm4, true))
+						{
+							añadir = true;
+						}
+					}
+
+					if (añadir == true)
+					{
+						MostrarJuegoDRM nuevoDrm = new MostrarJuegoDRM();
+						nuevoDrm.DRMId = drm3.Id;
+						nuevoDrm.Estado = true;
+
+						drms.Clear();
+						drms.Add(nuevoDrm);
+						break;
+					}
+				}
+			}
+
+			#endregion
+
 			foreach (var drm in drms)
 			{
 				if (juego.PrecioMinimosHistoricos[0].DRM == drm.DRMId && drm.Estado == true)
@@ -653,6 +853,34 @@
 			}
 
 			bool tienda2 = false;
+
+			#region Usuario añade Tienda en enlace
+
+			if (string.IsNullOrEmpty(tiendaEscrita) == false)
+			{
+				foreach (var tienda3 in Tiendas2.TiendasCargar.GenerarListado())
+				{
+					bool añadir = false;
+
+					if (Herramientas.Buscador.LimpiarNombre(tiendaEscrita, true) == Herramientas.Buscador.LimpiarNombre(tienda3.Nombre, true))
+					{
+						añadir = true;
+					}
+
+					if (añadir == true)
+					{
+						MostrarJuegoTienda nuevaTienda = new MostrarJuegoTienda();
+						nuevaTienda.TiendaId = tienda3.Id;
+						nuevaTienda.Estado = true;
+
+						tiendas.Clear();
+						tiendas.Add(nuevaTienda);
+						break;
+					}
+				}
+			}
+
+			#endregion
 
 			foreach (var tienda in tiendas)
 			{
@@ -678,12 +906,14 @@
 			{
 				juegosFiltrados.Add(juego);
 			}
+
+			cargado = true;
 		}
 
 		return juegosFiltrados;
 	}
 
-	private void ElegirOrdenamiento()
+	private async void ElegirOrdenamiento()
 	{
 		if (ordenamientoElegido == Herramientas.Idiomas.BuscarTexto(idioma, "String3", "HistoricalLows"))
 		{
@@ -714,6 +944,8 @@
 		{
 			OrdenarDescuento();
 		}
+
+		await InvokeAsync(StateHasChanged);
 	}
 
 	private void TextoCambiaBusqueda(ChangeEventArgs texto)
@@ -730,33 +962,48 @@
 		ElegirOrdenamiento();
 	}
 
-	private bool mostrarFiltrado = false;
+	private string ocultarJuegosUsuarioSteam = null;
 
-	private void EnseñarFiltrado()
-	{
-		mostrarFiltrado = true;
-	}
-
-	private void OcultarFiltrado()
-	{
-		mostrarFiltrado = false;
-	}
-
-	private string estadoOcultarJuegosUsuario = null;
-
-	private async void OcultarJuegosUsuario()
+	private async void OcultarJuegosUsuarioSteam()
 	{
 		if (usuario != null)
 		{
 			if (usuario.HistoricalLowsOption1 == true)
 			{
 				usuario.HistoricalLowsOption1 = false;
-				estadoOcultarJuegosUsuario = null;
+				ocultarJuegosUsuarioSteam = null;
 			}
 			else
 			{
 				usuario.HistoricalLowsOption1 = true;
-				estadoOcultarJuegosUsuario = "checked";
+				ocultarJuegosUsuarioSteam = "checked";
+			}
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch { }
+
+			ElegirOrdenamiento();
+		}
+	}
+
+	private string ocultarJuegosUsuarioGog = null;
+
+	private async void OcultarJuegosUsuarioGog()
+	{
+		if (usuario != null)
+		{
+			if (usuario.HistoricalLowsOption4 == true)
+			{
+				usuario.HistoricalLowsOption4 = false;
+				ocultarJuegosUsuarioGog = null;
+			}
+			else
+			{
+				usuario.HistoricalLowsOption4 = true;
+				ocultarJuegosUsuarioGog = "checked";
 			}
 
 			try
@@ -1010,6 +1257,116 @@
 		}
 
 		return nuevaLista;
+	}
+
+	#endregion
+
+	#region Opciones
+
+	private void OpcionesPestañas()
+	{
+		enseñarOcultar = false;
+		enseñarDescuentoMinimo = false;
+		enseñarPrecioMaximo = false;
+		enseñarDRMs = false;
+		enseñarTiendas = false;
+		enseñarCategorias = false;
+	}
+
+	private bool enseñarOcultar = false;
+
+	private void OpcionesOcultar()
+	{
+		if (enseñarOcultar == false)
+		{
+			OpcionesPestañas();
+
+			enseñarOcultar = true;
+		}
+		else
+		{
+			enseñarOcultar = false;
+		}
+	}
+
+	private bool enseñarDescuentoMinimo = false;
+
+	private void OpcionesDescuentoMinimo()
+	{
+		if (enseñarDescuentoMinimo == false)
+		{
+			OpcionesPestañas();
+
+			enseñarDescuentoMinimo = true;
+		}
+		else
+		{
+			enseñarDescuentoMinimo = false;
+		}
+	}
+
+	private bool enseñarPrecioMaximo = false;
+
+	private void OpcionesPrecioMaximo()
+	{
+		if (enseñarPrecioMaximo == false)
+		{
+			OpcionesPestañas();
+
+			enseñarPrecioMaximo = true;
+		}
+		else
+		{
+			enseñarPrecioMaximo = false;
+		}
+	}
+
+	private bool enseñarDRMs = false;
+
+	private void OpcionesDRMs()
+	{
+		if (enseñarDRMs == false)
+		{
+			OpcionesPestañas();
+
+			enseñarDRMs = true;
+		}
+		else
+		{
+			enseñarDRMs = false;
+		}
+	}
+
+	private bool enseñarTiendas = false;
+
+	private void OpcionesTiendas()
+	{
+		if (enseñarTiendas == false)
+		{
+			OpcionesPestañas();
+
+			enseñarTiendas = true;
+		}
+		else
+		{
+			enseñarTiendas = false;
+		}
+	}
+
+	private bool enseñarCategorias = false;
+
+	private void OpcionesCategorias()
+	{
+		if (enseñarCategorias == false)
+		{
+			OpcionesPestañas();
+
+			enseñarCategorias = true;
+		}
+		else
+		{
+			enseñarCategorias = false;
+		}
 	}
 
 	#endregion

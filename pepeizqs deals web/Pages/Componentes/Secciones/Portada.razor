@@ -264,18 +264,6 @@
 	padding: 30px;
 	}
 
-	.noticia-ancho {
-	width: calc(33% - 16px);
-	}
-
-	.noticia-expandir {
-	transition: transform .2s;
-	}
-
-	.noticia-expandir:hover {
-	transform: scale(1.01);
-	}
-
 	.noticia-enlaces {
 	flex-direction: row;
 	}
@@ -287,10 +275,6 @@
 
 	.noticia-enlaces {
 	flex-direction: column;
-	}
-
-	.noticia-ancho {
-	width: calc(50% - 16px);
 	}
 	}
 </style>
@@ -307,10 +291,7 @@
 <div class="noticias-caja" style="background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); margin-bottom: 60px; display: flex; flex-direction: column; gap: 30px;">
 	@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 	{
-		<div>
-			<div style="font-size: 18px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")
-			</div>
+		<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
 			<Virtualize Context="noticia" Items="noticiasTresDias">
 				<ItemContent>
 					<CajaNoticia idioma="@idioma" noticia="@noticia" />
@@ -321,10 +302,13 @@
 
 	@if (noticiasSemana.Count > 0)
 	{
-		<div>
-			<div style="font-size: 18px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Index")
-			</div>
+		<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Index")">
+			<button class="boton-pequeño" @onclick="CerrarNoticiasSemana" style="padding: 0px; width: fit-content; font-size: 20px; background-color: transparent;">
+				<div>
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+			</button>
+
 			<Virtualize Context="noticia" Items="noticiasSemana">
 				<ItemContent>
 					<CajaNoticia idioma="@idioma" noticia="@noticia" />
@@ -1109,6 +1093,11 @@
 	private void CargarNoticiasSemana()
 	{
 		noticiasSemana = BaseDatos.Noticias.Buscar.Actuales(conexion, 7);
+	}
+
+	private void CerrarNoticiasSemana()
+	{
+		noticiasSemana.Clear();
 	}
 
 	private async void CronometroNoticias(int limite)
