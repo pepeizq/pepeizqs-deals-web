@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Data.SqlClient
 
 @if (noticia != null)
@@ -146,6 +146,10 @@
 				<button @onclick="(e => EnviarBlueSky(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
 					BlueSky
 				</button>
+
+				<button @onclick="(e => EnviarNotificaciones(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Notificaciones Push
+				</button>
 			</div>
 		</div>
 	</div>
@@ -157,6 +161,9 @@
 
 	[Parameter]
 	public string idioma { get; set; }
+
+	[Parameter]
+	public string usuarioId { get; set; }
 
 	[Parameter]
 	public int noticiaId { get; set; }
@@ -386,5 +393,10 @@
 	private void EnviarBlueSky(MouseEventArgs e)
 	{
 		Herramientas.Bluesky.Postear(noticia);
+	}
+
+	private void EnviarNotificaciones(MouseEventArgs e)
+	{
+		Herramientas.NotificacionesPush.EnviarNoticia(noticia);
 	}
 }

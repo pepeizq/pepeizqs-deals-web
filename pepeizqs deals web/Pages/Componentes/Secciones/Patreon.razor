@@ -4,7 +4,7 @@
 
 @inject UserManager<Usuario> UserManager
 
-<div style="max-width: 1000px; margin: auto;">
+<div style="max-width: 1200px; margin: auto;">
 	<h1 style="font-size: 23px;">
 		@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Patreon")
 	</h1>
@@ -78,6 +78,18 @@
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Patreon")
 			</div>
 		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Patreon")
+			</div>
+
+			<hr />
+
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Patreon")
+			</div>
+		</div>
 	</div>
 
 	@if (noticias.Count > 0)
@@ -118,7 +130,7 @@
 
 		if (usuario != null)
 		{
-			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+			usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
 		}
 
 		noticias = BaseDatos.Noticias.Buscar.Ultimas(10, Noticias.NoticiaTipo.Patreon);

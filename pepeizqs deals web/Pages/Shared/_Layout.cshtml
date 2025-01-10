@@ -97,7 +97,7 @@
                         }
                     }
 
-                    if (usuario.PatreonLastLogin == null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
+                    if (usuario.PatreonLastLogin == null && Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
                     {
                         usuario.PatreonLastLogin = DateTime.Now;
                         usuario.PatreonCoins = 1;
@@ -105,7 +105,7 @@
                         global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
                     }
 
-                    if (usuario.PatreonLastLogin != null && Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
+                    if (usuario.PatreonLastLogin != null && Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
                     {
                         if (usuario.PatreonCoins < 30)
                         {
@@ -335,6 +335,9 @@
             document.getElementById(id).style.display = 'none';
         }
     </script>
+
+    <script src="~/pushNotifications.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 
     <div id="components-reconnect-modal" style="display: none"/>
 

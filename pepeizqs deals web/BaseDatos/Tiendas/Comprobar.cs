@@ -22,14 +22,7 @@ namespace BaseDatos.Tiendas
 				}
 			}
 
-			Juego juego = JuegoCrear.Generar();
-
-			string idSteam2 = string.Empty;
-
-			if (oferta.Enlace.Contains("https://store.steampowered.com/app/") == true)
-			{
-				idSteam2 = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
-			}
+			string idSteam2 = APIs.Steam.Juego.LimpiarID(oferta.Enlace);
 
 			if (string.IsNullOrEmpty(idSteam2) == false)
 			{
@@ -46,6 +39,8 @@ namespace BaseDatos.Tiendas
 
 				if (idSteam > 0)
 				{
+					Juego juego = JuegoCrear.Generar();
+
 					if (analisis != null && juego != null)
 					{
 						if (string.IsNullOrEmpty(analisis.Cantidad) == false && string.IsNullOrEmpty(analisis.Porcentaje) == false)

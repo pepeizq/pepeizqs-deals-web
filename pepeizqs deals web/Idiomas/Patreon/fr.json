@@ -10,5 +10,7 @@
   "String8": "Changer la langue sur les avis des utilisateurs de Steam",
   "String9": "Vous pouvez modifier les langues dans les critiques à votre guise, ainsi qu'afficher comment le jeu est noté dans chaque région.",
   "String10": "Liens vers d'autres sites Web",
-  "String11": "Je suis réaliste, je ne peux pas avoir toutes les informations utiles sur les jeux donc vous aurez une section avec des liens directs vers leurs pages sur des sites comme SteamDB, PCGamingWiki ou IsThereAnyDeal."
+  "String11": "Je suis réaliste, je ne peux pas avoir toutes les informations utiles sur les jeux donc vous aurez une section avec des liens directs vers leurs pages sur des sites comme SteamDB, PCGamingWiki ou IsThereAnyDeal.",
+  "String12": "Préférence de connexion",
+  "String13": "En cas de saturation de ce site vous serez le premier à pouvoir vous connecter, et vous pourrez également actualiser le site autant de fois que vous le souhaitez sans aucune restriction."
 }

@@ -127,6 +127,11 @@ namespace APIs.Steam
 							}
 						}
 					}
+
+					if (tope < 1000)
+					{
+						tope = 10000;
+					}
 				}
 				else
 				{

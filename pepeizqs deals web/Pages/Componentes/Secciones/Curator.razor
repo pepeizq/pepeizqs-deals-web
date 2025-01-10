@@ -278,7 +278,7 @@
 
 		if (usuario != null)
 		{
-			usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+			usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
 
 			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
 			{

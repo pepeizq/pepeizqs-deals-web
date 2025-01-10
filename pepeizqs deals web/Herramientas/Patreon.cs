@@ -56,7 +56,7 @@ namespace Herramientas
 			cliente.Dispose();
 		}
 
-		public static bool VerificarComprobacion(DateTime? ultimoRegistro)
+		public static bool VerificarActivo(DateTime? ultimoRegistro)
 		{
 			if (ultimoRegistro != null)
 			{

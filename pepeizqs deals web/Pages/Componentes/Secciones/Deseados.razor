@@ -663,7 +663,7 @@
 
 			if (string.IsNullOrEmpty(otroUsuario) == true)
 			{
-				usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+				usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
 
 				estadoCompartir = usuario.WishlistPublic;
 				compartirNombre = usuario.WishlistNickname;

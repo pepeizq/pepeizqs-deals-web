@@ -535,6 +535,15 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 {
                     BaseDatos.Errores.Insertar.Mensaje("Enviar BlueSky Noticia", ex);
                 }
+
+                try
+                {
+                    Herramientas.NotificacionesPush.EnviarNoticia(noticiaAñadir);
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Mensaje("Enviar Notificaciones Push Noticia", ex);
+                }
                
                 noticia = new Plantilla();
 

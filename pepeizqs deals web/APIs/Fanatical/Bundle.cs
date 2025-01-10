@@ -22,12 +22,19 @@ namespace APIs.Fanatical
 			};
 
             DateTime fechaEmpieza = DateTime.Now;
-            fechaEmpieza = new DateTime(fechaEmpieza.Year, fechaEmpieza.Month, fechaEmpieza.Day, 17, 0, 0);
+			int hora = 17;
+
+			if (fechaEmpieza.Hour == 16)
+			{
+				hora = 16;
+			}
+
+            fechaEmpieza = new DateTime(fechaEmpieza.Year, fechaEmpieza.Month, fechaEmpieza.Day, hora, 0, 0);
 
             bundle.FechaEmpieza = fechaEmpieza;
 
             DateTime fechaTermina = DateTime.Now;
-			fechaTermina = fechaTermina.AddDays(14);
+			fechaTermina = fechaTermina.AddDays(21);
 			fechaTermina = new DateTime(fechaTermina.Year, fechaTermina.Month, fechaTermina.Day, 17, 0, 0);
 
 			bundle.FechaTermina = fechaTermina;

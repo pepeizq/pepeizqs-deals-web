@@ -58,6 +58,7 @@
     <PackageReference Include="Toolbelt.Blazor.HeadElement.ServerPrerendering" Version="7.3.1" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement.Services" Version="7.3.1" />
     <PackageReference Include="TweetinviAPI.AspNetPlugin" Version="5.0.4" />
+    <PackageReference Include="WebPush-NetCore" Version="1.0.2" />
     <PackageReference Include="X.Bluesky" Version="1.1.0" />
   </ItemGroup>
 

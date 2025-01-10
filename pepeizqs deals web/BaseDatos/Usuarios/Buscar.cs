@@ -368,5 +368,44 @@ namespace BaseDatos.Usuarios
 
 			return null;
 		}
+
+		public static List<NotificacionSuscripcion> TodosUsuariosNotificaciones(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<NotificacionSuscripcion> usuarios = new List<NotificacionSuscripcion>();
+
+			string busqueda = "SELECT * FROM usuariosNotificaciones";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						NotificacionSuscripcion usuario = new NotificacionSuscripcion();
+						usuario.UserId = lector.GetString(0);
+						usuario.NotificationSubscriptionId = lector.GetInt32(1);
+						usuario.Url = lector.GetString(2);
+						usuario.P256dh = lector.GetString(3);
+						usuario.Auth = lector.GetString(4);
+
+						usuarios.Add(usuario);
+					}
+				}
+			}
+
+			return usuarios;
+		}
 	}
 }

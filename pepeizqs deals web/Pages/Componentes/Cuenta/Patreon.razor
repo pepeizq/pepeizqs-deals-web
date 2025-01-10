@@ -8,7 +8,7 @@
 
 @if (usuario != null)
 {
-    if (Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck) == true)
+    if (Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
     {
         <div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
             <div style="display: flex; align-items: center; gap: 25px;">

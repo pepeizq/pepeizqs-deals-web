@@ -44,7 +44,8 @@
 			@(await Html.RenderComponentAsync<Componentes.Admin.Noticia>(RenderMode.ServerPrerendered, new
 			{
 				idioma = Model.idioma,
-				noticiaId = Model.noticia.Id
+				noticiaId = Model.noticia.Id,
+				usuarioId = usuario?.Id
 			}))
 		}
 	}

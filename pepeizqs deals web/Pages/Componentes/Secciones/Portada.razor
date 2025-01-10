@@ -3,12 +3,14 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
+@using Microsoft.JSInterop
 @using Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
 @using System.Text.Json
 
 @inject UserManager<Usuario> UserManager
+@inject IJSRuntime JavaScript
 
 <style>
 	.destacado-fondo {
@@ -372,7 +374,7 @@
 			{
 				if (usuarioLogeado == true)
 				{
-					if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+					if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 					{
 						if (cantidadJuegosMinimos > 950 && cantidadJuegosMinimos <= 1000)
 						{
@@ -428,7 +430,7 @@
 
 			<hr style="margin-top: 30px;">
 
-			@if (usuario != null)
+			@if (usuarioLogeado == true)
 			{
 				<div style="display: flex; flex-direction: column; gap: 30px; margin-top: 30px;">
 					<div style="display: flex; align-items: center; gap: 20px;">
@@ -646,7 +648,7 @@
 				{
 					int limiteTiempoNoticias = 300;
 
-					if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+					if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 					{
 						limiteTiempoNoticias = 60;
 					}
@@ -669,7 +671,7 @@
 			{
 				int limiteTiempoMinimos = 300;
 
-				if (Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+				if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 				{
 					limiteTiempoMinimos = 60;
 				}
@@ -680,6 +682,25 @@
 			#endregion
 		}
 	}
+
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+    {
+        if (primerRender == true)
+        {
+			if (usuarioLogeado == true)
+			{
+				Herramientas.NotificacionSuscripcion suscripcion = await JavaScript.InvokeAsync<Herramientas.NotificacionSuscripcion>("blazorPushNotifications.requestSubscription");
+				
+				if (suscripcion != null)
+				{
+					suscripcion.UserId = usuarioId;
+
+					BaseDatos.Usuarios.Insertar.Notificaciones(suscripcion);
+				}
+			}
+		}
+	}
+	
 
 	#region Destacados
 

@@ -171,7 +171,8 @@ else
 
         if (suscripcionSeleccionadaSuscripciones == SuscripcionesCargar.GenerarListado()[0].Id.ToString())
         {
-            fechaEmpiezaSeleccionadaSuscripciones = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            DateTime fechaEmpieza = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+            fechaEmpiezaSeleccionadaSuscripciones = fechaEmpieza.ToString("yyyy-MM-ddTHH:mm:ss");
             fechaTerminaSeleccionadaSuscripciones = SuscripcionesCargar.GenerarListado()[0].FechaSugerencia.ToString("yyyy-MM-ddTHH:mm:ss");
         }
 

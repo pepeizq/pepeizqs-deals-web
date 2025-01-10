@@ -1721,7 +1721,7 @@
             </div>
 
             <div style="display: flex; align-items: flex-start; gap: 40px;">
-                @if ((Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
+                @if ((Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
                 {
                     <div style="width: 25%; display: flex; flex-direction: column; gap: 10px;">
                         @{
@@ -1953,7 +1953,7 @@
             </div>
         }
 
-        @if ((Herramientas.Patreon.VerificarComprobacion(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
+        @if ((Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
         {
             <div id="links" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                 <div>
@@ -2232,12 +2232,12 @@
                             }
 
                             <ApexPointSeries TItem="PuntoGrafico"
-                            Items="datos"
-                            Name="@punto.Año.ToString()"
-                            SeriesType="SeriesType.Line"
-                            XValue="e => e.DiaMes"
-                            YValue="e => e.Precio"
-                            ShowDataLabels="true"/>
+                                Items="datos"
+                                Name="@punto.Año.ToString()"
+                                SeriesType="SeriesType.Line"
+                                XValue="e => e.DiaMes"
+                                YValue="e => e.Precio"
+                                ShowDataLabels="true"/>
                         }
                     </ChildContent>
                 </ApexChart>
@@ -2305,7 +2305,7 @@
 
         if (usuario != null)
         {
-            usuarioPatreon = Herramientas.Patreon.VerificarComprobacion(usuario.PatreonLastCheck);
+            usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
 
             if (string.IsNullOrEmpty(usuario.SteamGames) == false)
             {

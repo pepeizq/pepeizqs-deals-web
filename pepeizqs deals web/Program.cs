@@ -12,6 +12,7 @@ using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -314,8 +315,7 @@ builder.Services.AddRateLimiter(opciones =>
 	{
 		if (contexto.Lease.TryGetMetadata(MetadataName.RetryAfter, out var reintento))
 		{
-			contexto.HttpContext.Response.Headers.RetryAfter =
-				((int)reintento.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
+			contexto.HttpContext.Response.Headers.RetryAfter = ((int)reintento.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
 		}
 
 		contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
@@ -327,24 +327,45 @@ builder.Services.AddRateLimiter(opciones =>
 	opciones.GlobalLimiter = PartitionedRateLimiter.CreateChained(
 		PartitionedRateLimiter.Create<HttpContext, string>(contexto =>
 		{
-			string? usuario = contexto.User.Identity?.Name;
+			bool? usuarioLogeado = contexto.User.Identity?.IsAuthenticated;
 
-			if (string.IsNullOrEmpty(usuario) == true)
+			if (usuarioLogeado == true)
 			{
-				return RateLimitPartition.GetFixedWindowLimiter(
-					partitionKey: contexto.Request.Headers.Host.ToString(),
-					factory: partition => new FixedWindowRateLimiterOptions
+				string? usuarioId = contexto.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+				if (string.IsNullOrEmpty(usuarioId) == false)
+				{
+					UserManager<Usuario>? userManager = contexto.RequestServices.GetService<UserManager<Usuario>>();
+					Usuario? usuario = userManager?.FindByIdAsync(usuarioId).Result;
+
+					if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 					{
-						AutoReplenishment = true,
-						PermitLimit = 200,
-						QueueLimit = 0,
-						Window = TimeSpan.FromMinutes(1)
-					});
+						return RateLimitPartition.GetNoLimiter("");
+					}
+					else
+					{
+						return RateLimitPartition.GetFixedWindowLimiter(
+							partitionKey: contexto.Request.Headers.Host.ToString(),
+							factory: partition => new FixedWindowRateLimiterOptions
+							{
+								AutoReplenishment = true,
+								PermitLimit = 1000,
+								QueueLimit = 20,
+								Window = TimeSpan.FromMinutes(1)
+							});
+					}
+				}
 			}
-			else
-			{
-				return RateLimitPartition.GetNoLimiter("");
-			}
+
+			return RateLimitPartition.GetFixedWindowLimiter(
+				partitionKey: contexto.Request.Headers.Host.ToString(),
+				factory: partition => new FixedWindowRateLimiterOptions
+				{
+					AutoReplenishment = true,
+					PermitLimit = 200,
+					QueueLimit = 50,
+					Window = TimeSpan.FromMinutes(1)
+				});
 		})
 	);
 });
