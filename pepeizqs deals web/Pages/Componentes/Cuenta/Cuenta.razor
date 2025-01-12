@@ -18,14 +18,13 @@
 
     .grid-estructura {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 25px;
     }
         
     @@media (max-width: 800px) {
         .grid-estructura {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
     }
@@ -84,22 +83,6 @@
             </div>
         </button>
 
-        <button @onclick="@(e => MostrarNotificaciones(e))" class="boton-pestañas">
-            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <i class="fa-solid fa-envelope" style="font-size: 22px;"></i>
-
-                <div>
-                    <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Account")
-                    </div>
-
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Account")
-                    </div>
-                </div>
-            </div>
-        </button>
-
         <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <i class="fa-brands fa-patreon" style="font-size: 22px;"></i>
@@ -127,6 +110,43 @@
 
                     <div style="margin-top: 5px; font-size: 14px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Account")</label>
+    <hr />
+
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+        <button @onclick="@(e => MostrarNotificacionesCorreo(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-envelope" style="font-size: 22px;"></i>
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarNotificacionesPush(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <i class="fa-solid fa-bell" style="font-size: 22px;"></i>
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String21", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Account")
                     </div>
                 </div>
             </div>
@@ -206,9 +226,14 @@
                     <CambioContrasena idioma="@idioma" />
                 }
 
-                @if (mostrarNotificaciones == true)
+                @if (mostrarNotificacionesCorreo == true)
                 {
                     <NotificacionesCorreo idioma="@idioma" />
+                }
+
+                @if (mostrarNotificacionesPush == true)
+                {
+                    <NotificacionesPush idioma="@idioma" userAgent="@userAgent"/>
                 }
 
                 @if (mostrarDatosPersonales == true)
@@ -245,7 +270,6 @@
     </div>
 }
 
-
 @code {
 
     #nullable disable
@@ -253,13 +277,17 @@
     [Parameter]
     public string idioma { get; set; }
 
+    [Parameter]
+    public string userAgent { get; set; }
+
     private bool enseñarPestaña = false;
 
     private void CerrarPestañas()
     {
         mostrarCorreo = false;
         mostrarContraseña = false;
-        mostrarNotificaciones = false;
+        mostrarNotificacionesCorreo = false;
+        mostrarNotificacionesPush = false;
         mostrarDatosPersonales = false;
         mostrarPatreon = false;
         mostrarSteam = false;
@@ -291,13 +319,22 @@
         mostrarContraseña = true;
     }
 
-    private bool mostrarNotificaciones = false;
+    private bool mostrarNotificacionesCorreo = false;
 
-    private void MostrarNotificaciones(MouseEventArgs e)
+    private void MostrarNotificacionesCorreo(MouseEventArgs e)
     {
         CerrarPestañas();
         enseñarPestaña = true;
-        mostrarNotificaciones = true;
+        mostrarNotificacionesCorreo = true;
+    }
+
+    private bool mostrarNotificacionesPush = false;
+
+    private void MostrarNotificacionesPush(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarNotificacionesPush = true;
     }
 
     private bool mostrarDatosPersonales = false;

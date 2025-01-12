@@ -1,12 +1,12 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
-@using Microsoft.AspNetCore.Identity;
-@using pepeizqs_deals_web.Areas.Identity.Data;
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div>
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+<div style="display: flex; flex-direction: column; gap: 20px;">
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 		<div style="display: flex; align-items: start; gap: 30px;">
 			<div class="checkbox-caja">
 				<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos" style="margin-top: 20px;">
@@ -14,66 +14,66 @@
 
 			<div style="display: flex; flex-direction: column; gap: 10px;">
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications1", "Account")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail1", "Account")
 				</div>
 
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications2", "Account")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail2", "Account")
 				</div>	
 				
 				<hr style="margin: 10px 0px" />
 
 				<div style="font-size: 14px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications11", "Account")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail11", "Account")
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 		<div class="checkbox-caja">
 			<input type="checkbox" class="checkbox-interior" checked="@estadoBundles" @onchange="ClickearCambioBundles">
 		</div>
 
 		<div style="padding-left: 30px;">
 			<div style="margin-bottom: 10px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications3", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail3", "Account")
 			</div>
 
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications4", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail4", "Account")
 			</div>
 		</div>
 	</div>
 
-	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 		<div class="checkbox-caja">
 			<input type="checkbox" class="checkbox-interior" checked="@estadoGratis" @onchange="ClickearCambioGratis">
 		</div>
 
 		<div style="padding-left: 30px;">
 			<div style="margin-bottom: 10px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications5", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail5", "Account")
 			</div>
 
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications6", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail6", "Account")
 			</div>
 		</div>
 	</div>
 
-	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 20px;">
+	<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 		<div class="checkbox-caja">
 			<input type="checkbox" class="checkbox-interior" checked="@estadoSuscripciones" @onchange="ClickearCambioSuscripciones">
 		</div>
 
 		<div style="padding-left: 30px;">
 			<div style="margin-bottom: 10px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications7", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail7", "Account")
 			</div>
 
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications8", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail8", "Account")
 			</div>
 		</div>
 	</div>
@@ -85,11 +85,11 @@
 
 		<div style="padding-left: 30px;">
 			<div style="margin-bottom: 10px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications9", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail9", "Account")
 			</div>
 
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Notifications10", "Account")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsMail10", "Account")
 			</div>
 		</div>
 	</div>

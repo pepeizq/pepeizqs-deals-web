@@ -3,7 +3,9 @@
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
+using pepeizqs_deals_web.Areas.Identity.Data;
 using System.Text.Json;
+using Tareas.Tiendas;
 
 namespace BaseDatos.Usuarios
 {
@@ -369,7 +371,7 @@ namespace BaseDatos.Usuarios
 			return null;
 		}
 
-		public static List<NotificacionSuscripcion> TodosUsuariosNotificaciones(SqlConnection conexion = null)
+		public static List<NotificacionSuscripcion> TodosUsuariosNotificacionesPush(SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -399,6 +401,7 @@ namespace BaseDatos.Usuarios
 						usuario.Url = lector.GetString(2);
 						usuario.P256dh = lector.GetString(3);
 						usuario.Auth = lector.GetString(4);
+						usuario.UserAgent = lector.GetString(5);
 
 						usuarios.Add(usuario);
 					}
@@ -406,6 +409,46 @@ namespace BaseDatos.Usuarios
 			}
 
 			return usuarios;
+		}
+
+		public static NotificacionSuscripcion UnUsuarioNotificacionesPush(string usuarioId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT * FROM usuariosNotificaciones WHERE usuarioId=@usuarioId";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@usuarioId", usuarioId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						NotificacionSuscripcion usuario = new NotificacionSuscripcion();
+						usuario.UserId = lector.GetString(0);
+						usuario.NotificationSubscriptionId = lector.GetInt32(1);
+						usuario.Url = lector.GetString(2);
+						usuario.P256dh = lector.GetString(3);
+						usuario.Auth = lector.GetString(4);
+						usuario.UserAgent = lector.GetString(5);
+
+						return usuario;
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }

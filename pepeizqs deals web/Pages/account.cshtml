@@ -12,12 +12,20 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
-}
 
-@if (usuarioLogeado == true)
-{
-    @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.Server, new
+    string? userAgent = string.Empty;
+
+    if (HttpContext != null)
     {
-        idioma = Model.idioma
-    }))
+        userAgent = HttpContext.Request.Headers.UserAgent;
+    }
+
+    if (usuarioLogeado == true)
+    {
+        @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.Server, new
+        {
+            idioma = Model.idioma,
+            userAgent = userAgent
+        }))
+    }
 }

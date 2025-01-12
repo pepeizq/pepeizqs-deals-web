@@ -10,7 +10,6 @@
 @using System.Text.Json
 
 @inject UserManager<Usuario> UserManager
-@inject IJSRuntime JavaScript
 
 <style>
 	.destacado-fondo {
@@ -682,25 +681,6 @@
 			#endregion
 		}
 	}
-
-	protected override async Task OnAfterRenderAsync(bool primerRender)
-    {
-        if (primerRender == true)
-        {
-			if (usuarioLogeado == true)
-			{
-				Herramientas.NotificacionSuscripcion suscripcion = await JavaScript.InvokeAsync<Herramientas.NotificacionSuscripcion>("blazorPushNotifications.requestSubscription");
-				
-				if (suscripcion != null)
-				{
-					suscripcion.UserId = usuarioId;
-
-					BaseDatos.Usuarios.Insertar.Notificaciones(suscripcion);
-				}
-			}
-		}
-	}
-	
 
 	#region Destacados
 

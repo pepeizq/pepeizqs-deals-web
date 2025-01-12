@@ -196,5 +196,26 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(256)")]
 	public string? WishlistNickname { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationPushLows { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationPushBundles { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationPushFree { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationPushSubscriptions { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? NotificationPushOthers { get; set; }
+
 }
 

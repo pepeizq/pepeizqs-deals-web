@@ -1,0 +1,386 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IJSRuntime JavaScript
+
+<div style="display: flex; flex-direction: column; gap: 20px;">
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div style="display: flex; flex-direction: column; gap: 15px;">
+			@if (string.IsNullOrEmpty(userAgentRegistrado) == false)
+			{
+				<div>
+					<div>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush12", "Account")
+					</div>
+
+					<div>
+						@userAgentRegistrado
+					</div>
+				</div>
+
+				<button @onclick="@(e => QuitarUsuario(e))" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush14", "Account")
+				</button>
+			}
+			else
+			{
+				<button @onclick="@(e => AñadirUsuario(e))" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush13", "Account")
+				</button>
+			}
+		</div>
+	</div>
+
+	@if (string.IsNullOrEmpty(userAgentRegistrado) == false)
+	{
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="display: flex; align-items: start; gap: 30px;">
+				<div class="checkbox-caja">
+					<input type="checkbox" class="checkbox-interior" checked="@estadoMinimos" @onchange="ClickearCambioMinimos" style="margin-top: 20px;">
+				</div>
+
+				<div style="display: flex; flex-direction: column; gap: 10px;">
+					<div>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush1", "Account")
+					</div>
+
+					<div>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush2", "Account")
+					</div>
+
+					<hr style="margin: 10px 0px" />
+
+					<div style="font-size: 14px;">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush11", "Account")
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoBundles" @onchange="ClickearCambioBundles">
+			</div>
+
+			<div style="padding-left: 30px;">
+				<div style="margin-bottom: 10px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush3", "Account")
+				</div>
+
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush4", "Account")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoGratis" @onchange="ClickearCambioGratis">
+			</div>
+
+			<div style="padding-left: 30px;">
+				<div style="margin-bottom: 10px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush5", "Account")
+				</div>
+
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush6", "Account")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoSuscripciones" @onchange="ClickearCambioSuscripciones">
+			</div>
+
+			<div style="padding-left: 30px;">
+				<div style="margin-bottom: 10px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush7", "Account")
+				</div>
+
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush8", "Account")
+				</div>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div class="checkbox-caja">
+				<input type="checkbox" class="checkbox-interior" checked="@estadoOtros" @onchange="ClickearCambioOtros">
+			</div>
+
+			<div style="padding-left: 30px;">
+				<div style="margin-bottom: 10px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush9", "Account")
+				</div>
+
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "NotificationsPush10", "Account")
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public string userAgent { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private string userAgentRegistrado = string.Empty;
+
+	private string estadoMinimos = null;
+
+	private string estadoBundles = null;
+	private string estadoGratis = null;
+	private string estadoSuscripciones = null;
+	private string estadoOtros = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (string.IsNullOrEmpty(usuario.Id) == false)
+		{
+			Herramientas.NotificacionSuscripcion suscripcion = BaseDatos.Usuarios.Buscar.UnUsuarioNotificacionesPush(usuario.Id);
+
+			if (suscripcion != null)
+			{
+				userAgentRegistrado = suscripcion.UserAgent;
+
+				if (usuario.NotificationPushLows == null)
+				{
+					estadoMinimos = null;
+				}
+				else
+				{
+					if (usuario.NotificationPushLows == true)
+					{
+						estadoMinimos = "checked";
+					}
+					else
+					{
+						estadoMinimos = null;
+					}
+				}
+
+				if (usuario.NotificationPushBundles == null)
+				{
+					estadoBundles = null;
+				}
+				else
+				{
+					if (usuario.NotificationPushBundles == true)
+					{
+						estadoBundles = "checked";
+					}
+					else
+					{
+						estadoBundles = null;
+					}
+				}
+
+				if (usuario.NotificationPushFree == null)
+				{
+					estadoGratis = null;
+				}
+				else
+				{
+					if (usuario.NotificationPushFree == true)
+					{
+						estadoGratis = "checked";
+					}
+					else
+					{
+						estadoGratis = null;
+					}
+				}
+
+				if (usuario.NotificationPushSubscriptions == null)
+				{
+					estadoSuscripciones = null;
+				}
+				else
+				{
+					if (usuario.NotificationPushSubscriptions == true)
+					{
+						estadoSuscripciones = "checked";
+					}
+					else
+					{
+						estadoSuscripciones = null;
+					}
+				}
+
+				if (usuario.NotificationPushOthers == null)
+				{
+					estadoOtros = null;
+				}
+				else
+				{
+					if (usuario.NotificationPushOthers == true)
+					{
+						estadoOtros = "checked";
+					}
+					else
+					{
+						estadoOtros = null;
+					}
+				}
+			}
+		}
+	}
+
+	private async void AñadirUsuario(MouseEventArgs e)
+	{
+		Herramientas.NotificacionSuscripcion suscripcion = await JavaScript.InvokeAsync<Herramientas.NotificacionSuscripcion>("blazorPushNotifications.requestSubscription");
+
+		if (suscripcion != null)
+		{
+			suscripcion.UserId = usuario.Id;
+			suscripcion.UserAgent = userAgent;
+
+			BaseDatos.Usuarios.Insertar.NotificacionesPush(suscripcion);
+
+			Herramientas.NotificacionSuscripcion suscripcion2 = BaseDatos.Usuarios.Buscar.UnUsuarioNotificacionesPush(usuario.Id);
+
+			if (suscripcion2 != null)
+			{
+				userAgentRegistrado = suscripcion.UserAgent;
+			}
+		}
+	}
+
+	private void QuitarUsuario(MouseEventArgs e)
+	{
+		BaseDatos.Usuarios.Borrar.NotificacionesPush(usuario.Id);
+		userAgentRegistrado = null;
+	}
+
+	private async void ClickearCambioMinimos()
+	{
+		if (usuario != null)
+		{
+			bool boolMinimos = false;
+
+			if (estadoMinimos == null)
+			{
+				estadoMinimos = "checked";
+				boolMinimos = true;
+			}
+			else
+			{
+				estadoMinimos = null;
+				boolMinimos = false;
+			}
+
+			usuario.NotificationPushLows = boolMinimos;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioBundles()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoBundles == null)
+			{
+				estadoBundles = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoBundles = null;
+				estado = false;
+			}
+
+			usuario.NotificationPushBundles = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioGratis()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoGratis == null)
+			{
+				estadoGratis = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoGratis = null;
+				estado = false;
+			}
+
+			usuario.NotificationPushFree = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioSuscripciones()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoSuscripciones == null)
+			{
+				estadoSuscripciones = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoSuscripciones = null;
+				estado = false;
+			}
+
+			usuario.NotificationPushSubscriptions = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+
+	private async void ClickearCambioOtros()
+	{
+		if (usuario != null)
+		{
+			bool estado = false;
+
+			if (estadoOtros == null)
+			{
+				estadoOtros = "checked";
+				estado = true;
+			}
+			else
+			{
+				estadoOtros = null;
+				estado = false;
+			}
+
+			usuario.NotificationPushOthers = estado;
+
+			await UserManager.UpdateAsync(usuario);
+		}
+	}
+}

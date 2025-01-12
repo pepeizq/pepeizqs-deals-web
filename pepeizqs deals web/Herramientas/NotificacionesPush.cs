@@ -10,13 +10,13 @@ namespace Herramientas
 		public static async void EnviarNoticia(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
-			string publicKey = "BLn05UCC8XXU59DVU-Iw7lI2gJblF3jhjewYv-zBqU_AgBzMYhn3dQgFAvh3H9VFxBOVAt_sA7mFXLbnOcWz0wg";
-			string privateKey = "K-6UD7EV2CwkRrqoxCH5vmx0samCcvRO0Dv7PH0Cdag";
+			string publicKey = builder.Configuration.GetValue<string>("NotificacionesPush:PublicKey"); 
+			string privateKey = builder.Configuration.GetValue<string>("NotificacionesPush:PrivateKey");
 
 			VapidDetails vapidDetalles = new VapidDetails("https://pepeizqdeals.com", publicKey, privateKey);
 			WebPushClient webPushCliente = new WebPushClient();
 
-			foreach (var usuario in global::BaseDatos.Usuarios.Buscar.TodosUsuariosNotificaciones())
+			foreach (var usuario in global::BaseDatos.Usuarios.Buscar.TodosUsuariosNotificacionesPush())
 			{
 				PushSubscription suscripcion = new PushSubscription(usuario.Url, usuario.P256dh, usuario.Auth);
 
@@ -45,5 +45,6 @@ namespace Herramientas
 		public string Url { get; set; }
 		public string P256dh { get; set; }
 		public string Auth { get; set; }
+		public string UserAgent { get; set; }
 	}
 }

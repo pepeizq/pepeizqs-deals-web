@@ -7,7 +7,7 @@ namespace BaseDatos.Usuarios
 {
 	public static class Insertar
 	{
-		public static void Notificaciones(NotificacionSuscripcion datos, SqlConnection conexion = null)
+		public static void NotificacionesPush(NotificacionSuscripcion datos, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -41,8 +41,8 @@ namespace BaseDatos.Usuarios
 			if (añadir == true)
 			{
 				string sqlAñadir = "INSERT INTO usuariosNotificaciones " +
-					 "(usuarioId, notificacionId, enlace, p256dh, auth) VALUES " +
-					 "(@usuarioId, @notificacionId, @enlace, @p256dh, @auth) ";
+					 "(usuarioId, notificacionId, enlace, p256dh, auth, userAgent) VALUES " +
+					 "(@usuarioId, @notificacionId, @enlace, @p256dh, @auth, @userAgent) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 				{
@@ -51,6 +51,7 @@ namespace BaseDatos.Usuarios
 					comando.Parameters.AddWithValue("@enlace", datos.Url);
 					comando.Parameters.AddWithValue("@p256dh", datos.P256dh);
 					comando.Parameters.AddWithValue("@auth", datos.Auth);
+					comando.Parameters.AddWithValue("@userAgent", datos.UserAgent);
 
 					try
 					{
