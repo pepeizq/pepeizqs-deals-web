@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Microsoft.Data.SqlClient;
 using System.IO.Compression;
 using System.Net;
 

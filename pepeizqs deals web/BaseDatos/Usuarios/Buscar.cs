@@ -42,7 +42,7 @@ namespace BaseDatos.Usuarios
 			return false;
 		}
 
-		public static string UsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm, int juegoIdSteam = 0)
+		public static string UsuarioDeseados(string usuarioId, string juegoId, JuegoDRM drm, int juegoIdSteam = 0, int juegoIdGog = 0)
 		{
 			if (string.IsNullOrEmpty(usuarioId) == false)
 			{
@@ -50,7 +50,7 @@ namespace BaseDatos.Usuarios
 
 				using (conexion)
 				{
-					string busqueda = "SELECT NotificationLows, EmailConfirmed, SteamGames, SteamWishlist, Email, Wishlist FROM AspNetUsers WHERE Id=@Id";
+					string busqueda = "SELECT NotificationLows, EmailConfirmed, SteamGames, SteamWishlist, Email, Wishlist, GogGames, GogWishlist FROM AspNetUsers WHERE Id=@Id";
 
 					using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 					{
@@ -63,6 +63,7 @@ namespace BaseDatos.Usuarios
 								bool notificaciones = false;
 								bool correo = false;
 								bool steam = true;
+								bool gog = true;
                             
                                 //Enseñar Notificaciones Minimos
                                 if (lector.IsDBNull(0) == false)
@@ -117,9 +118,46 @@ namespace BaseDatos.Usuarios
 											}
 										}
                                     }
-                                }                             
+                                }
 
-                                if (correo == true && notificaciones == true && steam == true)
+								//Juegos Gog
+								if (juegoIdGog > 0)
+								{
+									if (drm == JuegoDRM.GOG)
+									{
+										if (lector.IsDBNull(6) == false)
+										{
+											string tempGog = string.Empty;
+
+											try
+											{
+												tempGog = lector.GetString(6);
+											}
+											catch { }
+
+											if (string.IsNullOrEmpty(tempGog) == false)
+											{
+												List<string> juegosGog = Listados.Generar(tempGog);
+
+												if (juegosGog != null)
+												{
+													if (juegosGog.Count > 0)
+													{
+														foreach (var juegoGog in juegosGog)
+														{
+															if (juegoGog == juegoIdGog.ToString())
+															{
+																gog = false;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (correo == true && notificaciones == true && steam == true && gog == true)
 								{
 									//Deseados Steam
 									if (drm == JuegoDRM.Steam && lector.IsDBNull(3) == false)
@@ -133,6 +171,33 @@ namespace BaseDatos.Usuarios
 												foreach (var deseadoSteam in deseadosSteam)
 												{
 													if (juegoIdSteam.ToString() == deseadoSteam)
+													{
+														//Correo
+														if (lector.IsDBNull(4) == false)
+														{
+															if (string.IsNullOrEmpty(lector.GetString(4)) == false)
+															{
+																return lector.GetString(4);
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+
+									//Deseados Gog
+									if (drm == JuegoDRM.GOG && lector.IsDBNull(7) == false)
+									{
+										if (string.IsNullOrEmpty(lector.GetString(7)) == false)
+										{
+											List<string> deseadosGog = Listados.Generar(lector.GetString(7));
+
+											if (deseadosGog.Count > 0)
+											{
+												foreach (var deseadoGog in deseadosGog)
+												{
+													if (juegoIdGog.ToString() == deseadoGog)
 													{
 														//Correo
 														if (lector.IsDBNull(4) == false)
@@ -449,6 +514,41 @@ namespace BaseDatos.Usuarios
 			}
 
 			return null;
+		}
+
+		public static bool UnUsuarioNotificacionesPushMinimos(string usuarioId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT NotificationPushLows FROM AspNetUsers WHERE Id=@Id";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@Id", usuarioId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						if (lector.IsDBNull(0) == false)
+						{
+							return lector.GetBoolean(0);
+						}
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 }

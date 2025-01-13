@@ -9,9 +9,7 @@
 @using global::Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@inject HttpClient ClienteHttp
 @inject UserManager<Usuario> UserManager
-@inject IJSRuntime JavaScript
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="opciones-combobox" style="width: 33%;">
@@ -538,7 +536,28 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
 
                 try
                 {
-                    Herramientas.NotificacionesPush.EnviarNoticia(noticiaAñadir);
+                    foreach (var usuario in UserManager.Users)
+                    {
+                        if (usuario.NotificationPushBundles == true && noticiaAñadir.Tipo == NoticiaTipo.Bundles)
+                        {
+                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                        }
+
+                        if (usuario.NotificationPushFree == true && noticiaAñadir.Tipo == NoticiaTipo.Gratis)
+                        {
+                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                        }
+
+                        if (usuario.NotificationPushSubscriptions == true && noticiaAñadir.Tipo == NoticiaTipo.Suscripciones)
+                        {
+                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                        }
+
+                        if (usuario.NotificationPushOthers == true && noticiaAñadir.Tipo != NoticiaTipo.Bundles && noticiaAñadir.Tipo != NoticiaTipo.Gratis && noticiaAñadir.Tipo != NoticiaTipo.Suscripciones)
+                        {
+                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

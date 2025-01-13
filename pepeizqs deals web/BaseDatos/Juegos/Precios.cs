@@ -126,7 +126,7 @@ namespace BaseDatos.Juegos
                                             {
                                                 if (usuarioInteresado.DRM == minimo.DRM)
                                                 {
-                                                    string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam);
+                                                    string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam, juego.IdGog);
 
 													if (string.IsNullOrEmpty(correo) == false)
 													{
@@ -139,7 +139,21 @@ namespace BaseDatos.Juegos
 															BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
 														}
                                                     }
-                                                }
+
+													bool enviarPush = Usuarios.Buscar.UnUsuarioNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
+
+													if (enviarPush == true)
+													{
+														try
+														{
+															Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, juego, minimo);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
+														}
+													}
+												}
                                             }
                                         }
                                     }
@@ -323,7 +337,14 @@ namespace BaseDatos.Juegos
 											{
 												if (usuarioInteresado.DRM == minimo.DRM)
 												{
-													string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, id.ToString(), usuarioInteresado.DRM, idSteam);
+													int idGOG2 = 0;
+
+													try
+													{
+														idGOG2 = int.Parse(idGOG);
+													} catch { }
+
+													string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, id.ToString(), usuarioInteresado.DRM, idSteam, idGOG2);
 
 													if (string.IsNullOrEmpty(correo) == false)
 													{
@@ -334,6 +355,20 @@ namespace BaseDatos.Juegos
 														catch (Exception ex)
 														{
 															BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
+														}
+													}
+
+													bool enviarPush = Usuarios.Buscar.UnUsuarioNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
+
+													if (enviarPush == true)
+													{
+														try
+														{
+															Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, id, minimo);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
 														}
 													}
 												}

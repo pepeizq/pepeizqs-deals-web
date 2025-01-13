@@ -168,8 +168,23 @@ namespace Herramientas
                 }
 
                 Uri enlaceFinal = new Uri(enlace);
-			
-                await cliente.Post(noticia.TituloEn, enlaceFinal);
+
+				string imageUrl = noticia.Imagen;
+				HttpClient clienteWeb = new HttpClient();
+
+				using (HttpResponseMessage respuesta = await clienteWeb.GetAsync(imageUrl, HttpCompletionOption.ResponseContentRead))
+				{
+					byte[] imageBytes = await respuesta.Content.ReadAsByteArrayAsync();
+
+					X.Bluesky.Models.Image imagen = new X.Bluesky.Models.Image
+					{
+						Content = imageBytes,
+						Alt = noticia.TituloEn,
+						MimeType = "image/jpeg"
+					};
+
+					await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
+				}
             }           
 		}
 	}

@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
 
 @if (noticia != null)
 {
@@ -147,7 +151,7 @@
 					BlueSky
 				</button>
 
-				<button @onclick="(e => EnviarNotificaciones(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+				<button @onclick="(e => EnviarNotificacionesPush(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
 					Notificaciones Push
 				</button>
 			</div>
@@ -395,8 +399,11 @@
 		Herramientas.Bluesky.Postear(noticia);
 	}
 
-	private void EnviarNotificaciones(MouseEventArgs e)
+	private void EnviarNotificacionesPush(MouseEventArgs e)
 	{
-		Herramientas.NotificacionesPush.EnviarNoticia(noticia);
+		foreach (var usuario in UserManager.Users)
+		{
+			Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticia, usuario.Language);
+		}
 	}
 }
