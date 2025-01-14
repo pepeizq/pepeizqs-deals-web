@@ -1,7 +1,8 @@
 ﻿#nullable disable
 
 using Herramientas;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.Steam
 {
@@ -37,7 +38,7 @@ namespace APIs.Steam
 
                 if (string.IsNullOrEmpty(html) == false)
                 {
-					SteamSacarID id = JsonConvert.DeserializeObject<SteamSacarID>(html);
+					SteamSacarID id = JsonSerializer.Deserialize<SteamSacarID>(html);
 
                     if (id != null)
                     {
@@ -92,7 +93,7 @@ namespace APIs.Steam
 
                 if (string.IsNullOrEmpty(html) == false)
                 {
-                    SteamCuentaAPI cuenta = JsonConvert.DeserializeObject<SteamCuentaAPI>(html);
+                    SteamCuentaAPI cuenta = JsonSerializer.Deserialize<SteamCuentaAPI>(html);
 
                     if (cuenta != null)
                     {
@@ -101,7 +102,7 @@ namespace APIs.Steam
 
                         if (htmlJuegos != null)
                         {
-                            SteamJuegosAPI json = JsonConvert.DeserializeObject<SteamJuegosAPI>(htmlJuegos);
+                            SteamJuegosAPI json = JsonSerializer.Deserialize<SteamJuegosAPI>(htmlJuegos);
 
                             if (json != null)
                             {
@@ -115,11 +116,11 @@ namespace APIs.Steam
                                             {
                                                 if (juegos == string.Empty)
                                                 {
-                                                    juegos = juego.ID;
+                                                    juegos = juego.ID.ToString();
                                                 }
                                                 else
                                                 {
-                                                    juegos = juegos + "," + juego.ID;
+                                                    juegos = juegos + "," + juego.ID.ToString();
                                                 }
                                             }
                                         }
@@ -146,7 +147,7 @@ namespace APIs.Steam
 
 									try
 									{
-										juegosDeseados = JsonConvert.DeserializeObject<SteamDeseadosRespuesta>(htmlDeseados);
+										juegosDeseados = JsonSerializer.Deserialize<SteamDeseadosRespuesta>(htmlDeseados);
 									}
 									catch (Exception ex)
 									{
@@ -188,7 +189,7 @@ namespace APIs.Steam
 
                         if (string.IsNullOrEmpty(htmlGrupos) == false)
                         {
-                            SteamGruposAPI json = JsonConvert.DeserializeObject<SteamGruposAPI>(htmlGrupos);
+                            SteamGruposAPI json = JsonSerializer.Deserialize<SteamGruposAPI>(htmlGrupos);
 
                             if (json != null)
                             {
@@ -254,25 +255,25 @@ namespace APIs.Steam
 
     public class SteamCuentaAPI
     {
-        [JsonProperty("response")]
+        [JsonPropertyName("response")]
         public SteamCuentaAPIDatos Datos { get; set; }
     }
 
     public class SteamCuentaAPIDatos
     {
-        [JsonProperty("players")]
+        [JsonPropertyName("players")]
         public List<SteamCuentaAPIJugador> Jugador { get; set; }
     }
 
     public class SteamCuentaAPIJugador
     {
-        [JsonProperty("steamid")]
+        [JsonPropertyName("steamid")]
         public string ID64 { get; set; }
 
-        [JsonProperty("personaname")]
+        [JsonPropertyName("personaname")]
         public string Nombre { get; set; }
 
-        [JsonProperty("avatarfull")]
+        [JsonPropertyName("avatarfull")]
         public string Avatar { get; set; }
     }
 
@@ -280,13 +281,13 @@ namespace APIs.Steam
 
     public class SteamSacarID
     {
-        [JsonProperty("response")]
+        [JsonPropertyName("response")]
         public SteamSacarID2 Datos { get; set; }
     }
 
     public class SteamSacarID2
     {
-        [JsonProperty("steamid")]
+        [JsonPropertyName("steamid")]
         public string ID64 { get; set; }
     }
 
@@ -294,28 +295,28 @@ namespace APIs.Steam
 
     public class SteamJuegosAPI
     {
-        [JsonProperty("response")]
+        [JsonPropertyName("response")]
         public SteamJuegosAPIDatos Datos { get; set; }
     }
 
     public class SteamJuegosAPIDatos
     {
-        [JsonProperty("game_count")]
-        public string CantidadJuegos { get; set; }
+        [JsonPropertyName("game_count")]
+        public int CantidadJuegos { get; set; }
 
-        [JsonProperty("games")]
+        [JsonPropertyName("games")]
         public List<SteamJuegosAPIJuego> Juegos { get; set; }
     }
 
     public class SteamJuegosAPIJuego
     {
-        [JsonProperty("appid")]
-        public string ID { get; set; }
+        [JsonPropertyName("appid")]
+        public int ID { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Titulo { get; set; }
 
-        [JsonProperty("img_icon_url")]
+        [JsonPropertyName("img_icon_url")]
         public string Icono { get; set; }
     }
 
@@ -323,19 +324,19 @@ namespace APIs.Steam
 
 	public class SteamDeseadosRespuesta
 	{
-		[JsonProperty("response")]
+		[JsonPropertyName("response")]
 		public SteamDeseadosRespuestaJuegos Datos { get; set; }
 	}
 
 	public class SteamDeseadosRespuestaJuegos
 	{
-		[JsonProperty("items")]
+		[JsonPropertyName("items")]
 		public List<SteamDeseadosRespuestaJuego> Juegos { get; set; }
 	}
 
 	public class SteamDeseadosRespuestaJuego
 	{
-		[JsonProperty("appid")]
+		[JsonPropertyName("appid")]
 		public int Id { get; set; }
 	}
 
@@ -352,19 +353,19 @@ namespace APIs.Steam
 
     public class SteamGruposAPI
 	{
-		[JsonProperty("response")]
+		[JsonPropertyName("response")]
 		public SteamGruposAPIDatos Datos { get; set; }
 	}
 
 	public class SteamGruposAPIDatos
 	{
-		[JsonProperty("groups")]
+		[JsonPropertyName("groups")]
 		public List<SteamGruposAPIGrupo> Grupos { get; set; }
 	}
 
 	public class SteamGruposAPIGrupo
 	{
-		[JsonProperty("gid")]
+		[JsonPropertyName("gid")]
 		public string Id { get; set; }
 	}
 }

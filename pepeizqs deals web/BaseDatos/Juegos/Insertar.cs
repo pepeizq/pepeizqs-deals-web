@@ -2,7 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Juegos
 {
@@ -79,6 +79,27 @@ namespace BaseDatos.Juegos
 				añadirMayorEdad2 = ", @mayorEdad";
 			}
 
+			string añadirEtiquetas1 = null;
+			string añadirEtiquetas2 = null;
+
+			if (juego.Etiquetas != null)
+			{
+				if (juego.Etiquetas.Count > 0)
+				{
+					añadirEtiquetas1 = ", etiquetas";
+					añadirEtiquetas2 = ", @etiquetas";
+				}
+			}
+
+			string añadirDeck1 = null;
+			string añadirDeck2 = null;
+
+			if (juego.Deck != JuegoDeck.Desconocido)
+			{
+				añadirDeck1 = ", deck";
+				añadirDeck2 = ", @deck";
+			}
+
 			string añadirIdMaestra1 = null;
 			string añadirIdMaestra2 = null;
 
@@ -88,15 +109,9 @@ namespace BaseDatos.Juegos
 				añadirIdMaestra2 = ", @idMaestra";
 			}
 
-			if (string.IsNullOrEmpty(juego.MayorEdad) == false)
-			{
-				añadirMayorEdad1 = ", mayorEdad";
-				añadirMayorEdad2 = ", @mayorEdad";
-			}
-
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirIdMaestra1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirIdMaestra2 + ") ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirEtiquetas1 + añadirDeck1 + añadirIdMaestra1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirEtiquetas2 + añadirDeck2 + añadirIdMaestra2 + ") ";
 
 			if (noExiste == true)
 			{
@@ -110,29 +125,29 @@ namespace BaseDatos.Juegos
 				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
 				comando.Parameters.AddWithValue("@tipo", juego.Tipo);
 				comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", juego.FechaSteamAPIComprobacion.ToString());
-				comando.Parameters.AddWithValue("@imagenes", JsonConvert.SerializeObject(juego.Imagenes));
-				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos));
-				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonConvert.SerializeObject(juego.PrecioActualesTiendas));
-				comando.Parameters.AddWithValue("@analisis", JsonConvert.SerializeObject(juego.Analisis));
-				comando.Parameters.AddWithValue("@caracteristicas", JsonConvert.SerializeObject(juego.Caracteristicas));
-				comando.Parameters.AddWithValue("@media", JsonConvert.SerializeObject(juego.Media));
+				comando.Parameters.AddWithValue("@imagenes", JsonSerializer.Serialize(juego.Imagenes));
+				comando.Parameters.AddWithValue("@precioMinimosHistoricos", JsonSerializer.Serialize(juego.PrecioMinimosHistoricos));
+				comando.Parameters.AddWithValue("@precioActualesTiendas", JsonSerializer.Serialize(juego.PrecioActualesTiendas));
+				comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
+				comando.Parameters.AddWithValue("@caracteristicas", JsonSerializer.Serialize(juego.Caracteristicas));
+				comando.Parameters.AddWithValue("@media", JsonSerializer.Serialize(juego.Media));
 				comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
-				comando.Parameters.AddWithValue("@categorias", JsonConvert.SerializeObject(juego.Categorias));
-				comando.Parameters.AddWithValue("@generos", JsonConvert.SerializeObject(juego.Generos));
+				comando.Parameters.AddWithValue("@categorias", JsonSerializer.Serialize(juego.Categorias));
+				comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));
 
 				if (juego.Bundles != null)
 				{
-					comando.Parameters.AddWithValue("@bundles", JsonConvert.SerializeObject(juego.Bundles));
+					comando.Parameters.AddWithValue("@bundles", JsonSerializer.Serialize(juego.Bundles));
 				}
 
 				if (juego.Gratis != null)
 				{
-					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(juego.Gratis));
+					comando.Parameters.AddWithValue("@gratis", JsonSerializer.Serialize(juego.Gratis));
 				}
 
 				if (juego.Suscripciones != null)
 				{
-					comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(juego.Suscripciones));
+					comando.Parameters.AddWithValue("@suscripciones", JsonSerializer.Serialize(juego.Suscripciones));
 				}
 
 				if (string.IsNullOrEmpty(juego.Maestro) == false)
@@ -151,6 +166,19 @@ namespace BaseDatos.Juegos
 				if (string.IsNullOrEmpty(juego.MayorEdad) == false)
 				{
 					comando.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
+				}
+
+				if (juego.Etiquetas != null)
+				{
+					if (juego.Etiquetas.Count > 0)
+					{
+						comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
+					}
+				}
+
+				if (juego.Deck != JuegoDeck.Desconocido)
+				{
+					comando.Parameters.AddWithValue("@deck", juego.Deck);
 				}
 
 				if (tabla == "seccionMinimos")

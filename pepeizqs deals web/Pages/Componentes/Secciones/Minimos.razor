@@ -6,10 +6,10 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
 @using Microsoft.JSInterop
-@using System.Text.Json
-@using Tiendas2
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
+@using System.Text.Json
+@using Tiendas2
 
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
@@ -208,6 +208,21 @@ else
 									}
 								</div>
 							</button>
+
+							<button class="boton-pequeño" @onclick="OpcionesSteamDeck" style="font-size: 14px; width: fit-content; padding: 6px 10px; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "HistoricalLows")
+
+									@if (enseñarSteamDeck == false)
+									{
+										<i class="fa-solid fa-caret-down"></i>
+									}
+									else
+									{
+										<i class="fa-solid fa-caret-up"></i>
+									}
+								</div>
+							</button>
 						</div>
 
 						@if (enseñarOcultar == true)
@@ -368,6 +383,45 @@ else
 								</div>
 							</div>
 						}
+
+						@if (enseñarSteamDeck == true)
+						{
+							<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+								<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px;">
+									@foreach (var steamdeck in deck)
+									{
+										string nombreTipo = string.Empty;
+
+										if (steamdeck.Tipo == JuegoDeck.Verificado)
+										{
+											nombreTipo = Herramientas.Idiomas.BuscarTexto(idioma, "String25", "HistoricalLows");
+										}
+										else if (steamdeck.Tipo == JuegoDeck.Jugable)
+										{
+											nombreTipo = Herramientas.Idiomas.BuscarTexto(idioma, "String26", "HistoricalLows");
+										}
+										else if (steamdeck.Tipo == JuegoDeck.NoSoportado)
+										{
+											nombreTipo = Herramientas.Idiomas.BuscarTexto(idioma, "String27", "HistoricalLows");
+										}
+										else if (steamdeck.Tipo == JuegoDeck.Desconocido)
+										{
+											nombreTipo = Herramientas.Idiomas.BuscarTexto(idioma, "String28", "HistoricalLows");
+										}
+
+										<div style="display: flex; align-items: center;" title="@nombreTipo">
+											<div class="checkbox-caja">
+												<input type="checkbox" class="checkbox-interior" checked="@steamdeck.Checkbox" @onchange="@(e => EnseñarJuegosSteamDeck(e, steamdeck.Tipo))">
+											</div>
+
+											<div style="margin-left: 15px; padding-bottom: 8px;">
+												<label style="font-size: 14px;">@nombreTipo</label>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						}
 					</div>
 				</div>
 			}
@@ -515,7 +569,7 @@ else
 
 		using (conexion)
 		{
-			juegosGestor = BaseDatos.Juegos.Buscar.Todos(conexion, "seccionMinimos");
+			juegosGestor = BaseDatos.Juegos.Buscar.Minimos(conexion);
 		}
 
 		if (juegosGestor.Count > 0)
@@ -901,8 +955,18 @@ else
 				}
 			}
 
+			bool steamdeck2 = false;
+
+			foreach (var steamdeck in deck)
+			{
+				if (juego.Deck == steamdeck.Tipo && steamdeck.Estado == true)
+				{
+					steamdeck2 = true;
+				}
+			}
+
 			if (buscador == true && ocultar == false && minimoDescuento2 == true && maximoPrecio2 == true && 
-				drm2 == true && tienda2 == true && categoria2 == true)
+				drm2 == true && tienda2 == true && categoria2 == true && steamdeck2 == true)
 			{
 				juegosFiltrados.Add(juego);
 			}
@@ -1247,14 +1311,94 @@ else
 		{
 			if (categoria != JuegoTipo.Bundle)
 			{
-				MostrarJuegoCategoria nuevaTienda = new MostrarJuegoCategoria();
-				nuevaTienda.Estado = true;
-				nuevaTienda.Checkbox = "checked";
-				nuevaTienda.Categoria = categoria;
+				MostrarJuegoCategoria nuevaCategoria = new MostrarJuegoCategoria();
+				nuevaCategoria.Estado = true;
+				nuevaCategoria.Checkbox = "checked";
+				nuevaCategoria.Categoria = categoria;
 
-				nuevaLista.Add(nuevaTienda);
+				nuevaLista.Add(nuevaCategoria);
 			}
 		}
+
+		return nuevaLista;
+	}
+
+	private async void EnseñarJuegosSteamDeck(ChangeEventArgs e, JuegoDeck tipoElegido)
+	{
+		foreach (var steamdeck in deck)
+		{
+			if (steamdeck.Tipo == tipoElegido)
+			{
+				if (steamdeck.Checkbox == null)
+				{
+					steamdeck.Checkbox = "checked";
+					steamdeck.Estado = true;
+				}
+				else
+				{
+					steamdeck.Checkbox = null;
+					steamdeck.Estado = false;
+				}
+			}
+		}
+
+		if (usuario != null)
+		{
+			usuario.HistoricalLowsSteamDeck = JsonSerializer.Serialize(deck);
+
+			try
+			{
+				await UserManager.UpdateAsync(usuario);
+			}
+			catch (Exception ex)
+			{
+				BaseDatos.Errores.Insertar.Mensaje("Guardar Usuario Minimos", ex);
+			}
+		}
+
+		ElegirOrdenamiento();
+	}
+
+	private List<MostrarJuegoSteamDeck> deck = CrearListaSteamDeck();
+
+	public class MostrarJuegoSteamDeck
+	{
+		public bool Estado { get; set; }
+		public string Checkbox { get; set; }
+		public JuegoDeck Tipo { get; set; }
+	}
+
+	private static List<MostrarJuegoSteamDeck> CrearListaSteamDeck()
+	{
+		List<MostrarJuegoSteamDeck> nuevaLista = new List<MostrarJuegoSteamDeck>();
+
+		MostrarJuegoSteamDeck nuevoTipo1 = new MostrarJuegoSteamDeck();
+		nuevoTipo1.Estado = true;
+		nuevoTipo1.Checkbox = "checked";
+		nuevoTipo1.Tipo = JuegoDeck.Verificado;
+
+		nuevaLista.Add(nuevoTipo1);
+
+		MostrarJuegoSteamDeck nuevoTipo2 = new MostrarJuegoSteamDeck();
+		nuevoTipo2.Estado = true;
+		nuevoTipo2.Checkbox = "checked";
+		nuevoTipo2.Tipo = JuegoDeck.Jugable;
+
+		nuevaLista.Add(nuevoTipo2);
+
+		MostrarJuegoSteamDeck nuevoTipo3 = new MostrarJuegoSteamDeck();
+		nuevoTipo3.Estado = true;
+		nuevoTipo3.Checkbox = "checked";
+		nuevoTipo3.Tipo = JuegoDeck.NoSoportado;
+
+		nuevaLista.Add(nuevoTipo3);
+
+		MostrarJuegoSteamDeck nuevoTipo4 = new MostrarJuegoSteamDeck();
+		nuevoTipo4.Estado = true;
+		nuevoTipo4.Checkbox = "checked";
+		nuevoTipo4.Tipo = JuegoDeck.Desconocido;
+
+		nuevaLista.Add(nuevoTipo4);
 
 		return nuevaLista;
 	}
@@ -1271,6 +1415,7 @@ else
 		enseñarDRMs = false;
 		enseñarTiendas = false;
 		enseñarCategorias = false;
+		enseñarSteamDeck = false;
 	}
 
 	private bool enseñarOcultar = false;
@@ -1366,6 +1511,22 @@ else
 		else
 		{
 			enseñarCategorias = false;
+		}
+	}
+
+	private bool enseñarSteamDeck = false;
+
+	private void OpcionesSteamDeck()
+	{
+		if (enseñarSteamDeck == false)
+		{
+			OpcionesPestañas();
+
+			enseñarSteamDeck = true;
+		}
+		else
+		{
+			enseñarSteamDeck = false;
 		}
 	}
 

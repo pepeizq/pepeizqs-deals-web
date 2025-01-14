@@ -40,7 +40,7 @@ namespace APIs.GameBillet
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			string html = await Decompiladores.Estandar("https://www.gamebillet.com/product/jsonfeed?store=eu&guid=39A6D2B7-A4EF-4E8B-AA19-350B89788365");
 
@@ -73,16 +73,39 @@ namespace APIs.GameBillet
 
 									if (descuento > 0)
 									{
-										JuegoDRM drm1 = JuegoDRM2.Traducir(juego.DRM1, Generar().Id);
-										JuegoDRM drm2 = JuegoDRM2.Traducir(juego.DRM2, Generar().Id);
+										JuegoDRM drm1 = JuegoDRM.NoEspecificado;
+											
+										if (string.IsNullOrEmpty(juego.DRM1) == false)
+										{
+											drm1 = JuegoDRM2.Traducir(juego.DRM1, Generar().Id);
+										}
 
-										if (drm1 != JuegoDRM.NoEspecificado || drm2 != JuegoDRM.NoEspecificado)
+										JuegoDRM drm2 = JuegoDRM.NoEspecificado;
+
+										if (string.IsNullOrEmpty(juego.DRM2) == false)
+										{
+											drm2 = JuegoDRM2.Traducir(juego.DRM2, Generar().Id);
+										}
+
+										JuegoDRM drm3 = JuegoDRM.NoEspecificado;
+
+										if (string.IsNullOrEmpty(juego.DRM3) == false)
+										{
+											drm3 = JuegoDRM2.Traducir(juego.DRM3, Generar().Id);
+										}
+
+										if (drm1 != JuegoDRM.NoEspecificado || drm2 != JuegoDRM.NoEspecificado || drm3 != JuegoDRM.NoEspecificado)
 										{
 											JuegoDRM drmFinal = drm1;
 
 											if (drm2 != JuegoDRM.NoEspecificado)
 											{
 												drmFinal = drm2;
+											}
+
+											if (drm3 != JuegoDRM.NoEspecificado)
+											{
+												drmFinal = drm3;
 											}
 
 											JuegoPrecio oferta = new JuegoPrecio
@@ -99,24 +122,30 @@ namespace APIs.GameBillet
 												FechaActualizacion = DateTime.Now
 											};
 
+											if (juego.TieneCodigoDescuento == true)
+											{
+												oferta.CodigoDescuento = (int)juego.CodigoDescuentoPorcentaje;
+												oferta.CodigoTexto = juego.CodigoDescuento;
+											}
+
 											try
 											{
 												BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+												BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 											}
 
 											juegos2 += 1;
 
 											try
 											{
-												BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+												BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+												BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 											}
 										}
 									}
@@ -159,6 +188,18 @@ namespace APIs.GameBillet
 
 		[JsonPropertyName("filters2")]
 		public string DRM2 { get; set; }
+
+		[JsonPropertyName("filters3")]
+		public string DRM3 { get; set; }
+
+		[JsonPropertyName("hasCoupon")]
+		public bool TieneCodigoDescuento { get; set; }
+
+		[JsonPropertyName("discountName")]
+		public string CodigoDescuento { get; set; }
+
+		[JsonPropertyName("discountPercentage")]
+		public double CodigoDescuentoPorcentaje { get; set; }
 	}
 
 	#endregion

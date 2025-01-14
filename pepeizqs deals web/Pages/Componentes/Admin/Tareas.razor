@@ -151,6 +151,23 @@
 
     private SqlConnection conexion = new SqlConnection();
 
+    private PeriodicTimer cronometro = null;
+
+    protected override void OnInitialized()
+    {
+        Cronometro();
+    }
+
+    private async void Cronometro()
+    {
+        cronometro = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
+        while (await cronometro.WaitForNextTickAsync())
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
     private async Task ClickearTienda(MouseEventArgs e, string id)
     {
         if (string.IsNullOrEmpty(id) == false)

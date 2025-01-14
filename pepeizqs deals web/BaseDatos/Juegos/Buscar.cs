@@ -825,7 +825,7 @@ namespace BaseDatos.Juegos
             return juegos;
         }
 
-        public static List<Juego> Todos(SqlConnection conexion = null, string tabla = null, int dias = 0, bool analisis = false)
+        public static List<Juego> Minimos(SqlConnection conexion = null, int dias = 0, bool analisis = false)
 		{
             if (conexion == null)
             {
@@ -843,18 +843,7 @@ namespace BaseDatos.Juegos
 
             using (conexion)
 			{
-                string tabla2 = string.Empty;
-
-                if (tabla == null)
-                {
-                    tabla2 = "juegos";
-                }
-                else
-                {
-                    tabla2 = tabla;
-                }
-
-                string busqueda = "SELECT * FROM " + tabla2;
+                string busqueda = "SELECT * FROM seccionMinimos";
                 string donde = string.Empty;
 
                 if (dias > 0)

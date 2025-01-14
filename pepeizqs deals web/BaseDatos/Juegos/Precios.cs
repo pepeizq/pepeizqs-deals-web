@@ -255,7 +255,15 @@ namespace BaseDatos.Juegos
 								precio.FechaDetectado = nuevaOferta.FechaDetectado;
 							}
 
-							precio.Precio = nuevaOferta.Precio;
+							decimal tempPrecio = nuevaOferta.Precio;
+
+							if (string.IsNullOrEmpty(nuevaOferta.CodigoTexto) == false)
+							{
+								decimal descuento = (decimal)nuevaOferta.CodigoDescuento / 100;
+								tempPrecio = tempPrecio - (tempPrecio * descuento);
+							}
+
+							precio.Precio = tempPrecio;
 							precio.Descuento = nuevaOferta.Descuento;
 							precio.FechaActualizacion = nuevaOferta.FechaActualizacion;
 							precio.FechaTermina = nuevaOferta.FechaTermina;
@@ -293,6 +301,12 @@ namespace BaseDatos.Juegos
 							drmEncontrado = true;
 
 							decimal tempPrecio = nuevaOferta.Precio;
+
+							if (string.IsNullOrEmpty(nuevaOferta.CodigoTexto) == false)
+							{
+								decimal descuento = (decimal) nuevaOferta.CodigoDescuento / 100;
+								tempPrecio = tempPrecio - (tempPrecio * descuento);
+							}
 
 							if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
 							{
@@ -451,12 +465,21 @@ namespace BaseDatos.Juegos
 				nuevoHistorico.DRM = nuevaOferta.DRM;
 				nuevoHistorico.Tienda = nuevaOferta.Tienda;
 				nuevoHistorico.Fecha = nuevaOferta.FechaDetectado;
-				nuevoHistorico.Precio = nuevaOferta.Precio;
+
+				decimal tempPrecio = nuevaOferta.Precio;
+
+				if (string.IsNullOrEmpty(nuevaOferta.CodigoTexto) == false)
+				{
+					decimal descuento = (decimal)nuevaOferta.CodigoDescuento / 100;
+					tempPrecio = tempPrecio - (tempPrecio * descuento);
+				}
 
 				if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
 				{
-					nuevoHistorico.Precio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
+					tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, nuevaOferta.Moneda);
 				}
+
+				nuevoHistorico.Precio = tempPrecio;
 
 				historicos.Add(nuevoHistorico);
 			}
@@ -466,12 +489,21 @@ namespace BaseDatos.Juegos
 				nuevoHistorico.DRM = nuevaOferta.DRM;
 				nuevoHistorico.Tienda = nuevaOferta.Tienda;
 				nuevoHistorico.Fecha = nuevaOferta.FechaDetectado;
-				nuevoHistorico.Precio = nuevaOferta.Precio;
+
+				decimal tempPrecio = nuevaOferta.Precio;
+
+				if (string.IsNullOrEmpty(nuevaOferta.CodigoTexto) == false)
+				{
+					decimal descuento = (decimal)nuevaOferta.CodigoDescuento / 100;
+					tempPrecio = tempPrecio - (tempPrecio * descuento);
+				}
 
 				if (nuevaOferta.Moneda != Herramientas.JuegoMoneda.Euro)
 				{
-					nuevoHistorico.Precio = Herramientas.Divisas.Cambio(nuevaOferta.Precio, nuevaOferta.Moneda);
+					tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, nuevaOferta.Moneda);
 				}
+
+				nuevoHistorico.Precio = tempPrecio;
 
 				bool mismoDRM = false;
 				decimal precioMasBajo2 = 1000000;

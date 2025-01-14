@@ -1,6 +1,6 @@
 ﻿using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Suscripciones
 {
@@ -14,7 +14,7 @@ namespace BaseDatos.Suscripciones
 			using (SqlCommand comando = new SqlCommand(sqlActualizarJuego, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juegoId);
-				comando.Parameters.AddWithValue("@suscripciones", JsonConvert.SerializeObject(listaVecesSuscripciones));
+				comando.Parameters.AddWithValue("@suscripciones", JsonSerializer.Serialize(listaVecesSuscripciones));
 
 				try
 				{

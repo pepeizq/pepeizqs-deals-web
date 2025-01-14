@@ -122,6 +122,10 @@ public class Usuario : IdentityUser
 	public string? HistoricalLowsCategories { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? HistoricalLowsSteamDeck { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "bit(1)")]
 	public bool? IndexOption1 { get; set; }
 
