@@ -276,6 +276,57 @@ namespace APIs.GOG
 
 			return galaxy;
         }
+
+		public static async Task<List<JuegoIdioma>> GalaxyIdiomas(string id, List<JuegoIdioma> listadoIdiomas)
+		{
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					List<JuegoIdioma> idiomas = Herramientas.Idiomas.GogSacarIdiomas(datos.Caracteristicas.Idiomas);
+
+					if (listadoIdiomas == null)
+					{
+						listadoIdiomas = idiomas;
+					}
+					else
+					{
+						List<JuegoIdioma> listadoActualizar = listadoIdiomas;
+
+						foreach (var nuevoIdioma in idiomas)
+						{
+							bool existe = false;
+
+							foreach (var viejoIdioma in listadoActualizar)
+							{
+								if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+								{
+									existe = true;
+
+									viejoIdioma.Audio = nuevoIdioma.Audio;
+									viejoIdioma.Texto = nuevoIdioma.Texto;
+
+									break;
+								}
+							}
+
+							if (existe == false)
+							{
+								listadoActualizar.Add(nuevoIdioma);
+							}
+						}
+
+						return listadoActualizar;
+					}
+				}
+			}
+
+			return null;	
+		}
 	}
 
 	#region Ofertas (Antiguo)
@@ -390,14 +441,47 @@ namespace APIs.GOG
 
     public class GOGGalaxy2Caracteristicas
     {
-        [JsonPropertyName("features")]
+		[JsonPropertyName("localizations")]
+		public List<GOGGalaxy2Idioma> Idiomas { get; set; }
+
+		[JsonPropertyName("features")]
         public List<GOGGalaxy2Caracteristica> Datos { get; set; }
 
 		[JsonPropertyName("properties")]
 		public List<GOGGalaxy2Propiedad> Propiedades { get; set; }
 	}
 
-    public class GOGGalaxy2Caracteristica
+	public class GOGGalaxy2Idioma
+	{
+		[JsonPropertyName("_embedded")]
+		public GOGGalaxy2IdiomaDatos Datos { get; set; }
+	}
+
+	public class GOGGalaxy2IdiomaDatos
+	{
+		[JsonPropertyName("language")]
+		public GOGGalaxy2IdiomaDatosIdioma Idioma { get; set; }
+
+		[JsonPropertyName("localizationScope")]
+		public GOGGalaxy2IdiomaDatosTipo Tipo { get; set; }
+	}
+
+	public class GOGGalaxy2IdiomaDatosIdioma
+	{
+		[JsonPropertyName("code")]
+		public string Codigo { get; set; }
+
+		[JsonPropertyName("name")]
+		public string Nombre { get; set; }
+	}
+
+	public class GOGGalaxy2IdiomaDatosTipo
+	{
+		[JsonPropertyName("type")]
+		public string Nombre { get; set; }
+	}
+
+	public class GOGGalaxy2Caracteristica
 	{
         [JsonPropertyName("id")]
         public string Id { get; set; }

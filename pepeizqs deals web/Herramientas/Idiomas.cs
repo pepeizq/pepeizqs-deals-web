@@ -2,6 +2,8 @@
 
 #nullable disable
 
+using APIs.GOG;
+using Juegos;
 using System.Text.Json;
 
 namespace Herramientas
@@ -36,10 +38,10 @@ namespace Herramientas
 				{
 					idiomaUsuario = "pt";
 				}
-				else if (ComprobarSueco(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "sv";
-				}
+				//else if (ComprobarSueco(idiomaUsuario) == true)
+				//{
+				//	idiomaUsuario = "sv";
+				//}
 				else
 				{
 					idiomaUsuario = "en";
@@ -147,6 +149,8 @@ namespace Herramientas
 			}
 		}
 
+		#region Steam Reseñas
+
 		//https://partner.steamgames.com/doc/store/localization/languages
 
 		public class SteamIdioma
@@ -155,7 +159,7 @@ namespace Herramientas
 			public string Contenido { get; set; }
 		}
 
-		public static List<SteamIdioma> ListadoSteam(string idiomaUsuario)
+		public static List<SteamIdioma> ListadoSteamReseñas(string idiomaUsuario)
 		{
 			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "brazilian", "swedish", "greek", "polish", "norwegian", "romanian", "dutch", "danish", "czech", "finnish"];
 
@@ -417,5 +421,273 @@ namespace Herramientas
 
 			return false;
 		}
+
+		#endregion
+
+		#region Steam Juegos
+
+		private static List<SteamIdioma> ListadoSteamJuegos()
+		{
+			List<SteamIdioma> idiomas = [
+				new SteamIdioma
+				{
+					Id = "en",
+					Contenido = "English"
+				},
+				new SteamIdioma
+				{
+					Id = "es",
+					Contenido = "Spanish - Spain"
+				},
+				new SteamIdioma
+				{
+					Id = "de",
+					Contenido = "German"
+				},
+				new SteamIdioma
+				{
+					Id = "fr",
+					Contenido = "French"
+				},
+				new SteamIdioma
+				{
+					Id = "it",
+					Contenido = "Italian"
+				},
+				new SteamIdioma
+				{
+					Id = "pt",
+					Contenido = "Portuguese - Portugal"
+				},
+				new SteamIdioma
+				{
+					Id = "da",
+					Contenido = "Danish"
+				},
+				new SteamIdioma
+				{
+					Id = "nl",
+					Contenido = "Dutch"
+				},
+				new SteamIdioma
+				{
+					Id = "nn",
+					Contenido = "Norwegian"
+				},
+				new SteamIdioma
+				{
+					Id = "pl",
+					Contenido = "Polish"
+				},
+				new SteamIdioma
+				{
+					Id = "sv",
+					Contenido = "Swedish"
+				},
+				new SteamIdioma
+				{
+					Id = "ko",
+					Contenido = "Korean"
+				},
+				new SteamIdioma
+				{
+					Id = "zhs",
+					Contenido = "Simplified Chinese"
+				},
+				new SteamIdioma
+				{
+					Id = "zht",
+					Contenido = "Traditional Chinese"
+				},
+				new SteamIdioma
+				{
+					Id = "lat",
+					Contenido = "Spanish - Latin America"
+				},
+				new SteamIdioma
+				{
+					Id = "br",
+					Contenido = "Portuguese - Brazil"
+				},
+				new SteamIdioma
+				{
+					Id = "ja",
+					Contenido = "Japanese"
+				},
+				new SteamIdioma
+				{
+					Id = "hu",
+					Contenido = "Hungarian"
+				},
+				new SteamIdioma
+				{
+					Id = "cz",
+					Contenido = "Czech"
+				},
+				new SteamIdioma
+				{
+					Id = "tr",
+					Contenido = "Turkish"
+				},
+				new SteamIdioma
+				{
+					Id = "uk",
+					Contenido = "Ukrainian"
+				},
+				new SteamIdioma
+				{
+					Id = "fi",
+					Contenido = "Finnish"
+				},
+				new SteamIdioma
+				{
+					Id = "ro",
+					Contenido = "Romanian"
+				},
+				new SteamIdioma
+				{
+					Id = "ro",
+					Contenido = "Romanian"
+				},
+				new SteamIdioma
+				{
+					Id = "el",
+					Contenido = "Greek"
+				}
+			];
+
+			return idiomas;
+		}
+
+		public static List<JuegoIdioma> SteamSacarIdiomas(string contenido)
+		{
+			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
+
+			if (string.IsNullOrEmpty(contenido) == false)
+			{
+				foreach (var idioma in ListadoSteamJuegos())
+				{
+					if (contenido.Contains(idioma.Contenido + "<strong>*</strong>") == true)
+					{
+						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						{
+							DRM = JuegoDRM.Steam,
+							Idioma = idioma.Id,
+							Audio = true,
+							Texto = true
+						};
+
+						bool añadir = true;
+
+						if (idiomas.Count > 0)
+						{
+							foreach (var idioma2 in idiomas)
+							{
+								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								{
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							idiomas.Add(nuevoIdioma);
+						}
+					}
+
+					if (contenido.Contains(idioma.Contenido) == true)
+					{
+						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						{
+							DRM = JuegoDRM.Steam,
+							Idioma = idioma.Id,
+							Audio = false,
+							Texto = true
+						};
+
+						bool añadir = true;
+
+						if (idiomas.Count > 0)
+						{
+							foreach (var idioma2 in idiomas)
+							{
+								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								{
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							idiomas.Add(nuevoIdioma);
+						}
+					}
+				}
+			}
+
+			return idiomas;
+		}
+
+		#endregion
+
+		#region GOG Juegos
+
+		public static List<JuegoIdioma> GogSacarIdiomas(List<GOGGalaxy2Idioma> contenido)
+		{
+			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
+
+			foreach (var idioma in contenido)
+			{
+				JuegoIdioma nuevoIdioma = new JuegoIdioma
+				{
+					DRM = JuegoDRM.GOG,
+					Idioma = idioma.Datos.Idioma.Codigo
+				};
+
+				if (idioma.Datos.Tipo.Nombre == "text")
+				{
+					nuevoIdioma.Texto = true;
+				}
+
+				if (idioma.Datos.Tipo.Nombre == "audio")
+				{
+					nuevoIdioma.Audio = true;
+				}
+
+				bool añadir = true;
+
+				if (idiomas.Count > 0)
+				{
+					foreach (var idioma2 in idiomas)
+					{
+						if (idioma2.Idioma == nuevoIdioma.Idioma)
+						{
+							if (nuevoIdioma.Audio == true)
+							{
+								idioma2.Audio = true;
+							}
+
+							if (nuevoIdioma.Texto == true)
+							{
+								idioma2.Texto = true;
+							}
+
+							añadir = false;
+						}
+					}
+				}
+
+				if (añadir == true)
+				{
+					idiomas.Add(nuevoIdioma);
+				}
+			}
+
+			return idiomas;
+		}
+
+		#endregion
 	}
 }

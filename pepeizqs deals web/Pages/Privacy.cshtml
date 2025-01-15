@@ -1,50 +1,75 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model PrivacyModel
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
-	ViewData["Title"] = @Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Privacy");
+	string idioma = Model.idioma;
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario? usuario = new Usuario();
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
+	}
+
+	ViewData["Title"] = @Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Privacy");
 }
 
 <h1 style="font-size: 22px; text-align: left; margin: 0px;">
-	@Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Privacy")
+	@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Privacy")
 </h1>
 
 <hr />
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 40px;">
 	<div style="font-size: 18px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Privacy")
 	</div>
 
 	<hr />
 
 	<div>
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Privacy")
 
 		<ul>
 			<li>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Privacy")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Privacy")
 			</li>
 			<li>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Privacy")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Privacy")
 			</li>
 		</ul>
 
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Privacy")
 	</div>
 </div>
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 	<div style="font-size: 18px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Privacy")
 	</div>
 
 	<hr/>
 
 	<div style="margin-bottom: 20px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Privacy")
 	</div>
 
 	<div>
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "Privacy")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Privacy")
 	</div>
 </div>

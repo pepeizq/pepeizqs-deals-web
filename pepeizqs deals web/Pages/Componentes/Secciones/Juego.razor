@@ -1766,7 +1766,7 @@
                             </div>
                         </button>
 
-                        @foreach (var idiomaSteam in Idiomas.ListadoSteam(idioma))
+                        @foreach (var idiomaSteam in Idiomas.ListadoSteamReseñas(idioma))
                         {
                             string subrayado = string.Empty;
 
@@ -1933,7 +1933,7 @@
 
                                                 <hr />
 
-                                                <div style="white-space: pre-line; max-width: 100vh; overflow-wrap: break-word;">
+                                                <div style="white-space: pre-line; max-width: 100%; overflow-wrap: break-word;">
                                                     @analisis.Contenido
                                                 </div>
                                             </div>
@@ -2464,6 +2464,8 @@
                 if (juego.GalaxyGOG == null)
                 {
                     juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
+                    juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+
                     global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
                 }
                 else
@@ -2471,6 +2473,8 @@
                     if (juego.GalaxyGOG.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
                     {
                         juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
+                        juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+
                         global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
                     }
                 }
@@ -4063,7 +4067,7 @@
         {
             analisisRegiones.Clear();
 
-            foreach (var idiomaSteam2 in Idiomas.ListadoSteam(idioma))
+            foreach (var idiomaSteam2 in Idiomas.ListadoSteamReseñas(idioma))
             {
                 JuegoAnalisisAmpliado analisisRegion = await AnalisisCargarIdioma(idiomaSteam2.Id);
                 JuegoAnalisisAmpliadoIdioma analisisRegion2 = new JuegoAnalisisAmpliadoIdioma();

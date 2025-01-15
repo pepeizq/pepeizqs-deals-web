@@ -49,6 +49,7 @@ namespace Juegos
 		public JuegoGalaxyGOG GalaxyGOG { get; set; }
 		public JuegoCantidadJugadoresSteam CantidadJugadores { get; set; }
 		public List<string> CuratorsSteam { get; set; }
+		public List<JuegoIdioma> Idiomas { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -249,5 +250,15 @@ namespace Juegos
 	{
 		public int Tipo { get; set; }
 		public string Mensaje { get; set; }
+	}
+
+	//-------------------------------------------------------
+
+	public class JuegoIdioma
+	{
+		public JuegoDRM DRM { get; set; }
+		public string Idioma { get; set; }
+		public bool Audio { get; set; }
+		public bool Texto { get; set; }
 	}
 }

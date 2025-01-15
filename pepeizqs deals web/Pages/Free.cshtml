@@ -11,18 +11,27 @@
 @{
     #nullable disable
 
-    string titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Free");
-
-    ViewData["Title"] = titulo;
-    Layout = "/Pages/Shared/_Layout.cshtml";
-
+    string idioma = Model.idioma;
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
     Usuario usuario = new Usuario();
 
     if (usuarioLogeado == true)
     {
         usuario = await UserManager.GetUserAsync(User);
+
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+            {
+                idioma = usuario.LanguageOverride;
+            }
+        }
     }
+
+    string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Free");
+
+    ViewData["Title"] = titulo;
+    Layout = "/Pages/Shared/_Layout.cshtml";
 
     List<Juegos.JuegoGratis> juegosActuales = new List<Juegos.JuegoGratis>();
     List<Juegos.JuegoGratis> juegosTodos = BaseDatos.Gratis.Buscar.Actuales();
@@ -64,61 +73,61 @@
             {
                 if (dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Free");
                 }
                 else if (dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Free"), dlcs.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
             }
             else if (juegos > 0)
             {
                 if (juegos == 1 && dlcs == 0)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Free");
                 }
                 else if (juegos > 1 && dlcs == 0)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Free"), juegos.ToString()) + " " + Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
                 else if (juegos == 1 && dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
                 else if (juegos > 1 && dlcs == 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
                 else if (juegos == 1 && dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
                 else if (juegos > 1 && dlcs > 1)
                 {
-                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Free"), juegos.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Free") + " " +
-                        string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Free"), dlcs.ToString()) + " " +
-                        Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "Free");
+                    titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Free"), juegos.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Free") + " " +
+                        string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Free"), dlcs.ToString()) + " " +
+                        Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Free");
                 }
             }
 
             if (string.IsNullOrEmpty(titulo) == true)
             {
-                titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String10", "Free");
+                titulo = Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Free");
             }
         }
     }
 
-    string descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String11", "Free");
+    string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Free");
 
     string enlace = "https://pepeizqdeals.com/free/";
 
@@ -139,7 +148,7 @@
     {
         @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
         {
-            idioma = Model.idioma,
+            idioma = idioma,
             titulo = titulo,
             enlace = enlace,
             canonical = enlace,
@@ -148,14 +157,14 @@
 
         @(await Html.RenderComponentAsync<Componentes.Secciones.Gratis>(RenderMode.ServerPrerendered, new
         {
-            idioma = Model.idioma
+            idioma = idioma
         }))
     }
     else
     {
         @(await Html.RenderComponentAsync<Componentes.Secciones.Gratis>(RenderMode.Server, new
         {
-            idioma = Model.idioma,
+            idioma = idioma,
             usuarioId = usuario?.Id
         }))
     }

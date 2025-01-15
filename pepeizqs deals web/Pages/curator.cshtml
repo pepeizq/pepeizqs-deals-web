@@ -12,18 +12,27 @@
 @{
 	#nullable disable
 
-	string titulo = Model.curator.Nombre;
-
-	ViewData["Title"] = titulo;
-	Layout = "/Pages/Shared/_Layout.cshtml";
-
+	string idioma = Model.idioma;
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
 	Usuario usuario = new Usuario();
 
 	if (usuarioLogeado == true)
 	{
 		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
 	}
+
+	string titulo = Model.curator.Nombre;
+
+	ViewData["Title"] = titulo;
+	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool seo = false;
 	string userAgent = string.Empty;
@@ -44,7 +53,7 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			titulo = titulo,
 			enlace = enlace,
 			canonical = enlace,
@@ -54,7 +63,7 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			curatorId = Model.curator.Id
 		}))
 	}
@@ -62,7 +71,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Curator>(RenderMode.Server, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			curatorId = Model.curator.Id,
 			usuarioId = usuario?.Id
 		}))

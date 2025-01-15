@@ -1,13 +1,37 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.ContactModel
 
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
-	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Contact");
+    string idioma = Model.idioma;
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+    Usuario? usuario = new Usuario();
+
+    if (usuarioLogeado == true)
+    {
+        usuario = await UserManager.GetUserAsync(User);
+
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+            {
+                idioma = usuario.LanguageOverride;
+            }
+        }
+    }
+
+	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Contact");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
 <div style="font-size: 22px; text-align: left; margin-bottom: 30px;">
-	@Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Contact")
+	@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Contact")
 </div>
 
 <div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; gap: 20px;">
@@ -15,11 +39,11 @@
 		<i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
 	</div>
 	<div>
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Contact")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Contact")
 	</div>	
 </div>
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-top: 30px; margin-bottom: 40px;">
-	@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Contact")
+	@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Contact")
 	admin@pepeizqdeals.com
 </div>

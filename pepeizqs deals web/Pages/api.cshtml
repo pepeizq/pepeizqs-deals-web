@@ -1,13 +1,38 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.apiModel
+
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 @{
 	#nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Api");
-	Layout = "/Pages/Shared/_Layout.cshtml";
-}
+	string idioma = Model.idioma;
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario usuario = new Usuario();
 
-@(await Html.RenderComponentAsync<Componentes.Secciones.Api>(RenderMode.ServerPrerendered, new { 
-	idioma = Model.idioma 
-}))
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
+	}
+
+	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Api");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	@(await Html.RenderComponentAsync<Componentes.Secciones.Api>(RenderMode.ServerPrerendered, new
+	{
+		idioma = idioma
+	}))
+}

@@ -1,0 +1,13 @@
+{
+  "en": "English",
+  "es": "Spanish",
+  "fr": "French",
+  "de": "German",
+  "it": "Italian",
+  "pt": "Portuguese",
+  "String1": "Language detected:",
+  "String2": "Note: If your language is not on the website, it is changed by default to English.",
+  "String3": "If your language is different from the one detected by the website, you can change it here:",
+  "String4": "Change language",
+  "String5": "Please refresh the page to fully apply the language change"
+}

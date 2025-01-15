@@ -13,15 +13,10 @@
 @{
 	#nullable disable
 
-	ViewData["Title"] = Model.juego.Nombre;
-	Layout = "/Pages/Shared/_Layout.cshtml";
-
-	bool usuarioLogeado = false;
-	usuarioLogeado = SignInManager.IsSignedIn(User);
-
-	Usuario usuario = null;
-
+	string idioma = Model.idioma;
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
 	bool adminLogeado = false;
+	Usuario usuario = new Usuario();
 
 	if (usuarioLogeado == true)
 	{
@@ -29,6 +24,11 @@
 
 		if (usuario != null)
 		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+
 			if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
 			{
 				adminLogeado = true;
@@ -36,13 +36,16 @@
 		}
 	}
 
+	ViewData["Title"] = Model.juego.Nombre;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
 	if (usuarioLogeado == true)
 	{
 		if (adminLogeado == true)
 		{
 			@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new
 			{
-				idioma = Model.idioma,
+				idioma = idioma,
 				juego = Model.juego
 			}))
 		}
@@ -87,7 +90,7 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			titulo = Model.juego.Nombre,
 			enlace = enlace,
 			canonical = enlace,
@@ -97,7 +100,7 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			juego = Model.juego,
 			userAgent = userAgent
 		}))
@@ -106,7 +109,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			juego = Model.juego,
 			usuarioId = usuario?.Id,
 			userAgent = userAgent

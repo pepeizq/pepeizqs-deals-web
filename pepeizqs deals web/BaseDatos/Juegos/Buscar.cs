@@ -390,6 +390,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(34) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(34)) == false)
+					{
+						juego.Idiomas = JsonSerializer.Deserialize<List<JuegoIdioma>>(lector.GetString(34));
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

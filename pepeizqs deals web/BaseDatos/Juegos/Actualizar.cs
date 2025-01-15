@@ -603,15 +603,56 @@ namespace BaseDatos.Juegos
 				juego.Categorias = nuevoJuego.Categorias;
 				juego.Generos = nuevoJuego.Generos;
 
+				if (juego.Idiomas == null)
+				{
+					juego.Idiomas = nuevoJuego.Idiomas;
+				}
+				else
+				{
+					List<JuegoIdioma> listadoActualizar = juego.Idiomas;
+
+					foreach (var nuevoIdioma in nuevoJuego.Idiomas)
+					{
+						bool existe = false;
+
+						foreach (var viejoIdioma in listadoActualizar)
+						{
+							if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+							{
+								existe = true;
+
+								viejoIdioma.Audio = nuevoIdioma.Audio;
+								viejoIdioma.Texto = nuevoIdioma.Texto;
+
+								break;
+							}
+						}
+
+						if (existe == false)
+						{
+							listadoActualizar.Add(nuevoIdioma);
+						}
+					}
+
+					juego.Idiomas = listadoActualizar;
+				}
+
 				if (conexion == null)
 				{
 					conexion = Herramientas.BaseDatos.Conectar();
+				}
+				else
+				{
+					if (conexion.State != System.Data.ConnectionState.Open)
+					{
+						conexion = Herramientas.BaseDatos.Conectar();
+					}
 				}
 
 				using (conexion)
 				{
 					string sqlActualizar = "UPDATE juegos " +
-										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion WHERE id=@id";
+										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
@@ -624,14 +665,15 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@categorias", JsonSerializer.Serialize(juego.Categorias));
 						comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+						comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
 
 						try
 						{
 							comando.ExecuteNonQuery();
 						}
-						catch
+						catch (Exception ex)
 						{
-
+							BaseDatos.Errores.Insertar.Mensaje("Actualizar Steam API", ex);
 						}
 					}
 				}
@@ -751,6 +793,13 @@ namespace BaseDatos.Juegos
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
 			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
@@ -783,6 +832,13 @@ namespace BaseDatos.Juegos
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
 			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
@@ -812,6 +868,13 @@ namespace BaseDatos.Juegos
 			if (conexion == null)
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
 			}
 
 			using (conexion)
@@ -843,16 +906,24 @@ namespace BaseDatos.Juegos
 			{
 				conexion = Herramientas.BaseDatos.Conectar();
 			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
 			using (conexion)
 			{
 				string sqlActualizar = "UPDATE juegos " +
-					"SET galaxyGOG=@galaxyGOG WHERE id=@id";
+					"SET galaxyGOG=@galaxyGOG, idiomas=@idiomas WHERE id=@id";
 
 				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", juego.Id);
 					comando.Parameters.AddWithValue("@galaxyGOG", JsonSerializer.Serialize(juego.GalaxyGOG));
+					comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
 
 					comando.ExecuteNonQuery();
 					try

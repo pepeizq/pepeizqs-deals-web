@@ -11,16 +11,25 @@
 @{
 	#nullable disable
 
-	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "HistoricalLows");
-	Layout = "/Pages/Shared/_Layout.cshtml";
-
+	string idioma = Model.idioma;
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
 	Usuario usuario = new Usuario();
 
 	if (usuarioLogeado == true)
 	{
 		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
 	}
+
+	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "HistoricalLows");
+	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool seo = false;
 	string userAgent = string.Empty;
@@ -41,23 +50,23 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
-			titulo = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "HistoricalLows"),
+			idioma = idioma,
+			titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "HistoricalLows"),
 			enlace = enlace,
 			canonical = enlace,
-			descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String22", "HistoricalLows")
+			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "HistoricalLows")
 		}))
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma
+			idioma = idioma
 		}))
 	}
 	else
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Minimos>(RenderMode.Server, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			usuarioId = usuario?.Id,
 			usuarioLogeado = usuarioLogeado,
 			drmEscrito = Model.drm,

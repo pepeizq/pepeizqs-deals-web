@@ -10,22 +10,31 @@
 @inject UserManager<Usuario> UserManager
 
 @{
-	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(Model.idioma, "Subtitle", "Index");
-
-	ViewData["Title"] = titulo;
-	Layout = "/Pages/Shared/_Layout.cshtml";
-
-	string descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Subtitle", "Index");
-
-	string enlace = "https://pepeizqdeals.com";
-
+	string idioma = Model.idioma;
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
 	Usuario? usuario = new Usuario();
 
 	if (usuarioLogeado == true)
 	{
 		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
 	}
+
+	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
+
+	ViewData["Title"] = titulo;
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
+
+	string enlace = "https://pepeizqdeals.com";
 
 	bool seo = false;
 	string? userAgent = string.Empty;
@@ -44,7 +53,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			titulo = titulo,
 			descripcion = descripcion,
 			enlace = enlace,
@@ -53,14 +62,14 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma
+			idioma = idioma
 		}))
 	}
 	else
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.Server, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			usuarioLogeado = usuarioLogeado,
 			usuarioId = usuario?.Id
 		}))

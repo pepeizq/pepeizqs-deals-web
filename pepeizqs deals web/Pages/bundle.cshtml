@@ -13,25 +13,33 @@
 @{
 	#nullable disable
 
-	string titulo = Model.bundle.NombreBundle + " • " + Model.bundle.NombreTienda;
-
-	ViewData["Title"] = titulo;
-	Layout = "/Pages/Shared/_Layout.cshtml";
-
+	string idioma = Model.idioma;
 	bool usuarioLogeado = SignInManager.IsSignedIn(User);
-	Usuario usuario = new Usuario();
-
 	bool adminLogeado = false;
+	Usuario usuario = new Usuario();
 
 	if (usuarioLogeado == true)
 	{
 		usuario = await UserManager.GetUserAsync(User);
 
-		if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+		if (usuario != null)
 		{
-			adminLogeado = true;
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+
+			if (global::BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+			{
+				adminLogeado = true;
+			}
 		}
 	}
+
+	string titulo = Model.bundle.NombreBundle + " • " + Model.bundle.NombreTienda;
+
+	ViewData["Title"] = titulo;
+	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	string enlace = "https://pepeizqdeals.com/bundle/" + Model.bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.bundle.NombreBundle) + "/";
 
@@ -45,11 +53,11 @@
 
 		if (Model.bundle.Pick == false)
 		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String22", "Bundle") + " " + precio;
+			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Bundle") + " " + precio;
 		}
 		else
 		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(Model.idioma, "String23", "Bundle") + " " + precio;
+			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Bundle") + " " + precio;
 		}		
 	}
 
@@ -63,13 +71,13 @@
 		}
 	}
 
-	@if (usuarioLogeado == true)
+	if (usuarioLogeado == true)
 	{
 		if (adminLogeado == true)
 		{
 			@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new
 			{
-				idioma = Model.idioma,
+				idioma = idioma,
 				bundleId = Model.bundle.Id
 			}))
 		}
@@ -92,7 +100,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			titulo = titulo,
 			enlace = enlace,
 			canonical = enlace,
@@ -102,7 +110,7 @@
 
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			bundleId = Model.bundle.Id
 		}))
 	}
@@ -110,7 +118,7 @@
 	{
 		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.Server, new
 		{
-			idioma = Model.idioma,
+			idioma = idioma,
 			bundleId = Model.bundle.Id,
 			usuarioId = usuario?.Id
 		}))

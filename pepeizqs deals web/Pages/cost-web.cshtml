@@ -1,18 +1,42 @@
 ﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
 @model pepeizqs_deals_web.Pages.cost_webModel
 
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
 @{
-	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "CostWeb");
+	string idioma = Model.idioma;
+	bool usuarioLogeado = SignInManager.IsSignedIn(User);
+	Usuario? usuario = new Usuario();
+
+	if (usuarioLogeado == true)
+	{
+		usuario = await UserManager.GetUserAsync(User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+			{
+				idioma = usuario.LanguageOverride;
+			}
+		}
+	}
+
+	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "CostWeb");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
 <div style="display: flex; flex-direction: column; gap: 20px;">
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "CostWeb")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "CostWeb")
 	</div>
 
 	<div style="font-size: 22px; text-align: left; margin-top: 20px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String16", "CostWeb")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "CostWeb")
 	</div>
 
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
@@ -21,80 +45,80 @@
 
 			if (saldo >= 0)
 			{
-				@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String14", "CostWeb"), saldo.ToString().Replace(".", ","))
+				@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String14", "CostWeb"), saldo.ToString().Replace(".", ","))
 			}
 			else
 			{
-				@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String15", "CostWeb"), saldo.ToString().Replace(".", ","))
+				@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String15", "CostWeb"), saldo.ToString().Replace(".", ","))
 			}
 		}
 	</div>
 
 	<div style="font-size: 22px; text-align: left; margin-top: 20px;">
-		@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String17", "CostWeb")
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String17", "CostWeb")
 	</div>
 
 	<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "CostWeb")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "CostWeb")
 			</div>
 			<hr />
 			<div style="display: flex; flex-direction: column; gap: 20px;">
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String10", "CostWeb")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "CostWeb")
 				</div>
 
 				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "CostWeb"), "30/1/2027")
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "CostWeb"), "30/1/2027")
 				</div>
 			</div>
 		</div>
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "CostWeb")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "CostWeb")
 			</div>
 			<hr />
 			<div style="display: flex; flex-direction: column; gap: 20px;">
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String11", "CostWeb")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "CostWeb")
 				</div>
 
 				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "CostWeb"), "15/3/2028")
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "CostWeb"), "15/3/2028")
 				</div>
 			</div>
 		</div>
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "CostWeb")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "CostWeb")
 			</div>
 			<hr />
 			<div style="display: flex; flex-direction: column; gap: 20px;">
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String12", "CostWeb")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "CostWeb")
 				</div>
 
 				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "CostWeb"), "6/12/2025")
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "CostWeb"), "6/12/2025")
 				</div>
 			</div>
 		</div>
 
 		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 			<div>
-				@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String8", "CostWeb")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "CostWeb")
 			</div>
 			<hr />
 			<div style="display: flex; flex-direction: column; gap: 20px;">
 				<div>
-					@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String13", "CostWeb")
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "CostWeb")
 				</div>
 
 				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(Model.idioma, "String9", "CostWeb"), "6/12/2025")
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "CostWeb"), "6/12/2025")
 				</div>
 			</div>
 		</div>

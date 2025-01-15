@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario != null)
+{
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div>
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountLanguage")
+                </div>
+
+                <div>
+                    @idiomaWeb
+                </div>
+            </div>
+
+            @if (Herramientas.Idiomas.SacarIdiomaUsuario(usuario.Language) == "en" || Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride) == "en")
+            {
+                <div style="font-size: 14px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountLanguage")
+                </div>
+            }
+
+            <div>
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountLanguage")
+            </div>
+
+            <div class="menu-dropdown" style="width: fit-content; margin-top: 5px;">
+                <button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+                    <div style="font-size: 14px; color: var(--colorEnlace); padding-right: 15px;">
+                        @idiomaSobreescrito
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </div>
+                </button>
+
+                <div>
+                    <div class="menu-dropdown-contenido" style="left: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+                        @{
+                            string ingles = "en";
+                            string español = "es";
+                            string aleman = "de";
+                            string frances = "fr";
+                            string italiano = "it";
+                            string portugues = "pt";
+                        }
+
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, ingles))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, ingles, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, español))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, español, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, aleman))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, aleman, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, frances))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, frances, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, italiano))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, italiano, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, portugues))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, portugues, "AccountLanguage")
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            @if (avisoSobreescrito == true)
+            {
+                <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountLanguage")
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private string idiomaWeb = string.Empty;
+    private string idiomaSobreescrito = string.Empty;
+    private bool avisoSobreescrito = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+        if (usuario != null)
+        {
+            idiomaWeb = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.Language), "AccountLanguage");
+
+            if (string.IsNullOrEmpty(usuario.LanguageOverride) == true)
+            {
+                idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountLanguage");
+            }
+            else
+            {
+                idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride), "AccountLanguage");
+            }
+        }
+    }
+
+    private async void CambiarIdiomaWeb(MouseEventArgs e, string nuevoIdioma)
+    {
+        bool actualizar = false;
+
+        if (string.IsNullOrEmpty(usuario.LanguageOverride) == true || usuario.LanguageOverride != nuevoIdioma)
+        {
+            actualizar = true;
+        }
+
+        if (actualizar == true)
+        {
+            usuario.LanguageOverride = nuevoIdioma;
+
+            idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride), "AccountLanguage");
+
+            await UserManager.UpdateAsync(usuario);
+
+            idioma = usuario.LanguageOverride;
+            avisoSobreescrito = true;
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

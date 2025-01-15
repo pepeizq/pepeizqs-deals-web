@@ -20,6 +20,22 @@
         catch { }
     }
 
+    bool usuarioLogeado = SignInManager.IsSignedIn(User);
+    Usuario usuario = new Usuario();
+
+    if (usuarioLogeado == true)
+    {
+        usuario = await UserManager.GetUserAsync(User);
+
+        if (usuario != null)
+        {
+            if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
+            {
+                idioma = usuario.LanguageOverride;
+            }
+        }
+    }
+
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
     string piscinaTiendas = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
     string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
@@ -41,13 +57,8 @@
         }
     }    
 
-    bool usuarioLogeado = SignInManager.IsSignedIn(User);
-    Usuario usuario = new Usuario();
-
     if (usuarioLogeado == true)
-    {
-        usuario = await UserManager.GetUserAsync(User);
-        
+    {       
         if (usuario != null)
         {
             if (usuario != null)

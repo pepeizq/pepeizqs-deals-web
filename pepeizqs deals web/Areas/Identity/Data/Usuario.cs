@@ -150,8 +150,12 @@ public class Usuario : IdentityUser
     public string? RewardsLastLogin { get; set; }
 
 	[PersonalData]
-	[Column(TypeName = "nvarchar(50)")]
+	[Column(TypeName = "nvarchar(100)")]
 	public string? Language { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? LanguageOverride { get; set; }
 
 	[PersonalData]
 	[Column(TypeName = "datetime(8)")]

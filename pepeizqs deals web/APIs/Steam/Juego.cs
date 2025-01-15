@@ -199,6 +199,11 @@ namespace APIs.Steam
 							}
 						}
 
+						if (string.IsNullOrEmpty(datos.Datos.Idiomas) == false)
+						{
+							juego.Idiomas = Herramientas.Idiomas.SteamSacarIdiomas(datos.Datos.Idiomas);
+						}
+
 						try
 						{
 							if (datos.Datos.Precio != null)
@@ -408,6 +413,9 @@ namespace APIs.Steam
 
 		[JsonPropertyName("short_description")]
 		public string DescripcionCorta { get; set; }
+
+		[JsonPropertyName("supported_languages")]
+		public string Idiomas { get; set; }
 
 		[JsonPropertyName("header_image")]
 		public string ImagenHeader_460x215 { get; set; }

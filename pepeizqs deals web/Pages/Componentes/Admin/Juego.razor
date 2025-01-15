@@ -10,7 +10,7 @@
 		<div style="width: 100%;">
 			Admin Editar • @juego.Nombre
 		</div>
-		
+
 		<a href="/api/game/@juego.Id" target="_blank" style="padding: 10px 15px; text-decoration: none;">
 			Api
 		</a>
@@ -204,6 +204,10 @@
 						</button>
 
 						<label>@juego.DeckComprobacion.ToString()</label>
+
+						<button @onclick="(async () => await ActualizarGogApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+							Actualizar GOG
+						</button>
 					</div>
 				</div>
 
@@ -714,6 +718,8 @@
 		if (nuevoJuego != null)
 		{
 			BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+
+			await InvokeAsync(StateHasChanged);
 		}
 	}
 
@@ -764,6 +770,14 @@
 			juego.DeckComprobacion = DateTime.Now;
 			global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
 		}
+	}
+
+	private async Task ActualizarGogApi()
+	{
+		juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
+		juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+
+		global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
 	}
 
 	private string tipo = string.Empty;
