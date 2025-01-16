@@ -73,8 +73,8 @@
   "String72": "Windows Compatible",
   "String73": "Mac Compatible",
   "String74": "Linux Compatible",
-  "String75": "Has achievements for GOG Galaxy",
-  "String76": "Has cloud storage for GOG Galaxy",
+  "String75": "Has achievements for {0}",
+  "String76": "Has cloud storage for {0}",
   "String77": "This game is part of GOG's preservation program",
   "String78": "It is a video game soundtrack, this means that you will only have access to the audio files of the game.",
   "String79": "This game can only be run with a virtual reality device.",
@@ -88,5 +88,7 @@
   "String87": "Playable from Amazon Luna",
   "String88": "Links",
   "String89": "More from {0}",
-  "String90": "Discount Code:"
+  "String90": "Discount Code:",
+  "String91": "Audio",
+  "String92": "Text"
 }

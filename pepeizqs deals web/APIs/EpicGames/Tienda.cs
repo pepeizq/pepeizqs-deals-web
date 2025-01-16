@@ -30,7 +30,7 @@ namespace APIs.EpicGames
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			int juegos2 = 0;
 
@@ -93,17 +93,28 @@ namespace APIs.EpicGames
 
 																	int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
-																	string slug = null;
+																	string slug = juego.Enlace;
 
-                                                                    if (juego.Enlaces != null)
-                                                                    {
-                                                                        if (juego.Enlaces.Count > 0)
-                                                                        {
-                                                                            slug = juego.Enlaces[0].Slug;
-                                                                        }
-                                                                    }
+																	if (string.IsNullOrEmpty(slug) == false)
+																	{
+																		if (slug.Contains("/") == true)
+																		{
+																			int int1 = slug.IndexOf("/");
+																			slug = slug.Remove(int1, slug.Length - int1);
+																		}
+																	}
+																	else
+																	{
+																		if (juego.Enlaces != null)
+																		{
+																			if (juego.Enlaces.Count > 0)
+																			{
+																				slug = juego.Enlaces[0].Slug;
+																			}
+																		}
+																	}
 
-                                                                    if (string.IsNullOrEmpty(slug) == true)
+																	if (string.IsNullOrEmpty(slug) == true)
 																	{
 																		if (juego.Enlaces2 != null)
 																		{
@@ -113,14 +124,6 @@ namespace APIs.EpicGames
 																			}
 																		}
 																	}
-
-                                                                    if (string.IsNullOrEmpty(slug) == true)
-																	{
-                                                                        if (string.IsNullOrEmpty(juego.Enlace) == false)
-                                                                        {
-                                                                            slug = juego.Enlace;
-                                                                        }
-                                                                    }
 
                                                                     if (descuento > 0 && string.IsNullOrEmpty(slug) == false && juego.Imagenes != null)
 																	{
@@ -133,8 +136,6 @@ namespace APIs.EpicGames
 
 																			string imagen = juego.Imagenes[0].Enlace;
 
-																			JuegoDRM drm = JuegoDRM.Epic;
-
 																			JuegoPrecio oferta = new JuegoPrecio
 																			{
 																				Nombre = nombre,
@@ -144,7 +145,7 @@ namespace APIs.EpicGames
 																				Precio = precioRebajado,
 																				Descuento = descuento,
 																				Tienda = Generar().Id,
-																				DRM = drm,
+																				DRM = JuegoDRM.Epic,
 																				FechaDetectado = DateTime.Now,
 																				FechaActualizacion = DateTime.Now
 																			};
@@ -155,7 +156,7 @@ namespace APIs.EpicGames
 																			}
 																			catch (Exception ex)
 																			{
-                                                                                BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                                                                BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 																			}
 
 																			juegos2 += 1;
@@ -163,11 +164,11 @@ namespace APIs.EpicGames
 
 																			try
 																			{
-																				BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+																				BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 																			}
 																			catch (Exception ex)
 																			{
-																				BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+																				BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 																			}
 																		}
 																	}

@@ -402,6 +402,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(35) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(35)) == false)
+					{
+						juego.EpicGames = JsonSerializer.Deserialize<JuegoEpicGames>(lector.GetString(35));
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

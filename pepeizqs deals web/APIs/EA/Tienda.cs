@@ -32,7 +32,7 @@ namespace APIs.EA
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			int juegos2 = 0;
 
@@ -109,8 +109,6 @@ namespace APIs.EA
 
                                     string imagen = juegobd.ImagenServidor + juegobd.i18n.ImagenGrande;
 
-                                    JuegoDRM drm = JuegoDRM.EA;
-
                                     JuegoPrecio oferta = new JuegoPrecio
                                     {
                                         Nombre = nombre,
@@ -120,7 +118,7 @@ namespace APIs.EA
                                         Precio = precioRebajado,
                                         Descuento = descuento,
                                         Tienda = Generar().Id,
-                                        DRM = drm,
+                                        DRM = JuegoDRM.EA,
                                         FechaDetectado = DateTime.Now,
                                         FechaActualizacion = DateTime.Now
                                     };
@@ -131,18 +129,18 @@ namespace APIs.EA
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                        BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                                     }
 
 									juegos2 += 1;
 
 									try
 									{
-										BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+										BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 									}
 									catch (Exception ex)
 									{
-                                        BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                        BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                                     }
 								}
                             }
@@ -189,6 +187,12 @@ namespace APIs.EA
 
 		[JsonPropertyName("mdmItemType")]
 		public string Tipo2 { get; set; }
+
+        [JsonPropertyName("softwareLocales")]
+        public List<string> Idiomas { get; set; }
+
+        [JsonPropertyName("gdpPath")]
+        public string EnlaceTienda { get; set; }
 	}
 
     public class EABDJuegoi18n

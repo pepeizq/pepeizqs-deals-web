@@ -4,6 +4,7 @@
 
 using APIs.GOG;
 using Juegos;
+using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 using System.Text.Json;
 
 namespace Herramientas
@@ -424,6 +425,42 @@ namespace Herramientas
 
 		#endregion
 
+		#region Juegos Razor
+
+		public static string EncontrarIdiomaJuego(string idiomaUsuario, string idiomaJuego)
+		{
+			string imagenBandera = string.Empty;
+
+			if (ComprobarEspañol(idiomaUsuario) == true && ComprobarEspañol(idiomaJuego) == true)
+			{
+				imagenBandera = "spanish";
+			}
+
+			if (ComprobarAleman(idiomaUsuario) == true && ComprobarAleman(idiomaJuego) == true)
+			{
+				imagenBandera = "german";
+			}
+
+			if (ComprobarFrances(idiomaUsuario) == true && ComprobarFrances(idiomaJuego) == true)
+			{
+				imagenBandera = "french";
+			}
+
+			if (ComprobarItaliano(idiomaUsuario) == true && ComprobarItaliano(idiomaJuego) == true)
+			{
+				imagenBandera = "italian";
+			}
+
+			if (ComprobarPortugues(idiomaUsuario) == true && ComprobarPortugues(idiomaJuego) == true)
+			{
+				imagenBandera = "portuguese";
+			}
+
+			return imagenBandera;
+		}
+
+		#endregion
+
 		#region Steam Juegos
 
 		private static List<SteamIdioma> ListadoSteamJuegos()
@@ -682,6 +719,359 @@ namespace Herramientas
 				if (añadir == true)
 				{
 					idiomas.Add(nuevoIdioma);
+				}
+			}
+
+			return idiomas;
+		}
+
+		#endregion
+
+		#region Epic Games Juegos
+
+		private static List<SteamIdioma> ListadoEpicGamesJuegos()
+		{
+			List<SteamIdioma> idiomas = [
+				new SteamIdioma
+				{
+					Id = "en",
+					Contenido = "English"
+				},
+				new SteamIdioma
+				{
+					Id = "es",
+					Contenido = "Spanish (Spain)"
+				},
+				new SteamIdioma
+				{
+					Id = "es",
+					Contenido = "Spanish - Spain"
+				},
+				new SteamIdioma
+				{
+					Id = "de",
+					Contenido = "German"
+				},
+				new SteamIdioma
+				{
+					Id = "fr",
+					Contenido = "French"
+				},
+				new SteamIdioma
+				{
+					Id = "it",
+					Contenido = "Italian"
+				},
+				new SteamIdioma
+				{
+					Id = "pt",
+					Contenido = "Portuguese - Portugal"
+				},
+				new SteamIdioma
+				{
+					Id = "pt",
+					Contenido = "Portuguese (Portugal)"
+				},
+				new SteamIdioma
+				{
+					Id = "da",
+					Contenido = "Danish"
+				},
+				new SteamIdioma
+				{
+					Id = "nl",
+					Contenido = "Dutch"
+				},
+				new SteamIdioma
+				{
+					Id = "nn",
+					Contenido = "Norwegian"
+				},
+				new SteamIdioma
+				{
+					Id = "pl",
+					Contenido = "Polish"
+				},
+				new SteamIdioma
+				{
+					Id = "sv",
+					Contenido = "Swedish"
+				},
+				new SteamIdioma
+				{
+					Id = "ko",
+					Contenido = "Korean"
+				},
+				new SteamIdioma
+				{
+					Id = "zhs",
+					Contenido = "Simplified Chinese"
+				},
+				new SteamIdioma
+				{
+					Id = "zht",
+					Contenido = "Traditional Chinese"
+				},
+				new SteamIdioma
+				{
+					Id = "lat",
+					Contenido = "Spanish - Latin America"
+				},
+				new SteamIdioma
+				{
+					Id = "br",
+					Contenido = "Portuguese (Brazil)"
+				},
+				new SteamIdioma
+				{
+					Id = "ja",
+					Contenido = "Japanese"
+				},
+				new SteamIdioma
+				{
+					Id = "hu",
+					Contenido = "Hungarian"
+				},
+				new SteamIdioma
+				{
+					Id = "cz",
+					Contenido = "Czech"
+				},
+				new SteamIdioma
+				{
+					Id = "tr",
+					Contenido = "Turkish"
+				},
+				new SteamIdioma
+				{
+					Id = "uk",
+					Contenido = "Ukrainian"
+				},
+				new SteamIdioma
+				{
+					Id = "fi",
+					Contenido = "Finnish"
+				},
+				new SteamIdioma
+				{
+					Id = "ro",
+					Contenido = "Romanian"
+				},
+				new SteamIdioma
+				{
+					Id = "ro",
+					Contenido = "Romanian"
+				},
+				new SteamIdioma
+				{
+					Id = "el",
+					Contenido = "Greek"
+				}
+			];
+
+			return idiomas;
+		}
+
+		public static List<JuegoIdioma> EpicGamesSacarIdiomas(List<string> audios, List<string> textos)
+		{
+			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
+
+			if (audios != null)
+			{
+				if (audios.Count > 0)
+				{
+					foreach (var audio in audios)
+					{
+						foreach (var idioma in ListadoEpicGamesJuegos())
+						{
+							if (idioma.Contenido == audio)
+							{
+								JuegoIdioma nuevoIdioma = new JuegoIdioma
+								{
+									DRM = JuegoDRM.Epic,
+									Idioma = idioma.Id,
+									Audio = true,
+									Texto = false
+								};
+
+								bool añadir = true;
+
+								if (idiomas.Count > 0)
+								{
+									foreach (var idioma2 in idiomas)
+									{
+										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										{
+											añadir = false;
+										}
+									}
+								}
+
+								if (añadir == true)
+								{
+									idiomas.Add(nuevoIdioma);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if (textos != null)
+			{
+				if (textos.Count > 0)
+				{
+					foreach (var texto in textos)
+					{
+						foreach (var idioma in ListadoEpicGamesJuegos())
+						{
+							if (idioma.Contenido == texto)
+							{
+								JuegoIdioma nuevoIdioma = new JuegoIdioma
+								{
+									DRM = JuegoDRM.Epic,
+									Idioma = idioma.Id,
+									Audio = false,
+									Texto = true
+								};
+
+								bool añadir = true;
+
+								if (idiomas.Count > 0)
+								{
+									foreach (var idioma2 in idiomas)
+									{
+										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										{
+											idioma2.Texto = true;
+
+											añadir = false;
+										}
+									}
+								}
+
+								if (añadir == true)
+								{
+									idiomas.Add(nuevoIdioma);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			return idiomas;
+		}
+
+		public static List<JuegoIdioma> EpicGamesSacarIdiomas(string contenido1, string contenido2)
+		{
+			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
+
+			string contenidoAudio = string.Empty;
+
+			if (string.IsNullOrEmpty(contenido1) == false)
+			{
+				if (contenido1.ToLower().Contains("audio") == true)
+				{
+					contenidoAudio = contenido1;
+				}
+			}
+
+			if (string.IsNullOrEmpty(contenido2) == false && string.IsNullOrEmpty(contenidoAudio) == true)
+			{
+				if (contenido2.ToLower().Contains("audio") == true)
+				{
+					contenidoAudio = contenido2;
+				}
+			}
+
+			if (string.IsNullOrEmpty(contenidoAudio) == false)
+			{
+				foreach (var idioma in ListadoEpicGamesJuegos())
+				{
+					if (contenidoAudio.Contains(idioma.Contenido) == true)
+					{
+						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						{
+							DRM = JuegoDRM.Epic,
+							Idioma = idioma.Id,
+							Audio = true,
+							Texto = true
+						};
+
+						bool añadir = true;
+
+						if (idiomas.Count > 0)
+						{
+							foreach (var idioma2 in idiomas)
+							{
+								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								{
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							idiomas.Add(nuevoIdioma);
+						}
+					}
+				}
+			}
+
+			string contenidoTexto = string.Empty;
+
+			if (string.IsNullOrEmpty(contenido1) == false)
+			{
+				if (contenido1.ToLower().Contains("text") == true)
+				{
+					contenidoTexto = contenido1;
+				}
+			}
+
+			if (string.IsNullOrEmpty(contenido2) == false && string.IsNullOrEmpty(contenidoTexto) == true)
+			{
+				if (contenido2.ToLower().Contains("text") == true)
+				{
+					contenidoTexto = contenido2;
+				}
+			}
+
+			if (string.IsNullOrEmpty(contenidoTexto) == false)
+			{
+				foreach (var idioma in ListadoEpicGamesJuegos())
+				{
+					if (contenidoTexto.Contains(idioma.Contenido) == true)
+					{
+						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						{
+							DRM = JuegoDRM.Epic,
+							Idioma = idioma.Id,
+							Audio = false,
+							Texto = true
+						};
+
+						bool añadir = true;
+
+						if (idiomas.Count > 0)
+						{
+							foreach (var idioma2 in idiomas)
+							{
+								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								{
+									idioma2.Texto = true;
+
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							idiomas.Add(nuevoIdioma);
+						}
+					}
 				}
 			}
 

@@ -50,6 +50,7 @@ namespace Juegos
 		public JuegoCantidadJugadoresSteam CantidadJugadores { get; set; }
 		public List<string> CuratorsSteam { get; set; }
 		public List<JuegoIdioma> Idiomas { get; set; }
+		public JuegoEpicGames EpicGames { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -194,6 +195,15 @@ namespace Juegos
         public bool GuardadoNube { get; set; }
 		public bool Preservacion { get; set; }
     }
+
+	public class JuegoEpicGames
+	{
+		public bool Windows { get; set; }
+		public bool Mac { get; set; }
+		public DateTime Fecha { get; set; }
+		public bool Logros { get; set; }
+		public bool GuardadoNube { get; set; }
+	}
 
 	public class JuegoCantidadJugadoresSteam
 	{

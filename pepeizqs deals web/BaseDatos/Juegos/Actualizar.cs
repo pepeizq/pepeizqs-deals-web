@@ -765,8 +765,20 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void SlugGOG(Juego juego, SqlConnection conexion)
+		public static void SlugGOG(Juego juego, SqlConnection conexion = null)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET slugGOG=@slugGOG WHERE id=@id";
 
@@ -779,6 +791,40 @@ namespace BaseDatos.Juegos
 				try
 				{
 					
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void SlugEpic(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET slugEpic=@slugEpic WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@slugEpic", juego.SlugEpic);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
 				}
 				catch
 				{
@@ -923,6 +969,44 @@ namespace BaseDatos.Juegos
 				{
 					comando.Parameters.AddWithValue("@id", juego.Id);
 					comando.Parameters.AddWithValue("@galaxyGOG", JsonSerializer.Serialize(juego.GalaxyGOG));
+					comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
+
+					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
+
+		public static void EpicGames(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+					"SET epicGames=@epicGames, idiomas=@idiomas WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@epicGames", JsonSerializer.Serialize(juego.EpicGames));
 					comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
 
 					comando.ExecuteNonQuery();

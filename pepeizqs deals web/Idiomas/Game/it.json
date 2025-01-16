@@ -73,8 +73,8 @@
   "String72": "Compatibile con Windows",
   "String73": "Compatibile con Mac",
   "String74": "Compatibile con Linux",
-  "String75": "Ha risultati per GOG Galaxy",
-  "String76": "Dispone di spazio di archiviazione cloud per GOG Galaxy",
+  "String75": "Ha risultati per {0}",
+  "String76": "Dispone di spazio di archiviazione cloud per {0}",
   "String77": "Questo gioco fa parte del programma di conservazione di GOG",
   "String78": "È la colonna sonora di un videogioco, ciò significa che avrai accesso solo ai file audio del gioco.",
   "String79": "Questo gioco può essere eseguito solo con un dispositivo di realtà virtuale.",
@@ -88,5 +88,7 @@
   "String87": "Giocabile da Amazon Luna",
   "String88": "Collegamenti",
   "String89": "Altro da {0}",
-  "String90": "Codice Sconto:"
+  "String90": "Codice Sconto:",
+  "String91": "Audio",
+  "String92": "Testo"
 }

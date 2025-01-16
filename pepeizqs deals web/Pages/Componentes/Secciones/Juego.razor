@@ -662,6 +662,14 @@
                                                     }
                                                 }
 
+                                                if (drm.Id == JuegoDRM.Epic && juego.EpicGames != null)
+                                                {
+                                                    if (juego.EpicGames.Windows == true || juego.EpicGames.Mac == true)
+                                                    {
+                                                        añadirDiv = true;
+                                                    }
+                                                }
+
                                                 if (drm.Id == JuegoDRM.GOG && juego.Tipo == JuegoTipo.Game)
                                                 {
                                                     amazonLuna = global::BaseDatos.Streaming.Buscar.AmazonLuna(juego.Id);
@@ -712,6 +720,34 @@
                                                                         </div>
                                                                     }
                                                                 </div>
+
+                                                                if (juego.Tipo == JuegoTipo.Game)
+                                                                {
+                                                                    if (juego.Categorias != null)
+                                                                    {
+                                                                        if (juego.Categorias.Count > 0)
+                                                                        {
+                                                                            <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
+                                                                                @foreach (var categoria in juego.Categorias)
+                                                                                {
+                                                                                    if (categoria == "22")
+                                                                                    {
+                                                                                        <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String75", "Game"), "Steam")" style="width: 100%; height: 100%;">
+                                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
+                                                                                        </div>
+                                                                                    }
+
+                                                                                    if (categoria == "23")
+                                                                                    {
+                                                                                        <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String76", "Game"), "Steam")" style="width: 100%; height: 100%;">
+                                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
+                                                                                        </div>
+                                                                                    }
+                                                                                }
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                }
                                                             }	
                                                         }
 
@@ -751,14 +787,14 @@
 
                                                                             @if (juego.GalaxyGOG.Logros == true)
                                                                             {
-                                                                                <div title="@Idiomas.BuscarTexto(idioma, "String75", "Game")" style="width: 100%; height: 100%;">
+                                                                                <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String75", "Game"), "GOG Galaxy")" style="width: 100%; height: 100%;">
                                                                                     <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
                                                                                 </div>
                                                                             }
 
                                                                             @if (juego.GalaxyGOG.GuardadoNube == true)
                                                                             {
-                                                                                <div title="@Idiomas.BuscarTexto(idioma, "String76", "Game")" style="width: 100%; height: 100%;">
+                                                                                <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String76", "Game"), "GOG Galaxy")" style="width: 100%; height: 100%;">
                                                                                     <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
                                                                                 </div>
                                                                             }
@@ -773,6 +809,50 @@
                                                                     }
                                                                 }
                                                             }															
+                                                        }
+
+                                                        @if (drm.Id == JuegoDRM.Epic)
+                                                        {
+                                                            if (juego.EpicGames != null)
+                                                            {
+                                                                <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
+                                                                    @if (juego.EpicGames.Windows == true)
+                                                                    {
+                                                                        <div title="@Idiomas.BuscarTexto(idioma, "String72", "Game")" style="width: 100%; height: 100%;">
+                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 15 15"><path d="M0 1h7v7H0zM0 9h7v7H0zM8 9h7v7H8zM8 1h7v7H8z" fill="var(--colorTexto)"></path></svg>
+                                                                        </div>
+                                                                    }
+
+                                                                    @if (juego.EpicGames.Mac == true)
+                                                                    {
+                                                                        <div title="@Idiomas.BuscarTexto(idioma, "String73", "Game")" style="width: 100%; height: 100%;">
+                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 410 410"><path d="M361.05 137.57c-61 66-57 118 13 165-11 33-29 63-54 89-17 18-38 25-60 14-32-15-62-14-93 1-18 9-35 5-51-8-49-40-95-150-72-219 18-55 75-99 137-69 21 10 40 6 61-2 51-19 87-10 119 29zm-153-45c0-50 26-80 78-92 5 51-28 91-78 92z" fill="var(--colorTexto)"></path></svg>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+
+                                                                if (juego.Tipo == JuegoTipo.Game)
+                                                                {
+                                                                    if (juego.EpicGames.Logros == true || juego.EpicGames.GuardadoNube == true)
+                                                                    {
+                                                                        <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
+                                                                            @if (juego.EpicGames.Logros == true)
+                                                                            {
+                                                                                <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String75", "Game"), "Epic Games")" style="width: 100%; height: 100%;">
+                                                                                    <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
+                                                                                </div>
+                                                                            }
+
+                                                                            @if (juego.EpicGames.GuardadoNube == true)
+                                                                            {
+                                                                                <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String76", "Game"), "Epic Games")" style="width: 100%; height: 100%;">
+                                                                                    <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            }
                                                         }
 
                                                         @if (drm.Id == JuegoDRM.Steam && juego.Deck != JuegoDeck.Desconocido)
@@ -819,6 +899,55 @@
                                                                 <div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String87", "Game")">
                                                                     <img src="@APIs.GOG.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" />
                                                                 </div>
+                                                            }
+                                                        }
+
+                                                        @if (juego.Idiomas != null)
+                                                        {
+                                                            if (juego.Idiomas.Count > 0)
+                                                            {
+                                                                foreach (var idiomaJuego in juego.Idiomas)
+                                                                {
+                                                                    if (idiomaJuego.DRM == drm.Id)
+                                                                    {
+                                                                        string idiomaEncontrado = Herramientas.Idiomas.EncontrarIdiomaJuego(idioma, idiomaJuego.Idioma);
+
+                                                                        if (string.IsNullOrEmpty(idiomaEncontrado) == false)
+                                                                        {
+                                                                            string imagenBandera = "/imagenes/banderas/" + idiomaEncontrado + ".svg";
+
+                                                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                                                <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+
+                                                                                <div style="font-size: 14px;">
+                                                                                    @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                                </div>
+
+                                                                                @if (idiomaJuego.Audio == true)
+                                                                                {
+                                                                                    <i class="fa-solid fa-check"></i>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                                }
+
+                                                                                <div style="font-size: 14px;">
+                                                                                    @Idiomas.BuscarTexto(idioma, "String92", "Game")
+                                                                                </div>
+
+                                                                                @if (idiomaJuego.Texto == true)
+                                                                                {
+                                                                                    <i class="fa-solid fa-check"></i>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                                }
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     </div>
@@ -896,7 +1025,7 @@
                                                                 </button>
                                                             </div>
                                                         }
-                                                    
+
                                                         <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda, usuarioPatreon)" target="_blank">
                                                             <div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
                                                                 <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
@@ -964,7 +1093,7 @@
                                             {
                                                 foreach (var precioBajo in preciosBajos)
                                                 {
-                                                     <div>
+                                                    <div>
                                                         @if (string.IsNullOrEmpty(precioBajo.CodigoTexto) == false)
                                                         {
                                                             <div style="width: 100%; display: flex; justify-content: right;">
@@ -2258,12 +2387,12 @@
                             }
 
                             <ApexPointSeries TItem="PuntoGrafico"
-                                Items="datos"
-                                Name="@punto.Año.ToString()"
-                                SeriesType="SeriesType.Line"
-                                XValue="e => e.DiaMes"
-                                YValue="e => e.Precio"
-                                ShowDataLabels="true"/>
+                            Items="datos"
+                            Name="@punto.Año.ToString()"
+                            SeriesType="SeriesType.Line"
+                            XValue="e => e.DiaMes"
+                            YValue="e => e.Precio"
+                            ShowDataLabels="true"/>
                         }
                     </ChildContent>
                 </ApexChart>
@@ -2476,6 +2605,27 @@
                         juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
 
                         global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+            {
+                if (juego.EpicGames == null)
+                {
+                    juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
+                    juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
+
+                    global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
+                }
+                else
+                {
+                    if (juego.EpicGames.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+                    {
+                        juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
+                        juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
+
+                        global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
                     }
                 }
             }
