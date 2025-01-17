@@ -727,24 +727,37 @@
                                                                     {
                                                                         if (juego.Categorias.Count > 0)
                                                                         {
-                                                                            <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
-                                                                                @foreach (var categoria in juego.Categorias)
-                                                                                {
-                                                                                    if (categoria == "22")
-                                                                                    {
-                                                                                        <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String75", "Game"), "Steam")" style="width: 100%; height: 100%;">
-                                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
-                                                                                        </div>
-                                                                                    }
+                                                                            bool añadirDiv2 = false;
 
-                                                                                    if (categoria == "23")
-                                                                                    {
-                                                                                        <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String76", "Game"), "Steam")" style="width: 100%; height: 100%;">
-                                                                                            <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
-                                                                                        </div>
-                                                                                    }
+                                                                            foreach (var categoria in juego.Categorias)
+                                                                            {
+                                                                                if (categoria == "22" || categoria == "23")
+                                                                                {
+                                                                                    añadirDiv2 = true;
                                                                                 }
-                                                                            </div>
+                                                                            }
+
+                                                                            if (añadirDiv2 == true)
+                                                                            {
+                                                                                <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
+                                                                                    @foreach (var categoria in juego.Categorias)
+                                                                                    {
+                                                                                        if (categoria == "22")
+                                                                                        {
+                                                                                            <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String75", "Game"), "Steam")" style="width: 100%; height: 100%;">
+                                                                                                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 512 512" fill="var(--colorTexto)"><path d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z"></path></svg>
+                                                                                            </div>
+                                                                                        }
+
+                                                                                        if (categoria == "23")
+                                                                                        {
+                                                                                            <div title="@string.Format(Idiomas.BuscarTexto(idioma, "String76", "Game"), "Steam")" style="width: 100%; height: 100%;">
+                                                                                                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 640 512" fill="var(--colorTexto)"><path d="M0 336c0 79.5 64.5 144 144 144l368 0c70.7 0 128-57.3 128-128c0-61.9-44-113.6-102.4-125.4c4.1-10.7 6.4-22.4 6.4-34.6c0-53-43-96-96-96c-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192c0 2.7 .1 5.4 .2 8.1C40.2 219.8 0 273.2 0 336z" /></svg>
+                                                                                            </div>
+                                                                                        }
+                                                                                    }
+                                                                                </div>
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -906,15 +919,29 @@
                                                         {
                                                             if (juego.Idiomas.Count > 0)
                                                             {
+                                                                bool idiomaEncontrado = false;
+
+                                                                string idiomaUsuario = idioma;
+
+                                                                if (usuario != null)
+                                                                {
+                                                                    if (string.IsNullOrEmpty(usuario.LanguageGames) == false)
+                                                                    {
+                                                                        idiomaUsuario = usuario.LanguageGames;
+                                                                    }
+                                                                }
+
                                                                 foreach (var idiomaJuego in juego.Idiomas)
                                                                 {
                                                                     if (idiomaJuego.DRM == drm.Id)
                                                                     {
-                                                                        string idiomaEncontrado = Herramientas.Idiomas.EncontrarIdiomaJuego(idioma, idiomaJuego.Idioma);
+                                                                        string idiomaEncontradoTexto = Herramientas.Idiomas.EncontrarIdiomaJuego(idiomaUsuario, idiomaJuego.Idioma);
 
-                                                                        if (string.IsNullOrEmpty(idiomaEncontrado) == false)
+                                                                        if (string.IsNullOrEmpty(idiomaEncontradoTexto) == false)
                                                                         {
-                                                                            string imagenBandera = "/imagenes/banderas/" + idiomaEncontrado + ".svg";
+                                                                            idiomaEncontrado = true;
+
+                                                                            string imagenBandera = "/imagenes/banderas/" + idiomaEncontradoTexto + ".svg";
 
                                                                             <div style="display: flex; align-items: center; gap: 10px;">
                                                                                 <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
@@ -946,6 +973,30 @@
                                                                                 }
                                                                             </div>
                                                                         }
+                                                                    }
+                                                                }
+
+                                                                if (drm.Id == JuegoDRM.Steam || drm.Id == JuegoDRM.GOG || drm.Id == JuegoDRM.Epic)
+                                                                {
+                                                                    if (idiomaEncontrado == false)
+                                                                    {
+                                                                        string imagenBandera = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaUsuario(idiomaUsuario) + ".svg";
+
+                                                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                                                            <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+
+                                                                            <div style="font-size: 14px;">
+                                                                                @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                            </div>
+
+                                                                            <i class="fa-solid fa-xmark"></i>
+
+                                                                            <div style="font-size: 14px;">
+                                                                                @Idiomas.BuscarTexto(idioma, "String92", "Game")
+                                                                            </div>
+
+                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                        </div>
                                                                     }
                                                                 }
                                                             }

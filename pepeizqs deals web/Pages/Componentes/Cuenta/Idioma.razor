@@ -7,8 +7,19 @@
 
 @if (usuario != null)
 {
+    string ingles = "en";
+    string español = "es";
+    string aleman = "de";
+    string frances = "fr";
+    string italiano = "it";
+    string portugues = "pt";
+
     <div style="display: flex; flex-direction: column; gap: 20px;">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="margin-bottom: 5px;">
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountLanguage")
+            </div>
+            
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div>
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountLanguage")
@@ -43,15 +54,6 @@
 
                 <div>
                     <div class="menu-dropdown-contenido" style="left: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
-                        @{
-                            string ingles = "en";
-                            string español = "es";
-                            string aleman = "de";
-                            string frances = "fr";
-                            string italiano = "it";
-                            string portugues = "pt";
-                        }
-
                         <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, ingles))">
                             @Herramientas.Idiomas.BuscarTexto(idioma, ingles, "AccountLanguage")
                         </button>
@@ -81,6 +83,51 @@
                 </div>
             }
         </div>
+
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountLanguage")
+            </div>
+
+            <div>
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "AccountLanguage")
+            </div>
+
+            <div class="menu-dropdown" style="width: fit-content;">
+                <button class="boton-pequeño" style="display: flex; align-items: center; width: 100%; padding: 10px 15px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+                    <div style="font-size: 14px; color: var(--colorEnlace); padding-right: 15px;">
+                        @idiomaJuegos
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </div>
+                </button>
+
+                <div>
+                    <div class="menu-dropdown-contenido" style="left: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, ingles))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, ingles, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, español))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, español, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, aleman))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, aleman, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, frances))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, frances, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, italiano))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, italiano, "AccountLanguage")
+                        </button>
+                        <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, portugues))">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, portugues, "AccountLanguage")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -96,6 +143,7 @@
     private string idiomaWeb = string.Empty;
     private string idiomaSobreescrito = string.Empty;
     private bool avisoSobreescrito = false;
+    private string idiomaJuegos = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,6 +160,15 @@
             else
             {
                 idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride), "AccountLanguage");
+            }
+
+            if (string.IsNullOrEmpty(usuario.LanguageGames) == true)
+            {
+                idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountLanguage");
+            }
+            else
+            {
+                idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageGames), "AccountLanguage");
             }
         }
     }
@@ -136,6 +193,26 @@
             idioma = usuario.LanguageOverride;
             avisoSobreescrito = true;
 
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async void CambiarIdiomaJuegos(MouseEventArgs e, string nuevoIdioma)
+    {
+        bool actualizar = false;
+
+        if (string.IsNullOrEmpty(usuario.LanguageGames) == true || usuario.LanguageGames != nuevoIdioma)
+        {
+            actualizar = true;
+        }
+
+        if (actualizar == true)
+        {
+            usuario.LanguageGames = nuevoIdioma;
+
+            idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageGames), "AccountLanguage");
+
+            await UserManager.UpdateAsync(usuario);
             await InvokeAsync(StateHasChanged);
         }
     }

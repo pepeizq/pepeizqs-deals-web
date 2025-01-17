@@ -158,6 +158,10 @@ public class Usuario : IdentityUser
 	public string? LanguageOverride { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "nvarchar(100)")]
+	public string? LanguageGames { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "datetime(8)")]
 	public DateTime? PatreonLastCheck { get; set; }
 

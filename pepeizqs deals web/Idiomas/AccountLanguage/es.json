@@ -9,5 +9,8 @@
   "String2": "Nota: Si tu idioma no esta en la web se cambia por defecto a Inglés.",
   "String3": "Si tu idioma es diferente al detectado por la web, puedes cambiarlo aquí:",
   "String4": "Cambia el idioma",
-  "String5": "Actualiza la página para aplicar completamente el cambio de idioma"
+  "String5": "Actualiza la página para aplicar completamente el cambio de idioma",
+  "String6": "También puedes seleccionar en que idioma deseas que aparezcan las traducciones de los juegos si están disponibles:",
+  "String7": "Idioma en la web",
+  "String8": "Traducciones en los juegos"
 }

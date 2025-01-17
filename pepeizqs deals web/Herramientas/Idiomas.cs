@@ -4,7 +4,6 @@
 
 using APIs.GOG;
 using Juegos;
-using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 using System.Text.Json;
 
 namespace Herramientas
@@ -263,6 +262,16 @@ namespace Herramientas
 			return idiomaSteam;
 		}
 
+		public static bool ComprobarIngles(string idiomaUsuario)
+		{
+			if (idiomaUsuario == "en" || idiomaUsuario == "en-US" || idiomaUsuario == "en-GB")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 		public static bool ComprobarEspañol(string idiomaUsuario)
 		{
 			if (idiomaUsuario == "es" || idiomaUsuario == "es-ES" || idiomaUsuario == "ca" || idiomaUsuario == "ca-ES-valencia" || idiomaUsuario == "eu" || idiomaUsuario == "gl")
@@ -431,6 +440,11 @@ namespace Herramientas
 		{
 			string imagenBandera = string.Empty;
 
+			if (ComprobarIngles(idiomaUsuario) == true && ComprobarIngles(idiomaJuego) == true)
+			{
+				imagenBandera = "english";
+			}
+
 			if (ComprobarEspañol(idiomaUsuario) == true && ComprobarEspañol(idiomaJuego) == true)
 			{
 				imagenBandera = "spanish";
@@ -452,6 +466,43 @@ namespace Herramientas
 			}
 
 			if (ComprobarPortugues(idiomaUsuario) == true && ComprobarPortugues(idiomaJuego) == true)
+			{
+				imagenBandera = "portuguese";
+			}
+
+			return imagenBandera;
+		}
+
+		public static string EncontrarIdiomaUsuario(string idiomaUsuario)
+		{
+			string imagenBandera = string.Empty;
+
+			if (ComprobarIngles(idiomaUsuario) == true)
+			{
+				imagenBandera = "english";
+			}
+
+			if (ComprobarEspañol(idiomaUsuario) == true)
+			{
+				imagenBandera = "spanish";
+			}
+
+			if (ComprobarAleman(idiomaUsuario) == true)
+			{
+				imagenBandera = "german";
+			}
+
+			if (ComprobarFrances(idiomaUsuario) == true)
+			{
+				imagenBandera = "french";
+			}
+
+			if (ComprobarItaliano(idiomaUsuario) == true)
+			{
+				imagenBandera = "italian";
+			}
+
+			if (ComprobarPortugues(idiomaUsuario) == true)
 			{
 				imagenBandera = "portuguese";
 			}

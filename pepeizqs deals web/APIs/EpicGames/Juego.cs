@@ -281,7 +281,7 @@ namespace APIs.EpicGames
 									{
 										if (datos.Paginas.Count > 0)
 										{
-											if (datos.Paginas[0].Datos.Requisitos.Idiomas.Count == 2)
+											if (datos.Paginas[0].Datos.Requisitos.Idiomas.Count >= 2)
 											{
 												List<JuegoIdioma> idiomas = Herramientas.Idiomas.EpicGamesSacarIdiomas(datos.Paginas[0].Datos.Requisitos.Idiomas[0], datos.Paginas[0].Datos.Requisitos.Idiomas[1]);
 
