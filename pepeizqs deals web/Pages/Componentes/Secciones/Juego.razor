@@ -1915,221 +1915,224 @@
             }
         }
 
-        <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
-            <div>
-                <div style="font-size: 18px; margin-bottom: 5px;">
-                    @Idiomas.BuscarTexto(idioma, "String1", "Reviews")
+        @if (juego.IdSteam > 0)
+        {
+            <div id="reviews" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                <div>
+                    <div style="font-size: 18px; margin-bottom: 5px;">
+                        @Idiomas.BuscarTexto(idioma, "String1", "Reviews")
+                    </div>
+                    <div style="font-size: 14px;">
+                        @Idiomas.BuscarTexto(idioma, "String2", "Reviews")
+                    </div>
+                    <hr />
                 </div>
-                <div style="font-size: 14px;">
-                    @Idiomas.BuscarTexto(idioma, "String2", "Reviews")
-                </div>
-                <hr />
-            </div>
 
-            <div style="display: flex; align-items: flex-start; gap: 40px;">
-                @if ((Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
-                {
-                    <div style="width: 25%; display: flex; flex-direction: column; gap: 10px;">
-                        @{
-                            string idiomaGlobal = "global";
-                            string subrayadoGlobal = string.Empty;
+                <div style="display: flex; align-items: flex-start; gap: 40px;">
+                    @if ((Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true) && juego.IdSteam > 0)
+                    {
+                        <div style="width: 25%; display: flex; flex-direction: column; gap: 10px;">
+                            @{
+                                string idiomaGlobal = "global";
+                                string subrayadoGlobal = string.Empty;
 
-                            if (idiomaAnalisis == idiomaGlobal)
-                            {
-                                subrayadoGlobal = "border-bottom: 1px solid var(--colorEnlace);";
-                            }
-                        }
-
-                        <button @onclick="(e => AnalisisIdioma(e, idiomaGlobal))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-                            <div style="@subrayadoGlobal padding-bottom: 5px;">
-                                @Idiomas.BuscarTexto(idioma, "String8", "Reviews")
-                            </div>
-                        </button>
-
-                        @foreach (var idiomaSteam in Idiomas.ListadoSteamReseñas(idioma))
-                        {
-                            string subrayado = string.Empty;
-
-                            if (idiomaAnalisis == idiomaSteam.Id)
-                            {
-                                subrayado = "border-bottom: 1px solid var(--colorEnlace);";
+                                if (idiomaAnalisis == idiomaGlobal)
+                                {
+                                    subrayadoGlobal = "border-bottom: 1px solid var(--colorEnlace);";
+                                }
                             }
 
-                            <button @onclick="(e => AnalisisIdioma(e, idiomaSteam.Id))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-                                <div style="@subrayado padding-bottom: 5px;">
-                                    @idiomaSteam.Contenido
+                            <button @onclick="(e => AnalisisIdioma(e, idiomaGlobal))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+                                <div style="@subrayadoGlobal padding-bottom: 5px;">
+                                    @Idiomas.BuscarTexto(idioma, "String8", "Reviews")
                                 </div>
                             </button>
-                        }
-                    </div>
-                }
 
-                @if (idiomaAnalisis == "global")
-                {
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 20px; width: 100%;">
-                        @foreach (var analisisRegion in analisisRegiones)
-                        {
-                            if (analisisRegion != null)
+                            @foreach (var idiomaSteam in Idiomas.ListadoSteamReseñas(idioma))
                             {
-                                int totalRegion = analisisRegion.CantidadPositivos + analisisRegion.CantidadNegativos;
-                                int porcentajeRegion = Calculadora.SacarDescuento(analisisRegion.CantidadPositivos + analisisRegion.CantidadNegativos, analisisRegion.CantidadNegativos);
+                                string subrayado = string.Empty;
 
-                                if (analisisRegion.CantidadPositivos > 0 && analisisRegion.CantidadNegativos == 0)
+                                if (idiomaAnalisis == idiomaSteam.Id)
                                 {
-                                    porcentajeRegion = 99;
+                                    subrayado = "border-bottom: 1px solid var(--colorEnlace);";
                                 }
 
-                                string imagenRegion = "/imagenes/banderas/" + analisisRegion.Idioma + ".svg";
-
-                                <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 10px; justify-content: center;">
-                                    <img src="@imagenRegion" style="height: 26px;" />
-
-                                    <div>
-                                        @if (porcentajeRegion > 74)
-                                        {
-                                            <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
-                                        }
-
-                                        @if (porcentajeRegion > 49 && porcentajeRegion < 75)
-                                        {
-                                            <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
-                                        }
-
-                                        @if (porcentajeRegion < 50)
-                                        {
-                                            <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
-                                        }
+                                <button @onclick="(e => AnalisisIdioma(e, idiomaSteam.Id))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+                                    <div style="@subrayado padding-bottom: 5px;">
+                                        @idiomaSteam.Contenido
                                     </div>
-
-                                    <div>
-                                        @porcentajeRegion%
-                                    </div>
-                                </div>
+                                </button>
                             }
-                        }
-                    </div>
-                }
-                else
-                {
-                    if (analisisAmpliado.CantidadPositivos > 0)
+                        </div>
+                    }
+
+                    @if (idiomaAnalisis == "global")
                     {
-                        <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
-                            <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-                                <div style="margin-bottom: 10px;">
-                                    @Idiomas.BuscarTexto(idioma, "String3", "Reviews")
-                                </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 20px; width: 100%;">
+                            @foreach (var analisisRegion in analisisRegiones)
+                            {
+                                if (analisisRegion != null)
+                                {
+                                    int totalRegion = analisisRegion.CantidadPositivos + analisisRegion.CantidadNegativos;
+                                    int porcentajeRegion = Calculadora.SacarDescuento(analisisRegion.CantidadPositivos + analisisRegion.CantidadNegativos, analisisRegion.CantidadNegativos);
 
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    @{
-                                        int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
-                                        int porcentaje = Calculadora.SacarDescuento(analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos, analisisAmpliado.CantidadNegativos);
-
-                                        if (analisisAmpliado.CantidadPositivos > 0 && analisisAmpliado.CantidadNegativos == 0)
-                                        {
-                                            porcentaje = 99;
-                                        }
+                                    if (analisisRegion.CantidadPositivos > 0 && analisisRegion.CantidadNegativos == 0)
+                                    {
+                                        porcentajeRegion = 99;
                                     }
 
-                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                    string imagenRegion = "/imagenes/banderas/" + analisisRegion.Idioma + ".svg";
+
+                                    <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                        <img src="@imagenRegion" style="height: 26px;" />
+
                                         <div>
-                                            @if (porcentaje > 74)
+                                            @if (porcentajeRegion > 74)
                                             {
                                                 <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
                                             }
 
-                                            @if (porcentaje > 49 && porcentaje < 75)
+                                            @if (porcentajeRegion > 49 && porcentajeRegion < 75)
                                             {
                                                 <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
                                             }
 
-                                            @if (porcentaje < 50)
+                                            @if (porcentajeRegion < 50)
                                             {
                                                 <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
                                             }
                                         </div>
 
                                         <div>
-                                            @porcentaje%
+                                            @porcentajeRegion%
                                         </div>
                                     </div>
-
-                                    <div>
-                                        @string.Format(Idiomas.BuscarTexto(idioma, "String4", "Reviews"), total.ToString("N0"))
-                                    </div>
-
-                                    <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
-                                        <i class="fa-solid fa-thumbs-up"></i>
-                                        @analisisAmpliado.CantidadPositivos.ToString("N0")
-                                    </div>
-
-                                    <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
-                                        <i class="fa-solid fa-thumbs-down"></i>
-                                        @analisisAmpliado.CantidadNegativos.ToString("N0")
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if (analisisAmpliado != null)
-                            {
-                                if (analisisAmpliado.Contenido != null)
-                                {
-                                    foreach (var analisis in analisisAmpliado.Contenido)
-                                    {
-                                        <a href="https://steamcommunity.com/profiles/@analisis.Autor.SteamID/recommended/@juego.IdSteam/" target="_blank" style="color: var(--colorTexto); text-decoration: none;">
-                                            <div class="boton-expandir2" style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-                                                <div style="display: flex; align-items: center; gap: 20px;">
-                                                    @if (analisis.Positiva == true)
-                                                    {
-                                                        <div style="color: var(--deckVerificado);">
-                                                            <i class="fa-solid fa-thumbs-up"></i>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div style="color: var(--colorTextoPeligro);">
-                                                            <i class="fa-solid fa-thumbs-down"></i>
-                                                        </div>
-                                                    }
-
-                                                    <div>
-                                                        @{
-                                                            TimeSpan tiempoSpan = TimeSpan.FromMinutes(analisis.Autor.TiempoJugadoSiempre);
-
-                                                            decimal tiempoD = Convert.ToDecimal(analisis.Autor.TiempoJugadoSiempre) / 60;
-                                                        }
-
-                                                        @string.Format(Idiomas.BuscarTexto(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
-                                                    </div>
-
-                                                    <div>
-                                                        @{
-                                                            DateTimeOffset fecha = DateTimeOffset.FromUnixTimeSeconds(analisis.TicksCreado);
-                                                            DateTime fechaCreado = fecha.UtcDateTime;
-                                                        }
-
-                                                        @string.Format(Idiomas.BuscarTexto(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
-                                                    </div>
-                                                </div>
-
-                                                <hr />
-
-                                                <div style="white-space: pre-line; max-width: 100%; overflow-wrap: break-word;">
-                                                    @analisis.Contenido
-                                                </div>
-                                            </div>
-                                        </a>
-                                    }
                                 }
                             }
                         </div>
                     }
                     else
                     {
-                        @Idiomas.BuscarTexto(idioma, "String5", "Reviews")
+                        if (analisisAmpliado.CantidadPositivos > 0)
+                        {
+                            <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+                                <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+                                    <div style="margin-bottom: 10px;">
+                                        @Idiomas.BuscarTexto(idioma, "String3", "Reviews")
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        @{
+                                            int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
+                                            int porcentaje = Calculadora.SacarDescuento(analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos, analisisAmpliado.CantidadNegativos);
+
+                                            if (analisisAmpliado.CantidadPositivos > 0 && analisisAmpliado.CantidadNegativos == 0)
+                                            {
+                                                porcentaje = 99;
+                                            }
+                                        }
+
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div>
+                                                @if (porcentaje > 74)
+                                                {
+                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                }
+
+                                                @if (porcentaje > 49 && porcentaje < 75)
+                                                {
+                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                }
+
+                                                @if (porcentaje < 50)
+                                                {
+                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                }
+                                            </div>
+
+                                            <div>
+                                                @porcentaje%
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            @string.Format(Idiomas.BuscarTexto(idioma, "String4", "Reviews"), total.ToString("N0"))
+                                        </div>
+
+                                        <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fa-solid fa-thumbs-up"></i>
+                                            @analisisAmpliado.CantidadPositivos.ToString("N0")
+                                        </div>
+
+                                        <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
+                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            @analisisAmpliado.CantidadNegativos.ToString("N0")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (analisisAmpliado != null)
+                                {
+                                    if (analisisAmpliado.Contenido != null)
+                                    {
+                                        foreach (var analisis in analisisAmpliado.Contenido)
+                                        {
+                                            <a href="https://steamcommunity.com/profiles/@analisis.Autor.SteamID/recommended/@juego.IdSteam/" target="_blank" style="color: var(--colorTexto); text-decoration: none;">
+                                                <div class="boton-expandir2" style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+                                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                                        @if (analisis.Positiva == true)
+                                                        {
+                                                            <div style="color: var(--deckVerificado);">
+                                                                <i class="fa-solid fa-thumbs-up"></i>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="color: var(--colorTextoPeligro);">
+                                                                <i class="fa-solid fa-thumbs-down"></i>
+                                                            </div>
+                                                        }
+
+                                                        <div>
+                                                            @{
+                                                                TimeSpan tiempoSpan = TimeSpan.FromMinutes(analisis.Autor.TiempoJugadoSiempre);
+
+                                                                decimal tiempoD = Convert.ToDecimal(analisis.Autor.TiempoJugadoSiempre) / 60;
+                                                            }
+
+                                                            @string.Format(Idiomas.BuscarTexto(idioma, "String7", "Reviews"), tiempoD.ToString("N1"))
+                                                        </div>
+
+                                                        <div>
+                                                            @{
+                                                                DateTimeOffset fecha = DateTimeOffset.FromUnixTimeSeconds(analisis.TicksCreado);
+                                                                DateTime fechaCreado = fecha.UtcDateTime;
+                                                            }
+
+                                                            @string.Format(Idiomas.BuscarTexto(idioma, "String6", "Reviews"), Calculadora.DiferenciaTiempo(fechaCreado, idioma))
+                                                        </div>
+                                                    </div>
+
+                                                    <hr />
+
+                                                    <div style="white-space: pre-line; max-width: 100%; overflow-wrap: break-word;">
+                                                        @analisis.Contenido
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        }
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            @Idiomas.BuscarTexto(idioma, "String5", "Reviews")
+                        }
                     }
-                }
+                </div>
             </div>
-        </div>
+        }
 
         @if (dlcs.Count > 0)
         {

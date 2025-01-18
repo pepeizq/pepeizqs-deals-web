@@ -153,21 +153,21 @@ namespace Herramientas
 
 		//https://partner.steamgames.com/doc/store/localization/languages
 
-		public class SteamIdioma
+		public class IdiomaClase
 		{
 			public string Id { get; set; }
 			public string Contenido { get; set; }
 		}
 
-		public static List<SteamIdioma> ListadoSteamReseñas(string idiomaUsuario)
+		public static List<IdiomaClase> ListadoSteamReseñas(string idiomaUsuario)
 		{
 			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "brazilian", "swedish", "greek", "polish", "norwegian", "romanian", "dutch", "danish", "czech", "finnish"];
 
-			List<SteamIdioma> idiomasFinal = new List<SteamIdioma>();
+			List<IdiomaClase> idiomasFinal = new List<IdiomaClase>();
 
 			foreach (var idioma in idiomas)
 			{
-				SteamIdioma idiomaFinal = new SteamIdioma();
+				IdiomaClase idiomaFinal = new IdiomaClase();
 				idiomaFinal.Id = idioma;
 				idiomaFinal.Contenido = Idiomas.BuscarTexto(idiomaUsuario, "Language." + idioma, "Reviews");
 
@@ -512,132 +512,141 @@ namespace Herramientas
 
 		#endregion
 
-		#region Steam Juegos
 
-		private static List<SteamIdioma> ListadoSteamJuegos()
+		private static List<IdiomaClase> ListadoIdiomasBuscar()
 		{
-			List<SteamIdioma> idiomas = [
-				new SteamIdioma
+			List<IdiomaClase> idiomas = [
+				new IdiomaClase
 				{
 					Id = "en",
 					Contenido = "English"
 				},
-				new SteamIdioma
+				new IdiomaClase
+				{
+					Id = "es",
+					Contenido = "Spanish (Spain)"
+				},
+				new IdiomaClase
 				{
 					Id = "es",
 					Contenido = "Spanish - Spain"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "de",
 					Contenido = "German"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "fr",
 					Contenido = "French"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "it",
 					Contenido = "Italian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "pt",
 					Contenido = "Portuguese - Portugal"
 				},
-				new SteamIdioma
+				new IdiomaClase
+				{
+					Id = "pt",
+					Contenido = "Portuguese (Portugal)"
+				},
+				new IdiomaClase
 				{
 					Id = "da",
 					Contenido = "Danish"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "nl",
 					Contenido = "Dutch"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "nn",
 					Contenido = "Norwegian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "pl",
 					Contenido = "Polish"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "sv",
 					Contenido = "Swedish"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "ko",
 					Contenido = "Korean"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "zhs",
 					Contenido = "Simplified Chinese"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "zht",
 					Contenido = "Traditional Chinese"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "lat",
 					Contenido = "Spanish - Latin America"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "br",
-					Contenido = "Portuguese - Brazil"
+					Contenido = "Portuguese (Brazil)"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "ja",
 					Contenido = "Japanese"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "hu",
 					Contenido = "Hungarian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "cz",
 					Contenido = "Czech"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "tr",
 					Contenido = "Turkish"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "uk",
 					Contenido = "Ukrainian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "fi",
 					Contenido = "Finnish"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "ro",
 					Contenido = "Romanian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "ro",
 					Contenido = "Romanian"
 				},
-				new SteamIdioma
+				new IdiomaClase
 				{
 					Id = "el",
 					Contenido = "Greek"
@@ -647,13 +656,15 @@ namespace Herramientas
 			return idiomas;
 		}
 
+		#region Steam Juegos
+
 		public static List<JuegoIdioma> SteamSacarIdiomas(string contenido)
 		{
 			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
 
 			if (string.IsNullOrEmpty(contenido) == false)
 			{
-				foreach (var idioma in ListadoSteamJuegos())
+				foreach (var idioma in ListadoIdiomasBuscar())
 				{
 					if (contenido.Contains(idioma.Contenido + "<strong>*</strong>") == true)
 					{
@@ -780,149 +791,6 @@ namespace Herramientas
 
 		#region Epic Games Juegos
 
-		private static List<SteamIdioma> ListadoEpicGamesJuegos()
-		{
-			List<SteamIdioma> idiomas = [
-				new SteamIdioma
-				{
-					Id = "en",
-					Contenido = "English"
-				},
-				new SteamIdioma
-				{
-					Id = "es",
-					Contenido = "Spanish (Spain)"
-				},
-				new SteamIdioma
-				{
-					Id = "es",
-					Contenido = "Spanish - Spain"
-				},
-				new SteamIdioma
-				{
-					Id = "de",
-					Contenido = "German"
-				},
-				new SteamIdioma
-				{
-					Id = "fr",
-					Contenido = "French"
-				},
-				new SteamIdioma
-				{
-					Id = "it",
-					Contenido = "Italian"
-				},
-				new SteamIdioma
-				{
-					Id = "pt",
-					Contenido = "Portuguese - Portugal"
-				},
-				new SteamIdioma
-				{
-					Id = "pt",
-					Contenido = "Portuguese (Portugal)"
-				},
-				new SteamIdioma
-				{
-					Id = "da",
-					Contenido = "Danish"
-				},
-				new SteamIdioma
-				{
-					Id = "nl",
-					Contenido = "Dutch"
-				},
-				new SteamIdioma
-				{
-					Id = "nn",
-					Contenido = "Norwegian"
-				},
-				new SteamIdioma
-				{
-					Id = "pl",
-					Contenido = "Polish"
-				},
-				new SteamIdioma
-				{
-					Id = "sv",
-					Contenido = "Swedish"
-				},
-				new SteamIdioma
-				{
-					Id = "ko",
-					Contenido = "Korean"
-				},
-				new SteamIdioma
-				{
-					Id = "zhs",
-					Contenido = "Simplified Chinese"
-				},
-				new SteamIdioma
-				{
-					Id = "zht",
-					Contenido = "Traditional Chinese"
-				},
-				new SteamIdioma
-				{
-					Id = "lat",
-					Contenido = "Spanish - Latin America"
-				},
-				new SteamIdioma
-				{
-					Id = "br",
-					Contenido = "Portuguese (Brazil)"
-				},
-				new SteamIdioma
-				{
-					Id = "ja",
-					Contenido = "Japanese"
-				},
-				new SteamIdioma
-				{
-					Id = "hu",
-					Contenido = "Hungarian"
-				},
-				new SteamIdioma
-				{
-					Id = "cz",
-					Contenido = "Czech"
-				},
-				new SteamIdioma
-				{
-					Id = "tr",
-					Contenido = "Turkish"
-				},
-				new SteamIdioma
-				{
-					Id = "uk",
-					Contenido = "Ukrainian"
-				},
-				new SteamIdioma
-				{
-					Id = "fi",
-					Contenido = "Finnish"
-				},
-				new SteamIdioma
-				{
-					Id = "ro",
-					Contenido = "Romanian"
-				},
-				new SteamIdioma
-				{
-					Id = "ro",
-					Contenido = "Romanian"
-				},
-				new SteamIdioma
-				{
-					Id = "el",
-					Contenido = "Greek"
-				}
-			];
-
-			return idiomas;
-		}
-
 		public static List<JuegoIdioma> EpicGamesSacarIdiomas(List<string> audios, List<string> textos)
 		{
 			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
@@ -933,7 +801,7 @@ namespace Herramientas
 				{
 					foreach (var audio in audios)
 					{
-						foreach (var idioma in ListadoEpicGamesJuegos())
+						foreach (var idioma in ListadoIdiomasBuscar())
 						{
 							if (idioma.Contenido == audio)
 							{
@@ -974,7 +842,7 @@ namespace Herramientas
 				{
 					foreach (var texto in textos)
 					{
-						foreach (var idioma in ListadoEpicGamesJuegos())
+						foreach (var idioma in ListadoIdiomasBuscar())
 						{
 							if (idioma.Contenido == texto)
 							{
@@ -1038,7 +906,7 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(contenidoAudio) == false)
 			{
-				foreach (var idioma in ListadoEpicGamesJuegos())
+				foreach (var idioma in ListadoIdiomasBuscar())
 				{
 					if (contenidoAudio.Contains(idioma.Contenido) == true)
 					{
@@ -1079,6 +947,11 @@ namespace Herramientas
 				{
 					contenidoTexto = contenido1;
 				}
+
+				if (contenido1.ToLower().Contains("interface") == true)
+				{
+					contenidoTexto = contenido1;
+				}
 			}
 
 			if (string.IsNullOrEmpty(contenido2) == false && string.IsNullOrEmpty(contenidoTexto) == true)
@@ -1087,11 +960,16 @@ namespace Herramientas
 				{
 					contenidoTexto = contenido2;
 				}
+
+				if (contenido2.ToLower().Contains("interface") == true)
+				{
+					contenidoTexto = contenido2;
+				}
 			}
 
 			if (string.IsNullOrEmpty(contenidoTexto) == false)
 			{
-				foreach (var idioma in ListadoEpicGamesJuegos())
+				foreach (var idioma in ListadoIdiomasBuscar())
 				{
 					if (contenidoTexto.Contains(idioma.Contenido) == true)
 					{
