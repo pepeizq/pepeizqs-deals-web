@@ -2684,6 +2684,14 @@
                 }
             }
 
+            if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+            {
+                if (string.IsNullOrEmpty(juego.IdXbox) == false)
+                {
+                    APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
+                }
+            }
+
             if (juego.CuratorsSteam != null)
             {
                 if (juego.CuratorsSteam.Count > 0)

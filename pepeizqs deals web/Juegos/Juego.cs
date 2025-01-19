@@ -51,6 +51,7 @@ namespace Juegos
 		public List<string> CuratorsSteam { get; set; }
 		public List<JuegoIdioma> Idiomas { get; set; }
 		public JuegoEpicGames EpicGames { get; set; }
+		public string IdXbox { get; set; }
 	}
 
 	public static class JuegoCrear

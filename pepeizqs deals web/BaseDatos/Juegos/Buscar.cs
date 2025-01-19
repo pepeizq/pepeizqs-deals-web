@@ -414,6 +414,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(36) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(36)) == false)
+					{
+						juego.IdXbox = lector.GetString(36);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

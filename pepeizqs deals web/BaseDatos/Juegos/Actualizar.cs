@@ -833,6 +833,40 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void IdXbox(int idJuego, string idXbox, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET idXbox=@idXbox WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", idJuego);
+				comando.Parameters.AddWithValue("@idXbox", idXbox);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Deck(Juego juego, SqlConnection conexion = null)
 		{
 			if (conexion == null)

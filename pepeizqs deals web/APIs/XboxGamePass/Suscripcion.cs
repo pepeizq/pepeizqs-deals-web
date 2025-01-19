@@ -87,7 +87,7 @@ namespace APIs.XboxGamePass
 												{
 													foreach (var id in idJuegos)
 													{
-														Juego juegobd = BaseDatos.Juegos.Buscar.UnJuego(int.Parse(id));
+														Juegos.Juego juegobd = BaseDatos.Juegos.Buscar.UnJuego(int.Parse(id));
 
 														if (juegobd != null)
 														{
@@ -116,6 +116,11 @@ namespace APIs.XboxGamePass
 																	if (actualizar == true)
 																	{
 																		BaseDatos.Juegos.Actualizar.Suscripciones(juegobd, conexion);
+
+																		if (string.IsNullOrEmpty(juegobd.IdXbox) == true)
+																		{
+																			BaseDatos.Juegos.Actualizar.IdXbox(juegobd.Id, juego.Id);
+																		}
 
 																		JuegoSuscripcion suscripcion2 = BaseDatos.Suscripciones.Buscar.UnJuego(enlace);
 
