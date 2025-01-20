@@ -52,6 +52,7 @@ namespace Juegos
 		public List<JuegoIdioma> Idiomas { get; set; }
 		public JuegoEpicGames EpicGames { get; set; }
 		public string IdXbox { get; set; }
+		public JuegoXbox Xbox { get; set; }
 	}
 
 	public static class JuegoCrear
@@ -204,6 +205,15 @@ namespace Juegos
 		public DateTime Fecha { get; set; }
 		public bool Logros { get; set; }
 		public bool GuardadoNube { get; set; }
+	}
+
+	public class JuegoXbox
+	{
+		public bool Windows { get; set; }
+		public DateTime Fecha { get; set; }
+		public bool Logros { get; set; }
+		public bool GuardadoNube { get; set; }
+		public bool Streaming { get; set; }
 	}
 
 	public class JuegoCantidadJugadoresSteam

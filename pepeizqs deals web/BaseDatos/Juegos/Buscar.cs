@@ -426,6 +426,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(37) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(37)) == false)
+					{
+						juego.Xbox = JsonSerializer.Deserialize<JuegoXbox>(lector.GetString(37));
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

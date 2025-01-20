@@ -2,7 +2,9 @@
 
 #nullable disable
 
+using AngleSharp.Dom;
 using APIs.GOG;
+using APIs.XboxGamePass;
 using Juegos;
 using System.Text.Json;
 
@@ -157,6 +159,7 @@ namespace Herramientas
 		{
 			public string Id { get; set; }
 			public string Contenido { get; set; }
+			public string Codigo { get; set; }
 		}
 
 		public static List<IdiomaClase> ListadoSteamReseñas(string idiomaUsuario)
@@ -512,49 +515,56 @@ namespace Herramientas
 
 		#endregion
 
-
 		private static List<IdiomaClase> ListadoIdiomasBuscar()
 		{
 			List<IdiomaClase> idiomas = [
 				new IdiomaClase
 				{
 					Id = "en",
-					Contenido = "English"
+					Contenido = "English",
+					Codigo = "en-US"
 				},
 				new IdiomaClase
 				{
 					Id = "es",
-					Contenido = "Spanish (Spain)"
+					Contenido = "Spanish (Spain)",
+					Codigo = "es-ES"
 				},
 				new IdiomaClase
 				{
 					Id = "es",
-					Contenido = "Spanish - Spain"
+					Contenido = "Spanish - Spain",
+					Codigo = "es-ES"
 				},
 				new IdiomaClase
 				{
 					Id = "de",
-					Contenido = "German"
+					Contenido = "German",
+					Codigo = "de-DE"
 				},
 				new IdiomaClase
 				{
 					Id = "fr",
-					Contenido = "French"
+					Contenido = "French",
+					Codigo = "fr-FR"
 				},
 				new IdiomaClase
 				{
 					Id = "it",
-					Contenido = "Italian"
+					Contenido = "Italian",
+					Codigo = "it-IT"
 				},
 				new IdiomaClase
 				{
 					Id = "pt",
-					Contenido = "Portuguese - Portugal"
+					Contenido = "Portuguese - Portugal",
+					Codigo = "pt-PT"
 				},
 				new IdiomaClase
 				{
 					Id = "pt",
-					Contenido = "Portuguese (Portugal)"
+					Contenido = "Portuguese (Portugal)",
+					Codigo = "pt-PT"
 				},
 				new IdiomaClase
 				{
@@ -564,7 +574,8 @@ namespace Herramientas
 				new IdiomaClase
 				{
 					Id = "nl",
-					Contenido = "Dutch"
+					Contenido = "Dutch",
+					Codigo = "nl-NL"
 				},
 				new IdiomaClase
 				{
@@ -574,7 +585,8 @@ namespace Herramientas
 				new IdiomaClase
 				{
 					Id = "pl",
-					Contenido = "Polish"
+					Contenido = "Polish",
+					Codigo = "pl-PL"
 				},
 				new IdiomaClase
 				{
@@ -599,17 +611,32 @@ namespace Herramientas
 				new IdiomaClase
 				{
 					Id = "lat",
-					Contenido = "Spanish - Latin America"
+					Contenido = "Spanish (Latin America)",
+					Codigo = "es-MX"
+				},
+				new IdiomaClase
+				{
+					Id = "lat",
+					Contenido = "Spanish - Latin America",
+					Codigo = "es-MX"
 				},
 				new IdiomaClase
 				{
 					Id = "br",
-					Contenido = "Portuguese (Brazil)"
+					Contenido = "Portuguese (Brazil)",
+					Codigo = "pt-BR"
+				},
+				new IdiomaClase
+				{
+					Id = "br",
+					Contenido = "Portuguese - Brazil",
+					Codigo = "pt-BR"
 				},
 				new IdiomaClase
 				{
 					Id = "ja",
-					Contenido = "Japanese"
+					Contenido = "Japanese",
+					Codigo = "ja-JP"
 				},
 				new IdiomaClase
 				{
@@ -624,7 +651,8 @@ namespace Herramientas
 				new IdiomaClase
 				{
 					Id = "tr",
-					Contenido = "Turkish"
+					Contenido = "Turkish",
+					Codigo = "tr-TR"
 				},
 				new IdiomaClase
 				{
@@ -999,6 +1027,116 @@ namespace Herramientas
 						if (añadir == true)
 						{
 							idiomas.Add(nuevoIdioma);
+						}
+					}
+				}
+			}
+
+			return idiomas;
+		}
+
+		#endregion
+
+		#region Xbox Juegos
+
+		public static List<JuegoIdioma> XboxSacarIdiomas(Dictionary<string, XboxJuegoAPIIdioma> idiomas2)
+		{
+			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
+
+			foreach (var idioma in ListadoIdiomasBuscar())
+			{
+				if (string.IsNullOrEmpty(idioma.Codigo) == false)
+				{
+					if (idiomas2.ContainsKey(idioma.Codigo) == true)
+					{
+						if (idiomas2[idioma.Codigo].Audio == 1)
+						{
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
+							{
+								DRM = JuegoDRM.Microsoft,
+								Idioma = idioma.Id,
+								Audio = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
+								{
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										idioma2.Audio = true;
+
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
+						}
+
+						if (idiomas2[idioma.Codigo].Interfaz == 1)
+						{
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
+							{
+								DRM = JuegoDRM.Microsoft,
+								Idioma = idioma.Id,
+								Texto = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
+								{
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										idioma2.Texto = true;
+
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
+						}
+
+						if (idiomas2[idioma.Codigo].Subtitulos == 1)
+						{
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
+							{
+								DRM = JuegoDRM.Microsoft,
+								Idioma = idioma.Id,
+								Texto = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
+								{
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										idioma2.Texto = true;
+
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
 						}
 					}
 				}

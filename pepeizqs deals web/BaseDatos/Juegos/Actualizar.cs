@@ -1056,6 +1056,44 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void Xbox(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			using (conexion)
+			{
+				string sqlActualizar = "UPDATE juegos " +
+					"SET xbox=@xbox, idiomas=@idiomas WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", juego.Id);
+					comando.Parameters.AddWithValue("@xbox", JsonSerializer.Serialize(juego.Xbox));
+					comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
+
+					comando.ExecuteNonQuery();
+					try
+					{
+
+					}
+					catch
+					{
+
+					}
+				}
+			}
+		}
+
 		public static void CantidadJugadoresSteam(Juego juego, SqlConnection conexion = null)
 		{
 			if (conexion == null)
