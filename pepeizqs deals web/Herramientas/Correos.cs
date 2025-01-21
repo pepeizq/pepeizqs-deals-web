@@ -23,7 +23,7 @@ namespace Herramientas
 
 				if (string.IsNullOrEmpty(idioma) == false)
 				{
-					if (Herramientas.Idiomas.ComprobarEspañol(idioma) == true || Herramientas.Idiomas.ComprobarEspañolLatino(idioma) == true)
+					if (Herramientas.Idiomas.ComprobarIdiomaUso("es", idioma) == true)
 					{
 						titulo = noticia.TituloEs;
                         enlace = "https://pepeizqdeals.com/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEs) + "/";

@@ -909,6 +909,21 @@
                                                                             }
                                                                         </div>
                                                                     }
+
+                                                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                                                        <div style="font-size: 14px;">
+                                                                            Cloud Gaming
+                                                                        </div>
+
+                                                                        @if (juego.Xbox.Streaming == true)
+                                                                        {
+                                                                            <i class="fa-solid fa-check"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                        }
+                                                                    </div>
                                                                 }
                                                             }
                                                         }
@@ -1013,35 +1028,37 @@
 
                                                                             string imagenBandera = "/imagenes/banderas/" + idiomaEncontradoTexto + ".svg";
 
-                                                                            <div style="display: flex; align-items: center; gap: 10px;">
-                                                                                <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+                                                                            <button @onclick="(e => IdiomasEnseñar(e, drm.Id))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; height: 34px; padding: 0px 22px;">
+                                                                                <div style="display: flex; align-items: center; gap: 10px; flex-direction: row; justify-content: center;">
+                                                                                    <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
 
-                                                                                <div style="font-size: 14px;">
-                                                                                    @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                                    <div style="font-size: 14px;">
+                                                                                        @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                                    </div>
+
+                                                                                    @if (idiomaJuego.Audio == true)
+                                                                                    {
+                                                                                        <i class="fa-solid fa-check"></i>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                                    }
+
+                                                                                    <div style="font-size: 14px;">
+                                                                                        @Idiomas.BuscarTexto(idioma, "String92", "Game")
+                                                                                    </div>
+
+                                                                                    @if (idiomaJuego.Texto == true)
+                                                                                    {
+                                                                                        <i class="fa-solid fa-check"></i>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                                    }
                                                                                 </div>
-
-                                                                                @if (idiomaJuego.Audio == true)
-                                                                                {
-                                                                                    <i class="fa-solid fa-check"></i>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <i class="fa-solid fa-xmark"></i>
-                                                                                }
-
-                                                                                <div style="font-size: 14px;">
-                                                                                    @Idiomas.BuscarTexto(idioma, "String92", "Game")
-                                                                                </div>
-
-                                                                                @if (idiomaJuego.Texto == true)
-                                                                                {
-                                                                                    <i class="fa-solid fa-check"></i>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <i class="fa-solid fa-xmark"></i>
-                                                                                }
-                                                                            </div>
+                                                                            </button>
                                                                         }
                                                                     }
                                                                 }
@@ -1070,23 +1087,25 @@
 
                                                                 if (ponerNoTieneIdioma == true)
                                                                 {
-                                                                    string imagenBandera = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaUsuario(idiomaUsuario) + ".svg";
+                                                                    string imagenBandera = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaImagen(idiomaUsuario) + ".svg";
 
-                                                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                                                        <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+                                                                    <button @onclick="(e => IdiomasEnseñar(e, drm.Id))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; height: 34px; padding: 0px 22px;">
+                                                                        <div style="display: flex; align-items: center; gap: 10px; flex-direction: row; justify-content: center;">
+                                                                            <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
 
-                                                                        <div style="font-size: 14px;">
-                                                                            @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                            <div style="font-size: 14px;">
+                                                                                @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                                                                            </div>
+
+                                                                            <i class="fa-solid fa-xmark"></i>
+
+                                                                            <div style="font-size: 14px;">
+                                                                                @Idiomas.BuscarTexto(idioma, "String92", "Game")
+                                                                            </div>
+
+                                                                            <i class="fa-solid fa-xmark"></i>
                                                                         </div>
-
-                                                                        <i class="fa-solid fa-xmark"></i>
-
-                                                                        <div style="font-size: 14px;">
-                                                                            @Idiomas.BuscarTexto(idioma, "String92", "Game")
-                                                                        </div>
-
-                                                                        <i class="fa-solid fa-xmark"></i>
-                                                                    </div>
+                                                                    </button>
                                                                 }
                                                             }
                                                         }
@@ -2037,20 +2056,41 @@
                                 </div>
                             </button>
 
-                            @foreach (var idiomaSteam in Idiomas.ListadoSteamReseñas(idioma))
-                            {
-                                string subrayado = string.Empty;
+                            @{
+                                List<IdiomaClase> listadoIdiomas = new List<IdiomaClase>();
 
-                                if (idiomaAnalisis == idiomaSteam.Id)
+                                foreach (var idioma2 in Idiomas.ListadoIdiomasGenerar())
                                 {
-                                    subrayado = "border-bottom: 1px solid var(--colorEnlace);";
+                                    if (idioma2.SteamReseñas == true)
+                                    {
+                                        idioma2.Traduccion = Idiomas.BuscarTexto(idioma, idioma2.Id, "Languages");
+                                        listadoIdiomas.Add(idioma2);
+                                    }
                                 }
 
-                                <button @onclick="(e => AnalisisIdioma(e, idiomaSteam.Id))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
-                                    <div style="@subrayado padding-bottom: 5px;">
-                                        @idiomaSteam.Contenido
-                                    </div>
-                                </button>
+                                if (listadoIdiomas.Count > 0)
+                                {
+                                    listadoIdiomas = listadoIdiomas.OrderBy(x => x.Traduccion).ToList();
+                                }
+
+                                foreach (var idioma2 in listadoIdiomas)
+                                {
+                                    if (idioma2.SteamReseñas == true)
+                                    {
+                                        string subrayado = string.Empty;
+
+                                        if (idiomaAnalisis == idioma2.SteamAPI)
+                                        {
+                                            subrayado = "border-bottom: 1px solid var(--colorEnlace);";
+                                        }
+
+                                        <button @onclick="(e => AnalisisIdioma(e, idioma2.SteamAPI))" style="color: var(--colorEnlace); border: 0; background: transparent; padding: 0px;">
+                                            <div style="@subrayado padding-bottom: 5px;">
+                                                @idioma2.Traduccion
+                                            </div>
+                                        </button>
+                                    }
+                                }
                             }
                         </div>
                     }
@@ -2569,15 +2609,99 @@
     </div>
 }
 
+@if (enseñarIdiomas == true)
+{
+    <div class="opciones-panel">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 40px;">
+            <button @onclick="@(e => IdiomasCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            <div style="display: flex; flex-direction: column; gap: 30px; width: 600px;">
+                <div>
+                    @juego.Nombre (@idiomaDrmSeleccionadoTexto)
+                </div>
+
+                <div>
+                    @Idiomas.BuscarTexto(idioma, "String91", "Game")
+                    <hr/>
+
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        @if (juego.Idiomas != null)
+                        {
+                            if (juego.Idiomas.Count > 0)
+                            {
+                                foreach (var idioma in juego.Idiomas)
+                                {
+                                    if (idioma.DRM == idiomaDrmSeleccionado && idioma.Audio == true)
+                                    {
+                                        string imagenIdioma = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma) + ".svg";
+
+                                        if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
+                                        {
+                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;"/>
+                                        }
+                                        else
+                                        {
+                                            @idioma.Idioma
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    @Idiomas.BuscarTexto(idioma, "String92", "Game")
+                    <hr/>
+
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        @if (juego.Idiomas != null)
+                        {
+                            if (juego.Idiomas.Count > 0)
+                            {
+                                foreach (var idioma in juego.Idiomas)
+                                {
+                                    if (idioma.DRM == idiomaDrmSeleccionado && idioma.Texto == true)
+                                    {
+                                        string imagenIdioma = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma) + ".svg";
+
+                                        if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
+                                        {
+                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" />
+                                        }
+                                        else
+                                        {
+                                            @idioma.Idioma
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+
+                @if (string.IsNullOrEmpty(idiomaAdminContenido) == false)
+                {
+                    <div>
+                        @idiomaAdminContenido
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
 @code {
 
     #nullable disable
 
-    [Parameter]
-    public string idioma { get; set; }
+        [Parameter]
+        public string idioma { get; set; }
 
-    [Parameter]
-    public string usuarioId { get; set; }
+        [Parameter]
+        public string usuarioId { get; set; }
 
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
@@ -2707,7 +2831,30 @@
 
                 if (Herramientas.RobotsUserAgents.Autorizar(userAgent) == false)
                 {
-                    string idiomaSteam = Herramientas.Idiomas.SacarIdiomaSteamAPI(idioma);
+                    string idiomaSteam = "english";
+
+                    if (string.IsNullOrEmpty(idioma) == false)
+                    {
+                        foreach (var idioma2 in Idiomas.ListadoIdiomasGenerar())
+                        {
+                            if (idioma2.SteamReseñas == true)
+                            {
+                                if (idioma2.Id.ToLower() == idioma.ToLower())
+                                {
+                                    idiomaSteam = idioma2.SteamAPI;
+                                }
+
+                                foreach (var codigo in idioma2.Codigos)
+                                {
+                                    if (codigo.ToLower() == idioma.ToLower())
+                                    {
+                                        idiomaSteam = idioma2.SteamAPI;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     idiomaAnalisis = idiomaSteam;
 
                     if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
@@ -2773,14 +2920,24 @@
                 }
             }
 
-            if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+            if (string.IsNullOrEmpty(juego.IdXbox) == false)
             {
-                if (string.IsNullOrEmpty(juego.IdXbox) == false)
+                if (juego.Xbox == null)
                 {
                     juego.Xbox = await APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
                     juego.Idiomas = await APIs.XboxGamePass.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
 
                     global::BaseDatos.Juegos.Actualizar.Xbox(juego);
+                }
+                else
+                {
+                    if (juego.Xbox.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+                    {
+                        juego.Xbox = await APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
+                        juego.Idiomas = await APIs.XboxGamePass.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+
+                        global::BaseDatos.Juegos.Actualizar.Xbox(juego);
+                    }
                 }
             }
 
@@ -4371,14 +4528,17 @@
         {
             analisisRegiones.Clear();
 
-            foreach (var idiomaSteam2 in Idiomas.ListadoSteamReseñas(idioma))
+            foreach (var idioma2 in Idiomas.ListadoIdiomasGenerar())
             {
-                JuegoAnalisisAmpliado analisisRegion = await AnalisisCargarIdioma(idiomaSteam2.Id);
-                JuegoAnalisisAmpliadoIdioma analisisRegion2 = new JuegoAnalisisAmpliadoIdioma();
-                analisisRegion2.CantidadPositivos = analisisRegion.CantidadPositivos;
-                analisisRegion2.CantidadNegativos = analisisRegion.CantidadNegativos;
-                analisisRegion2.Idioma = idiomaSteam2.Id;
-                analisisRegiones.Add(analisisRegion2);
+                if (idioma2.SteamReseñas == true && idiomaSteam == idioma2.SteamAPI)
+                {
+                    JuegoAnalisisAmpliado analisisRegion = await AnalisisCargarIdioma(idioma2.SteamAPI);
+                    JuegoAnalisisAmpliadoIdioma analisisRegion2 = new JuegoAnalisisAmpliadoIdioma();
+                    analisisRegion2.CantidadPositivos = analisisRegion.CantidadPositivos;
+                    analisisRegion2.CantidadNegativos = analisisRegion.CantidadNegativos;
+                    analisisRegion2.Idioma = idioma2.SteamAPI;
+                    analisisRegiones.Add(analisisRegion2);
+                }
             }
         }
     }
@@ -4438,6 +4598,58 @@
     private async Task CopiarAlClipboard(MouseEventArgs e, string texto)
     {
         await JavaScript.InvokeVoidAsync("clipboardCopy.copyText", texto);
+    }
+
+    #endregion
+
+    #region Ventana Idiomas
+
+    private bool enseñarIdiomas = false;
+    private JuegoDRM idiomaDrmSeleccionado = JuegoDRM.NoEspecificado;
+    private string idiomaDrmSeleccionadoTexto = string.Empty;
+    private string idiomaAdminContenido = string.Empty;
+
+    private void IdiomasEnseñar(MouseEventArgs e, JuegoDRM drm)
+    {
+        if (enseñarIdiomas == false)
+        {
+            enseñarIdiomas = true;
+
+            idiomaDrmSeleccionado = drm;
+            idiomaDrmSeleccionadoTexto = JuegoDRM2.DevolverDRM(drm);
+
+            // if (global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+            // {
+            //     if (drm == JuegoDRM.Steam)
+            //     {
+            //         idiomaAdminContenido = await APIs.Steam.Juego.CargarIdiomasAdmin(juego.IdSteam.ToString());
+            //     }
+
+            //     if (drm == JuegoDRM.GOG)
+            //     {
+            //         idiomaAdminContenido = await APIs.GOG.Tienda.CargarIdiomasAdmin(juego.IdGog.ToString());
+            //     }
+
+            //     if (drm == JuegoDRM.Epic)
+            //     {
+            //         idiomaAdminContenido = await APIs.EpicGames.Juego.CargarIdiomasAdmin(juego.SlugEpic);
+            //     }
+
+            //     if (drm == JuegoDRM.Microsoft)
+            //     {
+            //         idiomaAdminContenido = await APIs.XboxGamePass.Juego.CargarIdiomasAdmin(juego.IdXbox);
+            //     }
+            // }     
+        }
+        else
+        {
+            enseñarIdiomas = false;
+        }
+    }
+
+    private void IdiomasCerrar(MouseEventArgs e)
+    {
+        enseñarIdiomas = false;
     }
 
     #endregion

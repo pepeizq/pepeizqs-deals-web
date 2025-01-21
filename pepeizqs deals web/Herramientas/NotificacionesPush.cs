@@ -23,7 +23,7 @@ namespace Herramientas
 			{
 				string titulo = noticia.TituloEn;
 
-				if (Herramientas.Idiomas.ComprobarEspañol(idioma) == true || Herramientas.Idiomas.ComprobarEspañolLatino(idioma) == true)
+				if (Herramientas.Idiomas.ComprobarIdiomaUso("es", idioma) == true)
 				{
 					titulo = noticia.TituloEs;
 				}

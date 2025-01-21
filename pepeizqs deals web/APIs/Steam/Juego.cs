@@ -258,6 +258,34 @@ namespace APIs.Steam
 			return null;
 		}
 
+		public static async Task<string> CargarIdiomasAdmin(string id)
+		{
+			string html = await Decompiladores.Estandar("https://store.steampowered.com/api/appdetails/?appids=" + id + "&l=english");
+
+			if (string.IsNullOrEmpty(html) == false)
+			{
+				int int1 = html.IndexOf(":");
+
+				html = html.Remove(0, int1 + 1);
+				html = html.Remove(html.Length - 1, 1);
+
+				SteamJuegoAPI datos = null;
+
+				try
+				{
+					datos = JsonSerializer.Deserialize<SteamJuegoAPI>(html);
+				}
+				catch { }
+
+				if (datos != null)
+				{
+					return JsonSerializer.Serialize(datos.Datos.Idiomas);
+				}
+			}
+
+			return null;
+		}
+
 		public static async Task<SteamDeckAPI> CargarDatosDeck(int id2)
 		{
 			string id = id2.ToString();

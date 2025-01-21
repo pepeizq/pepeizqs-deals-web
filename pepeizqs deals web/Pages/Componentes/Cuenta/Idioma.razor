@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            @if (Herramientas.Idiomas.SacarIdiomaUsuario(usuario.Language) == "en" || Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride) == "en")
+            @if (Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.Language) == "en" || Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.LanguageOverride) == "en")
             {
                 <div style="font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountLanguage")
@@ -151,7 +151,7 @@
 
         if (usuario != null)
         {
-            idiomaWeb = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.Language), "AccountLanguage");
+            idiomaWeb = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.Language), "AccountLanguage");
 
             if (string.IsNullOrEmpty(usuario.LanguageOverride) == true)
             {
@@ -159,7 +159,7 @@
             }
             else
             {
-                idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride), "AccountLanguage");
+                idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.LanguageOverride), "AccountLanguage");
             }
 
             if (string.IsNullOrEmpty(usuario.LanguageGames) == true)
@@ -168,7 +168,7 @@
             }
             else
             {
-                idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageGames), "AccountLanguage");
+                idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.LanguageGames), "AccountLanguage");
             }
         }
     }
@@ -186,7 +186,7 @@
         {
             usuario.LanguageOverride = nuevoIdioma;
 
-            idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageOverride), "AccountLanguage");
+            idiomaSobreescrito = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.LanguageOverride), "AccountLanguage");
 
             await UserManager.UpdateAsync(usuario);
 
@@ -210,7 +210,7 @@
         {
             usuario.LanguageGames = nuevoIdioma;
 
-            idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuario(usuario.LanguageGames), "AccountLanguage");
+            idiomaJuegos = Herramientas.Idiomas.BuscarTexto(idioma, Herramientas.Idiomas.SacarIdiomaUsuarioWeb(usuario.LanguageGames), "AccountLanguage");
 
             await UserManager.UpdateAsync(usuario);
             await InvokeAsync(StateHasChanged);

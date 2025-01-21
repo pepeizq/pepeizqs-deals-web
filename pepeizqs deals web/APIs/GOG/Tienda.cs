@@ -297,6 +297,30 @@ namespace APIs.GOG
 					{
 						List<JuegoIdioma> listadoActualizar = listadoIdiomas;
 
+						//Limpiar en un futuro
+
+						int i = 0;
+						while (i < 20)
+						{
+							int j = 0;
+
+							foreach (var viejoIdioma in listadoActualizar)
+							{
+								if (viejoIdioma.DRM == JuegoDRM.GOG)
+								{
+									break;
+								}
+
+								j += 1;
+							}
+
+							listadoActualizar.RemoveAt(j);
+
+							i += 1;
+						}
+
+						//----------------------------
+						
 						foreach (var nuevoIdioma in idiomas)
 						{
 							bool existe = false;
@@ -326,6 +350,23 @@ namespace APIs.GOG
 			}
 
 			return null;	
+		}
+
+		public static async Task<string> CargarIdiomasAdmin(string id)
+		{
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					return JsonSerializer.Serialize(datos.Caracteristicas.Idiomas);
+				}
+			}
+
+			return null;
 		}
 	}
 

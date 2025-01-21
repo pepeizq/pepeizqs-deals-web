@@ -1,8 +1,8 @@
 ﻿//https://learn.microsoft.com/en-us/graph/search-concept-acceptlanguage-header
+//https://partner.steamgames.com/doc/store/localization/languages
 
 #nullable disable
 
-using AngleSharp.Dom;
 using APIs.GOG;
 using APIs.XboxGamePass;
 using Juegos;
@@ -10,52 +10,346 @@ using System.Text.Json;
 
 namespace Herramientas
 {
+	public class IdiomaClase
+	{
+		public string Id { get; set; }
+		public List<string> Contenidos { get; set; }
+		public List<string> Codigos { get; set; }
+		public string ImagenBandera { get; set; }
+		public string SteamAPI { get; set; }
+		public bool SteamReseñas { get; set; }
+		public string Traduccion { get; set; }
+		public bool WebOfrece { get; set; }
+	}
+
 	public static class Idiomas
 	{
-		public static string SacarIdiomaUsuario(string idiomaUsuario)
+		public static List<IdiomaClase> ListadoIdiomasGenerar()
+		{
+			List<IdiomaClase> idiomas = [
+				new IdiomaClase
+				{
+					Id = "en",
+					Contenidos = new List<string>() { "English" },
+					Codigos = new List<string>() { "en", "en-US", "en-GB" },
+					ImagenBandera = "english",
+					SteamAPI = "english",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "es",
+					Contenidos = new List<string>() { "Spanish (Spain)", "Spanish - Spain", "Spanish" },
+					Codigos = new List<string>() { "es", "es-ES", "ca", "ca-ES-valencia", "eu", "gl" },
+					ImagenBandera = "spanish",
+					SteamAPI = "spanish",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "de",
+					Contenidos = new List<string>() { "German" },
+					Codigos = new List<string>() { "de", "de-DE" },
+					ImagenBandera = "german",
+					SteamAPI = "german",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "fr",
+					Contenidos = new List<string>() { "French" },
+					Codigos = new List<string>() { "fr", "fr-FR", "fr-CA" },
+					ImagenBandera = "french",
+					SteamAPI = "french",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "it",
+					Contenidos = new List<string>() { "Italian" },
+					Codigos = new List<string>() { "it", "it-IT" },
+					ImagenBandera = "italian",
+					SteamAPI = "italian",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "pt",
+					Contenidos = new List<string>() { "Portuguese - Portugal", "Portuguese (Portugal)", "Portuguese" },
+					Codigos = new List<string>() { "pt", "pt-PT" },
+					ImagenBandera = "portuguese",
+					SteamAPI = "portuguese",
+					SteamReseñas = true,
+					WebOfrece = true
+				},
+				new IdiomaClase
+				{
+					Id = "da",
+					Contenidos = new List<string>() { "Danish" },
+					Codigos = new List<string>() { "da", "da-DK" },
+					ImagenBandera = "danish",
+					SteamAPI = "danish",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "nl",
+					Contenidos = new List<string>() { "Dutch" },
+					Codigos = new List<string>() { "nl", "nl-NL", "nl-BE" },
+					ImagenBandera = "dutch",
+					SteamAPI = "dutch",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "nn",
+					Contenidos = new List<string>() { "Norwegian" },
+					Codigos = new List<string>() { "nn", "nb", "nb-NO" },
+					ImagenBandera = "norwegian",
+					SteamAPI = "norwegian",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "pl",
+					Contenidos = new List<string>() { "Polish" },
+					Codigos = new List<string>() { "pl", "pl-PL" },
+					ImagenBandera = "polish",
+					SteamAPI = "polish",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "sv",
+					Contenidos = new List<string>() { "Swedish" },
+					Codigos = new List<string>() { "sv", "sv-SE" },
+					ImagenBandera = "swedish",
+					SteamAPI = "swedish",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "ko",
+					Contenidos = new List<string>() { "Korean" },
+					Codigos = new List<string>() { "ko", "ko-KR" },
+					ImagenBandera = "korean",
+					SteamAPI = "korean",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "zhs",
+					Contenidos = new List<string>() { "Simplified Chinese", "Chinese - Simplified" },
+					Codigos = new List<string>() { "zhs", "zh-Hans", "zh-CN", "cn" },
+					ImagenBandera = "chinese",
+					SteamAPI = "schinese",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "zht",
+					Contenidos = new List<string>() { "Traditional Chinese", "Chinese - Traditional" },
+					Codigos = new List<string>() { "zht", "zh-Hant", "zh-TW", "zh" },
+					ImagenBandera = "chinese",
+					SteamAPI = "tchinese",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "lat",
+					Contenidos = new List<string>() { "Spanish - Latin America", "Spanish (Latin America)" },
+					Codigos = new List<string>() { "lat", "es-MX", "es_mx", "es-US" },
+					ImagenBandera = "latam",
+					SteamAPI = "latam",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "br",
+					Contenidos = new List<string>() { "Portuguese (Brazil)", "Portuguese - Brazil" },
+					Codigos = new List<string>() { "br", "pt-BR" },
+					ImagenBandera = "brazilian",
+					SteamAPI = "brazilian",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "ja",
+					Contenidos = new List<string>() { "Japanese" },
+					Codigos = new List<string>() { "ja", "jp", "ja-JP" },
+					ImagenBandera = "japanese",
+					SteamAPI = "japanese",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "hu",
+					Contenidos = new List<string>() { "Hungarian" },
+					Codigos = new List<string>() { "hu" },
+					ImagenBandera = "hungarian",
+					SteamAPI = "hungarian",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "cz",
+					Contenidos = new List<string>() { "Czech" },
+					Codigos = new List<string>() { "cs" },
+					ImagenBandera = "czech",
+					SteamAPI = "czech",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "tr",
+					Contenidos = new List<string>() { "Turkish" },
+					Codigos = new List<string>() { "tr-TR" },
+					ImagenBandera = "turkish",
+					SteamAPI = "turkish",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "uk",
+					Contenidos = new List<string>() { "Ukrainian" },
+					Codigos = new List<string>() { "uk" },
+					ImagenBandera = "ukrainian",
+					SteamAPI = "ukrainian",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "fi",
+					Contenidos = new List<string>() { "Finnish" },
+					Codigos = new List<string>() { "fi", "fi-FI" },
+					ImagenBandera = "finnish",
+					SteamAPI = "finnish",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "ro",
+					Contenidos = new List<string>() { "Romanian" },
+					Codigos = new List<string>() { "ro" },
+					ImagenBandera = "romanian",
+					SteamAPI = "romanian",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "el",
+					Contenidos = new List<string>() { "Greek" },
+					Codigos = new List<string>() { "el" },
+					ImagenBandera = "greek",
+					SteamAPI = "greek",
+					SteamReseñas = true,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "ru",
+					Contenidos = new List<string>() { "Russian" },
+					Codigos = new List<string>() { "ru", "ru-RU" },
+					ImagenBandera = "russian",
+					SteamAPI = "russian",
+					SteamReseñas = false,
+					WebOfrece = false
+				},
+				new IdiomaClase
+				{
+					Id = "ar",
+					Contenidos = new List<string>() { "Arabic" },
+					Codigos = new List<string>() { "ar", "ar-SA" },
+					ImagenBandera = "arabic",
+					SteamAPI = "arabic",
+					SteamReseñas = false,
+					WebOfrece = false
+				}
+			];
+
+			return idiomas;
+		}
+
+		public static string SacarIdiomaUsuarioWeb(string idiomaUsuario)
 		{
 			if (string.IsNullOrEmpty(idiomaUsuario) == true)
 			{
-				idiomaUsuario = "en";
+				return "en";
 			}
 			else
 			{
-				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
+				foreach (var idioma in ListadoIdiomasGenerar())
 				{
-					idiomaUsuario = "es";
+					if (idioma.WebOfrece == true)
+					{
+						if (idioma.Id == idiomaUsuario)
+						{
+							return idioma.Id;
+						}
+
+						foreach (var codigo in idioma.Codigos)
+						{
+							if (codigo.ToLower() == idiomaUsuario.ToLower())
+							{
+								return idioma.Id;
+							}
+						}
+					}
 				}
-				else if (ComprobarFrances(idiomaUsuario) == true)
+
+				return "en";
+			}
+		}
+
+		public static bool ComprobarIdiomaUso(string id, string idiomaUso)
+		{
+			foreach (var idioma in ListadoIdiomasGenerar())
+			{
+				if (id == idioma.Id)
 				{
-					idiomaUsuario = "fr";
-				}
-				else if (ComprobarAleman(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "de";
-				}
-				else if (ComprobarItaliano(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "it";
-				}
-				else if (ComprobarPortugues(idiomaUsuario) == true || ComprobarBrasileño(idiomaUsuario) == true)
-				{
-					idiomaUsuario = "pt";
-				}
-				//else if (ComprobarSueco(idiomaUsuario) == true)
-				//{
-				//	idiomaUsuario = "sv";
-				//}
-				else
-				{
-					idiomaUsuario = "en";
+					if (idiomaUso == idioma.Id)
+					{
+						return true;
+					}
+
+					foreach (var codigo in idioma.Codigos)
+					{
+						if (codigo.ToLower() == idiomaUso.ToLower())
+						{
+							return true;
+						}
+					}
 				}
 			}
 
-			return idiomaUsuario;
+			return false;
 		}
 
 		public static string BuscarTexto(string idiomaUsuario, string cadena, string carpeta)
 		{
-			idiomaUsuario = SacarIdiomaUsuario(idiomaUsuario);
+			idiomaUsuario = SacarIdiomaUsuarioWeb(idiomaUsuario);
 
 			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
@@ -102,13 +396,13 @@ namespace Herramientas
 			}
 			else
 			{
-				return rutaFichero;
+				return BuscarTexto("en", cadena, carpeta);
 			}
 		}
 
 		public static string CogerTodo(string idiomaUsuario, string carpeta)
 		{
-			idiomaUsuario = SacarIdiomaUsuario(idiomaUsuario);
+			idiomaUsuario = SacarIdiomaUsuarioWeb(idiomaUsuario);
 
 			string rutaFichero = "Idiomas/" + idiomaUsuario + ".json";
 
@@ -136,7 +430,7 @@ namespace Herramientas
 		{
 			if (idiomaUsuario != null)
 			{
-				if (ComprobarEspañol(idiomaUsuario) == true || ComprobarEspañolLatino(idiomaUsuario) == true)
+				if (ComprobarIdiomaUso("es", idiomaUsuario) == true)
 				{
 					return textoEspañol;
 				}
@@ -151,538 +445,66 @@ namespace Herramientas
 			}
 		}
 
-		#region Steam Reseñas
-
-		//https://partner.steamgames.com/doc/store/localization/languages
-
-		public class IdiomaClase
-		{
-			public string Id { get; set; }
-			public string Contenido { get; set; }
-			public string Codigo { get; set; }
-		}
-
-		public static List<IdiomaClase> ListadoSteamReseñas(string idiomaUsuario)
-		{
-			List<string> idiomas = ["english", "spanish", "latam", "french", "german", "italian", "portuguese", "brazilian", "swedish", "greek", "polish", "norwegian", "romanian", "dutch", "danish", "czech", "finnish"];
-
-			List<IdiomaClase> idiomasFinal = new List<IdiomaClase>();
-
-			foreach (var idioma in idiomas)
-			{
-				IdiomaClase idiomaFinal = new IdiomaClase();
-				idiomaFinal.Id = idioma;
-				idiomaFinal.Contenido = Idiomas.BuscarTexto(idiomaUsuario, "Language." + idioma, "Reviews");
-
-				idiomasFinal.Add(idiomaFinal);
-			}
-
-			if (idiomasFinal.Count > 0)
-			{
-				idiomasFinal = idiomasFinal.OrderBy(x => x.Contenido).ToList();
-			}
-
-			return idiomasFinal;
-		}
-
-		public static string SacarIdiomaSteamAPI(string idiomaUsuario)
-		{
-			string idiomaSteam = string.Empty;
-
-			if (string.IsNullOrEmpty(idiomaUsuario) == false)
-			{
-				if (ComprobarEspañol(idiomaUsuario) == true)
-				{
-					idiomaSteam = "spanish";
-				}
-				else if (ComprobarEspañolLatino(idiomaUsuario) == true)
-				{
-					idiomaSteam = "latam";
-				}
-				else if (ComprobarFrances(idiomaUsuario) == true)
-				{
-					idiomaSteam = "french";
-				}
-				else if (ComprobarAleman(idiomaUsuario) == true)
-				{
-					idiomaSteam = "german";
-				}
-				else if (ComprobarItaliano(idiomaUsuario) == true)
-				{
-					idiomaSteam = "italian";
-				}
-				else if (ComprobarPortugues(idiomaUsuario) == true)
-				{
-					idiomaSteam = "portuguese";
-				}
-				else if (ComprobarBrasileño(idiomaUsuario) == true)
-				{
-					idiomaSteam = "brazilian";
-				}
-				else if (ComprobarSueco(idiomaUsuario) == true)
-				{
-					idiomaSteam = "swedish";
-				}
-				else if (ComprobarGriego(idiomaUsuario) == true)
-				{
-					idiomaSteam = "greek";
-				}
-				else if (ComprobarPolaco(idiomaUsuario) == true)
-				{
-					idiomaSteam = "polish";
-				}
-				else if (ComprobarNoruego(idiomaUsuario) == true)
-				{
-					idiomaSteam = "norwegian";
-				}
-				else if (ComprobarRumano(idiomaUsuario) == true)
-				{
-					idiomaSteam = "romanian";
-				}
-				else if (ComprobarHolandes(idiomaUsuario) == true)
-				{
-					idiomaSteam = "dutch";
-				}
-				else if (ComprobarDanes(idiomaUsuario) == true)
-				{
-					idiomaSteam = "danish";
-				}
-				else if (ComprobarCheco(idiomaUsuario) == true)
-				{
-					idiomaSteam = "czech";
-				}
-				else if (ComprobarFines(idiomaUsuario) == true)
-				{
-					idiomaSteam = "finnish";
-				}
-			}
-
-			if (string.IsNullOrEmpty(idiomaSteam) == true)
-			{
-				idiomaSteam = "english";
-			}
-
-			return idiomaSteam;
-		}
-
-		public static bool ComprobarIngles(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "en" || idiomaUsuario == "en-US" || idiomaUsuario == "en-GB")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarEspañol(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "es" || idiomaUsuario == "es-ES" || idiomaUsuario == "ca" || idiomaUsuario == "ca-ES-valencia" || idiomaUsuario == "eu" || idiomaUsuario == "gl")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarEspañolLatino(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "es-MX" || idiomaUsuario == "es-US")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarFrances(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "fr" || idiomaUsuario == "fr-FR" || idiomaUsuario == "fr-CA")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarAleman(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "de" || idiomaUsuario == "de-de")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarItaliano(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "it" || idiomaUsuario == "it-it")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarPortugues(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "pt" || idiomaUsuario == "pt-PT")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarBrasileño(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "pt-BR")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarSueco(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "sv")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarGriego(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "el")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarPolaco(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "pl")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarNoruego(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "nb" || idiomaUsuario == "nn")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarRumano(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "ro")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarHolandes(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "nl" || idiomaUsuario == "nl-BE")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarDanes(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "da")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarCheco(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "cs")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarFines(string idiomaUsuario)
-		{
-			if (idiomaUsuario == "fi")
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		#endregion
-
 		#region Juegos Razor
 
 		public static string EncontrarIdiomaJuego(string idiomaUsuario, string idiomaJuego)
 		{
 			string imagenBandera = string.Empty;
 
-			if (ComprobarIngles(idiomaUsuario) == true && ComprobarIngles(idiomaJuego) == true)
+			foreach (var idioma in ListadoIdiomasGenerar())
 			{
-				imagenBandera = "english";
+				bool okUsuario = false;
+				bool okJuego = false;
+
+				if (idioma.Id == idiomaUsuario)
+				{
+					okUsuario = true;
+				}
+
+				if (idioma.Id == idiomaJuego)
+				{
+					okJuego = true;
+				}
+
+				foreach (var codigo in idioma.Codigos)
+				{
+					if (codigo.ToLower() == idiomaUsuario.ToLower())
+					{
+						okUsuario = true;
+					}
+
+					if (codigo.ToLower() == idiomaJuego.ToLower())
+					{
+						okJuego = true;
+					}
+				}
+
+				if (okUsuario == true && okJuego == true)
+				{
+					return idioma.ImagenBandera;
+				}
 			}
 
-			if (ComprobarEspañol(idiomaUsuario) == true && ComprobarEspañol(idiomaJuego) == true)
-			{
-				imagenBandera = "spanish";
-			}
-
-			if (ComprobarAleman(idiomaUsuario) == true && ComprobarAleman(idiomaJuego) == true)
-			{
-				imagenBandera = "german";
-			}
-
-			if (ComprobarFrances(idiomaUsuario) == true && ComprobarFrances(idiomaJuego) == true)
-			{
-				imagenBandera = "french";
-			}
-
-			if (ComprobarItaliano(idiomaUsuario) == true && ComprobarItaliano(idiomaJuego) == true)
-			{
-				imagenBandera = "italian";
-			}
-
-			if (ComprobarPortugues(idiomaUsuario) == true && ComprobarPortugues(idiomaJuego) == true)
-			{
-				imagenBandera = "portuguese";
-			}
-
-			return imagenBandera;
+			return null;
 		}
 
-		public static string EncontrarIdiomaUsuario(string idiomaUsuario)
+		public static string EncontrarIdiomaImagen(string idiomaBandera)
 		{
-			string imagenBandera = string.Empty;
-
-			if (ComprobarIngles(idiomaUsuario) == true)
+			foreach (var idioma in ListadoIdiomasGenerar())
 			{
-				imagenBandera = "english";
+				if (idioma.Id == idiomaBandera)
+				{
+					if (string.IsNullOrEmpty(idioma.ImagenBandera) == false)
+					{
+						return idioma.ImagenBandera;
+					}
+				}
 			}
 
-			if (ComprobarEspañol(idiomaUsuario) == true)
-			{
-				imagenBandera = "spanish";
-			}
-
-			if (ComprobarAleman(idiomaUsuario) == true)
-			{
-				imagenBandera = "german";
-			}
-
-			if (ComprobarFrances(idiomaUsuario) == true)
-			{
-				imagenBandera = "french";
-			}
-
-			if (ComprobarItaliano(idiomaUsuario) == true)
-			{
-				imagenBandera = "italian";
-			}
-
-			if (ComprobarPortugues(idiomaUsuario) == true)
-			{
-				imagenBandera = "portuguese";
-			}
-
-			return imagenBandera;
+			return null;
 		}
 
 		#endregion
-
-		private static List<IdiomaClase> ListadoIdiomasBuscar()
-		{
-			List<IdiomaClase> idiomas = [
-				new IdiomaClase
-				{
-					Id = "en",
-					Contenido = "English",
-					Codigo = "en-US"
-				},
-				new IdiomaClase
-				{
-					Id = "es",
-					Contenido = "Spanish (Spain)",
-					Codigo = "es-ES"
-				},
-				new IdiomaClase
-				{
-					Id = "es",
-					Contenido = "Spanish - Spain",
-					Codigo = "es-ES"
-				},
-				new IdiomaClase
-				{
-					Id = "de",
-					Contenido = "German",
-					Codigo = "de-DE"
-				},
-				new IdiomaClase
-				{
-					Id = "fr",
-					Contenido = "French",
-					Codigo = "fr-FR"
-				},
-				new IdiomaClase
-				{
-					Id = "it",
-					Contenido = "Italian",
-					Codigo = "it-IT"
-				},
-				new IdiomaClase
-				{
-					Id = "pt",
-					Contenido = "Portuguese - Portugal",
-					Codigo = "pt-PT"
-				},
-				new IdiomaClase
-				{
-					Id = "pt",
-					Contenido = "Portuguese (Portugal)",
-					Codigo = "pt-PT"
-				},
-				new IdiomaClase
-				{
-					Id = "da",
-					Contenido = "Danish"
-				},
-				new IdiomaClase
-				{
-					Id = "nl",
-					Contenido = "Dutch",
-					Codigo = "nl-NL"
-				},
-				new IdiomaClase
-				{
-					Id = "nn",
-					Contenido = "Norwegian"
-				},
-				new IdiomaClase
-				{
-					Id = "pl",
-					Contenido = "Polish",
-					Codigo = "pl-PL"
-				},
-				new IdiomaClase
-				{
-					Id = "sv",
-					Contenido = "Swedish"
-				},
-				new IdiomaClase
-				{
-					Id = "ko",
-					Contenido = "Korean"
-				},
-				new IdiomaClase
-				{
-					Id = "zhs",
-					Contenido = "Simplified Chinese"
-				},
-				new IdiomaClase
-				{
-					Id = "zht",
-					Contenido = "Traditional Chinese"
-				},
-				new IdiomaClase
-				{
-					Id = "lat",
-					Contenido = "Spanish (Latin America)",
-					Codigo = "es-MX"
-				},
-				new IdiomaClase
-				{
-					Id = "lat",
-					Contenido = "Spanish - Latin America",
-					Codigo = "es-MX"
-				},
-				new IdiomaClase
-				{
-					Id = "br",
-					Contenido = "Portuguese (Brazil)",
-					Codigo = "pt-BR"
-				},
-				new IdiomaClase
-				{
-					Id = "br",
-					Contenido = "Portuguese - Brazil",
-					Codigo = "pt-BR"
-				},
-				new IdiomaClase
-				{
-					Id = "ja",
-					Contenido = "Japanese",
-					Codigo = "ja-JP"
-				},
-				new IdiomaClase
-				{
-					Id = "hu",
-					Contenido = "Hungarian"
-				},
-				new IdiomaClase
-				{
-					Id = "cz",
-					Contenido = "Czech"
-				},
-				new IdiomaClase
-				{
-					Id = "tr",
-					Contenido = "Turkish",
-					Codigo = "tr-TR"
-				},
-				new IdiomaClase
-				{
-					Id = "uk",
-					Contenido = "Ukrainian"
-				},
-				new IdiomaClase
-				{
-					Id = "fi",
-					Contenido = "Finnish"
-				},
-				new IdiomaClase
-				{
-					Id = "ro",
-					Contenido = "Romanian"
-				},
-				new IdiomaClase
-				{
-					Id = "ro",
-					Contenido = "Romanian"
-				},
-				new IdiomaClase
-				{
-					Id = "el",
-					Contenido = "Greek"
-				}
-			];
-
-			return idiomas;
-		}
 
 		#region Steam Juegos
 
@@ -692,63 +514,66 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(contenido) == false)
 			{
-				foreach (var idioma in ListadoIdiomasBuscar())
+				foreach (var idioma in ListadoIdiomasGenerar())
 				{
-					if (contenido.Contains(idioma.Contenido + "<strong>*</strong>") == true)
+					foreach (var idiomaContenido in idioma.Contenidos)
 					{
-						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						if (contenido.Contains(idiomaContenido + "<strong>*</strong>") == true)
 						{
-							DRM = JuegoDRM.Steam,
-							Idioma = idioma.Id,
-							Audio = true,
-							Texto = true
-						};
-
-						bool añadir = true;
-
-						if (idiomas.Count > 0)
-						{
-							foreach (var idioma2 in idiomas)
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
 							{
-								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								DRM = JuegoDRM.Steam,
+								Idioma = idioma.Id,
+								Audio = true,
+								Texto = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
 								{
-									añadir = false;
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										añadir = false;
+									}
 								}
+							}
+
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
 							}
 						}
 
-						if (añadir == true)
+						if (contenido.Contains(idiomaContenido) == true)
 						{
-							idiomas.Add(nuevoIdioma);
-						}
-					}
-
-					if (contenido.Contains(idioma.Contenido) == true)
-					{
-						JuegoIdioma nuevoIdioma = new JuegoIdioma
-						{
-							DRM = JuegoDRM.Steam,
-							Idioma = idioma.Id,
-							Audio = false,
-							Texto = true
-						};
-
-						bool añadir = true;
-
-						if (idiomas.Count > 0)
-						{
-							foreach (var idioma2 in idiomas)
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
 							{
-								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								DRM = JuegoDRM.Steam,
+								Idioma = idioma.Id,
+								Audio = false,
+								Texto = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
 								{
-									añadir = false;
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										añadir = false;
+									}
 								}
 							}
-						}
 
-						if (añadir == true)
-						{
-							idiomas.Add(nuevoIdioma);
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
 						}
 					}
 				}
@@ -765,53 +590,78 @@ namespace Herramientas
 		{
 			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
 
-			foreach (var idioma in contenido)
+			foreach (var idioma2 in ListadoIdiomasGenerar())
 			{
-				JuegoIdioma nuevoIdioma = new JuegoIdioma
+				foreach (var idioma in contenido)
 				{
-					DRM = JuegoDRM.GOG,
-					Idioma = idioma.Datos.Idioma.Codigo
-				};
+					string id = idioma.Datos.Idioma.Codigo;
+					bool existe = false;
 
-				if (idioma.Datos.Tipo.Nombre == "text")
-				{
-					nuevoIdioma.Texto = true;
-				}
-
-				if (idioma.Datos.Tipo.Nombre == "audio")
-				{
-					nuevoIdioma.Audio = true;
-				}
-
-				bool añadir = true;
-
-				if (idiomas.Count > 0)
-				{
-					foreach (var idioma2 in idiomas)
+					if (idioma2.Id == id)
 					{
-						if (idioma2.Idioma == nuevoIdioma.Idioma)
+						existe = true;
+						break;
+					}
+
+					foreach (var codigo in idioma2.Codigos)
+					{
+						if (codigo == id)
 						{
-							if (nuevoIdioma.Audio == true)
-							{
-								idioma2.Audio = true;
-							}
+							existe = true;
+							id = idioma2.Id;
+							break;
+						}
+					}
 
-							if (nuevoIdioma.Texto == true)
-							{
-								idioma2.Texto = true;
-							}
+					if (existe == true)
+					{
+						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						{
+							DRM = JuegoDRM.GOG,
+							Idioma = id
+						};
 
-							añadir = false;
+						if (idioma.Datos.Tipo.Nombre == "text")
+						{
+							nuevoIdioma.Texto = true;
+						}
+
+						if (idioma.Datos.Tipo.Nombre == "audio")
+						{
+							nuevoIdioma.Audio = true;
+						}
+
+						bool añadir = true;
+
+						if (idiomas.Count > 0)
+						{
+							foreach (var idioma3 in idiomas)
+							{
+								if (idioma3.Idioma == nuevoIdioma.Idioma)
+								{
+									if (nuevoIdioma.Audio == true)
+									{
+										idioma3.Audio = true;
+									}
+
+									if (nuevoIdioma.Texto == true)
+									{
+										idioma3.Texto = true;
+									}
+
+									añadir = false;
+								}
+							}
+						}
+
+						if (añadir == true)
+						{
+							idiomas.Add(nuevoIdioma);
 						}
 					}
 				}
-
-				if (añadir == true)
-				{
-					idiomas.Add(nuevoIdioma);
-				}
 			}
-
+				
 			return idiomas;
 		}
 
@@ -829,36 +679,40 @@ namespace Herramientas
 				{
 					foreach (var audio in audios)
 					{
-						foreach (var idioma in ListadoIdiomasBuscar())
+						foreach (var idioma in ListadoIdiomasGenerar())
 						{
-							if (idioma.Contenido == audio)
+							foreach (var idiomaContenido in idioma.Contenidos)
 							{
-								JuegoIdioma nuevoIdioma = new JuegoIdioma
+								if (idiomaContenido == audio)
 								{
-									DRM = JuegoDRM.Epic,
-									Idioma = idioma.Id,
-									Audio = true,
-									Texto = false
-								};
-
-								bool añadir = true;
-
-								if (idiomas.Count > 0)
-								{
-									foreach (var idioma2 in idiomas)
+									JuegoIdioma nuevoIdioma = new JuegoIdioma
 									{
-										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										DRM = JuegoDRM.Epic,
+										Idioma = idioma.Id,
+										Audio = true,
+										Texto = false
+									};
+
+									bool añadir = true;
+
+									if (idiomas.Count > 0)
+									{
+										foreach (var idioma2 in idiomas)
 										{
-											añadir = false;
+											if (idioma2.Idioma == nuevoIdioma.Idioma)
+											{
+												añadir = false;
+											}
 										}
 									}
-								}
 
-								if (añadir == true)
-								{
-									idiomas.Add(nuevoIdioma);
+									if (añadir == true)
+									{
+										idiomas.Add(nuevoIdioma);
+									}
 								}
 							}
+							
 						}
 					}
 				}
@@ -870,36 +724,39 @@ namespace Herramientas
 				{
 					foreach (var texto in textos)
 					{
-						foreach (var idioma in ListadoIdiomasBuscar())
+						foreach (var idioma in ListadoIdiomasGenerar())
 						{
-							if (idioma.Contenido == texto)
+							foreach (var idiomaContenido in idioma.Contenidos)
 							{
-								JuegoIdioma nuevoIdioma = new JuegoIdioma
+								if (idiomaContenido == texto)
 								{
-									DRM = JuegoDRM.Epic,
-									Idioma = idioma.Id,
-									Audio = false,
-									Texto = true
-								};
-
-								bool añadir = true;
-
-								if (idiomas.Count > 0)
-								{
-									foreach (var idioma2 in idiomas)
+									JuegoIdioma nuevoIdioma = new JuegoIdioma
 									{
-										if (idioma2.Idioma == nuevoIdioma.Idioma)
-										{
-											idioma2.Texto = true;
+										DRM = JuegoDRM.Epic,
+										Idioma = idioma.Id,
+										Audio = false,
+										Texto = true
+									};
 
-											añadir = false;
+									bool añadir = true;
+
+									if (idiomas.Count > 0)
+									{
+										foreach (var idioma2 in idiomas)
+										{
+											if (idioma2.Idioma == nuevoIdioma.Idioma)
+											{
+												idioma2.Texto = true;
+
+												añadir = false;
+											}
 										}
 									}
-								}
 
-								if (añadir == true)
-								{
-									idiomas.Add(nuevoIdioma);
+									if (añadir == true)
+									{
+										idiomas.Add(nuevoIdioma);
+									}
 								}
 							}
 						}
@@ -924,7 +781,7 @@ namespace Herramientas
 				}
 			}
 
-			if (string.IsNullOrEmpty(contenido2) == false && string.IsNullOrEmpty(contenidoAudio) == true)
+			if (string.IsNullOrEmpty(contenido2) == false)
 			{
 				if (contenido2.ToLower().Contains("audio") == true)
 				{
@@ -934,34 +791,37 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(contenidoAudio) == false)
 			{
-				foreach (var idioma in ListadoIdiomasBuscar())
+				foreach (var idioma in ListadoIdiomasGenerar())
 				{
-					if (contenidoAudio.Contains(idioma.Contenido) == true)
+					foreach (var idiomaContenido in idioma.Contenidos)
 					{
-						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						if (contenidoAudio.Contains(idiomaContenido) == true)
 						{
-							DRM = JuegoDRM.Epic,
-							Idioma = idioma.Id,
-							Audio = true,
-							Texto = true
-						};
-
-						bool añadir = true;
-
-						if (idiomas.Count > 0)
-						{
-							foreach (var idioma2 in idiomas)
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
 							{
-								if (idioma2.Idioma == nuevoIdioma.Idioma)
+								DRM = JuegoDRM.Epic,
+								Idioma = idioma.Id,
+								Audio = true,
+								Texto = true
+							};
+
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
 								{
-									añadir = false;
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										añadir = false;
+									}
 								}
 							}
-						}
 
-						if (añadir == true)
-						{
-							idiomas.Add(nuevoIdioma);
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
 						}
 					}
 				}
@@ -980,9 +840,14 @@ namespace Herramientas
 				{
 					contenidoTexto = contenido1;
 				}
+
+				if (contenido1.ToLower().Contains("menus + subtitles") == true)
+				{
+					contenidoTexto = contenido1;
+				}
 			}
 
-			if (string.IsNullOrEmpty(contenido2) == false && string.IsNullOrEmpty(contenidoTexto) == true)
+			if (string.IsNullOrEmpty(contenido2) == false)
 			{
 				if (contenido2.ToLower().Contains("text") == true)
 				{
@@ -993,40 +858,48 @@ namespace Herramientas
 				{
 					contenidoTexto = contenido2;
 				}
+
+				if (contenido2.ToLower().Contains("menus + subtitles") == true)
+				{
+					contenidoTexto = contenido2;
+				}
 			}
 
 			if (string.IsNullOrEmpty(contenidoTexto) == false)
 			{
-				foreach (var idioma in ListadoIdiomasBuscar())
+				foreach (var idioma in ListadoIdiomasGenerar())
 				{
-					if (contenidoTexto.Contains(idioma.Contenido) == true)
+					foreach (var idiomaContenido in idioma.Contenidos)
 					{
-						JuegoIdioma nuevoIdioma = new JuegoIdioma
+						if (contenidoTexto.Contains(idiomaContenido) == true)
 						{
-							DRM = JuegoDRM.Epic,
-							Idioma = idioma.Id,
-							Audio = false,
-							Texto = true
-						};
-
-						bool añadir = true;
-
-						if (idiomas.Count > 0)
-						{
-							foreach (var idioma2 in idiomas)
+							JuegoIdioma nuevoIdioma = new JuegoIdioma
 							{
-								if (idioma2.Idioma == nuevoIdioma.Idioma)
-								{
-									idioma2.Texto = true;
+								DRM = JuegoDRM.Epic,
+								Idioma = idioma.Id,
+								Audio = false,
+								Texto = true
+							};
 
-									añadir = false;
+							bool añadir = true;
+
+							if (idiomas.Count > 0)
+							{
+								foreach (var idioma2 in idiomas)
+								{
+									if (idioma2.Idioma == nuevoIdioma.Idioma)
+									{
+										idioma2.Texto = true;
+
+										añadir = false;
+									}
 								}
 							}
-						}
 
-						if (añadir == true)
-						{
-							idiomas.Add(nuevoIdioma);
+							if (añadir == true)
+							{
+								idiomas.Add(nuevoIdioma);
+							}
 						}
 					}
 				}
@@ -1043,99 +916,102 @@ namespace Herramientas
 		{
 			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
 
-			foreach (var idioma in ListadoIdiomasBuscar())
+			foreach (var idioma in ListadoIdiomasGenerar())
 			{
-				if (string.IsNullOrEmpty(idioma.Codigo) == false)
+				foreach (var idiomaCodigo in idioma.Codigos)
 				{
-					if (idiomas2.ContainsKey(idioma.Codigo) == true)
+					if (string.IsNullOrEmpty(idiomaCodigo) == false)
 					{
-						if (idiomas2[idioma.Codigo].Audio == 1)
+						if (idiomas2.ContainsKey(idiomaCodigo) == true)
 						{
-							JuegoIdioma nuevoIdioma = new JuegoIdioma
+							if (idiomas2[idiomaCodigo].Audio == 1)
 							{
-								DRM = JuegoDRM.Microsoft,
-								Idioma = idioma.Id,
-								Audio = true
-							};
-
-							bool añadir = true;
-
-							if (idiomas.Count > 0)
-							{
-								foreach (var idioma2 in idiomas)
+								JuegoIdioma nuevoIdioma = new JuegoIdioma
 								{
-									if (idioma2.Idioma == nuevoIdioma.Idioma)
-									{
-										idioma2.Audio = true;
+									DRM = JuegoDRM.Microsoft,
+									Idioma = idioma.Id,
+									Audio = true
+								};
 
-										añadir = false;
+								bool añadir = true;
+
+								if (idiomas.Count > 0)
+								{
+									foreach (var idioma2 in idiomas)
+									{
+										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										{
+											idioma2.Audio = true;
+
+											añadir = false;
+										}
 									}
+								}
+
+								if (añadir == true)
+								{
+									idiomas.Add(nuevoIdioma);
 								}
 							}
 
-							if (añadir == true)
+							if (idiomas2[idiomaCodigo].Interfaz == 1)
 							{
-								idiomas.Add(nuevoIdioma);
-							}
-						}
-
-						if (idiomas2[idioma.Codigo].Interfaz == 1)
-						{
-							JuegoIdioma nuevoIdioma = new JuegoIdioma
-							{
-								DRM = JuegoDRM.Microsoft,
-								Idioma = idioma.Id,
-								Texto = true
-							};
-
-							bool añadir = true;
-
-							if (idiomas.Count > 0)
-							{
-								foreach (var idioma2 in idiomas)
+								JuegoIdioma nuevoIdioma = new JuegoIdioma
 								{
-									if (idioma2.Idioma == nuevoIdioma.Idioma)
-									{
-										idioma2.Texto = true;
+									DRM = JuegoDRM.Microsoft,
+									Idioma = idioma.Id,
+									Texto = true
+								};
 
-										añadir = false;
+								bool añadir = true;
+
+								if (idiomas.Count > 0)
+								{
+									foreach (var idioma2 in idiomas)
+									{
+										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										{
+											idioma2.Texto = true;
+
+											añadir = false;
+										}
 									}
+								}
+
+								if (añadir == true)
+								{
+									idiomas.Add(nuevoIdioma);
 								}
 							}
 
-							if (añadir == true)
+							if (idiomas2[idiomaCodigo].Subtitulos == 1)
 							{
-								idiomas.Add(nuevoIdioma);
-							}
-						}
-
-						if (idiomas2[idioma.Codigo].Subtitulos == 1)
-						{
-							JuegoIdioma nuevoIdioma = new JuegoIdioma
-							{
-								DRM = JuegoDRM.Microsoft,
-								Idioma = idioma.Id,
-								Texto = true
-							};
-
-							bool añadir = true;
-
-							if (idiomas.Count > 0)
-							{
-								foreach (var idioma2 in idiomas)
+								JuegoIdioma nuevoIdioma = new JuegoIdioma
 								{
-									if (idioma2.Idioma == nuevoIdioma.Idioma)
-									{
-										idioma2.Texto = true;
+									DRM = JuegoDRM.Microsoft,
+									Idioma = idioma.Id,
+									Texto = true
+								};
 
-										añadir = false;
+								bool añadir = true;
+
+								if (idiomas.Count > 0)
+								{
+									foreach (var idioma2 in idiomas)
+									{
+										if (idioma2.Idioma == nuevoIdioma.Idioma)
+										{
+											idioma2.Texto = true;
+
+											añadir = false;
+										}
 									}
 								}
-							}
 
-							if (añadir == true)
-							{
-								idiomas.Add(nuevoIdioma);
+								if (añadir == true)
+								{
+									idiomas.Add(nuevoIdioma);
+								}
 							}
 						}
 					}

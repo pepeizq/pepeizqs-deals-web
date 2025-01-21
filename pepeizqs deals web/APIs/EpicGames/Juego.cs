@@ -330,6 +330,77 @@ namespace APIs.EpicGames
 
 			return listadoIdiomas;
 		}
+
+		public static async Task<string> CargarIdiomasAdmin(string slug)
+		{
+			if (string.IsNullOrEmpty(slug) == false)
+			{
+				string html = await Decompiladores.Estandar("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
+
+				if (string.IsNullOrEmpty(html) == false)
+				{
+					EpicGamesAPIIds ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+
+					if (ids != null)
+					{
+						if (string.IsNullOrEmpty(ids.Datos.Mapping.Mapping2.SandboxId) == false)
+						{
+							string sandboxId = ids.Datos.Mapping.Mapping2.SandboxId;
+
+							string html2 = await Decompiladores.Estandar("https://store.epicgames.com/graphql?operationName=getStoreConfig&variables={%22locale%22:%22en-US%22,%22sandboxId%22:%22" + sandboxId + "%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%220247771a057e44ee16627574296ad79fd48e41b4cb056465515a54ade05aa7f2%22}}");
+
+							if (string.IsNullOrEmpty(html2) == false)
+							{
+								EpicGamesAPIDatos datos = JsonSerializer.Deserialize<EpicGamesAPIDatos>(html2);
+
+								if (datos != null)
+								{
+									if (datos.Datos.Producto.Configuracion.Configs.Count > 0)
+									{
+										foreach (var configs in datos.Datos.Producto.Configuracion.Configs)
+										{
+											if (configs != null)
+											{
+												if (configs.Juego != null)
+												{
+													if (configs.Juego.IdiomasAudios.Count > 0 || configs.Juego.IdiomasTexto.Count > 0)
+													{
+														return JsonSerializer.Serialize(configs.Juego.IdiomasAudios) + " --- " + JsonSerializer.Serialize(configs.Juego.IdiomasTexto);
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
+							string html3 = await Decompiladores.Estandar("https://store-content-ipv4.ak.epicgames.com/api/en-US/content/products/" + slug);
+
+							if (string.IsNullOrEmpty(html3) == false)
+							{
+								EpicGamesAPIDatos3 datos = JsonSerializer.Deserialize<EpicGamesAPIDatos3>(html3);
+
+								if (datos != null)
+								{
+									if (datos.Paginas != null)
+									{
+										if (datos.Paginas.Count > 0)
+										{
+											if (datos.Paginas[0].Datos.Requisitos.Idiomas.Count >= 2)
+											{
+												return JsonSerializer.Serialize(datos.Paginas[0].Datos.Requisitos.Idiomas[0]) + " --- " + JsonSerializer.Serialize(datos.Paginas[0].Datos.Requisitos.Idiomas[1]);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return null;
+		}
 	}
 
     #region API Vieja

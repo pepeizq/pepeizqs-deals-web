@@ -151,6 +151,39 @@ namespace APIs.XboxGamePass
 
 			return listadoIdiomas;
 		}
+
+		public static async Task<string> CargarIdiomasAdmin(string id)
+		{
+			HttpClient cliente = new HttpClient();
+			cliente.BaseAddress = new Uri("https://www.xbox.com/xbox-game-pass");
+			cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+			HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, "https://catalog.gamepass.com/products?market=US&language=en-US&hydration=MobileDetailsForConsole");
+			peticion.Content = new StringContent("{\r\n  \"Products\": [ \"" + id + "\" ]\r\n}",
+												Encoding.UTF8, "application/json");
+
+			HttpResponseMessage respuesta = await cliente.SendAsync(peticion);
+
+			string html = string.Empty;
+
+			try
+			{
+				html = await respuesta.Content.ReadAsStringAsync();
+			}
+			catch { }
+
+			if (string.IsNullOrEmpty(html) == false)
+			{
+				XboxJuegoAPI datos = JsonSerializer.Deserialize<XboxJuegoAPI>(html);
+
+				if (datos != null)
+				{
+					return JsonSerializer.Serialize(datos.Productos[id].Idiomas);
+				}
+			}
+
+			return null;
+		}
 	}
 
 	public class XboxJuegoAPI
