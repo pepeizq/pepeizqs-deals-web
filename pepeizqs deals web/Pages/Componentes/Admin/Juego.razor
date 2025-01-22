@@ -187,25 +187,27 @@
 					</div>
 				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+				@if (string.IsNullOrEmpty(idSteam) == false)
+				{
+					<div style="display: flex; align-items: center;">
+						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						</div>
 
+						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+							<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Actualizar Steam
+							</button>
+
+							<label>@juego.FechaSteamAPIComprobacion.ToString()</label>
+
+							<button @onclick="(async () => await ActualizarDeckSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Actualizar Deck
+							</button>
+
+							<label>@juego.DeckComprobacion.ToString()</label>
+						</div>
 					</div>
-
-					<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-						<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Actualizar Steam
-						</button>
-
-						<label>@juego.FechaSteamAPIComprobacion.ToString()</label>
-
-						<button @onclick="(async () => await ActualizarDeckSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Actualizar Deck
-						</button>
-
-						<label>@juego.DeckComprobacion.ToString()</label>
-					</div>
-				</div>
+				}
 
 				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
@@ -225,22 +227,24 @@
 					</div>
 				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					
-					</div>
+				@if (string.IsNullOrEmpty(idGOG) == false)
+				{
+					<div style="display: flex; align-items: center;">
+						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						</div>
 
-					<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-						<button @onclick="(async () => await ActualizarGogApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Actualizar GOG
-						</button>
+						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+							<button @onclick="(async () => await ActualizarGogApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Actualizar GOG
+							</button>
 
-						@if (juego.GalaxyGOG != null)
-						{
-							<label>@juego.GalaxyGOG.Fecha.ToString()</label>
-						}
+							@if (juego.GalaxyGOG != null)
+							{
+								<label>@juego.GalaxyGOG.Fecha.ToString()</label>
+							}
+						</div>
 					</div>
-				</div>
+				}
 
 				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
@@ -251,37 +255,52 @@
 					</div>
 				</div>
 
+				@if (string.IsNullOrEmpty(slugEpic) == false)
+				{
+					<div style="display: flex; align-items: center;">
+						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+							<button @onclick="(async () => await ActualizarEpicGamesApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Actualizar Epic Games
+							</button>
+
+							@if (juego.EpicGames != null)
+							{
+								<label>@juego.EpicGames.Fecha.ToString()</label>
+							}
+						</div>
+					</div>
+				}
+
 				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						<label>Id Xbox</label>
 					</div>
-
-					<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-						<button @onclick="(async () => await ActualizarEpicGamesApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Actualizar Epic Games
-						</button>
-
-						@if (juego.EpicGames != null)
-						{
-							<label>@juego.EpicGames.Fecha.ToString()</label>
-						}
+					<div style="width: 20%;">
+						<input type="text" @oninput="TextoCambiaIdXbox" class="entrada-texto" value="@idXbox" />
 					</div>
 				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-					</div>
+				@if (string.IsNullOrEmpty(idXbox) == false)
+				{
+					<div style="display: flex; align-items: center;">
+						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+						</div>
 
-					<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-						<button @onclick="(async () => await ActualizarXboxApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-							Actualizar Xbox
-						</button>
+						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+							<button @onclick="(async () => await ActualizarXboxApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
+								Actualizar Xbox
+							</button>
 
-						@if (juego.Xbox != null)
-						{
-							<label>@juego.Xbox.Fecha.ToString()</label>
-						}
+							@if (juego.Xbox != null)
+							{
+								<label>@juego.Xbox.Fecha.ToString()</label>
+							}
+						</div>
 					</div>
-				</div>
+				}
 
 				<div style="display: flex; align-items: center;">
 					<div style="width: 15%; padding: 0px 30px; text-align: right;">
@@ -321,6 +340,7 @@
 	private string idGOG = string.Empty;
 	private string slugGOG = string.Empty;
 	private string slugEpic = string.Empty;
+	private string idXbox = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -362,6 +382,11 @@
 		if (string.IsNullOrEmpty(juego.SlugEpic) == false)
 		{
 			slugEpic = juego.SlugEpic;
+		}
+
+		if (string.IsNullOrEmpty(juego.IdXbox) == false)
+		{
+			idXbox = juego.IdXbox;
 		}
 
 		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
@@ -785,6 +810,24 @@
 			{
 				juego.SlugEpic = slugEpic;
 				BaseDatos.Juegos.Actualizar.SlugEpic(juego, conexion);
+			}
+		}
+	}
+
+	private void TextoCambiaIdXbox(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			idXbox = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.IdXbox = idXbox;
+				BaseDatos.Juegos.Actualizar.IdXbox(juego.Id, idXbox, conexion);
 			}
 		}
 	}

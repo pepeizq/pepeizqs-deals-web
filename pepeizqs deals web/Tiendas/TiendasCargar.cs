@@ -33,7 +33,8 @@ namespace Tiendas2
 				APIs.EpicGames.Tienda.Generar(),
 				APIs._2Game.Tienda.Generar(),
 				APIs.GameBillet.Tienda.Generar(),
-				APIs.Ubisoft.Tienda.Generar()
+				APIs.Ubisoft.Tienda.Generar(),
+				APIs.Playsum.Tienda.Generar()
             };
 
 			return tiendas;
@@ -137,6 +138,10 @@ namespace Tiendas2
 				{
 					await APIs.Allyouplay.Tienda.BuscarOfertas(conexion, decompilador);
 				}
+				else if (id == APIs.Playsum.Tienda.Generar().Id)
+				{
+					await APIs.Playsum.Tienda.BuscarOfertas(conexion, decompilador);
+				}
 			}
         }
 
@@ -233,6 +238,10 @@ namespace Tiendas2
 			else if (id == APIs.Allyouplay.Tienda.Generar().Id)
 			{
 				await APIs.Allyouplay.Tienda.BuscarOfertas(conexion, decompilador);
+			}
+			else if (id == APIs.Playsum.Tienda.Generar().Id)
+			{
+				await APIs.Playsum.Tienda.BuscarOfertas(conexion, decompilador);
 			}
 		}
     }

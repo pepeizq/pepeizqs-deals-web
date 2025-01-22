@@ -3,6 +3,7 @@
 using Juegos;
 using Microsoft.Data.SqlClient;
 using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BaseDatos.Juegos
 {
@@ -467,8 +468,20 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void MayorEdad(Juego juego, SqlConnection conexion)
+		public static void MayorEdad(Juego juego, SqlConnection conexion = null)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
 					"SET mayorEdad=@mayorEdad WHERE id=@id";
 
@@ -484,6 +497,43 @@ namespace BaseDatos.Juegos
 				catch
 				{
 
+				}
+			}
+
+			bool actualizar = false;
+			string buscarMinimos = "SELECT * FROM seccionMinimos WHERE idMaestra=@idMaestra";
+
+			using (SqlCommand comando2 = new SqlCommand(buscarMinimos, conexion))
+			{
+				comando2.Parameters.AddWithValue("@idMaestra", juego.Id);
+
+				using (SqlDataReader lector = comando2.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						actualizar = true;
+					}
+				}
+			}
+
+			if (actualizar == true)
+			{
+				string actualizarMinimos = "UPDATE seccionMinimos " +
+					"SET mayorEdad=@mayorEdad WHERE idMaestra=@idMaestra";
+
+				using (SqlCommand comando3 = new SqlCommand(actualizarMinimos, conexion))
+				{
+					comando3.Parameters.AddWithValue("@idMaestra", juego.Id);
+					comando3.Parameters.AddWithValue("@mayorEdad", juego.MayorEdad);
+
+					try
+					{
+						comando3.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
 				}
 			}
 		}
@@ -611,29 +661,32 @@ namespace BaseDatos.Juegos
 				{
 					List<JuegoIdioma> listadoActualizar = juego.Idiomas;
 
-					foreach (var nuevoIdioma in nuevoJuego.Idiomas)
+					if (nuevoJuego.Idiomas.Count > 0)
 					{
-						bool existe = false;
-
-						foreach (var viejoIdioma in listadoActualizar)
+						foreach (var nuevoIdioma in nuevoJuego.Idiomas)
 						{
-							if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+							bool existe = false;
+
+							foreach (var viejoIdioma in listadoActualizar)
 							{
-								existe = true;
+								if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+								{
+									existe = true;
 
-								viejoIdioma.Audio = nuevoIdioma.Audio;
-								viejoIdioma.Texto = nuevoIdioma.Texto;
+									viejoIdioma.Audio = nuevoIdioma.Audio;
+									viejoIdioma.Texto = nuevoIdioma.Texto;
 
-								break;
+									break;
+								}
+							}
+
+							if (existe == false)
+							{
+								listadoActualizar.Add(nuevoIdioma);
 							}
 						}
-
-						if (existe == false)
-						{
-							listadoActualizar.Add(nuevoIdioma);
-						}
 					}
-
+					
 					juego.Idiomas = listadoActualizar;
 				}
 

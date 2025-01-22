@@ -15,5 +15,14 @@
   "nl": "Dutch",
   "da": "Danish",
   "cz": "Czech",
-  "fi": "Finnish"
+  "fi": "Finnish",
+  "ko": "Korean",
+  "zhs": "Chinese (Simplified)",
+  "zht": "Chinese (Traditional)",
+  "ja": "Japanese",
+  "hu": "Hungarian",
+  "tr": "Turkish",
+  "uk": "Ukrainian",
+  "ru": "Russian",
+  "ar": "Arabic"
 }

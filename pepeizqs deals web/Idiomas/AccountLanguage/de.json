@@ -1,10 +1,4 @@
 {
-  "en": "Englisch",
-  "es": "Spanisch",
-  "fr": "Französisch",
-  "de": "Deutsch",
-  "it": "Italienisch",
-  "pt": "Portugiesisch",
   "String1": "Erkannte Sprache:",
   "String2": "Hinweis: Wenn Ihre Sprache nicht auf der Website aufgeführt ist, wird sie standardmäßig auf Englisch geändert.",
   "String3": "Wenn sich Ihre Sprache von der von der Website erkannten unterscheidet, können Sie sie hier ändern:",

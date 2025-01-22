@@ -128,6 +128,10 @@ namespace Herramientas
 					{
 						enlace = APIs.GameBillet.Tienda.Referido(enlace);
 					}
+					else if (tienda == APIs.Playsum.Tienda.Generar().Id)
+					{
+						enlace = APIs.Playsum.Tienda.Referido(enlace);
+					}
 				}
 			}
 			

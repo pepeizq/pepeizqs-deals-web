@@ -1,10 +1,4 @@
 {
-  "en": "Inglés",
-  "es": "Español",
-  "fr": "Francés",
-  "de": "Alemán",
-  "it": "Italiano",
-  "pt": "Portugués",
   "String1": "Idioma detectado:",
   "String2": "Nota: Si tu idioma no esta en la web se cambia por defecto a Inglés.",
   "String3": "Si tu idioma es diferente al detectado por la web, puedes cambiarlo aquí:",

@@ -7,15 +7,19 @@ namespace Herramientas
 {
 	public static class RobotsUserAgents
 	{
-		public static bool Autorizar(string userAgent)
+		private static List<string> botsBuenos = ["www.google.com/bot.html", "www.bing.com/bingbot.htm", 
+			"duckduckgo.com/duckduckbot.html", "Valve Client", "Steam Client", "Valve/Steam"];
+
+		public static bool EsBotVerificado(string userAgent)
 		{
 			if (string.IsNullOrEmpty(userAgent) == false)
 			{
-				if (userAgent.Contains("http://www.google.com/bot.html") == true ||
-					userAgent.Contains("http://www.bing.com/bingbot.htm") == true ||
-					userAgent.Contains("http://duckduckgo.com/duckduckbot.html") == true)
+				foreach (var bot in botsBuenos)
 				{
-					return true;
+					if (userAgent.Contains(bot) == true)
+					{
+						return true;
+					}
 				}
 			}			
 

@@ -499,6 +499,14 @@ namespace Herramientas
 						return idioma.ImagenBandera;
 					}
 				}
+
+				foreach (var codigo in idioma.Codigos)
+				{
+					if (codigo.ToLower() == idiomaBandera.ToLower())
+					{
+						return idioma.ImagenBandera;
+					}
+				}
 			}
 
 			return null;

@@ -1122,40 +1122,43 @@
                                                 </button>
                                             }
 
-                                            @if (drm.Id == JuegoDRM.Steam)
+                                            @if (Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == false)
                                             {
-                                                if (juego.IdSteam > 0)
+                                                if (drm.Id == JuegoDRM.Steam)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), APIs.Steam.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
-                                                        @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "Steam")
-                                                    </a>
+                                                    if (juego.IdSteam > 0)
+                                                    {
+                                                        <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.steampowered.com/app/" + juego.IdSteam.ToString(), APIs.Steam.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                            @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "Steam")
+                                                        </a>
+                                                    }
                                                 }
-                                            }
 
-                                            @if (drm.Id == JuegoDRM.GOG)
-                                            {
-                                                if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+                                                if (drm.Id == JuegoDRM.GOG)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, APIs.GOG.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
-                                                        @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "GOG")
-                                                    </a>
+                                                    if (string.IsNullOrEmpty(juego.SlugGOG) == false)
+                                                    {
+                                                        <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://www.gog.com/game/" + juego.SlugGOG, APIs.GOG.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                            @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "GOG")
+                                                        </a>
+                                                    }
                                                 }
-                                            }
 
-                                            @if (drm.Id == JuegoDRM.Epic)
-                                            {
-                                                if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+                                                if (drm.Id == JuegoDRM.Epic)
                                                 {
-                                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, APIs.EpicGames.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
-                                                        @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "Epic Games")
-                                                    </a>
+                                                    if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+                                                    {
+                                                        <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar("https://store.epicgames.com/p/" + juego.SlugEpic, APIs.EpicGames.Tienda.Generar().Id, usuarioPatreon)" target="_blank" style="width: auto; min-width: 200px; text-align: center;">
+                                                            @string.Format("{0} {1}", Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Game"), "Epic Games")
+                                                        </a>
+                                                    }
                                                 }
                                             }
                                         </div>
                                     </div>
                                 }
-
-                                @if (preciosActualesDRM.Count > 0)
+                          
+                                @if (preciosActualesDRM.Count > 0 && Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == false)
                                 {
                                     List<JuegoPrecio> preciosBajos = new List<JuegoPrecio>();
                                     int descuentoMaximo = 0;
@@ -2697,11 +2700,11 @@
 
     #nullable disable
 
-        [Parameter]
-        public string idioma { get; set; }
+    [Parameter]
+    public string idioma { get; set; }
 
-        [Parameter]
-        public string usuarioId { get; set; }
+    [Parameter]
+    public string usuarioId { get; set; }
 
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
@@ -2829,7 +2832,7 @@
                     }
                 } 
 
-                if (Herramientas.RobotsUserAgents.Autorizar(userAgent) == false)
+                if (Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == false)
                 {
                     string idiomaSteam = "english";
 
