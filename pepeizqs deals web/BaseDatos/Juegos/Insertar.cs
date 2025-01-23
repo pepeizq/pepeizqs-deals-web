@@ -196,5 +196,66 @@ namespace BaseDatos.Juegos
 				}				
 			}
 		}
+
+		public static async Task<string> GogReferencia(string idJuego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			bool sePuedeInsertar = true;
+			string buscar = "SELECT * FROM gogReferencias WHERE idJuego=@idJuego";
+
+			using (SqlCommand comando = new SqlCommand(buscar, conexion))
+			{
+				comando.Parameters.AddWithValue("@idJuego", idJuego);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						if (lector.IsDBNull(1) == false)
+						{
+							sePuedeInsertar = false;
+							return lector.GetInt32(1).ToString();
+						}
+					}
+				}
+			}
+
+			if (sePuedeInsertar == true)
+			{
+				string idReferencia = await APIs.GOG.Juego.BuscarReferencia(idJuego);
+
+				string insertar = "INSERT INTO gogReferencias (idJuego, idReferencia) VALUES (@idJuego, @idReferencia)";
+
+				using (SqlCommand comando = new SqlCommand(insertar, conexion))
+				{
+					comando.Parameters.AddWithValue("@idJuego", idJuego);
+					comando.Parameters.AddWithValue("@idReferencia", idReferencia);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+					}
+					catch (Exception ex)
+					{
+						Errores.Insertar.Mensaje("Añadir GOG Referencia " + idJuego, ex);
+					}
+				}
+
+				return idReferencia;
+			}
+			
+			return idJuego;
+		}
 	}
 }

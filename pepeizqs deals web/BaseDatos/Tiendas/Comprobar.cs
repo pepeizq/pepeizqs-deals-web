@@ -26,6 +26,8 @@ namespace BaseDatos.Tiendas
 
 			if (string.IsNullOrEmpty(idSteam2) == false)
 			{
+				idSteam2 = APIs.Steam.Tienda.IdsEspeciales(idSteam2);
+
 				int idSteam = 0;
 
 				try

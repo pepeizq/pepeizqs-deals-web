@@ -50,7 +50,7 @@ namespace Tareas.Suscripciones
 						{
 							try
 							{
-								await APIs.XboxGamePass.Suscripcion.Buscar(conexion);
+								await APIs.Xbox.Suscripcion.Buscar(conexion);
 
 								Environment.Exit(1);
 							}

@@ -93,13 +93,17 @@ namespace APIs.GOG
 									{
 										foreach (var juego in cuenta2.Datos.Juegos)
 										{
+											string idJuego = juego.Datos.Id;
+
+											idJuego = await BaseDatos.Juegos.Insertar.GogReferencia(idJuego);
+
 											if (string.IsNullOrEmpty(juegos) == false)
 											{
-												juegos = juegos + "," + juego.Datos.Id;
+												juegos = juegos + "," + idJuego;
 											}
 											else
 											{
-												juegos = juego.Datos.Id;
+												juegos = idJuego;
 											}
 										}
 									}

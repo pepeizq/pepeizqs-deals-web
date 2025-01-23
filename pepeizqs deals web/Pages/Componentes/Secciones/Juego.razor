@@ -2885,8 +2885,8 @@
             {
                 if (juego.GalaxyGOG == null)
                 {
-                    juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
-                    juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+                    juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
+                    juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
 
                     global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
                 }
@@ -2894,8 +2894,8 @@
                 {
                     if (juego.GalaxyGOG.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
                     {
-                        juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
-                        juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+                        juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
+                        juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
 
                         global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
                     }
@@ -2927,8 +2927,8 @@
             {
                 if (juego.Xbox == null)
                 {
-                    juego.Xbox = await APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
-                    juego.Idiomas = await APIs.XboxGamePass.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+                    juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
+                    juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
 
                     global::BaseDatos.Juegos.Actualizar.Xbox(juego);
                 }
@@ -2936,8 +2936,8 @@
                 {
                     if (juego.Xbox.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
                     {
-                        juego.Xbox = await APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
-                        juego.Idiomas = await APIs.XboxGamePass.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+                        juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
+                        juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
 
                         global::BaseDatos.Juegos.Actualizar.Xbox(juego);
                     }

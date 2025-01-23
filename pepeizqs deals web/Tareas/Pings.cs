@@ -47,7 +47,7 @@ namespace Tareas
 					}
                     catch (Exception ex)
                     {
-						BaseDatos.Errores.Insertar.Mensaje("Ping Tiendas", ex);
+						BaseDatos.Errores.Insertar.Mensaje("Ping Tiendas", ex, null, false);
 					}
 
 					//---------------------------------------------------------------------------------------

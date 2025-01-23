@@ -407,6 +407,29 @@ namespace APIs.Steam
 				BaseDatos.Admin.Actualizar.TiendasValorAdicional(Generar().Id, "valorAdicional", i, conexion);
 			}
 		}
+
+		public static string IdsEspeciales(string id)
+		{
+			#region Total War: SHOGUN 2 DLC es juego
+
+			if (id == "201270")
+			{
+				id = "34330";
+			}
+
+			#endregion
+
+			#region Call of Duty®: Modern Warfare® 3(2011) Config es juego
+
+			if (id == "115300")
+			{
+				id = "42680";
+			}
+
+			#endregion
+
+			return id;
+		}
 	}
 
 	public class SteamQueryAPI

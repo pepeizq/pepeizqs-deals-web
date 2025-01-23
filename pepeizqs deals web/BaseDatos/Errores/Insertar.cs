@@ -6,7 +6,7 @@ namespace BaseDatos.Errores
 {
     public static class Insertar
 	{
-        public static void Mensaje(string seccion, Exception ex, SqlConnection conexion = null)
+        public static void Mensaje(string seccion, Exception ex, SqlConnection conexion = null, bool reiniciar = true)
 		{
             if (conexion == null)
             {
@@ -44,7 +44,10 @@ namespace BaseDatos.Errores
                 }
             }
             
-            Environment.Exit(1);
+            if (reiniciar == true)
+            {
+				Environment.Exit(1);
+			}  
         }
 
         public static void Mensaje(string seccion, string mensaje, string enlace = null)

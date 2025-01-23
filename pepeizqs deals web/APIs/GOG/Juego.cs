@@ -10,9 +10,11 @@
 #nullable disable
 
 using Herramientas;
+using Juegos;
 using Microsoft.VisualBasic;
-using Newtonsoft.Json;
 using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.GOG
 {
@@ -63,7 +65,7 @@ namespace APIs.GOG
 
 						if (string.IsNullOrEmpty(htmlAPI) == false) 
 						{
-							GOGJuegoAPI datos = JsonConvert.DeserializeObject<GOGJuegoAPI>(htmlAPI);
+							GOGJuegoAPI datos = JsonSerializer.Deserialize<GOGJuegoAPI>(htmlAPI);
 
 							if (datos != null)
 							{
@@ -71,7 +73,7 @@ namespace APIs.GOG
 
 								if (htmlBusquedaAPI != null)
 								{
-									GOGBusquedaAPI busqueda = JsonConvert.DeserializeObject<GOGBusquedaAPI>(htmlBusquedaAPI);
+									GOGBusquedaAPI busqueda = JsonSerializer.Deserialize<GOGBusquedaAPI>(htmlBusquedaAPI);
 
 									if (busqueda != null)
 									{
@@ -166,7 +168,7 @@ namespace APIs.GOG
 												Juegos.Juego juego = new Juegos.Juego
 												{
 													IdSteam = 0,
-													IdGog = int.Parse(datos.Id),
+													IdGog = datos.Id,
 													Nombre = datos.Nombre,
 													Media = media,
 													Caracteristicas = caracteristicas,
@@ -237,55 +239,240 @@ namespace APIs.GOG
 
 			return id;
 		}
+
+		public static async Task<JuegoGalaxyGOG> GalaxyDatos(string id)
+		{
+			JuegoGalaxyGOG galaxy = new JuegoGalaxyGOG();
+			string html = await Decompiladores.Estandar("https://api.gog.com/products/" + id + "?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog");
+
+			if (string.IsNullOrEmpty(html) == false)
+			{
+				GOGGalaxy datos = JsonSerializer.Deserialize<GOGGalaxy>(html);
+
+				if (datos != null)
+				{
+					galaxy.Windows = datos.Sistemas.Windows;
+					galaxy.Mac = datos.Sistemas.Mac;
+					galaxy.Linux = datos.Sistemas.Linux;
+				}
+			}
+
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					foreach (var caracteristica in datos.Caracteristicas.Datos)
+					{
+						if (caracteristica.Id == "achievements")
+						{
+							galaxy.Logros = true;
+						}
+
+						if (caracteristica.Id == "cloud_saves")
+						{
+							galaxy.GuardadoNube = true;
+						}
+					}
+
+					foreach (var propiedad in datos.Caracteristicas.Propiedades)
+					{
+						if (propiedad.Slug == "good-old-game")
+						{
+							galaxy.Preservacion = true;
+						}
+					}
+				}
+			}
+
+			galaxy.Fecha = DateTime.Now;
+
+			return galaxy;
+		}
+
+		public static async Task<List<JuegoIdioma>> GalaxyIdiomas(string id, List<JuegoIdioma> listadoIdiomas)
+		{
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					List<JuegoIdioma> idiomas = Herramientas.Idiomas.GogSacarIdiomas(datos.Caracteristicas.Idiomas);
+
+					if (listadoIdiomas == null)
+					{
+						listadoIdiomas = idiomas;
+					}
+					else
+					{
+						List<JuegoIdioma> listadoActualizar = listadoIdiomas;
+
+						//Limpiar en un futuro
+
+						int i = 0;
+						while (i < 30)
+						{
+							int j = 0;
+							bool borrar = false;
+
+							foreach (var viejoIdioma in listadoActualizar)
+							{
+								if (viejoIdioma.DRM == JuegoDRM.GOG)
+								{
+									borrar = true;
+									break;
+								}
+
+								j += 1;
+							}
+
+							if (borrar == true)
+							{
+								listadoActualizar.RemoveAt(j);
+							}
+
+							i += 1;
+						}
+
+						//----------------------------
+
+						foreach (var nuevoIdioma in idiomas)
+						{
+							bool existe = false;
+
+							foreach (var viejoIdioma in listadoActualizar)
+							{
+								if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+								{
+									existe = true;
+
+									viejoIdioma.Audio = nuevoIdioma.Audio;
+									viejoIdioma.Texto = nuevoIdioma.Texto;
+
+									break;
+								}
+							}
+
+							if (existe == false)
+							{
+								listadoActualizar.Add(nuevoIdioma);
+							}
+						}
+
+						return listadoActualizar;
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public static async Task<string> CargarIdiomasAdmin(string id)
+		{
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					return JsonSerializer.Serialize(datos.Caracteristicas.Idiomas);
+				}
+			}
+
+			return null;
+		}
+
+		public static async Task<string> BuscarReferencia(string id)
+		{
+			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
+
+				if (datos != null)
+				{
+					if (datos.SeHaLanzado == "unavailable")
+					{
+						if (datos.Enlaces != null)
+						{
+							if (datos.Enlaces.Listado != null)
+							{
+								if (datos.Enlaces.Listado.Count > 0)
+								{
+									foreach (var enlace in datos.Enlaces.Listado)
+									{
+										if (enlace.Estado == "default" && enlace.Id > 0)
+										{
+											return enlace.Id.ToString();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return id;
+		}
 	}
 
     #region Clases
 
     public class GOGJuegoAPI
 	{
-		[JsonProperty("id")]
-		public string Id { get; set; }
+		[JsonPropertyName("id")]
+		public int Id { get; set; }
 
-		[JsonProperty("title")]
+		[JsonPropertyName("title")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("game_type")]
+		[JsonPropertyName("game_type")]
 		public string Tipo { get; set; }
 
-		[JsonProperty("content_system_compatibility")]
+		[JsonPropertyName("content_system_compatibility")]
 		public GOGJuegoAPISistemas Sistemas { get; set; }
 
-		[JsonProperty("images")]
+		[JsonPropertyName("images")]
 		public GOGJuegoAPIImagenes Imagenes { get; set; }
 	}
 
 	public class GOGJuegoAPISistemas
 	{
-		[JsonProperty("windows")]
+		[JsonPropertyName("windows")]
 		public bool Windows { get; set; }
 
-		[JsonProperty("osx")]
+		[JsonPropertyName("osx")]
 		public bool Mac { get; set; }
 
-		[JsonProperty("linux")]
+		[JsonPropertyName("linux")]
 		public bool Linux { get; set; }
 	}
 
 	public class GOGJuegoAPIImagenes
 	{
-		[JsonProperty("background")]
+		[JsonPropertyName("background")]
 		public string Background { get; set; }
 
-		[JsonProperty("logo")]
+		[JsonPropertyName("logo")]
 		public string Logo { get; set; }
 
-		[JsonProperty("icon")]
+		[JsonPropertyName("icon")]
 		public string Icon { get; set; }
 
-		[JsonProperty("sidebarIcon")]
+		[JsonPropertyName("sidebarIcon")]
 		public string SidebarIcon { get; set; }
 
-		[JsonProperty("menuNotificationAv")]
+		[JsonPropertyName("menuNotificationAv")]
 		public string MenuNotificationAv { get; set; }
 	}
 
@@ -293,46 +480,46 @@ namespace APIs.GOG
 
 	public class GOGBusquedaAPI
 	{
-		[JsonProperty("products")]
+		[JsonPropertyName("products")]
 		public List<GOGBusquedaAPIResultado> Resultados { get; set; }
 	}
 
 	public class GOGBusquedaAPIResultado
 	{
-		[JsonProperty("id")]
-		public string Id { get; set; }
+		[JsonPropertyName("id")]
+		public int Id { get; set; }
 
-		[JsonProperty("slug")]
+		[JsonPropertyName("slug")]
 		public string Slug { get; set; }
 
-		[JsonProperty("screenshots")]
+		[JsonPropertyName("screenshots")]
 		public List<string> Capturas { get; set; }
 
-		[JsonProperty("coverHorizontal")]
+		[JsonPropertyName("coverHorizontal")]
 		public string CoverHorizontal { get; set; }
 
-		[JsonProperty("coverVertical")]
+		[JsonPropertyName("coverVertical")]
 		public string CoverVertical { get; set; }
 
-		[JsonProperty("developers")]
+		[JsonPropertyName("developers")]
 		public List<string> Desarrolladores { get; set; }
 
-		[JsonProperty("publishers")]
+		[JsonPropertyName("publishers")]
 		public List<string> Publishers { get; set; }
 
-		[JsonProperty("operatingSystems")]
+		[JsonPropertyName("operatingSystems")]
 		public List<string> Sistemas { get; set; }
 
-		[JsonProperty("price")]
+		[JsonPropertyName("price")]
 		public GOGBusquedaAPIResultadoPrecio Precio { get; set; }
 	}
 
 	public class GOGBusquedaAPIResultadoPrecio
 	{
-		[JsonProperty("discount")]
+		[JsonPropertyName("discount")]
 		public string Descuento { get; set; }
 
-		[JsonProperty("final")]
+		[JsonPropertyName("final")]
 		public string Cantidad { get; set; }
 	}
 

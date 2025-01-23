@@ -223,151 +223,6 @@ namespace APIs.GOG
 				i += 1;
 			}
 		}
-
-		public static async Task<JuegoGalaxyGOG> GalaxyDatos(string id)
-		{
-            JuegoGalaxyGOG galaxy = new JuegoGalaxyGOG();
-            string html = await Decompiladores.Estandar("https://api.gog.com/products/" + id + "?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog");
-
-            if (string.IsNullOrEmpty(html) == false)
-			{
-                GOGGalaxy datos = JsonSerializer.Deserialize<GOGGalaxy>(html);
-
-				if (datos != null)
-				{
-					galaxy.Windows = datos.Sistemas.Windows;
-					galaxy.Mac = datos.Sistemas.Mac;
-					galaxy.Linux = datos.Sistemas.Linux;
-				}
-            }
-
-            string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
-
-            if (string.IsNullOrEmpty(html2) == false)
-            {
-                GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
-
-                if (datos != null)
-                {
-                    foreach (var caracteristica in datos.Caracteristicas.Datos)
-					{
-						if (caracteristica.Id == "achievements")
-						{
-							galaxy.Logros = true;
-						}
-
-						if (caracteristica.Id == "cloud_saves")
-						{
-							galaxy.GuardadoNube = true;
-						}
-					}
-
-					foreach (var propiedad in datos.Caracteristicas.Propiedades)
-					{
-						if (propiedad.Slug == "good-old-game")
-						{
-							galaxy.Preservacion = true;
-						}
-					}
-                }
-            }
-
-			galaxy.Fecha = DateTime.Now;
-
-			return galaxy;
-        }
-
-		public static async Task<List<JuegoIdioma>> GalaxyIdiomas(string id, List<JuegoIdioma> listadoIdiomas)
-		{
-			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
-
-			if (string.IsNullOrEmpty(html2) == false)
-			{
-				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
-
-				if (datos != null)
-				{
-					List<JuegoIdioma> idiomas = Herramientas.Idiomas.GogSacarIdiomas(datos.Caracteristicas.Idiomas);
-
-					if (listadoIdiomas == null)
-					{
-						listadoIdiomas = idiomas;
-					}
-					else
-					{
-						List<JuegoIdioma> listadoActualizar = listadoIdiomas;
-
-						//Limpiar en un futuro
-
-						int i = 0;
-						while (i < 20)
-						{
-							int j = 0;
-
-							foreach (var viejoIdioma in listadoActualizar)
-							{
-								if (viejoIdioma.DRM == JuegoDRM.GOG)
-								{
-									break;
-								}
-
-								j += 1;
-							}
-
-							listadoActualizar.RemoveAt(j);
-
-							i += 1;
-						}
-
-						//----------------------------
-						
-						foreach (var nuevoIdioma in idiomas)
-						{
-							bool existe = false;
-
-							foreach (var viejoIdioma in listadoActualizar)
-							{
-								if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
-								{
-									existe = true;
-
-									viejoIdioma.Audio = nuevoIdioma.Audio;
-									viejoIdioma.Texto = nuevoIdioma.Texto;
-
-									break;
-								}
-							}
-
-							if (existe == false)
-							{
-								listadoActualizar.Add(nuevoIdioma);
-							}
-						}
-
-						return listadoActualizar;
-					}
-				}
-			}
-
-			return null;	
-		}
-
-		public static async Task<string> CargarIdiomasAdmin(string id)
-		{
-			string html2 = await Decompiladores.Estandar("https://api.gog.com/v2/games/" + id);
-
-			if (string.IsNullOrEmpty(html2) == false)
-			{
-				GOGGalaxy2 datos = JsonSerializer.Deserialize<GOGGalaxy2>(html2);
-
-				if (datos != null)
-				{
-					return JsonSerializer.Serialize(datos.Caracteristicas.Idiomas);
-				}
-			}
-
-			return null;
-		}
 	}
 
 	#region Ofertas (Antiguo)
@@ -478,7 +333,13 @@ namespace APIs.GOG
     {
         [JsonPropertyName("_embedded")]
         public GOGGalaxy2Caracteristicas Caracteristicas { get; set; }
-    }
+
+		[JsonPropertyName("_links")]
+		public GOGGalaxy2Enlaces Enlaces { get; set; }
+
+		[JsonPropertyName("releaseStatus")]
+		public string SeHaLanzado { get; set; }
+	}
 
     public class GOGGalaxy2Caracteristicas
     {
@@ -532,6 +393,23 @@ namespace APIs.GOG
 	{
 		[JsonPropertyName("slug")]
 		public string Slug { get; set; }
+	}
+	public class GOGGalaxy2Enlaces
+	{
+		[JsonPropertyName("isIncludedInGames")]
+		public List<GOGGalaxy2Enlace> Listado { get; set; }
+	}
+
+	public class GOGGalaxy2Enlace
+	{
+		[JsonPropertyName("id")]
+		public int Id { get; set; }
+
+		[JsonPropertyName("isSecret")]
+		public bool Secreto { get; set; }
+
+		[JsonPropertyName("releaseStatus")]
+		public string Estado { get; set; }
 	}
 
 	#endregion

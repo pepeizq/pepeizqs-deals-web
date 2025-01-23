@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace APIs.XboxGamePass
+namespace APIs.Xbox
 {
     public static class Suscripcion
     {

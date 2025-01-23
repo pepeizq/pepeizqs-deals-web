@@ -4,7 +4,7 @@
 #nullable disable
 
 using APIs.GOG;
-using APIs.XboxGamePass;
+using APIs.Xbox;
 using Juegos;
 using System.Text.Json;
 
@@ -608,18 +608,19 @@ namespace Herramientas
 					if (idioma2.Id == id)
 					{
 						existe = true;
-						break;
 					}
 
-					foreach (var codigo in idioma2.Codigos)
+					if (existe == false)
 					{
-						if (codigo == id)
+						foreach (var codigo in idioma2.Codigos)
 						{
-							existe = true;
-							id = idioma2.Id;
-							break;
+							if (codigo.ToLower() == id.ToLower())
+							{
+								existe = true;
+								id = idioma2.Id;
+							}
 						}
-					}
+					}	
 
 					if (existe == true)
 					{
@@ -629,17 +630,19 @@ namespace Herramientas
 							Idioma = id
 						};
 
+						bool añadir = false;
+
 						if (idioma.Datos.Tipo.Nombre == "text")
 						{
 							nuevoIdioma.Texto = true;
+							añadir = true;
 						}
 
 						if (idioma.Datos.Tipo.Nombre == "audio")
 						{
 							nuevoIdioma.Audio = true;
+							añadir = true;
 						}
-
-						bool añadir = true;
 
 						if (idiomas.Count > 0)
 						{
@@ -719,8 +722,7 @@ namespace Herramientas
 										idiomas.Add(nuevoIdioma);
 									}
 								}
-							}
-							
+							}	
 						}
 					}
 				}

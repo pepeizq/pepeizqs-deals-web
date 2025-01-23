@@ -16,53 +16,101 @@
 		</a>
 	</div>
 
-	<div style="display: flex; align-items: center;">
+	<div style="display: flex; align-items: start; gap: 20px;">
 		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 				Imagenes
 			</button>
+
+			@if (pestañaMostrar == 1)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 2))" class="boton-pequeño" style="padding: 10px 15px;">
 				Precios
 			</button>
+
+			@if (pestañaMostrar == 2)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 3))" class="boton-pequeño" style="padding: 10px 15px;">
 				Bundles
 			</button>
+
+			@if (pestañaMostrar == 3)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 4))" class="boton-pequeño" style="padding: 10px 15px;">
 				Gratis
 			</button>
+
+			@if (pestañaMostrar == 4)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 5))" class="boton-pequeño" style="padding: 10px 15px;">
 				Suscripciones
 			</button>
+
+			@if (pestañaMostrar == 5)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 6))" class="boton-pequeño" style="padding: 10px 15px;">
 				Datos
 			</button>
+
+			@if (pestañaMostrar == 6)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 7))" class="boton-pequeño" style="padding: 10px 15px;">
 				Deseados
 			</button>
+
+			@if (pestañaMostrar == 7)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 
-		<div style="width: auto; margin-left: 20px;">
+		<div style="width: auto;">
 			<button @onclick="(e => MostrarPestaña(e, 8))" class="boton-pequeño" style="padding: 10px 15px;">
 				Históricos
 			</button>
+
+			@if (pestañaMostrar == 8)
+			{
+				<div style="margin-top: 10px; background: color-mix(in srgb, var(--colorTexto) 50%, transparent); padding: 1px;">
+				</div>
+			}
 		</div>
 	</div>
 
@@ -72,7 +120,7 @@
 
 		if (pestañaMostrar == 1)
 		{
-			<div style="display: flex; align-items: start;">
+			<div style="display: flex; align-items: start; gap: 40px;">
 				<div style="width: 20%;">
 					<button @onclick="(e => MostrarPestañaImagenes(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 						Capsule_231x87
@@ -102,7 +150,7 @@
 
 				</div>
 
-				<div style="width: 80%; padding: 5px 0px 5px 40px;">
+				<div style="width: 80%;">
 					<label style="margin-bottom: 10px;">Imagen Origen:</label>
 
 					<input type="text" @oninput="TextoCambiaImagenOrigen" class="entrada-texto" style="margin-bottom: 20px;" value="@imagenOrigen" />
@@ -112,7 +160,7 @@
 		}
 		else if (pestañaMostrar == 2)
 		{
-			<div style="display: flex; align-items: start;">
+			<div style="display: flex; align-items: start; gap: 40px;">
 				<div style="width: 20%;">
 					<button @onclick="(e => MostrarPestañaPrecios(e, 1))" class="boton-pequeño" style="padding: 10px 15px;">
 						Actuales
@@ -123,7 +171,7 @@
 					</button>
 				</div>
 
-				<div style="width: 80%; padding: 5px 0px 5px 40px;">
+				<div style="width: 80%;">
 					<textarea @onchange="(e => TextoCambiaPrecios(e))" class="entrada-texto" rows="16">@textoPrecios</textarea>
 				</div>
 			</div>
@@ -145,173 +193,273 @@
 			<div style="display: flex; flex-direction: column; gap: 20px;">
 				@if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
 				{
-					<div style="display: flex; align-items: center;">
-						<div style="width: 15%; padding: 0px 30px; text-align: right;">
-							<label>Maestro</label>
+					<div style="display: flex; align-items: center; gap: 20px; background: color-mix(in srgb, var(--fondoDlc) 50%, transparent); border: 1px solid var(--fondoBotonPequeño); padding: 20px 40px;">
+						<div>
+							Juego Maestro
 						</div>
-						<div style="width: 20%;">
+
+						<div style="min-width: 200px; width: fit-content;">
 							<input type="text" @oninput="TextoCambiaDlcMaestro" class="entrada-texto" value="@textoDlcMaestro" />
 						</div>
-						<div style="width: 65%; padding: 0px 30px;">
-							<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Buscar
-							</button>
-						</div>
+
+						<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+							Buscar
+						</button>
 					</div>
 				}
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>FreeToPlay</label>
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; justify-items: left; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							FreeToPlay
+						</div>
+						<div class="checkbox-caja" style="height: 24px;">
+							<input type="checkbox" class="checkbox-interior" checked="@textoF2P" @onchange="@(e => TextoCambiaF2P(e))">
+						</div>
 					</div>
-					<div class="checkbox-caja">
-						<input type="checkbox" class="checkbox-interior" checked="@textoF2P" @onchange="@(e => TextoCambiaF2P(e))">
-					</div>
-				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Mayor Edad</label>
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							Mayor Edad
+						</div>
+						<div class="checkbox-caja" style="height: 24px;">
+							<input type="checkbox" class="checkbox-interior" checked="@textoEdad" @onchange="@(e => TextoCambiaEdad(e))">
+						</div>
 					</div>
-					<div class="checkbox-caja">
-						<input type="checkbox" class="checkbox-interior" checked="@textoEdad" @onchange="@(e => TextoCambiaEdad(e))">
-					</div>
-				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Id Steam</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
-					</div>
-				</div>
-
-				@if (string.IsNullOrEmpty(idSteam) == false)
-				{
-					<div style="display: flex; align-items: center;">
-						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							Tipo	
 						</div>
 
+						<div class="menu-dropdown" style="width: fit-content;">
+							<button class="boton-pequeño" style="display: flex; align-items: center; gap: 10px; justify-content: center; padding: 10px 25px; margin: 0; border: 0px; color: var(--colorTextoVisitado);">
+								<div style="color: var(--colorEnlace); margin-right: 5px;">
+									@if (tipo == "0")
+									{
+										<div>
+											Juego
+										</div>
+									}
+
+									@if (tipo == "1")
+									{
+										<div>
+											DLC
+										</div>
+									}
+
+									@if (tipo == "2")
+									{
+										<div>
+											Bundle
+										</div>
+									}
+
+									@if (tipo == "3")
+									{
+										<div>
+											Banda Sonora
+										</div>
+									}
+
+									@if (tipo == "4")
+									{
+										<div>
+											Software
+										</div>
+									}
+								</div>
+
+								<div>
+									<i class="fa-solid fa-caret-down"></i>
+								</div>
+							</button>
+
+							<div>
+								@{
+									string tipoJuego = "0";
+									string tipoDlc = "1";
+									string tipoBundle = "2";
+									string tipoBandaSonora = "3";
+									string tipoSoftware = "4";
+								}
+
+								<div class="menu-dropdown-contenido" style="left: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+									<button @onclick="(e => ActualizarTipo(e, tipoJuego))" class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;">
+										Juego
+									</button>
+									<button @onclick="(e => ActualizarTipo(e, tipoDlc))" class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;">
+										DLC
+									</button>
+									<button @onclick="(e => ActualizarTipo(e, tipoBundle))" class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;">
+										Bundle
+									</button>
+									<button @onclick="(e => ActualizarTipo(e, tipoBandaSonora))" class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;">
+										Banda Sonora
+									</button>
+									<button @onclick="(e => ActualizarTipo(e, tipoSoftware))" class="texto-cabecera menu-dropdown-item" style="text-align: left; width: 100%; border: 0px;">
+										Software
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@APIs.Steam.Tienda.Generar().ImagenIcono" style="width: 24px; height: 24px;" />
+
+							<div>
+								Steam
+							</div>
+						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Id
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaIdSteam" class="entrada-texto" value="@idSteam" />
+							</div>
+						</div>
+					</div>
+
+					@if (string.IsNullOrEmpty(idSteam) == false)
+					{
 						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-							<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Actualizar Steam
+							<button @onclick="(async () => await ActualizarSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+								Actualizar API
 							</button>
 
-							<label>@juego.FechaSteamAPIComprobacion.ToString()</label>
+							<label>@Herramientas.Calculadora.DiferenciaTiempo(juego.FechaSteamAPIComprobacion, "es")</label>
 
-							<button @onclick="(async () => await ActualizarDeckSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Actualizar Deck
-							</button>
+							@if (juego.Tipo == JuegoTipo.Game)
+							{
+								<button @onclick="(async () => await ActualizarDeckSteamApi())" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+									Actualizar Deck
+								</button>
 
-							<label>@juego.DeckComprobacion.ToString()</label>
+								<label>@Herramientas.Calculadora.DiferenciaTiempo(juego.DeckComprobacion, "es")</label>
+							}
 						</div>
-					</div>
-				}
-
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Id GOG</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaIdGOG" class="entrada-texto" value="@idGOG" />
-					</div>
+					}
 				</div>
 
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Slug GOG</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaSlugGOG" class="entrada-texto" value="@slugGOG" />
-					</div>
-				</div>
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@APIs.GOG.Tienda.Generar().ImagenIcono" style="width: 24px; height: 24px;" />
 
-				@if (string.IsNullOrEmpty(idGOG) == false)
-				{
-					<div style="display: flex; align-items: center;">
-						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+							<div>
+								GOG
+							</div>
 						</div>
 
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Id
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaIdGOG" class="entrada-texto" value="@idGOG" />
+							</div>
+						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Slug
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaSlugGOG" class="entrada-texto" value="@slugGOG" />
+							</div>
+						</div>
+					</div>
+
+					@if (string.IsNullOrEmpty(idGOG) == false)
+					{
 						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
 							<button @onclick="(async () => await ActualizarGogApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Actualizar GOG
+								Actualizar API
 							</button>
 
 							@if (juego.GalaxyGOG != null)
 							{
-								<label>@juego.GalaxyGOG.Fecha.ToString()</label>
+								<label>@Herramientas.Calculadora.DiferenciaTiempo(juego.GalaxyGOG.Fecha, "es")</label>
 							}
 						</div>
-					</div>
-				}
-
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Slug Epic</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaSlugEpic" class="entrada-texto" value="@slugEpic" />
-					</div>
+					}
 				</div>
 
-				@if (string.IsNullOrEmpty(slugEpic) == false)
-				{
-					<div style="display: flex; align-items: center;">
-						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@APIs.EpicGames.Tienda.Generar().ImagenIcono" style="width: 24px; height: 24px;" />
+
+							<div>
+								Epic Games
+							</div>
 						</div>
 
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Slug
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaSlugEpic" class="entrada-texto" value="@slugEpic" />
+							</div>
+						</div>
+					</div>
+
+					@if (string.IsNullOrEmpty(slugEpic) == false)
+					{
 						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
 							<button @onclick="(async () => await ActualizarEpicGamesApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Actualizar Epic Games
+								Actualizar API
 							</button>
 
 							@if (juego.EpicGames != null)
 							{
-								<label>@juego.EpicGames.Fecha.ToString()</label>
+								<label>@Herramientas.Calculadora.DiferenciaTiempo(juego.EpicGames.Fecha, "es")</label>
 							}
 						</div>
-					</div>
-				}
-
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Id Xbox</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaIdXbox" class="entrada-texto" value="@idXbox" />
-					</div>
+					}
 				</div>
 
-				@if (string.IsNullOrEmpty(idXbox) == false)
-				{
-					<div style="display: flex; align-items: center;">
-						<div style="width: 15%; padding: 0px 30px; text-align: right;">
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@APIs.Xbox.Suscripcion.Generar().ImagenIcono" style="width: 24px; height: 24px;" />
+
+							<div>
+								Xbox
+							</div>
 						</div>
 
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Id
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaIdXbox" class="entrada-texto" value="@idXbox" />
+							</div>
+						</div>
+					</div>
+
+					@if (string.IsNullOrEmpty(idXbox) == false)
+					{
 						<div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
 							<button @onclick="(async () => await ActualizarXboxApi())" class="boton-pequeño" style="padding: 10px 15px; width: auto;">
-								Actualizar Xbox
+								Actualizar API
 							</button>
 
 							@if (juego.Xbox != null)
 							{
-								<label>@juego.Xbox.Fecha.ToString()</label>
+								<label>@Herramientas.Calculadora.DiferenciaTiempo(juego.Xbox.Fecha, "es")</label>
 							}
 						</div>
-					</div>
-				}
-
-				<div style="display: flex; align-items: center;">
-					<div style="width: 15%; padding: 0px 30px; text-align: right;">
-						<label>Tipo</label>
-					</div>
-					<div style="width: 20%;">
-						<input type="text" @oninput="TextoCambiaTipo" class="entrada-texto" value="@tipo" />
-					</div>
-					<div style="width: 65%; padding: 0px 30px;">
-						<label>(0 juego, 1 dlc, 2 bundle, 3 musica, 4 software)</label>
-					</div>
+					}
 				</div>
 			</div>
 		}
@@ -341,6 +489,8 @@
 	private string slugGOG = string.Empty;
 	private string slugEpic = string.Empty;
 	private string idXbox = string.Empty;
+
+	private string idiomasGog = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -895,8 +1045,8 @@
 
 	private async Task ActualizarGogApi()
 	{
-		juego.GalaxyGOG = await APIs.GOG.Tienda.GalaxyDatos(juego.IdGog.ToString());
-		juego.Idiomas = await APIs.GOG.Tienda.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+		juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
+		juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
 
 		global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
 	}
@@ -911,43 +1061,41 @@
 
 	private async Task ActualizarXboxApi()
 	{
-		juego.Xbox = await APIs.XboxGamePass.Juego.XboxDatos(juego.IdXbox);
-		juego.Idiomas = await APIs.XboxGamePass.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+		juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
+		juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
 
 		global::BaseDatos.Juegos.Actualizar.Xbox(juego);
 	}
 
 	private string tipo = string.Empty;
 
-	private void TextoCambiaTipo(ChangeEventArgs texto)
+	private void ActualizarTipo(MouseEventArgs e, string nuevoTipo)
 	{
-		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		if (string.IsNullOrEmpty(nuevoTipo) == false)
 		{
-			string nuevoTexto = texto.Value.ToString().Trim();
-
-			tipo = nuevoTexto;
+			tipo = nuevoTipo;
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 
 			using (conexion)
 			{
-				if (nuevoTexto == "0")
+				if (nuevoTipo == "0")
 				{
 					juego.Tipo = global::Juegos.JuegoTipo.Game;
 				}
-				else if (nuevoTexto == "1")
+				else if (nuevoTipo == "1")
 				{
 					juego.Tipo = global::Juegos.JuegoTipo.DLC;
 				}
-				else if (nuevoTexto == "2")
+				else if (nuevoTipo == "2")
 				{
 					juego.Tipo = global::Juegos.JuegoTipo.Bundle;
 				}
-				else if (nuevoTexto == "3")
+				else if (nuevoTipo == "3")
 				{
 					juego.Tipo = global::Juegos.JuegoTipo.Music;
 				}
-				else if (nuevoTexto == "4")
+				else if (nuevoTipo == "4")
 				{
 					juego.Tipo = global::Juegos.JuegoTipo.Software;
 				}
