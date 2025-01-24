@@ -6,6 +6,8 @@ using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -32,7 +34,28 @@ namespace APIs.Ubisoft
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
+
+            //HttpClient cliente = new HttpClient();
+            //cliente.BaseAddress = new Uri("https://store.ubisoft.com/");
+            //cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //         cliente.DefaultRequestHeaders.Add("X-Algolia-Api-Key", "9258b782262f815cdfee54a00cf69d02");
+            //         cliente.DefaultRequestHeaders.Add("X-Algolia-Application-Id", "AVCVYSEJS1");
+
+            //         HttpResponseMessage respuesta = await cliente.GetAsync("https://avcvysejs1-dsn.algolia.net/1/indexes/products_en-us_default?&query=&hitsPerPage=1000");
+
+            //string html = string.Empty;
+
+            //try
+            //{
+            //	html = await respuesta.Content.ReadAsStringAsync();
+            //}
+            //catch { }
+
+            //if (string.IsNullOrEmpty(html) == false)
+            //{
+            //	BaseDatos.Errores.Insertar.Mensaje("test", html);
+            //}
 
             string html = await Decompiladores.Estandar("https://daisycon.io/datafeed/?media_id=350618&standard_id=1&language_code=es&locale_id=17&type=JSON&program_id=14538&html_transform=none&rawdata=false&encoding=utf8&general=false");
 
@@ -107,7 +130,7 @@ namespace APIs.Ubisoft
 
                                                 try
                                                 {
-													BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+                                                    BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -123,7 +146,33 @@ namespace APIs.Ubisoft
                 }
             }
         }
-    }
+
+        public static async void BuscarJuego(string tiendaId)
+        {
+            HttpClient cliente = new HttpClient();
+            cliente.BaseAddress = new Uri("https://store.ubisoft.com/");
+            cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, "https://xely3u4lod-dsn.algolia.net/1/indexes/eu_custom_MFE/query?x-algolia-agent=Algolia%20for%20JavaScript%20(4.8.5)%3B%20Browser&x-algolia-application-id=XELY3U4LOD&x-algolia-api-key=5638539fd9edb8f2c6b024b49ec375bd");
+            peticion.Content = new StringContent("{\"query\":\"" + tiendaId + "\"}",
+                                                Encoding.UTF8, "application/json");
+
+            HttpResponseMessage respuesta = await cliente.SendAsync(peticion);
+
+            string html = string.Empty;
+
+            try
+            {
+                html = await respuesta.Content.ReadAsStringAsync();
+            }
+            catch { }
+
+            if (string.IsNullOrEmpty(html) == false)
+            {
+                BaseDatos.Errores.Insertar.Mensaje("test", html);
+            }
+        }
+	}
 
     public class UbisoftDatos
     {

@@ -1,7 +1,7 @@
 {
   "String1": "Avis",
   "String2": "Les avis sont tirés directement de Steam et divisés par régions et je vous montre les mieux notés au cours des 30 derniers jours.",
-  "String3": "Données régionales :",
+  "String3": "Avis sur {0} :",
   "String4": "{0} avis",
   "String5": "Il n'y a aucun avis pour cette région.",
   "String6": "Écrit {0}",

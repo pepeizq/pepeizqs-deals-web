@@ -282,4 +282,13 @@ namespace Juegos
 		public bool Audio { get; set; }
 		public bool Texto { get; set; }
 	}
+
+	//-------------------------------------------------------
+
+	public class JuegoRazorUsuario
+	{
+		public JuegoDRM DRM { get; set; }
+		public bool Tiene { get; set; }
+		public bool Desea { get; set; }
+	}
 }

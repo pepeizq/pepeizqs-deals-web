@@ -1,7 +1,7 @@
 {
   "String1": "Reviews",
   "String2": "The reviews are taken directly from Steam and divided by regions and I show you the best rated ones in the last 30 days.",
-  "String3": "Regional data:",
+  "String3": "Reviews on {0}:",
   "String4": "{0} reviews",
   "String5": "There is no reviews for this region.",
   "String6": "Written {0}",

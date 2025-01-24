@@ -577,9 +577,16 @@
 
 	private int pestañaMostrar = 0;
 
-	private void MostrarPestaña(MouseEventArgs e, int pestaña)
+	private void MostrarPestaña(MouseEventArgs e, int nuevaPestaña)
 	{
-		pestañaMostrar = pestaña;
+		if (nuevaPestaña == pestañaMostrar)
+		{
+			pestañaMostrar = 0;
+		}
+		else
+		{
+			pestañaMostrar = nuevaPestaña;
+		}
 	}
 
 	#region Imagenes

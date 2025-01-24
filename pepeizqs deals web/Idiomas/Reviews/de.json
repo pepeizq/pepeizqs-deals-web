@@ -1,7 +1,7 @@
 {
   "String1": "Rezensionen",
   "String2": "Die Bewertungen stammen direkt von Steam und sind nach Regionen unterteilt. Ich zeige Ihnen die am besten bewerteten in den letzten 30 Tagen.",
-  "String3": "Regionale Daten:",
+  "String3": "Rezensionen zu {0}:",
   "String4": "{0} Bewertungen",
   "String5": "Für diese Region liegen keine Bewertungen vor.",
   "String6": "Geschrieben {0}",

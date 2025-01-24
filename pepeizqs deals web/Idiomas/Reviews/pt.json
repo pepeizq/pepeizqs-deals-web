@@ -1,7 +1,7 @@
 {
   "String1": "Comentários",
   "String2": "As análises são retiradas diretamente do Steam e divididas por regiões e mostro as mais bem avaliadas dos últimos 30 dias.",
-  "String3": "Dados regionais:",
+  "String3": "Avaliações sobre {0}:",
   "String4": "{0} comentários",
   "String5": "Não há comentários para esta região.",
   "String6": "Escrito {0}",

@@ -1,7 +1,7 @@
 {
   "String1": "Recensioni",
   "String2": "Le recensioni sono prese direttamente da Steam e divise per regioni e vi mostro quelle più votate negli ultimi 30 giorni.",
-  "String3": "Dati regionali:",
+  "String3": "Recensioni su {0}:",
   "String4": "{0} recensioni",
   "String5": "Non ci sono recensioni per questa regione.",
   "String6": "Scritto {0}",
