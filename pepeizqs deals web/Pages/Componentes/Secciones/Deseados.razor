@@ -947,8 +947,15 @@
 
 								if (juego.Analisis != null)
 								{
-									nuevoDeseado.ReseñasPorcentaje = juego.Analisis.Porcentaje.Replace("%", null);
-									nuevoDeseado.ReseñasCantidad = juego.Analisis.Cantidad.Replace(",", null);
+									if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+									{
+										nuevoDeseado.ReseñasPorcentaje = juego.Analisis.Porcentaje.Replace("%", null);
+									}
+
+									if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+									{
+										nuevoDeseado.ReseñasCantidad = juego.Analisis.Cantidad.Replace(",", null);
+									}
 								}
 								else
 								{

@@ -79,7 +79,7 @@ namespace APIs.GOG
 									{
 										foreach (GOGBusquedaAPIResultado resultado in busqueda.Resultados)
 										{
-											if (resultado.Id == datos.Id)
+											if (resultado.Id == datos.Id.ToString())
 											{
 												string descuentoTemp = resultado.Precio.Descuento;
 												int descuento = 0;
@@ -487,7 +487,7 @@ namespace APIs.GOG
 	public class GOGBusquedaAPIResultado
 	{
 		[JsonPropertyName("id")]
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		[JsonPropertyName("slug")]
 		public string Slug { get; set; }
