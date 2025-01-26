@@ -47,13 +47,13 @@ namespace Herramientas
 			}
 		}
 
-		public static void EnviarMinimo(string usuarioId, int idJuego, JuegoPrecio minimo)
+		public static void EnviarMinimo(string usuarioId, int idJuego, JuegoPrecio minimo, JuegoDRM drm)
 		{
 			Juego juego = global::BaseDatos.Juegos.Buscar.UnJuego(idJuego);
-			EnviarMinimo(usuarioId, juego, minimo);
+			EnviarMinimo(usuarioId, juego, minimo, drm);
 		}
 
-		public static async void EnviarMinimo(string usuarioId, Juego juego, JuegoPrecio minimo)
+		public static async void EnviarMinimo(string usuarioId, Juego juego, JuegoPrecio minimo, JuegoDRM drm)
 		{
 			if (juego != null)
 			{

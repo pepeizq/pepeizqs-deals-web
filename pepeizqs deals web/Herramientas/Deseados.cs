@@ -207,7 +207,7 @@ namespace Herramientas
 			return false;
 		}
 
-		public static async void CambiarEstado(UserManager<Usuario> UserManager, Usuario usuario, Juego juego, bool estado, JuegoDRM drm)
+		public static async Task<List<JuegoRazorUsuario>> CambiarEstado(List<JuegoRazorUsuario> usuarioTieneDesea, UserManager<Usuario> UserManager, Usuario usuario, Juego juego, bool estado, JuegoDRM drm)
 		{
 			List<JuegoDeseado> deseados = new List<JuegoDeseado>();
 
@@ -240,6 +240,14 @@ namespace Herramientas
 					deseado.DRM = drm;
 
 					deseados.Add(deseado);
+
+					if (usuarioTieneDesea != null)
+					{
+						JuegoRazorUsuario deseado2 = new JuegoRazorUsuario();
+						deseado2.DRM = drm;
+						deseado2.Desea = true;
+						usuarioTieneDesea.Add(deseado2);
+					}
 				}
 
 				usuario.Wishlist = JsonSerializer.Serialize(deseados);
@@ -269,7 +277,20 @@ namespace Herramientas
 				usuario.Wishlist = JsonSerializer.Serialize(deseados);
 
 				await UserManager.UpdateAsync(usuario);
+
+				if (usuarioTieneDesea != null)
+				{
+					foreach (var desea in usuarioTieneDesea)
+					{
+						if (desea.DRM == drm)
+						{
+							desea.Desea = false;
+						}
+					}
+				}
 			}
+
+			return usuarioTieneDesea;
 		}
 	}
 }

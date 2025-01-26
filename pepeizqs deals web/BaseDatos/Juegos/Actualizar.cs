@@ -653,41 +653,40 @@ namespace BaseDatos.Juegos
 				juego.Categorias = nuevoJuego.Categorias;
 				juego.Generos = nuevoJuego.Generos;
 
-				if (juego.Idiomas == null)
+				if (nuevoJuego.Idiomas != null)
 				{
-					juego.Idiomas = nuevoJuego.Idiomas;
-				}
-				else
-				{
-					List<JuegoIdioma> listadoActualizar = juego.Idiomas;
-
 					if (nuevoJuego.Idiomas.Count > 0)
 					{
-						foreach (var nuevoIdioma in nuevoJuego.Idiomas)
+						if (juego.Idiomas == null)
 						{
-							bool existe = false;
-
-							foreach (var viejoIdioma in listadoActualizar)
+							juego.Idiomas = nuevoJuego.Idiomas;
+						}
+						else
+						{
+							foreach (var nuevoIdioma in nuevoJuego.Idiomas)
 							{
-								if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+								bool existe = false;
+
+								foreach (var viejoIdioma in juego.Idiomas)
 								{
-									existe = true;
+									if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+									{
+										existe = true;
 
-									viejoIdioma.Audio = nuevoIdioma.Audio;
-									viejoIdioma.Texto = nuevoIdioma.Texto;
+										viejoIdioma.Audio = nuevoIdioma.Audio;
+										viejoIdioma.Texto = nuevoIdioma.Texto;
 
-									break;
+										break;
+									}
 								}
-							}
 
-							if (existe == false)
-							{
-								listadoActualizar.Add(nuevoIdioma);
+								if (existe == false)
+								{
+									juego.Idiomas.Add(nuevoIdioma);
+								}
 							}
 						}
 					}
-					
-					juego.Idiomas = listadoActualizar;
 				}
 
 				if (conexion == null)

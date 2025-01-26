@@ -407,6 +407,7 @@
                 {
                     bool usuarioTieneJuego = false;
                     bool usuarioTieneDeseado = false;
+                    bool usuarioTieneDeseadoImportado = false;
                     string usuarioTieneDeseadoMensaje = string.Empty;
 
                     List<JuegoPrecio> preciosActualesDRM = OrdenarPrecios(juego.PrecioActualesTiendas, drm.Id);
@@ -423,32 +424,26 @@
                                     {
                                         if (drm.Id == tieneDesea.DRM)
                                         {
-                                            if (tieneDesea.Tiene == true)
-                                            {
-                                                usuarioTieneJuego = true;
-                                            }
+                                            usuarioTieneJuego = tieneDesea.Tiene;
+                                            usuarioTieneDeseado = tieneDesea.Desea;
+                                            usuarioTieneDeseadoImportado = tieneDesea.ImportadoDesea;
 
-                                            if (tieneDesea.Desea == true)
-                                            {
-                                                usuarioTieneDeseado = true;
-                                            }
-
-                                            if (tieneDesea.Desea == true && drm.Id == JuegoDRM.Steam && juego.Tipo == Juegos.JuegoTipo.Game)
+                                            if (tieneDesea.Desea == true && tieneDesea.ImportadoDesea == true && drm.Id == JuegoDRM.Steam && juego.Tipo == Juegos.JuegoTipo.Game)
                                             {
                                                 usuarioTieneDeseadoMensaje = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Game"), "Steam");
                                             }
 
-                                            if (tieneDesea.Desea == true && drm.Id == JuegoDRM.Steam && juego.Tipo == Juegos.JuegoTipo.DLC)
+                                            if (tieneDesea.Desea == true && tieneDesea.ImportadoDesea == true && drm.Id == JuegoDRM.Steam && juego.Tipo == Juegos.JuegoTipo.DLC)
                                             {
                                                 usuarioTieneDeseadoMensaje = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Game"), "Steam");
                                             }
 
-                                            if (tieneDesea.Desea == true && drm.Id == JuegoDRM.GOG && juego.Tipo == Juegos.JuegoTipo.Game)
+                                            if (tieneDesea.Desea == true && tieneDesea.ImportadoDesea == true && drm.Id == JuegoDRM.GOG && juego.Tipo == Juegos.JuegoTipo.Game)
                                             {
                                                 usuarioTieneDeseadoMensaje = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Game"), "GOG");
                                             }
 
-                                            if (tieneDesea.Desea == true && drm.Id == JuegoDRM.GOG && juego.Tipo == Juegos.JuegoTipo.DLC)
+                                            if (tieneDesea.Desea == true && tieneDesea.ImportadoDesea == true && drm.Id == JuegoDRM.GOG && juego.Tipo == Juegos.JuegoTipo.DLC)
                                             {
                                                 usuarioTieneDeseadoMensaje = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Game"), "GOG");
                                             }
@@ -456,7 +451,7 @@
                                     }
                                 }
 
-                                if (usuarioTieneJuego == false && string.IsNullOrEmpty(usuarioTieneDeseadoMensaje) == true)
+                                if (usuarioTieneJuego == false && usuarioTieneDeseadoImportado == false)
                                 {
                                     if (usuarioTieneDeseado == true)
                                     {
@@ -2113,7 +2108,7 @@
 
                                         @string.Format(Idiomas.BuscarTexto(idioma, "String3", "Reviews"), idiomaTraduccion.ToLower())
                                     </div>
-                                 
+
                                     <div style="display: flex; align-items: center; gap: 20px;">
                                         @{
                                             int total = analisisAmpliado.CantidadPositivos + analisisAmpliado.CantidadNegativos;
@@ -2789,6 +2784,7 @@
                                                     JuegoRazorUsuario nuevoDeseadoUsuario = new JuegoRazorUsuario();
                                                     nuevoDeseadoUsuario.DRM = JuegoDRM.Steam;
                                                     nuevoDeseadoUsuario.Desea = true;
+                                                    nuevoDeseadoUsuario.ImportadoDesea = true;
                                                     usuarioTieneDesea.Add(nuevoDeseadoUsuario);
 
                                                     break;
@@ -2816,6 +2812,7 @@
                                                     JuegoRazorUsuario nuevoDeseadoUsuario = new JuegoRazorUsuario();
                                                     nuevoDeseadoUsuario.DRM = JuegoDRM.GOG;
                                                     nuevoDeseadoUsuario.Desea = true;
+                                                    nuevoDeseadoUsuario.ImportadoDesea = true;
                                                     usuarioTieneDesea.Add(nuevoDeseadoUsuario);
 
                                                     break;
@@ -3616,9 +3613,11 @@
 
     #region Deseados
 
-    private void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
+    private async void CambiarEstadoDeseado(MouseEventArgs e, bool estado, JuegoDRM drm)
     {
-        Herramientas.Deseados.CambiarEstado(UserManager, usuario, juego, estado, drm);
+        usuarioTieneDesea = await Herramientas.Deseados.CambiarEstado(usuarioTieneDesea, UserManager, usuario, juego, estado, drm);
+
+        await InvokeAsync(StateHasChanged);
     }
 
     #endregion

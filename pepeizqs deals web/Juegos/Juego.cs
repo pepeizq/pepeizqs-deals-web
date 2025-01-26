@@ -290,5 +290,6 @@ namespace Juegos
 		public JuegoDRM DRM { get; set; }
 		public bool Tiene { get; set; }
 		public bool Desea { get; set; }
+		public bool ImportadoDesea { get; set; }
 	}
 }
