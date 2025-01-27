@@ -1,0 +1,10 @@
+{
+  "String1": "Importez votre liste de souhaits",
+  "String2": "Trouvez l'emplacement du fichier .json",
+  "String3": "Des choses que vous devez savoir avant d'importer votre liste de souhaits",
+  "String4": "IsthereanyDeal fournit le strict minimum d'informations lorsque vous exportez votre liste de souhaits à partir de là. ",
+  "String5": "IsthereanyDeal ne fournit aucune information sur la plate-forme que vous souhaitez que vos jeux de souhaits soient sur, donc par défaut lors de l'importation de jeux, ils seront affectés à Steam.",
+  "String6": "Dans IsThereAnyDeal, vous pouvez exporter votre liste de souhaits au format JSON à partir d'ici :",
+  "String7": "Cette importation n'est pas automatique, vous devez exporter votre liste de souhaits depuis IsThereAnyDeal dans un fichier JSON puis rechercher ce fichier pour l'importer sur le site. ",
+  "String8": "Quantité de votre liste de souhaits importée : {0}"
+}

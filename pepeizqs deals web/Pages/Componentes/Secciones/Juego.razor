@@ -1884,8 +1884,11 @@
                         posicion += 1;
                     }
 
-                    juegosCurator.RemoveAt(posicion);
-
+                    if (posicion < juegosCurator.Count)
+                    {
+                        juegosCurator.RemoveAt(posicion);
+                    }
+                    
                     if (juegosCurator.Count > 0)
                     {
                         juegosCurator = juegosCurator.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Nombre).ToList();

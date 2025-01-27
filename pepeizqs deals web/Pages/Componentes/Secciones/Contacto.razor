@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+<div style="max-width: 1000px; margin: auto;">
+	<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Contact")</h1>
+	<hr />
+
+	<div style="display: flex; flex-direction: column; gap: 40px;">
+		<div style="display: flex; align-items: center; gap: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+			<div>
+				<i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
+			</div>
+			<div>
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Contact") @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Contact"), "admin@pepeizqdeals.com")
+			</div>
+		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+			<div style="margin-left: 8px; margin-bottom: 8px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Contact")
+			</div>
+			<input class="entrada-texto" value="@formularioCorreo" @oninput="TextoCambiaCorreo" />
+
+			<div style="margin-left: 8px; margin-bottom: 8px; margin-top: 20px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Contact")
+			</div>
+			<input class="entrada-texto" value="@formularioTitulo" @oninput="TextoCambiaTitulo" />
+
+			<div style="margin-left: 8px; margin-bottom: 8px; margin-top: 20px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Contact")
+			</div>
+			<textarea class="entrada-texto" value="@formularioContenido" @oninput="TextoCambiaContenido" rows="10" />
+
+			@if (correoValido == true && tituloValido == true && contenidoValido == true)
+			{
+				<button class="boton" @onclick="EnviarmeCorreo" style="margin-top: 20px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Contact")
+				</button>
+			}
+
+			@if (formularioEnviado == true)
+			{
+				<div style="background-color: var(--fondoBien); padding: 10px 15px; margin-top: 30px;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Contact")
+				</div>
+			}
+		</div>
+	</div>
+</div>
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private string formularioCorreo = string.Empty;
+	private bool correoValido = false;
+	private string formularioTitulo = string.Empty;
+	private bool tituloValido = false;
+	private string formularioContenido = string.Empty;
+	private bool contenidoValido = false;
+
+	private bool formularioEnviado = false;
+
+	private void TextoCambiaCorreo(ChangeEventArgs texto)
+	{
+		formularioCorreo = texto.Value.ToString();
+
+		correoValido = false;
+
+		if (string.IsNullOrEmpty(formularioCorreo) == false)
+		{
+			if (formularioCorreo.Contains("@") == true && formularioCorreo.Contains(".") == true)
+			{
+				correoValido = true;
+			}
+		}
+	}
+
+	private void TextoCambiaTitulo(ChangeEventArgs texto)
+	{
+		formularioTitulo = texto.Value.ToString();
+
+		tituloValido = false;
+
+		if (string.IsNullOrEmpty(formularioTitulo) == false)
+		{
+			if (formularioTitulo.Length > 10)
+			{
+				tituloValido = true;
+			}
+		}
+	}
+
+	private void TextoCambiaContenido(ChangeEventArgs texto)
+	{
+		formularioContenido = texto.Value.ToString();
+
+		contenidoValido = false;
+
+		if (string.IsNullOrEmpty(formularioContenido) == false)
+		{
+			if (formularioContenido.Length > 50)
+			{
+				contenidoValido = true;
+			}
+		}
+	}
+
+	private void EnviarmeCorreo()
+	{
+		formularioEnviado = Herramientas.Correos.EnviarCorreo(formularioContenido, formularioTitulo, formularioCorreo, "admin@pepeizqdeals.com");
+
+		if (formularioEnviado == true)
+		{
+			formularioContenido = null;
+			formularioTitulo = null;
+			formularioCorreo = null;
+
+			correoValido = false;
+			tituloValido = false;
+			contenidoValido = false;
+		}
+	}
+}

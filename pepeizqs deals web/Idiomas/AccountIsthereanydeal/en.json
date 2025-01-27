@@ -1,0 +1,10 @@
+{
+  "String1": "Import your wishlist",
+  "String2": "Find the location of the .json file",
+  "String3": "Things you should know before importing your wishlist",
+  "String4": "IsThereAnyDeal provides the bare minimum of information when you export your wishlist from there. The only information it provides is the title of the games and when importing games here it is possible that not all games will be imported if there are discrepancies in the titles I have stored on the web.",
+  "String5": "IsThereAnyDeal does not provide any information about which platform you want your wishlisted games to be on, so by default when importing games they will be assigned to Steam.",
+  "String6": "In IsThereAnyDeal you can export your wishlist in JSON format from here:",
+  "String7": "This import is not automatic, you must export your wishlist from IsThereAnyDeal in a JSON file and then search for that file to import it to the website. If you make changes to your wishlist in IsThereAnyDeal you will have to re-import the file again.",
+  "String8": "Quantity of your imported wishlist: {0}"
+}

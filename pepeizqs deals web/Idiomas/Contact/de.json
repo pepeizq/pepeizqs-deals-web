@@ -1,5 +1,10 @@
 {
   "Title": "Kontakt",
-  "String1": "Ich antworte nur auf E-Mails mit Problemen, die in direktem Zusammenhang mit der Website stehen. Wenn Sie Probleme mit einem bestimmten Geschäft haben, wenden Sie sich an den jeweiligen Kundendienst.",
-  "String2": "Schreiben Sie mir an die folgende E-Mail auf Englisch oder Spanisch:"
+  "String1": "Ich antworte nur auf Nachrichten auf Spanisch oder Englisch mit Problemen, die direkt mit der Website zusammenhängen. Wenn Sie Probleme mit einem bestimmten Geschäft haben, wenden Sie sich an den jeweiligen Kundendienst.",
+  "String2": "Sie haben zwei Optionen, um mich zu kontaktieren, das unten stehende Formular auszufüllen oder mir unter der folgenden E -Mail zu schreiben: {0}",
+  "String3": "Geben Sie die E-Mail-Adresse ein, auf die ich antworten soll:",
+  "String4": "Geben Sie einen Titel ein:",
+  "String5": "Schreiben Sie mir den Grund, warum Sie mit mir Kontakt aufnehmen möchten:",
+  "String6": "Nachricht senden",
+  "String7": "Nachricht an den Administrator gesendet, er wird antworten, bevor Half-Life 3 herauskommt"
 }

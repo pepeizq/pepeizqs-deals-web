@@ -91,6 +91,18 @@ namespace BaseDatos.Juegos
 				}
 			}
 
+			string añadirIdiomas1 = null;
+			string añadirIdiomas2 = null;
+
+			if (juego.Idiomas != null)
+			{
+				if (juego.Idiomas.Count > 0)
+				{
+					añadirIdiomas1 = ", idiomas";
+					añadirIdiomas2 = ", @idiomas";
+				}
+			}
+
 			string añadirDeck1 = null;
 			string añadirDeck2 = null;
 
@@ -110,8 +122,8 @@ namespace BaseDatos.Juegos
 			}
 
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirEtiquetas1 + añadirDeck1 + añadirIdMaestra1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirEtiquetas2 + añadirDeck2 + añadirIdMaestra2 + ") ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirEtiquetas1 + añadirIdiomas1 + añadirDeck1 + añadirIdMaestra1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirEtiquetas2 + añadirIdiomas2 + añadirDeck2 + añadirIdMaestra2 + ") ";
 
 			if (noExiste == true)
 			{
@@ -173,6 +185,14 @@ namespace BaseDatos.Juegos
 					if (juego.Etiquetas.Count > 0)
 					{
 						comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
+					}
+				}
+
+				if (juego.Idiomas != null)
+				{
+					if (juego.Idiomas.Count > 0)
+					{
+						comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
 					}
 				}
 

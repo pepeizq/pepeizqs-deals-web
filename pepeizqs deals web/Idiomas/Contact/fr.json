@@ -1,5 +1,10 @@
 {
   "Title": "Contact",
-  "String1": "Je ne répondrai qu'aux e-mails contenant des problèmes directement liés au site Web. Si vous rencontrez des problèmes avec un magasin spécifique, rendez-vous auprès de leur service client respectif.",
-  "String2": "Écrivez-moi à l'e-mail suivant en anglais ou en espagnol :"
+  "String1": "Je ne répondrai qu'aux messages en espagnol ou en anglais concernant des problèmes directement liés au site Web. Si vous rencontrez des problèmes avec un magasin spécifique, adressez-vous à leur service client respectif.",
+  "String2": "Vous avez deux possibilités pour me contacter, remplir le formulaire ci-dessous ou m'écrire à l'adresse e-mail suivante : {0}",
+  "String3": "Entrez l'e-mail auquel vous souhaitez que je réponde :",
+  "String4": "Entrez un titre:",
+  "String5": "Écrivez-moi la raison pour laquelle vous souhaitez me contacter :",
+  "String6": "Envoyer un message",
+  "String7": "Message envoyé à l'administrateur, il répondra avant la sortie de Half-Life 3"
 }

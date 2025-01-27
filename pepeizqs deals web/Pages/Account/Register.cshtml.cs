@@ -117,7 +117,7 @@ namespace pepeizqs_deals_web.Pages.Account
 						{
 							await _signInManager.SignInAsync(usuario, isPersistent: false);
 							//return LocalRedirect(returnUrl);
-							return Redirect("./Manage");
+							return Redirect("~/account");
 						}
 					}
 

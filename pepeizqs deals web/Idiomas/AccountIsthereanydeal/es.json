@@ -1,0 +1,10 @@
+{
+  "String1": "Importa tu lista de deseados",
+  "String2": "Busca la ubicación del fichero .json ",
+  "String3": "Cosas que debes saber antes de importar tu lista de deseados",
+  "String4": "IsThereAnyDeal proporciona la información mínima al exportar tu lista de deseados desde allí. La única información que proporciona es el titulo de los juegos y al importar los juegos aquí es posible que no se importen todos los juegos si hay discrepancias en los títulos que yo tengo almacenados en la web.",
+  "String5": "IsThereAnyDeal no proporciona ningún tipo de información sobre que plataforma quieres los juegos de tu lista de deseados, así que por defecto al importar los juegos serán asignados a Steam.",
+  "String6": "En IsThereAnyDeal puedes exportar en formato JSON tu lista de deseados desde aquí:",
+  "String7": "Esta importación no es automática, debes exportar tu lista de deseados desde IsThereAnyDeal en un fichero JSON y luego buscar ese fichero para importarlo a la web. Si haces modificaciones de tu lista de deseados en IsThereAnyDeal tendrás que volver a importar el fichero de nuevo.",
+  "String8": "Cantidad de tu lista de deseados importados: {0}"
+}

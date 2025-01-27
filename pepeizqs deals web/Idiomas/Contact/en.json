@@ -1,5 +1,10 @@
 {
   "Title": "Contact",
-  "String1": "I will only respond to emails with issues directly related to the website, if you have problems with a specific store, go to their respective customer service.",
-  "String2": "Write me at the following email in English or Spanish:"
+  "String1": "I will only respond to messages in Spanish or English with issues directly related to the website, if you have problems with a specific store, go to their respective customer service.",
+  "String2": "You have two options to contact me, fill out the form below or write to me at the following email: {0}",
+  "String3": "Enter the email you want me to respond to:",
+  "String4": "Enter an title:",
+  "String5": "Write me the reason why you want to contact me:",
+  "String6": "Send message",
+  "String7": "Message sent to admin, he will reply before Half-Life 3 comes out"
 }

@@ -653,15 +653,16 @@ namespace BaseDatos.Juegos
 				juego.Categorias = nuevoJuego.Categorias;
 				juego.Generos = nuevoJuego.Generos;
 
+				if (juego.Idiomas == null)
+				{
+					juego.Idiomas = new List<JuegoIdioma>();
+				}
+
 				if (nuevoJuego.Idiomas != null)
 				{
 					if (nuevoJuego.Idiomas.Count > 0)
 					{
-						if (juego.Idiomas == null)
-						{
-							juego.Idiomas = nuevoJuego.Idiomas;
-						}
-						else
+						if (juego.Idiomas != null)
 						{
 							foreach (var nuevoIdioma in nuevoJuego.Idiomas)
 							{

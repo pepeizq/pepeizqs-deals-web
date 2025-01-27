@@ -1,0 +1,10 @@
+{
+  "String1": "Importieren Sie Ihre Wunschliste",
+  "String2": "Suchen Sie den Speicherort der .json-Datei",
+  "String3": "Dinge, die Sie wissen sollten, bevor Sie Ihre Wunschliste importieren",
+  "String4": "Isthereanydeal liefert das Minimum an Informationen, wenn Sie Ihre Wunschliste von dort aus exportieren. ",
+  "String5": "Isthereanydeal enthält keine Informationen darüber, auf welcher Plattform Ihre Wunschliste -Spiele auftreten sollen. Importieren Sie daher standardmäßig mit Dampf.",
+  "String6": "In Isthereanydeal können Sie Ihre Wunschliste von hier im JSON -Format exportieren:",
+  "String7": "Dieser Import ist nicht automatisch. Sie müssen Ihre Wunschliste von Isthereanydeal in einer JSON -Datei exportieren und dann nach dieser Datei suchen, um sie auf die Website zu importieren. ",
+  "String8": "Menge Ihrer importierten Wunschliste: {0}"
+}
