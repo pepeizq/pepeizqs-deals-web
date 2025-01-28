@@ -123,6 +123,45 @@ namespace BaseDatos.Pendientes
             }         
         }
 
+        public static void PlataformaAmazon(string idAmazon, int idJuego, SqlConnection conexion)
+        {
+            if (idJuego > 0)
+            {
+                bool actualizado = false;
+
+				string sqlActualizar = "UPDATE juegos " +
+				  "SET idAmazon=@idAmazon WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", idJuego);
+					comando.Parameters.AddWithValue("@idAmazon", idAmazon);
+
+					try
+					{
+						comando.ExecuteNonQuery();
+                        actualizado = true;
+					}
+					catch
+					{
+
+					}
+				}
+
+                if (actualizado == true)
+                {
+                    string sqlBorrar = "DELETE FROM temporalAmazonJuegos WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idAmazon);
+
+						comando.ExecuteNonQuery();
+					}
+				}
+			}
+		}
+
         public static void DescartarTienda(string idTienda, string enlace, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE tienda" + idTienda + " " +

@@ -438,6 +438,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(38) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(38)) == false)
+					{
+						juego.IdAmazon = lector.GetString(38);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 
@@ -1255,32 +1267,6 @@ namespace BaseDatos.Juegos
 
             return resultados;
         }
-
-		public static Juego Aleatorio()
-		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
-			{
-				string buscar = "SELECT TOP 1 * FROM seccionMinimos ORDER BY NEWID()";
-
-				using (SqlCommand comando = new SqlCommand(buscar, conexion))
-				{
-					using (SqlDataReader lector = comando.ExecuteReader())
-					{
-						if (lector.Read())
-						{
-							Juego juego = JuegoCrear.Generar();
-							juego = Cargar(juego, lector);
-
-							return juego;
-						}
-					}
-				}
-			}
-
-			return null;
-		}
 
 		public static List<string> Sitemap()
 		{

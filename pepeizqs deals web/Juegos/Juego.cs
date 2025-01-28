@@ -53,6 +53,7 @@ namespace Juegos
 		public JuegoEpicGames EpicGames { get; set; }
 		public string IdXbox { get; set; }
 		public JuegoXbox Xbox { get; set; }
+		public string IdAmazon { get; set; }
 	}
 
 	public static class JuegoCrear

@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Data.Sqlite
+@using System.Text
+@using System.Net.Http.Headers
+
+<label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+    <InputFile OnChange="CargarFichero" accept=".sqlite" hidden />
+    test
+</label>
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private async void CargarFichero(InputFileChangeEventArgs e)
+    {
+        IBrowserFile fichero = e.File;
+        int maximoTamaño = 1024000 * 64;
+        byte[] buffer = new byte[fichero.Size];
+
+        var stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
+        var fileContent = new StreamContent(stream);
+
+        string ubicacion = Path.GetFullPath("./wwwroot/otros/amazon.sqlite");
+        await File.WriteAllBytesAsync(ubicacion, await fileContent.ReadAsByteArrayAsync());
+
+        List<string> listadoIds = new List<string>();
+
+        using (SqliteConnection conexion = new SqliteConnection("Data Source=" + ubicacion))
+        {
+            conexion.Open();
+
+            SqliteCommand comando = conexion.CreateCommand();
+            comando.CommandText = "SELECT * FROM game_entitlements";
+
+            using (SqliteDataReader lector = comando.ExecuteReader())
+            {
+                while (lector.Read())
+                {
+                    if (lector.IsDBNull(1) == false)
+                    {
+                        if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+                        {
+                            listadoIds.Add(lector.GetString(1));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (listadoIds.Count > 0)
+        {
+            foreach (string id in listadoIds)
+            {
+                BaseDatos.Plataformas.Buscar.Amazon(id);
+            }
+        }
+    }
+}

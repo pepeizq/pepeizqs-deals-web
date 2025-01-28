@@ -220,6 +220,22 @@
                 </div>
             </div>
         </button>
+
+        <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
     </div>
 </div>
 
@@ -284,7 +300,12 @@
 
                 @if (mostrarIsthereanydeal == true)
                 {
-                    <CuentaIsthereanydeal idioma="@idioma" />
+                    <Isthereanydeal idioma="@idioma" />
+                }
+
+                @if (mostrarAmazon == true)
+                {
+                    <Amazon idioma="@idioma" />
                 }
             </div> 
         </div>
@@ -318,6 +339,7 @@
         mostrarSteam = false;
         mostrarGog = false;
         mostrarIsthereanydeal = false;
+        mostrarAmazon = false;
     }
 
     private void ClickearCerrarPestaña()
@@ -422,5 +444,14 @@
         CerrarPestañas();
         enseñarPestaña = true;
         mostrarIsthereanydeal = true;
+    }
+
+    private bool mostrarAmazon = false;
+
+    private void MostrarAmazon(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarAmazon = true;
     }
 }

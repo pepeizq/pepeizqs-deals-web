@@ -10,7 +10,7 @@
             {
                 string fondo = string.Empty;
 
-                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true)
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idPlataformaPendiente) == true)
                 {
                     idTiendaPendiente = pendiente.Tienda.Id;
 
@@ -23,7 +23,7 @@
                         fondo = "background-color: transparent;";
                     }
                 }
-                
+
                 <button @onclick="@(e => ClickearTiendaPendientes(e, pendiente.Tienda.Id, pendiente.Tienda.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block; @fondo">
                     <img src="@pendiente.Tienda.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Tienda.Nombre (@pendiente.Pendientes.Count)
                 </button>
@@ -36,7 +36,7 @@
             {
                 string fondo = string.Empty;
 
-                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true)
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idPlataformaPendiente) == true)
                 {
                     idSuscripcionPendiente = pendiente.Suscripcion.Id.ToString();
 
@@ -62,7 +62,7 @@
             {
                 string fondo = string.Empty;
 
-                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true)
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idPlataformaPendiente) == true)
                 {
                     idStreamingPendiente = pendiente.Streaming.Id.ToString();
 
@@ -81,9 +81,35 @@
                 </button>
             }
         }
+
+        @foreach (var pendiente in pendientesPlataforma)
+        {
+            if (pendiente.Pendientes.Count > 0)
+            {
+                string fondo = string.Empty;
+
+                if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idPlataformaPendiente) == true)
+                {
+                    idPlataformaPendiente = pendiente.Plataforma.Id.ToString();
+
+                    ClickearPlataformaPendientes(idPlataformaPendiente);
+                }
+                else
+                {
+                    if (idPlataformaPendiente != pendiente.Plataforma.Id.ToString())
+                    {
+                        fondo = "background-color: transparent;";
+                    }
+                }
+
+                <button @onclick="@(e => ClickearPlataformaPendientes(e, pendiente.Plataforma.Id.ToString(), pendiente.Plataforma.Nombre))" class="boton-pequeño" style="margin: 10px 0px; display: block; @fondo">
+                    <img src="@pendiente.Plataforma.ImagenIcono" style="margin: 0px 8px; height: 16px; width: 16px;" /> @pendiente.Plataforma.Nombre (@pendiente.Pendientes.Count)
+                </button>
+            }
+        }
     </div>
 
-    @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idSuscripcionPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false)
+    @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idSuscripcionPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
     {
         <div style="width: 100%;">
             <div style="display: flex; justify-content: space-between;">
@@ -101,7 +127,7 @@
                     </div>
 
                     <div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
-                        @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false)
+                        @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
                         {
                             <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
                         }
@@ -320,10 +346,12 @@
     private List<PendientesTienda> pendientesTiendas = new List<PendientesTienda>();
     private List<PendientesSuscripcion> pendientesSuscripcion = new List<PendientesSuscripcion>();
     private List<PendientesStreaming> pendientesStreaming = new List<PendientesStreaming>();
+    private List<PendientesPlataforma> pendientesPlataforma = new List<PendientesPlataforma>();
 
     private string idTiendaPendiente = null;
     private string idSuscripcionPendiente = null;
     private string idStreamingPendiente = null;
+    private string idPlataformaPendiente = null;
 
     private string imagenPendiente = null;
     private string nombrePendiente = null;
@@ -385,6 +413,20 @@
                 pendientesStreaming.Add(pendienteStreaming);
             }
         }
+
+        pendientesPlataforma.Clear();
+
+        foreach (var plataforma in Plataformas2.PlataformasCargar.GenerarListado())
+        {
+            PendientesPlataforma pendientePlataforma = new PendientesPlataforma();
+            pendientePlataforma.Plataforma = plataforma;
+            pendientePlataforma.Pendientes = BaseDatos.Pendientes.Buscar.Plataforma(plataforma.Id, conexion);
+
+            if (pendientePlataforma.Pendientes.Count > 0)
+            {
+                pendientesPlataforma.Add(pendientePlataforma);
+            }
+        }
     }
 
     private void ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
@@ -392,6 +434,7 @@
         idTiendaPendiente = id;
         idSuscripcionPendiente = null;
         idStreamingPendiente = null;
+        idPlataformaPendiente = null;
 
         ClickearTiendaPendientes(idTiendaPendiente);
     }
@@ -435,6 +478,7 @@
         idTiendaPendiente = null;
         idSuscripcionPendiente = id;
         idStreamingPendiente = null;
+        idPlataformaPendiente = null;
 
         ClickearSuscripcionPendientes(idSuscripcionPendiente);
     }
@@ -478,6 +522,7 @@
         idTiendaPendiente = null;
         idSuscripcionPendiente = null;
         idStreamingPendiente = id;
+        idPlataformaPendiente = null;
 
         ClickearStreamingPendientes(idStreamingPendiente);
     }
@@ -511,6 +556,48 @@
                     enlacePendiente = juego.Enlace;
 
                     idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
+                }
+            }
+        }
+    }
+
+    private void ClickearPlataformaPendientes(MouseEventArgs e, string id, string nombre)
+    {
+        idTiendaPendiente = null;
+        idSuscripcionPendiente = null;
+        idStreamingPendiente = null;
+        idPlataformaPendiente = id;
+
+        ClickearPlataformaPendientes(idPlataformaPendiente);
+    }
+
+    private void ClickearPlataformaPendientes(string id)
+    {
+        if (string.IsNullOrEmpty(id) == false)
+        {
+            if (conexion.State != System.Data.ConnectionState.Open)
+            {
+                conexion = Herramientas.BaseDatos.Conectar();
+            }
+
+            using (conexion)
+            {
+                BaseDatos.Pendientes.Pendiente juego = BaseDatos.Pendientes.Buscar.PrimerJuegoPlataforma(id, conexion);
+
+                if (juego != null)
+                {
+                    nombrePendiente = juego.Nombre;
+                 
+                    string imagen = juego.Imagen;
+
+                    if (imagen != null)
+                    {
+                        imagen = imagen.Replace("&amp;", "&");
+                    }
+
+                    imagenPendiente = imagen;
+
+                    enlacePendiente = juego.Enlace;
                 }
             }
         }
@@ -623,6 +710,24 @@
 
                 ClickearStreamingPendientes(idStreamingPendiente);
             }
+
+            if (string.IsNullOrEmpty(idPlataformaPendiente) == false)
+            {
+                if (idPlataformaPendiente.ToLower() == "amazon")
+                {
+                    BaseDatos.Pendientes.Actualizar.PlataformaAmazon(enlace, int.Parse(idsPendiente), conexion);
+
+                    foreach (var pendiente in pendientesPlataforma)
+                    {
+                        if (pendiente.Plataforma.Id.ToString() == idPlataformaPendiente)
+                        {
+                            pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Plataforma(pendiente.Plataforma.Id, conexion);
+                        }
+                    }
+
+                    ClickearPlataformaPendientes(idPlataformaPendiente);
+                }
+            }
         }
     }
 
@@ -631,7 +736,7 @@
         idsPendiente = texto.Value.ToString();
     }
 
-    //--------------------------------------------------------------------------------------------
+    #region Buscador
 
     private bool pestañaJuegos = true;
     private bool pestañaDLCs = false;
@@ -874,4 +979,6 @@
             buscadorPendientesJuegos = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
         }
     }
+
+    #endregion
 }

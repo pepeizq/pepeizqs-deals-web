@@ -152,6 +152,43 @@ namespace BaseDatos.Pendientes
 			return cantidad;
 		}
 
+        public static int PlataformaCantidad(SqlConnection conexion = null)
+        {
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			int cantidad = 0;
+
+            foreach (var plataforma in Plataformas2.PlataformasCargar.GenerarListado())
+            {
+                string busqueda = "SELECT * FROM temporal" + plataforma.Id + "juegos";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					SqlDataReader lector = comando.ExecuteReader();
+
+					using (lector)
+					{
+						while (lector.Read() == true)
+						{
+							cantidad += 1;
+						}
+					}
+				}
+			}
+
+			return cantidad;
+		}
+
 		public static List<Pendiente> Tienda(string tiendaId, SqlConnection conexion)
         {
 			List<Pendiente> listaPendientes = new List<Pendiente>();
@@ -268,6 +305,44 @@ namespace BaseDatos.Pendientes
             return listaPendientes;
         }
 
+        public static List<Pendiente> Plataforma(Plataformas2.PlataformaTipo id, SqlConnection conexion = null)
+        {
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			List<Pendiente> listaPendientes = new List<Pendiente>();
+
+			string busqueda = "SELECT * FROM temporal" + id + "juegos";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read() == true)
+					{
+						Pendiente pendiente = new Pendiente
+						{
+							Enlace = lector.GetString(0),
+							Nombre = lector.GetString(0)
+						};
+
+						listaPendientes.Add(pendiente);
+					}
+				}
+			}
+
+			return listaPendientes;
+		}
+
         public static Pendiente PrimerJuegoTienda(string tiendaId, SqlConnection conexion)
 		{
 			string busqueda = "SELECT * FROM tienda" + tiendaId + " WHERE (idJuegos='0' AND descartado='no')";
@@ -348,7 +423,32 @@ namespace BaseDatos.Pendientes
 
             return null;
         }
-    }
+
+		public static Pendiente PrimerJuegoPlataforma(string plataformaId, SqlConnection conexion)
+		{
+			string busqueda = "SELECT * FROM temporal" + plataformaId + "juegos";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						Pendiente pendiente = new Pendiente
+						{
+							Enlace = lector.GetString(0),
+							Nombre = lector.GetString(0),
+							Imagen = "vacio"
+						};
+
+						return pendiente;
+					}
+				}
+			}
+
+			return null;
+		}
+	}
 
 	public class Pendiente
 	{
@@ -374,4 +474,10 @@ namespace BaseDatos.Pendientes
         public List<Pendiente> Pendientes;
         public Streaming2.Streaming Streaming;
     }
+
+	public class PendientesPlataforma
+	{
+		public List<Pendiente> Pendientes;
+		public Plataformas2.Plataforma Plataforma;
+	}
 }
