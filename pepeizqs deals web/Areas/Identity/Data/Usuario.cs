@@ -229,5 +229,8 @@ public class Usuario : IdentityUser
 	[Column(TypeName = "bit(1)")]
 	public bool? NotificationPushOthers { get; set; }
 
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? AmazonGames { get; set; }
 }
 

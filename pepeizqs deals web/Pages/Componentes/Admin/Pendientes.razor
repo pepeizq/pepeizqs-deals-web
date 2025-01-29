@@ -587,7 +587,7 @@
                 if (juego != null)
                 {
                     nombrePendiente = juego.Nombre;
-                 
+
                     string imagen = juego.Imagen;
 
                     if (imagen != null)
@@ -597,7 +597,9 @@
 
                     imagenPendiente = imagen;
 
-                    enlacePendiente = juego.Enlace;
+                    enlacePendiente = "amazon-games://play/" + juego.Enlace;
+
+                    idsPendiente = "0";
                 }
             }
         }
@@ -640,6 +642,23 @@
                 }
 
                 ClickearStreamingPendientes(idStreamingPendiente);
+            }
+
+            if (string.IsNullOrEmpty(idPlataformaPendiente) == false)
+            {
+                enlace = enlace.Replace("amazon-games://play/", null);
+
+                BaseDatos.Pendientes.Actualizar.DescartarPlataforma(idPlataformaPendiente, enlace, conexion);
+
+                foreach (var pendiente in pendientesPlataforma)
+                {
+                    if (pendiente.Plataforma.Id.ToString() == idPlataformaPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Plataforma(pendiente.Plataforma.Id, conexion);
+                    }
+                }
+
+                ClickearPlataformaPendientes(idPlataformaPendiente);
             }
         }
     }
@@ -715,6 +734,8 @@
             {
                 if (idPlataformaPendiente.ToLower() == "amazon")
                 {
+                    enlace = enlace.Replace("amazon-games://play/", null);
+
                     BaseDatos.Pendientes.Actualizar.PlataformaAmazon(enlace, int.Parse(idsPendiente), conexion);
 
                     foreach (var pendiente in pendientesPlataforma)

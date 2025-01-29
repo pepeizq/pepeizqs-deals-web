@@ -44,7 +44,7 @@ namespace Tareas.Tiendas
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan siguienteComprobacion = TimeSpan.FromHours(2);
+						TimeSpan siguienteComprobacion = TimeSpan.FromHours(3);
 
 						if (DateTime.Now.Hour == 17 || DateTime.Now.Hour == 18)
 						{

@@ -461,6 +461,27 @@
 						</div>
 					}
 				</div>
+
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@Plataformas2.PlataformasCargar.GenerarListado()[0].ImagenIcono" style="width: 24px; height: 24px;" />
+
+							<div>
+								Amazon Games
+							</div>
+						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Id
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaIdAmazon" class="entrada-texto" value="@idAmazon" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		}
 		else if (pestañaMostrar == 7)
@@ -489,6 +510,7 @@
 	private string slugGOG = string.Empty;
 	private string slugEpic = string.Empty;
 	private string idXbox = string.Empty;
+	private string idAmazon = string.Empty;
 
 	private string idiomasGog = string.Empty;
 
@@ -537,6 +559,11 @@
 		if (string.IsNullOrEmpty(juego.IdXbox) == false)
 		{
 			idXbox = juego.IdXbox;
+		}
+
+		if (string.IsNullOrEmpty(juego.IdAmazon) == false)
+		{
+			idAmazon = juego.IdAmazon;
 		}
 
 		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
@@ -985,6 +1012,24 @@
 			{
 				juego.IdXbox = idXbox;
 				BaseDatos.Juegos.Actualizar.IdXbox(juego.Id, idXbox, conexion);
+			}
+		}
+	}
+
+	private void TextoCambiaIdAmazon(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			idAmazon = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.IdAmazon = idAmazon;
+				BaseDatos.Pendientes.Actualizar.PlataformaAmazon(idAmazon, juego.Id, conexion);
 			}
 		}
 	}

@@ -1,7 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Data.SqlClient
 @using Microsoft.Data.Sqlite
 @using System.Text
 @using System.Net.Http.Headers
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
     <InputFile OnChange="CargarFichero" accept=".sqlite" hidden />
@@ -15,47 +21,96 @@
     [Parameter]
     public string idioma { get; set; }
 
+    private Usuario usuario = new Usuario();
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+    }
+
     private async void CargarFichero(InputFileChangeEventArgs e)
     {
-        IBrowserFile fichero = e.File;
-        int maximoTamaño = 1024000 * 64;
-        byte[] buffer = new byte[fichero.Size];
-
-        var stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
-        var fileContent = new StreamContent(stream);
-
-        string ubicacion = Path.GetFullPath("./wwwroot/otros/amazon.sqlite");
-        await File.WriteAllBytesAsync(ubicacion, await fileContent.ReadAsByteArrayAsync());
-
-        List<string> listadoIds = new List<string>();
-
-        using (SqliteConnection conexion = new SqliteConnection("Data Source=" + ubicacion))
+        if (e.File.Name.ToLower().Contains("gameuserinteractionsinfo") == true)
         {
-            conexion.Open();
+            IBrowserFile fichero = e.File;
+            int maximoTamaño = 1024000 * 64;
+            byte[] buffer = new byte[fichero.Size];
 
-            SqliteCommand comando = conexion.CreateCommand();
-            comando.CommandText = "SELECT * FROM game_entitlements";
+            var stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
+            var fileContent = new StreamContent(stream);
 
-            using (SqliteDataReader lector = comando.ExecuteReader())
+            string ubicacion = Path.GetFullPath("./wwwroot/otros/amazon.sqlite");
+            await File.WriteAllBytesAsync(ubicacion, await fileContent.ReadAsByteArrayAsync());
+
+            List<string> listadoIds = new List<string>();
+
+            using (SqliteConnection conexion = new SqliteConnection("Data Source=" + ubicacion))
             {
-                while (lector.Read())
+                conexion.Open();
+
+                SqliteCommand comando = conexion.CreateCommand();
+                comando.CommandText = "SELECT * FROM dbset";
+
+                using (SqliteDataReader lector = comando.ExecuteReader())
                 {
-                    if (lector.IsDBNull(1) == false)
+                    while (lector.Read())
                     {
-                        if (string.IsNullOrEmpty(lector.GetString(1)) == false)
+                        if (lector.IsDBNull(0) == false)
                         {
-                            listadoIds.Add(lector.GetString(1));
+                            if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+                            {
+                                listadoIds.Add(lector.GetString(0));
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (listadoIds.Count > 0)
-        {
-            foreach (string id in listadoIds)
+            if (listadoIds.Count > 0)
             {
-                BaseDatos.Plataformas.Buscar.Amazon(id);
+                SqlConnection conexion = new SqlConnection();
+
+                if (conexion == null)
+                {
+                    conexion = Herramientas.BaseDatos.Conectar();
+                }
+                else
+                {
+                    if (conexion.State != System.Data.ConnectionState.Open)
+                    {
+                        conexion = Herramientas.BaseDatos.Conectar();
+                    }
+                }
+
+                string textoIds = string.Empty;
+
+                foreach (string id in listadoIds)
+                {
+                    BaseDatos.Plataformas.Buscar.Amazon(id, conexion);
+
+                    if (string.IsNullOrEmpty(textoIds) == true)
+                    {
+                        textoIds = id;
+                    }
+                    else
+                    {
+                        textoIds = textoIds + "," + id;
+                    }
+                }
+
+                if (usuario != null)
+                {
+                    usuario.AmazonGames = textoIds;
+
+                    try
+                    {
+                        await UserManager.UpdateAsync(usuario);
+                    }
+                    catch
+                    {
+                        BaseDatos.Errores.Insertar.Mensaje("Cuenta Amazon Juegos", usuario.Id);
+                    }
+                }
             }
         }
     }

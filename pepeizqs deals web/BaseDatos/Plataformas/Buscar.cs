@@ -58,21 +58,41 @@ namespace BaseDatos.Plataformas
 
 				if (yaTemporal == false)
 				{
-					string sqlInsertar = "INSERT INTO temporalamazonjuegos " +
-					"(id) VALUES " +
-					"(@id) ";
+					bool yaDescartado = false;
 
-					using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+					string busqueda3 = "SELECT * FROM amazonDescartes WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(busqueda3, conexion))
 					{
 						comando.Parameters.AddWithValue("@id", id);
 
-						try
+						using (SqlDataReader lector = comando.ExecuteReader())
 						{
-							comando.ExecuteNonQuery();
+							if (lector.Read() == true)
+							{
+								yaDescartado = true;
+							}
 						}
-						catch
-						{
+					}
 
+					if (yaDescartado == false)
+					{
+						string sqlInsertar = "INSERT INTO temporalamazonjuegos " +
+							"(id) VALUES " +
+							"(@id) ";
+
+						using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+						{
+							comando.Parameters.AddWithValue("@id", id);
+
+							try
+							{
+								comando.ExecuteNonQuery();
+							}
+							catch (Exception ex)
+							{
+								BaseDatos.Errores.Insertar.Mensaje("Amazon Plataforma", ex);
+							}
 						}
 					}
 				}

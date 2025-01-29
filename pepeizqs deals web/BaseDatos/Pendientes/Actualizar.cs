@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 
 namespace BaseDatos.Pendientes
 {
@@ -127,7 +128,7 @@ namespace BaseDatos.Pendientes
         {
             if (idJuego > 0)
             {
-                bool actualizado = false;
+                int actualizado = 0;
 
 				string sqlActualizar = "UPDATE juegos " +
 				  "SET idAmazon=@idAmazon WHERE id=@id";
@@ -139,16 +140,15 @@ namespace BaseDatos.Pendientes
 
 					try
 					{
-						comando.ExecuteNonQuery();
-                        actualizado = true;
+						actualizado = comando.ExecuteNonQuery();
 					}
 					catch
 					{
 
 					}
 				}
-
-                if (actualizado == true)
+				
+				if (actualizado > 0)
                 {
                     string sqlBorrar = "DELETE FROM temporalAmazonJuegos WHERE id=@id";
 
@@ -203,5 +203,35 @@ namespace BaseDatos.Pendientes
                 }
             }
         }
+
+        public static void DescartarPlataforma(string idPlataforma, string idJuego, SqlConnection conexion)
+        {
+			string sqlBorrar = "DELETE FROM temporal" + idPlataforma + "Juegos WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", idJuego);
+
+				comando.ExecuteNonQuery();
+			}
+
+			string sqlInsertar = "INSERT INTO " + idPlataforma + "Descartes " +
+							"(id) VALUES " +
+							"(@id) ";
+
+			using (SqlCommand comando = new SqlCommand(sqlInsertar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", idJuego);
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Mensaje("Descarte Plataforma", ex);
+				}
+			}
+		}
     }
 }
