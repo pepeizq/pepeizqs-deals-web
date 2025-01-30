@@ -1,0 +1,11 @@
+{
+  "String1": "Things you should know before importing your games from Amazon:",
+  "String2": "Importing games is not automatic, this means that if you get new games you will have to import your games again.",
+  "String3": "Importing games is done by uploading a single file, nothing else needs to be done. The file you need to upload is called '{0}' located in the folder '{1}'.",
+  "String4": "The folder location may be hidden in Windows, to unlock it you can see how to do it by entering the link.",
+  "String5": "Import your games from Amazon",
+  "String6": "Select the file: {0}",
+  "String7": "Imported games: {0}",
+  "String8": "If you have hundreds of games in your account the import will take several minutes to complete.",
+  "String9": "your user"
+}

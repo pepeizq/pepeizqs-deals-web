@@ -149,6 +149,7 @@ builder.Services.AddSingleton<Tareas.Tiendas.Battlenet>();
 builder.Services.AddSingleton<Tareas.Tiendas.EA>();
 builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
 builder.Services.AddSingleton<Tareas.Tiendas.Ubisoft>();
+builder.Services.AddSingleton<Tareas.Tiendas.Playsum>();
 //builder.Services.AddSingleton<Tareas.Tiendas.Allyouplay>();
 
 builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
@@ -193,6 +194,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Ubisoft>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Playsum>());
 //builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Allyouplay>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());

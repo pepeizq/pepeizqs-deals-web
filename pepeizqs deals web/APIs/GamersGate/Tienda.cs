@@ -61,12 +61,6 @@ namespace APIs.GamersGate
 						{
 							foreach (GamersGateJuego juego in listaJuegos.Juegos)
 							{
-								string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-								string enlace = juego.Enlace;
-
-								string imagen = juego.ImagenGrande;
-
 								decimal precioBase = decimal.Parse(juego.PrecioBase);
 								decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
@@ -74,6 +68,12 @@ namespace APIs.GamersGate
 
 								if (descuento > 0)
 								{
+									string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+									string enlace = juego.Enlace;
+
+									string imagen = juego.ImagenGrande;
+
 									JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
 									JuegoPrecio oferta = new JuegoPrecio
@@ -116,18 +116,18 @@ namespace APIs.GamersGate
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 					}
 
 					juegos2 += 1;
 
 					try
 					{
-						BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+						BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 					}
 					catch (Exception ex)
 					{
-						BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+						BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 					}
 				}
 			}

@@ -9,10 +9,78 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
-    <InputFile OnChange="CargarFichero" accept=".sqlite" hidden />
-    test
-</label>
+<style>
+    .cargando {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--colorTexto);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @@keyframes rotation {
+    0% {
+    transform: rotate(0deg);
+    }
+
+    100% {
+    transform: rotate(360deg);
+    }
+    }
+</style>
+
+<div style="display: flex; flex-direction: column; gap: 40px;">
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+        <label style="font-size: 18px; margin-bottom: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountAmazon")</label>
+
+        <div>
+            <ul style="display: flex; flex-direction: column; gap: 20px; margin: 0px;">
+                <li>
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountAmazon")
+                </li>
+
+                <li>
+                    @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountAmazon"), "GameUserInteractionsInfo.sqlite", "C:\\Users\\[" + Herramientas.Idiomas.BuscarTexto(idioma, "String9", "AccountAmazon") + "]\\AppData\\Local\\Amazon Games\\Data\\Games\\Sql\\")
+                </li>
+
+                <li>
+                    <a href="https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1#ID0EDBBBBBFD-button" target="_blank">@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountAmazon")</a>
+                </li>
+
+                <li>
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountAmazon")
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column;">
+        <div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountAmazon")</div>
+        <hr />
+
+        @if (trabajando == false)
+        {
+            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                <InputFile OnChange="CargarFichero" accept=".sqlite" hidden />
+                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "AccountAmazon"), "GameUserInteractionsInfo.sqlite")
+            </label>
+        }
+        else
+        {
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="cargando" />
+            </div>
+        }
+
+        @if (importados > 0)
+        {
+            <label style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountAmazon"), importados)</label>
+        }
+    </div>
+</div>
 
 @code {
 
@@ -23,6 +91,9 @@
 
     private Usuario usuario = new Usuario();
 
+    private bool trabajando = false;
+    private int importados = 0;
+
     protected override async Task OnInitializedAsync()
     {
         usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
@@ -30,17 +101,21 @@
 
     private async void CargarFichero(InputFileChangeEventArgs e)
     {
+        trabajando = true;
+
         if (e.File.Name.ToLower().Contains("gameuserinteractionsinfo") == true)
         {
+            importados = 0;
+
             IBrowserFile fichero = e.File;
-            int maximoTamaño = 1024000 * 64;
+            int maximoTamaño = 1024000;
             byte[] buffer = new byte[fichero.Size];
 
-            var stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
-            var fileContent = new StreamContent(stream);
+            Herramientas.FicheroLecturaPerezosa stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
+            StreamContent contenido = new StreamContent(stream);
 
             string ubicacion = Path.GetFullPath("./wwwroot/otros/amazon.sqlite");
-            await File.WriteAllBytesAsync(ubicacion, await fileContent.ReadAsByteArrayAsync());
+            await File.WriteAllBytesAsync(ubicacion, await contenido.ReadAsByteArrayAsync());
 
             List<string> listadoIds = new List<string>();
 
@@ -96,6 +171,8 @@
                     {
                         textoIds = textoIds + "," + id;
                     }
+
+                    importados += 1;
                 }
 
                 if (usuario != null)
@@ -113,5 +190,7 @@
                 }
             }
         }
+
+        trabajando = false;
     }
 }

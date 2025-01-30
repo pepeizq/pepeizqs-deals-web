@@ -1,58 +1,60 @@
 ﻿@using Blazored.Video
 @using Juegos
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
 @using Microsoft.VisualBasic
 
 @inject NavigationManager NavManager
+@inject IJSRuntime JavaScript
 
 <style>
 	.cjuego-titulo {
-		padding: 10px 20px;
+	padding: 10px 20px;
 	}
 
 	.cjuego-fecha {
-		font-size: 14px;
+	font-size: 14px;
 	}
 
 	.cjuego-descuento {
-		font-size: 16px;
-		padding: 10px 15px;
-		min-width: 65px;
+	font-size: 16px;
+	padding: 10px 15px;
+	min-width: 65px;
 	}
 
 	.cjuego-precio {
-		font-size: 18px;
-		min-width: 110px;
+	font-size: 18px;
+	min-width: 110px;
 	}
 
 	@@media (max-width: 800px) {
-		.cjuego-titulo {
-			padding: 5px 10px;
-		}
+	.cjuego-titulo {
+	padding: 5px 10px;
+	}
 
-		.cjuego-fecha {
-			font-size: 10px;
-		}
+	.cjuego-fecha {
+	font-size: 10px;
+	}
 
-		.cjuego-descuento {
-			font-size: 12px;
-			padding: 5px 8px;
-			min-width: 35px;
-		}
+	.cjuego-descuento {
+	font-size: 12px;
+	padding: 5px 8px;
+	min-width: 35px;
+	}
 
-		.cjuego-precio {
-			font-size: 12px;
-			min-width: 50px;
-		}
+	.cjuego-precio {
+	font-size: 12px;
+	min-width: 50px;
+	}
 	}
 
 	.boton-expandir {
-		transition: transform .2s;
+	transition: transform .2s;
 	}
 
-		.boton-expandir:hover {
-			transform: scale(1.01);
-		}
+	.boton-expandir:hover {
+	transform: scale(1.01);
+	}
 </style>
 
 @{
@@ -61,6 +63,7 @@
 	string enlace = string.Empty;
 	string enlaceNuevaPestaña = string.Empty;
 	string iconoTienda = string.Empty;
+	string codigoTexto = string.Empty;
 
 	JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
 
@@ -68,6 +71,7 @@
 	{
 		descuento = oferta.Descuento.ToString() + "%";
 		precio = Herramientas.Precios.Euro(oferta.Precio);
+		codigoTexto = oferta.CodigoTexto;
 
 		//--------------------------------------------------------
 
@@ -320,6 +324,18 @@
 					</div>
 				</div>
 			</a>
+
+			if (string.IsNullOrEmpty(codigoTexto) == false)
+			{
+				<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; top: 15px; bottom: 15px; left: 100%; width: 220px; position: absolute;">
+					<button @onclick="(e => CopiarAlClipboard(e, codigoTexto))" class="juego-boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+						<div style="display: flex; flex-direction: column; gap: 10px; text-align: center;">
+							<div>@Herramientas.Idiomas.BuscarTexto(idioma, "String90", "Game")</div>
+							<div>@codigoTexto</div>
+						</div>
+					</button>
+				</div>
+			}
 		}
 	</div>
 }
@@ -365,4 +381,13 @@
 	{
 		NavManager.NavigateTo(enlace, true);
 	}
+
+	#region Portapapeles
+
+	private async Task CopiarAlClipboard(MouseEventArgs e, string texto)
+	{
+		await JavaScript.InvokeVoidAsync("clipboardCopy.copyText", texto);
+	}
+
+	#endregion
 }

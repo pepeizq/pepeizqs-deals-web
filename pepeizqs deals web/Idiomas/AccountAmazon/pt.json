@@ -1,0 +1,11 @@
+{
+  "String1": "Coisas que você deve saber antes de importar seus jogos da Amazon:",
+  "String2": "A importação de jogos não é automática, isso significa que, se você receber novos jogos, precisará importar seus jogos novamente.",
+  "String3": "O arquivo que você precisa fazer é chamado {0} localizado na pasta {1}.",
+  "String4": "O local da pasta pode estar oculto no Windows, para desbloqueá-lo, você pode ver como fazê-lo digitando o link.",
+  "String5": "Importe seus jogos da Amazon",
+  "String6": "Selecione o arquivo: {0}",
+  "String7": "Jogos importados: {0}",
+  "String8": "Se você tiver centenas de jogos em sua conta, a importação levará vários minutos para ser concluída.",
+  "String9": "seu usuário"
+}
