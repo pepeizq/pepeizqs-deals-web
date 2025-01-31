@@ -129,7 +129,7 @@
 		{
 			string colorSeleccionado = "var(--fondoOscuro)";
 
-			if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
+			if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
 			{
 				colorSeleccionado = "var(--fondoBien)";
 			}
@@ -233,7 +233,7 @@
 
 				string fondoDestacado = "background-color: var(--fondoOscuro);";
 
-				if (Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+				if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
 				{
 					fondoDestacado = "background-color: var(--fondoBien);";
 				}
@@ -357,7 +357,7 @@
 		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
 			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
 				<ItemContent>
-					<CajaJuego idioma="@idioma" juego="@juego" usuarioJuegosSteam="@juegosUsuarioSteam" usuarioJuegosGog="@juegosUsuarioGog" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Portada" />
+					<CajaJuego idioma="@idioma" juego="@juego" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Portada" />
 				</ItemContent>
 			</Virtualize>
 		</div>
@@ -557,11 +557,9 @@
 	public bool usuarioLogeado { get; set; }
 
 	private Usuario usuario = new Usuario();
+	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
 	private SqlConnection conexion = new SqlConnection();
-
-	private List<string> juegosUsuarioSteam = new List<string>();
-	private List<string> juegosUsuarioGog = new List<string>();
 
 	private List<Noticias.Noticia> noticiasTresDias = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasSemana = new List<Noticias.Noticia>();
@@ -574,15 +572,7 @@
 
 			if (usuario != null)
 			{
-				if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-				{
-					juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-				}
-
-				if (string.IsNullOrEmpty(usuario.GogGames) == false)
-				{
-					juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
-				}
+				juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
 
 				#region Filtrado
 
@@ -849,7 +839,7 @@
 					{
 						if (ocultarJuegosUsuarioSteam == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.Steam)
 						{
-							foreach (var juegoUsuario in juegosUsuarioSteam)
+							foreach (var juegoUsuario in juegosUsuario.Steam)
 							{
 								if (juego.IdSteam.ToString() == juegoUsuario)
 								{
@@ -864,7 +854,7 @@
 					{
 						if (ocultarJuegosUsuarioGog == "checked" && juego.PrecioMinimosHistoricos[0].DRM == JuegoDRM.GOG)
 						{
-							foreach (var juegoUsuario in juegosUsuarioGog)
+							foreach (var juegoUsuario in juegosUsuario.Gog)
 							{
 								if (juego.IdGog.ToString() == juegoUsuario)
 								{

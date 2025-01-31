@@ -1923,7 +1923,7 @@
                                             {
                                                 if (i < juegosCurator.Count)
                                                 {
-                                                    bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juegosCurator[i]);
+                                                    bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juegosCurator[i]);
                                                     bool usuarioTieneDeseado = false;
 
                                                     string fondoColor = string.Empty;
@@ -2668,8 +2668,7 @@
 
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
-    private List<string> juegosUsuarioSteam = new List<string>();
-    private List<string> juegosUsuarioGog = new List<string>();
+    private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
     private List<JuegoRazorUsuario> usuarioTieneDesea = new List<JuegoRazorUsuario>();
 
     [Parameter]
@@ -2692,16 +2691,7 @@
         if (usuario != null)
         {
             usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
-
-            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-            {
-                juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-            }
-
-            if (string.IsNullOrEmpty(usuario.GogGames) == false)
-            {
-                juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
-            }
+            juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
 
             foreach (DRM drm in JuegoDRM2.GenerarListado())
             {

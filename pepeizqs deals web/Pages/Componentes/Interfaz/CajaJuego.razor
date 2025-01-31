@@ -100,7 +100,7 @@
 		}
 	}
 
-	bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(usuarioJuegosSteam, usuarioJuegosGog, juego, juego.PrecioMinimosHistoricos[0].DRM);
+	bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
 	bool usuarioTieneDeseado = false;
 
 	string fondoColor = string.Empty;
@@ -124,11 +124,14 @@
 
 	bool usuarioConectado = false;
 
-	if (usuarioJuegosSteam.Count > 0)
+	if (juegosUsuario != null)
 	{
-		usuarioConectado = true;
+		if (juegosUsuario.Steam.Count > 0)
+		{
+			usuarioConectado = true;
+		}
 	}
-
+	
 	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
 
 	<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.IdMaestra.ToString()-@juego.PrecioMinimosHistoricos[0].DRM.ToString()')">
@@ -348,10 +351,7 @@
 	public string idioma { get; set; }
 
 	[Parameter]
-	public List<string> usuarioJuegosSteam { get; set; }
-
-	[Parameter]
-	public List<string> usuarioJuegosGog { get; set; }
+	public Herramientas.UsuarioListadosJuegos juegosUsuario { get; set; }
 
 	[Parameter]
 	public string usuarioDeseadosSteam { get; set; }

@@ -194,62 +194,6 @@ namespace Herramientas
 
 			return datos;
         }
-
-        public static bool ComprobarUsuarioTieneJuego(List<string> juegosUsuarioSteam, List<string> juegosUsuarioGog, Juego juego, JuegoDRM drm = JuegoDRM.NoEspecificado)
-        {
-			if (juego != null)
-			{
-				if (juegosUsuarioSteam != null)
-				{
-					if (juegosUsuarioSteam.Count > 0)
-					{
-						bool drmValido = false;
-
-						if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.Steam)
-						{
-							drmValido = true;
-						}
-
-						if (juego.Tipo == JuegoTipo.Game && drmValido == true)
-						{
-							foreach (var juegoUsuario in juegosUsuarioSteam)
-							{
-								if (juegoUsuario == juego.IdSteam.ToString())
-								{
-									return true;
-								}
-							}
-						}
-					}
-				}
-
-				if (juegosUsuarioGog != null)
-				{
-					if (juegosUsuarioGog.Count > 0)
-					{
-						bool drmValido = false;
-
-						if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.GOG)
-						{
-							drmValido = true;
-						}
-
-						if (juego.Tipo == JuegoTipo.Game && drmValido == true)
-						{
-							foreach (var juegoUsuario in juegosUsuarioGog)
-							{
-								if (juegoUsuario == juego.IdGog.ToString())
-								{
-									return true;
-								}
-							}
-						}
-					}
-				}
-			}
-
-			return false;
-        }
 	}
 
     public class ToolTipDatos

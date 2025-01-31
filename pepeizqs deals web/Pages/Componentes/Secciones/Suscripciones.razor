@@ -351,7 +351,7 @@ else
 
                 <a href="@enlace" class="boton-pequeño" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px; max-width: 235px;">
                    @{
-                        bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego.Juego, juego.DRM);
+                        bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego.Juego, juego.DRM);
                         bool usuarioTieneDeseado = false;
 
                         string fondoColor = string.Empty;
@@ -398,12 +398,10 @@ else
 
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
+    private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
     private List<Suscripciones2.SuscripcionComponente> suscripcionesActuales = new List<Suscripciones2.SuscripcionComponente>();
     private List<Suscripciones2.SuscripcionComponente> suscripcionesPasadas = new List<Suscripciones2.SuscripcionComponente>();
-
-    private List<string> juegosUsuarioSteam = new List<string>();
-    private List<string> juegosUsuarioGog = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -411,17 +409,8 @@ else
 
         if (usuario != null)
         {
-            if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-            {
-                juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-            }
-
-            if (string.IsNullOrEmpty(usuario.GogGames) == false)
-            {
-                juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
-            }
-
             usuarioPatreon = Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck);
+            juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
         }
 
         //--------------------------------------------------------------------

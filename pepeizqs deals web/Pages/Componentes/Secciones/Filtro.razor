@@ -517,7 +517,7 @@ else
 				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="107" OverscanCount="6">
 					<ItemContent>
 						@{
-							bool usuarioTieneJuego = Herramientas.Tooltip.ComprobarUsuarioTieneJuego(juegosUsuarioSteam, juegosUsuarioGog, juego);
+							bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego);
 							bool usuarioTieneDeseado = false;
 
 							string fondoColor = string.Empty;
@@ -582,9 +582,7 @@ else
 	public string usuarioId { get; set; }
 
 	private Usuario usuario = new Usuario();
-
-	private List<string> juegosUsuarioSteam = new List<string>();
-	private List<string> juegosUsuarioGog = new List<string>();
+	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
 	private bool cargado = false;
 
@@ -600,15 +598,7 @@ else
 
 		if (usuario != null)
 		{
-			if (string.IsNullOrEmpty(usuario.SteamGames) == false)
-			{
-				juegosUsuarioSteam = Herramientas.Listados.Generar(usuario.SteamGames);
-			}
-
-			if (string.IsNullOrEmpty(usuario.GogGames) == false)
-			{
-				juegosUsuarioGog = Herramientas.Listados.Generar(usuario.GogGames);
-			}
+			juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
 		}
 
 		CargarDeck();

@@ -36,7 +36,7 @@ namespace Tareas
 
 						HttpClient httpClient = new HttpClient(clientHandler);
 						HttpRequestMessage mensaje = new HttpRequestMessage();
-						mensaje.RequestUri = new Uri("https://tiendas.pepeizqdeals.com/");
+						mensaje.RequestUri = new Uri("https://tareasdeals.pepeizqapps.com");
 						mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
 						mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
 						mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
@@ -49,30 +49,6 @@ namespace Tareas
                     {
 						BaseDatos.Errores.Insertar.Mensaje("Ping Tiendas", ex, null, false);
 					}
-
-					//---------------------------------------------------------------------------------------
-
-					//               string bingApiClave = builder.Configuration.GetValue<string>("BingAPI:Contenido");
-
-					//string bingEnlace = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apiKey=" + bingApiClave;
-
-					//               Juegos.Juego aleatorio = BaseDatos.Juegos.Buscar.Aleatorio();
-
-					//               if (aleatorio != null)
-					//               {
-					//                   Juegos.Juego aleatorio2 = BaseDatos.Juegos.Buscar.UnJuego(aleatorio.Id);
-
-					//	BingApi nuevoAleatorio = new BingApi("https://pepeizqdeals.com/game/" + aleatorio2.Id.ToString() + "/" + EnlaceAdaptador.Nombre(aleatorio2.Nombre) + "/");
-
-					//	HttpRequestMessage peticion = new HttpRequestMessage(HttpMethod.Post, bingEnlace)
-					//	{
-					//		Content = JsonContent.Create(nuevoAleatorio)
-					//	};
-
-					//	HttpResponseMessage respuesta = await httpClient.SendAsync(peticion);
-
-					//	respuesta.EnsureSuccessStatusCode();
-					//}
 				}
 			}
         }

@@ -90,7 +90,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_WebToolingArtifacts Remove="Properties\PublishProfiles\tiendas.pubxml" />
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\web.pubxml" />
   </ItemGroup>
 
