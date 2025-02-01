@@ -126,10 +126,13 @@
 
 	if (juegosUsuario != null)
 	{
-		if (juegosUsuario.Steam.Count > 0)
+		if (juegosUsuario.Steam != null)
 		{
-			usuarioConectado = true;
-		}
+			if (juegosUsuario.Steam.Count > 0)
+			{
+				usuarioConectado = true;
+			}
+		}		
 	}
 	
 	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);

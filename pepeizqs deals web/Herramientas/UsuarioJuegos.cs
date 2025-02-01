@@ -102,11 +102,6 @@ namespace Herramientas
 						drmValidoAmazon = true;
 					}
 
-					if (juego.Id == 45464)
-					{
-						global::BaseDatos.Errores.Insertar.Mensaje("test", drmValidoAmazon.ToString());
-					}
-
 					if (drmValidoAmazon == true)
 					{
 						if (listados.Amazon != null)
