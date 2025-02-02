@@ -450,6 +450,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(39) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(39)) == false)
+					{
+						juego.ExeEpic = lector.GetString(39);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

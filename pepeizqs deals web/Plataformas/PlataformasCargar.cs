@@ -4,7 +4,8 @@ namespace Plataformas2
 {
 	public enum PlataformaTipo
 	{
-		Amazon
+		Amazon,
+		Epic
 	}
 
 	public class PlataformasCargar
@@ -22,6 +23,16 @@ namespace Plataformas2
 			};
 
 			listado.Add(amazon);
+
+			Plataforma epic = new Plataforma
+			{
+				Id = PlataformaTipo.Epic,
+				Nombre = "Epic Games",
+				ImagenIcono = "/imagenes/drm/epic.webp",
+				ImagenLogo = "/imagenes/tiendas/epic_300x80.webp"
+			};
+
+			listado.Add(epic);
 
 			return listado;
 		}

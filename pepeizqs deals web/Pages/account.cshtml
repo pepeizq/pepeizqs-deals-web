@@ -13,6 +13,8 @@
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
     Usuario? usuario = new Usuario();
 
+    bool adminLogeado = false;
+
     if (usuarioLogeado == true)
     {
         usuario = await UserManager.GetUserAsync(User);
@@ -22,6 +24,11 @@
             if (string.IsNullOrEmpty(usuario.LanguageOverride) == false)
             {
                 idioma = usuario.LanguageOverride;
+            }
+
+            if (BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+            {
+                adminLogeado = true;
             }
         }
     }
@@ -41,7 +48,8 @@
         @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.Server, new
         {
             idioma = idioma,
-            userAgent = userAgent
+            userAgent = userAgent,
+            adminLogeado = adminLogeado
         }))
     }
 }

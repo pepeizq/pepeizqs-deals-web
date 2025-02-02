@@ -54,6 +54,7 @@ namespace Juegos
 		public string IdXbox { get; set; }
 		public JuegoXbox Xbox { get; set; }
 		public string IdAmazon { get; set; }
+		public string ExeEpic { get; set; }
 	}
 
 	public static class JuegoCrear

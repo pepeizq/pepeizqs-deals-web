@@ -236,6 +236,25 @@
                 </div>
             </div>
         </button>
+
+        @if (adminLogeado == true)
+        {
+            <button @onclick="@(e => MostrarGoggalaxy(e))" class="boton-pestañas">
+                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                    <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
+
+                    <div>
+                        <div>
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
+                        </div>
+
+                        <div style="margin-top: 5px; font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
+                        </div>
+                    </div>
+                </div>
+            </button>
+        }
     </div>
 </div>
 
@@ -307,6 +326,11 @@
                 {
                     <Amazon idioma="@idioma" />
                 }
+
+                @if (mostrarGoggalaxy == true)
+                {
+                    <Goggalaxy idioma="@idioma"/>
+                }
             </div> 
         </div>
     </div>
@@ -321,6 +345,9 @@
 
     [Parameter]
     public string userAgent { get; set; }
+
+    [Parameter]
+    public bool adminLogeado { get; set; }
 
     private bool enseñarPestaña = false;
 
@@ -340,6 +367,7 @@
         mostrarGog = false;
         mostrarIsthereanydeal = false;
         mostrarAmazon = false;
+        mostrarGoggalaxy = false;
     }
 
     private void ClickearCerrarPestaña()
@@ -453,5 +481,14 @@
         CerrarPestañas();
         enseñarPestaña = true;
         mostrarAmazon = true;
+    }
+
+    private bool mostrarGoggalaxy = false;
+
+    private void MostrarGoggalaxy(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarGoggalaxy = true;
     }
 }

@@ -8,6 +8,29 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<style>
+	.cargando {
+	width: 48px;
+	height: 48px;
+	border: 5px solid var(--colorTexto);
+	border-bottom-color: transparent;
+	border-radius: 50%;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+	}
+
+	@@keyframes rotation {
+	0% {
+	transform: rotate(0deg);
+	}
+
+	100% {
+	transform: rotate(360deg);
+	}
+	}
+</style>
+
 <div style="display: flex; flex-direction: column; gap: 40px;">
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
 		<label style="font-size: 18px; margin-bottom: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountIsthereanydeal")</label>
@@ -36,15 +59,24 @@
 	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column;">
 		<div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountIsthereanydeal")</div>
 		<hr/>
-		
-		<label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
-			<InputFile OnChange="CargarFichero" accept=".json" hidden />
-			@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountIsthereanydeal")
-		</label>
 
-		@if (añadidos > 0)
+		@if (trabajando == false)
 		{
-			<label style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountIsthereanydeal"), añadidos)</label>
+			<label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+				<InputFile OnChange="CargarFichero" accept=".json" hidden />
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountIsthereanydeal")
+			</label>
+
+			@if (añadidos > 0)
+			{
+				<label style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountIsthereanydeal"), añadidos)</label>
+			}
+		}
+		else
+		{
+			<div style="display: flex; align-items: center; gap: 20px;">
+				<div class="cargando" />
+			</div>
 		}
 	</div>
 </div>
@@ -59,6 +91,7 @@
 	private Usuario usuario = new Usuario();
 
 	private List<string> listaDeseados = new List<string>();
+	private bool trabajando = false;
 	private int añadidos = 0;
 
 	protected override async Task OnInitializedAsync()
@@ -68,6 +101,8 @@
 
 	private async void CargarFichero(InputFileChangeEventArgs e)
 	{
+		trabajando = true;
+
 		añadidos = 0;
 
 		IBrowserFile fichero = e.File;
@@ -168,5 +203,7 @@
 				jsonDeseados = null;
 			}
 		}
+
+		trabajando = false;
 	}
 }
