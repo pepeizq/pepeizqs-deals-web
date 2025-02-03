@@ -462,6 +462,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(40) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(40)) == false)
+					{
+						juego.ExeUbisoft = lector.GetString(40);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 
@@ -716,7 +728,7 @@ namespace BaseDatos.Juegos
 
 			if (todo == false)
 			{
-				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis, idSteam, idGog, idAmazon";
+				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis, idSteam, idGog, idAmazon, exeEpic, exeUbisoft";
 			}
 
 			if (nombre.Contains(" ") == true)
@@ -886,6 +898,22 @@ namespace BaseDatos.Juegos
 								if (string.IsNullOrEmpty(lector.GetString(12)) == false)
 								{
 									juego.IdAmazon = lector.GetString(12);
+								}
+							}
+
+							if (lector.IsDBNull(13) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(13)) == false)
+								{
+									juego.ExeEpic = lector.GetString(13);
+								}
+							}
+
+							if (lector.IsDBNull(14) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(14)) == false)
+								{
+									juego.ExeUbisoft = lector.GetString(14);
 								}
 							}
 

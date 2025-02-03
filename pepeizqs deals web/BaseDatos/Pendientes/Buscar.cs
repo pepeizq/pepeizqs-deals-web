@@ -434,14 +434,28 @@ namespace BaseDatos.Pendientes
 				{
 					while (lector.Read())
 					{
-						Pendiente pendiente = new Pendiente
+						if (plataformaId.ToLower() == "amazon")
 						{
-							Enlace = lector.GetString(0),
-							Nombre = lector.GetString(0),
-							Imagen = "vacio"
-						};
+							Pendiente pendiente = new Pendiente
+							{
+								Enlace = lector.GetString(0),
+								Nombre = lector.GetString(0),
+								Imagen = "vacio"
+							};
 
-						return pendiente;
+							return pendiente;
+						}
+						else
+						{
+							Pendiente pendiente = new Pendiente
+							{
+								Enlace = lector.GetString(0),
+								Nombre = lector.GetString(1),
+								Imagen = "vacio"
+							};
+
+							return pendiente;
+						}
 					}
 				}
 			}

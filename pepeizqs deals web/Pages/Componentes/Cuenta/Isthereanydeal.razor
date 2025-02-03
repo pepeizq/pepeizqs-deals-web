@@ -106,7 +106,7 @@
 		añadidos = 0;
 
 		IBrowserFile fichero = e.File;
-		long maximoTamaño = 512000;
+		long maximoTamaño = 268435456; //256 mb
 		var buffer = new byte[fichero.Size];
 
 		await fichero.OpenReadStream(maxAllowedSize: maximoTamaño).ReadAsync(buffer);

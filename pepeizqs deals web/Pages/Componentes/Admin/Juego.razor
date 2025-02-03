@@ -410,6 +410,15 @@
 								<input type="text" @oninput="TextoCambiaSlugEpic" class="entrada-texto" value="@slugEpic" />
 							</div>
 						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Exe
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaExeEpic" class="entrada-texto" value="@exeEpic" />
+							</div>
+						</div>
 					</div>
 
 					@if (string.IsNullOrEmpty(slugEpic) == false)
@@ -509,6 +518,7 @@
 	private string idGOG = string.Empty;
 	private string slugGOG = string.Empty;
 	private string slugEpic = string.Empty;
+	private string exeEpic = string.Empty;
 	private string idXbox = string.Empty;
 	private string idAmazon = string.Empty;
 
@@ -554,6 +564,11 @@
 		if (string.IsNullOrEmpty(juego.SlugEpic) == false)
 		{
 			slugEpic = juego.SlugEpic;
+		}
+
+		if (string.IsNullOrEmpty(juego.ExeEpic) == false)
+		{
+			exeEpic = juego.ExeEpic;
 		}
 
 		if (string.IsNullOrEmpty(juego.IdXbox) == false)
@@ -994,6 +1009,24 @@
 			{
 				juego.SlugEpic = slugEpic;
 				BaseDatos.Juegos.Actualizar.SlugEpic(juego, conexion);
+			}
+		}
+	}
+
+	private void TextoCambiaExeEpic(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			exeEpic = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.ExeEpic = exeEpic;
+				BaseDatos.Juegos.Actualizar.ExeEpic(juego, conexion);
 			}
 		}
 	}

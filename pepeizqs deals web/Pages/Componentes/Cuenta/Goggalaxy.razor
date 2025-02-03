@@ -109,7 +109,7 @@
             importados = 0;
 
             IBrowserFile fichero = e.File;
-            int maximoTamaño = 1024000 * 48;
+            int maximoTamaño = 268435456; //256 mb
             byte[] buffer = new byte[fichero.Size];
 
             Herramientas.FicheroLecturaPerezosa stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
@@ -152,6 +152,24 @@
 
                                     listadoJuegos.Add(nuevo);
                                 }
+
+                                if (lector.GetString(0).Contains("uplay_") == true)
+                                {
+                                    string id = lector.GetString(0);
+                                    id = id.Replace("uplay_", null);
+
+                                    string nombre = lector.GetString(1);
+                                    nombre = nombre.Replace("{" + Strings.ChrW(34) + "title" + Strings.ChrW(34) + ":" + Strings.ChrW(34), null);
+                                    nombre = nombre.Replace("}", null);
+                                    nombre = nombre.Replace("\"", null);
+
+                                    GogGalaxyJuego nuevo = new GogGalaxyJuego();
+                                    nuevo.Id = id;
+                                    nuevo.Nombre = nombre;
+                                    nuevo.DRM = Juegos.JuegoDRM.Ubisoft;
+
+                                    listadoJuegos.Add(nuevo);
+                                }
                             }
                         }
                     }
@@ -175,6 +193,7 @@
                 }
 
                 string textoEpicIds = string.Empty;
+                string textoUbisoftIds = string.Empty;
 
                 foreach (GogGalaxyJuego juego in listadoJuegos)
                 {
@@ -193,11 +212,28 @@
 
                         importados += 1;
                     }
+
+                    if (juego.DRM == Juegos.JuegoDRM.Ubisoft)
+                    {
+                        BaseDatos.Plataformas.Buscar.Ubisoft(juego.Id, juego.Nombre, conexion);
+
+                        if (string.IsNullOrEmpty(textoUbisoftIds) == true)
+                        {
+                            textoUbisoftIds = juego.Id;
+                        }
+                        else
+                        {
+                            textoUbisoftIds = textoUbisoftIds + "," + juego.Id;
+                        }
+
+                        importados += 1;
+                    }
                 }
 
                 if (usuario != null)
                 {
                     usuario.EpicGames = textoEpicIds;
+                    usuario.UbisoftGames = textoUbisoftIds;
 
                     try
                     {

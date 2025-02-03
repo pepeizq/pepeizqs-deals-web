@@ -95,29 +95,32 @@ namespace APIs.EpicGames
 
 								if (datos != null)
 								{
-									foreach (var plataforma in datos.Etiquetas.Plataformas)
+									if (datos.Etiquetas != null)
 									{
-										if (plataforma.Id == "9547")
+										foreach (var plataforma in datos.Etiquetas.Plataformas)
 										{
-											juegoEpicGames.Windows = true;
+											if (plataforma.Id == "9547")
+											{
+												juegoEpicGames.Windows = true;
+											}
+
+											if (plataforma.Id == "10719")
+											{
+												juegoEpicGames.Mac = true;
+											}
 										}
 
-										if (plataforma.Id == "10719")
+										foreach (var cosa in datos.Etiquetas.EpicCosas)
 										{
-											juegoEpicGames.Mac = true;
-										}
-									}
+											if (cosa.Id == "19847")
+											{
+												juegoEpicGames.Logros = true;
+											}
 
-									foreach (var cosa in datos.Etiquetas.EpicCosas)
-									{
-										if (cosa.Id == "19847")
-										{
-											juegoEpicGames.Logros = true;
-										}
-
-										if (cosa.Id == "21894")
-										{
-											juegoEpicGames.GuardadoNube = true;
+											if (cosa.Id == "21894")
+											{
+												juegoEpicGames.GuardadoNube = true;
+											}
 										}
 									}
 								}

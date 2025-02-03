@@ -477,7 +477,7 @@
                                     {
                                         string mensaje = string.Empty;
 
-                                        if (drm.Id == JuegoDRM.Steam || drm.Id == JuegoDRM.GOG || drm.Id == JuegoDRM.Amazon)
+                                        if (drm.Id == JuegoDRM.Steam || drm.Id == JuegoDRM.GOG || drm.Id == JuegoDRM.Amazon || drm.Id == JuegoDRM.Epic || drm.Id == JuegoDRM.Ubisoft)
                                         {
                                             if (juego.Tipo == Juegos.JuegoTipo.Game)
                                             {
@@ -509,6 +509,10 @@
                                                         else if (drm.Id == JuegoDRM.Amazon)
                                                         {
                                                             enlaceJugar = "amazon-games://play/" + juego.IdAmazon;
+                                                        }
+                                                        else if (drm.Id == JuegoDRM.Epic)
+                                                        {
+                                                            enlaceJugar = "com.epicgames.launcher://apps/" + juego.ExeEpic + "?action=launch&silent=true";
                                                         }
 
                                                         if (string.IsNullOrEmpty(enlaceJugar) == false)
@@ -2773,6 +2777,62 @@
                                             {
                                                 JuegoRazorUsuario nuevoJuegoUsuario = new JuegoRazorUsuario();
                                                 nuevoJuegoUsuario.DRM = JuegoDRM.Amazon;
+                                                nuevoJuegoUsuario.Tiene = true;
+                                                usuarioTieneDesea.Add(nuevoJuegoUsuario);
+                                                usuarioTieneDRM = true;
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (drm.Id == JuegoDRM.Epic && string.IsNullOrEmpty(juego.ExeEpic) == false)
+                        {
+                            if (string.IsNullOrEmpty(usuario.EpicGames) == false)
+                            {
+                                List<string> juegosEpic = Herramientas.Listados.Generar(usuario.EpicGames);
+
+                                if (juegosEpic.Count > 0)
+                                {
+                                    if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Epic)
+                                    {
+                                        foreach (var juegoUsuario in juegosEpic)
+                                        {
+                                            if (juegoUsuario == juego.ExeEpic)
+                                            {
+                                                JuegoRazorUsuario nuevoJuegoUsuario = new JuegoRazorUsuario();
+                                                nuevoJuegoUsuario.DRM = JuegoDRM.Epic;
+                                                nuevoJuegoUsuario.Tiene = true;
+                                                usuarioTieneDesea.Add(nuevoJuegoUsuario);
+                                                usuarioTieneDRM = true;
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (drm.Id == JuegoDRM.Ubisoft && string.IsNullOrEmpty(juego.ExeUbisoft) == false)
+                        {
+                            if (string.IsNullOrEmpty(usuario.UbisoftGames) == false)
+                            {
+                                List<string> juegosUbisoft = Herramientas.Listados.Generar(usuario.UbisoftGames);
+
+                                if (juegosUbisoft.Count > 0)
+                                {
+                                    if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.Ubisoft)
+                                    {
+                                        foreach (var juegoUsuario in juegosUbisoft)
+                                        {
+                                            if (juegoUsuario == juego.ExeUbisoft)
+                                            {
+                                                JuegoRazorUsuario nuevoJuegoUsuario = new JuegoRazorUsuario();
+                                                nuevoJuegoUsuario.DRM = JuegoDRM.Ubisoft;
                                                 nuevoJuegoUsuario.Tiene = true;
                                                 usuarioTieneDesea.Add(nuevoJuegoUsuario);
                                                 usuarioTieneDRM = true;

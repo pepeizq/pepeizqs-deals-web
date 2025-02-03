@@ -162,7 +162,83 @@ namespace BaseDatos.Pendientes
 			}
 		}
 
-        public static void DescartarTienda(string idTienda, string enlace, SqlConnection conexion)
+		public static void PlataformaEpic(string idEpic, int idJuego, SqlConnection conexion)
+		{
+			if (idJuego > 0)
+			{
+				int actualizado = 0;
+
+				string sqlActualizar = "UPDATE juegos " +
+				  "SET exeEpic=@exeEpic WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", idJuego);
+					comando.Parameters.AddWithValue("@exeEpic", idEpic);
+
+					try
+					{
+						actualizado = comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+
+				if (actualizado > 0)
+				{
+					string sqlBorrar = "DELETE FROM temporalEpicJuegos WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idEpic);
+
+						comando.ExecuteNonQuery();
+					}
+				}
+			}
+		}
+
+		public static void PlataformaUbisoft(string idUbisoft, int idJuego, SqlConnection conexion)
+		{
+			if (idJuego > 0)
+			{
+				int actualizado = 0;
+
+				string sqlActualizar = "UPDATE juegos " +
+				  "SET exeUbisoft=@exeUbisoft WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", idJuego);
+					comando.Parameters.AddWithValue("@exeUbisoft", idUbisoft);
+
+					try
+					{
+						actualizado = comando.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
+				}
+
+				if (actualizado > 0)
+				{
+					string sqlBorrar = "DELETE FROM temporalUbisoftJuegos WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idUbisoft);
+
+						comando.ExecuteNonQuery();
+					}
+				}
+			}
+		}
+
+		public static void DescartarTienda(string idTienda, string enlace, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE tienda" + idTienda + " " +
 					"SET descartado=@descartado WHERE enlace=@enlace";

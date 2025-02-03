@@ -258,7 +258,7 @@ namespace BaseDatos.Juegos
 				}
 				catch 
 				{
-					Errores.Insertar.Mensaje("Actualizar Datos " + BaseDatos.Juegos.Buscar.UnJuego(id).Nombre, comando.ExecuteScalar().ToString());
+					Errores.Insertar.Mensaje("Actualizar Juego " + id, comando.ExecuteScalar().ToString());
 				}
 			}
 		}
@@ -873,6 +873,40 @@ namespace BaseDatos.Juegos
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
 				comando.Parameters.AddWithValue("@slugEpic", juego.SlugEpic);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
+		public static void ExeEpic(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET exeEpic=@exeEpic WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@exeEpic", juego.ExeEpic);
 
 				comando.ExecuteNonQuery();
 				try

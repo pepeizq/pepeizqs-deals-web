@@ -108,7 +108,7 @@
             importados = 0;
 
             IBrowserFile fichero = e.File;
-            int maximoTamaño = 1024000;
+            int maximoTamaño = 268435456; //256 mb;
             byte[] buffer = new byte[fichero.Size];
 
             Herramientas.FicheroLecturaPerezosa stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);

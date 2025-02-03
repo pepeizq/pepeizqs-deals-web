@@ -597,7 +597,14 @@
 
                     imagenPendiente = imagen;
 
-                    enlacePendiente = "amazon-games://play/" + juego.Enlace;
+                    if (id.ToLower() == "amazon")
+                    {
+                        enlacePendiente = "amazon-games://play/" + juego.Enlace;
+                    }
+                    else
+                    {
+                        enlacePendiente = juego.Enlace;
+                    }
 
                     idsPendiente = "0";
                 }
@@ -737,17 +744,27 @@
                     enlace = enlace.Replace("amazon-games://play/", null);
 
                     BaseDatos.Pendientes.Actualizar.PlataformaAmazon(enlace, int.Parse(idsPendiente), conexion);
-
-                    foreach (var pendiente in pendientesPlataforma)
-                    {
-                        if (pendiente.Plataforma.Id.ToString() == idPlataformaPendiente)
-                        {
-                            pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Plataforma(pendiente.Plataforma.Id, conexion);
-                        }
-                    }
-
-                    ClickearPlataformaPendientes(idPlataformaPendiente);
                 }
+
+                if (idPlataformaPendiente.ToLower() == "epic")
+                {
+                    BaseDatos.Pendientes.Actualizar.PlataformaEpic(enlace, int.Parse(idsPendiente), conexion);
+                }
+
+                if (idPlataformaPendiente.ToLower() == "ubisoft")
+                {
+                    BaseDatos.Pendientes.Actualizar.PlataformaUbisoft(enlace, int.Parse(idsPendiente), conexion);
+                }
+
+                foreach (var pendiente in pendientesPlataforma)
+                {
+                    if (pendiente.Plataforma.Id.ToString() == idPlataformaPendiente)
+                    {
+                        pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Plataforma(pendiente.Plataforma.Id, conexion);
+                    }
+                }
+
+                ClickearPlataformaPendientes(idPlataformaPendiente);
             }
         }
     }

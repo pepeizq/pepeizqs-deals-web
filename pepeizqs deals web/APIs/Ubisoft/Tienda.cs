@@ -1,4 +1,7 @@
 ﻿//https://store.ubisoft.com/on/demandware.store/Sites-es_ubisoft-Site/es_ES/Product-GetAvailabilityAndOwnership?pid=60c30d870d253c1914049e94
+//https://xely3u4lod-dsn.algolia.net/1/indexes/es_custom_MFE/query?x-algolia-agent=Algolia%20for%20JavaScript%20(4.8.5)%3B%20Browser&x-algolia-application-id=XELY3U4LOD&x-algolia-api-key=5638539fd9edb8f2c6b024b49ec375bd
+//{"query":"5b06a3994e0165fa45ffdcdf"} <-- tienda id
+
 
 #nullable disable
 

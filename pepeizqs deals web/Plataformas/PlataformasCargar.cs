@@ -5,7 +5,8 @@ namespace Plataformas2
 	public enum PlataformaTipo
 	{
 		Amazon,
-		Epic
+		Epic,
+		Ubisoft
 	}
 
 	public class PlataformasCargar
@@ -33,6 +34,16 @@ namespace Plataformas2
 			};
 
 			listado.Add(epic);
+
+			Plataforma ubisoft = new Plataforma
+			{
+				Id = PlataformaTipo.Ubisoft,
+				Nombre = "Ubisoft Connect",
+				ImagenIcono = "/imagenes/drm/ubisoft.webp",
+				ImagenLogo = "/imagenes/drm/ubisoft.webp"
+			};
+
+			listado.Add(ubisoft);
 
 			return listado;
 		}

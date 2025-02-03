@@ -26,6 +26,11 @@ namespace Herramientas
 				listados.Amazon = Herramientas.Listados.Generar(usuario.AmazonGames);
 			}
 
+			if (string.IsNullOrEmpty(usuario.EpicGames) == false)
+			{
+				listados.Epic = Herramientas.Listados.Generar(usuario.EpicGames);
+			}
+
 			return listados;
 		}
 
@@ -121,7 +126,37 @@ namespace Herramientas
 							}
 						}
 					}
-				}				
+				}
+
+				if (string.IsNullOrEmpty(juego.ExeEpic) == false)
+				{
+					bool drmValidoEpic = false;
+
+					if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.Epic)
+					{
+						drmValidoEpic = true;
+					}
+
+					if (drmValidoEpic == true)
+					{
+						if (listados.Epic != null)
+						{
+							if (listados.Epic.Count > 0)
+							{
+								if (juego.Tipo == JuegoTipo.Game)
+								{
+									foreach (var juegoUsuario in listados.Epic)
+									{
+										if (juegoUsuario == juego.ExeEpic)
+										{
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 
 			return false;
@@ -133,5 +168,6 @@ namespace Herramientas
 		public List<string> Steam { get; set; }
 		public List<string> Gog { get; set; }
 		public List<string> Amazon { get; set; }
+		public List<string> Epic { get; set; }
 	}
 }
