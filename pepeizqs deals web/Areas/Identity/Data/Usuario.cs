@@ -234,6 +234,10 @@ public class Usuario : IdentityUser
 	public string? AmazonGames { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? AmazonLastImport { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? EpicGames { get; set; }
 

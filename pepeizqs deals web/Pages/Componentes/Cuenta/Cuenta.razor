@@ -1,4 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using global::Juegos
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <style>
     .boton-pestañas {
@@ -175,7 +181,7 @@
     <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
         <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
 
                 <div>
                     <div>
@@ -191,7 +197,7 @@
 
         <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
 
                 <div>
                     <div>
@@ -221,6 +227,22 @@
             </div>
         </button>
 
+        <button @onclick="@(e => MostrarGoggalaxy(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="/imagenes/otros/goggalaxy.webp" style="max-width: 30px; max-height: 30px;" />
+
+                <div>
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Account")
+                    </div>
+
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Account")
+                    </div>
+                </div>
+            </div>
+        </button>
+
         <button @onclick="@(e => MostrarIsthereanydeal(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
@@ -239,23 +261,85 @@
 
         @if (adminLogeado == true)
         {
-            <button @onclick="@(e => MostrarGoggalaxy(e))" class="boton-pestañas">
+            <button @onclick="@(e => MostrarPlaynite(e))" class="boton-pestañas">
                 <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="/imagenes/otros/goggalaxy.webp" style="max-width: 30px; max-height: 30px;" />
+                    <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
 
                     <div>
                         <div>
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Account")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
                         </div>
 
                         <div style="margin-top: 5px; font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Account")
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
                         </div>
                     </div>
                 </div>
             </button>
         }
     </div>
+
+    @if (adminLogeado == true)
+    {
+        <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+            <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
+                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <div>
+                            @JuegoDRM2.DevolverDRM(JuegoDRM.Steam)
+                        </div>                        
+
+                        @if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+                        {
+                            <div style="font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </button>
+
+            <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
+                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <div>
+                            @JuegoDRM2.DevolverDRM(JuegoDRM.GOG)
+                        </div>
+
+                        @if (usuario.GogAccountLastCheck != null)
+                        {
+                            <div style="font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </button>
+
+            <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas">
+                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Amazon)" style="max-width: 30px; max-height: 30px;" />
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <div>
+                            @JuegoDRM2.DevolverDRM(JuegoDRM.Amazon)
+                        </div>
+
+                        @if (usuario.AmazonLastImport != null)
+                        {
+                            <div style="font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.AmazonLastImport, idioma)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </button>
+        </div>
+    }
 </div>
 
 @if (enseñarPestaña == true)
@@ -309,12 +393,17 @@
 
                 @if (mostrarSteam == true)
                 {
-                    <CuentaSteam idioma="@idioma" />
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Steam idioma="@idioma" />
                 }
 
                 @if (mostrarGog == true)
                 {
-                    <CuentaGog idioma="@idioma" />
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Gog idioma="@idioma" />
+                }
+
+                @if (mostrarAmazon == true)
+                {
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Amazon idioma="@idioma" />
                 }
 
                 @if (mostrarIsthereanydeal == true)
@@ -322,14 +411,16 @@
                     <Isthereanydeal idioma="@idioma" />
                 }
 
-                @if (mostrarAmazon == true)
-                {
-                    <Amazon idioma="@idioma" />
-                }
+
 
                 @if (mostrarGoggalaxy == true)
                 {
                     <Goggalaxy idioma="@idioma"/>
+                }
+
+                @if (mostrarPlaynite == true)
+                {
+                    <Playnite idioma="@idioma" />
                 }
             </div> 
         </div>
@@ -349,7 +440,14 @@
     [Parameter]
     public bool adminLogeado { get; set; }
 
+    private Usuario usuario = new Usuario();
+
     private bool enseñarPestaña = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+    }
 
     private void CerrarPestañas()
     {
@@ -368,6 +466,7 @@
         mostrarIsthereanydeal = false;
         mostrarAmazon = false;
         mostrarGoggalaxy = false;
+        mostrarPlaynite = false;
     }
 
     private void ClickearCerrarPestaña()
@@ -490,5 +589,14 @@
         CerrarPestañas();
         enseñarPestaña = true;
         mostrarGoggalaxy = true;
+    }
+
+    private bool mostrarPlaynite = false;
+
+    private void MostrarPlaynite(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarPlaynite = true;
     }
 }

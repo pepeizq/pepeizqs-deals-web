@@ -1,0 +1,10 @@
+{
+  "String1": "Dinge, die Sie wissen sollten, bevor Sie Ihre Spiele von GOG Galaxy importieren:",
+  "String2": "Das Importieren von Spielen ist nicht automatisch. Wenn Sie neue Spiele erhalten, müssen Sie Ihre Spiele erneut importieren.",
+  "String3": "Die Datei, die Sie hochladen müssen, heißt {0} im Ordner {1}.",
+  "String4": "Der Ordnerort kann in Windows versteckt sein. Um ihn zu entsperren, können Sie sehen, wie dies der Fall ist, indem Sie den Link eingeben.",
+  "String5": "Importieren Sie Ihre Spiele bei GOG Galaxy",
+  "String6": "Wählen Sie die Datei aus: {0}",
+  "String7": "Importierte Spiele",
+  "String8": "Wenn Sie Hunderte von Spielen auf Ihrem Konto haben, dauert der Import einige Minuten."
+}

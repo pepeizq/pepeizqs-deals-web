@@ -5,6 +5,7 @@
 @using System.Text
 @using System.Net.Http.Headers
 @using Microsoft.VisualBasic
+@using global::Juegos
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -35,16 +36,16 @@
 
 <div style="display: flex; flex-direction: column; gap: 40px;">
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-        <label style="font-size: 18px; margin-bottom: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountAmazon")</label>
+        <label style="font-size: 18px; margin-bottom: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountGoggalaxy")</label>
 
         <div>
             <ul style="display: flex; flex-direction: column; gap: 20px; margin: 0px;">
                 <li>
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountAmazon")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountGoggalaxy")
                 </li>
 
                 <li>
-                    @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountAmazon"), "GameUserInteractionsInfo.sqlite", "C:\\Users\\[" + Herramientas.Idiomas.BuscarTexto(idioma, "String9", "AccountAmazon") + "]\\AppData\\Local\\Amazon Games\\Data\\Games\\Sql\\")
+                    @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountGoggalaxy"), "galaxy-2.0.db", "C:\\ProgramData\\GOG.com\\Galaxy\\storage")
                 </li>
 
                 <li>
@@ -52,26 +53,38 @@
                 </li>
 
                 <li>
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountAmazon")
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountGoggalaxy")
                 </li>
             </ul>
         </div>
     </div>
 
     <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column;">
-        <div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountAmazon")</div>
+        <div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountGoggalaxy")</div>
         <hr />
 
         @if (trabajando == false)
         {
             <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
                 <InputFile OnChange="CargarFichero" accept=".db" hidden />
-                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "AccountAmazon"), "GameUserInteractionsInfo.sqlite")
+                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String6", "AccountGoggalaxy"), "galaxy-2.0.db")
             </label>
 
-            @if (importados > 0)
+            @if (importadosEpic > 0 || importadosUbisoft > 0)
             {
-                <label style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountAmazon"), importados)</label>
+                <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGoggalaxy")
+                    </div>
+
+                    <div>
+                        Epic Games: @importadosEpic    
+                    </div>
+
+                    <div>
+                        Ubisoft Connect: @importadosUbisoft
+                    </div>
+                </div>
             }
         }
         else
@@ -93,7 +106,8 @@
     private Usuario usuario = new Usuario();
 
     private bool trabajando = false;
-    private int importados = 0;
+    private int importadosEpic = 0;
+    private int importadosUbisoft = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,7 +120,8 @@
 
         if (e.File.Name.ToLower().Contains("galaxy-2.0") == true)
         {
-            importados = 0;
+            importadosEpic = 0;
+            importadosUbisoft = 0;
 
             IBrowserFile fichero = e.File;
             int maximoTamaño = 268435456; //256 mb
@@ -148,7 +163,7 @@
                                     GogGalaxyJuego nuevo = new GogGalaxyJuego();
                                     nuevo.Id = id;
                                     nuevo.Nombre = nombre;
-                                    nuevo.DRM = Juegos.JuegoDRM.Epic;
+                                    nuevo.DRM = JuegoDRM.Epic;
 
                                     listadoJuegos.Add(nuevo);
                                 }
@@ -166,7 +181,7 @@
                                     GogGalaxyJuego nuevo = new GogGalaxyJuego();
                                     nuevo.Id = id;
                                     nuevo.Nombre = nombre;
-                                    nuevo.DRM = Juegos.JuegoDRM.Ubisoft;
+                                    nuevo.DRM = JuegoDRM.Ubisoft;
 
                                     listadoJuegos.Add(nuevo);
                                 }
@@ -197,7 +212,7 @@
 
                 foreach (GogGalaxyJuego juego in listadoJuegos)
                 {
-                    if (juego.DRM == Juegos.JuegoDRM.Epic)
+                    if (juego.DRM == JuegoDRM.Epic)
                     {
                         BaseDatos.Plataformas.Buscar.Epic(juego.Id, juego.Nombre, conexion);
 
@@ -210,10 +225,10 @@
                             textoEpicIds = textoEpicIds + "," + juego.Id;
                         }
 
-                        importados += 1;
+                        importadosEpic += 1;
                     }
 
-                    if (juego.DRM == Juegos.JuegoDRM.Ubisoft)
+                    if (juego.DRM == JuegoDRM.Ubisoft)
                     {
                         BaseDatos.Plataformas.Buscar.Ubisoft(juego.Id, juego.Nombre, conexion);
 
@@ -226,7 +241,7 @@
                             textoUbisoftIds = textoUbisoftIds + "," + juego.Id;
                         }
 
-                        importados += 1;
+                        importadosUbisoft += 1;
                     }
                 }
 
@@ -248,12 +263,17 @@
         }
 
         trabajando = false;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
     }
 
     private class GogGalaxyJuego
     {
         public string Id { get; set; }
         public string Nombre { get; set; }
-        public Juegos.JuegoDRM DRM { get; set; }
+        public JuegoDRM DRM { get; set; }
     }
 }

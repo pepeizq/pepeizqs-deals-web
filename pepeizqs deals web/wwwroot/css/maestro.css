@@ -29,6 +29,7 @@
     --deckJugable: #ffc82c;
     --fondoOpcionesTransparente: rgba(13, 22, 33, 0.95);
     --fondoBandaSonora: #ab4364;
+    --fondoPeligro: #842029;
 }
 
 @font-face {

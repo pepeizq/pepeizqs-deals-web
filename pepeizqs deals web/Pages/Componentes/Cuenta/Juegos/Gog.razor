@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
+@using global::Juegos
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -30,107 +31,119 @@
 
 @if (usuario != null)
 {
-	if (usuario.EmailConfirmed == true)
-	{
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			@if (ocupado == false)
-			{
-				<input class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "Gog1", "Account")" value="@usuario.GogAccount" @oninput="TextoCambiaGogCuenta" />
-			}
-			else
-			{
-				<div>@usuario.GogAccount</div>
-			}
+	<div style="display: flex; flex-direction: column; gap: 20px;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+				<img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 40px; max-height: 40px;" />
 
-			<div style="display: flex; align-items: start; margin: 20px 0px;">
-				<div style="padding-top: 10px; padding-right: 20px;">
-					<i class="fa-solid fa-circle-info" style="font-size: 30px;"></i>
-				</div>
+				<div>
+					<div style="font-size: 18px;">
+						@JuegoDRM2.DevolverDRM(JuegoDRM.GOG)
+					</div>
 
-				<div style="width: 100%;">
-					<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog2", "Account")</label>
-
-					<button @onclick="ClickearEnseñarImagen" style="outline: none; border: 0; background-color: transparent; color: var(--colorTextoOscuro); margin-top: 20px; padding: 0px; text-align: left;">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "Gog3", "Account")
-					</button>
+					<div style="font-size: 14px;">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "AccountGames")
+					</div>
 				</div>
 			</div>
 
-			@if (errorCuentaUsada == true)
-			{
-				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 30px; border-radius: 0px;" role="alert">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "Gog4", "Account")
-				</div>
-			}
+			<hr />
 
-			@if (usuario.GogAccountLastCheck + TimeSpan.FromMinutes(10) > DateTime.Now)
-			{
-				<div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 30px; border-radius: 0px;" role="alert">
-					<div>
-						@Herramientas.Idiomas.BuscarTexto(idioma, "Gog12", "Account")
+			<div style="display: flex; align-items: center; gap: 20px;">
+				@{
+					int cantidadJuegos = 0;
+
+					if (string.IsNullOrEmpty(usuario.GogGames) == false)
+					{
+						cantidadJuegos = Herramientas.Listados.Generar(usuario.GogGames).Count;
+					}
+
+					<div style="background-color: var(--fondoBien); padding: 10px 20px;">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountGames"), cantidadJuegos.ToString())
 					</div>
 
-					<div style="margin-top: 10px;">
-						<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog10", "Account"): @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)</label>
+					int cantidadDeseados = 0;
+
+					if (string.IsNullOrEmpty(usuario.GogWishlist) == false)
+					{
+						cantidadDeseados = Herramientas.Listados.Generar(usuario.GogWishlist).Count;
+					}
+
+					<div style="background-color: var(--fondoAlerta); padding: 10px 20px;">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "AccountGames"), cantidadDeseados.ToString())
 					</div>
-				</div>
-			}
-			else
-			{
-				if (ocupado == false)
+				}
+
+				@if (usuario.GogAccountLastCheck != null)
 				{
-					<button class="boton" style="font-size: 18px; max-width: 250px; margin-top: 20px; cursor: pointer;" @onclick="@(e => ActualizarCuenta(e))">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "Gog5", "Account")
-					</button>
+					<div>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)
+					</div>
+				}
+			</div>
+		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="font-size: 18px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "AccountGames")
+			</div>
+
+			<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; padding: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño);">
+				<label>@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountGames"), "GOG")</label>
+
+				<button @onclick="ClickearEnseñarImagen" style="outline: none; border: 0; background-color: transparent; color: var(--colorTextoOscuro); padding: 0px; text-align: left;">
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountGames"), "GOG")
+				</button>
+
+				@if (ocupado == false)
+				{
+					<input class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "AccountGames")" value="@usuario.GogAccount" @oninput="TextoCambiaGogCuenta" />
 				}
 				else
 				{
-					<div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
-						<div class="cargando" />
+					<div>@usuario.GogAccount</div>
+				}
+
+				@if (errorCuentaUsada == true)
+				{
+					<div style="background-color: var(--fondoPeligro); border: 1px solid var(--fondoBotonPequeño); padding: 20px">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountGames"), "GOG")
+					</div>
+				}
+
+				@if (usuario.GogAccountLastCheck + TimeSpan.FromMinutes(10) > DateTime.Now)
+				{
+					<div style="background-color: var(--fondoPeligro); border: 1px solid var(--fondoBotonPequeño); padding: 20px">
 						<div>
-							@mensajeCargando
+							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String12", "AccountGames"), "GOG")
+						</div>
+
+						<div style="margin-top: 10px;">
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames"): @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)</label>
 						</div>
 					</div>
 				}
-			}
-		</div>
-
-		@if (string.IsNullOrEmpty(usuario.GogId) == false)
-		{
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; align-items: start;">
-				<div style="width: 100%;">
-					@if (string.IsNullOrEmpty(usuario.GogId) == false)
+				else
+				{
+					if (ocupado == false)
 					{
-						<div>
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog6", "Account") @usuario.GogId</label>
+						<button class="boton" style="font-size: 18px; padding: 10px 30px; width: fit-content;" @onclick="@(e => ActualizarCuenta(e))">
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountGames")
+						</button>
+					}
+					else
+					{
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div class="cargando" />
+							<div>
+								@mensajeCargando
+							</div>
 						</div>
 					}
-
-					@if (string.IsNullOrEmpty(usuario.GogGames) == false)
-					{
-						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog8", "Account") @MensajeCantidad(usuario.GogGames)</label>
-						</div>
-					}
-
-					@if (string.IsNullOrEmpty(usuario.GogWishlist) == false)
-					{
-						<div style="margin-top: 5px;">
-							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "Gog9", "Account") @MensajeCantidad(usuario.GogWishlist)</label>
-						</div>
-					}
-				</div>
-			</div>
-		}
-	}
-	else
-	{
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-			<div class="alert alert-danger alert-dismissible" style="margin: 0px;" role="alert">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Gog11", "Account")
+				}
 			</div>
 		</div>
-	}
+	</div>
 }
 
 @if (enseñarImagen == true)

@@ -1,0 +1,299 @@
+﻿@using APIs.Steam
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using global::Juegos
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<style>
+	.cargando {
+	width: 48px;
+	height: 48px;
+	border: 5px solid var(--colorTexto);
+	border-bottom-color: transparent;
+	border-radius: 50%;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+	}
+
+	@@keyframes rotation {
+	0% {
+	transform: rotate(0deg);
+	}
+	100% {
+	transform: rotate(360deg);
+	}
+	} 
+</style>
+
+@if (usuario != null)
+{
+	<div style="display: flex; flex-direction: column; gap: 20px;">
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+				<img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 40px; max-height: 40px;" />
+
+				<div>
+					<div style="font-size: 18px;">
+						@JuegoDRM2.DevolverDRM(JuegoDRM.Steam)
+					</div>
+
+					<div style="font-size: 14px;">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "AccountGames")
+					</div>
+				</div>
+			</div>
+
+			<hr />
+
+			<div style="display: flex; align-items: center; gap: 20px;">
+				@{
+					int cantidadJuegos = 0;
+
+					if (string.IsNullOrEmpty(usuario.SteamGames) == false)
+					{
+						cantidadJuegos = Herramientas.Listados.Generar(usuario.SteamGames).Count;
+					}
+
+					<div style="background-color: var(--fondoBien); padding: 10px 20px;">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountGames"), cantidadJuegos.ToString())
+					</div>
+
+					int cantidadDeseados = 0;
+
+					if (string.IsNullOrEmpty(usuario.SteamWishlist) == false)
+					{
+						cantidadDeseados = Herramientas.Listados.Generar(usuario.SteamWishlist).Count;
+					}
+
+					<div style="background-color: var(--fondoAlerta); padding: 10px 20px;">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "AccountGames"), cantidadDeseados.ToString())
+					</div>
+				}
+
+				@if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+				{
+					<div>
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)
+					</div>
+				}
+			</div>
+		</div>
+
+		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div style="font-size: 18px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "AccountGames")
+			</div>
+
+			<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; padding: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño);">
+				<label>@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountGames"), "Steam")</label>
+
+				<button @onclick="ClickearEnseñarImagen" style="outline: none; border: 0; background-color: transparent; color: var(--colorTextoOscuro); padding: 0px; text-align: left;">
+					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountGames"), "Steam")
+				</button>
+
+				@if (ocupado == false)
+				{
+					<input class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountGames")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
+				}
+				else
+				{
+					<div>@usuario.SteamAccount</div>
+				}
+
+				@if (errorCuentaUsada == true)
+				{
+					<div style="background-color: var(--fondoPeligro); border: 1px solid var(--fondoBotonPequeño); padding: 20px">
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountGames"), "Steam")
+					</div>
+				}
+
+				@if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) > DateTime.Now)
+				{
+					<div style="background-color: var(--fondoPeligro); border: 1px solid var(--fondoBotonPequeño); padding: 20px">
+						<div>
+							@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String12", "AccountGames"), "Steam")
+						</div>
+
+						<div style="margin-top: 10px;">
+							<label>@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames"): @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)</label>
+						</div>
+					</div>
+				}
+				else
+				{
+					if (ocupado == false)
+					{
+						<button class="boton" style="font-size: 18px; padding: 10px 30px; width: fit-content;" @onclick="@(e => ActualizarCuenta(e))">
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountGames")
+						</button>
+					}
+					else
+					{
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div class="cargando" />
+							<div>
+								@mensajeCargando
+							</div>
+						</div>
+					}
+				}
+			</div>
+		</div>
+	</div>
+}
+
+@if (enseñarImagen == true)
+{
+	<div class="opciones-panel">
+		<div style="display: flex; align-items: start; margin: auto; justify-content: center; max-height: 100vh; max-width: 1000px;">
+			<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="ClickearEnseñarImagen">
+				<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
+			</button>
+
+			<img src="/imagenes/otros/permisos.jpg" style="margin-left: 20px; max-width: 100%; max-height: 100%;" />
+		</div>
+	</div>	
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private string enlaceCuenta = string.Empty;
+
+	private bool enseñarImagen = false;
+
+	private bool ocupado = false;
+	private string mensajeCargando = string.Empty;
+	private bool errorCuentaUsada = false;
+
+	private SteamUsuario datos = new SteamUsuario();
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+		if (usuario != null)
+		{
+			if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+			{
+				if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) < DateTime.Now)
+				{
+					ocupado = false;
+
+					if (string.IsNullOrEmpty(usuario.SteamAccount) == false)
+					{
+						enlaceCuenta = usuario.SteamAccount;
+					}
+				}
+				else
+				{
+					ocupado = true;
+				}
+			}
+		}
+	}
+
+	private void TextoCambiaSteamCuenta(ChangeEventArgs texto)
+	{
+		errorCuentaUsada = false;
+
+		if (texto.Value.ToString().Trim().Length > 1)
+		{
+			enlaceCuenta = texto.Value.ToString().Trim();
+		}
+	}
+
+	private void ClickearEnseñarImagen()
+	{
+		if (enseñarImagen == true)
+		{
+			enseñarImagen = false;
+		}
+		else
+		{
+			enseñarImagen = true;
+		}
+	}
+
+	private async Task ActualizarCuenta(MouseEventArgs args)
+	{
+		ocupado = true;
+
+		if (string.IsNullOrEmpty(enlaceCuenta) == false)
+		{
+			if (enlaceCuenta.Contains("https://steamcommunity.com/id/") == true || enlaceCuenta.Contains("https://steamcommunity.com/profiles/") == true || enlaceCuenta.Contains("http://steamcommunity.com/id/") == true || enlaceCuenta.Contains("http://steamcommunity.com/profiles/") == true)
+			{
+				mensajeCargando = Herramientas.Idiomas.BuscarTexto(idioma, "Steam13", "Account");
+
+				SteamCuentaID64 id64 = await APIs.Steam.Cuenta.CargarID64(enlaceCuenta);
+
+				if (id64 != null)
+				{
+					bool cuentaUsada = BaseDatos.Usuarios.Buscar.CuentaSteamUsada(id64.ID64, usuario.Id);
+
+					if (cuentaUsada == false)
+					{
+						mensajeCargando = Herramientas.Idiomas.BuscarTexto(idioma, "Steam14", "Account");
+
+						datos = await APIs.Steam.Cuenta.CargarDatos(enlaceCuenta);
+
+						if (datos != null)
+						{
+							usuario.SteamAccount = enlaceCuenta;
+							usuario.SteamGames = datos.Juegos;
+							usuario.SteamWishlist = datos.Deseados;
+							usuario.Avatar = datos.Avatar;
+							usuario.Nickname = datos.Nombre;
+							usuario.SteamAccountLastCheck = DateTime.Now.ToString();
+							usuario.OfficialGroup = datos.GrupoPremium;
+							usuario.OfficialGroup2 = datos.GrupoNormal;
+							usuario.SteamId = datos.SteamId;
+
+							try
+							{
+								await UserManager.UpdateAsync(usuario);
+							}
+							catch
+							{
+								BaseDatos.Errores.Insertar.Mensaje("Cuenta Usuario Steam", usuario.Id + Environment.NewLine + enlaceCuenta);
+							}
+						}
+					}
+					else
+					{
+						errorCuentaUsada = true;
+
+						usuario.SteamAccount = null;
+
+						try
+						{
+							await UserManager.UpdateAsync(usuario);
+						}
+						catch
+						{							
+						}
+					}					
+				}
+			}
+		}
+
+		if (Convert.ToDateTime(usuario.SteamAccountLastCheck) + TimeSpan.FromMinutes(10) > DateTime.Now)
+		{
+			ocupado = true;
+		}
+		else
+		{
+			ocupado = false;
+		}		
+	}
+}
