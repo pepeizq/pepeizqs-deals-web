@@ -41,20 +41,17 @@
                 </div>
             </div>
 
-            @if (usuario.PatreonLastCheck == null)
-            {
-                <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
-                    <label style="margin-left: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon3", "Account")</label>
-                    <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon4", "Account")</label>
+            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
+                <label style="margin-left: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon3", "Account")</label>
+                <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon4", "Account")</label>
 
-                    <input value="@correoAlternativo" @onchange="@(e => CambiarCorreo(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon5", "Account")" />
+                <input value="@correoAlternativo" @onchange="@(e => CambiarCorreo(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon5", "Account")" />
 
-                    @if (string.IsNullOrEmpty(correoAlternativo) == false && correoUsado == true)
-                    {
-                        <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon6", "Account")</label>
-                    }
-                </div>
-            }
+                @if (string.IsNullOrEmpty(correoAlternativo) == false && correoUsado == true)
+                {
+                    <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon6", "Account")</label>
+                }
+            </div>
             
             <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
                 <div style="display: flex; align-items: center; gap: 25px;">

@@ -954,6 +954,40 @@ namespace BaseDatos.Juegos
 			}
 		}
 
+		public static void ExeUbisoft(Juego juego, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string sqlActualizar = "UPDATE juegos " +
+					"SET exeUbisoft=@exeUbisoft WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", juego.Id);
+				comando.Parameters.AddWithValue("@exeUbisoft", juego.ExeUbisoft);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
+
 		public static void Deck(Juego juego, SqlConnection conexion = null)
 		{
 			if (conexion == null)

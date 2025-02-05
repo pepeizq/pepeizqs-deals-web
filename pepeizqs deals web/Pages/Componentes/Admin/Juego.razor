@@ -491,6 +491,27 @@
 						</div>
 					</div>
 				</div>
+
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
+					<div style="display: flex; align-items: center; gap: 30px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<img src="@APIs.Ubisoft.Tienda.Generar().ImagenIcono" style="width: 24px; height: 24px;" />
+
+							<div>
+								Ubisoft
+							</div>
+						</div>
+
+						<div style="display: flex; align-items: center; gap: 20px;">
+							<div>
+								Exe
+							</div>
+							<div style="width: fit-content;">
+								<input type="text" @oninput="TextoCambiaIdAmazon" class="entrada-texto" value="@idAmazon" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		}
 		else if (pestañaMostrar == 7)
@@ -521,8 +542,7 @@
 	private string exeEpic = string.Empty;
 	private string idXbox = string.Empty;
 	private string idAmazon = string.Empty;
-
-	private string idiomasGog = string.Empty;
+	private string exeUbisoft = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -579,6 +599,11 @@
 		if (string.IsNullOrEmpty(juego.IdAmazon) == false)
 		{
 			idAmazon = juego.IdAmazon;
+		}
+
+		if (string.IsNullOrEmpty(juego.ExeUbisoft) == false)
+		{
+			exeUbisoft = juego.ExeUbisoft;
 		}
 
 		if (string.IsNullOrEmpty(juego.FreeToPlay) == false)
@@ -1063,6 +1088,24 @@
 			{
 				juego.IdAmazon = idAmazon;
 				BaseDatos.Pendientes.Actualizar.PlataformaAmazon(idAmazon, juego.Id, conexion);
+			}
+		}
+	}
+
+	private void TextoCambiaExeUbisoft(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			exeUbisoft = nuevoTexto;
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.ExeUbisoft = exeUbisoft;
+				BaseDatos.Juegos.Actualizar.ExeUbisoft(juego, conexion);
 			}
 		}
 	}

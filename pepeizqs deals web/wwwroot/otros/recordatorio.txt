@@ -1,0 +1,1 @@
+﻿carpeta donde se guardan temporalmente los ficheros para importar juegos a las cuentas

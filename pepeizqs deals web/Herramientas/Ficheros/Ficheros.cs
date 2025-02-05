@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Herramientas
+namespace Herramientas.Ficheros
 {
 
-	internal sealed class FicheroLecturaPerezosa(IBrowserFile fichero, int tamañoMaximo)
+	internal sealed class LecturaPerezosa(IBrowserFile fichero, int tamañoMaximo)
 		: Stream
 	{
 		private readonly IBrowserFile file = fichero;

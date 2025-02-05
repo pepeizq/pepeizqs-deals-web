@@ -242,7 +242,23 @@ public class Usuario : IdentityUser
 	public string? EpicGames { get; set; }
 
 	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? EpicGamesLastImport { get; set; }
+
+	[PersonalData]
 	[Column(TypeName = "nvarchar(max)")]
 	public string? UbisoftGames { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? UbisoftLastImport { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "nvarchar(max)")]
+	public string? EaGames { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? EaLastImport { get; set; }
 }
 

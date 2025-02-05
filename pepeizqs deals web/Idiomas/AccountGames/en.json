@@ -22,5 +22,7 @@
   "String21": "your user",
   "String22": "If you have hundreds of games in your account the import will take several minutes to complete.",
   "String23": "Select the file: {0}",
-  "String24": "Imported games: {0}"
+  "String24": "Imported games: {0}",
+  "String25": "If you have the installable version of Playnite, you must load the file '{0}' located in the folder '{1}'.",
+  "String26": "If you have the portable version of Playnite, you must load the file '{0}' located in the folder '{1}'."
 }

@@ -445,7 +445,7 @@
                                 {
                                     if (usuarioTieneDeseado == true)
                                     {
-                                        <button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+                                        <button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
                                             <div class="perfil-flexible-centrado">
                                                 <i class="fa-solid fa-check" style="font-size: 25px;"></i>
 
@@ -502,15 +502,19 @@
                                                     {
                                                         string enlaceJugar = string.Empty;
 
-                                                        if (drm.Id == JuegoDRM.Steam)
+                                                        if (drm.Id == JuegoDRM.Steam && juego.IdSteam > 0)
                                                         {
                                                             enlaceJugar = "steam://rungameid/" + juego.IdSteam.ToString();
                                                         }
-                                                        else if (drm.Id == JuegoDRM.Amazon)
+                                                        else if (drm.Id == JuegoDRM.Amazon && string.IsNullOrEmpty(juego.IdAmazon) == false)
                                                         {
                                                             enlaceJugar = "amazon-games://play/" + juego.IdAmazon;
                                                         }
-                                                        else if (drm.Id == JuegoDRM.Epic)
+                                                        else if (drm.Id == JuegoDRM.Ubisoft && string.IsNullOrEmpty(juego.ExeUbisoft) == false)
+                                                        {
+                                                            enlaceJugar = "uplay://launch/" + juego.ExeUbisoft + "/0";
+                                                        }
+                                                        else if (drm.Id == JuegoDRM.Epic && string.IsNullOrEmpty(juego.ExeEpic) == false)
                                                         {
                                                             enlaceJugar = "com.epicgames.launcher://apps/" + juego.ExeEpic + "?action=launch&silent=true";
                                                         }

@@ -96,17 +96,18 @@
 
                 @if (trabajando == false)
                 {
-                    <div class="grid-estructura">
-                        <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas" style="font-size: 16px; padding: 0px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <button @onclick="@(e => MostrarAmazon(e))" title="Amazon Launcher" class="boton-pestañas" style="font-size: 16px; padding: 0px; width: fit-content; height: 60px;">
                             <div>
-                                <div style="display: flex; align-items: center; gap: 20px; text-align: left; padding: 15px 20px;">
+                                <div style="display: flex; align-items: center; gap: 15px; justify-content: center; padding: 15px 20px;">
                                     <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Amazon)" style="max-width: 30px; max-height: 30px;" />
 
-                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    @if (mostrarAmazon == true)
+                                    {
                                         <div>
                                             Amazon Launcher
-                                        </div>                        
-                                    </div>
+                                        </div>  
+                                    }
                                 </div>
 
                                 @if (mostrarAmazon == true)
@@ -114,19 +115,39 @@
                                     <div style="border: 1px solid var(--colorTexto);"/>
                                 }
                             </div>
-                            
                         </button>
 
-                        <button @onclick="@(e => MostrarPlaynite(e))" class="boton-pestañas" style="font-size: 16px; padding: 0px;">
+                        <button @onclick="@(e => MostrarGogGalaxy(e))" title="GOG Galaxy" class="boton-pestañas" style="font-size: 16px; padding: 0px; width: fit-content; height: 60px;">
                             <div>
-                                <div style="display: flex; align-items: center; gap: 20px; text-align: left; padding: 15px 20px;">
+                                <div style="display: flex; align-items: center; gap: 15px; justify-content: center; padding: 15px 20px;">
+                                    <img src="/imagenes/otros/goggalaxy.webp" style="max-width: 30px; max-height: 30px;" />
+
+                                    @if (mostrarGogGalaxy == true)
+                                    {
+                                        <div>
+                                            GOG Galaxy
+                                        </div>
+                                    }
+                                </div>
+
+                                @if (mostrarGogGalaxy == true)
+                                {
+                                    <div style="border: 1px solid var(--colorTexto);"/>
+                                }
+                            </div>
+                        </button>
+
+                        <button @onclick="@(e => MostrarPlaynite(e))" title="Playnite" class="boton-pestañas" style="font-size: 16px; padding: 0px; width: fit-content; height: 60px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 15px; justify-content: center; padding: 15px 20px;">
                                     <img src="/imagenes/otros/playnite.webp" style="max-width: 30px; max-height: 30px;" />
 
-                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    @if (mostrarPlaynite == true)
+                                    {
                                         <div>
                                             Playnite
-                                        </div>                        
-                                    </div>
+                                        </div> 
+                                    }
                                 </div>
 
                                 @if (mostrarPlaynite == true)
@@ -134,7 +155,26 @@
                                     <div style="border: 1px solid var(--colorTexto);"/>
                                 }
                             </div>
-                            
+                        </button>
+
+                        <button @onclick="@(e => MostrarHeroicGames(e))" title="Heroic Games" class="boton-pestañas" style="font-size: 16px; padding: 0px; width: fit-content; height: 60px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 15px; justify-content: center; padding: 15px 20px;">
+                                    <img src="/imagenes/otros/heroic.webp" style="max-width: 30px; max-height: 30px;" />
+
+                                    @if (mostrarHeroicGames == true)
+                                    {
+                                        <div>
+                                            Heroic Games
+                                        </div> 
+                                    }
+                                </div>
+
+                                @if (mostrarHeroicGames == true)
+                                {
+                                    <div style="border: 1px solid var(--colorTexto);"/>
+                                }
+                            </div>
                         </button>
                     </div/>
                 }
@@ -142,9 +182,16 @@
                 @if (mostrarAmazon == true)
                 {
                     <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                           <i class="fa-brands fa-windows"></i>
+                           <div>
+                               Windows
+                           </div>
+                        </div>
+
                         <ul style="display: grid; gap: 15px; margin-bottom: 30px;">
                             <li>
-                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String19", "AccountGames"), "GameUserInteractionsInfo.sqlite", "C:\\Users\\[" + Herramientas.Idiomas.BuscarTexto(idioma, "String21", "AccountGames") + "]\\AppData\\Local\\Amazon Games\\Data\\Games\\Sql\\")
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String19", "AccountGames"), "GameUserInteractionsInfo.sqlite", "%LOCALAPPDATA%\\Amazon Games\\Data\\Games\\Sql\\")
                             </li>
 
                             <li>
@@ -177,9 +224,143 @@
                     </div>
                 }
 
-                @if (mostrarAmazon == true)
+                @if (mostrarGogGalaxy == true)
                 {
-                    
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                           <i class="fa-brands fa-windows"></i>
+                           <div>
+                               Windows
+                           </div>
+                        </div>
+
+                        <ul style="display: grid; gap: 15px; margin-bottom: 30px;">
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String19", "AccountGames"), "galaxy-2.0.db", "%ProgramData%\\GOG.com\\Galaxy\\storage")
+                            </li>
+
+                            <li>
+                                <a href="https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1#ID0EDBBBBBFD-button" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "AccountGames")</a>
+                            </li>
+
+                            <li>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String22", "AccountGames")
+                            </li>
+                        </ul>
+
+                        @if (trabajando == false)
+                        {
+                            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                                <InputFile OnChange="GogGalaxyCargarFichero" accept=".db" hidden />
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "AccountGames"), "galaxy-2.0.db")
+                            </label>
+
+                            @if (importados > 0)
+                            {
+                                <div style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String24", "AccountGames"), importados)</div>
+                            }
+                        }
+                        else
+                        {
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div class="cargando" />
+                            </div>
+                        }   
+                    </div>     
+                }
+
+                @if (mostrarPlaynite == true)
+                {
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                           <i class="fa-brands fa-windows"></i>
+                           <div>
+                               Windows
+                           </div>
+                        </div>
+
+                        <ul style="display: grid; gap: 15px; margin-bottom: 30px;">
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String25", "AccountGames"), "games.db", "%appdata%\\Playnite\\library\\")
+                            </li>
+
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String26", "AccountGames"), "games.db", "C:\\Playnite\\library\\")
+                            </li>
+
+                            <li>
+                                <a href="https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1#ID0EDBBBBBFD-button" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "AccountGames")</a>
+                            </li>
+
+                            <li>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String22", "AccountGames")
+                            </li>
+                        </ul>
+
+                        @if (trabajando == false)
+                        {
+                            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                                <InputFile OnChange="PlayniteCargarFichero" accept=".db" hidden />
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "AccountGames"), "games.db")
+                            </label>
+
+                            @if (importados > 0)
+                            {
+                                <div style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String24", "AccountGames"), importados)</div>
+                            }
+                        }
+                        else
+                        {
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div class="cargando" />
+                            </div>
+                        }    
+                    </div>
+                }
+
+                @if (mostrarHeroicGames == true)
+                {
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                           <i class="fa-brands fa-windows"></i>
+                           <div>
+                               Windows
+                           </div>
+                        </div>
+
+                         <ul style="display: grid; gap: 15px; margin-bottom: 30px;">
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String19", "AccountGames"), "library.json", "%APPDATA%\\heroic\\nile_config\\nile")
+                            </li>
+
+                            <li>
+                                <a href="https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1#ID0EDBBBBBFD-button" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "AccountGames")</a>
+                            </li>
+
+                            <li>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String22", "AccountGames")
+                            </li>
+                        </ul>
+
+                        @if (trabajando == false)
+                        {
+                            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                                <InputFile OnChange="HeroicGamesCargarFichero" accept=".json" hidden />
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "AccountGames"), "library.json")
+                            </label>
+
+                            @if (importados > 0)
+                            {
+                                <div style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String24", "AccountGames"), importados)</div>
+                            }
+                        }
+                        else
+                        {
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div class="cargando" />
+                            </div>
+                        }    
+                    </div>
                 }
             </div>
         </div>
@@ -206,7 +387,9 @@
     private void CerrarPestañas()
     {
         mostrarAmazon = false;
+        mostrarGogGalaxy = false;
         mostrarPlaynite = false;
+        mostrarHeroicGames = false;
     }
 
     private bool mostrarAmazon = false;
@@ -217,12 +400,28 @@
         mostrarAmazon = true;
     }
 
+    private bool mostrarGogGalaxy = false;
+
+    private void MostrarGogGalaxy(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarGogGalaxy = true;
+    }
+
     private bool mostrarPlaynite = false;
 
     private void MostrarPlaynite(MouseEventArgs e)
     {
         CerrarPestañas();
         mostrarPlaynite = true;
+    }
+
+    private bool mostrarHeroicGames = false;
+
+    private void MostrarHeroicGames(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarHeroicGames = true;
     }
 
     private async void AmazonCargarFichero(InputFileChangeEventArgs e)
@@ -237,7 +436,7 @@
             int maximoTamaño = 268435456; //256 mb;
             byte[] buffer = new byte[fichero.Size];
 
-            Herramientas.FicheroLecturaPerezosa stream = new Herramientas.FicheroLecturaPerezosa(fichero, maximoTamaño);
+            Herramientas.Ficheros.LecturaPerezosa stream = new Herramientas.Ficheros.LecturaPerezosa(fichero, maximoTamaño);
             StreamContent contenido = new StreamContent(stream);
 
             string ubicacion = Path.GetFullPath("./wwwroot/otros/amazon-" + usuario.Id + ".sqlite");
@@ -287,7 +486,7 @@
 
                 foreach (string id in listadoIds)
                 {
-                    BaseDatos.Plataformas.Buscar.Amazon(id, conexion);
+                    BaseDatos.Plataformas.Buscar.Amazon(id, null, conexion);
 
                     if (string.IsNullOrEmpty(textoIds) == true)
                     {
@@ -316,6 +515,60 @@
                     }
                 }
             }
+        }
+
+        trabajando = false;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    private async void GogGalaxyCargarFichero(InputFileChangeEventArgs e)
+    {
+        trabajando = true;
+
+        if (e.File.Name.ToLower().Contains("galaxy-2.0") == true)
+        {
+            importados = 0;
+            importados = await Herramientas.Ficheros.GogGalaxy.Cargar(JuegoDRM.Amazon, e.File, usuario, UserManager);
+        }
+
+        trabajando = false;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    private async void PlayniteCargarFichero(InputFileChangeEventArgs e)
+    {
+        trabajando = true;
+
+        if (e.File.Name.ToLower().Contains("games") == true)
+        {
+            importados = 0;
+            importados = await Herramientas.Ficheros.Playnite.Cargar(JuegoDRM.Amazon, e.File, usuario, UserManager);
+        }
+
+        trabajando = false;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+     private async void HeroicGamesCargarFichero(InputFileChangeEventArgs e)
+    {
+        trabajando = true;
+
+        if (e.File.Name.ToLower().Contains("library") == true)
+        {
+            importados = 0;
+            importados = await Herramientas.Ficheros.HeroicGames.Cargar(JuegoDRM.Amazon, e.File, usuario, UserManager);
         }
 
         trabajando = false;

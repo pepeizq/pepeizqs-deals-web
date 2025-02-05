@@ -474,6 +474,18 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(41) == false)
+				{
+					if (string.IsNullOrEmpty(lector.GetString(41)) == false)
+					{
+						juego.ExeEA = lector.GetString(41);
+					}
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 

@@ -1,0 +1,232 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using global::Juegos
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<style>
+    .cargando {
+        width: 48px;
+        height: 48px;
+        border: 5px solid var(--colorTexto);
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+
+    @@keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+@if (usuario != null)
+{
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Ubisoft)" style="max-width: 40px; max-height: 40px;" />
+
+                <div>
+                    <div style="font-size: 18px;">
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.Ubisoft)
+                    </div>
+
+                    <div style="font-size: 14px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "AccountGames")
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div style="display: flex; align-items: center; gap: 20px;">
+                @{
+                    int cantidadJuegos = 0;
+
+                    if (string.IsNullOrEmpty(usuario.UbisoftGames) == false)
+                    {
+                        cantidadJuegos = Herramientas.Listados.Generar(usuario.UbisoftGames).Count;
+                    }
+
+                    <div style="background-color: var(--fondoBien); padding: 10px 20px;">
+                        @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "AccountGames"), cantidadJuegos.ToString())
+                    </div>
+                }
+
+                @if (usuario.UbisoftLastImport != null)
+                {
+                    <div>
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.UbisoftLastImport, idioma)
+                    </div>
+                }
+
+                @if (cantidadJuegos > 0)
+                {
+                    <div style="margin-left: auto;">
+                        <button class="boton" style="font-size: 16px; padding: 10px 20px; width: fit-content;" @onclick="@(e => BorrarJuegos(e))">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+            <div style="font-size: 18px;">
+                @Herramientas.Idiomas.BuscarTexto(idioma, "String15", "AccountGames")
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; padding: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño);">
+                <label>@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String17", "AccountGames"), "Ubisoft Connect")</label>
+
+                @if (trabajando == false)
+                {
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <button @onclick="@(e => MostrarPlaynite(e))" title="Playnite" class="boton-pestañas" style="font-size: 16px; padding: 0px; width: fit-content; height: 60px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 15px; justify-content: center; padding: 15px 20px;">
+                                    <img src="/imagenes/otros/playnite.webp" style="max-width: 30px; max-height: 30px;" />
+
+                                    @if (mostrarPlaynite == true)
+                                    {
+                                        <div>
+                                            Playnite
+                                        </div> 
+                                    }
+                                </div>
+
+                                @if (mostrarPlaynite == true)
+                                {
+                                    <div style="border: 1px solid var(--colorTexto);"/>
+                                }
+                            </div>
+                        </button>
+                    </div/>
+                }
+
+                @if (mostrarPlaynite == true)
+                {
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                           <i class="fa-brands fa-windows"></i>
+                           <div>
+                               Windows
+                           </div>
+                        </div>
+
+                        <ul style="display: grid; gap: 15px; margin-bottom: 30px;">
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String25", "AccountGames"), "games.db", "%appdata%\\Playnite\\library\\")
+                            </li>
+
+                            <li>
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String26", "AccountGames"), "games.db", "C:\\Playnite\\library\\")
+                            </li>
+
+                            <li>
+                                <a href="https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1#ID0EDBBBBBFD-button" target="_blank" style="text-decoration: none;">@Herramientas.Idiomas.BuscarTexto(idioma, "String20", "AccountGames")</a>
+                            </li>
+
+                            <li>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String22", "AccountGames")
+                            </li>
+                        </ul>
+
+                        @if (trabajando == false)
+                        {
+                            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                                <InputFile OnChange="PlayniteCargarFichero" accept=".db" hidden />
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "AccountGames"), "games.db")
+                            </label>
+
+                            @if (importados > 0)
+                            {
+                                <div style="margin-top: 20px;">@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String24", "AccountGames"), importados)</div>
+                            }
+                        }
+                        else
+                        {
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div class="cargando" />
+                            </div>
+                        }    
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private bool trabajando = false;
+    private int importados = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+    }
+
+    private void CerrarPestañas()
+    {
+        mostrarPlaynite = false;
+    }
+
+    private bool mostrarPlaynite = false;
+
+    private void MostrarPlaynite(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        mostrarPlaynite = true;
+    }
+
+    private async void PlayniteCargarFichero(InputFileChangeEventArgs e)
+    {
+        trabajando = true;
+
+        if (e.File.Name.ToLower().Contains("games") == true)
+        {
+            importados = 0;
+            importados = await Herramientas.Ficheros.Playnite.Cargar(JuegoDRM.Ubisoft, e.File, usuario, UserManager);
+        }
+
+        trabajando = false;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    private async Task BorrarJuegos(MouseEventArgs args)
+    {
+        usuario.UbisoftGames = null;
+
+        try
+        {
+            await UserManager.UpdateAsync(usuario);
+        }
+        catch
+        {
+            BaseDatos.Errores.Insertar.Mensaje("Borrar Ubisoft Juegos", usuario.Id);
+        }
+    }
+}

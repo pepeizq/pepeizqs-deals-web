@@ -756,6 +756,11 @@
                     BaseDatos.Pendientes.Actualizar.PlataformaUbisoft(enlace, int.Parse(idsPendiente), conexion);
                 }
 
+                if (idPlataformaPendiente.ToLower() == "ea")
+                {
+                    BaseDatos.Pendientes.Actualizar.PlataformaEA(enlace, int.Parse(idsPendiente), conexion);
+                }
+
                 foreach (var pendiente in pendientesPlataforma)
                 {
                     if (pendiente.Plataforma.Id.ToString() == idPlataformaPendiente)

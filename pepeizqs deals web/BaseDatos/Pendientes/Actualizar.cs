@@ -238,6 +238,69 @@ namespace BaseDatos.Pendientes
 			}
 		}
 
+		public static void PlataformaEA(string idEa, int idJuego, SqlConnection conexion)
+		{
+			if (idJuego > 0)
+			{
+				bool yaPuesto = false;
+
+				string busqueda = "SELECT exeEA FROM juegos WHERE id=@id";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				{
+					comando.Parameters.AddWithValue("@id", idJuego);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read() == true)
+						{
+							if (lector.IsDBNull(0) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+								{
+									yaPuesto = true;
+								}
+							}
+						}
+					}
+				}
+
+				if (yaPuesto == false)
+				{
+					string sqlActualizar = "UPDATE juegos " +
+						"SET exeEA=@exeEA WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idJuego);
+						comando.Parameters.AddWithValue("@exeEA", idEa);
+
+						try
+						{
+							comando.ExecuteNonQuery();
+							yaPuesto = true;
+						}
+						catch
+						{
+
+						}
+					}
+				}
+				
+				if (yaPuesto == true)
+				{
+					string sqlBorrar = "DELETE FROM temporalEaJuegos WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idEa);
+
+						comando.ExecuteNonQuery();
+					}
+				}
+			}
+		}
+
 		public static void DescartarTienda(string idTienda, string enlace, SqlConnection conexion)
 		{
 			string sqlActualizar = "UPDATE tienda" + idTienda + " " +

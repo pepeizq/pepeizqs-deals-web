@@ -178,71 +178,7 @@
     <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Account")</label>
     <hr />
 
-    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-        <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
-            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
-
-                <div>
-                    <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Account")
-                    </div>
-
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Account")
-                    </div>
-                </div>
-            </div>
-        </button>
-
-        <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
-            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
-
-                <div>
-                    <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Account")
-                    </div>
-
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Account")
-                    </div>
-                </div>
-            </div>
-        </button>
-
-        <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas">
-            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="/imagenes/drm/amazongames.webp" style="max-width: 30px; max-height: 30px;" />
-
-                <div>
-                    <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Account")
-                    </div>
-
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String27", "Account")
-                    </div>
-                </div>
-            </div>
-        </button>
-
-        <button @onclick="@(e => MostrarGoggalaxy(e))" class="boton-pestañas">
-            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                <img src="/imagenes/otros/goggalaxy.webp" style="max-width: 30px; max-height: 30px;" />
-
-                <div>
-                    <div>
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Account")
-                    </div>
-
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Account")
-                    </div>
-                </div>
-            </div>
-        </button>
-
+    @*     <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
         <button @onclick="@(e => MostrarIsthereanydeal(e))" class="boton-pestañas">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
@@ -258,88 +194,123 @@
                 </div>
             </div>
         </button>
+    </div> *@
 
-        @if (adminLogeado == true)
-        {
-            <button @onclick="@(e => MostrarPlaynite(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
+    <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+        <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
 
+                <div style="display: flex; flex-direction: column; gap: 5px;">
                     <div>
-                        <div>
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
-                        </div>
-
-                        <div style="margin-top: 5px; font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
-                        </div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.Steam)
                     </div>
+
+                    @if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)
+                        </div>
+                    }
                 </div>
-            </button>
-        }
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.GOG)
+                    </div>
+
+                    @if (usuario.GogAccountLastCheck != null)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)
+                        </div>
+                    }
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Amazon)" style="max-width: 30px; max-height: 30px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.Amazon)
+                    </div>
+
+                    @if (usuario.AmazonLastImport != null)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.AmazonLastImport, idioma)
+                        </div>
+                    }
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarEpicGames(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Epic)" style="max-width: 30px; max-height: 30px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.Epic)
+                    </div>
+
+                    @if (usuario.EpicGamesLastImport != null)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.EpicGamesLastImport, idioma)
+                        </div>
+                    }
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarUbisoft(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Ubisoft)" style="max-width: 30px; max-height: 30px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.Ubisoft)
+                    </div>
+
+                    @if (usuario.UbisoftLastImport != null)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.UbisoftLastImport, idioma)
+                        </div>
+                    }
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="@(e => MostrarEa(e))" class="boton-pestañas">
+            <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                <img src="@JuegoDRM2.SacarImagen(JuegoDRM.EA)" style="max-width: 30px; max-height: 30px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div>
+                        @JuegoDRM2.DevolverDRM(JuegoDRM.EA)
+                    </div>
+
+                    @if (usuario.EaLastImport != null)
+                    {
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.EaLastImport, idioma)
+                        </div>
+                    }
+                </div>
+            </div>
+        </button>
     </div>
-
-    @if (adminLogeado == true)
-    {
-        <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-            <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Steam)" style="max-width: 30px; max-height: 30px;" />
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <div>
-                            @JuegoDRM2.DevolverDRM(JuegoDRM.Steam)
-                        </div>                        
-
-                        @if (string.IsNullOrEmpty(usuario.SteamAccountLastCheck) == false)
-                        {
-                            <div style="font-size: 14px;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(Convert.ToDateTime(usuario.SteamAccountLastCheck), idioma)
-                            </div>
-                        }
-                    </div>
-                </div>
-            </button>
-
-            <button @onclick="@(e => MostrarGog(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.GOG)" style="max-width: 30px; max-height: 30px;" />
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <div>
-                            @JuegoDRM2.DevolverDRM(JuegoDRM.GOG)
-                        </div>
-
-                        @if (usuario.GogAccountLastCheck != null)
-                        {
-                            <div style="font-size: 14px;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.GogAccountLastCheck, idioma)
-                            </div>
-                        }
-                    </div>
-                </div>
-            </button>
-
-            <button @onclick="@(e => MostrarAmazon(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Amazon)" style="max-width: 30px; max-height: 30px;" />
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <div>
-                            @JuegoDRM2.DevolverDRM(JuegoDRM.Amazon)
-                        </div>
-
-                        @if (usuario.AmazonLastImport != null)
-                        {
-                            <div style="font-size: 14px;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "AccountGames") @Herramientas.Calculadora.DiferenciaTiempo(usuario.AmazonLastImport, idioma)
-                            </div>
-                        }
-                    </div>
-                </div>
-            </button>
-        </div>
-    }
 </div>
 
 @if (enseñarPestaña == true)
@@ -406,21 +377,24 @@
                     <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Amazon idioma="@idioma" />
                 }
 
+                @if (mostrarEpicGames == true)
+                {
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.EpicGames idioma="@idioma" />
+                }
+
+                @if (mostrarUbisoft == true)
+                {
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Ubisoft idioma="@idioma" />
+                }
+
+                @if (mostrarEa == true)
+                {
+                    <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Ea idioma="@idioma" />
+                }
+
                 @if (mostrarIsthereanydeal == true)
                 {
                     <Isthereanydeal idioma="@idioma" />
-                }
-
-
-
-                @if (mostrarGoggalaxy == true)
-                {
-                    <Goggalaxy idioma="@idioma"/>
-                }
-
-                @if (mostrarPlaynite == true)
-                {
-                    <Playnite idioma="@idioma" />
                 }
             </div> 
         </div>
@@ -463,10 +437,12 @@
 
         mostrarSteam = false;
         mostrarGog = false;
-        mostrarIsthereanydeal = false;
         mostrarAmazon = false;
-        mostrarGoggalaxy = false;
-        mostrarPlaynite = false;
+        mostrarEpicGames = false;
+        mostrarUbisoft = false;
+        mostrarEa = false;
+
+        mostrarIsthereanydeal = false;
     }
 
     private void ClickearCerrarPestaña()
@@ -564,15 +540,6 @@
         mostrarGog = true;
     }
 
-    private bool mostrarIsthereanydeal = false;
-
-    private void MostrarIsthereanydeal(MouseEventArgs e)
-    {
-        CerrarPestañas();
-        enseñarPestaña = true;
-        mostrarIsthereanydeal = true;
-    }
-
     private bool mostrarAmazon = false;
 
     private void MostrarAmazon(MouseEventArgs e)
@@ -582,21 +549,39 @@
         mostrarAmazon = true;
     }
 
-    private bool mostrarGoggalaxy = false;
+    private bool mostrarEpicGames = false;
 
-    private void MostrarGoggalaxy(MouseEventArgs e)
+    private void MostrarEpicGames(MouseEventArgs e)
     {
         CerrarPestañas();
         enseñarPestaña = true;
-        mostrarGoggalaxy = true;
+        mostrarEpicGames = true;
     }
 
-    private bool mostrarPlaynite = false;
+    private bool mostrarUbisoft = false;
 
-    private void MostrarPlaynite(MouseEventArgs e)
+    private void MostrarUbisoft(MouseEventArgs e)
     {
         CerrarPestañas();
         enseñarPestaña = true;
-        mostrarPlaynite = true;
+        mostrarUbisoft = true;
+    }
+
+    private bool mostrarEa = false;
+
+    private void MostrarEa(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarEa = true;
+    }
+
+    private bool mostrarIsthereanydeal = false;
+
+    private void MostrarIsthereanydeal(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        enseñarPestaña = true;
+        mostrarIsthereanydeal = true;
     }
 }
