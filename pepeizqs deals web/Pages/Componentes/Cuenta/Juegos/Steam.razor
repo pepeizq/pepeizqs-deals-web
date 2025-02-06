@@ -97,7 +97,7 @@
 
 				@if (ocupado == false)
 				{
-					<input class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountGames")" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
+					<input class="entrada-texto" placeholder="https://steamcommunity.com/id/[@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountGames")]/" value="@usuario.SteamAccount" @oninput="TextoCambiaSteamCuenta" />
 				}
 				else
 				{

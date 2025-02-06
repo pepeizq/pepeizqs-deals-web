@@ -115,6 +115,11 @@ namespace Herramientas.Ficheros
 						global::BaseDatos.Plataformas.Buscar.Ubisoft(juego.Id, juego.Nombre, conexion);
 					}
 
+					if (drm == JuegoDRM.EA)
+					{
+						global::BaseDatos.Plataformas.Buscar.EA(juego.Id, juego.Nombre, conexion);
+					}
+
 					if (string.IsNullOrEmpty(textoIds) == true)
 					{
 						textoIds = juego.Id;
@@ -145,6 +150,12 @@ namespace Herramientas.Ficheros
 					{
 						usuario.UbisoftGames = textoIds;
 						usuario.UbisoftLastImport = DateTime.Now;
+					}
+
+					if (drm == JuegoDRM.EA)
+					{
+						usuario.EaGames = textoIds;
+						usuario.EaLastImport = DateTime.Now;
 					}
 
 					try

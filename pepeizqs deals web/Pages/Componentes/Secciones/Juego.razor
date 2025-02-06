@@ -477,7 +477,7 @@
                                     {
                                         string mensaje = string.Empty;
 
-                                        if (drm.Id == JuegoDRM.Steam || drm.Id == JuegoDRM.GOG || drm.Id == JuegoDRM.Amazon || drm.Id == JuegoDRM.Epic || drm.Id == JuegoDRM.Ubisoft)
+                                        if (drm.Id == JuegoDRM.Steam || drm.Id == JuegoDRM.GOG || drm.Id == JuegoDRM.Amazon || drm.Id == JuegoDRM.Epic || drm.Id == JuegoDRM.Ubisoft || drm.Id == JuegoDRM.EA)
                                         {
                                             if (juego.Tipo == Juegos.JuegoTipo.Game)
                                             {
@@ -513,6 +513,10 @@
                                                         else if (drm.Id == JuegoDRM.Ubisoft && string.IsNullOrEmpty(juego.ExeUbisoft) == false)
                                                         {
                                                             enlaceJugar = "uplay://launch/" + juego.ExeUbisoft + "/0";
+                                                        }
+                                                        else if (drm.Id == JuegoDRM.EA && string.IsNullOrEmpty(juego.ExeEA) == false)
+                                                        {
+                                                            enlaceJugar = "origin://LaunchGame/" + juego.ExeEA;
                                                         }
                                                         else if (drm.Id == JuegoDRM.Epic && string.IsNullOrEmpty(juego.ExeEpic) == false)
                                                         {
@@ -2837,6 +2841,34 @@
                                             {
                                                 JuegoRazorUsuario nuevoJuegoUsuario = new JuegoRazorUsuario();
                                                 nuevoJuegoUsuario.DRM = JuegoDRM.Ubisoft;
+                                                nuevoJuegoUsuario.Tiene = true;
+                                                usuarioTieneDesea.Add(nuevoJuegoUsuario);
+                                                usuarioTieneDRM = true;
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (drm.Id == JuegoDRM.EA && string.IsNullOrEmpty(juego.ExeEA) == false)
+                        {
+                            if (string.IsNullOrEmpty(usuario.EaGames) == false)
+                            {
+                                List<string> juegosEa = Herramientas.Listados.Generar(usuario.EaGames);
+
+                                if (juegosEa.Count > 0)
+                                {
+                                    if (juego.Tipo == JuegoTipo.Game && drm.Id == JuegoDRM.EA)
+                                    {
+                                        foreach (var juegoUsuario in juegosEa)
+                                        {
+                                            if (juegoUsuario == juego.ExeEA)
+                                            {
+                                                JuegoRazorUsuario nuevoJuegoUsuario = new JuegoRazorUsuario();
+                                                nuevoJuegoUsuario.DRM = JuegoDRM.EA;
                                                 nuevoJuegoUsuario.Tiene = true;
                                                 usuarioTieneDesea.Add(nuevoJuegoUsuario);
                                                 usuarioTieneDRM = true;

@@ -6,7 +6,8 @@ namespace Plataformas2
 	{
 		Amazon,
 		Epic,
-		Ubisoft
+		Ubisoft,
+		EA
 	}
 
 	public class PlataformasCargar
@@ -44,6 +45,16 @@ namespace Plataformas2
 			};
 
 			listado.Add(ubisoft);
+
+			Plataforma ea = new Plataforma
+			{
+				Id = PlataformaTipo.EA,
+				Nombre = "EA",
+				ImagenIcono = "/imagenes/drm/ea.webp",
+				ImagenLogo = "/imagenes/drm/ea.webp"
+			};
+
+			listado.Add(ea);
 
 			return listado;
 		}

@@ -31,6 +31,16 @@ namespace Herramientas
 				listados.Epic = Herramientas.Listados.Generar(usuario.EpicGames);
 			}
 
+			if (string.IsNullOrEmpty(usuario.UbisoftGames) == false)
+			{
+				listados.Ubisoft = Herramientas.Listados.Generar(usuario.UbisoftGames);
+			}
+
+			if (string.IsNullOrEmpty(usuario.EaGames) == false)
+			{
+				listados.Ea = Herramientas.Listados.Generar(usuario.EaGames);
+			}
+
 			return listados;
 		}
 
@@ -157,6 +167,66 @@ namespace Herramientas
 						}
 					}
 				}
+
+				if (string.IsNullOrEmpty(juego.ExeUbisoft) == false)
+				{
+					bool drmValidoUbisoft = false;
+
+					if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.Ubisoft)
+					{
+						drmValidoUbisoft = true;
+					}
+
+					if (drmValidoUbisoft == true)
+					{
+						if (listados.Ubisoft != null)
+						{
+							if (listados.Ubisoft.Count > 0)
+							{
+								if (juego.Tipo == JuegoTipo.Game)
+								{
+									foreach (var juegoUsuario in listados.Ubisoft)
+									{
+										if (juegoUsuario == juego.ExeUbisoft)
+										{
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (string.IsNullOrEmpty(juego.ExeEA) == false)
+				{
+					bool drmValidoEa = false;
+
+					if (drm == JuegoDRM.NoEspecificado || drm == JuegoDRM.EA)
+					{
+						drmValidoEa = true;
+					}
+
+					if (drmValidoEa == true)
+					{
+						if (listados.Ea != null)
+						{
+							if (listados.Ea.Count > 0)
+							{
+								if (juego.Tipo == JuegoTipo.Game)
+								{
+									foreach (var juegoUsuario in listados.Ea)
+									{
+										if (juegoUsuario == juego.ExeEA)
+										{
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 
 			return false;
@@ -169,5 +239,7 @@ namespace Herramientas
 		public List<string> Gog { get; set; }
 		public List<string> Amazon { get; set; }
 		public List<string> Epic { get; set; }
+		public List<string> Ubisoft { get; set; }
+		public List<string> Ea { get; set; }
 	}
 }

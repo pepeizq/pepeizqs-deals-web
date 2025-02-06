@@ -1,10 +1,9 @@
 {
-  "String1": "https://steamcommunity.com/id/yourname/",
-  "String2": "You can sync your Steam games and wishlist to the web by simply adding a link to your account. Every 7 days the data will be updated automatically so you don't have to do anything else.",
+  "String1": "your name",
+  "String2": "You can sync your {0} games and wishlist to the web by simply adding a link to your account. Every 7 days the data will be updated automatically so you don't have to do anything else.",
   "String3": "Your {0} account permissions must be like this.",
   "String4": "That {0} user is already associated with another registered account.",
   "String5": "Refresh",
-  "String6": "https://www.gog.com/u/yourname/",
   "String7": "Last import",
   "String8": "{0} games",
   "String9": "{0} wishlist",

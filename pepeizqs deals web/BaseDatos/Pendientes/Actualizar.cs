@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using pepeizqs_deals_web.Pages.Componentes.Cuenta;
+using Org.BouncyCastle.Crypto;
 
 namespace BaseDatos.Pendientes
 {
@@ -128,29 +128,54 @@ namespace BaseDatos.Pendientes
         {
             if (idJuego > 0)
             {
-                int actualizado = 0;
+				bool yaPuesto = false;
 
-				string sqlActualizar = "UPDATE juegos " +
-				  "SET idAmazon=@idAmazon WHERE id=@id";
+				string busqueda = "SELECT idAmazon FROM juegos WHERE id=@id";
 
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", idJuego);
-					comando.Parameters.AddWithValue("@idAmazon", idAmazon);
 
-					try
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						actualizado = comando.ExecuteNonQuery();
-					}
-					catch
-					{
-
+						if (lector.Read() == true)
+						{
+							if (lector.IsDBNull(0) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+								{
+									yaPuesto = true;
+								}
+							}
+						}
 					}
 				}
-				
-				if (actualizado > 0)
-                {
-                    string sqlBorrar = "DELETE FROM temporalAmazonJuegos WHERE id=@id";
+
+				if (yaPuesto == false)
+				{
+					string sqlActualizar = "UPDATE juegos " +
+						"SET idAmazon=@idAmazon WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idJuego);
+						comando.Parameters.AddWithValue("@idAmazon", idAmazon);
+
+						try
+						{
+							comando.ExecuteNonQuery();
+							yaPuesto = true;
+						}
+						catch
+						{
+
+						}
+					}
+				}
+
+				if (yaPuesto == true)
+				{
+					string sqlBorrar = "DELETE FROM temporalAmazonJuegos WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlBorrar, conexion))
 					{
@@ -166,27 +191,52 @@ namespace BaseDatos.Pendientes
 		{
 			if (idJuego > 0)
 			{
-				int actualizado = 0;
+				bool yaPuesto = false;
 
-				string sqlActualizar = "UPDATE juegos " +
-				  "SET exeEpic=@exeEpic WHERE id=@id";
+				string busqueda = "SELECT exeEpic FROM juegos WHERE id=@id";
 
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", idJuego);
-					comando.Parameters.AddWithValue("@exeEpic", idEpic);
 
-					try
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						actualizado = comando.ExecuteNonQuery();
-					}
-					catch
-					{
-
+						if (lector.Read() == true)
+						{
+							if (lector.IsDBNull(0) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+								{
+									yaPuesto = true;
+								}
+							}
+						}
 					}
 				}
 
-				if (actualizado > 0)
+				if (yaPuesto == false)
+				{
+					string sqlActualizar = "UPDATE juegos " +
+						"SET exeEpic=@exeEpic WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idJuego);
+						comando.Parameters.AddWithValue("@exeEpic", idEpic);
+
+						try
+						{
+							comando.ExecuteNonQuery();
+							yaPuesto = true;
+						}
+						catch
+						{
+
+						}
+					}
+				}
+
+				if (yaPuesto == true)
 				{
 					string sqlBorrar = "DELETE FROM temporalEpicJuegos WHERE id=@id";
 
@@ -204,27 +254,52 @@ namespace BaseDatos.Pendientes
 		{
 			if (idJuego > 0)
 			{
-				int actualizado = 0;
+				bool yaPuesto = false;
 
-				string sqlActualizar = "UPDATE juegos " +
-				  "SET exeUbisoft=@exeUbisoft WHERE id=@id";
+				string busqueda = "SELECT exeUbisoft FROM juegos WHERE id=@id";
 
-				using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", idJuego);
-					comando.Parameters.AddWithValue("@exeUbisoft", idUbisoft);
 
-					try
+					using (SqlDataReader lector = comando.ExecuteReader())
 					{
-						actualizado = comando.ExecuteNonQuery();
-					}
-					catch
-					{
-
+						if (lector.Read() == true)
+						{
+							if (lector.IsDBNull(0) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(0)) == false)
+								{
+									yaPuesto = true;
+								}
+							}
+						}
 					}
 				}
 
-				if (actualizado > 0)
+				if (yaPuesto == false)
+				{
+					string sqlActualizar = "UPDATE juegos " +
+						"SET exeUbisoft=@exeUbisoft WHERE id=@id";
+
+					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+					{
+						comando.Parameters.AddWithValue("@id", idJuego);
+						comando.Parameters.AddWithValue("@exeEA", idUbisoft);
+
+						try
+						{
+							comando.ExecuteNonQuery();
+							yaPuesto = true;
+						}
+						catch
+						{
+
+						}
+					}
+				}
+
+				if (yaPuesto == true)
 				{
 					string sqlBorrar = "DELETE FROM temporalUbisoftJuegos WHERE id=@id";
 

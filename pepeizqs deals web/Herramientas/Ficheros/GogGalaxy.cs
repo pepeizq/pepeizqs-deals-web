@@ -52,9 +52,11 @@ namespace Herramientas.Ficheros
 									nombre = nombre.Replace("}", null);
 									nombre = nombre.Replace("\"", null);
 
-									GogGalaxyJuego nuevo = new GogGalaxyJuego();
-									nuevo.Id = id;
-									nuevo.Nombre = nombre;
+									GogGalaxyJuego nuevo = new GogGalaxyJuego
+									{
+										Id = id,
+										Nombre = nombre
+									};
 
 									listadoJuegos.Add(nuevo);
 								}
@@ -69,9 +71,11 @@ namespace Herramientas.Ficheros
 									nombre = nombre.Replace("}", null);
 									nombre = nombre.Replace("\"", null);
 
-									GogGalaxyJuego nuevo = new GogGalaxyJuego();
-									nuevo.Id = id;
-									nuevo.Nombre = nombre;
+									GogGalaxyJuego nuevo = new GogGalaxyJuego
+									{
+										Id = id,
+										Nombre = nombre
+									};
 
 									listadoJuegos.Add(nuevo);
 								}
@@ -135,6 +139,12 @@ namespace Herramientas.Ficheros
 					{
 						usuario.EpicGames = textoIds;
 						usuario.EpicGamesLastImport = DateTime.Now;
+					}
+
+					if (drm == JuegoDRM.EA)
+					{
+						usuario.EaGames = textoIds;
+						usuario.EaLastImport = DateTime.Now;
 					}
 
 					try

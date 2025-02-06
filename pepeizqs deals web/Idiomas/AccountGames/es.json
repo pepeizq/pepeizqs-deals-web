@@ -1,10 +1,9 @@
 {
-  "String1": "https://steamcommunity.com/id/tunombre/",
+  "String1": "tu nombre",
   "String2": "Puedes sincronizar con la web los juegos y deseados que tengas en {0} simplemente añadiendo un enlace a tu cuenta. Cada 7 días se actualizarán los datos automáticamente con lo que no tendrás que hacer nada más.",
   "String3": "Los permisos de tu cuenta de {0} deben estar así.",
   "String4": "Ese usuario de {0} ya está asociado a otra cuenta registrada.",
   "String5": "Actualizar",
-  "String6": "https://www.gog.com/u/tunombre/",
   "String7": "Última importación",
   "String8": "{0} juegos",
   "String9": "{0} deseados",
