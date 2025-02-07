@@ -74,8 +74,12 @@
                 @if (cantidadJuegos > 0)
                 {
                     <div style="margin-left: auto;">
-                        <button class="boton" style="font-size: 16px; padding: 10px 20px; width: fit-content;" @onclick="@(e => BorrarJuegos(e))">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button class="boton" style="padding: 10px 20px; width: fit-content;" @onclick="@(e => BorrarJuegos(e))">
+                             <div style="max-width: 18px;">
+							    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/>
+                                </svg>
+						    </div>
                         </button>
                     </div>
                 }
@@ -119,10 +123,15 @@
                 {
                     <div>
                         <div style="display: flex; align-items: center; gap: 10px; margin-left: 5px;">
-                           <i class="fa-brands fa-windows"></i>
-                           <div>
-                               Windows
-                           </div>
+                            <div style="max-width: 14px;">
+							    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"/>
+                                </svg>
+						    </div>
+                           
+                            <div>
+                                Windows
+                            </div>
                         </div>
 
                         <ul style="display: grid; gap: 15px; margin-bottom: 30px;">

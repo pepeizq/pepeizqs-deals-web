@@ -149,12 +149,16 @@
 @if (enseñarImagen == true)
 {
 	<div class="opciones-panel">
-		<div style="display: flex; align-items: start; margin: auto; justify-content: center; max-height: 100vh; max-width: 1000px;">
-			<button style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 8px 15px;" @onclick="ClickearEnseñarImagen">
-				<i class="fa-solid fa-xmark" style="font-size: 30px;"></i>
+		<div style="display: flex; align-items: start; margin: auto; justify-content: center; gap: 20px;">
+			<button style="color: var(--colorTextoVisitado); background-color: transparent; border: 0px; padding: 0px;" @onclick="ClickearEnseñarImagen">
+				<div style="max-width: 28px;">
+					<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+						<path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+					</svg>
+				</div>
 			</button>
 
-			<img src="/imagenes/otros/permisos.jpg" style="margin-left: 20px; max-width: 100%; max-height: 100%;" />
+			<img src="/imagenes/otros/permisos.jpg" style="max-height: 100vh; max-width: 1000px;" />
 		</div>
 	</div>	
 }

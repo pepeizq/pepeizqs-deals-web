@@ -18,24 +18,36 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Compresion (Primero)
 
-builder.Services.AddResponseCompression(options =>
+builder.Services.AddResponseCompression(opciones =>
 {
-    options.Providers.Add<BrotliCompressionProvider>();
-    options.Providers.Add<GzipCompressionProvider>();
-    options.EnableForHttps = true;
+    opciones.Providers.Add<BrotliCompressionProvider>();
+    opciones.Providers.Add<GzipCompressionProvider>();
+    opciones.EnableForHttps = true;
+	opciones.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+				new[] { "application/octet-stream", "application/rss+xml", "text/html", "text/css", "image/png", "image/x-icon", "text/javascript" });
 });
 
-builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+builder.Services.Configure<BrotliCompressionProviderOptions>(opciones =>
 {
-    options.Level = CompressionLevel.Optimal;
+    opciones.Level = CompressionLevel.Optimal;
 });
 
-builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+builder.Services.Configure<GzipCompressionProviderOptions>(opciones =>
 {
-    options.Level = CompressionLevel.Optimal;
+    opciones.Level = CompressionLevel.Optimal;
 });
 
 #endregion
+
+builder.Services.AddWebOptimizer(opciones => {
+	opciones.AddCssBundle("/css/bundle.css", new NUglify.Css.CssSettings
+	{
+		CommentMode = NUglify.Css.CssComment.None,
+
+	}, "lib/bootstrap/dist/css/bootstrap.min.css", "css/maestro.css", "css/cabecera_cuerpo_pie.css", "css/resto.css", "css/site.css", "lib/font-awesome/css/all.css");
+
+	opciones.AddJavaScriptBundle("/superjs.js", "pushNotifications.js", "lib/jquery/dist/jquery.min.js", "lib/bootstrap/dist/js/bootstrap.bundle.min.js", "js/site.js");
+});
 
 var conexionTexto = builder.Configuration.GetConnectionString(Herramientas.BaseDatos.cadenaConexion) ?? throw new InvalidOperationException("Connection string 'pepeizqs_deals_webContextConnection' not found.");
 
@@ -384,14 +396,20 @@ app.UseDeveloperExceptionPage();
     app.UseHsts();
 //}
 
+app.UseHttpsRedirection();
+app.MapStaticAssets();
+
 #region Compresion (Primero)
 
 app.UseResponseCompression();
 
 #endregion
 
-app.UseHttpsRedirection();
-app.MapStaticAssets();
+#region Optmizador (Despues Compresion)
+
+app.UseWebOptimizer();
+
+#endregion
 
 app.UseRouting();
 app.UseAuthentication();

@@ -151,10 +151,10 @@
 						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
 							@if (bundle.Pick == true)
 							{
-								<div style="font-size: 18px; display: flex; align-items: center; width: 100%; flex-direction: row; padding-bottom: 10px;">
+								<div style="font-size: 18px; display: flex; align-items: center; flex-direction: row; gap: 40px; justify-content: center; margin-bottom: 30px;">
 									@foreach (var tier2 in OrdenarTiers(bundle.Tiers))
 									{
-										<div style="width: 100%; text-align: center;">
+										<div style="text-align: center; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 15px 30px;">
 											@if (tier2.CantidadJuegos == 1)
 											{
 												<label>@tier2.CantidadJuegos.ToString() @Herramientas.Idiomas.BuscarTexto(idioma, "String21", "Bundle") • @ArreglarPrecio(decimal.Parse(tier2.Precio))</label>
@@ -166,12 +166,10 @@
 										</div>
 									}
 								</div>
-
-								<hr style="margin: 20px 0px 35px 0px;"/>
 							}
 							else
 							{
-								<div style="font-size: 18px;">
+								<div style="font-size: 18px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 30px;">
 									<div style="margin-bottom: 5px;">
 										Tier @tier.Posicion: @ArreglarPrecio(decimal.Parse(tier.Precio))
 									</div>
@@ -196,8 +194,6 @@
 										@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Bundle"): @ArreglarPrecio(totalMinimos)
 									</div>
 								</div>
-
-								<hr/>
 							}
 
 							<div class="bundle-tabla" style="display: grid; grid-gap: 30px; margin-top: 10px;">

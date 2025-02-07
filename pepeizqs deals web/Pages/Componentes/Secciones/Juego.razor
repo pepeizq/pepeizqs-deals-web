@@ -311,7 +311,11 @@
                     if (juego.FreeToPlay.ToLower() == "true")
                     {
                         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
-                            <i class="fa-solid fa-circle-info" style="font-size: 22px;"></i>
+                            <div style="max-width: 26px;">
+                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+                                </svg>
+                            </div>
 
                             <div style="width: 100%;">
                                 @Idiomas.BuscarTexto(idioma, "String33", "Game")
@@ -325,7 +329,11 @@
                     if (juego.MayorEdad.ToLower() == "true")
                     {
                         <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
-                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
+                            <div style="max-width: 26px;">
+                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                                </svg>
+                            </div>
 
                             <div style="width: 100%;">
                                 @Idiomas.BuscarTexto(idioma, "String45", "Game")
@@ -341,7 +349,11 @@
                         if (categoria == "54")
                         {
                             <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
-                                <i class="fa-solid fa-vr-cardboard" style="font-size: 22px;"></i>
+                                <div style="max-width: 26px;">
+                                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                        <path d="M576 64L64 64C28.7 64 0 92.7 0 128L0 384c0 35.3 28.7 64 64 64l120.4 0c24.2 0 46.4-13.7 57.2-35.4l32-64c8.8-17.5 26.7-28.6 46.3-28.6s37.5 11.1 46.3 28.6l32 64c10.8 21.7 33 35.4 57.2 35.4L576 448c35.3 0 64-28.7 64-64l0-256c0-35.3-28.7-64-64-64zM96 240a64 64 0 1 1 128 0A64 64 0 1 1 96 240zm384-64a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
+                                    </svg>
+                                </div>
 
                                 <div style="width: 100%;">
                                     @Idiomas.BuscarTexto(idioma, "String79", "Game")
@@ -362,7 +374,11 @@
 
                         <a href="/game/@juego.Maestro/@Herramientas.EnlaceAdaptador.Nombre(juegoMaestro.Nombre)/" style="text-decoration: none;">
                             <div class="boton-expandir" style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background: color-mix(in srgb, var(--fondoOscuro), var(--fondoDlc) 70%); color: var(--colorTextoDlc); border: 1px solid var(--fondoBotonPequeño);">
-                                <i class="fa-solid fa-circle-arrow-down" style="font-size: 22px; opacity: 0.5;"></i>
+                                <div style="max-width: 26px; opacity: 0.5;">
+                                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM127 297c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l71 71L232 120c0-13.3 10.7-24 24-24s24 10.7 24 24l0 214.1 71-71c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 409c-9.4 9.4-24.6 9.4-33.9 0L127 297z"/>
+                                    </svg>
+                                </div>
 
                                 <div style="width: 100%;">
                                     @string.Format(Idiomas.BuscarTexto(idioma, "String32", "Game"), juegoMaestro.Nombre)
@@ -377,7 +393,11 @@
                     if (juego.MayorEdad.ToLower() == "true")
                     {
                         <div style="padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
-                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px;"></i>
+                            <div style="max-width: 26px;">
+                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                                </svg>
+                            </div>
 
                             <div style="width: 100%;">
                                 @Idiomas.BuscarTexto(idioma, "String46", "Game")
@@ -390,7 +410,11 @@
             @if (juego.Tipo == JuegoTipo.Music)
             {
                 <div style="background: color-mix(in srgb, var(--fondoOscuro), var(--fondoBandaSonora)); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; flex-direction: row; align-items: center; gap: 30px;">
-                    <i class="fa-solid fa-music" style="font-size: 22px;"></i>
+                    <div style="max-width: 26px;">
+                        <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/>
+                        </svg>
+                    </div>
 
                     <div style="width: 100%;">
                         @Idiomas.BuscarTexto(idioma, "String78", "Game")
@@ -446,10 +470,14 @@
                                     if (usuarioTieneDeseado == true)
                                     {
                                         <button @onclick="(e => CambiarEstadoDeseado(e, false, drm.Id))" class="boton-pequeño" style="width: auto; padding: 20px 40px; background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño);">
-                                            <div class="perfil-flexible-centrado">
-                                                <i class="fa-solid fa-check" style="font-size: 25px;"></i>
+                                            <div class="perfil-flexible-centrado" style="gap: 25px;">
+                                                <div style="max-width: 26px;">
+                                                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                        <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                                                    </svg>
+                                                </div>
 
-                                                <div style="text-align: left; padding-left: 25px; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Game")</div>
+                                                <div style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Game")</div>
                                             </div>
                                         </button>
                                     }
@@ -492,8 +520,10 @@
                                         <div>
                                             <div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 15px 20px;">
                                                 <div class="perfil-flexible-centrado" style="gap: 30px;">
-                                                    <div>
-                                                        <i class="fa-solid fa-check" style="font-size: 25px; display: inline-block; width: 40px; text-align: center;"></i>
+                                                    <div style="display: flex; align-items: center; justify-content: center; width: 50px; height: 26px;">
+                                                        <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                            <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                                                        </svg>
                                                     </div>
 
                                                     <label style="text-align: left; width: 100%;">@mensaje</label>
@@ -539,10 +569,14 @@
                                         if (string.IsNullOrEmpty(usuarioTieneDeseadoMensaje) == false)
                                         {
                                             <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px;">
-                                                <div class="perfil-flexible-centrado">
-                                                    <i class="fa-solid fa-exclamation" style="font-size: 25px;"></i>
+                                                <div class="perfil-flexible-centrado" style="gap: 25px;">
+                                                    <div style="display: flex; align-items: center; justify-content: center; width: 40px; height: 26px;">
+                                                        <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                                                            <path d="M96 64c0-17.7-14.3-32-32-32S32 46.3 32 64l0 256c0 17.7 14.3 32 32 32s32-14.3 32-32L96 64zM64 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z" />
+                                                        </svg>
+                                                    </div>                                                    
 
-                                                    <label style="text-align: left; padding-left: 25px; width: 100%;">@usuarioTieneDeseadoMensaje</label>
+                                                    <label style="text-align: left; width: 100%;">@usuarioTieneDeseadoMensaje</label>
                                                 </div>
                                             </div>
                                         }
@@ -874,11 +908,19 @@
 
                                                                         @if (juego.Xbox.Streaming == true)
                                                                         {
-                                                                            <i class="fa-solid fa-check"></i>
+                                                                            <div style="max-width: 16px;">
+                                                                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                                                                                </svg>
+                                                                            </div>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                            <div style="max-width: 16px;">
+                                                                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                                                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                                                                                </svg>
+                                                                            </div>
                                                                         }
                                                                     </div>
                                                                 }
@@ -995,11 +1037,19 @@
 
                                                                                     @if (idiomaJuego.Audio == true)
                                                                                     {
-                                                                                        <i class="fa-solid fa-check"></i>
+                                                                                        <div style="min-width: 14px; max-width: 16px;">
+                                                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                                <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                                                                                            </svg>
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                                        <div style="min-width: 14px; max-width: 16px;">
+                                                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                                                                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                                                                                            </svg>
+                                                                                        </div>
                                                                                     }
 
                                                                                     <div style="font-size: 14px;">
@@ -1008,11 +1058,19 @@
 
                                                                                     @if (idiomaJuego.Texto == true)
                                                                                     {
-                                                                                        <i class="fa-solid fa-check"></i>
+                                                                                         <div style="min-width: 14px; max-width: 16px;">
+                                                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                                <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                                                                                            </svg>
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                                        <div style="min-width: 14px; max-width: 16px;">
+                                                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                                                                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                                                                                            </svg>
+                                                                                        </div>
                                                                                     }
                                                                                 </div>
                                                                             </button>
@@ -1054,13 +1112,21 @@
                                                                                 @Idiomas.BuscarTexto(idioma, "String91", "Game")
                                                                             </div>
 
-                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                            <div style="min-width: 14px; max-width: 16px;min-width: 14px;width: 16px;">
+                                                                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                                                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                                                                                </svg>
+                                                                            </div>
 
                                                                             <div style="font-size: 14px;">
                                                                                 @Idiomas.BuscarTexto(idioma, "String92", "Game")
                                                                             </div>
 
-                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                            <div style="min-width: 14px; max-width: 16px;">
+                                                                                <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                                                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                                                                                </svg>
+                                                                            </div>
                                                                         </div>
                                                                     </button>
                                                                 }
@@ -1187,23 +1253,39 @@
                                                 <div style="display: flex; align-items: center; padding: 5px;">
                                                     @if (mostrarDescuentosBajos == true)
                                                     {
-                                                        <i class="fa-solid fa-angles-up"></i>
+                                                        <div style="max-width: 12px;">
+                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                <path d="M246.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 109.3 361.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160zm160 352l-160-160c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 301.3 361.4 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3z"/>
+                                                            </svg>
+                                                        </div>
 
                                                         <div style="width: 100%; text-align: center; font-size: 14px;">
                                                             @Herramientas.Idiomas.BuscarTexto(idioma, "String43", "Game")
                                                         </div>
 
-                                                        <i class="fa-solid fa-angles-up"></i>
+                                                        <div style="max-width: 12px;">
+                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                <path d="M246.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 109.3 361.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160zm160 352l-160-160c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 301.3 361.4 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3z" />
+                                                            </svg>
+                                                        </div>
                                                     }
                                                     else
                                                     {
-                                                        <i class="fa-solid fa-angles-down"></i>
+                                                        <div style="max-width: 12px;">
+                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z" />
+                                                            </svg>
+                                                        </div>
 
                                                         <div style="width: 100%; text-align: center; font-size: 14px;">
                                                             @Herramientas.Idiomas.BuscarTexto(idioma, "String42", "Game")
                                                         </div>
 
-                                                        <i class="fa-solid fa-angles-down"></i>
+                                                        <div style="max-width: 12px;">
+                                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z" />
+                                                            </svg>
+                                                        </div>
                                                     }
                                                 </div>
                                             </button>
@@ -1588,7 +1670,12 @@
                                     {
                                         <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
                                             <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre">
-                                            <i class="fa-solid fa-circle-play" style="position: absolute; font-size: 40px; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: pointer;"></i>
+
+                                            <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9l0 176c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
+                                                </svg>
+                                            </div>
                                         </div>
                                     }
 
@@ -1926,10 +2013,17 @@
                                     @{
                                         int i = curator.Posicion;
 
-                                        <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                                            <i class="fa-solid fa-arrow-left"></i>
-                                        </button>
-
+                                        @if (juegosCurator.Count > 4)
+                                        {
+                                            <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                                <div style="max-width: 24px;">
+                                                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        }
+                                        
                                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; width: 100%;">
                                             @while (i < (curator.Posicion + 4))
                                             {
@@ -1960,8 +2054,8 @@
                                                     }
 
                                                     <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
-                                                        <div style="display: flex; flex-direction: column; padding: 5px; height: 100%;" title="@juegosCurator[i].Nombre">
-                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 250px; max-height: 115px; object-fit: cover;" />
+                                                        <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juegosCurator[i].Nombre">
+                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" />
 
                                                             <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
                                                                 @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
@@ -1974,9 +2068,16 @@
                                             }
                                         </div>
 
-                                        <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                        </button>
+                                        @if (juegosCurator.Count > 4)
+                                        {
+                                            <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                                <div style="max-width: 24px;">
+                                                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                        <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        }                                     
                                     }
                                 </div>
                             </div>
@@ -2164,12 +2265,22 @@
                                         </div>
 
                                         <div style="color: var(--deckVerificado); display: flex; align-items: center; gap: 10px;">
-                                            <i class="fa-solid fa-thumbs-up"></i>
+                                            <div style="max-width: 16px;">
+                                                <svg class="svg-boton" style="fill: var(--deckVerificado);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z"/>
+                                                </svg>
+                                            </div>
+
                                             @analisisAmpliado.CantidadPositivos.ToString("N0")
                                         </div>
 
                                         <div style="color: var(--colorTextoPeligro); display: flex; align-items: center; gap: 10px;">
-                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <div style="max-width: 16px;">
+                                                <svg class="svg-boton" style="fill: var(--colorTextoPeligro);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2l144 0c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48l-97.5 0c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7l0 38.3 0 48 0 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384l64 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L32 96C14.3 96 0 110.3 0 128L0 352c0 17.7 14.3 32 32 32z"/>
+                                                </svg>
+                                            </div>
+
                                             @analisisAmpliado.CantidadNegativos.ToString("N0")
                                         </div>
                                     </div>
@@ -2186,14 +2297,18 @@
                                                     <div style="display: flex; align-items: center; gap: 20px;">
                                                         @if (analisis.Positiva == true)
                                                         {
-                                                            <div style="color: var(--deckVerificado);">
-                                                                <i class="fa-solid fa-thumbs-up"></i>
+                                                            <div style="max-width: 16px;">
+                                                                <svg class="svg-boton" style="fill: var(--deckVerificado);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                    <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
+                                                                </svg>
                                                             </div>
                                                         }
                                                         else
                                                         {
-                                                            <div style="color: var(--colorTextoPeligro);">
-                                                                <i class="fa-solid fa-thumbs-down"></i>
+                                                            <div style="max-width: 16px;">
+                                                                <svg class="svg-boton" style="fill: var(--colorTextoPeligro);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                    <path d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2l144 0c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48l-97.5 0c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7l0 38.3 0 48 0 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384l64 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L32 96C14.3 96 0 110.3 0 128L0 352c0 17.7 14.3 32 32 32z" />
+                                                                </svg>
                                                             </div>
                                                         }
 
@@ -2307,8 +2422,12 @@
 
             <div style="margin-bottom: 20px;">
                 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
-                    <button @onclick="@(e => BundleCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                        <i class="fa-solid fa-arrow-left"></i>
+                    <button @onclick="@(e => BundleCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                        <div style="max-width: 24px; max-height: 24px;">
+                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                            </svg>
+                        </div>
                     </button>
 
                     <div style="display: flex; align-items: center; flex-direction: row;">
@@ -2323,9 +2442,13 @@
                                 @bundleSeleccionado.NombreBundle
                             </a>
 
-                            <div style="display: flex; align-items: center; flex-direction: row; font-size: 14px;">
-                                <a href="/bundle/@bundleSeleccionado.Id/@Herramientas.EnlaceAdaptador.Nombre(bundleSeleccionado.NombreBundle)/" class="boton-pequeño" style="width: auto; text-align: center; padding: 4px 8px; margin-right: 20px; font-size: 14px;">
-                                    <i class="fa-solid fa-link"></i>
+                            <div style="display: flex; align-items: center; gap: 20px; flex-direction: row; font-size: 14px;">
+                                <a href="/bundle/@bundleSeleccionado.Id/@Herramientas.EnlaceAdaptador.Nombre(bundleSeleccionado.NombreBundle)/" class="boton-pequeño" style="padding: 0px; width: fit-content; background-color: transparent;">
+                                    <div style="max-width: 20px; max-height: 20px;">
+                                        <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                            <path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z" />
+                                        </svg>
+                                    </div>
                                 </a>
 
                                 @bundleSeleccionado.FechaEmpieza.Day.ToString()/@bundleSeleccionado.FechaEmpieza.Month.ToString()/@bundleSeleccionado.FechaEmpieza.Year.ToString() • @bundleSeleccionado.FechaTermina.Day.ToString()/@bundleSeleccionado.FechaTermina.Month.ToString()/@bundleSeleccionado.FechaTermina.Year.ToString()
@@ -2352,8 +2475,12 @@
     <div class="opciones-panel">
         <div style="max-width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
             <div style="display: flex; align-items: start; flex-direction: row; gap: 40px;">
-                <button @onclick="@(e => DeckCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                    <i class="fa-solid fa-arrow-left"></i>
+                <button @onclick="@(e => DeckCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                    <div style="max-width: 24px; max-height: 24px;">
+                        <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                        </svg>
+                    </div>
                 </button>
 
                 <div style="display: flex; flex-direction: column;">
@@ -2477,8 +2604,12 @@
 {
     <div class="opciones-panel">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 30px; width: 100%; height: 100%; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
-            <button @onclick="@(e => HistoricoCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                <i class="fa-solid fa-arrow-left"></i>
+            <button @onclick="@(e => HistoricoCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                <div style="max-width: 24px; max-height: 24px;">
+                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </div>
             </button>
 
             <div style="width: 100%; height: 100%;">
@@ -2564,7 +2695,11 @@
     <div class="opciones-panel">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 40px;">
             <button @onclick="@(e => LogearCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                <i class="fa-solid fa-arrow-left"></i>
+                <div style="max-width: 24px; max-height: 24px;">
+                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </div>
             </button>
 
             <div style="display: flex; flex-direction: column; gap: 30px; max-width: 600px;">
@@ -2588,8 +2723,12 @@
 {
     <div class="opciones-panel">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 40px;">
-            <button @onclick="@(e => IdiomasCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                <i class="fa-solid fa-arrow-left"></i>
+            <button @onclick="@(e => IdiomasCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                <div style="max-width: 24px; max-height: 24px;">
+                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </div>
             </button>
 
             <div style="display: flex; flex-direction: column; gap: 30px; width: 600px;">

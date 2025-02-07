@@ -774,3 +774,27 @@ select {
         transform: rotate(360deg);
     }
 }
+
+.svg-icono {
+    display: block;
+    fill: var(--colorEnlace);
+    width: 100%;
+    height: 100%;
+}
+
+    .svg-icono:hover {
+        transform: scale(1.1);
+        fill: var(--colorEnlaceHover);
+    }
+
+.svg-boton {
+    display: block;
+    fill: var(--colorTexto);
+    width: 100%;
+    height: 100%;
+}
+
+    .svg-boton:hover {
+        transform: scale(1.1);
+        fill: var(--colorTextoHover);
+    }
