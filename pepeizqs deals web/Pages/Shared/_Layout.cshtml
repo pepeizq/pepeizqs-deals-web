@@ -44,6 +44,7 @@
     string visitas = builder.Configuration.GetValue<string>("Enlaces:Visitas");
 
     string titulo = string.Empty;
+    string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 
     if (ViewData["Title"] != null)
     {
@@ -151,6 +152,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="description" Content="@descripcion" />
 
     <title>@titulo</title>
 

@@ -20,21 +20,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddResponseCompression(opciones =>
 {
-    opciones.Providers.Add<BrotliCompressionProvider>();
+    //opciones.Providers.Add<BrotliCompressionProvider>();
     opciones.Providers.Add<GzipCompressionProvider>();
     opciones.EnableForHttps = true;
 	opciones.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
 				new[] { "application/octet-stream", "application/rss+xml", "text/html", "text/css", "image/png", "image/x-icon", "text/javascript" });
 });
 
-builder.Services.Configure<BrotliCompressionProviderOptions>(opciones =>
-{
-    opciones.Level = CompressionLevel.Optimal;
-});
+//builder.Services.Configure<BrotliCompressionProviderOptions>(opciones =>
+//{
+//    opciones.Level = CompressionLevel.Fastest;
+//});
 
 builder.Services.Configure<GzipCompressionProviderOptions>(opciones =>
 {
-    opciones.Level = CompressionLevel.Optimal;
+	opciones.Level = CompressionLevel.Optimal;
 });
 
 #endregion

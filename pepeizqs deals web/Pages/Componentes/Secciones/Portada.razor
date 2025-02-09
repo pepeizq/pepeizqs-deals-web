@@ -143,33 +143,15 @@
 
 			<a href="/game/@juegoSeleccionado.IdMaestra.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
 				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
-					<div class="destacado-mostrar">
-						@{
-							string video = string.Empty;
-
-							if (juegoSeleccionado.Media != null)
-							{
-								if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
-								{
-									int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
-									string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
-
-									video = temp1 + "/microtrailer.webm";
-
-									video = video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-									video = video.Replace("http://", "https://");
-								}
-							}
-						}
-
-						@if (string.IsNullOrEmpty(video) == false)
+					<div class="destacado-mostrar" @onmouseover="@(e => EnseñarDestacadoVideo(e, juegoSeleccionado))">
+						@if (string.IsNullOrEmpty(videoDestacado) == false)
 						{
 							<div class="destacado-fondo">
 								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
 							</div>
 
 							<div class="destacado-video">
-								<video src="@video" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+								<video src="@videoDestacado" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
 							</div>
 						}
 						else
@@ -570,6 +552,8 @@
 	private Usuario usuario = new Usuario();
 	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
+	private string videoDestacado = string.Empty;
+
 	private SqlConnection conexion = new SqlConnection();
 
 	private List<Noticias.Noticia> noticiasTresDias = new List<Noticias.Noticia>();
@@ -631,7 +615,7 @@
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
-				juegoSeleccionado = juegosDestacadosMostrar[0];
+				juegoSeleccionado = juegosDestacadosMostrar[0];				
 			}
 
 			CronometroDestacados();
@@ -683,6 +667,25 @@
 		}
 	}
 
+	private void EnseñarDestacadoVideo(EventArgs args, Juegos.Juego juegoDestacado)
+	{
+		videoDestacado = null;
+
+		if (juegoSeleccionado.Media != null)
+		{
+			if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
+			{
+				int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
+				string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
+
+				videoDestacado = temp1 + "/microtrailer.webm";
+
+				videoDestacado = videoDestacado.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
+				videoDestacado = videoDestacado.Replace("http://", "https://");
+			}
+		}
+	}
+
 	#region Destacados
 
 	private List<Juegos.Juego> juegosDestacadosMostrar = new List<Juegos.Juego>();
@@ -694,6 +697,7 @@
 	private void CambiarJuegoDestacado(MouseEventArgs args, Juegos.Juego nuevoJuego)
 	{
 		juegoSeleccionado = nuevoJuego;
+		videoDestacado = null;
 
 		cronometroContador = 0;
 		cronometro.Dispose();

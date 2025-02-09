@@ -56,6 +56,10 @@ User-agent: DuckDuckBot
 Disallow: /account/
 Disallow: /link/*
 Disallow: /publisher/*
+User-agent: Chrome-Lighthouse
+Disallow: /account/
+Disallow: /link/*
+Disallow: /publisher/*
 
 Sitemap: https://pepeizqdeals.com/sitemap.xml");
 			}

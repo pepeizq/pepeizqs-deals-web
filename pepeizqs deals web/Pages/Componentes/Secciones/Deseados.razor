@@ -160,8 +160,8 @@
 								@ordenamientoElegido
 							</div>
 
-							<div style="max-width: 16px;">
-								<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+							<div style="max-width: 9px;">
+								<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
 									<path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
 								</svg>
 							</div>
@@ -199,7 +199,11 @@
 				{
 					<div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; width: 100%; margin: 15px 0px 25px 0px; display: flex; flex-direction: column; gap: 30px;">
 						<div style="display: flex; align-items: center; gap: 20px;">
-							<i class="fa-solid fa-magnifying-glass" style="font-size: 20px;"></i>
+							<div style="max-width: 20px;">
+								<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+									<path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+								</svg>
+							</div>
 
 							<input type="text" @onchange="(e => TextoCambiaBusqueda(e))" class="entrada-texto" style="flex: 1; min-width: 150px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Wishlist")" />
 						</div>
@@ -214,11 +218,19 @@
 
 											@if (enseñarDescuentoMinimo == false)
 											{
-												<i class="fa-solid fa-caret-down"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+													</svg>
+												</div>
 											}
 											else
 											{
-												<i class="fa-solid fa-caret-up"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+													</svg>
+												</div>
 											}
 										</div>
 									</button>
@@ -229,11 +241,19 @@
 
 											@if (enseñarPrecioMaximo == false)
 											{
-												<i class="fa-solid fa-caret-down"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+													</svg>
+												</div>
 											}
 											else
 											{
-												<i class="fa-solid fa-caret-up"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+													</svg>
+												</div>
 											}
 										</div>
 									</button>
@@ -244,11 +264,19 @@
 
 											@if (enseñarCompartir == false)
 											{
-												<i class="fa-solid fa-caret-down"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+													</svg>
+												</div>
 											}
 											else
 											{
-												<i class="fa-solid fa-caret-up"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+													</svg>
+												</div>
 											}
 										</div>
 									</button>
@@ -259,11 +287,19 @@
 
 											@if (enseñarExportar == false)
 											{
-												<i class="fa-solid fa-caret-down"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+													</svg>
+												</div>
 											}
 											else
 											{
-												<i class="fa-solid fa-caret-up"></i>
+												<div style="max-width: 9px;">
+													<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+													</svg>
+												</div>
 											}
 										</div>
 									</button>
@@ -989,23 +1025,29 @@
 
 						foreach (var actual in juego.PrecioActualesTiendas)
 						{
-							if (actual.DRM == drm)
+							if (actual != null)
 							{
-								if (Herramientas.OfertaActiva.Verificar(actual) == true)
+								if (actual.DRM == drm)
 								{
-									decimal tempPrecio = actual.Precio;
-
-									if (actual.Moneda != Herramientas.JuegoMoneda.Euro)
+									if (Herramientas.OfertaActiva.Verificar(actual) == true)
 									{
-										tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, actual.Moneda);
-									}
+										if (actual.Precio > 0)
+										{
+											decimal tempPrecio = actual.Precio;
 
-									if (precioReferencia > tempPrecio)
-									{
-										precioReferencia = tempPrecio;
-										precioFinal = actual;
-										precioFinal.Precio = precioReferencia;
-										break;
+											if (actual.Moneda != Herramientas.JuegoMoneda.Euro)
+											{
+												tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, actual.Moneda);
+											}
+
+											if (precioReferencia > tempPrecio)
+											{
+												precioReferencia = tempPrecio;
+												precioFinal = actual;
+												precioFinal.Precio = precioReferencia;
+												break;
+											}
+										}
 									}
 								}
 							}
@@ -1182,25 +1224,34 @@
 			{
 				deseadosOfertas.Clear();
 				deseadosOfertas = Filtros(false);
-				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje ??= "0")).ThenBy(x => x.Nombre).ToList();
 
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
 				}
 
-				if (deseadosBundles.Count > 0)
+				if (deseadosBundles != null)
 				{
-					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
+					if (deseadosBundles.Count > 0)
+					{
+						deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
 				}
 
-				if (deseadosSuscripciones.Count > 0)
+				if (deseadosSuscripciones != null)
 				{
-					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje)).ThenBy(x => x.Nombre).ToList();
-				}
+					if (deseadosSuscripciones.Count > 0)
+					{
+						deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasPorcentaje ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
+				}			
 			}
 
 			if (usuario != null)
@@ -1229,25 +1280,34 @@
 			{
 				deseadosOfertas.Clear();
 				deseadosOfertas = Filtros(false);
-				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
-			
+				deseadosOfertas = deseadosOfertas.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad ??= "0")).ThenBy(x => x.Nombre).ToList();
+
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosBundles.Count > 0)
+				
+				if (deseadosBundles != null)
 				{
-					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
+					if (deseadosBundles.Count > 0)
+					{
+						deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosSuscripciones.Count > 0)
+				
+				if (deseadosSuscripciones != null)
 				{
-					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad)).ThenBy(x => x.Nombre).ToList();
-				}			
+					if (deseadosSuscripciones.Count > 0)
+					{
+						deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => int.Parse(x.ReseñasCantidad ??= "0")).ThenBy(x => x.Nombre).ToList();
+					}
+				}		
 			}
 
 			if (usuario != null)
@@ -1281,20 +1341,29 @@
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Nombre).ToList();
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosBundles.Count > 0)
+				
+				if (deseadosBundles != null)
 				{
-					deseadosBundles = deseadosBundles.AsParallel().OrderBy(x => x.Nombre).ToList();
+					if (deseadosBundles.Count > 0)
+					{
+						deseadosBundles = deseadosBundles.AsParallel().OrderBy(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosSuscripciones.Count > 0)
+				
+				if (deseadosSuscripciones != null)
 				{
-					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderBy(x => x.Nombre).ToList();
-				}
+					if (deseadosSuscripciones.Count > 0)
+					{
+						deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderBy(x => x.Nombre).ToList();
+					}
+				}	
 			}
 
 			if (usuario != null)
@@ -1328,20 +1397,29 @@
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosBundles.Count > 0)
+				
+				if (deseadosBundles != null)
 				{
-					deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+					if (deseadosBundles.Count > 0)
+					{
+						deseadosBundles = deseadosBundles.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+					}
 				}
-
-				if (deseadosSuscripciones.Count > 0)
+				
+				if (deseadosSuscripciones != null)
 				{
-					deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => x.Nombre).ToList();
-				}
+					if (deseadosSuscripciones.Count > 0)
+					{
+						deseadosSuscripciones = deseadosSuscripciones.AsParallel().OrderByDescending(x => x.Nombre).ToList();
+					}
+				}			
 			}
 
 			if (usuario != null)
@@ -1375,10 +1453,13 @@
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Precio.Precio).ThenBy(x => x.Nombre).ToList();
-				}
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderBy(x => x.Precio.Precio).ThenBy(x => x.Nombre).ToList();
+					}
+				}		
 			}
 
 			if (usuario != null)
@@ -1412,10 +1493,13 @@
 				deseadosHistoricos.Clear();
 				deseadosHistoricos = Filtros(true);
 
-				if (deseadosHistoricos.Count > 0)
+				if (deseadosHistoricos != null)
 				{
-					deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Precio.Descuento).ThenBy(x => x.Nombre).ToList();
-				}
+					if (deseadosHistoricos.Count > 0)
+					{
+						deseadosHistoricos = deseadosHistoricos.AsParallel().OrderByDescending(x => x.Precio.Descuento).ThenBy(x => x.Nombre).ToList();
+					}
+				}		
 			}
 
 			if (usuario != null)
