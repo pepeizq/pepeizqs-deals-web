@@ -397,7 +397,7 @@ app.UseDeveloperExceptionPage();
 //}
 
 app.UseHttpsRedirection();
-app.MapStaticAssets();
+app.UseStaticFiles();
 
 #region Compresion (Primero)
 

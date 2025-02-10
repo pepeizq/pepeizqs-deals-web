@@ -50,7 +50,7 @@
     {
         if (ViewData["Title"].ToString() == Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Index"))
         {
-            titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
+            titulo = "pepeizq's deals • " + descripcion;
         }
         else
         {
@@ -152,8 +152,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="description" Content="@descripcion" />
-
+   
     <title>@titulo</title>
 
     <link rel="stylesheet" href="~/css/bundle.css" type="text/css" />
@@ -168,6 +167,8 @@
     <meta name="msapplication-TileColor" content="#002033" />
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
+
+    <meta property="description" content="@descripcion" />
 
     <base href="/" />
 </head>
@@ -271,11 +272,11 @@
                 </div>
 
                 <div>
-                    <a onclick="moverScroll('cuerpazo')" style="text-decoration: none; cursor: pointer;">
+                    <button onclick="moverScroll('cuerpazo')" style="text-decoration: none; cursor: pointer; background-color: transparent; border: 0px;" title="Up">
                         <div class="subir-arriba" style="max-width: 40px; max-height: 40px;">
                             <svg class="svg-icono" style="fill: var(--colorTextoOscuro);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" /></svg>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </div>          
         </div>

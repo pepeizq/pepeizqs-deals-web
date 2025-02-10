@@ -147,7 +147,7 @@
 						@if (string.IsNullOrEmpty(videoDestacado) == false)
 						{
 							<div class="destacado-fondo">
-								<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+								<img src="@fondoDestacado" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
 							</div>
 
 							<div class="destacado-video">
@@ -156,14 +156,14 @@
 						}
 						else
 						{
-							<img src="@juegoSeleccionado.Imagenes.Library_1920x620" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
+							<img src="@fondoDestacado" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
 						}
 
 						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
 									display: flex; align-items: end;" class="destacado-hueco">
 
 							<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
-								<img src="@juegoSeleccionado.Imagenes.Logo" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
+								<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
 							</div>
 
 							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
@@ -213,22 +213,26 @@
 					}
 				}
 
-				string fondoDestacado = "background-color: var(--fondoOscuro);";
+				string colorFondoDestacado = "background-color: var(--fondoOscuro);";
 
 				if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
 				{
-					fondoDestacado = "background-color: var(--fondoBien);";
+					colorFondoDestacado = "background-color: var(--fondoBien);";
 				}
 				else
 				{
 					if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
 					{
-						fondoDestacado = "background-color: var(--fondoAlerta);";
+						colorFondoDestacado = "background-color: var(--fondoAlerta);";
 					}
 				}
 
-				<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@fondoDestacado">
-					<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="width: 100%; @opacidad" alt="@destacado.Nombre">
+				<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@colorFondoDestacado">
+					@{
+						string miniatura = "imagenes/webps/" + destacado.Id.ToString() + "-destacado-miniatura.webp";
+					}
+
+					<img class="destacados-galeria-captura destacados-galeria-cursor" src="@miniatura" style="width: 100%; @opacidad" alt="@destacado.Nombre">
 
 					@if (mostrarBarra == true)
 					{
@@ -552,6 +556,8 @@
 	private Usuario usuario = new Usuario();
 	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
+	private string fondoDestacado = string.Empty;
+	private string logoDestacado = string.Empty;
 	private string videoDestacado = string.Empty;
 
 	private SqlConnection conexion = new SqlConnection();
@@ -615,7 +621,13 @@
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
-				juegoSeleccionado = juegosDestacadosMostrar[0];				
+				juegoSeleccionado = juegosDestacadosMostrar[0];
+				CambiarDestacadoImagenes();
+
+				foreach (var juego in juegosDestacadosMostrar)
+				{
+					await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura");
+				}
 			}
 
 			CronometroDestacados();
@@ -697,11 +709,18 @@
 	private void CambiarJuegoDestacado(MouseEventArgs args, Juegos.Juego nuevoJuego)
 	{
 		juegoSeleccionado = nuevoJuego;
-		videoDestacado = null;
+		CambiarDestacadoImagenes();
 
 		cronometroContador = 0;
 		cronometro.Dispose();
 		CronometroDestacados();
+	}
+
+	private async void CambiarDestacadoImagenes()
+	{
+		fondoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Library_1920x620, juegoSeleccionado.Id.ToString() + "-destacado-fondo");
+		logoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Logo, juegoSeleccionado.Id.ToString() + "-destacado-logo");
+		videoDestacado = null;
 	}
 
 	private async void CronometroDestacados()
@@ -722,6 +741,7 @@
 					if (tomarSiguiente == true)
 					{
 						juegoSeleccionado = destacado;
+						CambiarDestacadoImagenes();
 						break;
 					}
 
@@ -740,6 +760,12 @@
 					if (juegosDestacadosMostrar.Count > 0)
 					{
 						juegoSeleccionado = juegosDestacadosMostrar[0];
+						CambiarDestacadoImagenes();
+
+						foreach (var juego in juegosDestacadosMostrar)
+						{
+							await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura");
+						}
 					}
 				}
 

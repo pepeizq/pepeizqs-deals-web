@@ -91,7 +91,13 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Gratis.ToString())
                             {
                                 @if (noticia.Juegos.Contains(gratis.JuegoId.ToString()) == true)
                                 {
-                                    <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+                                    <div style="margin-left: 10px; margin-right: 20px;">
+                                        <div style="max-width: 20px; max-height: 20px;">
+                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 }
                             }
 
@@ -145,7 +151,13 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                             {
                                 @if (noticia.Juegos.Contains(suscripcion.JuegoId.ToString()) == true)
                                 {
-                                    <div style="margin-left: 10px; margin-right: 20px;"><i class="fa-solid fa-check"></i></div>
+                                    <div style="margin-left: 10px; margin-right: 20px;">
+                                        <div style="max-width: 20px; max-height: 20px;">
+                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 }
                             }
 
@@ -300,8 +312,12 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     <div class="opciones-panel">
         <div style="width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll; display: flex; flex-direction: column; gap: 20px;">
             <div style="display: flex; align-items: start; gap: 40px;">
-                <button @onclick="@(e => EnlaceCerrar(e))" class="boton-pequeño" style="padding: 10px 20px; width: auto;">
-                    <i class="fa-solid fa-arrow-left"></i>
+                <button @onclick="@(e => EnlaceCerrar(e))" class="boton-pequeño" style="padding: 10px 15px; width: fit-content;">
+                    <div style="max-width: 24px; max-height: 24px;">
+                        <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                        </svg>
+                    </div>
                 </button>
 
                 <div style="width: 100%;">

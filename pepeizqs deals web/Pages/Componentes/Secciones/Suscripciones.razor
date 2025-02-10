@@ -55,9 +55,12 @@
             <hr />
 
             <div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; gap: 20px;">
-                <div>
-                    <i class="fa-solid fa-circle-info" style="font-size: 25px;"></i>
+                <div style="max-width: 26px;">
+                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
                 </div>
+
                 <div>
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Subscriptions")
                 </div>
@@ -242,8 +245,12 @@ else
 {
     <div style="display: flex; flex-direction: column; gap: 30px;">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row; gap: 30px;">
-            <button @onclick="@(e => SuscripcionCerrar(e))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
-                <i class="fa-solid fa-arrow-left"></i>
+            <button @onclick="@(e => SuscripcionCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                <div style="max-width: 24px;">
+                    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </div>
             </button>
 
             <div style="display: flex; align-items: center; gap: 30px; width: 100%;">
@@ -303,8 +310,10 @@ else
                             @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Subscriptions")
                         </div>
 
-                        <div>
-                            <i class="fa-solid fa-caret-down"></i>
+                        <div style="max-width: 10px;">
+                            <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                            </svg>
                         </div>
                     </button>
 
@@ -335,7 +344,12 @@ else
         }
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <div style="max-width: 16px;">
+                <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                </svg>
+            </div>
+
             <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" />
         </div>
 

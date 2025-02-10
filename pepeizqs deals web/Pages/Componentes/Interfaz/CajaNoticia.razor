@@ -2,14 +2,14 @@
 
 <style>
 	.cnoticia-expandir {
-		transition: transform .2s;
-		border: 1px solid var(--fondoMinimo);
+	transition: transform .2s;
+	border: 1px solid var(--fondoMinimo);
 	}
 
-		.cnoticia-expandir:hover {
-			transform: scale(1.01);
-			border: 1px solid var(--fondoCodigo);
-		}
+	.cnoticia-expandir:hover {
+	transform: scale(1.01);
+	border: 1px solid var(--fondoCodigo);
+	}
 </style>
 
 @{
@@ -20,7 +20,7 @@
 	<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="cursor: pointer; text-decoration: none; color: var(--colorTexto);">
 		<div class="cnoticia-expandir" style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center;" title="@titulo">
 			<div style="position: relative;">
-				<img src="@noticia.Imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo"/>
+				<img src="@imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo"/>
 
 				@{
 					string icono = string.Empty;
@@ -73,4 +73,11 @@
 
 	[Parameter]
 	public Noticias.Noticia noticia { get; set; }
+
+	private string imagen = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		imagen = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia");
+	}
 }

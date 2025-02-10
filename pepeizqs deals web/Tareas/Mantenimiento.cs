@@ -55,6 +55,8 @@ namespace Tareas
 
 								BaseDatos.Analisis.Limpiar.Ejecutar();
 								BaseDatos.Juegos.Limpiar.Minimos();
+
+								Array.ForEach(Directory.GetFiles(@"./wwwroot/imagenes/webps/"), File.Delete);
 							}
 						}
 						catch (Exception ex)
