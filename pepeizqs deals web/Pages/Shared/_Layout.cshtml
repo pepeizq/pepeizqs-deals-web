@@ -155,7 +155,7 @@
    
     <title>@titulo</title>
 
-    <link rel="stylesheet" href="~/css/bundle.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/bundle.css" type="text/css" media="print" onload="this.media='all'" />
 
     <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-icon-180x180.png" />
@@ -175,8 +175,8 @@
 
 <body class="cuerpo" id="cuerpazo">
     <header class="cabecera">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="padding: 0px;">
-            <div class="cabecera-poner cuerpo-ancho">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm cuerpo-ancho" style="padding: 0px;">
+            <div class="cabecera-poner">
                 @(await Html.RenderComponentAsync<Componentes.Interfaz.Cabecera>(RenderMode.ServerPrerendered, new { 
                     idioma = idioma, 
                     usuario = usuario,
@@ -282,7 +282,7 @@
         </div>
     </footer>
 
-    <script src="~/superjs.js"></script>
+    <script src="~/superjs.js" defer></script>
 
 @*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

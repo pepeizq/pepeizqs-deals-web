@@ -20,7 +20,7 @@
 	<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="cursor: pointer; text-decoration: none; color: var(--colorTexto);">
 		<div class="cnoticia-expandir" style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center;" title="@titulo">
 			<div style="position: relative;">
-				<img src="@imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo"/>
+				<img src="@imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo" loading="lazy" />
 
 				@{
 					string icono = string.Empty;
@@ -45,7 +45,7 @@
 					if (string.IsNullOrEmpty(icono) == false)
 					{
 						<div style="position: absolute; bottom: 0; right: 0; background-color: var(--fondoBotonPequeño); padding: 0px 2px;">
-							<img src="@icono" style="width: 18px; height: 18px;" alt="@Noticias.NoticiasCargar.Traduccion(noticia.Tipo, idioma)" />
+							<img src="@icono" style="width: 18px; height: 18px;" alt="@Noticias.NoticiasCargar.Traduccion(noticia.Tipo, idioma)" loading="lazy" />
 						</div>
 					}
 				}

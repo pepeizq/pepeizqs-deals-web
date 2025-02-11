@@ -33,11 +33,11 @@ namespace Herramientas.Ficheros
 				}
 				catch
 				{
-					
+					return enlace;
 				}
 			}
 
-			return enlace;
+			return "imagenes/webps/" + nombreFichero + ".webp";
 		}
 	}
 }

@@ -167,7 +167,7 @@
 							</div>
 
 							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-								<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
+								<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM"/>
 
 								@{
 									string iconoTienda = string.Empty;
@@ -183,7 +183,7 @@
 									}
 								}
 
-								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
+								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store"/>
 
 								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
 									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
@@ -481,7 +481,7 @@
 							@if (drm.DRMId != JuegoDRM.DRMFree)
 							{
 								<div style="margin-left: 20px; padding-bottom: 10px;">
-									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" />
+									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" loading="lazy" />
 								</div>
 							}
 							else

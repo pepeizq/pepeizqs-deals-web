@@ -71,7 +71,7 @@
 <div>
     @if (juego.Tipo == JuegoTipo.Game)
     {
-        <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre"/>
+        <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre" loading="lazy" />
     }
 
     <div style="position: relative; display: flex; flex-direction: column; gap: 50px;">
@@ -97,7 +97,7 @@
         <div class="juego-cabecera" style="@fondoCabecera position: sticky; top: 70px; z-index: 3;">
             <div class="perfil-flexible-centrado">
                 <div class="juego-flexible-izquierda">
-                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" />
+                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
                 </div>
 
                 <div class="juego-titulo">
@@ -156,7 +156,7 @@
                                                 {
                                                     <button onclick="moverScroll('@drm.Id')" class="boton-pequeño" style="@fondoBotonDRM width: 40px; height: 40px; text-align: center; padding: 9px;">
                                                         <div style="display: flex; align-items: center;">
-                                                            <img src="@JuegoDRM2.SacarImagen(drm.Id)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" />
+                                                            <img src="@JuegoDRM2.SacarImagen(drm.Id)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" loading="lazy" />
                                                         </div>
                                                     </button>
                                                 }
@@ -169,30 +169,22 @@
 
                         @if (juego.Bundles != null)
                         {
-                            <div style="font-size: 16px; height: 40px; align-content: center;">
-                                <a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.BuscarTexto(idioma, "Bundles", "Header")</a>
-                            </div>
+                            <button onclick="moverScroll('gratis')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "Bundles", "Header")</button>
                         }
 
                         @if (juego.Gratis != null)
                         {
-                            <div style="font-size: 16px; height: 40px; align-content: center;">
-                                <a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.BuscarTexto(idioma, "Free", "Header")</a>
-                            </div>
+                            <button onclick="moverScroll('gratis')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "Free", "Header")</button>
                         }
 
                         @if (juego.Suscripciones != null)
                         {
-                            <div style="font-size: 16px; height: 40px; align-content: center;">
-                                <a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@Idiomas.BuscarTexto(idioma, "Subscriptions", "Header")</a>
-                            </div>
+                            <button onclick="moverScroll('suscripciones')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "Subscriptions", "Header")</button>
                         }
 
                         @if (dlcs.Count > 0)
                         {
-                            <div style="font-size: 16px; background-color: var(--fondoDlc); height: 40px;">
-                                <a onclick="moverScroll('dlcs')" style="color: var(--colorTextoDlc); text-decoration: none; cursor: pointer; padding: 8px 10px; vertical-align: middle; display: table-cell;">@Idiomas.BuscarTexto(idioma, "String34", "Game") (@dlcs.Count.ToString())</a>
-                            </div>
+                            <button onclick="moverScroll('dlcs')" class="boton" style="padding: 8px 10px; background-color: var(--fondoDlc); color: var(--colorTextoDlc); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "String34", "Game") (@dlcs.Count.ToString())</button>
                         }
                     </div>
                 </div>
@@ -226,22 +218,22 @@
                             {
                                 if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                                 {
-                                    <a onclick="moverScroll('reviews')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
+                                    <button onclick="moverScroll('reviews')" class="boton" style="width: fit-content; padding: 0px; color: var(--colorTexto);">
                                         <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
                                             <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
                                                 @if (int.Parse(juego.Analisis.Porcentaje) > 74)
                                                 {
-                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 30px; height: 30px;" alt="Reviews" loading="lazy" />
                                                 }
 
                                                 @if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
                                                 {
-                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 30px; height: 30px;" alt="Reviews" loading="lazy" />
                                                 }
 
                                                 @if (int.Parse(juego.Analisis.Porcentaje) < 50)
                                                 {
-                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 30px; height: 30px;" alt="Reviews" loading="lazy" />
                                                 }
 
                                                 <div style="font-size: 17px;">
@@ -253,7 +245,7 @@
                                                 @Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad)
                                             </div>
                                         </div>
-                                    </a>
+                                    </button>
                                 }
                             }
 
@@ -593,7 +585,7 @@
                                         else
                                         {
                                             <div style="max-width: 40px; max-height: 40px;">
-                                                <img src="@JuegoDRM2.SacarImagen(drm.Id)" alt="@drm.Nombre" style="width: 100%; height: 100%;" />
+                                                <img src="@JuegoDRM2.SacarImagen(drm.Id)" alt="@drm.Nombre" style="width: 100%; height: 100%;" loading="lazy" />
                                             </div>
                                         }
 
@@ -615,23 +607,17 @@
                                                 <div style="display: flex; flex-direction: column; gap: 10px;">
                                                     @if (BundlesComprobar(juego.Bundles, drm.Id) != null)
                                                     {
-                                                        <div style="font-size: 16px;">
-                                                            <a onclick="moverScroll('bundles')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@BundlesPreparar(drm.Id, idioma)</a>
-                                                        </div>
+                                                        <button onclick="moverScroll('bundles')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@BundlesPreparar(drm.Id, idioma)</button>
                                                     }
 
                                                     @if (GratisComprobar(juego.Gratis, drm.Id) != null)
                                                     {
-                                                        <div style="font-size: 16px;">
-                                                            <a onclick="moverScroll('gratis')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@GratisPreparar(drm.Id, idioma)</a>
-                                                        </div>
+                                                        <button onclick="moverScroll('gratis')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@GratisPreparar(drm.Id, idioma)</button>
                                                     }
 
                                                     @if (SuscripcionesComprobar(juego.Suscripciones, drm.Id) != null)
                                                     {
-                                                        <div style="font-size: 16px;">
-                                                            <a onclick="moverScroll('suscripciones')" style="color: var(--colorEnlace); text-decoration: none; cursor: pointer;">@SuscripcionesPreparar(drm.Id, idioma)</a>
-                                                        </div>
+                                                        <button onclick="moverScroll('suscripciones')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@SuscripcionesPreparar(drm.Id, idioma)</button>
                                                     }
                                                 </div>
                                             }
@@ -795,7 +781,7 @@
                                                                     if (juego.GalaxyGOG.Logros == true || juego.GalaxyGOG.GuardadoNube == true)
                                                                     {
                                                                         <div style="display: flex; align-items: center; gap: 8px; height: 18px;">
-                                                                            <img src="/imagenes/otros/goggalaxy.ico" title="GOG Galaxy" style="width: 100%; height: 100%;" />
+                                                                            <img src="/imagenes/otros/goggalaxy.ico" title="GOG Galaxy" style="width: 100%; height: 100%;" loading="lazy" />
 
                                                                             @if (juego.GalaxyGOG.Logros == true)
                                                                             {
@@ -816,7 +802,7 @@
                                                                     if (juego.GalaxyGOG.Preservacion == true)
                                                                     {
                                                                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String77", "Game")">
-                                                                            <img src="/imagenes/otros/gogpreserved.webp" style="max-width: 22px; max-height: 22px;" />
+                                                                            <img src="/imagenes/otros/gogpreserved.webp" style="max-width: 22px; max-height: 22px;" loading="lazy" />
                                                                         </div>
                                                                     }
                                                                 }
@@ -958,7 +944,7 @@
                                                                 if (drmG == drm.Id)
                                                                 {
                                                                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;" title="@Herramientas.Idiomas.BuscarTexto(idioma, "String71", "Game")">
-                                                                        <img src="@APIs.GeforceNOW.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" />
+                                                                        <img src="@APIs.GeforceNOW.Streaming.Generar().ImagenIcono" style="max-width: 22px; max-height: 22px;" loading="lazy" />
                                                                     </div>
                                                                 }
                                                             }
@@ -1029,7 +1015,7 @@
 
                                                                             <button @onclick="(e => IdiomasEnseñar(e, drm.Id))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; height: 34px; padding: 0px 22px;">
                                                                                 <div style="display: flex; align-items: center; gap: 10px; flex-direction: row; justify-content: center;">
-                                                                                    <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+                                                                                    <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" alt="Language" loading="lazy" />
 
                                                                                     <div style="font-size: 14px;">
                                                                                         @Idiomas.BuscarTexto(idioma, "String91", "Game")
@@ -1106,7 +1092,7 @@
 
                                                                     <button @onclick="(e => IdiomasEnseñar(e, drm.Id))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; height: 34px; padding: 0px 22px;">
                                                                         <div style="display: flex; align-items: center; gap: 10px; flex-direction: row; justify-content: center;">
-                                                                            <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" />
+                                                                            <img src="@imagenBandera" style="max-width: 20px; max-height: 20px;" alt="Language" loading="lazy"/>
 
                                                                             <div style="font-size: 14px;">
                                                                                 @Idiomas.BuscarTexto(idioma, "String91", "Game")
@@ -1213,7 +1199,7 @@
 
                                                         <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precio.Enlace, precio.Tienda, usuarioPatreon)" target="_blank">
                                                             <div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
-                                                                <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" />
+                                                                <img src="@SacarImagenTienda(precio.Tienda)" class="juego-imagen-boton" alt="@precio.Tienda" loading="lazy" />
                                                                 <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precio.Nombre)</span>
 
                                                                 <div class="juego-descuento-precio">
@@ -1309,7 +1295,7 @@
 
                                                         <a class="juego-boton-pequeño" style="display: block;" href="@EnlaceAcortador.Generar(precioBajo.Enlace, precioBajo.Tienda, usuarioPatreon)" target="_blank">
                                                             <div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
-                                                                <img src="@SacarImagenTienda(precioBajo.Tienda)" class="juego-imagen-boton" alt="@precioBajo.Tienda" />
+                                                                <img src="@SacarImagenTienda(precioBajo.Tienda)" class="juego-imagen-boton" alt="@precioBajo.Tienda" loading="lazy" />
                                                                 <span style="flex: 1;">@ComprobarEdicion(juego.Nombre, precioBajo.Nombre)</span>
 
                                                                 <div class="juego-descuento-precio">
@@ -1374,11 +1360,11 @@
                                 <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
                                     <div style="display: flex; align-items: center;">
                                         <div style="margin-right: 15px;">
-                                            <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
+                                            <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle" loading="lazy"/>
                                         </div>
 
                                         <div style="margin-right: 30px;">
-                                            <img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
+                                            <img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
                                         </div>
 
                                         <div style="margin-right: 20px; width: 100%;">
@@ -1421,11 +1407,11 @@
                             <button @onclick="(e => BundleAbrir(e, bundle2.BundleId))" class="boton-pequeño" style="font-size: 17px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px;">
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 15px;">
-                                        <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle"/>
+                                        <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle" loading="lazy"/>
                                     </div>
 
                                     <div style="margin-right: 30px;">
-                                        <img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
+                                        <img src="@JuegoDRM2.SacarImagen(bundle2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
                                     </div>
 
                                     <div style="margin-right: 20px; width: 100%;">
@@ -1459,11 +1445,11 @@
                         <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(gratis2.Enlace, gratis2.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; width: 100%; display: block;">
                             <div style="display: flex; align-items: center;">
                                 <div style="margin-right: 15px;">
-                                    <img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
+                                    <img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free" loading="lazy"/>
                                 </div>
 
                                 <div style="margin-right: 30px;">
-                                    <img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
+                                    <img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
                                 </div>
 
                                 <div style="margin-right: 20px; width: 100%;">
@@ -1494,7 +1480,7 @@
                         <hr/>
                         <div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
                             <div style="margin-right: 15px; width: 22px; height: 22px;">
-                                <img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free"/>
+                                <img src="@GratisCargar.DevolverGratis(gratis2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Free" loading="lazy"/>
                             </div>
 
                             <div style="margin-right: 30px; width: 22px; height: 22px;">
@@ -1504,7 +1490,7 @@
                                 }
                                 else
                                 {
-                                    <img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="@JuegoDRM2.DevolverDRM(gratis2.DRM)" />
+                                    <img src="@JuegoDRM2.SacarImagen(gratis2.DRM)" style="max-width: 22px; max-height: 22px;" alt="@JuegoDRM2.DevolverDRM(gratis2.DRM)" loading="lazy" />
                                 }
                             </div>
 
@@ -1548,11 +1534,11 @@
                             <a class="juego-boton-pequeño" href="@enlace" target="_blank" style="font-size: 16px; padding: 20px 25px; cursor: pointer; display: block;">
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 15px;">
-                                        <img src="@suscripcionUsar.ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" />
+                                        <img src="@suscripcionUsar.ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" loading="lazy" />
                                     </div>
 
                                     <div style="margin-right: 30px;">
-                                        <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" />
+                                        <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
                                     </div>
 
                                     <div style="margin-right: 20px; width: 100%;">
@@ -1608,11 +1594,11 @@
                         <hr />
                         <div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
                             <div style="margin-right: 15px; width: 22px; height: 22px;">
-                                <img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" />
+                                <img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" loading="lazy" />
                             </div>
 
                             <div style="margin-right: 30px; width: 22px; height: 22px;">
-                                <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM"/>
+                                <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
                             </div>
 
                             <div style="padding-right: 20px; width: 15%;">
@@ -1648,7 +1634,7 @@
                         {
                             <div>
                                 <div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @(juego.Media.Capturas.Count)</div>
-                                <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre">
+                                <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre" loading="lazy">
                             </div>
 
                             <a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
@@ -1669,7 +1655,7 @@
                                     if (string.IsNullOrEmpty(juego.Media.Video) == false)
                                     {
                                         <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
-                                            <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre">
+                                            <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
 
                                             <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                                 <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1685,7 +1671,7 @@
                                         int nuevaPosicion = i;
 
                                         <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
-                                            <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre">
+                                            <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
                                         </div>
 
                                         i += 1;
@@ -1750,14 +1736,14 @@
                                                             if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
                                                             {
                                                                 añadido = true;
-                                                                <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@desarrollador</a>
+                                                                <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@desarrollador</button>
                                                             }
                                                             else
                                                             {
                                                                 if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
                                                                 {
                                                                     añadido = true;
-                                                                    <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@desarrollador</a>
+                                                                    <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@desarrollador</button>
                                                                 }
                                                             }
                                                         }
@@ -1816,14 +1802,14 @@
                                                             if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
                                                             {
                                                                 añadido = true;
-                                                                <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
+                                                                <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@publisher</button>
                                                             }
                                                             else
                                                             {
                                                                 if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
                                                                 {
                                                                     añadido = true;
-                                                                    <a onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" style="cursor: pointer; color: var(--colorEnlace); text-decoration: underline;">@publisher</a>
+                                                                    <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@publisher</button>
                                                                 }
                                                             }
                                                         }
@@ -1908,7 +1894,7 @@
 
                                         <a href="/filter/@idCategoria/" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none;">
                                             <div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-                                                <img style="width: 26px; height: 16px;" src="@imagenCategoria" />
+                                                <img style="width: 26px; height: 16px;" src="@imagenCategoria" alt="@categoria" loading="lazy" />
 
                                                 <div style="width: 100%; font-size: 14px;">@cadenaCategoria</div>
                                             </div>
@@ -1996,7 +1982,7 @@
                         <div id="curator-@curator.Curator.Id.ToString()" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                             <div>
                                 <div style="display: flex; align-items: center; gap: 20px;">
-                                    <img src="@curator.Curator.Imagen" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" />
+                                    <img src="@curator.Curator.Imagen" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />
 
                                     <a href="/curator/@curator.Curator.Slug.ToLower()/" target="_blank" style="text-decoration: none;">
                                         <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -2055,7 +2041,7 @@
 
                                                     <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
                                                         <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juegosCurator[i].Nombre">
-                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" />
+                                                            <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
 
                                                             <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
                                                                 @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
@@ -2177,22 +2163,22 @@
                                     string imagenRegion = "/imagenes/banderas/" + analisisRegion.Idioma + ".svg";
 
                                     <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 10px; justify-content: center;">
-                                        <img src="@imagenRegion" style="height: 26px;" />
+                                        <img src="@imagenRegion" style="height: 26px;" loading="lazy" />
 
                                         <div>
                                             @if (porcentajeRegion > 74)
                                             {
-                                                <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                             }
 
                                             @if (porcentajeRegion > 49 && porcentajeRegion < 75)
                                             {
-                                                <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                             }
 
                                             @if (porcentajeRegion < 50)
                                             {
-                                                <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                             }
                                         </div>
 
@@ -2241,17 +2227,17 @@
                                             <div>
                                                 @if (porcentaje > 74)
                                                 {
-                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/positivo3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                                 }
 
                                                 @if (porcentaje > 49 && porcentaje < 75)
                                                 {
-                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/meh3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                                 }
 
                                                 @if (porcentaje < 50)
                                                 {
-                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" />
+                                                    <img src="/imagenes/analisis/negativo3.svg" style="width: 26px; height: 26px;" alt="Reviews" loading="lazy" />
                                                 }
                                             </div>
 
@@ -2366,7 +2352,7 @@
                             <a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
                                 <div class="boton-expandir" style="background: color-mix(in srgb, var(--fondoBotonPequeño), var(--fondoDlc) 30%); display: flex; align-items: center; gap: 20px;">
                                     <div>
-                                        <img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" />
+                                        <img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" loading="lazy" />
                                     </div>
 
                                     <div style="width: 100%;">
@@ -2394,17 +2380,17 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     @if (juego.IdSteam > 0)
                     {
-                        <a href="https://steamdb.info/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="SteamDB" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/steamdb.webp" style="width: 30px; height: 30px;"/></a>
-                        <a href="https://protondb.com/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="ProtonDB" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/protondb.webp" style="width: 30px; height: 30px;" /></a>
-                        <a href="https://pcgamingwiki.com/api/appid.php?appid=@juego.IdSteam" target="_blank" class="boton-pequeño" title="PCGamingWiki" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/pcgamingwiki.webp" style="width: 30px; height: 30px;" /></a>
-                        <a href="https://steambase.io/apps/@juego.IdSteam" target="_blank" class="boton-pequeño" title="SteamBase" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/steambase.webp" style="width: 30px; height: 30px;" /></a>
-                        <a href="https://isthereanydeal.com/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="IsThereAnyDeal" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/isthereanydeal.webp" style="width: 30px; height: 30px;" /></a>
-                        <a href="https://gg.deals/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="GG.deals" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/ggdeals.webp" style="width: 30px; height: 30px;" /></a>
+                        <a href="https://steamdb.info/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="SteamDB" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/steamdb.webp" style="width: 30px; height: 30px;" loading="lazy"/></a>
+                        <a href="https://protondb.com/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="ProtonDB" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/protondb.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
+                        <a href="https://pcgamingwiki.com/api/appid.php?appid=@juego.IdSteam" target="_blank" class="boton-pequeño" title="PCGamingWiki" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/pcgamingwiki.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
+                        <a href="https://steambase.io/apps/@juego.IdSteam" target="_blank" class="boton-pequeño" title="SteamBase" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/steambase.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
+                        <a href="https://isthereanydeal.com/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="IsThereAnyDeal" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/isthereanydeal.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
+                        <a href="https://gg.deals/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="GG.deals" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/ggdeals.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
                     }
 
                     @if (juego.IdGog > 0)
                     {
-                        <a href="https://www.gogdb.org/product/@juego.IdGog" target="_blank" class="boton-pequeño" title="GOG Database" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/gogdb.webp" style="width: 30px; height: 30px;" /></a>
+                        <a href="https://www.gogdb.org/product/@juego.IdGog" target="_blank" class="boton-pequeño" title="GOG Database" style="width: fit-content; padding: 10px;"><img src="/imagenes/webs/gogdb.webp" style="width: 30px; height: 30px;" loading="lazy" /></a>
                     }
                 </div>
             </div>
@@ -2433,7 +2419,7 @@
                     <div style="display: flex; align-items: center; flex-direction: row;">
                         <a href="@Herramientas.EnlaceAcortador.Generar(bundleSeleccionado.Enlace, bundleSeleccionado.Tipo, usuarioPatreon)" style="width: auto;" target="_blank">
                             <div style="height: 60px; padding-left: 40px; padding-right: 20px;">
-                                <img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" />
+                                <img src="@Bundles2.BundlesCargar.DevolverBundle(bundleSeleccionado.Tipo).ImagenTienda" style="height: 100%;" alt="@bundleSeleccionado.NombreBundle" loading="lazy" />
                             </div>
                         </a>
 
@@ -2637,7 +2623,7 @@
                                 }
 
                                 <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="@icono" style="width: 20px; height: 20px;" />
+                                    <img src="@icono" style="width: 20px; height: 20px;" loading="lazy" />
                                     <label>@nombre</label>
                                 </div>
                             }
@@ -2753,7 +2739,7 @@
 
                                         if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
                                         {
-                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;"/>
+                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" loading="lazy" />
                                         }
                                         else
                                         {
@@ -2783,7 +2769,7 @@
 
                                         if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
                                         {
-                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" />
+                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" loading="lazy" />
                                         }
                                         else
                                         {

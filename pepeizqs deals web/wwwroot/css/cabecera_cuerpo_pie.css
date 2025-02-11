@@ -13,6 +13,7 @@
     flex-wrap: inherit;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     line-height: 30px;
     gap: 20px;
 }
@@ -20,14 +21,15 @@
 .cuerpo {
     background-color: var(--fondoCuerpo);
     color: var(--colorTexto);
-    height: 100%;
+   /* height: 100%;*/
     font-family: 'Motiva Sans';
     position: relative;
+    margin: 0px;
 }
 
 .cuerpo-ancho {
     max-width: 1320px;
-    width: 100%;
+    /*width: 100%;*/
     margin-right: auto;
     margin-left: auto;
 }
@@ -46,11 +48,6 @@
     background-color: var(--fondoOscuro);
     font-size: var(--tamañoTexto);
     color: var(--colorTexto);
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transform: translateY(100%);
 }
 
 .texto-logo {

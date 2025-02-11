@@ -8,7 +8,7 @@ namespace Herramientas
 	public static class RobotsUserAgents
 	{
 		private static List<string> botsBuenos = ["www.google.com/bot.html", "www.bing.com/bingbot.htm", 
-			"duckduckgo.com/duckduckbot.html", "Valve Client", "Steam Client", "Valve/Steam"];
+			"duckduckgo.com/duckduckbot.html", "Valve Client", "Steam Client", "Valve/Steam", "archive.org"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{
@@ -57,6 +57,10 @@ Disallow: /account/
 Disallow: /link/*
 Disallow: /publisher/*
 User-agent: Chrome-Lighthouse
+Disallow: /account/
+Disallow: /link/*
+Disallow: /publisher/*
+User-agent: archive.org_bot
 Disallow: /account/
 Disallow: /link/*
 Disallow: /publisher/*

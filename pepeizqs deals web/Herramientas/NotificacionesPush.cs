@@ -40,9 +40,9 @@ namespace Herramientas
 
 					await webPushCliente.SendNotificationAsync(suscripcion, payload, vapidDetalles);
 				}
-				catch (Exception ex)
+				catch 
 				{
-					global::BaseDatos.Errores.Insertar.Mensaje("Notificaciones Push", ex);
+		
 				}
 			}
 		}

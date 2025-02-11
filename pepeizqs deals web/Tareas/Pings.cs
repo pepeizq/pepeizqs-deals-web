@@ -31,10 +31,10 @@ namespace Tareas
                 {
                     try
                     {
-						HttpClientHandler clientHandler = new HttpClientHandler();
-						clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+						HttpClientHandler manjeador = new HttpClientHandler();
+						manjeador.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-						HttpClient httpClient = new HttpClient(clientHandler);
+						HttpClient cliente = new HttpClient(manjeador);
 						HttpRequestMessage mensaje = new HttpRequestMessage();
 						mensaje.RequestUri = new Uri("http://tareasdeals.pepeizqapps.com");
 						mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
@@ -42,7 +42,7 @@ namespace Tareas
 						mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
 						mensaje.Headers.Connection.ParseAdd("keep-alive");
 						mensaje.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Linux; Android 10; Generic Android-x86_64 Build/QD1A.190821.014.C2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/79.0.3945.36 Safari/537.36");
-						HttpResponseMessage respuesta2 = await httpClient.SendAsync(mensaje);
+						HttpResponseMessage respuesta2 = await cliente.SendAsync(mensaje);
 						respuesta2.EnsureSuccessStatusCode();
 					}
                     catch (Exception ex)
