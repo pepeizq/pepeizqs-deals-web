@@ -13,7 +13,7 @@ namespace Herramientas
 {
 	public static class Correos
 	{
-		public static void EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion, string idioma)
+		public static bool EnviarNuevaNoticia(Noticia noticia, string correoHacia, SqlConnection conexion, string idioma)
 		{
 			try
 			{
@@ -91,11 +91,15 @@ namespace Herramientas
 				}
 
 				global::BaseDatos.CorreosEnviar.Insertar.Ejecutar(html, titulo, "deals@pepeizqdeals.com", correoHacia);
+
+				return true;
             }
 			catch (Exception ex) 
 			{
                 global::BaseDatos.Errores.Insertar.Mensaje("Correos - Enviar Noticia", ex, conexion);
 			}
+
+			return false;
         }
 
         public static void EnviarContraseñaReseteada(string idioma, string correoHacia)

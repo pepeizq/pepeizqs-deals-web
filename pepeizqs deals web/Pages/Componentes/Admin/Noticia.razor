@@ -389,14 +389,14 @@
 		}
 	}
 
-	private void EnviarTwitter(MouseEventArgs e)
+	private async void EnviarTwitter(MouseEventArgs e)
 	{
-		Herramientas.Twitter.Twitear(noticia);
+		await Herramientas.Twitter.Twitear(noticia);
 	}
 
-	private void EnviarBlueSky(MouseEventArgs e)
+	private async void EnviarBlueSky(MouseEventArgs e)
 	{
-		Herramientas.Bluesky.Postear(noticia);
+		await Herramientas.Bluesky.Postear(noticia);
 	}
 
 	private void EnviarNotificacionesPush(MouseEventArgs e)

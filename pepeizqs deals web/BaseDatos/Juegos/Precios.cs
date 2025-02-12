@@ -2,7 +2,6 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Tareas.Tiendas;
 
 namespace BaseDatos.Juegos
 {
@@ -127,33 +126,36 @@ namespace BaseDatos.Juegos
                                             {
                                                 if (usuarioInteresado.DRM == minimo.DRM)
 												{
-													if (Usuarios.Buscar.UsuarioTieneJuego(usuarioInteresado.UsuarioId, usuarioInteresado.DRM, juego.IdSteam, 0) == false)
+													if (Usuarios.Buscar.UsuarioTieneJuego(usuarioInteresado.UsuarioId, juego.Id, usuarioInteresado.DRM, conexion) == false)
 													{
-														string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, juego.IdSteam, juego.IdGog);
-
-														if (string.IsNullOrEmpty(correo) == false)
+														if (Usuarios.Buscar.UsuarioTieneDeseado(usuarioInteresado.UsuarioId, juego.Id.ToString(), usuarioInteresado.DRM, conexion) == true)
 														{
-															try
-															{
-																Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, juego, minimo, correo);
-															}
-															catch (Exception ex)
-															{
-																BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
-															}
-														}
+															string correo = Usuarios.Buscar.UsuarioQuiereCorreos(usuarioInteresado.UsuarioId, conexion);
 
-														bool enviarPush = Usuarios.Buscar.UnUsuarioNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
-
-														if (enviarPush == true)
-														{
-															try
+															if (string.IsNullOrEmpty(correo) == false)
 															{
-																Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, juego, minimo, usuarioInteresado.DRM);
+																try
+																{
+																	Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, juego, minimo, correo);
+																}
+																catch (Exception ex)
+																{
+																	BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
+																}
 															}
-															catch (Exception ex)
+
+															bool enviarPush = Usuarios.Buscar.UsuarioQuiereNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
+
+															if (enviarPush == true)
 															{
-																BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
+																try
+																{
+																	Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, juego, minimo, usuarioInteresado.DRM);
+																}
+																catch (Exception ex)
+																{
+																	BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
+																}
 															}
 														}
 													}
@@ -222,7 +224,8 @@ namespace BaseDatos.Juegos
 			Juegos.Actualizar.Ejecutar(juego, conexion, actualizarAPI);
 		}
 
-		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta, SqlConnection conexion, string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null, JuegoAnalisis analisis = null)
+		public static void Actualizar(int id, int idSteam, List<JuegoPrecio> ofertasActuales, List<JuegoPrecio> ofertasHistoricas, List<JuegoHistorico> historicos, JuegoPrecio nuevaOferta, SqlConnection conexion, 
+			string slugGOG = null, string idGOG = null, string slugEpic = null, List<JuegoUsuariosInteresados> usuariosInteresados = null, JuegoAnalisis analisis = null)
 		{
 			bool ultimaModificacion = false;
 
@@ -355,40 +358,36 @@ namespace BaseDatos.Juegos
 											{
 												if (usuarioInteresado.DRM == minimo.DRM)
 												{
-													int idGOG2 = 0;
-
-													try
+													if (Usuarios.Buscar.UsuarioTieneJuego(usuarioInteresado.UsuarioId, id, usuarioInteresado.DRM, conexion) == false)
 													{
-														idGOG2 = int.Parse(idGOG);
-													} catch { }
-
-													if (Usuarios.Buscar.UsuarioTieneJuego(usuarioInteresado.UsuarioId, usuarioInteresado.DRM, idSteam, idGOG2) == false)
-													{
-														string correo = Usuarios.Buscar.UsuarioDeseados(usuarioInteresado.UsuarioId, id.ToString(), usuarioInteresado.DRM, idSteam, idGOG2);
-
-														if (string.IsNullOrEmpty(correo) == false)
+														if (Usuarios.Buscar.UsuarioTieneDeseado(usuarioInteresado.UsuarioId, id.ToString(), usuarioInteresado.DRM, conexion) == true)
 														{
-															try
-															{
-																Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, id, minimo, correo);
-															}
-															catch (Exception ex)
-															{
-																BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
-															}
-														}
+															string correo = Usuarios.Buscar.UsuarioQuiereCorreos(usuarioInteresado.UsuarioId, conexion);
 
-														bool enviarPush = Usuarios.Buscar.UnUsuarioNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
-
-														if (enviarPush == true)
-														{
-															try
+															if (string.IsNullOrEmpty(correo) == false)
 															{
-																Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, id, minimo, usuarioInteresado.DRM);
+																try
+																{
+																	Herramientas.Correos.EnviarNuevoMinimo(usuarioInteresado.UsuarioId, id, minimo, correo);
+																}
+																catch (Exception ex)
+																{
+																	BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Minimo", ex);
+																}
 															}
-															catch (Exception ex)
+
+															bool enviarPush = Usuarios.Buscar.UsuarioQuiereNotificacionesPushMinimos(usuarioInteresado.UsuarioId);
+
+															if (enviarPush == true)
 															{
-																BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
+																try
+																{
+																	Herramientas.NotificacionesPush.EnviarMinimo(usuarioInteresado.UsuarioId, id, minimo, usuarioInteresado.DRM);
+																}
+																catch (Exception ex)
+																{
+																	BaseDatos.Errores.Insertar.Mensaje("Enviar Push Minimo", ex);
+																}
 															}
 														}
 													}

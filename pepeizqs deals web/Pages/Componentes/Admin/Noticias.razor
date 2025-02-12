@@ -444,7 +444,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         noticia.Fecha = Convert.ToDateTime(texto.Value.ToString());
     }
 
-    private void AñadirNoticia(MouseEventArgs e)
+    private async void AñadirNoticia(MouseEventArgs e)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -502,9 +502,9 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 int id = BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
                 noticiaAñadir.Id = id;
 
-                try
+                foreach (var usuario in UserManager.Users)
                 {
-                    foreach (var usuario in UserManager.Users)
+                    try
                     {
                         if (usuario.NotificationBundles == true && noticiaAñadir.Tipo == NoticiaTipo.Bundles)
                         {
@@ -526,15 +526,15 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                             Herramientas.Correos.EnviarNuevaNoticia(noticiaAñadir, usuario.Email, conexion, usuario.Language);
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Noticia", ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Noticia", ex);
-                }
-                
+            
                 try
                 {
-                    Herramientas.Twitter.Twitear(noticiaAñadir);
+                    await Herramientas.Twitter.Twitear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
@@ -543,16 +543,16 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 
                 try
                 {
-                    Herramientas.Bluesky.Postear(noticiaAñadir);
+                    await Herramientas.Bluesky.Postear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
                     BaseDatos.Errores.Insertar.Mensaje("Enviar BlueSky Noticia", ex);
                 }
 
-                try
+                foreach (var usuario in UserManager.Users)
                 {
-                    foreach (var usuario in UserManager.Users)
+                    try
                     {
                         if (usuario.NotificationPushBundles == true && noticiaAñadir.Tipo == NoticiaTipo.Bundles)
                         {
@@ -574,10 +574,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                             Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    BaseDatos.Errores.Insertar.Mensaje("Enviar Notificaciones Push Noticia", ex);
+                    catch (Exception ex)
+                    {
+                        BaseDatos.Errores.Insertar.Mensaje("Enviar Notificaciones Push Noticia", ex);
+                    }
                 }
                
                 noticia = new Plantilla();

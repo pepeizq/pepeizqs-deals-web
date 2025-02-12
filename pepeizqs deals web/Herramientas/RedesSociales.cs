@@ -11,7 +11,7 @@ namespace Herramientas
 {
 	public static class Twitter
 	{
-		public static async void Twitear(Noticias.Noticia noticia)
+		public static async Task<bool> Twitear(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -72,7 +72,9 @@ namespace Herramientas
 						Text = noticia.TituloEn + " " + Environment.NewLine + Environment.NewLine + enlace
 					}
 				);
-            }
+
+				return resultado.Response.IsSuccessStatusCode;
+			}
 			else
 			{
                 ITwitterResult resultado = await PonerTweet(cliente,
@@ -82,8 +84,9 @@ namespace Herramientas
 						Media = imagenTweet?.Id == null ? null : new() { MediaIds = new() { imagenTweet.Id.Value } }
 					}
 				);
-            }
 
+				return resultado.Response.IsSuccessStatusCode;
+            }
 		}
 
 		private static Task<ITwitterResult> PonerTweet(TwitterClient cliente, TweetV2PostRequest parametros)
@@ -130,7 +133,7 @@ namespace Herramientas
 	{
 		#nullable disable
 
-        public static async void Postear(Noticias.Noticia noticia)
+        public static async Task<bool> Postear(Noticias.Noticia noticia)
 		{
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -188,6 +191,7 @@ namespace Herramientas
 						};
 
 						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
+						return true;
 					}
 				}
 				catch 
@@ -198,8 +202,11 @@ namespace Herramientas
 				if (error == true)
 				{
 					await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
+					return true;
 				}
-            }           
+            }        
+			
+			return false;
 		}
 	}
 }
