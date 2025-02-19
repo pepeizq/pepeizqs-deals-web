@@ -4,8 +4,9 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.WinGameStore
 {
@@ -35,13 +36,13 @@ namespace APIs.WinGameStore
 
 		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null) 
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			string html = await Decompiladores.Estandar("https://www.macgamestore.com/affiliate/feeds/p_C1B2A3.json");
 
 			if (html != null)
 			{
-				List<WinGameStoreJuego> juegos = JsonConvert.DeserializeObject<List<WinGameStoreJuego>>(html);
+				List<WinGameStoreJuego> juegos = JsonSerializer.Deserialize<List<WinGameStoreJuego>>(html);
 
 				if (juegos != null)
 				{
@@ -51,14 +52,6 @@ namespace APIs.WinGameStore
 
 						foreach (WinGameStoreJuego juego in juegos)
 						{
-							string nombre = WebUtility.HtmlDecode(juego.Nombre);
-
-							string enlace = juego.Enlace;
-
-							enlace = enlace.Replace("?ars=pepeizqdeals", null);
-
-							string imagen = juego.Imagen;
-
 							decimal precioBase = decimal.Parse(juego.PrecioBase);
 							decimal precioRebajado = decimal.Parse(juego.PrecioRebajado);
 
@@ -66,6 +59,14 @@ namespace APIs.WinGameStore
 
 							if (descuento > 0)
 							{
+								string nombre = WebUtility.HtmlDecode(juego.Nombre);
+
+								string enlace = juego.Enlace;
+
+								enlace = enlace.Replace("?ars=pepeizqdeals", null);
+
+								string imagen = juego.Imagen;
+
 								JuegoDRM drm = JuegoDRM2.Traducir(juego.DRM, Generar().Id);
 
 								JuegoPrecio oferta = new JuegoPrecio
@@ -88,18 +89,18 @@ namespace APIs.WinGameStore
 								}
 								catch (Exception ex)
 								{
-                                    BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                    BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                                 }
 
 								juegos2 += 1;
 
 								try
 								{
-									BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+									BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 								}
 								catch (Exception ex)
 								{
-                                    BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                    BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                                 }
 							}
 						}
@@ -111,22 +112,22 @@ namespace APIs.WinGameStore
 
 	public class WinGameStoreJuego
 	{
-		[JsonProperty("title")]
+		[JsonPropertyName("title")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("url")]
+		[JsonPropertyName("url")]
 		public string Enlace { get; set; }
 
-		[JsonProperty("current_price")]
+		[JsonPropertyName("current_price")]
 		public string PrecioRebajado { get; set; }
 
-		[JsonProperty("retail_price")]
+		[JsonPropertyName("retail_price")]
 		public string PrecioBase { get; set; }
 
-		[JsonProperty("drm")]
+		[JsonPropertyName("drm")]
 		public string DRM { get; set; }
 
-		[JsonProperty("badge")]
+		[JsonPropertyName("badge")]
 		public string Imagen { get; set; }
 	}
 }

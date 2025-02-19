@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="APIs\WinGameStore\Tienda.cs~RF63534e.TMP" />
+    <None Remove="appsettings.json~RF12e4885.TMP" />
     <None Remove="Idiomas\News.es-ES.json~RF63e628.TMP" />
     <None Remove="Pages\Componentes\Cuenta\Juegos\vtvorkc0.rpr~" />
     <None Remove="Pages\Componentes\Secciones\am2uy0r2.1v5~" />

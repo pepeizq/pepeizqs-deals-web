@@ -26,13 +26,13 @@ namespace Herramientas
             };
 
             List<SyndicationItem> items = new List<SyndicationItem>();
-            List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
+            List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
 
             if (noticias.Count > 0)
             {
                 noticias = noticias.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-                foreach (Noticias.Noticia noticia in noticias)
+                foreach (Noticia noticia in noticias)
                 {
                     string enlace = dominio + "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEn) + "/";
 
@@ -91,13 +91,13 @@ namespace Herramientas
             };
 
             List<SyndicationItem> items = new List<SyndicationItem>();
-            List<Noticias.Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
+            List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Actuales();
 
             if (noticias.Count > 0)
             {
                 noticias = noticias.OrderBy(x => x.FechaEmpieza).Reverse().ToList();
 
-                foreach (Noticias.Noticia noticia in noticias)
+                foreach (Noticia noticia in noticias)
                 {
                     string enlace = dominio + "/news/" + noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticia.TituloEs) + "/";
 

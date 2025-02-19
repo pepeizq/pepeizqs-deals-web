@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using BaseDatos.Extension;
 using Bundles2;
 using Juegos;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,40 @@ namespace Herramientas
 {
 	public class Redireccionador : Controller
 	{
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("extension/steam/{id}")]
+		public IActionResult ExtensionSteam(int Id)
+		{
+			Extension juego = Buscar.Steam(Id.ToString());
+
+			if (juego != null)
+			{
+				if (juego.Id > 0)
+				{
+					return Ok(juego);
+				}
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("extension/epic/{slug}")]
+		public IActionResult ExtensionEpic(string Slug)
+		{
+			Extension juego = Buscar.EpicGames(Slug);
+
+			if (juego != null)
+			{
+				if (juego.Id > 0)
+				{
+					return Ok(juego);
+				}
+			}
+
+			return Redirect("~/");
+		}
+
 		[ResponseCache(Duration = 6000)]
 		[HttpGet("api/game/{id}")]
 		public IActionResult ApiJuego(int Id)

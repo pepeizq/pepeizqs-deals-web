@@ -8,7 +8,7 @@ namespace Herramientas
 {
 	public class NotificacionesPush
 	{
-		public static async void EnviarNoticia(string usuarioId, Noticias.Noticia noticia, string idioma)
+		public static async Task<bool> EnviarNoticia(string usuarioId, Noticias.Noticia noticia, string idioma)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string publicKey = builder.Configuration.GetValue<string>("NotificacionesPush:PublicKey"); 
@@ -45,6 +45,8 @@ namespace Herramientas
 		
 				}
 			}
+
+			return true;
 		}
 
 		public static void EnviarMinimo(string usuarioId, int idJuego, JuegoPrecio minimo, JuegoDRM drm)

@@ -399,11 +399,11 @@
 		await Herramientas.Bluesky.Postear(noticia);
 	}
 
-	private void EnviarNotificacionesPush(MouseEventArgs e)
+	private async void EnviarNotificacionesPush(MouseEventArgs e)
 	{
 		foreach (var usuario in UserManager.Users)
 		{
-			Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticia, usuario.Language);
+			await Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticia, usuario.Language);
 		}
 	}
 }

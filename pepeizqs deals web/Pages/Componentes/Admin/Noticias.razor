@@ -556,22 +556,22 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                     {
                         if (usuario.NotificationPushBundles == true && noticiaAñadir.Tipo == NoticiaTipo.Bundles)
                         {
-                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                            await Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
                         }
 
                         if (usuario.NotificationPushFree == true && noticiaAñadir.Tipo == NoticiaTipo.Gratis)
                         {
-                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                            await Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
                         }
 
                         if (usuario.NotificationPushSubscriptions == true && noticiaAñadir.Tipo == NoticiaTipo.Suscripciones)
                         {
-                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                            await Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
                         }
 
                         if (usuario.NotificationPushOthers == true && noticiaAñadir.Tipo != NoticiaTipo.Bundles && noticiaAñadir.Tipo != NoticiaTipo.Gratis && noticiaAñadir.Tipo != NoticiaTipo.Suscripciones)
                         {
-                            Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
+                            await Herramientas.NotificacionesPush.EnviarNoticia(usuario.Id, noticiaAñadir, usuario.Language);
                         }
                     }
                     catch (Exception ex)

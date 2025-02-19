@@ -266,16 +266,28 @@
 	}
 </style>
 
-<div style="display: flex; align-items: center; width: fit-content;">
-	<div style="padding: 0px 20px 0px 30px;">
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Index")
-	</div>
+<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
+	<div style="display: flex; align-items: center; gap: 20px;">
+		<div>
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Index")
+		</div>
 
-	<div style="background-color: var(--fondoBotonPequeño); border: 1px solid var(--fondoOscuro); padding: 10px 20px;">
-		<RedesSociales idioma="@idioma" tamañoFuente="22px" />
-	</div>	
+		<div style="background-color: var(--fondoBotonPequeño); border: 1px solid var(--fondoOscuro); padding: 10px 20px;">
+			<RedesSociales idioma="@idioma" tamañoFuente="22px" />
+		</div>
+	</div>
+	
+	@* <div style="display: flex; align-items: center; gap: 20px;">
+		<div>
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Index")
+		</div>
+
+		<div style="background-color: var(--fondoBotonPequeño); border: 1px solid var(--fondoOscuro); padding: 10px 20px;">
+			<Extension idioma="@idioma"/>
+		</div>
+	</div> *@
 </div>
-<div class="noticias-caja" style="background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); margin-bottom: 60px; display: flex; flex-direction: column; gap: 30px;">
+<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); margin-bottom: 60px; display: flex; flex-direction: column; gap: 30px;">
 	@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 	{
 		<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
@@ -306,7 +318,7 @@
 		</div>
 	}
 
-	<div class="noticia-enlaces" style="display: flex; align-items: center; gap: 30px;">
+	<div class="noticia-enlaces" style="display: flex; align-items: center; gap: 40px; justify-content: center;">
 		@if (noticiasSemana.Count == 0)
 		{
 			<button class="boton-pequeño" @onclick="CargarNoticiasSemana" style="padding: 15px 30px; width: fit-content;">

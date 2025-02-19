@@ -386,6 +386,16 @@ builder.Services.AddRateLimiter(opciones =>
 
 #endregion
 
+#region CORS necesario para extension
+
+builder.Services.AddCors(policy => {
+	policy.AddPolicy("Extension", builder =>
+		builder.WithOrigins("https://*:5001/").SetIsOriginAllowedToAllowWildcardSubdomains().AllowAnyOrigin()
+	);
+});
+
+#endregion
+
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
@@ -427,6 +437,12 @@ app.MapBlazorHub(opciones =>
 #region Seo
 
 app.UseHeadElementServerPrerendering();
+
+#endregion
+
+#region CORS necesario para extension
+
+app.UseCors("Extension");
 
 #endregion
 

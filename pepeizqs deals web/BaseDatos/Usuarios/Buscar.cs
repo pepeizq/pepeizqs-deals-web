@@ -3,7 +3,6 @@
 using Herramientas;
 using Juegos;
 using Microsoft.Data.SqlClient;
-using System.Text.Json;
 
 namespace BaseDatos.Usuarios
 {
