@@ -23,5 +23,6 @@
   "#SteamDeckVerified_TestResult_GameOrLauncherDoesntExitCleanly": "This game does not exit cleanly and may require you to manually quit via the Steam overlay",
   "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "This game requires manually enabling controller support using in-game settings",
   "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "Some auxiliary functionality is not accessible on Steam Deck: map editor",
-  "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "This game is unsupported on Steam Deck due to use of an unsupported anti-cheat or multiplayer service"
+  "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "This game is unsupported on Steam Deck due to use of an unsupported anti-cheat or multiplayer service",
+  "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedLocalMultiplayer": "This game does not support external Bluetooth/USB controllers on Deck for local multiplayer"
 }
