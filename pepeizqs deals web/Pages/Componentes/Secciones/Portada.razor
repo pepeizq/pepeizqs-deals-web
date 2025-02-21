@@ -267,25 +267,15 @@
 </style>
 
 <div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
-	<div style="display: flex; align-items: center; gap: 20px;">
+	<div style="display: flex; align-items: center; gap: 30px; background-color: var(--fondoBotonPequeño); padding: 15px 25px;">
 		<div>
 			@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Index")
 		</div>
 
-		<div style="background-color: var(--fondoBotonPequeño); border: 1px solid var(--fondoOscuro); padding: 10px 20px;">
+		<div>
 			<RedesSociales idioma="@idioma" tamañoFuente="22px" />
 		</div>
 	</div>
-	
-	@* <div style="display: flex; align-items: center; gap: 20px;">
-		<div>
-			@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Index")
-		</div>
-
-		<div style="background-color: var(--fondoBotonPequeño); border: 1px solid var(--fondoOscuro); padding: 10px 20px;">
-			<Extension idioma="@idioma"/>
-		</div>
-	</div> *@
 </div>
 <div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); margin-bottom: 60px; display: flex; flex-direction: column; gap: 30px;">
 	@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
