@@ -15,9 +15,10 @@
 {
 	<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
 		<div style="display: flex; align-items: center; width: 100%;">
-			<div style="width: 100%; font-size: 23px; text-align: left;">
+			<div style="font-size: 23px; text-align: left;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews")
 			</div>
+			<div style="flex: 1;"></div>
 
 			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" tamañoFuente="20px" />
 		</div>
@@ -70,7 +71,7 @@
 							}
 
 							<div>
-								@texto
+								@((MarkupString)texto))								
 							</div>
 
 							if (noticiaMostrar.Tipo == Noticias.NoticiaTipo.Bundles)

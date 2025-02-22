@@ -1044,7 +1044,7 @@
 
                                                                                     @if (idiomaJuego.Texto == true)
                                                                                     {
-                                                                                         <div style="min-width: 14px; max-width: 16px;">
+                                                                                        <div style="min-width: 14px; max-width: 16px;">
                                                                                             <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                                                 <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
                                                                                             </svg>
@@ -1974,7 +1974,7 @@
                     {
                         juegosCurator.RemoveAt(posicion);
                     }
-                    
+
                     if (juegosCurator.Count > 0)
                     {
                         juegosCurator = juegosCurator.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Nombre).ToList();
@@ -2009,7 +2009,7 @@
                                                 </div>
                                             </button>
                                         }
-                                        
+
                                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; width: 100%;">
                                             @while (i < (curator.Posicion + 4))
                                             {
@@ -3994,29 +3994,25 @@
 
     public string BundlesPrepararPrecio(Bundles2.Bundle bundle, int juegoId)
     {
+        int tier = 0;
+
         foreach (var juego in bundle.Juegos)
         {
             if (juegoId.ToString() == juego.JuegoId)
             {
-                string precioTexto = juego.Tier.Precio;
+                tier = juego.Tier.Posicion;
+                break;
+            }
+        }
 
-                if (precioTexto != null)
+        if (tier > 0 && bundle.Tiers.Count > 0)
+        {
+            foreach (var bundleTier in bundle.Tiers)
+            {
+                if (tier == bundleTier.Posicion)
                 {
-                    precioTexto = precioTexto.Replace(".", ",");
-
-                    if (precioTexto.Contains(",") == true)
-                    {
-                        int int1 = precioTexto.IndexOf(",");
-
-                        if (int1 == precioTexto.Length - 2)
-                        {
-                            precioTexto = precioTexto + "0";
-                        }
-                    }
-
-                    precioTexto = precioTexto + "€";
-                    return precioTexto;
-                }
+                    return Herramientas.Precios.Euro(decimal.Parse(bundleTier.Precio));
+                }            
             }
         }
 
