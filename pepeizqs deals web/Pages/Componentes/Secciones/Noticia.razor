@@ -31,7 +31,7 @@
 	</div>
 }
 
-<div style="padding: 0px; overflow-x: hidden; overflow-y: auto;">
+<div style="padding: 0px;">
 	@if (string.IsNullOrEmpty(imagenDestacada) == false)
 	{
 		<div style="display: flex; justify-content: center; align-items: center; overflow: hidden;">
@@ -133,7 +133,7 @@
 	{
 		if (noticia.BundleId > 0)
 		{
-			<div>
+			<div style="position: relative; display: flex; flex-direction: column;">
 				<Bundle bundleId="@noticia.BundleId" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuarioId="@usuario?.Id"/>
 			</div>
 		}

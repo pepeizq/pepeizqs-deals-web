@@ -133,7 +133,7 @@ namespace Herramientas
 	{
 		#nullable disable
 
-        public static async Task<bool> Postear(Noticias.Noticia noticia)
+        public static async void Postear(Noticias.Noticia noticia)
 		{
             WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -142,35 +142,35 @@ namespace Herramientas
 
 			if (string.IsNullOrEmpty(correo) == false && string.IsNullOrEmpty(contraseña) == false)
 			{
-                IBlueskyClient cliente = new BlueskyClient(correo, contraseña);
+				IBlueskyClient cliente = new BlueskyClient(correo, contraseña);
 
-                string enlace = string.Empty;
+				string enlace = string.Empty;
 
-                if (string.IsNullOrEmpty(noticia.Enlace) == false)
-                {
-                    enlace = noticia.Enlace;
-                }
-                else
-                {
-                    if (noticia.Id == 0)
-                    {
-                        enlace = "/news/" + noticia.IdMaestra.ToString() + "/";
-                    }
-                    else
-                    {
-                        enlace = "/news/" + noticia.Id.ToString() + "/";
-                    }
-                }
+				if (string.IsNullOrEmpty(noticia.Enlace) == false)
+				{
+					enlace = noticia.Enlace;
+				}
+				else
+				{
+					if (noticia.Id == 0)
+					{
+						enlace = "/news/" + noticia.IdMaestra.ToString() + "/";
+					}
+					else
+					{
+						enlace = "/news/" + noticia.Id.ToString() + "/";
+					}
+				}
 
-                if (string.IsNullOrEmpty(enlace) == false)
-                {
-                    if (enlace.Contains("https://pepeizqdeals.com") == false)
-                    {
-                        enlace = "https://pepeizqdeals.com" + enlace;
-                    }
-                }
+				if (string.IsNullOrEmpty(enlace) == false)
+				{
+					if (enlace.Contains("https://pepeizqdeals.com") == false)
+					{
+						enlace = "https://pepeizqdeals.com" + enlace;
+					}
+				}
 
-                Uri enlaceFinal = new Uri(enlace);
+				Uri enlaceFinal = new Uri(enlace);
 
 				bool error = false;
 
@@ -191,22 +191,18 @@ namespace Herramientas
 						};
 
 						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
-						return true;
 					}
 				}
-				catch 
-				{ 
+				catch
+				{
 					error = true;
 				}
-				
+
 				if (error == true)
 				{
 					await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
-					return true;
 				}
-            }        
-			
-			return false;
+			}
 		}
 	}
 }

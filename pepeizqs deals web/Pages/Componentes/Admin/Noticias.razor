@@ -416,10 +416,12 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             else if (noticiaTipoSeleccionada == NoticiaTipo.Web.ToString())
             {
                 noticia.Imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+                noticia.Fecha = DateTime.Now.AddDays(7);
             }
             else if (noticiaTipoSeleccionada == NoticiaTipo.Patreon.ToString())
             {
                 noticia.Imagen = "https://pepeizqdeals.com/logo/logoentradapatreon.webp";
+                noticia.Fecha = DateTime.Now.AddDays(7);
             }
         }
     }
@@ -543,7 +545,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 
                 try
                 {
-                    await Herramientas.Bluesky.Postear(noticiaAñadir);
+                    Herramientas.Bluesky.Postear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
@@ -579,6 +581,8 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                         BaseDatos.Errores.Insertar.Mensaje("Enviar Notificaciones Push Noticia", ex);
                     }
                 }
+
+                await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticiaAñadir.Imagen, noticiaAñadir.Id.ToString() + "-noticia");
                
                 noticia = new Plantilla();
 

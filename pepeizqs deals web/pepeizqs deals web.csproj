@@ -19,16 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="APIs\WinGameStore\Tienda.cs~RF63534e.TMP" />
-    <None Remove="appsettings.json~RF12e4885.TMP" />
-    <None Remove="Idiomas\News.es-ES.json~RF63e628.TMP" />
-    <None Remove="Pages\Componentes\Cuenta\Juegos\vtvorkc0.rpr~" />
-    <None Remove="Pages\Componentes\Secciones\am2uy0r2.1v5~" />
-    <None Remove="Pages\Componentes\Secciones\Bundle.razor~RF1e1c8e.TMP" />
-    <None Remove="Plataformas\Plataforma.cs~RF333f462.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>

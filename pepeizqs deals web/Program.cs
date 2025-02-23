@@ -13,6 +13,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
 using System.Security.Claims;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -153,7 +154,7 @@ builder.Services.AddSingleton<Tareas.Tiendas.GamesplanetUs>();
 builder.Services.AddSingleton<Tareas.Tiendas.WinGameStore>();
 builder.Services.AddSingleton<Tareas.Tiendas.IndieGala>();
 builder.Services.AddSingleton<Tareas.Tiendas.GameBillet>();
-builder.Services.AddSingleton<Tareas.Tiendas._2Game>();
+//builder.Services.AddSingleton<Tareas.Tiendas._2Game>();
 builder.Services.AddSingleton<Tareas.Tiendas.DLGamer>();
 builder.Services.AddSingleton<Tareas.Tiendas.Voidu>();
 builder.Services.AddSingleton<Tareas.Tiendas.JoyBuggy>();
@@ -198,7 +199,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.WinGameStore>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.IndieGala>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.GameBillet>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas._2Game>());
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas._2Game>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.DLGamer>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Voidu>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.JoyBuggy>());
@@ -407,7 +408,14 @@ app.UseDeveloperExceptionPage();
 //}
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "imagenes", "webps")),
+	RequestPath = "/imagenes/webps"
+});
+
+app.MapStaticAssets();
 
 #region Compresion (Primero)
 
@@ -427,7 +435,7 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.MapRazorPages();
+app.MapRazorPages().WithStaticAssets();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
