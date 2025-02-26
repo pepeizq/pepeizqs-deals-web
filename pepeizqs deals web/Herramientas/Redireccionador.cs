@@ -11,7 +11,7 @@ namespace Herramientas
 	public class Redireccionador : Controller
 	{
 		[ResponseCache(Duration = 6000)]
-		[HttpGet("extension/steam/{id}")]
+		[HttpGet("extension/steam/{id}/")]
 		public IActionResult ExtensionSteam(int Id)
 		{
 			Extension juego = Buscar.Steam(Id.ToString());
@@ -21,6 +21,29 @@ namespace Herramientas
 				if (juego.Id > 0)
 				{
 					return Ok(juego);
+				}
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("extension/steam/{id}/{clave}/")]
+		public IActionResult ExtensionSteam2(int id, string clave)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+			string claveExtension = builder.Configuration.GetValue<string>("Extension:Clave");
+
+			if (clave == claveExtension)
+			{
+				Extension juego = Buscar.Steam(id.ToString());
+
+				if (juego != null)
+				{
+					if (juego.Id > 0)
+					{
+						return Ok(juego);
+					}
 				}
 			}
 
@@ -38,6 +61,29 @@ namespace Herramientas
 				if (juego.Id > 0)
 				{
 					return Ok(juego);
+				}
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
+		[HttpGet("extension/epic/{slug}/{clave}/")]
+		public IActionResult ExtensionEpic2(string slug, string clave)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+			string claveExtension = builder.Configuration.GetValue<string>("Extension:Clave");
+
+			if (clave == claveExtension)
+			{
+				Extension juego = Buscar.EpicGames(slug);
+
+				if (juego != null)
+				{
+					if (juego.Id > 0)
+					{
+						return Ok(juego);
+					}
 				}
 			}
 

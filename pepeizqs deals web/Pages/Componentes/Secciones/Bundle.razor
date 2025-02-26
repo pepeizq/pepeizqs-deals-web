@@ -12,19 +12,19 @@
 
 <script>
 	window.ChangeUrl = function (url) {
-		history.pushState(null, '', url);
+	history.pushState(null, '', url);
 	}
 </script>
 
 <style>
 	.bundle-tabla {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
 
 	@@media (max-width: 800px) {
-		.bundle-tabla {
-			grid-template-columns: 1fr 1fr 1fr;
-		}
+	.bundle-tabla {
+	grid-template-columns: 1fr 1fr 1fr;
+	}
 	}
 </style>
 
@@ -247,12 +247,12 @@
 									usuarioConectado = true;
 								}
 
-																<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()')">
-																	<div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno" style="max-width: 460px; padding: 10px; font-size: 14px;">
-																		<div>@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip", "Bundle")</div>
+								<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()')">
+									<div id="tooltip-@juego.JuegoId.ToString()" class="tooltip-relleno" style="max-width: 460px; padding: 10px; font-size: 14px;">
+										<div>@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip", "Bundle")</div>
 
-																		<div style="margin-top: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip2", "Bundle")</div>
-																	</div>
+										<div style="margin-top: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Tooltip2", "Bundle")</div>
+									</div>
 
 									@{
 										List<string> dlcs = new List<string>();
@@ -266,15 +266,49 @@
 										}
 									}
 
-																	<button @onclick="(e => AbrirJuego(e, juego.Juego, dlcs, Herramientas.Tooltip.Generar(idioma, juego.Juego, juego.DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado)))" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor">
-																		<div style="padding: 0px;">
-																			<div style="text-align: center;">
-																				<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
-																			</div>
+									<button @onclick="(e => AbrirJuego(e, juego.Juego, dlcs, Herramientas.Tooltip.Generar(idioma, juego.Juego, juego.DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado)))" class="boton-pequeño" style="padding: 0px; text-align: center; position: relative; @fondoColor">
+										<div style="padding: 0px; position: relative;">
+											@{
+												bool añadirNuevo = false;
 
-																			<div style="display: flex; align-items: center;">
-																				<div style="display: flex; align-items: center; gap: 15px; padding: 15px; width: 100%;">
-																					<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
+												if (juego.Juego.Bundles != null)
+												{
+													if (juego.Juego.Bundles.Count == 1)
+													{
+														añadirNuevo = true;
+													}
+												}
+
+                                                if (juego.Juego.Suscripciones != null)
+                                                {
+                                                    if (juego.Juego.Suscripciones.Count > 0)
+                                                    {
+                                                        foreach (var suscripcion in juego.Juego.Suscripciones)
+                                                        {
+                                                            if (suscripcion.DRM == juego.DRM)
+                                                            {
+                                                                añadirNuevo = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+												if (añadirNuevo == true)
+												{
+													<div style="position: absolute; top: -15px; right: -15px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 5px 10px; font-size: 14px;">
+														@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Bundle")
+													</div>
+												}
+											}
+
+											<div style="text-align: center;">
+												<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
+											</div>
+
+											<div style="display: flex; align-items: center;">
+												<div style="display: flex; align-items: center; gap: 15px; padding: 15px; width: 100%;">
+													<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
 
 													@if (juego.Juego.PrecioMinimosHistoricos != null)
 													{
@@ -282,21 +316,21 @@
 														{
 															if (historico.DRM == juego.DRM)
 															{
-																											<div style="text-align: center; font-size: 14px;">
+																<div style="text-align: center; font-size: 14px;">
 																	@Herramientas.Idiomas.BuscarTexto(idioma, "Game1", "Bundle"): @ArreglarPrecio(historico.Precio)
-																											</div>
+																</div>
 
 																break;
 															}
 														}
 													}	
-																				</div>
+												</div>
 
 												@if (juego.DLCs != null)
 												{
 													if (juego.DLCs.Count > 0)
 													{
-																								<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; width: 42%;">
+														<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; width: 42%;">
 															@if (juego.DLCs.Count == 1)
 															{
 																@("+" + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs1", "Bundle"))
@@ -305,17 +339,17 @@
 															{
 																@string.Format("+ " + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs2", "Bundle"), juego.DLCs.Count)
 															}
-																								</div>
+														</div>
 													}
 												}
-																			</div>
-																		</div>
-																	</button>
-																</div>
-							}
-						}
 											</div>
 										</div>
+									</button>
+								</div>
+							}
+						}
+					</div>
+				</div>
 
 				@if (bundle.Pick == true)
 				{

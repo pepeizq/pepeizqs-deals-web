@@ -661,12 +661,12 @@ namespace BaseDatos.Juegos
 				{
 					if (nuevoJuego.Idiomas.Count > 0)
 					{
-						if (juego.Idiomas != null)
+						foreach (var nuevoIdioma in nuevoJuego.Idiomas)
 						{
-							foreach (var nuevoIdioma in nuevoJuego.Idiomas)
-							{
-								bool existe = false;
+							bool existe = false;
 
+							if (juego.Idiomas != null)
+							{
 								foreach (var viejoIdioma in juego.Idiomas)
 								{
 									if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
@@ -679,11 +679,11 @@ namespace BaseDatos.Juegos
 										break;
 									}
 								}
+							}
 
-								if (existe == false)
-								{
-									juego.Idiomas.Add(nuevoIdioma);
-								}
+							if (existe == false)
+							{
+								juego.Idiomas.Add(nuevoIdioma);
 							}
 						}
 					}
