@@ -307,6 +307,15 @@
 							</div>
 						</div>
 					</div>
+
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							Ocultar Portada
+						</div>
+						<div class="checkbox-caja" style="height: 24px;">
+							<input type="checkbox" class="checkbox-interior" checked="@textoOcultarPortada" @onchange="@(e => TextoCambiaOcultarPortada(e))">
+						</div>
+					</div>
 				</div>
 
 				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px; padding: 20px 40px;">
@@ -617,6 +626,8 @@
 		{
 			textoEdad = Convert.ToBoolean(juego.MayorEdad);
 		}
+
+		textoOcultarPortada = juego.OcultarPortada;
 
 		tipo = juego.Tipo.ToString();
 
@@ -963,6 +974,26 @@
 			{
 				juego.MayorEdad = textoEdad.ToString();
 				BaseDatos.Juegos.Actualizar.MayorEdad(juego, conexion);
+			}
+		}
+	}
+
+	private bool textoOcultarPortada = false;
+
+	private void TextoCambiaOcultarPortada(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			textoOcultarPortada = Convert.ToBoolean(nuevoTexto);
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				juego.OcultarPortada = textoOcultarPortada;
+				BaseDatos.Juegos.Actualizar.OcultarPortada(juego, conexion);
 			}
 		}
 	}

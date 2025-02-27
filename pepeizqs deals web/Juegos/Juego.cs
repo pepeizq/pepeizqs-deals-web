@@ -57,6 +57,7 @@ namespace Juegos
 		public string ExeEpic { get; set; }
 		public string ExeUbisoft { get; set; }
 		public string ExeEA { get; set; }
+		public bool OcultarPortada { get; set; }
 	}
 
 	public static class JuegoCrear

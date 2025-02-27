@@ -537,15 +537,27 @@ namespace BaseDatos.Juegos
 			}
 		}
 
-		public static void Nombre(Juego juego, SqlConnection conexion)
+		public static void OcultarPortada(Juego juego, SqlConnection conexion = null)
 		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
 			string sqlActualizar = "UPDATE juegos " +
-					"SET nombre=@nombre WHERE id=@id";
+					"SET ocultarPortada=@ocultarPortada WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
 				comando.Parameters.AddWithValue("@id", juego.Id);
-				comando.Parameters.AddWithValue("@nombre", juego.Nombre);
+				comando.Parameters.AddWithValue("@ocultarPortada", juego.OcultarPortada);
 
 				try
 				{
@@ -554,6 +566,43 @@ namespace BaseDatos.Juegos
 				catch
 				{
 
+				}
+			}
+
+			bool actualizar = false;
+			string buscarMinimos = "SELECT * FROM seccionMinimos WHERE idMaestra=@idMaestra";
+
+			using (SqlCommand comando2 = new SqlCommand(buscarMinimos, conexion))
+			{
+				comando2.Parameters.AddWithValue("@idMaestra", juego.Id);
+
+				using (SqlDataReader lector = comando2.ExecuteReader())
+				{
+					if (lector.Read() == true)
+					{
+						actualizar = true;
+					}
+				}
+			}
+
+			if (actualizar == true)
+			{
+				string actualizarMinimos = "UPDATE seccionMinimos " +
+					"SET ocultarPortada=@ocultarPortada WHERE idMaestra=@idMaestra";
+
+				using (SqlCommand comando3 = new SqlCommand(actualizarMinimos, conexion))
+				{
+					comando3.Parameters.AddWithValue("@idMaestra", juego.Id);
+					comando3.Parameters.AddWithValue("@ocultarPortada", juego.OcultarPortada);
+
+					try
+					{
+						comando3.ExecuteNonQuery();
+					}
+					catch
+					{
+
+					}
 				}
 			}
 		}

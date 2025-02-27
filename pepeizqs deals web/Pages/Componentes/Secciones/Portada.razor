@@ -56,6 +56,9 @@
 	object-fit: cover;
 	overflow: hidden;
 	transition: transform .2s;
+	min-width: 100px;
+	min-height: 50px;
+	max-width: 100%;
 	}
 
 	.destacados-galeria-captura:hover {
@@ -70,6 +73,8 @@
 	.destacado-logo-medidas {
 	max-width: 250px;
 	max-height: 200px;
+	min-width: 150px;
+    min-height: 120px;
 	}
 
 	.destacado-logo-alto {
@@ -92,8 +97,10 @@
 	}
 
 	.destacado-logo-medidas {
-	max-width: 150px;
-	max-height: 120px;
+		max-width: 150px;
+		max-height: 120px;
+		min-width: 100px;
+            min-height: 80px;
 	}
 
 	.destacado-logo-alto {
@@ -122,52 +129,73 @@
 	}
 </style>
 
-@if (juegosDestacadosMostrar.Count > 0)
-{
-	<div style="margin-bottom: 60px; position: relative;">
-		@if (juegoSeleccionado != null)
-		{
-			string colorSeleccionado = "var(--fondoOscuro)";
+<style>
+	.noticias-caja {
+		padding: 30px;
+	}
 
-			if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
+	.noticia-enlaces {
+		flex-direction: row;
+	}
+
+	@@media (max-width: 800px) {
+		.noticias-caja {
+			padding: 15px;
+		}
+
+		.noticia-enlaces {
+			flex-direction: column;
+		}
+	}
+</style>
+
+<div style="display: flex; flex-direction: column; gap: 60px;">
+	@if (juegosDestacadosMostrar.Count > 0)
+	{
+        <div>
+			@if (juegoSeleccionado != null)
 			{
-				colorSeleccionado = "var(--fondoBien)";
-			}
-			else
-			{
-				if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+				string colorSeleccionado = "var(--fondoOscuro)";
+
+				if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM) == true)
 				{
-					colorSeleccionado = "var(--fondoAlerta)";
+					colorSeleccionado = "var(--fondoBien)";
 				}
-			}
+				else
+				{
+					if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juegoSeleccionado, juegoSeleccionado.PrecioMinimosHistoricos[0].DRM, true) == true)
+					{
+						colorSeleccionado = "var(--fondoAlerta)";
+					}
+				}
 
-			<a href="/game/@juegoSeleccionado.IdMaestra.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
-				<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
-					<div class="destacado-mostrar" @onmouseover="@(e => EnseñarDestacadoVideo(e, juegoSeleccionado))">
-						@if (string.IsNullOrEmpty(videoDestacado) == false)
-						{
-							<div class="destacado-fondo">
-								<img src="@fondoDestacado" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
-							</div>
+				<a href="/game/@juegoSeleccionado.IdMaestra.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegoSeleccionado.Nombre)/" style="cursor: pointer; border: 0px; padding: 0px; display: block; width: 100%;">
+					<div style="position: relative; padding: 3px; background-color: @colorSeleccionado;">
+						<div class="destacado-mostrar" @onmouseover="@(e => EnseñarDestacadoVideo(e, juegoSeleccionado))">
+							@if (string.IsNullOrEmpty(videoDestacado) == false)
+							{
+								<div class="destacado-fondo">
+									<img src="@fondoDestacado" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+								</div>
 
-							<div class="destacado-video">
-								<video src="@videoDestacado" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
-							</div>
-						}
-						else
-						{
-							<img src="@fondoDestacado" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
-						}
+								<div class="destacado-video">
+									<video src="@videoDestacado" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+								</div>
+							}
+							else
+							{
+								<img src="@fondoDestacado" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
+							}
 
-						<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
-									display: flex; align-items: end;" class="destacado-hueco">
+							<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
+								display: flex; align-items: end;" class="destacado-hueco">
 
-							<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
-								<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
-							</div>
+								<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
+									<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
+								</div>
 
-							<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-								<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM"/>
+								<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
+									<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
 
 								@{
 									string iconoTienda = string.Empty;
@@ -183,240 +211,225 @@
 									}
 								}
 
-								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store"/>
+									<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
 
-								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+									<div class="destacado-precio-descuento" style="background-color: darkgreen;">
 									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
-								</div>
-								<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
+									</div>
+									<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
 									@Herramientas.Precios.Euro(juegoSeleccionado.PrecioMinimosHistoricos[0].Precio)
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</a>
-		}
-
-		<div class="destacados-galeria-fila">
-			@foreach (var destacado in juegosDestacadosMostrar)
-			{
-				bool mostrarBarra = false;
-				string opacidad = string.Empty;
-
-				if (juegoSeleccionado != null)
-				{
-					if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
-					{
-						opacidad = "opacity: 1;";
-						mostrarBarra = true;
-					}
-				}
-
-				string colorFondoDestacado = "background-color: var(--fondoOscuro);";
-
-				if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
-				{
-					colorFondoDestacado = "background-color: var(--fondoBien);";
-				}
-				else
-				{
-					if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
-					{
-						colorFondoDestacado = "background-color: var(--fondoAlerta);";
-					}
-				}
-
-				<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@colorFondoDestacado">
-					@{
-						string miniatura = "imagenes/webps/" + destacado.Id.ToString() + "-destacado-miniatura.webp";
-					}
-
-					<img class="destacados-galeria-captura destacados-galeria-cursor" src="@miniatura" style="width: 100%; @opacidad" alt="@destacado.Nombre">
-
-					@if (mostrarBarra == true)
-					{
-						<div style="height: 3px; width: 100%; background-color: transparent;">
-							<div class="destacado-progreso" style="height: 3px;" />
-						</div>
-					}
-				</div>
-			}
-		</div>
-	</div>
-}
-
-<style>
-	.noticias-caja {
-	padding: 30px;
-	}
-
-	.noticia-enlaces {
-	flex-direction: row;
-	}
-
-	@@media (max-width: 800px) {
-	.noticias-caja {
-	padding: 15px;
-	}
-
-	.noticia-enlaces {
-	flex-direction: column;
-	}
-	}
-</style>
-
-<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
-	<div style="display: flex; align-items: center; gap: 30px; padding: 15px 25px;">
-		<div>
-			@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Index")
-		</div>
-
-		<div>
-			<RedesSociales idioma="@idioma" tamañoFuente="22px" />
-		</div>
-	</div>
-</div>
-
-@{
-	string noHayNoticiasEstilo = string.Empty;
-
-	if (noticiasTresDias.Count == 0)
-	{
-		noHayNoticiasEstilo = "max-width: 1000px; margin-left: auto; margin-right: auto;";
-	}
-
-	<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); margin-bottom: 60px; display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
-		@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
-		{
-			<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
-				<Virtualize Context="noticia" Items="noticiasTresDias">
-					<ItemContent>
-						<CajaNoticia idioma="@idioma" noticia="@noticia" />
-					</ItemContent>
-				</Virtualize>
-			</div>
-		}
-
-		@if (noticiasSemana.Count > 0)
-		{
-			<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Index")">
-				<button class="boton-pequeño" @onclick="CerrarNoticiasSemana" style="padding: 0px; width: fit-content; background-color: transparent;">
-					<div style="max-width: 22px; max-height: 22px;">
-						<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-							<path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
-						</svg>
-					</div>
-				</button>
-
-				<Virtualize Context="noticia" Items="noticiasSemana">
-					<ItemContent>
-						<CajaNoticia idioma="@idioma" noticia="@noticia" />
-					</ItemContent>
-				</Virtualize>
-			</div>
-		}
-
-		<div class="noticia-enlaces" style="display: flex; align-items: center; gap: 40px; justify-content: center;">
-			@if (noticiasSemana.Count == 0)
-			{
-				<button class="boton-pequeño" @onclick="CargarNoticiasSemana" style="padding: 15px 30px; width: fit-content;">
-					<div>
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Index")
-					</div>
-				</button>
+				</a>
 			}
 
-			<a class="boton-pequeño" style="padding: 15px 30px; width: fit-content;" href="/last-news">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Index")
-			</a>
+			<div class="destacados-galeria-fila">
+				@foreach (var destacado in juegosDestacadosMostrar)
+				{
+					bool mostrarBarra = false;
+					string opacidad = string.Empty;
+
+					if (juegoSeleccionado != null)
+					{
+						if (destacado.IdMaestra == juegoSeleccionado.IdMaestra)
+						{
+							opacidad = "opacity: 1;";
+							mostrarBarra = true;
+						}
+					}
+
+					string colorFondoDestacado = "background-color: var(--fondoOscuro);";
+
+					if (Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, destacado, destacado.PrecioMinimosHistoricos[0].DRM) == true)
+					{
+						colorFondoDestacado = "background-color: var(--fondoBien);";
+					}
+					else
+					{
+						if (Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, destacado, destacado.PrecioMinimosHistoricos[0].DRM, true) == true)
+						{
+							colorFondoDestacado = "background-color: var(--fondoAlerta);";
+						}
+					}
+
+					<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@colorFondoDestacado">
+						@{
+							string miniatura = "imagenes/webps/" + destacado.Id.ToString() + "-destacado-miniatura.webp";
+						}
+
+						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@miniatura" style="@opacidad" alt="@destacado.Nombre">
+
+						@if (mostrarBarra == true)
+						{
+							<div style="height: 3px; width: 100%; background-color: transparent;">
+								<div class="destacado-progreso" style="height: 3px;" />
+							</div>
+						}
+					</div>
+				}
+			</div>
 		</div>
-	</div>
-}
+	}
 
-@if (juegosMinimosMostrar.Count > 0)
-{
-	<div style="max-width: 1000px; margin: auto;">
-		<div style="display: flex; font-size: 20px; align-items: center; justify-content: center;">
-			<div style="display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%;">
-				<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Index")</a>
 
-				<div class="tooltip2">
-					<div style="max-width: 16px; max-height: 16px;">
-						<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-							<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-						</svg>
-					</div>
+	<div>
+		<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
+			<div style="display: flex; align-items: center; gap: 30px; padding: 15px 25px;">
+				<div>
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Index")
+				</div>
 
-					<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Index")
-					</div>
+				<div>
+					<RedesSociales idioma="@idioma" tamañoFuente="22px" />
 				</div>
 			</div>
-
-			<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: auto; padding: 10px 15px; margin-left: 30px; border: 0px; color: var(--colorTextoVisitado);">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Filter", "Index")
-			</button>
-		</div>
-
-		<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
-			<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
-				<ItemContent>
-					<CajaJuego idioma="@idioma" juego="@juego" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Portada" />
-				</ItemContent>
-			</Virtualize>
 		</div>
 
 		@{
-			bool llegadoLimite = false;
+			string noHayNoticiasEstilo = string.Empty;
 
-			if (cantidadJuegosMinimos > juegosMinimosMostrar.Count)
+			if (noticiasTresDias.Count == 0)
 			{
-				llegadoLimite = true;
+				noHayNoticiasEstilo = "max-width: 1000px; margin-left: auto; margin-right: auto;";
 			}
-			else
-			{
-				if (usuarioLogeado == true)
+
+			<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
+				@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 				{
-					if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
+						<Virtualize Context="noticia" Items="noticiasTresDias">
+							<ItemContent>
+								<CajaNoticia idioma="@idioma" noticia="@noticia" />
+							</ItemContent>
+						</Virtualize>
+					</div>
+				}
+
+				@if (noticiasSemana.Count > 0)
+				{
+					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Index")">
+						<button class="boton-pequeño" @onclick="CerrarNoticiasSemana" style="padding: 0px; width: fit-content; background-color: transparent;">
+							<div style="max-width: 22px; max-height: 22px;">
+								<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+									<path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+								</svg>
+							</div>
+						</button>
+
+						<Virtualize Context="noticia" Items="noticiasSemana">
+							<ItemContent>
+								<CajaNoticia idioma="@idioma" noticia="@noticia" />
+							</ItemContent>
+						</Virtualize>
+					</div>
+				}
+
+				<div class="noticia-enlaces" style="display: flex; align-items: center; gap: 40px; justify-content: center;">
+					@if (noticiasSemana.Count == 0)
 					{
-						if (cantidadJuegosMinimos > 950 && cantidadJuegosMinimos <= 1000)
+						<button class="boton-pequeño" @onclick="CargarNoticiasSemana" style="padding: 15px 30px; width: fit-content;">
+							<div>
+								@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Index")
+							</div>
+						</button>
+					}
+
+					<a class="boton-pequeño" style="padding: 15px 30px; width: fit-content;" href="/last-news">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Index")
+					</a>
+				</div>
+			</div>
+		}
+	</div>
+
+	@if (juegosMinimosMostrar.Count > 0)
+	{
+		<div style="max-width: 1000px; width: 100vw; margin: auto;">
+			<div style="display: flex; font-size: 20px; align-items: center; gap: 30px; justify-content: center;">
+				<div style="display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%;">
+					<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Index")</a>
+
+					<div class="tooltip2">
+						<div style="max-width: 16px; max-height: 16px;">
+							<svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+								<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+							</svg>
+						</div>
+
+						<div class="tooltip-abrir tooltip-derecha" style="padding: 20px; min-width: 400px; max-width: 600px;">
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Index")
+						</div>
+					</div>
+				</div>
+
+				<button class="boton-pequeño" @onclick="EnseñarFiltrado" style="width: fit-content; padding: 10px 15px; border: 0px; color: var(--colorTextoVisitado);">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Filter", "Index")
+				</button>
+			</div>
+
+			<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
+				<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
+					<ItemContent>
+						<CajaJuego idioma="@idioma" juego="@juego" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Portada" />
+					</ItemContent>
+				</Virtualize>
+			</div>
+
+			@{
+				bool llegadoLimite = false;
+
+				if (cantidadJuegosMinimos > juegosMinimosMostrar.Count)
+				{
+					llegadoLimite = true;
+				}
+				else
+				{
+					if (usuarioLogeado == true)
+					{
+						if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || global::BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
 						{
-							llegadoLimite = true;
+							if (cantidadJuegosMinimos > 950 && cantidadJuegosMinimos <= 1000)
+							{
+								llegadoLimite = true;
+							}
+						}
+						else
+						{
+							if (cantidadJuegosMinimos > 450 && cantidadJuegosMinimos <= 500)
+							{
+								llegadoLimite = true;
+							}
 						}
 					}
 					else
 					{
-						if (cantidadJuegosMinimos > 450 && cantidadJuegosMinimos <= 500)
+						if (cantidadJuegosMinimos > 150 && cantidadJuegosMinimos <= 200)
 						{
 							llegadoLimite = true;
 						}
 					}
 				}
-				else
-				{
-					if (cantidadJuegosMinimos > 150 && cantidadJuegosMinimos <= 200)
+
+				<div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 30px;">
+					@if (llegadoLimite == false)
 					{
-						llegadoLimite = true;
+						<button class="boton-pequeño" @onclick="CargarMasMinimos" style="width: fit-content; padding: 15px 30px;">
+							@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Index")
+						</button>
 					}
-				}
+
+					<a class="boton-pequeño" href="/historical-lows" style="width: fit-content; padding: 15px 30px;">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Index")
+					</a>
+				</div>
 			}
+		</div>	
+	}
 
-			<div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 30px;">
-				@if (llegadoLimite == false)
-				{
-					<button class="boton-pequeño" @onclick="CargarMasMinimos" style="width: fit-content; padding: 15px 30px;">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Index")
-					</button>
-				}
-
-				<a class="boton-pequeño" href="/historical-lows" style="width: fit-content; padding: 15px 30px;">
-					@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Index")
-				</a>
-			</div>
-		}
-	</div>	
-}
+</div>
 
 @if (mostrarFiltrado == true)
 {

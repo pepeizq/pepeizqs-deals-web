@@ -486,6 +486,15 @@ namespace BaseDatos.Juegos
 			}
 			catch { }
 
+			try
+			{
+				if (lector.IsDBNull(42) == false)
+				{
+					juego.OcultarPortada = lector.GetBoolean(42);
+				}
+			}
+			catch { }
+
 			return juego;
 		}
 
