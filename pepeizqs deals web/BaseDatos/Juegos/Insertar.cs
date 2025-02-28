@@ -121,9 +121,18 @@ namespace BaseDatos.Juegos
 				añadirIdMaestra2 = ", @idMaestra";
 			}
 
+			string añadirOcultarPortada1 = null;
+			string añadirOcultarPortada2 = null;
+
+			if (juego.OcultarPortada == true)
+			{
+				añadirOcultarPortada1 = ", ocultarPortada";
+				añadirOcultarPortada2 = ", @ocultarPortada";
+			}
+
 			string sqlAñadir = "INSERT INTO " + tabla + " " +
-					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirEtiquetas1 + añadirIdiomas1 + añadirDeck1 + añadirIdMaestra1 + ") VALUES " +
-					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirEtiquetas2 + añadirIdiomas2 + añadirDeck2 + añadirIdMaestra2 + ") ";
+					"(idSteam, idGog, nombre, tipo, fechaSteamAPIComprobacion, imagenes, precioMinimosHistoricos, precioActualesTiendas, analisis, caracteristicas, media, nombreCodigo, categorias, generos" + añadirBundles1 + añadirGratis1 + añadirSuscripciones1 + añadirMaestro1 + añadirF2P1 + añadirMayorEdad1 + añadirEtiquetas1 + añadirIdiomas1 + añadirDeck1 + añadirIdMaestra1 + añadirOcultarPortada1 + ") VALUES " +
+					"(@idSteam, @idGog, @nombre, @tipo, @fechaSteamAPIComprobacion, @imagenes, @precioMinimosHistoricos, @precioActualesTiendas, @analisis, @caracteristicas, @media, @nombreCodigo, @categorias, @generos" + añadirBundles2 + añadirGratis2 + añadirSuscripciones2 + añadirMaestro2 + añadirF2P2 + añadirMayorEdad2 + añadirEtiquetas2 + añadirIdiomas2 + añadirDeck2 + añadirIdMaestra2 + añadirOcultarPortada2 + ") ";
 
 			if (noExiste == true)
 			{
@@ -206,13 +215,18 @@ namespace BaseDatos.Juegos
 					comando.Parameters.AddWithValue("@idMaestra", juego.IdMaestra);
 				}
 
+				if (juego.OcultarPortada == true)
+				{
+					comando.Parameters.AddWithValue("@ocultarPortada", juego.OcultarPortada);
+				}
+
 				try
 				{
 					comando.ExecuteNonQuery();
 				}
 				catch (Exception ex)
 				{
-					Errores.Insertar.Mensaje("Añadir juego " + juego.Nombre, ex);
+					Errores.Insertar.Mensaje("Añadir Juego " + juego.Nombre, ex);
 				}				
 			}
 		}

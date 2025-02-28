@@ -64,7 +64,7 @@ namespace Tareas
 								{
 									foreach (Noticias.Noticia noticia in noticias)
 									{
-										await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia");
+										await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia", 200, 110);
 									}
 								}
 							}

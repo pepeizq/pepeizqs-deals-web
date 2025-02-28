@@ -397,6 +397,17 @@ builder.Services.AddCors(policy => {
 
 #endregion
 
+#region Mejora velocidad carga
+
+builder.Services.AddHsts(opciones =>
+{
+	opciones.Preload = true;
+	opciones.IncludeSubDomains = true;
+	opciones.MaxAge = TimeSpan.FromDays(730);
+});
+
+#endregion
+
 var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())

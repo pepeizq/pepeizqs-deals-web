@@ -66,12 +66,12 @@
                 </div>
             </div>
 
-            <div class="suscripciones-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; margin-top: 30px;">
+            <div class="suscripciones-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
                 @foreach (var suscripcionActual in suscripcionesActuales)
                 {
                     <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño suscripcion-grid" style="display: flex; flex-direction: column; align-items: center;">
-                        <div style="max-width: 200px; height: 70px;">
-                            <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" style="width: 100%; height: 100%; object-fit: contain;" />
+                        <div style="width: 200px; height: 70px; display: flex; justify-content: center;">
+                            <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                         </div>
 
                         @if (suscripcionActual.Juegos != null)
@@ -104,12 +104,8 @@
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     @if (suscripcionActual.Tipo.Precio > 0)
                                     {
-                                        string precioTexto = suscripcionActual.Tipo.Precio.ToString();
-                                        precioTexto = precioTexto.Replace(".", ",");
-                                        precioTexto = precioTexto + "€";
-
                                         <div>
-                                            @precioTexto
+                                            @Herramientas.Precios.Euro((decimal)suscripcionActual.Tipo.Precio)
                                         </div>
                                     }
 
@@ -254,19 +250,15 @@ else
             </button>
 
             <div style="display: flex; align-items: center; gap: 30px; width: 100%;">
-                <div style="max-width: 150px;">
-                    <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="width: 100%; height: 100%; object-fit: contain; object-position: 0 50%;" />
+                <div style="width: 150px; height: 60px; display: flex; justify-content: center;">
+                    <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     @if (suscripcionSeleccionadaTipo.Precio > 0)
                     {
-                        string precioTexto = suscripcionSeleccionadaTipo.Precio.ToString();
-                        precioTexto = precioTexto.Replace(".", ",");
-                        precioTexto = precioTexto + "€";
-
                         <div>
-                            @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Subscriptions"), precioTexto)
+                            @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Subscriptions"), Herramientas.Precios.Euro((decimal)suscripcionSeleccionadaTipo.Precio))
                         </div>
                     }
 
@@ -317,7 +309,7 @@ else
                         </div>
                     </button>
 
-                    <div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño);">
+                    <div class="menu-dropdown-contenido" style="right: 0; width: 100%; background-color: var(--fondoBotonPequeño); z-index: 1001;">
                         <button @onclick="@(e => FiltrarDRM(e))" class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;">
                             @Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Subscriptions")
                         </button>
@@ -338,9 +330,11 @@ else
 
         @if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
         {
-            <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
-                @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Subscriptions")
-            </a>
+            <div style="position: sticky; top: var(--alturaCabecera); z-index: 1000;">
+                <a href="@Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px;" target="_blank">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Subscriptions")
+                </a>
+            </div>
         }
 
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">

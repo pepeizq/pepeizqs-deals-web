@@ -1,13 +1,15 @@
 ﻿#nullable disable
 
 using ImageProcessor;
+using ImageProcessor.Imaging;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
+using System.Drawing;
 
 namespace Herramientas.Ficheros
 {
 	public static class Imagenes
 	{
-		public static async Task<string> DescargarYGuardar(string enlace, string nombreFichero)
+		public static async Task<string> DescargarYGuardar(string enlace, string nombreFichero, int ancho, int alto)
 		{
 			if (File.Exists("./wwwroot/imagenes/webps/" + nombreFichero + ".webp") == false)
 			{
@@ -25,7 +27,14 @@ namespace Herramientas.Ficheros
 						{
 							FormFile ficheroWebp = new FormFile(new MemoryStream(bytes), 0, bytes.Length, null, nombreFichero + ".webp");
 
-							imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Quality(50).Save(ficheroWebpStream);
+							if (ancho > 0 && alto > 0)
+							{
+								imagenFabrica.Load(ficheroWebp.OpenReadStream()).Resize(new ResizeLayer(new Size(ancho, alto))).Format(new WebPFormat()).Save(ficheroWebpStream);
+							}
+							else
+							{
+								imagenFabrica.Load(ficheroWebp.OpenReadStream()).Format(new WebPFormat()).Save(ficheroWebpStream);
+							}
 
 							return "imagenes/webps/" + nombreFichero + ".webp";
 						}

@@ -28,7 +28,9 @@
         }
     }
 
-    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions");
+    string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions");
+
+    ViewData["Title"] = titulo;
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool seo = false;
@@ -46,6 +48,16 @@
 
     if (seo == true)
     {
+        string enlace = "https://pepeizqdeals.com/subscriptions";
+
+        @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
+        {
+            idioma = idioma,
+            titulo = titulo,
+            enlace = enlace,
+            canonical = enlace
+        }))
+
         @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new
         {
             idioma = idioma

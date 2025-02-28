@@ -582,7 +582,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                     }
                 }
 
-                await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticiaAñadir.Imagen, noticiaAñadir.Id.ToString() + "-noticia");
+                await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticiaAñadir.Imagen, noticiaAñadir.Id.ToString() + "-noticia", 200, 110);
                
                 noticia = new Plantilla();
 

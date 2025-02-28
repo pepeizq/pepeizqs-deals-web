@@ -26,7 +26,7 @@
 
     <hr>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); justify-items: center; gap: 40px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-items: center; gap: 30px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
         @foreach (var juego in juegosActuales)
         {
             bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego.Juego, juego.DRM);
@@ -50,7 +50,7 @@
 
             bool usuarioConectado = false;
 
-            if (usuario != null)
+            if (string.IsNullOrEmpty(usuarioId) == false)
             {
                 usuarioConectado = true;
             }

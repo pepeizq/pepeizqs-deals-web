@@ -78,6 +78,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		imagen = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia");
+		imagen = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia", 200, 110);
 	}
 }

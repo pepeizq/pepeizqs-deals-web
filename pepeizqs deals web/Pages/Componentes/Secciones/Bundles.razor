@@ -42,7 +42,7 @@
 
 		<hr>
 
-		<div class="bundles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; justify-items: center; margin-bottom: 70px;">
+		<div class="bundles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-items: center; margin-bottom: 70px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
 			@foreach (var bundle in bundlesActuales)
 			{
 				<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">

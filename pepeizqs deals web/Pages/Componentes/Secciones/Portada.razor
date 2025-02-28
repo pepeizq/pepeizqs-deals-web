@@ -71,10 +71,11 @@
 	}
 
 	.destacado-logo-medidas {
-	max-width: 250px;
-	max-height: 200px;
-	min-width: 150px;
-    min-height: 120px;
+		max-width: 250px;
+		max-height: 200px;
+		min-width: 150px;
+		min-height: 120px;
+		object-fit: contain;
 	}
 
 	.destacado-logo-alto {
@@ -651,7 +652,7 @@
 
 				foreach (var juego in juegosDestacadosMostrar)
 				{
-					await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura");
+					await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura", 214, 100);
 				}
 			}
 
@@ -743,8 +744,8 @@
 
 	private async void CambiarDestacadoImagenes()
 	{
-		fondoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Library_1920x620, juegoSeleccionado.Id.ToString() + "-destacado-fondo");
-		logoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Logo, juegoSeleccionado.Id.ToString() + "-destacado-logo");
+		fondoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Library_1920x620, juegoSeleccionado.Id.ToString() + "-destacado-fondo", 1314, 425);
+		logoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Logo, juegoSeleccionado.Id.ToString() + "-destacado-logo", 0, 0);
 		videoDestacado = null;
 	}
 
@@ -789,7 +790,7 @@
 
 						foreach (var juego in juegosDestacadosMostrar)
 						{
-							await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura");
+							await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura", 214, 100);
 						}
 					}
 				}

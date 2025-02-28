@@ -166,6 +166,8 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="alternate" type="application/rss+xml" href="https://pepeizqdeals.com/rss-en.xml" />
 
+    <link rel="prefetch" href="_framework/blazor.server.js">
+
     <meta name="msapplication-TileColor" content="#002033" />
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
@@ -314,7 +316,7 @@
             await Blazor.start({
                 reconnectionOptions: {
                     maxRetries: 100,
-                    retryIntervalMilliseconds: 3000
+                    retryIntervalMilliseconds: 5000
                 }
             })
 

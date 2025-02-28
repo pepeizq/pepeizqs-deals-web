@@ -11,25 +11,8 @@ namespace Herramientas
 	public class Redireccionador : Controller
 	{
 		[ResponseCache(Duration = 6000)]
-		[HttpGet("extension/steam/{id}/")]
-		public IActionResult ExtensionSteam(int Id)
-		{
-			Extension juego = Buscar.Steam(Id.ToString());
-
-			if (juego != null)
-			{
-				if (juego.Id > 0)
-				{
-					return Ok(juego);
-				}
-			}
-
-			return Redirect("~/");
-		}
-
-		[ResponseCache(Duration = 6000)]
 		[HttpGet("extension/steam/{id}/{clave}/")]
-		public IActionResult ExtensionSteam2(int id, string clave)
+		public IActionResult ExtensionSteam(int id, string clave)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string claveExtension = builder.Configuration.GetValue<string>("Extension:Clave");
@@ -51,25 +34,8 @@ namespace Herramientas
 		}
 
 		[ResponseCache(Duration = 6000)]
-		[HttpGet("extension/epic/{slug}")]
-		public IActionResult ExtensionEpic(string Slug)
-		{
-			Extension juego = Buscar.EpicGames(Slug);
-
-			if (juego != null)
-			{
-				if (juego.Id > 0)
-				{
-					return Ok(juego);
-				}
-			}
-
-			return Redirect("~/");
-		}
-
-		[ResponseCache(Duration = 6000)]
 		[HttpGet("extension/epic/{slug}/{clave}/")]
-		public IActionResult ExtensionEpic2(string slug, string clave)
+		public IActionResult ExtensionEpic(string slug, string clave)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string claveExtension = builder.Configuration.GetValue<string>("Extension:Clave");

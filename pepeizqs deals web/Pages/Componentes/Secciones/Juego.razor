@@ -1,6 +1,4 @@
 ﻿@using ApexCharts
-@using Blazored.Video
-@using Blazored.Video.Support
 @using Bundles2
 @using Gratis2
 @using Herramientas
@@ -1625,10 +1623,10 @@
                     <div class="juego-galeria-contenedor">
                         @if (mediaMostrarPosicion == 99999)
                         {
-                            <BlazoredVideo style="width: 100vw; height: calc(100vh - 190px); cursor: pointer; max-width: 1320px; max-height: 742.50px;" controls="controls" preload="metadata">
+                            <video style="width: 100vw; height: calc(100vh - 190px); cursor: pointer; max-width: 1320px; max-height: 742.50px;" controls="controls" preload="metadata">
                                 <source src="@mediaMostrar" type="video/mp4" />
                                 <source src="@mediaMostrar.Replace(".mp4", ".webm")" type="video/webm" />
-                            </BlazoredVideo>
+                            </video>
                         }
                         else
                         {
