@@ -88,8 +88,9 @@ namespace Herramientas
 			{
 				int bundlesActuales = 0;
                 int bundlesPasados = 0;
+				string bundleExtra = null;
 
-                foreach (var bundle in juego.Bundles)
+				foreach (var bundle in juego.Bundles)
 				{
 					if (bundle.FechaEmpieza < DateTime.Now && bundle.FechaTermina > DateTime.Now)
 					{
@@ -160,22 +161,49 @@ namespace Herramientas
 			{
 				int suscripcionesActuales = 0;
 				int suscripcionesPasados = 0;
+				string suscripcionExtra = null;
 
-				foreach (var suscripcion in juego.Suscripciones)
+				foreach (JuegoSuscripcion suscripcion in juego.Suscripciones)
 				{
-					if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
+					bool contar = true;
+
+					if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
 					{
-						suscripcionesActuales += 1;
+						foreach (JuegoSuscripcion suscripcion2 in juego.Suscripciones)
+						{
+							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
+							{
+								contar = false;
+							}
+						}
 					}
-					else
+
+					if (contar == true)
 					{
-						suscripcionesPasados += 1;
+						if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
+						{
+							suscripcionesActuales += 1;
+
+							if (suscripcionesActuales == 1)
+							{
+								suscripcionExtra = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+							}
+						}
+						else
+						{
+							suscripcionesPasados += 1;
+
+							if (suscripcionesPasados == 1)
+							{
+								suscripcionExtra = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+							}
+						}
 					}
 				}
 
 				if (suscripcionesActuales == 1)
 				{
-					datos.SuscripcionesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
+					datos.SuscripcionesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip") + " (" + suscripcionExtra + ")";
 				}
 				else if (suscripcionesActuales > 1)
 				{
@@ -184,7 +212,7 @@ namespace Herramientas
 
 				if (suscripcionesPasados == 1)
 				{
-					datos.SuscripcionesPasadas = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
+					datos.SuscripcionesPasadas = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip") + " (" + suscripcionExtra + ")";
 				}
 				else if (suscripcionesPasados > 1)
 				{

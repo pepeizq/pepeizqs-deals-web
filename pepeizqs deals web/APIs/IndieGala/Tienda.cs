@@ -262,6 +262,9 @@ namespace APIs.IndieGala
 
 		[XmlElement("state")]
 		public string Estado { get; set; }
+
+		[XmlElement("notAvailableRegions")]
+		public string RegionesNo { get; set; }
 	}
 
 	#endregion
