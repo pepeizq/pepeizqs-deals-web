@@ -20,6 +20,45 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
+@{
+    string titulo = juego.Nombre + " • pepeizq's deals";
+    string descripcion = string.Empty;
+    string enlace = "https://pepeizqdeals.com/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+    string imagen = string.Empty;
+
+    if (juego.Caracteristicas != null)
+    {
+        if (string.IsNullOrEmpty(juego.Caracteristicas.Descripcion) == false)
+        {
+            descripcion = juego.Caracteristicas.Descripcion;
+        }
+    }
+
+    if (juego.Imagenes != null)
+    {
+        if (string.IsNullOrEmpty(juego.Imagenes.Header_460x215) == false)
+        {
+            imagen = juego.Imagenes.Header_460x215;
+        }
+    }
+
+        <PageTitle>@titulo</PageTitle>
+        <HeadContent>
+            <meta name="og:title" Content="@titulo" />
+            <meta name="description" content="@descripcion" />
+            <meta name="og:description" content="@descripcion" />
+            <meta name="og:url" content="@enlace" />
+            <meta name="og:image" content="@imagen" />
+            <meta name="og:video" content="@mediaMostrar" />
+            <meta name="og:site_name" content="pepeizq's deals" />
+            <meta name="og:type" content="website" />
+            <meta name="robots" content="index, nofollow, noimageindex" />
+            <meta name="keywords" content="deals, games, free, offers, bundles" />
+     
+            <link rel="canonical" href="@enlace" />
+        </HeadContent>
+}
+
 <script>
     window.ChangeUrl = function (url) {
     history.pushState(null, '', url);
@@ -1520,16 +1559,16 @@
                         @foreach (var suscripcion2 in SuscripcionesDisponibles(juego.Suscripciones))
                         {
                             Suscripcion suscripcionUsar = SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo);
-                            string enlace = suscripcion2.Enlace;
+                            string enlaceSuscripcion = suscripcion2.Enlace;
 
                             if (suscripcionUsar.UsuarioEnlacesEspecificos == false)
                             {
-                                enlace = suscripcionUsar.Enlace;
+                                enlaceSuscripcion = suscripcionUsar.Enlace;
                             }
 
-                            enlace = EnlaceAcortador.Generar(enlace, suscripcion2.Tipo, usuarioPatreon);
+                            enlaceSuscripcion = EnlaceAcortador.Generar(enlaceSuscripcion, suscripcion2.Tipo, usuarioPatreon);
 
-                            <a class="juego-boton-pequeño" href="@enlace" target="_blank" style="font-size: 16px; padding: 20px 25px; cursor: pointer; display: block;">
+                            <a class="juego-boton-pequeño" href="@enlaceSuscripcion" target="_blank" style="font-size: 16px; padding: 20px 25px; cursor: pointer; display: block;">
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 15px;">
                                         <img src="@suscripcionUsar.ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" loading="lazy" />
@@ -1999,7 +2038,7 @@
 
                                         @if (juegosCurator.Count > 4)
                                         {
-                                            <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                            <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;" title="Back">
                                                 <div style="max-width: 24px;">
                                                     <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                         <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
@@ -2054,7 +2093,7 @@
 
                                         @if (juegosCurator.Count > 4)
                                         {
-                                            <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;">
+                                            <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;" title="Next">
                                                 <div style="max-width: 24px;">
                                                     <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                         <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>

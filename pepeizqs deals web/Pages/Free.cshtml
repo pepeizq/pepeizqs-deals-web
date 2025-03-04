@@ -146,26 +146,12 @@
 
     if (seo == true)
     {
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-        {
-            idioma = idioma,
-            titulo = titulo,
-            enlace = enlace,
-            canonical = enlace,
-            descripcion = descripcion
-        }))
+        <component type="typeof(Componentes.Secciones.Seo)" render-mode="ServerPrerendered" param-idioma="idioma" param-titulo="titulo" param-descripcion="descripcion" param-enlace="enlace" param-canonical="enlace"/>
 
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Gratis>(RenderMode.ServerPrerendered, new
-        {
-            idioma = idioma
-        }))
+        <component type="typeof(Componentes.Secciones.Gratis)" render-mode="ServerPrerendered" param-idioma="idioma" />
     }
     else
     {
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Gratis>(RenderMode.Server, new
-        {
-            idioma = idioma,
-            usuarioId = usuario?.Id
-        }))
+        <component type="typeof(Componentes.Secciones.Gratis)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" />
     }
 }

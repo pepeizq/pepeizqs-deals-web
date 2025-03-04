@@ -41,86 +41,13 @@
 	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	string enlace = "https://pepeizqdeals.com/bundle/" + Model.bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.bundle.NombreBundle) + "/";
-
-	string descripcion = string.Empty;
-
-	if (Model.bundle.Tiers != null)
-	{
-		string precio = Model.bundle.Tiers[0].Precio.ToString();
-		precio = precio.Replace(".", ",");
-		precio = precio.Trim() + "€";
-
-		if (Model.bundle.Pick == false)
-		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Bundle") + " " + precio;
-		}
-		else
-		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Bundle") + " " + precio;
-		}		
-	}
-
-	string imagen = string.Empty;
-
-	if (string.IsNullOrEmpty(Model.bundle.ImagenNoticia) == false)
-	{
-		if (Model.bundle.ImagenNoticia.Contains("https://") == true)
-		{
-			imagen = Model.bundle.ImagenNoticia;
-		}
-	}
-
 	if (usuarioLogeado == true)
 	{
 		if (adminLogeado == true)
 		{
-			@(await Html.RenderComponentAsync<Componentes.Admin.Bundle>(RenderMode.Server, new
-			{
-				idioma = idioma,
-				bundleId = Model.bundle.Id
-			}))
+			<component type="typeof(Componentes.Admin.Bundle)" render-mode="Server" param-idioma="idioma" param-bundleId="Model.bundle.Id" />
 		}
 	}
 
-	bool seo = false;
-	string? userAgent = string.Empty;
-
-	if (HttpContext != null)
-	{
-		userAgent = HttpContext.Request.Headers.UserAgent;
-
-		if (string.IsNullOrEmpty(userAgent) == false)
-		{
-			seo = Herramientas.RobotsUserAgents.EsBotVerificado(userAgent);
-		}
-	}
-
-	if (seo == true)
-	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			titulo = titulo,
-			enlace = enlace,
-			canonical = enlace,
-			descripcion = descripcion,
-			imagen = imagen
-		}))
-
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			bundleId = Model.bundle.Id
-		}))
-	}
-	else
-	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.Server, new
-		{
-			idioma = idioma,
-			bundleId = Model.bundle.Id,
-			usuarioId = usuario?.Id
-		}))
-	}
+	<component type="typeof(Componentes.Secciones.Bundle)" render-mode="Server" param-idioma="idioma" param-bundleId="Model.bundle.Id" param-usuarioId="usuario?.Id" />
 }

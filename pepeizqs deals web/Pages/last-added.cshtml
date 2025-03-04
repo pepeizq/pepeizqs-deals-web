@@ -29,8 +29,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastAdded");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	@(await Html.RenderComponentAsync<Componentes.Secciones.UltimosAnadidos>(RenderMode.ServerPrerendered, new
-	{
-		idioma = idioma
-	}))
+	<component type="typeof(Componentes.Secciones.UltimosAnadidos)" render-mode="Server" param-idioma="idioma" />
 }

@@ -10,6 +10,52 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
+@{
+	string titulo = bundle.NombreBundle + " • " + bundle.NombreTienda + " • pepeizq's deals";
+	string descripcion = string.Empty;
+	string enlace = "https://pepeizqdeals.com/bundle/" + bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/";
+	string imagen = string.Empty;
+
+	if (bundle.Tiers != null)
+	{
+		string precio = bundle.Tiers[0].Precio.ToString();
+		precio = precio.Replace(".", ",");
+		precio = precio.Trim() + "€";
+
+		if (bundle.Pick == false)
+		{
+			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Bundle") + " " + precio;
+		}
+		else
+		{
+			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Bundle") + " " + precio;
+		}
+	}
+
+	if (string.IsNullOrEmpty(bundle.ImagenNoticia) == false)
+	{
+		if (bundle.ImagenNoticia.Contains("https://") == true)
+		{
+			imagen = bundle.ImagenNoticia;
+		}
+	}
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, nofollow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <script>
 	window.ChangeUrl = function (url) {
 	history.pushState(null, '', url);
@@ -279,20 +325,20 @@
 													}
 												}
 
-                                                if (juego.Juego.Suscripciones != null)
-                                                {
-                                                    if (juego.Juego.Suscripciones.Count > 0)
-                                                    {
-                                                        foreach (var suscripcion in juego.Juego.Suscripciones)
-                                                        {
-                                                            if (suscripcion.DRM == juego.DRM)
-                                                            {
-                                                                añadirNuevo = false;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                }
+												if (juego.Juego.Suscripciones != null)
+												{
+													if (juego.Juego.Suscripciones.Count > 0)
+													{
+														foreach (var suscripcion in juego.Juego.Suscripciones)
+														{
+															if (suscripcion.DRM == juego.DRM)
+															{
+																añadirNuevo = false;
+																break;
+															}
+														}
+													}
+												}
 
 												if (añadirNuevo == true)
 												{
@@ -362,16 +408,16 @@
 
 <style>
 	.bundle-juego-panel {
-		height: calc(100% - var(--alturaCabecera));
-		width: 100%;
-		left: 0;
-		top: 0;
-		overflow-x: auto;
-		position: fixed;
-		z-index: 1001;
-		margin-top: var(--alturaCabecera);
-		padding: 10px;
-		background-color: var(--fondoOscuroTransparente);
+	height: calc(100% - var(--alturaCabecera));
+	width: 100%;
+	left: 0;
+	top: 0;
+	overflow-x: auto;
+	position: fixed;
+	z-index: 1001;
+	margin-top: var(--alturaCabecera);
+	padding: 10px;
+	background-color: var(--fondoOscuroTransparente);
 	}
 </style>
 
@@ -572,7 +618,7 @@
 	[Parameter]
 	public Tipo tipo { get; set; } = Tipo.Bundle;
 
-	public Bundles2.Bundle bundle = new Bundles2.Bundle();
+    public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -587,12 +633,18 @@
 
 		if (bundle != null)
 		{
-			foreach (var juego in bundle.Juegos)
+			if (bundle.Juegos != null)
 			{
-				if (string.IsNullOrEmpty(juego.JuegoId) == false)
+				if (bundle.Juegos.Count > 0)
 				{
-					juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
-					juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+					foreach (var juego in bundle.Juegos)
+					{
+						if (string.IsNullOrEmpty(juego.JuegoId) == false)
+						{
+							juego.Juego = BaseDatos.Juegos.Buscar.UnJuego(juego.JuegoId);
+							juego.Imagen = juego.Juego.Imagenes.Header_460x215;
+						}
+					}
 				}
 			}
 		}
@@ -611,7 +663,7 @@
 		{
 			if (bundle != null)
 			{
-				await JavaScript.InvokeVoidAsync("ChangeUrl", "/bundle/" + bundleId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/");
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/bundle/" + bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/");
 			}			
 		}
 	}

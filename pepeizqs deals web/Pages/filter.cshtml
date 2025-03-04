@@ -28,8 +28,39 @@
 		}
 	}
 
-    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Filter");
-    Layout = "/Pages/Shared/_Layout.cshtml";
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Filter");
+
+	if (Model.ids != null)
+	{
+		string[] ids = Model.ids.Split(',');
+
+		if (ids.Length > 0)
+		{
+			if (ids.Length == 1)
+			{
+				foreach (string id in ids)
+				{
+					if (string.IsNullOrEmpty(id) == false)
+					{
+						if (id.ToLower().Contains("t") == true)
+						{
+							string cadena = id.Replace("t", null);
+							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags") + ")";
+						}
+
+						if (id.ToLower().Contains("c") == true)
+						{
+							string cadena = id.Replace("c", null);
+							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories") + ")";
+						}
+					}
+				}
+			}
+        }
+    }
+
+	ViewData["Title"] = titulo;
+	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	if (string.IsNullOrEmpty(Model.ids) == false)
 	{
@@ -48,28 +79,17 @@
 
 		if (seo == true)
 		{
-			@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.ServerPrerendered, new
-			{
-				idioma = idioma,
-				ids = Model.ids
-			}))
+			<component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo"/>
+
+			<component type="typeof(Componentes.Secciones.Filtro)" render-mode="Server" param-idioma="idioma" param-ids="Model.ids"/>
 		}
 		else
 		{
-			@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
-			{
-				idioma = idioma,
-				ids = Model.ids,
-				usuarioId = usuario?.Id
-			}))
+			<component type="typeof(Componentes.Secciones.Filtro)" render-mode="Server" param-idioma="idioma" param-ids="Model.ids" param-usuarioId="usuario?.Id" />
 		}
 	}
 	else
 	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Filtro>(RenderMode.Server, new
-		{
-			idioma = idioma,
-			usuarioId = usuario?.Id
-		}))
+		<component type="typeof(Componentes.Secciones.Filtro)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" />
 	}
 }

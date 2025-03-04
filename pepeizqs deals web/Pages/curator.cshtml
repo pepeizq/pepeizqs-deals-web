@@ -51,29 +51,12 @@
 	{
 		string enlace = "https://pepeizqdeals.com/curator/" + Model.curator.Slug.ToLower() + "/";
 
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			titulo = titulo,
-			enlace = enlace,
-			canonical = enlace,
-			descripcion = Model.curator.Descripcion,
-			imagen = Model.curator.Imagen
-		}))
+		<component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo" param-descripcion="Model.curator.Descripcion" param-enlace="enlace" param-canonical="enlace" param-imagen="Model.curator.Imagen" />
 
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Bundle>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			curatorId = Model.curator.Id
-		}))
+		<component type="typeof(Componentes.Secciones.Curator)" render-mode="Server" param-idioma="idioma" param-curatorId="Model.curator.Id" />
 	}
 	else
 	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Curator>(RenderMode.Server, new
-		{
-			idioma = idioma,
-			curatorId = Model.curator.Id,
-			usuarioId = usuario?.Id
-		}))
+		<component type="typeof(Componentes.Secciones.Curator)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorId="Model.curator.Id" />
 	}
 }

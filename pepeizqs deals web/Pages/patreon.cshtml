@@ -31,9 +31,5 @@
     ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Patreon");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Patreon>(RenderMode.Server, new
-    {
-        idioma = idioma,
-        usuarioId = usuario?.Id
-    }))
+    <component type="typeof(Componentes.Secciones.Patreon)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" />
 }

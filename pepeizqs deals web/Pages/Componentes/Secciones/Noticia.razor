@@ -12,7 +12,7 @@
 
 <script>
 	window.ChangeUrl = function (url) {
-		history.pushState(null, '', url);
+	history.pushState(null, '', url);
 	}
 </script>
 
@@ -133,9 +133,14 @@
 	{
 		if (noticia.BundleId > 0)
 		{
-			<div style="position: relative; display: flex; flex-direction: column;">
-				<Bundle bundleId="@noticia.BundleId" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuarioId="@usuario?.Id"/>
-			</div>
+			Bundles2.Bundle bundle = BaseDatos.Bundles.Buscar.UnBundle(noticia.BundleId);
+
+			if (bundle != null)
+			{
+				<div style="position: relative; display: flex; flex-direction: column;">
+					<Bundle bundle="@bundle" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuarioId="@usuario?.Id" />
+				</div>
+			}
 		}
 	}
 	else if (noticia.Tipo == NoticiaTipo.Gratis)

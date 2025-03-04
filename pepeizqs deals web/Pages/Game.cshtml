@@ -43,76 +43,16 @@
 	{
 		if (adminLogeado == true)
 		{
-			@(await Html.RenderComponentAsync<Componentes.Admin.Juego>(RenderMode.Server, new
-			{
-				idioma = idioma,
-				juego = Model.juego
-			}))
+			<component type="typeof(Componentes.Admin.Juego)" render-mode="Server" param-idioma="idioma" param-juego="Model.juego" />
 		}
 	}
 
-	bool seo = false;
 	string? userAgent = string.Empty;
 
 	if (HttpContext != null)
 	{
 		userAgent = HttpContext.Request.Headers.UserAgent;
-
-		if (string.IsNullOrEmpty(userAgent) == false)
-		{
-			seo = Herramientas.RobotsUserAgents.EsBotVerificado(userAgent);
-		}
 	}
 
-	if (seo == true)
-	{
-		string enlace = "https://pepeizqdeals.com/game/" + Model.juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(Model.juego.Nombre) + "/";
-
-		string descripcion = string.Empty;
-
-		if (Model.juego.Caracteristicas != null)
-		{
-			if (string.IsNullOrEmpty(Model.juego.Caracteristicas.Descripcion) == false)
-			{
-				descripcion = Model.juego.Caracteristicas.Descripcion;
-			}
-		}
-
-		string imagen = string.Empty;
-
-		if (Model.juego.Imagenes != null)
-		{
-			if (string.IsNullOrEmpty(Model.juego.Imagenes.Header_460x215) == false)
-			{
-				imagen = Model.juego.Imagenes.Header_460x215;
-			}
-		}
-
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			titulo = Model.juego.Nombre,
-			enlace = enlace,
-			canonical = enlace,
-			descripcion = descripcion,
-			imagen = imagen
-		}))
-
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			juego = Model.juego,
-			userAgent = userAgent
-		}))
-	}
-	else
-	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new
-		{
-			idioma = idioma,
-			juego = Model.juego,
-			usuarioId = usuario?.Id,
-			userAgent = userAgent
-		}))
-	}
+	<component type="typeof(Componentes.Secciones.Juego)" render-mode="Server" param-idioma="idioma" param-juego="Model.juego" param-usuarioId="usuario?.Id" param-userAgent="userAgent" />
 }

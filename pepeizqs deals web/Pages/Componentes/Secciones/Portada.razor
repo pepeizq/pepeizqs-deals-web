@@ -11,6 +11,28 @@
 
 @inject UserManager<Usuario> UserManager
 
+@{
+	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
+	string enlace = "https://pepeizqdeals.com/";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, follow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <style>
 	.destacado-fondo {
 	display: block;
@@ -180,7 +202,7 @@
 								</div>
 
 								<div class="destacado-video">
-									<video src="@videoDestacado" autoplay="true" loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+									<video src="@videoDestacado" onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
 								</div>
 							}
 							else
@@ -284,7 +306,7 @@
 				</div>
 
 				<div>
-					<RedesSociales idioma="@idioma" tamañoFuente="22px" />
+					<RedesSociales idioma="@idioma"/>
 				</div>
 			</div>
 		</div>

@@ -45,11 +45,6 @@
 
     if (usuarioLogeado == true)
     {
-        @(await Html.RenderComponentAsync<Componentes.Cuenta.Cuenta>(RenderMode.Server, new
-        {
-            idioma = idioma,
-            userAgent = userAgent,
-            adminLogeado = adminLogeado
-        }))
+        <component type="typeof(Componentes.Cuenta.Cuenta)" render-mode="Server" param-idioma="idioma" param-userAgent="userAgent" param-adminLogeado="adminLogeado"/>
     }
 }

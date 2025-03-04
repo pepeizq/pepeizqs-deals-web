@@ -50,25 +50,12 @@
     {
         string enlace = "https://pepeizqdeals.com/subscriptions";
 
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-        {
-            idioma = idioma,
-            titulo = titulo,
-            enlace = enlace,
-            canonical = enlace
-        }))
+        <component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo" param-enlace="enlace"/>
 
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.ServerPrerendered, new
-        {
-            idioma = idioma
-        }))
+        <component type="typeof(Componentes.Secciones.Suscripciones)" render-mode="Server" param-idioma="idioma" />
     }
     else
     {
-        @(await Html.RenderComponentAsync<Componentes.Secciones.Suscripciones>(RenderMode.Server, new
-        {
-            idioma = idioma,
-            usuarioId = usuario?.Id
-        }))
+        <component type="typeof(Componentes.Secciones.Suscripciones)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id"/>
     }
 }

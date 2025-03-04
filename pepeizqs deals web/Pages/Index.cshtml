@@ -27,51 +27,15 @@
 		}
 	}
 
-	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
-
-	ViewData["Title"] = titulo;
+	ViewData["Title"] = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
-
-	string enlace = "https://pepeizqdeals.com";
-
-	bool seo = false;
 	string? userAgent = string.Empty;
 
 	if (HttpContext != null)
 	{
 		userAgent = HttpContext.Request.Headers.UserAgent;
-
-		if (string.IsNullOrEmpty(userAgent) == false)
-		{
-			seo = Herramientas.RobotsUserAgents.EsBotVerificado(userAgent);
-		}
 	}
 
-	if (seo == true)
-	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			titulo = titulo,
-			descripcion = descripcion,
-			enlace = enlace,
-			canonical = enlace
-		}))
-
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma
-		}))
-	}
-	else
-	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Portada>(RenderMode.Server, new
-		{
-			idioma = idioma,
-			usuarioLogeado = usuarioLogeado,
-			usuarioId = usuario?.Id
-		}))
-	}
+	<component type="typeof(Portada)" render-mode="Server" param-idioma="idioma" param-usuarioLogeado="usuarioLogeado" param-usuarioId="usuario?.Id"/>
 }

@@ -88,18 +88,43 @@ namespace Herramientas
 			{
 				int bundlesActuales = 0;
                 int bundlesPasados = 0;
-				string bundleExtra = null;
+				string bundleExtraActual = null;
+				string bundleExtraPasado = null;
 
 				foreach (var bundle in juego.Bundles)
 				{
 					if (bundle.FechaEmpieza < DateTime.Now && bundle.FechaTermina > DateTime.Now)
 					{
 						bundlesActuales += 1;
+
+						if (bundlesActuales == 1)
+						{
+							bundleExtraActual = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
+						}
+						else if (bundlesActuales > 1)
+						{
+							if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraActual)
+							{
+								bundleExtraActual = null;
+							}
+						}
 					}
 					else
 					{
                         bundlesPasados += 1;
-                    }
+
+						if (bundlesPasados == 1)
+						{
+							bundleExtraPasado = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
+						}
+						else if (bundlesPasados > 1)
+						{
+							if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraPasado)
+							{
+								bundleExtraPasado = null;
+							}
+						}
+					}
 				}
 
                 if (bundlesActuales == 1)
@@ -111,6 +136,11 @@ namespace Herramientas
                     datos.BundlesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
                 }
 
+				if (string.IsNullOrEmpty(bundleExtraActual) == false)
+				{
+					datos.BundlesActuales = datos.BundlesActuales + " (" + bundleExtraActual + ")";
+				}
+
                 if (bundlesPasados == 1)
 				{
 					datos.BundlesPasados = Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Tooltip");
@@ -119,22 +149,53 @@ namespace Herramientas
 				{
 					datos.BundlesPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Tooltip"), juego.Bundles.Count.ToString());
 				}
+
+				if (string.IsNullOrEmpty(bundleExtraPasado) == false)
+				{
+					datos.BundlesPasados = datos.BundlesPasados + " (" + bundleExtraPasado + ")";
+				}
 			}
 
 			if (juego.Gratis != null)
 			{
 				int gratisActuales = 0;
 				int gratisPasados = 0;
+				string gratisExtraActual = null;
+				string gratisExtraPasado = null;
 
 				foreach (var gratis in juego.Gratis)
 				{
 					if (gratis.FechaEmpieza < DateTime.Now && gratis.FechaTermina > DateTime.Now)
 					{
 						gratisActuales += 1;
+
+						if (gratisActuales == 1)
+						{
+							gratisExtraActual = Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre;
+						}
+						else if (gratisActuales > 1)
+						{
+							if (Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre != gratisExtraActual)
+							{
+								gratisExtraActual = null;
+							}
+						}
 					}
 					else
 					{
 						gratisPasados += 1;
+
+						if (gratisPasados == 1)
+						{
+							gratisExtraPasado = Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre;
+						}
+						else if (gratisPasados > 1)
+						{
+							if (Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre != gratisExtraPasado)
+							{
+								gratisExtraPasado = null;
+							}
+						}
 					}
 				}
 
@@ -147,6 +208,11 @@ namespace Herramientas
 					datos.GratisActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
 
+				if (string.IsNullOrEmpty(gratisExtraActual) == false)
+				{
+					datos.GratisActuales = datos.GratisActuales + " (" + gratisExtraActual + ")";
+				}
+
 				if (gratisPasados == 1)
 				{
 					datos.GratisPasados = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Tooltip");
@@ -155,13 +221,19 @@ namespace Herramientas
 				{
 					datos.GratisPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
 				}
+
+				if (string.IsNullOrEmpty(gratisExtraPasado) == false)
+				{
+					datos.GratisPasados = datos.GratisPasados + " (" + gratisExtraPasado + ")";
+				}
 			}
 
 			if (juego.Suscripciones != null)
 			{
 				int suscripcionesActuales = 0;
 				int suscripcionesPasados = 0;
-				string suscripcionExtra = null;
+				string suscripcionExtraActual = null;
+				string suscripcionExtraPasada = null;
 
 				foreach (JuegoSuscripcion suscripcion in juego.Suscripciones)
 				{
@@ -174,6 +246,7 @@ namespace Herramientas
 							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
 							{
 								contar = false;
+								break;
 							}
 						}
 					}
@@ -186,7 +259,14 @@ namespace Herramientas
 
 							if (suscripcionesActuales == 1)
 							{
-								suscripcionExtra = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+								suscripcionExtraActual = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+							}
+							else if (suscripcionesActuales > 1)
+							{
+								if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraActual)
+								{
+									suscripcionExtraActual = null;
+								}
 							}
 						}
 						else
@@ -195,7 +275,14 @@ namespace Herramientas
 
 							if (suscripcionesPasados == 1)
 							{
-								suscripcionExtra = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+								suscripcionExtraPasada = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+							}
+							else if (suscripcionesPasados > 1)
+							{
+								if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraPasada)
+								{
+									suscripcionExtraPasada = null;
+								}
 							}
 						}
 					}
@@ -203,20 +290,30 @@ namespace Herramientas
 
 				if (suscripcionesActuales == 1)
 				{
-					datos.SuscripcionesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip") + " (" + suscripcionExtra + ")";
+					datos.SuscripcionesActuales = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
 				}
 				else if (suscripcionesActuales > 1)
 				{
 					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
 				}
 
+				if (string.IsNullOrEmpty(suscripcionExtraActual) == false)
+				{
+					datos.SuscripcionesActuales = datos.SuscripcionesActuales + " (" + suscripcionExtraActual + ")";
+				}
+
 				if (suscripcionesPasados == 1)
 				{
-					datos.SuscripcionesPasadas = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip") + " (" + suscripcionExtra + ")";
+					datos.SuscripcionesPasadas = Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Tooltip");
 				}
 				else if (suscripcionesPasados > 1)
 				{
 					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+				}
+
+				if (string.IsNullOrEmpty(suscripcionExtraPasada) == false)
+				{
+					datos.SuscripcionesPasadas = datos.SuscripcionesPasadas + " (" + suscripcionExtraPasada + ")";
 				}
 			}
 

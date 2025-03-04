@@ -31,11 +31,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Wishlist");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-    @(await Html.RenderComponentAsync<Componentes.Secciones.Deseados>(RenderMode.Server, new
-    {
-        idioma = idioma,
-        usuarioId = usuario?.Id,
-        usuarioLogeado = usuarioLogeado,
-        otroUsuario = Model.otroUsuario
-    }))
+	<component type="typeof(Componentes.Secciones.Deseados)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-otroUsuario="Model.otroUsuario"/>
 }

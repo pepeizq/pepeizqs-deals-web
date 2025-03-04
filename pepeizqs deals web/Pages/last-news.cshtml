@@ -28,7 +28,9 @@
 		}
 	}
 
-	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews");
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews");
+
+	ViewData["Title"] = titulo;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
 	bool seo = false;
@@ -46,27 +48,15 @@
 
 	if (seo == true)
 	{
+		string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows");
 		string enlace = "https://pepeizqdeals.com/last-news/";
 
-		@(await Html.RenderComponentAsync<Componentes.Secciones.Seo>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma,
-			titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews"),
-			enlace = enlace,
-			canonical = enlace,
-			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "HistoricalLows")
-		}))
+		<component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo" param-descripcion="descripcion" param-enlace="enlace" param-canonical="enlace" />
 
-		@(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias>(RenderMode.ServerPrerendered, new
-		{
-			idioma = idioma
-		}))
+		<component type="typeof(Componentes.Secciones.UltimasNoticias)" render-mode="Server" param-idioma="idioma" />
 	}
 	else
 	{
-		@(await Html.RenderComponentAsync<Componentes.Secciones.UltimasNoticias>(RenderMode.Server, new
-		{
-			idioma = idioma
-		}))
+		<component type="typeof(Componentes.Secciones.UltimasNoticias)" render-mode="Server" param-idioma="idioma" />
 	}
 }

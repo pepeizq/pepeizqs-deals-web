@@ -284,42 +284,45 @@ namespace APIs.EpicGames
 									{
 										if (datos.Paginas.Count > 0)
 										{
-											if (datos.Paginas[0].Datos.Requisitos.Idiomas.Count >= 2)
+											if (datos.Paginas[0].Datos.Requisitos.Idiomas != null)
 											{
-												List<JuegoIdioma> idiomas = Herramientas.Idiomas.EpicGamesSacarIdiomas(datos.Paginas[0].Datos.Requisitos.Idiomas[0], datos.Paginas[0].Datos.Requisitos.Idiomas[1]);
-
-												if (listadoIdiomas == null)
+												if (datos.Paginas[0].Datos.Requisitos.Idiomas.Count >= 2)
 												{
-													listadoIdiomas = idiomas;
-												}
-												else
-												{
-													List<JuegoIdioma> listadoActualizar = listadoIdiomas;
+													List<JuegoIdioma> idiomas = Herramientas.Idiomas.EpicGamesSacarIdiomas(datos.Paginas[0].Datos.Requisitos.Idiomas[0], datos.Paginas[0].Datos.Requisitos.Idiomas[1]);
 
-													foreach (var nuevoIdioma in idiomas)
+													if (listadoIdiomas == null)
 													{
-														bool existe = false;
+														listadoIdiomas = idiomas;
+													}
+													else
+													{
+														List<JuegoIdioma> listadoActualizar = listadoIdiomas;
 
-														foreach (var viejoIdioma in listadoActualizar)
+														foreach (var nuevoIdioma in idiomas)
 														{
-															if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+															bool existe = false;
+
+															foreach (var viejoIdioma in listadoActualizar)
 															{
-																existe = true;
+																if (viejoIdioma.DRM == nuevoIdioma.DRM && nuevoIdioma.Idioma == viejoIdioma.Idioma)
+																{
+																	existe = true;
 
-																viejoIdioma.Audio = nuevoIdioma.Audio;
-																viejoIdioma.Texto = nuevoIdioma.Texto;
+																	viejoIdioma.Audio = nuevoIdioma.Audio;
+																	viejoIdioma.Texto = nuevoIdioma.Texto;
 
-																break;
+																	break;
+																}
+															}
+
+															if (existe == false)
+															{
+																listadoActualizar.Add(nuevoIdioma);
 															}
 														}
 
-														if (existe == false)
-														{
-															listadoActualizar.Add(nuevoIdioma);
-														}
+														return listadoActualizar;
 													}
-
-													return listadoActualizar;
 												}
 											}
 										}

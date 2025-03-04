@@ -1,5 +1,6 @@
 {
   "Title": "API",
+  "Subtitle": "Se quiser desenvolver uma aplicação utilizando informações da web, pode utilizar a API.",
   "String1": "Jogo",
   "String2": "Você pode acessar a API do jogo usando o ID que pode ser obtido diretamente no link do jogo (o ID são os números sublinhados):",
   "String3": "Com o número de ID você pode carregar a API do jogo usando este link:",

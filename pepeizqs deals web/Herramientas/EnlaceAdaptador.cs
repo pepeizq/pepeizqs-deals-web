@@ -7,6 +7,11 @@ namespace Herramientas
 	{
 		public static string Nombre(string nombre)
 		{
+			if (string.IsNullOrEmpty(nombre) == true)
+			{
+				return string.Empty;
+			}
+
 			string s2 = Regex.Replace(nombre, @"(?<![a-zA-Z0-9])[^a-zA-Z0-9]|[^a-zA-Z0-9](?![a-zA-Z0-9])", "_");
 			s2 = s2.Replace("'", string.Empty);
 			s2 = s2.Replace("’", string.Empty);
