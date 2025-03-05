@@ -1,5 +1,6 @@
 {
   "Title": "Forfaits",
+  "Subtitle": "Découvrez tous les forfaits de jeux PC actuellement disponibles.",
   "String1": "Forfaits disponibles",
   "String2": "Archives des lots",
   "String3": "Offre groupée ouverte",
@@ -17,7 +18,6 @@
   "String16": "{0} offre groupée disponible à l'achat",
   "String17": "{0} offres groupées disponibles à l'achat",
   "String18": "Il n'y a aucun forfait disponible à l'achat",
-  "String19": "Découvrez les derniers packs de jeux PC disponibles à l'achat",
   "String20": "par unité",
   "String21": "jeu",
   "String22": "Bundle divisé en plusieurs niveaux et disponible à partir de",

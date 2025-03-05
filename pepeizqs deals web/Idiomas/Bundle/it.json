@@ -1,5 +1,6 @@
 {
   "Title": "Fasci",
+  "Subtitle": "Dai un'occhiata a tutti i pacchetti di giochi per PC attualmente disponibili.",
   "String1": "Pacchetti disponibili",
   "String2": "Archivio dei bundle",
   "String3": "Pacchetto aperto",
@@ -17,7 +18,6 @@
   "String16": "Pacchetto {0} disponibile per l'acquisto",
   "String17": "{0} pacchetti disponibili per l'acquisto",
   "String18": "Non sono disponibili pacchetti per l'acquisto",
-  "String19": "Scopri gli ultimi bundle di giochi per PC disponibili per l'acquisto",
   "String20": "per unità",
   "String21": "gioco",
   "String22": "Pacchetto suddiviso in più livelli e disponibile da",

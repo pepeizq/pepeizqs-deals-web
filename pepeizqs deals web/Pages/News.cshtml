@@ -36,14 +36,8 @@
 		}
 	}
 
-	string titulo = Herramientas.Idiomas.ElegirTexto(idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
-
-	ViewData["Title"] = titulo;
+	ViewData["Title"] = Herramientas.Idiomas.ElegirTexto(idioma, Model.noticia.TituloEn, Model.noticia.TituloEs);
 	Layout = "/Pages/Shared/_Layout.cshtml";
-
-	string enlace = "https://pepeizqdeals.com/news/" + Model.noticia.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(titulo) + "/";
-
-	string imagen = Model.noticia.Imagen;
 
 	if (usuarioLogeado == true)
 	{
@@ -53,54 +47,5 @@
 		}
 	}
 
-	bool seo = false;
-	string? userAgent = string.Empty;
-
-	if (HttpContext != null)
-	{
-		userAgent = HttpContext.Request.Headers.UserAgent;
-
-		if (string.IsNullOrEmpty(userAgent) == false)
-		{
-			seo = Herramientas.RobotsUserAgents.EsBotVerificado(userAgent);
-		}
-	}
-
-	if (seo == true)
-	{
-		string texto = Herramientas.Idiomas.ElegirTexto(idioma, Model.noticia.ContenidoEn, Model.noticia.ContenidoEs);
-
-		if (string.IsNullOrEmpty(texto) == false)
-		{
-			if (texto.Contains("</div>") == true)
-			{
-				int int1 = texto.IndexOf("</div>");
-				texto = texto.Remove(int1, texto.Length - int1);
-
-				if (texto.Contains("<div") == true)
-				{
-					int int2 = texto.IndexOf(">");
-					texto = texto.Remove(0, int2 + 1);
-				}
-			}
-			else
-			{
-				if (texto.Contains("<") == true)
-				{
-					int int1 = texto.IndexOf("<");
-					texto = texto.Remove(int1, texto.Length - int1);
-				}
-			}
-		}
-
-		string descripcion = texto;
-
-		<component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo" param-descripcion="descripcion" param-enlace="enlace" param-canonical="enlace" param-imagen="imagen"/>
-
-		<component type="typeof(Componentes.Secciones.Noticia)" render-mode="Server" param-idioma="idioma" param-noticiaId="Model.noticia.Id" />
-	}
-	else
-	{
-		<component type="typeof(Componentes.Secciones.Noticia)" render-mode="Server" param-idioma="idioma" param-noticiaId="Model.noticia.Id" param-usuarioId="usuario?.Id" />
-	}
+	<component type="typeof(Componentes.Secciones.Noticia)" render-mode="Server" param-idioma="idioma" param-noticiaId="Model.noticia.Id" param-usuarioId="usuario?.Id" />
 }

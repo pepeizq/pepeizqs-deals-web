@@ -1,4 +1,28 @@
-﻿<div style="max-width: 1200px; margin: auto;">
+﻿@using Microsoft.AspNetCore.Components.Web
+
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "RSS") + " • pepeizq's deals";
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "RSS");
+	string enlace = "https://pepeizqdeals.com/rss";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, nofollow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
+<div style="max-width: 1200px; margin: auto;">
 	<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "RSS")</h1>
 	<hr />
 

@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
 using System.IO.Compression;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 using System.Threading.RateLimiting;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
@@ -115,12 +114,6 @@ builder.Services.AddSession(options =>
 	options.Cookie.HttpOnly = true;
 	options.Cookie.IsEssential = true;
 });
-
-#region Seo
-
-builder.Services.AddHeadElementHelper();
-
-#endregion
 
 #region Tareas
 
@@ -446,18 +439,12 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.MapRazorPages().WithStaticAssets();
+app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });
-
-#region Seo
-
-app.UseHeadElementServerPrerendering();
-
-#endregion
 
 #region CORS necesario para extension
 

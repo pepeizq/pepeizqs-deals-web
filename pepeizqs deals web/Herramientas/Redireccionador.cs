@@ -34,6 +34,29 @@ namespace Herramientas
 		}
 
 		[ResponseCache(Duration = 6000)]
+		[HttpGet("extension/gog/{slug}/{clave}/")]
+		public IActionResult ExtensionGog(string slug, string clave)
+		{
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+			string claveExtension = builder.Configuration.GetValue<string>("Extension:Clave");
+
+			if (clave == claveExtension)
+			{
+				Extension juego = Buscar.Gog(slug);
+
+				if (juego != null)
+				{
+					if (juego.Id > 0)
+					{
+						return Ok(juego);
+					}
+				}
+			}
+
+			return Redirect("~/");
+		}
+
+		[ResponseCache(Duration = 6000)]
 		[HttpGet("extension/epic/{slug}/{clave}/")]
 		public IActionResult ExtensionEpic(string slug, string clave)
 		{

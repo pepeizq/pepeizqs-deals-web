@@ -10,6 +10,60 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Bundle");
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Bundle");
+	string enlace = "https://pepeizqdeals.com/bundles/";
+	string imagen = string.Empty;
+
+	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
+	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Actuales();
+
+	if (bundles.Count > 0)
+	{
+		foreach (var bundle in bundles)
+		{
+			if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
+			{
+				bundlesActuales.Add(bundle);
+			}
+		}
+
+		if (bundlesActuales.Count > 0)
+		{
+			if (bundlesActuales.Count == 1)
+			{
+				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
+			}
+			else if (bundlesActuales.Count > 1)
+			{
+				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
+			}
+		}
+		else if (bundlesActuales.Count == 0)
+		{
+			titulo = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Bundle");
+		}
+	}
+
+    titulo = titulo + " • pepeizq's deals";
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, follow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <script>
 	function moverScroll(id) {
 		const yOffset = -30;
@@ -110,7 +164,7 @@
 				</a>
 			</div>		
 
-			<Bundle bundle="@bundleSeleccionado" idioma="@idioma" usuarioId="@usuarioId" tipo="@Bundle.Tipo.Bundles" />
+			<Bundle bundleId="@bundleSeleccionado.Id" idioma="@idioma" usuarioId="@usuarioId" tipo="@Bundle.Tipo.Bundles" />
 		}
 	}
 }

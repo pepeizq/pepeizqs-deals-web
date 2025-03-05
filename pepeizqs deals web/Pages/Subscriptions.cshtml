@@ -28,34 +28,8 @@
         }
     }
 
-    string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions");
-
-    ViewData["Title"] = titulo;
+    ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions");
     Layout = "/Pages/Shared/_Layout.cshtml";
 
-    bool seo = false;
-    string userAgent = string.Empty;
-
-    if (HttpContext != null)
-    {
-        userAgent = HttpContext.Request.Headers.UserAgent;
-
-        if (string.IsNullOrEmpty(userAgent) == false)
-        {
-            seo = Herramientas.RobotsUserAgents.EsBotVerificado(userAgent);
-        }
-    }
-
-    if (seo == true)
-    {
-        string enlace = "https://pepeizqdeals.com/subscriptions";
-
-        <component type="typeof(Componentes.Secciones.Seo)" render-mode="Server" param-idioma="idioma" param-titulo="titulo" param-enlace="enlace"/>
-
-        <component type="typeof(Componentes.Secciones.Suscripciones)" render-mode="Server" param-idioma="idioma" />
-    }
-    else
-    {
-        <component type="typeof(Componentes.Secciones.Suscripciones)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id"/>
-    }
+    <component type="typeof(Componentes.Secciones.Suscripciones)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" />
 }

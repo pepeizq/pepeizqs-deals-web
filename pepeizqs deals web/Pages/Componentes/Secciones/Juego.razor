@@ -20,7 +20,8 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
-@{
+@if (juego != null)
+{
     string titulo = juego.Nombre + " • pepeizq's deals";
     string descripcion = string.Empty;
     string enlace = "https://pepeizqdeals.com/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
@@ -42,21 +43,21 @@
         }
     }
 
-        <PageTitle>@titulo</PageTitle>
-        <HeadContent>
-            <meta name="og:title" Content="@titulo" />
-            <meta name="description" content="@descripcion" />
-            <meta name="og:description" content="@descripcion" />
-            <meta name="og:url" content="@enlace" />
-            <meta name="og:image" content="@imagen" />
-            <meta name="og:video" content="@mediaMostrar" />
-            <meta name="og:site_name" content="pepeizq's deals" />
-            <meta name="og:type" content="website" />
-            <meta name="robots" content="index, nofollow, noimageindex" />
-            <meta name="keywords" content="deals, games, free, offers, bundles" />
+    <PageTitle>@titulo</PageTitle>
+    <HeadContent>
+        <meta name="og:title" Content="@titulo" />
+        <meta name="description" content="@descripcion" />
+        <meta name="og:description" content="@descripcion" />
+        <meta name="og:url" content="@enlace" />
+        <meta name="og:image" content="@imagen" />
+        <meta name="og:video" content="@mediaMostrar" />
+        <meta name="og:site_name" content="pepeizq's deals" />
+        <meta name="og:type" content="website" />
+        <meta name="robots" content="index, nofollow, noimageindex" />
+        <meta name="keywords" content="deals, games, free, offers, bundles" />
      
-            <link rel="canonical" href="@enlace" />
-        </HeadContent>
+        <link rel="canonical" href="@enlace" />
+    </HeadContent>
 }
 
 <script>
@@ -105,7 +106,9 @@
     }
 </style>
 
-<div>
+@if (juego != null)
+{
+    <div>
     @if (juego.Tipo == JuegoTipo.Game)
     {
         <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre" loading="lazy" />
@@ -2434,8 +2437,9 @@
         }
     </div>
 </div>
+}
 
-@if (bundleId > 0)
+    @if (juego != null && bundleId > 0)
 {
     <div class="opciones-panel">
         <div style="max-width: 1320px; margin: 20px auto; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
@@ -2493,7 +2497,7 @@
     </div>
 }
 
-@if (enseñarDeck == true)
+@if (juego != null && enseñarDeck == true)
 {
     <div class="opciones-panel">
         <div style="max-width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
@@ -2623,7 +2627,7 @@
     </div>
 }
 
-@if (enseñarHistorico == true)
+    @if (juego != null && enseñarHistorico == true)
 {
     <div class="opciones-panel">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 30px; width: 100%; height: 100%; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
@@ -2742,7 +2746,7 @@
     </div>
 }
 
-@if (enseñarIdiomas == true)
+    @if (juego != null && enseñarIdiomas == true)
 {
     <div class="opciones-panel">
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; align-items: start; gap: 40px;">

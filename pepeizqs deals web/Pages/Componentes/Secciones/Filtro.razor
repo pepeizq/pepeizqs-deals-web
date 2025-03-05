@@ -11,6 +11,59 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Filter");
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Filter");
+	string enlace = "https://pepeizqdeals.com/filter/" + ids + "/";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+	if (string.IsNullOrEmpty(ids) == false)
+	{
+		string[] ids2 = ids.Split(',');
+
+		if (ids2.Length > 0)
+		{
+			if (ids.Length == 1)
+			{
+				foreach (string id in ids2)
+				{
+					if (string.IsNullOrEmpty(id) == false)
+					{
+						if (id.ToLower().Contains("t") == true)
+						{
+							string cadena = id.Replace("t", null);
+							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags") + ")";
+						}
+
+						if (id.ToLower().Contains("c") == true)
+						{
+							string cadena = id.Replace("c", null);
+							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories") + ")";
+						}
+					}
+				}
+			}
+		}
+	}
+
+	titulo = titulo + " • pepeizq's deals";
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, follow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <script>
 	window.ChangeUrl = function (url) {
 		history.pushState(null, '', url);
@@ -501,10 +554,10 @@ else
 									<div style="display: flex; align-items: center; gap: 10px;">
 										<div style="max-width: 30px;">
 											@{
-												string imagen = "/imagenes/categorias/" + @categoria.Id + ".webp";
+												string imagenCategoria = "/imagenes/categorias/" + @categoria.Id + ".webp";
 											}
 
-											<img src="@imagen" style="width: 100%; height: 100%;"/>
+											<img src="@imagenCategoria" style="width: 100%; height: 100%;"/>
 										</div>
 
 										<div style="width: 100%; font-size: 14px;">

@@ -11,7 +11,23 @@ namespace Herramientas.Ficheros
 	{
 		public static async Task<string> DescargarYGuardar(string enlace, string nombreFichero, int ancho, int alto)
 		{
+			bool generar = false;
+
 			if (File.Exists("./wwwroot/imagenes/webps/" + nombreFichero + ".webp") == false)
+			{
+				generar = true;
+			}
+			else if (File.Exists("./wwwroot/imagenes/webps/" + nombreFichero + ".webp") == true)
+			{
+				var info = new FileInfo("./wwwroot/imagenes/webps/" + nombreFichero + ".webp");
+
+				if (info.Length == 0)
+				{
+					generar = true;
+				}
+			}
+
+			if (generar == true)
 			{
 				HttpClient cliente = new HttpClient();
 

@@ -1,5 +1,6 @@
 {
   "Title": "Bundles",
+  "Subtitle": "Comprueba todos los bundles de juegos para PC que hay disponibles actualmente.",
   "String1": "Bundles Disponibles",
   "String2": "Bundles Archivo",
   "String3": "Abrir Bundle",
@@ -17,7 +18,6 @@
   "String16": "{0} bundle disponible para comprar",
   "String17": "{0} bundles disponibles para comprar",
   "String18": "No hay bundles disponibles para comprar",
-  "String19": "Comprueba los ultimos bundles de juegos para PC que hay disponibles para comprar",
   "String20": "cada unidad",
   "String21": "juego",
   "String22": "Bundle dividido en varios tiers y disponible desde",

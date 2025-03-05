@@ -15,6 +15,28 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "HistoricalLows") + " • pepeizq's deals";
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "HistoricalLows");
+	string enlace = "https://pepeizqdeals.com/historical-lows/";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, nofollow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <style>
 	.cargando {
 	width: 48px;

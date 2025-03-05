@@ -10,6 +10,28 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+@{
+    string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Subscriptions") + " • pepeizq's deals";
+    string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Subscriptions");
+    string enlace = "https://pepeizqdeals.com/subscriptions";
+    string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+    <PageTitle>@titulo</PageTitle>
+    <HeadContent>
+        <meta name="og:title" Content="@titulo" />
+        <meta name="description" content="@descripcion" />
+        <meta name="og:description" content="@descripcion" />
+        <meta name="og:url" content="@enlace" />
+        <meta name="og:image" content="@imagen" />
+        <meta name="og:site_name" content="pepeizq's deals" />
+        <meta name="og:type" content="website" />
+        <meta name="robots" content="index, nofollow, noimageindex" />
+        <meta name="keywords" content="deals, games, free, offers, bundles" />
+
+        <link rel="canonical" href="@enlace" />
+    </HeadContent>
+}
+
 <script>
     function moverScroll(id) {
         const yOffset = -30;
@@ -350,14 +372,14 @@ else
         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
             @foreach (var juego in suscripcionSeleccionadaJuegosMostrar)
             {
-                string enlace = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo, usuarioPatreon);
+                string enlaceSuscripcion = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo, usuarioPatreon);
 
                 if (suscripcionSeleccionadaTipo.UsuarioEnlacesEspecificos == false)
                 {
-                    enlace = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon);
+                    enlaceSuscripcion = Herramientas.EnlaceAcortador.Generar(suscripcionSeleccionadaTipo.Enlace, suscripcionSeleccionadaTipo.Id, usuarioPatreon);
                 }
 
-                <a href="@enlace" class="boton-pequeño" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px; max-width: 235px;">
+                <a href="@enlaceSuscripcion" class="boton-pequeño" target="_blank" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px; max-width: 235px;">
                    @{
                         bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego.Juego, juego.DRM);
                         bool usuarioTieneDeseado = false;

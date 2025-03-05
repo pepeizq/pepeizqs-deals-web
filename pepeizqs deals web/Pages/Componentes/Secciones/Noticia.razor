@@ -10,6 +10,53 @@
 @inject UserManager<Usuario> UserManager
 @inject IJSRuntime JavaScript
 
+@{
+	string tituloSeo = titulo + " • pepeizq's deals";
+
+	string texto2 = Herramientas.Idiomas.ElegirTexto(idioma, noticia.ContenidoEn, noticia.ContenidoEs);
+
+	if (string.IsNullOrEmpty(texto2) == false)
+	{
+		if (texto2.Contains("</div>") == true)
+		{
+			int int1 = texto2.IndexOf("</div>");
+			texto2 = texto2.Remove(int1, texto2.Length - int1);
+
+			if (texto2.Contains("<div") == true)
+			{
+				int int2 = texto2.IndexOf(">");
+				texto2 = texto2.Remove(0, int2 + 1);
+			}
+		}
+		else
+		{
+			if (texto2.Contains("<") == true)
+			{
+				int int1 = texto2.IndexOf("<");
+				texto2 = texto2.Remove(int1, texto2.Length - int1);
+			}
+		}
+	}
+
+	string descripcion = texto2;
+
+	<PageTitle>@tituloSeo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" Content="@tituloSeo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagenDestacada" />
+		<meta name="og:video" content="@video" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, nofollow, noimageindex" />
+		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <script>
 	window.ChangeUrl = function (url) {
 	history.pushState(null, '', url);
@@ -18,8 +65,6 @@
 
 @if (cambiarEnlace == true)
 {
-	<Seo idioma="@idioma" titulo="@titulo" enlace="@enlace" descripcion="@Herramientas.Idiomas.BuscarTexto(idioma, "SEO", "News")" video="@video" />
-
 	<div style="display: flex; align-items: center; gap: 30px; margin-bottom: 40px;">
 		<a href="/last-news" class="boton-pequeño" style="color: var(--colorTextoVisitado); background-color: var(--fondoBotonPequeño); border: 0px; padding: 12px 20px; text-decoration: none; width: auto;">
 			@Herramientas.Idiomas.BuscarTexto(idioma, "Back", "News")
@@ -138,7 +183,7 @@
 			if (bundle != null)
 			{
 				<div style="position: relative; display: flex; flex-direction: column;">
-					<Bundle bundle="@bundle" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuarioId="@usuario?.Id" />
+					<Bundle bundleId="@bundle.Id" idioma="@idioma" tipo="Bundle.Tipo.Noticia" usuarioId="@usuario?.Id" />
 				</div>
 			}
 		}

@@ -1,5 +1,6 @@
 {
   "Title": "Pacotes",
+  "Subtitle": "Confira todos os pacotes de jogos para PC que estão disponíveis atualmente.",
   "String1": "Pacotes disponíveis",
   "String2": "Arquivo de pacotes",
   "String3": "Abrir pacote",
@@ -17,7 +18,6 @@
   "String16": "{0} pacote disponível para compra",
   "String17": "{0} pacotes disponíveis para compra",
   "String18": "Não há pacotes disponíveis para compra",
-  "String19": "Confira os pacotes de jogos para PC mais recentes disponíveis para compra",
   "String20": "por unidade",
   "String21": "jogo",
   "String22": "Pacote dividido em vários níveis e disponível em",

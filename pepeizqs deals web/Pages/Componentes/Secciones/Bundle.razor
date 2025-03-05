@@ -10,7 +10,8 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
-@{
+@if (bundle != null)
+{
 	string titulo = bundle.NombreBundle + " • " + bundle.NombreTienda + " • pepeizq's deals";
 	string descripcion = string.Empty;
 	string enlace = "https://pepeizqdeals.com/bundle/" + bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/";
@@ -349,12 +350,12 @@
 											}
 
 											<div style="text-align: center;">
-												<img src="@juego.Imagen" style="width: 100%; height: 100%;" />
+												<img src="@juego.Imagen" style="width: 100%; height: 100%;" alt="@juego.Nombre"/>
 											</div>
 
 											<div style="display: flex; align-items: center;">
 												<div style="display: flex; align-items: center; gap: 15px; padding: 15px; width: 100%;">
-													<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
+													<img src="@Juegos.JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" alt="@Juegos.JuegoDRM2.DevolverDRM(juego.DRM)"/>
 
 													@if (juego.Juego.PrecioMinimosHistoricos != null)
 													{
