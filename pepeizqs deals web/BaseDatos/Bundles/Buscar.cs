@@ -187,7 +187,7 @@ namespace BaseDatos.Bundles
 			return null;
 		}
 
-        public static List<Bundles2.Bundle> Ultimos(string cantidad)
+        public static List<Bundles2.Bundle> Ultimos(int cantidad)
         {
             List<Bundles2.Bundle> bundles = new List<Bundles2.Bundle>();
 
@@ -195,7 +195,7 @@ namespace BaseDatos.Bundles
 
             using (conexion)
             {
-                string busqueda = "SELECT TOP " + cantidad + " * FROM bundles ORDER BY id DESC";
+                string busqueda = "SELECT TOP " + cantidad.ToString() + " * FROM bundles ORDER BY id DESC";
 
                 using (SqlCommand comando = new SqlCommand(busqueda, conexion))
                 {
