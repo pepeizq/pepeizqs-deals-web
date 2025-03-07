@@ -51,18 +51,15 @@ namespace BaseDatos.Gratis
                 }
             }
 
-			using (conexion)
-			{
-				string busqueda = "SELECT * FROM gratis WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
+			string busqueda = "SELECT * FROM gratis WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
 
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
-					using (SqlDataReader lector = comando.ExecuteReader())
+					while (lector.Read())
 					{
-						while (lector.Read())
-						{
-							listaGratis.Add(Cargar(lector));
-						}
+						listaGratis.Add(Cargar(lector));
 					}
 				}
 			}
@@ -91,23 +88,20 @@ namespace BaseDatos.Gratis
                 }
             }
 
-            using (conexion)
-            {
-                string busqueda = "SELECT * FROM gratis WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
+			string busqueda = "SELECT * FROM gratis WHERE YEAR(fechaEmpieza) = " + año + " AND GETDATE() > fechaTermina";
 
-                using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-                {
-                    using (SqlDataReader lector = comando.ExecuteReader())
-                    {
-                        while (lector.Read())
-                        {
-                            listaGratis.Add(Cargar(lector));
-                        }
-                    }
-                }
-            }
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						listaGratis.Add(Cargar(lector));
+					}
+				}
+			}
 
-            if (listaGratis.Count > 0)
+			if (listaGratis.Count > 0)
             {
                 listaGratis.Reverse();
             }
@@ -115,43 +109,50 @@ namespace BaseDatos.Gratis
             return listaGratis;
         }
 
-        public static List<JuegoGratis> UnTipo(string gratisTexto, Herramientas.Tiempo tiempo)
+        public static List<JuegoGratis> UnTipo(string gratisTexto, Herramientas.Tiempo tiempo, SqlConnection conexion = null)
 		{
 			List<JuegoGratis> listaGratis = new List<JuegoGratis>();
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+			if (conexion == null)
 			{
-				string busqueda = "SELECT * FROM gratis WHERE gratis=@gratis";
-
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
 				{
-					comando.Parameters.AddWithValue("@gratis", GratisCargar.DevolverGratis(gratisTexto).Tipo);
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
 
-					using (SqlDataReader lector = comando.ExecuteReader())
+			string busqueda = "SELECT * FROM gratis WHERE gratis=@gratis";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@gratis", GratisCargar.DevolverGratis(gratisTexto).Tipo);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
 					{
-						while (lector.Read())
-						{
-							JuegoGratis gratis = Cargar(lector);
+						JuegoGratis gratis = Cargar(lector);
 
-							if (tiempo == Herramientas.Tiempo.Atemporal)
+						if (tiempo == Herramientas.Tiempo.Atemporal)
+						{
+							listaGratis.Add(gratis);
+						}
+						else if (tiempo == Herramientas.Tiempo.Actual)
+						{
+							if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
 							{
 								listaGratis.Add(gratis);
 							}
-							else if (tiempo == Herramientas.Tiempo.Actual)
+						}
+						else if (tiempo == Herramientas.Tiempo.Pasado)
+						{
+							if (DateTime.Now > gratis.FechaTermina)
 							{
-								if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-								{
-									listaGratis.Add(gratis);
-								}
-							}
-							else if (tiempo == Herramientas.Tiempo.Pasado)
-							{
-								if (DateTime.Now > gratis.FechaTermina)
-								{
-									listaGratis.Add(gratis);
-								}
+								listaGratis.Add(gratis);
 							}
 						}
 					}
@@ -175,20 +176,17 @@ namespace BaseDatos.Gratis
 				}
 			}
 
-			using (conexion)
+			string busqueda = "SELECT * FROM gratis WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
-				string busqueda = "SELECT * FROM gratis WHERE id=@id";
+				comando.Parameters.AddWithValue("@id", id);
 
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				using (SqlDataReader lector = comando.ExecuteReader())
 				{
-					comando.Parameters.AddWithValue("@id", id);
-
-					using (SqlDataReader lector = comando.ExecuteReader())
+					while (lector.Read())
 					{
-						while (lector.Read())
-						{
-							return Cargar(lector);
-						}
+						return Cargar(lector);
 					}
 				}
 			}
@@ -196,46 +194,23 @@ namespace BaseDatos.Gratis
 			return null;
 		}
 
-		public static JuegoGratis UnJuego(int juegoId)
-		{
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-			using (conexion)
+        public static List<JuegoGratis> Ultimos(int cantidad, SqlConnection conexion = null)
+        {
+			if (conexion == null)
 			{
-				string busqueda = "SELECT TOP 1 * FROM gratis WHERE juegoId=@juegoId ORDER BY id DESC";
-
-				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
 				{
-					comando.Parameters.AddWithValue("@juegoId", juegoId);
-
-					using (SqlDataReader lector = comando.ExecuteReader())
-					{
-						while (lector.Read())
-						{
-							return Cargar(lector);
-						}
-					}
+					conexion = Herramientas.BaseDatos.Conectar();
 				}
 			}
 
-			return null;
-		}
+			List<JuegoGratis> juegos = new List<JuegoGratis>();
 
-        public static List<JuegoGratis> Ultimos(string cantidad)
-        {
-            SqlConnection conexion = Herramientas.BaseDatos.Conectar();
-
-            using (conexion)
-            {
-                return Ultimos(conexion, cantidad);
-            }
-        }
-
-        public static List<JuegoGratis> Ultimos(SqlConnection conexion, string cantidad)
-        {
-            List<JuegoGratis> juegos = new List<JuegoGratis>();
-
-            string busqueda = "SELECT TOP " + cantidad + " * FROM gratis ORDER BY id DESC";
+            string busqueda = "SELECT TOP " + cantidad.ToString() + " * FROM gratis ORDER BY id DESC";
 
             using (SqlCommand comando = new SqlCommand(busqueda, conexion))
             {

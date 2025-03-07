@@ -148,7 +148,7 @@ namespace Herramientas.Redireccionador
 		[HttpGet("api/last-news/")]
 		public IActionResult NoticiasUltimas()
 		{
-			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("5");
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(5);
 
 			if (noticias != null)
 			{
@@ -174,7 +174,7 @@ namespace Herramientas.Redireccionador
 				cantidadFinal = 25;
 			}
 
-			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(cantidadFinal.ToString());
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(cantidadFinal);
 
 			if (noticias != null)
 			{
@@ -188,7 +188,7 @@ namespace Herramientas.Redireccionador
 		[HttpGet("api/last-free/")]
 		public IActionResult GratisUltimos()
 		{
-			List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos("5");
+			List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos(5);
 
 			if (gratis != null)
 			{
@@ -214,7 +214,7 @@ namespace Herramientas.Redireccionador
 				cantidadFinal = 25;
 			}
 
-			List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos(cantidadFinal.ToString());
+			List<JuegoGratis> gratis = global::BaseDatos.Gratis.Buscar.Ultimos(cantidadFinal);
 
 			if (gratis != null)
 			{

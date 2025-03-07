@@ -154,7 +154,7 @@ namespace Herramientas
             {
                 if (global::BaseDatos.Usuarios.Buscar.RolDios(User.FindFirst(ClaimTypes.NameIdentifier).Value) == true)
                 {
-                    List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("10");
+                    List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(10);
 
                     if (noticias.Count > 0)
                     {

@@ -248,7 +248,7 @@ namespace BaseDatos.Noticias
 			return noticias;
 		}
 
-		public static List<Noticia> Ultimas(string cantidad, SqlConnection conexion = null)
+		public static List<Noticia> Ultimas(int cantidad, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -266,7 +266,7 @@ namespace BaseDatos.Noticias
 
 			using (conexion)
 			{
-				string busqueda = "SELECT TOP " + cantidad + " * FROM noticias ORDER BY id DESC";
+				string busqueda = "SELECT TOP " + cantidad.ToString() + " * FROM noticias ORDER BY id DESC";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

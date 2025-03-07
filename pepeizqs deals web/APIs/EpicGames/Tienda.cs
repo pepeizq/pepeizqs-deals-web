@@ -4,8 +4,9 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.EpicGames
 {
@@ -44,7 +45,7 @@ namespace APIs.EpicGames
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
-					EpicGamesStorePrincipal principal = JsonConvert.DeserializeObject<EpicGamesStorePrincipal>(html);
+					EpicGamesStorePrincipal principal = JsonSerializer.Deserialize<EpicGamesStorePrincipal>(html);
 
 					if (principal != null)
 					{
@@ -198,88 +199,88 @@ namespace APIs.EpicGames
 
 	public class EpicGamesStorePrincipal
 	{
-		[JsonProperty("data")]
+		[JsonPropertyName("data")]
 		public EpicGamesStoreData Datos { get; set; }
 	}
 
 	public class EpicGamesStoreData
 	{
-		[JsonProperty("Catalog")]
+		[JsonPropertyName("Catalog")]
 		public EpicGamesStoreCatalog Catalogo { get; set; }
 	}
 
 	public class EpicGamesStoreCatalog
 	{
-		[JsonProperty("searchStore")]
+		[JsonPropertyName("searchStore")]
 		public EpicGamesStoreSearch Busqueda { get; set; }
 	}
 
 	public class EpicGamesStoreSearch
 	{
-		[JsonProperty("elements")]
+		[JsonPropertyName("elements")]
 		public List<EpicGamesStoreJuego> Juegos { get; set; }
 	}
 
 	public class EpicGamesStoreJuego
 	{
-		[JsonProperty("title")]
+		[JsonPropertyName("title")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("keyImages")]
+		[JsonPropertyName("keyImages")]
 		public List<EpicGamesStoreJuegoImagen> Imagenes { get; set; }
 
-		[JsonProperty("offerMappings")]
+		[JsonPropertyName("offerMappings")]
 		public List<EpicGamesStoreJuegoEnlace> Enlaces { get; set; }
 
-		[JsonProperty("price")]
+		[JsonPropertyName("price")]
 		public EpicGamesStoreJuegoPrecio Precio { get; set; }
 
-		[JsonProperty("productSlug")]
+		[JsonPropertyName("productSlug")]
 		public string Enlace { get; set; }
 
-        [JsonProperty("catalogNs")]
+        [JsonPropertyName("catalogNs")]
         public EpicGamesStoreJuegoEnlaceMapeo Enlaces2 { get; set; }
     }
 
 	public class EpicGamesStoreJuegoImagen
 	{
-		[JsonProperty("type")]
+		[JsonPropertyName("type")]
 		public string Tipo { get; set; }
 
-		[JsonProperty("url")]
+		[JsonPropertyName("url")]
 		public string Enlace { get; set; }
 	}
 
 	public class EpicGamesStoreJuegoEnlace
 	{
-		[JsonProperty("pageSlug")]
+		[JsonPropertyName("pageSlug")]
 		public string Slug { get; set; }
 	}
 
 	public class EpicGamesStoreJuegoPrecio
 	{
-		[JsonProperty("totalPrice")]
+		[JsonPropertyName("totalPrice")]
 		public EpicGamesStoreJuegoPrecio2 PrecioTotal { get; set; }
 	}
 
 	public class EpicGamesStoreJuegoPrecio2
 	{
-		[JsonProperty("fmtPrice")]
+		[JsonPropertyName("fmtPrice")]
 		public EpicGamesStoreJuegoPrecio3 PrecioFmt { get; set; }
 	}
 
 	public class EpicGamesStoreJuegoPrecio3
 	{
-		[JsonProperty("originalPrice")]
+		[JsonPropertyName("originalPrice")]
 		public string PrecioBase { get; set; }
 
-		[JsonProperty("discountPrice")]
+		[JsonPropertyName("discountPrice")]
 		public string PrecioRebajado { get; set; }
 	}
 
     public class EpicGamesStoreJuegoEnlaceMapeo
     {
-        [JsonProperty("mappings")]
+        [JsonPropertyName("mappings")]
         public List<EpicGamesStoreJuegoEnlace> Mapeos { get; set; }
     }
 }

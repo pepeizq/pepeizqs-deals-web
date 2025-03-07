@@ -89,7 +89,7 @@ namespace Herramientas
 
 			sb.Append(textoCurators);
 
-			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas("20");
+			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(20);
 
 			if (noticias.Count > 0)
 			{
@@ -287,7 +287,7 @@ namespace Herramientas
 
 			using (conexion)
 			{
-				noticias = global::BaseDatos.Noticias.Buscar.Ultimas("20");
+				noticias = global::BaseDatos.Noticias.Buscar.Ultimas(20);
 			}
 
 			if (noticias.Count > 0)
