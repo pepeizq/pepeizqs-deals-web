@@ -20,7 +20,7 @@
 	<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="cursor: pointer; text-decoration: none; color: var(--colorTexto);">
 		<div class="cnoticia-expandir" style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center;" title="@titulo">
 			<div>
-				<img src="@imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo" loading="lazy" />
+				<img src="@noticia.Imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo" loading="lazy" />
 			</div>
 
 			<div style="padding: 10px 20px; display: flex; flex-direction: column; gap: 10px;">
@@ -73,11 +73,4 @@
 
 	[Parameter]
 	public Noticias.Noticia noticia { get; set; }
-
-	private string imagen = string.Empty;
-
-	protected override async Task OnInitializedAsync()
-	{
-		imagen = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia", 200, 110);
-	}
 }

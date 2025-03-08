@@ -55,18 +55,6 @@ namespace Tareas
 
 								BaseDatos.Analisis.Limpiar.Ejecutar();
 								BaseDatos.Juegos.Limpiar.Minimos();
-
-								Array.ForEach(Directory.GetFiles(@"./wwwroot/imagenes/webps/"), File.Delete);
-
-								List<Noticias.Noticia> noticias = BaseDatos.Noticias.Buscar.Actuales(conexion);
-
-								if (noticias.Count > 0)
-								{
-									foreach (Noticias.Noticia noticia in noticias)
-									{
-										await Herramientas.Ficheros.Imagenes.DescargarYGuardar(noticia.Imagen, noticia.Id.ToString() + "-noticia", 200, 110);
-									}
-								}
 							}
 						}
 						catch (Exception ex)

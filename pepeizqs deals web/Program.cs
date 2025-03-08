@@ -413,11 +413,11 @@ app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-	FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "imagenes", "webps")),
-	RequestPath = "/imagenes/webps"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//	FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "imagenes", "webps")),
+//	RequestPath = "/imagenes/webps"
+//});
 
 app.MapStaticAssets();
 

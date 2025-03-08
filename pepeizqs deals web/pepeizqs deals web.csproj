@@ -116,8 +116,4 @@
     <UpToDateCheckInput Remove="Pages\Componentes\Admin\Recompensas.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\imagenes\webps\" />
-  </ItemGroup>
-
 </Project>

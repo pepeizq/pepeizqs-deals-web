@@ -234,11 +234,11 @@
 									}
 								}
 
-									<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
+								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
 
-									<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
 									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
-									</div>
+								</div>
 									<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
 									@Herramientas.Precios.Euro(juegoSeleccionado.PrecioMinimosHistoricos[0].Precio)
 									</div>
@@ -279,11 +279,7 @@
 					}
 
 					<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@colorFondoDestacado">
-						@{
-							string miniatura = "imagenes/webps/" + destacado.Id.ToString() + "-destacado-miniatura.webp";
-						}
-
-						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@miniatura" style="@opacidad" alt="@destacado.Nombre">
+						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="@opacidad" alt="@destacado.Nombre">
 
 						@if (mostrarBarra == true)
 						{
@@ -671,11 +667,6 @@
 			{
 				juegoSeleccionado = juegosDestacadosMostrar[0];
 				CambiarDestacadoImagenes();
-
-				foreach (var juego in juegosDestacadosMostrar)
-				{
-					await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura", 214, 100);
-				}
 			}
 
 			CronometroDestacados();
@@ -764,10 +755,10 @@
 		CronometroDestacados();
 	}
 
-	private async void CambiarDestacadoImagenes()
+	private void CambiarDestacadoImagenes()
 	{
-		fondoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Library_1920x620, juegoSeleccionado.Id.ToString() + "-destacado-fondo", 1314, 425);
-		logoDestacado = await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juegoSeleccionado.Imagenes.Logo, juegoSeleccionado.Id.ToString() + "-destacado-logo", 0, 0);
+		fondoDestacado = juegoSeleccionado.Imagenes.Library_1920x620;
+		logoDestacado = juegoSeleccionado.Imagenes.Logo;
 		videoDestacado = null;
 	}
 
@@ -809,11 +800,6 @@
 					{
 						juegoSeleccionado = juegosDestacadosMostrar[0];
 						CambiarDestacadoImagenes();
-
-						foreach (var juego in juegosDestacadosMostrar)
-						{
-							await Herramientas.Ficheros.Imagenes.DescargarYGuardar(juego.Imagenes.Header_460x215, juego.Id.ToString() + "-destacado-miniatura", 214, 100);
-						}
 					}
 				}
 

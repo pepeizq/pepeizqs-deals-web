@@ -36,7 +36,7 @@ namespace Tareas
 
 						HttpClient cliente = new HttpClient(manjeador);
 						HttpRequestMessage mensaje = new HttpRequestMessage();
-						mensaje.RequestUri = new Uri("http://tareasdeals.pepeizqapps.com");
+						mensaje.RequestUri = new Uri("http://pepeizq-001-site4.ntempurl.com");
 						mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
 						mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
 						mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
