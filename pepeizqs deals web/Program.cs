@@ -12,7 +12,6 @@ using System.Globalization;
 using Microsoft.AspNetCore.Http.Connections;
 using ApexCharts;
 using System.Security.Claims;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -412,12 +411,6 @@ app.UseDeveloperExceptionPage();
 //}
 
 app.UseHttpsRedirection();
-
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//	FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "imagenes", "webps")),
-//	RequestPath = "/imagenes/webps"
-//});
 
 app.MapStaticAssets();
 
