@@ -61,8 +61,6 @@ namespace Herramientas
 			IHttpClientFactory factoria = servicio.GetService<IHttpClientFactory>() ?? throw new InvalidOperationException();
 			HttpClient cliente = factoria.CreateClient("Decompilador");
 
-			string contenido = string.Empty;
-
 			using (cliente)
 			{
 				cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
@@ -73,8 +71,7 @@ namespace Herramientas
 					{
 						using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
 						{
-							contenido = await respuesta.Content.ReadAsStringAsync();
-							break;
+							return await respuesta.Content.ReadAsStringAsync();
 						}
 					}
 					catch { }
@@ -83,7 +80,7 @@ namespace Herramientas
 
 			cliente.Dispose();
 
-			return contenido;
+			return null;
         }
 
 		public static async Task<string> GZipFormato(string enlace) 
@@ -126,5 +123,36 @@ namespace Herramientas
 
             return html;
         }
-    }
+
+		public static async Task<string> GZipFormato2(string enlace)
+		{
+			HttpRequestMessage mensaje = new HttpRequestMessage();
+			mensaje.RequestUri = new Uri(enlace);
+			mensaje.Headers.Accept.ParseAdd("text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+			mensaje.Headers.AcceptEncoding.ParseAdd("gzip, deflate, br");
+			mensaje.Headers.AcceptLanguage.ParseAdd("es,en-US;q=0.7,en;q=0.3");
+			mensaje.Headers.Connection.ParseAdd("keep-alive");
+			mensaje.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Linux; Android 10; Generic Android-x86_64 Build/QD1A.190821.014.C2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/79.0.3945.36 Safari/537.36");
+
+			CookieContainer cookieContainer = new CookieContainer();
+			
+			using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer, UseCookies = true, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })
+			{
+				using (HttpClient cliente = new HttpClient(handler) { BaseAddress = new Uri(enlace) })
+				{
+					HttpResponseMessage respuesta = await cliente.SendAsync(mensaje);
+
+					Stream stream = await respuesta.Content.ReadAsStreamAsync();
+
+					using (GZipStream descompresion = new GZipStream(stream, CompressionMode.Decompress))
+					{
+						using (StreamReader lector = new StreamReader(stream))
+						{
+							return await lector.ReadToEndAsync();
+						}
+					}
+				}
+			}
+		}
+	}
 }

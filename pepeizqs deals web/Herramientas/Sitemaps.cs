@@ -144,7 +144,7 @@ namespace Herramientas
 
 			sb.Append(textoIndex);
 
-			List<string> juegos = global::BaseDatos.Juegos.Buscar.Sitemap();
+			List<string> juegos = global::BaseDatos.Juegos.Buscar.SitemapMinimos();
 
 			if (juegos.Count > 0)
 			{
@@ -170,7 +170,47 @@ namespace Herramientas
 			};
 		}
 
-        [HttpGet("sitemap-lastgames.xml")]
+		[HttpGet("sitemap-gamesrandom.xml")]
+		public IActionResult SitemapAzar()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			string textoIndex = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/</loc>" + Environment.NewLine +
+					"<changefreq>hourly</changefreq>" + Environment.NewLine +
+					"<priority>0.9</priority> " + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoIndex);
+
+			List<string> juegos = global::BaseDatos.Juegos.Buscar.SitemapAzar();
+
+			if (juegos.Count > 0)
+			{
+				foreach (var enlace in juegos)
+				{
+					string textoJuegos = "<url>" + Environment.NewLine +
+						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
+						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
+						 "<priority>0.9</priority> " + Environment.NewLine +
+						 "</url>";
+
+					sb.Append(textoJuegos);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-lastgames.xml")]
         public IActionResult SitemapUltimos()
         {
             StringBuilder sb = new StringBuilder();

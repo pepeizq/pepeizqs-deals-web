@@ -4,7 +4,6 @@
 
 using Herramientas;
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Text.Json;
@@ -31,7 +30,7 @@ namespace APIs.EpicGames
 			return tienda;
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
@@ -43,11 +42,29 @@ namespace APIs.EpicGames
 				int cantidad = i * 40;
 				int juegos3 = 0;
 
-				string html = await Decompiladores.GZipFormato("https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables={%22allowCountries%22:%22ES%22,%22category%22:%22games/edition/base|addons|games/edition%22,%22count%22:40,%22country%22:%22ES%22,%22effectiveDate%22:%22[,2024-11-19T19:59:57.141Z]%22,%22keywords%22:%22%22,%22locale%22:%22en-GB%22,%22onSale%22:true,%22sortBy%22:%22relevancy,viewableDate%22,%22sortDir%22:%22DESC,DESC%22,%22start%22:" + cantidad + ",%22tag%22:%22%22,%22withPrice%22:true}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%227d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437%22}}");
+				string fecha = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString(); 
+
+				string html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables={%22allowCountries%22:%22ES%22,%22category%22:%22games/edition/base|addons|games/edition%22,%22count%22:40,%22country%22:%22ES%22,%22effectiveDate%22:%22[," + fecha + "T10:00:00.141Z]%22,%22keywords%22:%22%22,%22locale%22:%22en-GB%22,%22onSale%22:true,%22sortBy%22:%22relevancy,viewableDate%22,%22sortDir%22:%22DESC,DESC%22,%22start%22:" + cantidad + ",%22tag%22:%22%22,%22withPrice%22:true}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%227d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437%22}}");
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
-					EpicGamesStorePrincipal principal = JsonSerializer.Deserialize<EpicGamesStorePrincipal>(html);
+					EpicGamesStorePrincipal principal = null;
+
+					try
+					{
+						principal = JsonSerializer.Deserialize<EpicGamesStorePrincipal>(html);
+					}
+					catch
+					{ }
+
+					html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables={%22allowCountries%22:%22ES%22,%22category%22:%22games/edition/base|addons|games/edition%22,%22count%22:40,%22country%22:%22ES%22,%22effectiveDate%22:%22[," + fecha + "T10:00:00.141Z]%22,%22keywords%22:%22%22,%22locale%22:%22en-GB%22,%22onSale%22:true,%22sortBy%22:%22relevancy,viewableDate%22,%22sortDir%22:%22DESC,DESC%22,%22start%22:" + cantidad + ",%22tag%22:%22%22,%22withPrice%22:true}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%227d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437%22}}");
+
+					try
+					{
+						principal = JsonSerializer.Deserialize<EpicGamesStorePrincipal>(html);
+					}
+					catch
+					{ }
 
 					if (principal != null)
 					{
