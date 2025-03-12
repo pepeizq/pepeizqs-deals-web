@@ -43,11 +43,11 @@ namespace Tareas.Tiendas
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						TimeSpan siguienteComprobacion = TimeSpan.FromHours(4);
+						TimeSpan siguienteComprobacion = TimeSpan.FromHours(6);
 
 						if (DateTime.Now.Hour == 19)
 						{
-							siguienteComprobacion = TimeSpan.FromHours(5);
+							siguienteComprobacion = TimeSpan.FromHours(7);
 						}
 
 						if (DateTime.Now.Hour == 17)

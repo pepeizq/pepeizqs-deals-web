@@ -3298,7 +3298,7 @@
                 }
                 else
                 {
-                    if (juego.EpicGames.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+                    if (juego.EpicGames.Fecha + TimeSpan.FromDays(240) < DateTime.Now)
                     {
                         juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
                         juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);

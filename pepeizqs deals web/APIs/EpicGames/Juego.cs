@@ -72,11 +72,28 @@ namespace APIs.EpicGames
         {
             if (string.IsNullOrEmpty(slug) == false)
             {
-                string html = await Decompiladores.Estandar("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
+                string html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
            
                 if (string.IsNullOrEmpty(html) == false)
                 {
-					EpicGamesAPIIds ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+					EpicGamesAPIIds ids = null;
+					
+					try
+					{
+						ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+					}
+					catch { }
+					
+					if (ids == null)
+					{
+						html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
+
+						try
+						{
+							ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+						}
+						catch { }
+					}
 
                     if (ids != null)
                     {
@@ -91,7 +108,24 @@ namespace APIs.EpicGames
 
 							if (string.IsNullOrEmpty(html1) == false)
 							{
-								EpicGamesAPIDatos1 datos = JsonSerializer.Deserialize<EpicGamesAPIDatos1>(html1);
+								EpicGamesAPIDatos1 datos = null;
+
+								try
+								{
+									datos = JsonSerializer.Deserialize<EpicGamesAPIDatos1>(html1);
+								}
+								catch { }
+
+								if (datos == null)
+								{
+									html1 = await Decompiladores.Estandar("https://egs-platform-service.store.epicgames.com/api/v1/egs/products/" + productId + "?country=ES&locale=es-ES&store=EGS");
+									
+									try
+									{
+										datos = JsonSerializer.Deserialize<EpicGamesAPIDatos1>(html1);
+									}
+									catch { }
+								}
 
 								if (datos != null)
 								{
@@ -170,7 +204,24 @@ namespace APIs.EpicGames
 
 							if (string.IsNullOrEmpty(html3) == false)
 							{
-								EpicGamesAPILogros logros = JsonSerializer.Deserialize<EpicGamesAPILogros>(html3);
+								EpicGamesAPILogros logros = null;
+
+								try
+								{
+									logros = JsonSerializer.Deserialize<EpicGamesAPILogros>(html3);
+								}
+								catch { }
+								
+								if (logros == null)
+								{
+									html3 = await Decompiladores.Estandar("https://store.epicgames.com/graphql?operationName=Achievement&variables=%7B%22sandboxId%22:%22" + sandboxId + "%22,%22locale%22:%22es-ES%22%7D&extensions=%7B%22persistedQuery%22:%7B%22version%22:1,%22sha256Hash%22:%229284d2fe200e351d1496feda728db23bb52bfd379b236fc3ceca746c1f1b33f2%22%7D%7D");
+
+									try
+									{
+										logros = JsonSerializer.Deserialize<EpicGamesAPILogros>(html3);
+									}
+									catch { }
+								}
 
 								if (logros != null)
 								{
@@ -199,11 +250,28 @@ namespace APIs.EpicGames
 		{
 			if (string.IsNullOrEmpty(slug) == false)
 			{
-				string html = await Decompiladores.Estandar("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
+				string html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
 
 				if (string.IsNullOrEmpty(html) == false)
 				{
-					EpicGamesAPIIds ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+					EpicGamesAPIIds ids = null;
+					
+					try
+					{
+						ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+					}
+					catch { }
+					
+					if (ids == null)
+					{
+						html = await Decompiladores.GZipFormato2("https://store.epicgames.com/graphql?operationName=getMappingByPageSlug&variables={%22pageSlug%22:%22" + slug + "%22,%22locale%22:%22es-ES%22}&extensions={%22persistedQuery%22:{%22version%22:1,%22sha256Hash%22:%22781fd69ec8116125fa8dc245c0838198cdf5283e31647d08dfa27f45ee8b1f30%22}}");
+
+						try
+						{
+							ids = JsonSerializer.Deserialize<EpicGamesAPIIds>(html);
+						}
+						catch { }
+					}
 
 					if (ids != null)
 					{
