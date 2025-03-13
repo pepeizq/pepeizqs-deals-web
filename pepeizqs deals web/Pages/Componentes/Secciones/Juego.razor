@@ -139,9 +139,15 @@
 
             <div class="juego-cabecera" style="@fondoCabecera position: sticky; top: 70px; z-index: 3;">
                 <div class="perfil-flexible-centrado">
-                    <div class="juego-flexible-izquierda">
-                        <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
-                    </div>
+                    @if (juego.Imagenes != null)
+                    {
+                        if (string.IsNullOrEmpty(juego.Imagenes.Header_460x215) == false)
+                        {
+                            <div class="juego-flexible-izquierda">
+                                <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
+                            </div>
+                        }
+                    }
 
                     <div class="juego-titulo">
                         <h1 style="font-size: 20px; margin: 0px;">@juego.Nombre</h1>

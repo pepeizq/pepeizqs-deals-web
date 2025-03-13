@@ -22,9 +22,15 @@
   "SearchFilter8": "Curators",
   "SearchMessage1": "Desde {0}",
   "SearchMessage2": "No hay Ofertas",
-  "SearchMessage3": "En la suscripción {0}",
-  "SearchMessage4": "En el bundle: {0} de {1}",
+  "SearchMessage3": "Desde {0} y en un bundle de {1}",
+  "SearchMessage4": "Desde {0} y con la suscripción {1}",
   "SearchMessage5": "Gratis para reclamar en {0}",
-  "SearchMessage6": "Gratis para Jugar",
+  "SearchMessage6": "Gratis para jugar",
+  "SearchMessage7": "En un bundle de {0}",
+  "SearchMessage8": "En la suscripción {0}",
+  "SearchMessage9": "Desde {0} y en {1} bundles",
+  "SearchMessage10": "Desde {0} y en {1} suscripciones",
+  "SearchMessage11": "En {0} bundles",
+  "SearchMessage12": "En {0} suscripciones",
   "SearchPlaceholder": "buscar"
 }

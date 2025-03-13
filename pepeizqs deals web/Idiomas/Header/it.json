@@ -22,9 +22,15 @@
   "SearchFilter8": "Curators",
   "SearchMessage1": "Da {0}",
   "SearchMessage2": "Non in vendita",
-  "SearchMessage3": "Nell'abbonamento {0}",
-  "SearchMessage4": "Nel pacchetto: {0} da {1}",
-  "SearchMessage5": "Puoi rivendicarlo gratuitamente su {0}",
+  "SearchMessage3": "Da {0} e in un pacchetto {1}",
+  "SearchMessage4": "Da {0} e con un abbonamento {1}",
+  "SearchMessage5": "Libero di rivendicare su {0}",
   "SearchMessage6": "Libero di giocare",
+  "SearchMessage7": "In un pacchetto {0}",
+  "SearchMessage8": "In un abbonamento {0}",
+  "SearchMessage9": "Da {0} e in {1} bundle",
+  "SearchMessage10": "Da {0} e in {1} abbonamenti",
+  "SearchMessage11": "In {0} pacchetti",
+  "SearchMessage12": "In abbonamenti {0}",
   "SearchPlaceholder": "ricerca"
 }

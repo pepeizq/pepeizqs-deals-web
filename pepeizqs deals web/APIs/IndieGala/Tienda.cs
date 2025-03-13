@@ -5,7 +5,6 @@
 
 using Herramientas;
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Xml;
@@ -37,7 +36,7 @@ namespace APIs.IndieGala
 			return enlace + "?ref=pepeizq";
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
@@ -48,7 +47,7 @@ namespace APIs.IndieGala
 			{
 				string html = await Decompiladores.Estandar("https://www.indiegala.com/store_games_rss?&sale=true&page=" + i.ToString());
 
-				if (html != null)
+				if (string.IsNullOrEmpty(html) == false)
 				{
 					if (html == "None")
 					{

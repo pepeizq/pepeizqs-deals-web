@@ -16,34 +16,20 @@
 	string enlace = "https://pepeizqdeals.com/bundles/";
 	string imagen = string.Empty;
 
-	List<Bundles2.Bundle> bundlesActuales = new List<Bundles2.Bundle>();
-	List<Bundles2.Bundle> bundles = BaseDatos.Bundles.Buscar.Actuales();
-
-	if (bundles.Count > 0)
+	if (bundlesActuales.Count > 0)
 	{
-		foreach (var bundle in bundles)
+		if (bundlesActuales.Count == 1)
 		{
-			if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-			{
-				bundlesActuales.Add(bundle);
-			}
+			titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
 		}
-
-		if (bundlesActuales.Count > 0)
+		else if (bundlesActuales.Count > 1)
 		{
-			if (bundlesActuales.Count == 1)
-			{
-				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Bundle"), bundlesActuales.Count.ToString());
-			}
-			else if (bundlesActuales.Count > 1)
-			{
-				titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
-			}
+			titulo = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Bundle"), bundlesActuales.Count.ToString());
 		}
-		else if (bundlesActuales.Count == 0)
-		{
-			titulo = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Bundle");
-		}
+	}
+	else if (bundlesActuales.Count == 0)
+	{
+		titulo = Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Bundle");
 	}
 
     titulo = titulo + " • pepeizq's deals";

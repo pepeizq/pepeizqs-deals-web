@@ -31,11 +31,11 @@ namespace Tiendas2
 				APIs.JoyBuggy.Tienda.Generar(),
 				APIs.Voidu.Tienda.Generar(),
 				APIs.EpicGames.Tienda.Generar(),
-				APIs._2Game.Tienda.Generar(),
 				APIs.GameBillet.Tienda.Generar(),
 				APIs.Ubisoft.Tienda.Generar(),
-				APIs.Playsum.Tienda.Generar()
-            };
+				APIs.Playsum.Tienda.Generar(),
+				APIs.PlanetPlay.Tienda.Generar()
+			};
 
 			return tiendas;
 		}
@@ -141,6 +141,10 @@ namespace Tiendas2
 				else if (id == APIs.Playsum.Tienda.Generar().Id)
 				{
 					await APIs.Playsum.Tienda.BuscarOfertas(conexion, decompilador);
+				}
+				else if (id == APIs.PlanetPlay.Tienda.Generar().Id)
+				{
+					await APIs.PlanetPlay.Tienda.BuscarOfertas(conexion, decompilador);
 				}
 			}
         }

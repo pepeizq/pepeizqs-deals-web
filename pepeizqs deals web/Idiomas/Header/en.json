@@ -22,9 +22,15 @@
   "SearchFilter8": "Curators",
   "SearchMessage1": "From {0}",
   "SearchMessage2": "Not in Sale",
-  "SearchMessage3": "In the {0} subscription",
-  "SearchMessage4": "In the bundle: {0} from {1}",
+  "SearchMessage3": "From {0} and in a {1} bundle",
+  "SearchMessage4": "From {0} and with a {1} subscription",
   "SearchMessage5": "Free to claim on {0}",
   "SearchMessage6": "Free to Play",
+  "SearchMessage7": "In a {0} bundle",
+  "SearchMessage8": "In a {0} subscription",
+  "SearchMessage9": "From {0} and in {1} bundles",
+  "SearchMessage10": "From {0} and in {1} subscriptions",
+  "SearchMessage11": "In {0} bundles",
+  "SearchMessage12": "In {0} subscriptions",
   "SearchPlaceholder": "search"
 }

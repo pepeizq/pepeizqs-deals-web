@@ -2,7 +2,6 @@
 
 using Herramientas;
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Text.Json;
@@ -34,7 +33,7 @@ namespace APIs.WinGameStore
 			return enlace + "?ars=pepeizqdeals";
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null) 
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador) 
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
