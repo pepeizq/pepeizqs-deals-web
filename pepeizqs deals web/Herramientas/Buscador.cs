@@ -314,10 +314,10 @@ namespace Herramientas
 							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage10", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoCantidad);
 						}
 					}
-					else
-					{
-						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), Herramientas.Precios.Euro(minimoCantidad));
-					}
+				}
+				else
+				{
+					return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage1", "Header"), Herramientas.Precios.Euro(minimoCantidad));
 				}
 			}
 

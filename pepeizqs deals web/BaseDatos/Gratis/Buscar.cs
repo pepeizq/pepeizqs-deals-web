@@ -162,7 +162,39 @@ namespace BaseDatos.Gratis
 			return listaGratis;
 		}
 
-		public static JuegoGratis UnJuego(int id, SqlConnection conexion = null)
+		public static JuegoGratis UnJuego(string juegoId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+		
+			string busqueda = "SELECT TOP 1 * FROM gratis WHERE juegoId=@juegoId ORDER BY ID DESC";
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@juegoId", juegoId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read())
+					{
+						return Cargar(lector);
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public static JuegoGratis UnGratis(string id, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -194,7 +226,7 @@ namespace BaseDatos.Gratis
 			return null;
 		}
 
-        public static List<JuegoGratis> Ultimos(int cantidad, SqlConnection conexion = null)
+		public static List<JuegoGratis> Ultimos(int cantidad, SqlConnection conexion = null)
         {
 			if (conexion == null)
 			{

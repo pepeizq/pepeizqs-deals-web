@@ -16,5 +16,6 @@
   "String14": "Derzeit besteht ein positiver Saldo von {0}€. Wenn es Zeit für eine Verlängerung ist, werden die unten aufgeführten Ausgaben von diesem Saldo abgezogen.",
   "String15": "Derzeit besteht ein negativer Saldo von {0}€. Sobald ein Einkommen vorliegt, wird zuerst der negative Saldo gedeckt und bei einem positiven Saldo wird dieser zur Verlängerung der unten aufgeführten Ausgabenzeiten verwendet.",
   "String16": "Aktueller Kontostand",
-  "String17": "Kosten"
+  "String17": "Ausgaben für den Betrieb der Website",
+  "String18": "Transaktionen"
 }

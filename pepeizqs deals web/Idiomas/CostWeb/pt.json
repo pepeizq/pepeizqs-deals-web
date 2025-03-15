@@ -16,5 +16,6 @@
   "String14": "Atualmente existe um saldo positivo de {0}€, quando chegar o momento da renovação as despesas abaixo serão deduzidas deste saldo.",
   "String15": "Atualmente existe um saldo negativo de {0}€, assim que houver rendimento o saldo negativo será coberto primeiro e quando houver saldo positivo será utilizado para prolongar os tempos das despesas abaixo.",
   "String16": "Saldo atual",
-  "String17": "Despesas"
+  "String17": "Despesas necessárias para a operação do site",
+  "String18": "Transações"
 }

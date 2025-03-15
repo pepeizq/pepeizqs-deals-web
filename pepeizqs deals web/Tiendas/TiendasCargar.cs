@@ -247,6 +247,10 @@ namespace Tiendas2
 			{
 				await APIs.Playsum.Tienda.BuscarOfertas(conexion, decompilador);
 			}
+			else if (id == APIs.PlanetPlay.Tienda.Generar().Id)
+			{
+				await APIs.PlanetPlay.Tienda.BuscarOfertas(conexion, decompilador);
+			}
 		}
     }
 }

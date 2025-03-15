@@ -239,8 +239,7 @@ namespace BaseDatos.Juegos
 					{
 						if (nuevaOferta.Enlace == precio.Enlace &&
 							nuevaOferta.DRM == precio.DRM &&
-							nuevaOferta.Tienda == precio.Tienda &&
-							nuevaOferta.Moneda == precio.Moneda)
+							nuevaOferta.Tienda == precio.Tienda)
 						{
 							bool cambiarFechaDetectado = false;
 
@@ -278,6 +277,7 @@ namespace BaseDatos.Juegos
 							precio.CodigoTexto = nuevaOferta.CodigoTexto;
 							precio.Nombre = nuevaOferta.Nombre;
 							precio.Imagen = nuevaOferta.Imagen;
+							precio.Moneda = nuevaOferta.Moneda;
 
 							añadir = false;
 							break;

@@ -1,5 +1,6 @@
 ﻿@page
 
+@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 
@@ -35,23 +36,77 @@
 		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "CostWeb")
 	</div>
 
-	<div style="font-size: 22px; text-align: left; margin-top: 20px;">
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "CostWeb")
-	</div>
+	@{
+		double saldo = -14.49;
+	}
 
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-		@{
-			double saldo = -50.13;
+	<div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+		<div style="font-size: 22px; text-align: left;">
+			@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "CostWeb")
+		</div>
 
-			if (saldo >= 0)
-			{
-				@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String14", "CostWeb"), saldo.ToString().Replace(".", ","))
-			}
-			else
-			{
-				@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String15", "CostWeb"), saldo.ToString().Replace(".", ","))
-			}
+		@if (saldo >= 0)
+		{
+			<div style="padding: 5px 10px; background-color: var(--fondoBien);">
+				@saldo.ToString().Replace(".", ",") € EUR
+			</div>
 		}
+		else
+		{
+			<div style="padding: 5px 10px; background-color: var(--fondoPeligro);">
+				@saldo.ToString().Replace(".", ",") € EUR
+			</div>
+		}
+	</div>
+	
+	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		@if (saldo >= 0)
+		{
+			@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String14", "CostWeb"), saldo.ToString().Replace(".", ","))
+		}
+		else
+		{
+			@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String15", "CostWeb"), saldo.ToString().Replace(".", ","))
+		}
+
+		<hr/>
+
+		@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "CostWeb")
+
+		<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 15px;">
+			<div style="display: flex; align-items: center; gap: 20px; justify-content: space-between; padding: 10px 15px; background-color: var(--fondoMinimo);">
+				<div style="display: flex; align-items: center; gap: 20px;">
+					<div style="min-width: 100px; text-align: center;">
+						10/3/2025
+					</div>
+
+					<div>
+						Fanatical Affiliates
+					</div>
+				</div>
+
+				<div style="padding: 5px 10px; background-color: var(--fondoBien); min-width: 120px; text-align: center;">
+					29,91 £ GBP
+				</div>
+			</div>
+
+			<div style="display: flex; align-items: center; gap: 20px; justify-content: space-between; padding: 10px 15px; background-color: var(--fondoMinimo);">
+				<div style="display: flex; align-items: center; gap: 20px;">
+					<div style="min-width: 100px; text-align: center;">
+						17/11/2024
+					</div>
+
+					<div>
+						SmarterASP SSL + Extra 1 Static IP (1 Year Extra)
+					</div>
+				</div>
+
+				<div style="padding: 5px 10px; background-color: var(--fondoPeligro); min-width: 120px; text-align: center;">
+					53 $ USD
+				</div>
+			</div>
+		</div>
+		
 	</div>
 
 	<div style="font-size: 22px; text-align: left; margin-top: 20px;">
@@ -69,9 +124,11 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "CostWeb")
 				</div>
 
-				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "CostWeb"), "30/1/2027")
-				</div>
+				<a href="https://www.smarterasp.net/index?r=pepeizq" target="_blank" style="text-decoration: none;">
+					<div>
+						@(string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String3", "CostWeb"), "30/1/2027"))
+					</div>
+				</a>
 			</div>
 		</div>
 
@@ -85,9 +142,11 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "CostWeb")
 				</div>
 
-				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "CostWeb"), "15/3/2028")
-				</div>
+				<a href="https://clientes.webempresa.com/europa/gestion/aff.php?aff=2609" target="_blank" style="text-decoration: none;">
+					<div>
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "CostWeb"), "15/3/2028")
+					</div>
+				</a>
 			</div>
 		</div>
 
@@ -101,9 +160,11 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "CostWeb")
 				</div>
 
-				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "CostWeb"), "6/12/2025")
-				</div>
+				<a href="https://www.smarterasp.net/index?r=pepeizq" target="_blank" style="text-decoration: none;">
+					<div>
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "CostWeb"), "6/12/2025")
+					</div>
+				</a>
 			</div>
 		</div>
 
@@ -117,9 +178,11 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "CostWeb")
 				</div>
 
-				<div>
-					@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "CostWeb"), "6/12/2025")
-				</div>
+				<a href="https://www.smarterasp.net/index?r=pepeizq" target="_blank" style="text-decoration: none;">
+					<div>
+						@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "CostWeb"), "6/12/2025")
+					</div>
+				</a>
 			</div>
 		</div>
 	</div>

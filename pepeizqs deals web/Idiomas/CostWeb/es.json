@@ -16,5 +16,6 @@
   "String14": "Actualmente hay un saldo positivo de {0}€, cuando toque renovar los gastos de abajo se descontara del saldo.",
   "String15": "Actualmente hay un saldo negativo de {0}€, en cuanto haya un ingreso se cubrirá el balance negativo primero y cuando haya un balance positivo se usará para ampliar los tiempos de los gastos de abajo.",
   "String16": "Saldo actual",
-  "String17": "Gastos"
+  "String17": "Gastos necesarios para el funcionamiento de la web",
+  "String18": "Transacciones"
 }

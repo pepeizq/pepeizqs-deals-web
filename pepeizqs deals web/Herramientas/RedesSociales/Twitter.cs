@@ -5,9 +5,8 @@ using System.Text;
 using Tweetinvi;
 using Tweetinvi.Core.Web;
 using Tweetinvi.Models;
-using X.Bluesky;
 
-namespace Herramientas
+namespace Herramientas.RedesSociales
 {
 	public static class Twitter
 	{
@@ -92,7 +91,7 @@ namespace Herramientas
 		private static Task<ITwitterResult> PonerTweet(TwitterClient cliente, TweetV2PostRequest parametros)
 		{
 			return cliente.Execute.AdvanceRequestAsync(
-				(ITwitterRequest peticion) =>
+				(peticion) =>
 				{
 					string json = cliente.Json.Serialize(parametros);
 					StringContent contenido = new StringContent(json, Encoding.UTF8, "application/json");
@@ -128,81 +127,4 @@ namespace Herramientas
             }
         }
     }
-
-	public static class Bluesky
-	{
-		#nullable disable
-
-        public static async void Postear(Noticias.Noticia noticia)
-		{
-            WebApplicationBuilder builder = WebApplication.CreateBuilder();
-
-            string correo = builder.Configuration.GetValue<string>("Bluesky:Correo");
-			string contraseña = builder.Configuration.GetValue<string>("Bluesky:Contraseña");
-
-			if (string.IsNullOrEmpty(correo) == false && string.IsNullOrEmpty(contraseña) == false)
-			{
-				IBlueskyClient cliente = new BlueskyClient(correo, contraseña);
-
-				string enlace = string.Empty;
-
-				if (string.IsNullOrEmpty(noticia.Enlace) == false)
-				{
-					enlace = noticia.Enlace;
-				}
-				else
-				{
-					if (noticia.Id == 0)
-					{
-						enlace = "/news/" + noticia.IdMaestra.ToString() + "/";
-					}
-					else
-					{
-						enlace = "/news/" + noticia.Id.ToString() + "/";
-					}
-				}
-
-				if (string.IsNullOrEmpty(enlace) == false)
-				{
-					if (enlace.Contains("https://pepeizqdeals.com") == false)
-					{
-						enlace = "https://pepeizqdeals.com" + enlace;
-					}
-				}
-
-				Uri enlaceFinal = new Uri(enlace);
-
-				bool error = false;
-
-				try
-				{
-					string imageUrl = noticia.Imagen;
-					HttpClient clienteWeb = new HttpClient();
-
-					using (HttpResponseMessage respuesta = await clienteWeb.GetAsync(imageUrl, HttpCompletionOption.ResponseContentRead))
-					{
-						byte[] imageBytes = await respuesta.Content.ReadAsByteArrayAsync();
-
-						X.Bluesky.Models.Image imagen = new X.Bluesky.Models.Image
-						{
-							Content = imageBytes,
-							Alt = noticia.TituloEn,
-							MimeType = "image/jpeg"
-						};
-
-						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
-					}
-				}
-				catch
-				{
-					error = true;
-				}
-
-				if (error == true)
-				{
-					await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
-				}
-			}
-		}
-	}
 }

@@ -16,5 +16,6 @@
   "String14": "There is currently a positive balance of {0}€, when it is time to renew the expenses below will be deducted from this balance.",
   "String15": "Currently there is a negative balance of {0}€, as soon as there is an income the negative balance will be covered first and when there is a positive balance it will be used to extend the times of the expenses below.",
   "String16": "Current balance",
-  "String17": "Expenses"
+  "String17": "Expenses necessary for the operation of the website",
+  "String18": "Transactions"
 }

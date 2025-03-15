@@ -16,5 +16,6 @@
   "String14": "Attualmente c'è un saldo positivo di {0}€, quando sarà il momento di rinnovare le spese sottostanti verranno detratte da questo saldo.",
   "String15": "Attualmente c'è un saldo negativo di {0}€, appena ci sarà un reddito il saldo negativo verrà prima coperto e quando c'è un saldo positivo verrà utilizzato per allungare i tempi delle spese sottostanti.",
   "String16": "Saldo attuale",
-  "String17": "Spese"
+  "String17": "Spese necessarie per il funzionamento del sito Web",
+  "String18": "Transazioni"
 }

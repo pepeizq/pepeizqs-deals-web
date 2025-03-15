@@ -536,7 +536,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             
                 try
                 {
-                    await Herramientas.Twitter.Twitear(noticiaAñadir);
+                    await Herramientas.RedesSociales.Twitter.Twitear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
@@ -545,7 +545,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 
                 try
                 {
-                    Herramientas.Bluesky.Postear(noticiaAñadir);
+                    Herramientas.RedesSociales.Bluesky.Postear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {

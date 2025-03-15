@@ -16,5 +16,6 @@
   "String14": "Il y a actuellement un solde positif de {0} €, au moment du renouvellement, les dépenses ci-dessous seront déduites de ce solde.",
   "String15": "Actuellement, il y a un solde négatif de {0} €, dès qu'il y a un revenu, le solde négatif sera couvert en premier et lorsqu'il y aura un solde positif, il sera utilisé pour prolonger les délais des dépenses ci-dessous.",
   "String16": "Solde courant",
-  "String17": "Dépenses"
+  "String17": "Dépenses nécessaires à l'exploitation du site Web",
+  "String18": "Transactions"
 }

@@ -391,12 +391,12 @@
 
 	private async void EnviarTwitter(MouseEventArgs e)
 	{
-		await Herramientas.Twitter.Twitear(noticia);
+		await Herramientas.RedesSociales.Twitter.Twitear(noticia);
 	}
 
 	private void EnviarBlueSky(MouseEventArgs e)
 	{
-		Herramientas.Bluesky.Postear(noticia);
+		Herramientas.RedesSociales.Bluesky.Postear(noticia);
 	}
 
 	private async void EnviarNotificacionesPush(MouseEventArgs e)
