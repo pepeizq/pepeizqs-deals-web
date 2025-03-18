@@ -30,12 +30,5 @@
 	ViewData["Title"] = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	string? userAgent = string.Empty;
-
-	if (HttpContext != null)
-	{
-		userAgent = HttpContext.Request.Headers.UserAgent;
-	}
-
-	<component type="typeof(Portada)" render-mode="Server" param-idioma="idioma" param-usuarioLogeado="usuarioLogeado" param-usuarioId="usuario?.Id"/>
+		<component type="typeof(Portada)" render-mode="Server" param-idioma="idioma" param-usuarioLogeado="usuarioLogeado" param-usuarioId="usuario?.Id" />
 }

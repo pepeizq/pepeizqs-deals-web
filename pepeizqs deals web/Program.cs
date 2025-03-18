@@ -1,17 +1,18 @@
+using ApexCharts;
 using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using System.IO.Compression;
-using System.Threading.RateLimiting;
 using System.Globalization;
-using Microsoft.AspNetCore.Http.Connections;
-using ApexCharts;
+using System.IO.Compression;
 using System.Security.Claims;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,7 +102,13 @@ builder.Services.AddServerSideBlazor(opciones =>
 
 #region Redireccionador
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddMvcOptions(opciones =>
+	opciones.Filters.Add(
+		new ResponseCacheAttribute
+		{
+			NoStore = true,
+			Location = ResponseCacheLocation.None
+		}));
 
 #endregion
 
@@ -422,7 +429,7 @@ app.UseResponseCompression();
 
 #endregion
 
-#region Optmizador (Despues Compresion)
+#region Optimizador (Despues Compresion)
 
 app.UseWebOptimizer();
 

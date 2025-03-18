@@ -255,9 +255,9 @@ namespace BaseDatos.Juegos
 				{
 					comando.ExecuteNonQuery();
 				}
-				catch 
+				catch (Exception ex)
 				{
-					Errores.Insertar.Mensaje("Actualizar Juego " + id, comando.ExecuteScalar().ToString());
+					Errores.Insertar.Mensaje("Actualizar Juego " + id, ex);
 				}
 			}
 		}

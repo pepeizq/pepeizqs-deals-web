@@ -93,10 +93,8 @@
 	}
 
 	.destacado-logo-medidas {
-		max-width: 250px;
-		max-height: 150px;
-		min-width: 150px;
-		min-height: 120px;
+		width: 16vw;
+		height: 8vw;
 		object-fit: contain;
 	}
 
@@ -120,10 +118,8 @@
 	}
 
 	.destacado-logo-medidas {
-		max-width: 150px;
-		max-height: 120px;
-		min-width: 100px;
-            min-height: 80px;
+		width: 16vw;
+		height: 8vw;
 	}
 
 	.destacado-logo-alto {
@@ -210,12 +206,10 @@
 								<img src="@fondoDestacado" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
 							}
 
-							<div style="position: absolute; left: 0; bottom: 0; width: 100%; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
-								display: flex; align-items: end;" class="destacado-hueco">
+							<div style="position: absolute; left: 0; bottom: 0; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
+										display: flex; align-items: end; justify-content: space-between; width: 100%;" class="destacado-hueco">
 
-								<div class="destacado-logo-alto" style="width: 100%; height: 100%; display: flex; align-items: center;">
-									<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
-								</div>
+								<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
 
 								<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
 									<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
@@ -318,7 +312,7 @@
 			<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
 				@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 				{
-					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
+					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px; min-height: 50px;">
 						<Virtualize Context="noticia" Items="noticiasTresDias">
 							<ItemContent>
 								<CajaNoticia idioma="@idioma" noticia="@noticia" />

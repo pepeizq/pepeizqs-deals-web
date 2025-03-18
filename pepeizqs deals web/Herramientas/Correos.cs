@@ -59,9 +59,13 @@ namespace Herramientas
 												</div>
 											</div>
 										</a>
+									</div>
 
-										<a href=""{{enlace}}"" style=""color: #95c0fe; user-select: none; width: 100%; text-align: left; font-size: 16px;"" target=""_blank"">
-											{{texto1}}
+									<div style=""margin-top: 20px;"">
+										<a href=""{{enlace}}"" style=""color: #95c0fe; background-color: #0d1621; display: inline-block; user-select: none; width: 100%; padding: 6px; text-align: center; border: 0px; "">
+											<div style=""display: flex; align-content: center; align-items: center; justify-content: center; font-size: 17px; margin: 15px;"">
+												{{texto1}}
+											</div>
 										</a>
 									</div>
 
