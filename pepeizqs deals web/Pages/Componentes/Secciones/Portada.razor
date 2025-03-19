@@ -288,7 +288,7 @@
 	}
 
 
-	<div>
+	<div style="min-height: 50px;">
 		<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
 			<div style="display: flex; align-items: center; gap: 30px; padding: 15px 25px;">
 				<div>
@@ -312,7 +312,7 @@
 			<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
 				@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 				{
-					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px; min-height: 50px;">
+					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
 						<Virtualize Context="noticia" Items="noticiasTresDias">
 							<ItemContent>
 								<CajaNoticia idioma="@idioma" noticia="@noticia" />

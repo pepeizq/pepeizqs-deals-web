@@ -151,6 +151,14 @@
 					BlueSky
 				</button>
 
+				<button @onclick="(e => EnviarTelegram(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Telegram
+				</button>
+
+				<button @onclick="(e => EnviarReddit(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Reddit
+				</button>
+
 				<button @onclick="(e => EnviarNotificacionesPush(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
 					Notificaciones Push
 				</button>
@@ -389,14 +397,24 @@
 		}
 	}
 
-	private async void EnviarTwitter(MouseEventArgs e)
+	private void EnviarTwitter(MouseEventArgs e)
 	{
-		await Herramientas.RedesSociales.Twitter.Twitear(noticia);
+		Herramientas.RedesSociales.Twitter.Twitear(noticia);
 	}
 
 	private void EnviarBlueSky(MouseEventArgs e)
 	{
 		Herramientas.RedesSociales.Bluesky.Postear(noticia);
+	}
+
+	private void EnviarTelegram(MouseEventArgs e)
+	{
+		Herramientas.RedesSociales.Telegram.Postear(noticia);
+	}
+
+	private void EnviarReddit(MouseEventArgs e)
+	{
+		Herramientas.RedesSociales.Reddit.Postear(noticia);
 	}
 
 	private async void EnviarNotificacionesPush(MouseEventArgs e)

@@ -49,10 +49,10 @@ namespace Herramientas.RedesSociales
 
 				try
 				{
-					string imageUrl = noticia.Imagen;
+					string imagenEnlace = noticia.Imagen;
 					HttpClient clienteWeb = new HttpClient();
 
-					using (HttpResponseMessage respuesta = await clienteWeb.GetAsync(imageUrl, HttpCompletionOption.ResponseContentRead))
+					using (HttpResponseMessage respuesta = await clienteWeb.GetAsync(imagenEnlace, HttpCompletionOption.ResponseContentRead))
 					{
 						byte[] imageBytes = await respuesta.Content.ReadAsByteArrayAsync();
 

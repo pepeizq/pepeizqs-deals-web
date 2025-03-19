@@ -10,7 +10,7 @@ namespace Herramientas.RedesSociales
 {
 	public static class Twitter
 	{
-		public static async Task<bool> Twitear(Noticias.Noticia noticia)
+		public static async void Twitear(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -71,8 +71,6 @@ namespace Herramientas.RedesSociales
 						Text = noticia.TituloEn + " " + Environment.NewLine + Environment.NewLine + enlace
 					}
 				);
-
-				return resultado.Response.IsSuccessStatusCode;
 			}
 			else
 			{
@@ -83,8 +81,6 @@ namespace Herramientas.RedesSociales
 						Media = imagenTweet?.Id == null ? null : new() { MediaIds = new() { imagenTweet.Id.Value } }
 					}
 				);
-
-				return resultado.Response.IsSuccessStatusCode;
             }
 		}
 

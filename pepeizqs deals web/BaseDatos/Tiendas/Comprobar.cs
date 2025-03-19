@@ -313,7 +313,7 @@ namespace BaseDatos.Tiendas
 					SELECT @pos = @nextpos;
 				END
 
-				SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos FROM juegos WHERE id IN (SELECT numero FROM @tabla);
+				SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, analisis FROM juegos WHERE id IN (SELECT numero FROM @tabla);
 				END;
 				END;";
 
@@ -399,9 +399,21 @@ namespace BaseDatos.Tiendas
 							}
 						}
 
+						JuegoAnalisis analisis = null;
+						if (lector.IsDBNull(6) == false)
+						{
+							if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+							{
+								if (lector.GetString(6) != "null")
+								{
+									analisis = JsonSerializer.Deserialize<JuegoAnalisis>(lector.GetString(6));
+								}
+							}
+						}
+
 						if (id > 0)
 						{
-							Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, historicos, oferta, conexion, slugGOG, idGog, slugEpic, usuariosInteresados);
+							Juegos.Precios.Actualizar(id, idSteam, ofertasActuales, ofertasHistoricas, historicos, oferta, conexion, slugGOG, idGog, slugEpic, usuariosInteresados, analisis);
 						}
 					}
 				}

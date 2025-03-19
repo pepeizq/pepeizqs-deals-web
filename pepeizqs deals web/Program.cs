@@ -334,8 +334,19 @@ builder.Services.AddRateLimiter(opciones =>
 			contexto.HttpContext.Response.Headers.RetryAfter = ((int)reintento.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
 		}
 
-		contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-		contexto.HttpContext.Response.WriteAsync("Too many requests. Please try again later. If you are a bot, go fuck yourself somewhere else.");
+		if (Herramientas.BloqueosIps.EstaBloqueada(contexto.HttpContext.Connection.RemoteIpAddress?.ToString()) == true)
+		{
+			contexto.HttpContext.Response.WriteAsync(@"Your IP is blocked.
+
+If you are a human with blood running through your veins, contact admin@pepeizqdeals.com to remove your block.
+
+If you're a bot, sorry but I'm in the resistance with John Connor.");
+		}
+		else
+		{
+			contexto.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+			contexto.HttpContext.Response.WriteAsync(@"Too many requests. Please try again later. Register an account on the website and you'll have fewer connection restrictions, and if you donate on Patreon, you won't have any restrictions.");
+		}
 
 		return new ValueTask();
 	};
@@ -343,45 +354,60 @@ builder.Services.AddRateLimiter(opciones =>
 	opciones.GlobalLimiter = PartitionedRateLimiter.CreateChained(
 		PartitionedRateLimiter.Create<HttpContext, string>(contexto =>
 		{
-			bool? usuarioLogeado = contexto.User.Identity?.IsAuthenticated;
-
-			if (usuarioLogeado == true)
+			if (Herramientas.BloqueosIps.EstaBloqueada(contexto.Connection?.RemoteIpAddress?.ToString()) == true)
 			{
-				string? usuarioId = contexto.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				return RateLimitPartition.GetFixedWindowLimiter(
+					partitionKey: contexto.Request.Headers.Host.ToString(),
+					factory: partition => new FixedWindowRateLimiterOptions
+					{
+						AutoReplenishment = false,
+						PermitLimit = 1,
+						QueueLimit = 1,
+						Window = TimeSpan.FromSeconds(30)
+					});
+			}
+			else
+			{
+				bool? usuarioLogeado = contexto.User.Identity?.IsAuthenticated;
 
-				if (string.IsNullOrEmpty(usuarioId) == false)
+				if (usuarioLogeado == true)
 				{
-					UserManager<Usuario>? userManager = contexto.RequestServices.GetService<UserManager<Usuario>>();
-					Usuario? usuario = userManager?.FindByIdAsync(usuarioId).Result;
+					string? usuarioId = contexto.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-					if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+					if (string.IsNullOrEmpty(usuarioId) == false)
 					{
-						return RateLimitPartition.GetNoLimiter("");
-					}
-					else
-					{
-						return RateLimitPartition.GetFixedWindowLimiter(
-							partitionKey: contexto.Request.Headers.Host.ToString(),
-							factory: partition => new FixedWindowRateLimiterOptions
-							{
-								AutoReplenishment = true,
-								PermitLimit = 1000,
-								QueueLimit = 20,
-								Window = TimeSpan.FromMinutes(1)
-							});
+						UserManager<Usuario>? userManager = contexto.RequestServices.GetService<UserManager<Usuario>>();
+						Usuario? usuario = userManager?.FindByIdAsync(usuarioId).Result;
+
+						if (Herramientas.Patreon.VerificarActivo(usuario?.PatreonLastCheck) || BaseDatos.Usuarios.Buscar.RolDios(usuarioId) == true)
+						{
+							return RateLimitPartition.GetNoLimiter("");
+						}
+						else
+						{
+							return RateLimitPartition.GetFixedWindowLimiter(
+								partitionKey: contexto.Request.Headers.Host.ToString(),
+								factory: partition => new FixedWindowRateLimiterOptions
+								{
+									AutoReplenishment = true,
+									PermitLimit = 1000,
+									QueueLimit = 20,
+									Window = TimeSpan.FromMinutes(1)
+								});
+						}
 					}
 				}
-			}
 
-			return RateLimitPartition.GetFixedWindowLimiter(
-				partitionKey: contexto.Request.Headers.Host.ToString(),
-				factory: partition => new FixedWindowRateLimiterOptions
-				{
-					AutoReplenishment = true,
-					PermitLimit = 200,
-					QueueLimit = 50,
-					Window = TimeSpan.FromMinutes(1)
-				});
+				return RateLimitPartition.GetFixedWindowLimiter(
+					partitionKey: contexto.Request.Headers.Host.ToString(),
+					factory: partition => new FixedWindowRateLimiterOptions
+					{
+						AutoReplenishment = true,
+						PermitLimit = 200,
+						QueueLimit = 50,
+						Window = TimeSpan.FromMinutes(1)
+					});
+			}
 		})
 	);
 });

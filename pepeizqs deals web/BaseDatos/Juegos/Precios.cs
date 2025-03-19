@@ -396,6 +396,10 @@ namespace BaseDatos.Juegos
 										}
 									}
 								}
+
+								//------------------------------------------
+
+								Herramientas.RedesSociales.Reddit.Postear(id, minimo, analisis);
 							}
 							else if (tempPrecio == minimo.Precio)
 							{

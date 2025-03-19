@@ -536,7 +536,7 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
             
                 try
                 {
-                    await Herramientas.RedesSociales.Twitter.Twitear(noticiaAñadir);
+                    Herramientas.RedesSociales.Twitter.Twitear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
@@ -550,6 +550,24 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 catch (Exception ex)
                 {
                     BaseDatos.Errores.Insertar.Mensaje("Enviar BlueSky Noticia", ex);
+                }
+
+                try
+                {
+                    Herramientas.RedesSociales.Telegram.Postear(noticiaAñadir);
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Mensaje("Enviar Telegram Noticia", ex);
+                }
+
+                try
+                {
+                    Herramientas.RedesSociales.Reddit.Postear(noticiaAñadir);
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Mensaje("Enviar Reddit Noticia", ex);
                 }
 
                 foreach (var usuario in UserManager.Users)
