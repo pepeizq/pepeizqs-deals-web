@@ -138,6 +138,7 @@ builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.Patreon>();
+builder.Services.AddSingleton<Tareas.RedesSociales>();
 
 builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
 builder.Services.AddSingleton<Tareas.Tiendas.HumbleStore>();

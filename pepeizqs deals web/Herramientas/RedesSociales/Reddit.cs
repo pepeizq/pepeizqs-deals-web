@@ -51,118 +51,170 @@ namespace Herramientas.RedesSociales
 			}
 		}
 
-		public static void Postear(int id, JuegoPrecio juego, JuegoAnalisis analisis)
+		public static void Postear(string enlace, int id, int descuento, string precio, string tipo, string tienda, string codigoDescuento = null, string codigoTexto = null)
 		{
-			if (juego != null)
+			WebApplicationBuilder builder = WebApplication.CreateBuilder();
+			string cuenta = builder.Configuration.GetValue<string>("Reddit:Cuenta");
+			string contraseña = builder.Configuration.GetValue<string>("Reddit:Contraseña");
+
+			string subTexto = null;
+
+			if (tipo == "steam")
 			{
-				if (juego.DRM == JuegoDRM.Steam)
+				subTexto = "/r/gamesdealssteam";
+			}
+
+			if (string.IsNullOrEmpty(subTexto) == false)
+			{
+				RedditSharp.Reddit cliente = new RedditSharp.Reddit();
+				cliente.LogIn(cuenta, contraseña);
+
+				cliente.InitOrUpdateUser();
+
+				if (cliente.User != null)
 				{
-					if (analisis != null)
+					RedditSharp.Things.Subreddit sub = cliente.GetSubreddit(subTexto);
+
+					string nombreTienda = string.Empty;
+					foreach (var tienda2 in Tiendas2.TiendasCargar.GenerarListado())
 					{
-						if (string.IsNullOrEmpty(analisis.Cantidad) == false)
+						if (tienda2.Id == tienda)
 						{
-							if (analisis.Cantidad.Length > 3)
+							nombreTienda = tienda2.Nombre;
+						}
+					}
+
+					Juego juego2 = global::BaseDatos.Juegos.Buscar.UnJuego(id);
+
+					if (juego2 != null)
+					{
+						string titulo = "[" + nombreTienda + "] " + juego2.Nombre + " (" + Herramientas.Precios.Euro(decimal.Parse(precio)) + " / " + descuento + "% off)";
+
+						RedditSharp.Things.Post post = sub.SubmitPost(titulo, enlace);
+
+						string comentario = string.Empty;
+
+						if (string.IsNullOrEmpty(codigoDescuento) == false)
+						{
+							comentario = "Use code " + codigoTexto + " to obtain the price indicated in the title." + Environment.NewLine;
+						}
+
+						if (juego2.Bundles != null)
+						{
+							if (juego2.Bundles.Count > 0)
 							{
-								WebApplicationBuilder builder = WebApplication.CreateBuilder();
-								string cuenta = builder.Configuration.GetValue<string>("Reddit:Cuenta");
-								string contraseña = builder.Configuration.GetValue<string>("Reddit:Contraseña");
+								List<int> bundlesActivos = new List<int>();
+								List<int> bundlesViejunos = new List<int>();
 
-								RedditSharp.Reddit cliente = new RedditSharp.Reddit();
-								cliente.LogIn(cuenta, contraseña);
-
-								cliente.InitOrUpdateUser();
-
-								if (cliente.User != null)
+								foreach (var bundle in juego2.Bundles)
 								{
-									RedditSharp.Things.Subreddit sub = cliente.GetSubreddit("/r/gamesdealssteam");
-
-									string nombreTienda = string.Empty;
-									foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
+									if (bundle.FechaEmpieza <= DateTime.Now && bundle.FechaTermina >= DateTime.Now)
 									{
-										if (tienda.Id == juego.Tienda)
+										bundlesActivos.Add(bundle.BundleId);
+									}
+									else
+									{
+										bundlesViejunos.Add(bundle.BundleId);
+									}
+								}
+
+								if (bundlesActivos.Count > 0)
+								{
+									comentario = comentario + Environment.NewLine + juego2.Nombre + " is part of the following bundles:" + Environment.NewLine;
+
+									foreach (var bundle in bundlesActivos)
+									{
+										Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
+
+										if (bundle2 != null)
 										{
-											nombreTienda = tienda.Nombre;
+											comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](" + bundle2.Enlace + ")" + Environment.NewLine;
 										}
 									}
+								}
 
-									string titulo = "[" + nombreTienda + "] " + juego.Nombre + " (" + Herramientas.Precios.Euro(juego.Precio) + " / " + juego.Descuento + "% off)";
+								if (bundlesViejunos.Count > 0)
+								{
+									comentario = comentario + Environment.NewLine + juego2.Nombre + " was part of the following bundles:" + Environment.NewLine;
 
-									RedditSharp.Things.Post post = sub.SubmitPost(titulo, juego.Enlace);
-
-									string comentario = string.Empty;
-
-									if (juego.CodigoDescuento > 0)
+									foreach (var bundle in bundlesViejunos)
 									{
-										comentario = "Use code " + juego.CodigoTexto + " to obtain the price indicated in the title." + Environment.NewLine + Environment.NewLine;
-									}
+										Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
 
-									Juego juego2 = global::BaseDatos.Juegos.Buscar.UnJuego(id);
-
-									if (juego2 != null)
-									{
-										if (juego2.Bundles != null)
+										if (bundle2 != null)
 										{
-											if (juego2.Bundles.Count > 0)
-											{
-												List<int> bundlesActivos = new List<int>();
-												List<int> bundlesViejunos = new List<int>();
-
-												foreach (var bundle in juego2.Bundles)
-												{
-													if (bundle.FechaEmpieza <= DateTime.Now && bundle.FechaTermina >= DateTime.Now)
-													{
-														bundlesActivos.Add(bundle.BundleId);
-													}
-													else
-													{
-														bundlesViejunos.Add(bundle.BundleId);
-													}
-												}
-												
-												if (bundlesActivos.Count > 0)
-												{
-													comentario = comentario + "This title is part of the following bundles:" + Environment.NewLine;
-
-													foreach (var bundle in bundlesActivos)
-													{
-														Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
-														
-														if (bundle2 != null)
-														{
-															comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](" + bundle2.Enlace + ")" + Environment.NewLine;
-														}
-													}
-												}
-
-												if (bundlesViejunos.Count > 0)
-												{
-													comentario = comentario + "This title was part of the following bundles:" + Environment.NewLine;
-
-													foreach (var bundle in bundlesViejunos)
-													{
-														Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
-
-														if (bundle2 != null)
-														{
-															comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](https://pepeizqdeals.com/bundle/" + bundle2.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle2.NombreBundle) + "/)" + Environment.NewLine;
-														}
-													}
-												}
-											}
+											comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](https://pepeizqdeals.com/bundle/" + bundle2.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle2.NombreBundle) + "/) (" + Calculadora.DiferenciaTiempo(bundle2.FechaEmpieza, "en") + ")" + Environment.NewLine;
 										}
-									}
-
-									if (string.IsNullOrEmpty(comentario) == false)
-									{
-										RedditSharp.Things.Comment comentario2 = post.Comment(comentario);
-										comentario2.Distinguish(RedditSharp.Things.VotableThing.DistinguishType.Moderator);
 									}
 								}
 							}
 						}
+
+						if (juego2.Gratis != null)
+						{
+							if (juego2.Gratis.Count > 0)
+							{
+								foreach (var gratis in juego2.Gratis)
+								{
+									if (gratis.FechaEmpieza <= DateTime.Now && gratis.FechaTermina >= DateTime.Now)
+									{
+										if (comentario.Contains(juego2.Nombre + " is currently free on:") == false)
+										{
+											comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently free on:" + Environment.NewLine;
+										}
+
+										comentario = comentario + "* [" + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + "](" + gratis.Enlace + ")" + Environment.NewLine;
+									}
+									else
+									{
+										if (comentario.Contains(juego2.Nombre + " was free on:") == false)
+										{
+											comentario = comentario + Environment.NewLine + juego2.Nombre + " was free on:" + Environment.NewLine;
+										}
+
+										comentario = comentario + "* " + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(gratis.FechaEmpieza, "en") + ")" + Environment.NewLine;
+									}
+								}
+							}
+						}
+
+						if (juego2.Suscripciones != null)
+						{
+							if (juego2.Suscripciones.Count > 0)
+							{
+								foreach (var suscripcion in juego2.Suscripciones)
+								{
+									if (suscripcion.FechaEmpieza <= DateTime.Now && suscripcion.FechaTermina >= DateTime.Now)
+									{
+										if (comentario.Contains(juego2.Nombre + " is currently available on subscription services:") == false)
+										{
+											comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently available on subscription services:" + Environment.NewLine;
+										}
+
+										comentario = comentario + "* [" + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + "](" + suscripcion.Enlace + ")" + Environment.NewLine;
+									}
+									else
+									{
+										if (comentario.Contains(juego2.Nombre + " was available on subscription services:") == false)
+										{
+											comentario = comentario + Environment.NewLine + juego2.Nombre + " was available on subscription services:" + Environment.NewLine;
+										}
+
+										comentario = comentario + "* " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(suscripcion.FechaEmpieza, "en") + ")" + Environment.NewLine;
+									}
+								}
+							}
+						}
+
+						if (string.IsNullOrEmpty(comentario) == false)
+						{
+							comentario = comentario.Trim();
+
+							post.Comment(comentario);
+						}
 					}
 				}
-			}		
+			}
 		}
-	}
+	}		
 }

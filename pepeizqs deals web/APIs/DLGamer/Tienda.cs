@@ -8,10 +8,10 @@
 
 using Herramientas;
 using Juegos;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.DLGamer
 {
@@ -39,9 +39,9 @@ namespace APIs.DLGamer
 			return enlace + "?affil=pepeizqdeals";
 		}
 
-		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
+		public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador)
 		{
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			int juegos2 = 0;
 
@@ -49,7 +49,7 @@ namespace APIs.DLGamer
 
 			if (html != null)
 			{
-				DLGamerJuegos basedatos = JsonConvert.DeserializeObject<DLGamerJuegos>(html);
+				DLGamerJuegos basedatos = JsonSerializer.Deserialize<DLGamerJuegos>(html);
 
 				if (basedatos != null)
 				{
@@ -90,18 +90,18 @@ namespace APIs.DLGamer
 							}
 							catch (Exception ex)
 							{
-                                BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                             }
 
 							juegos2 += 1;
 
 							try
 							{
-								BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+								BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 							}
 							catch (Exception ex)
 							{
-                                BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                             }
 						}
 					}
@@ -114,40 +114,40 @@ namespace APIs.DLGamer
 
 	public class DLGamerJuegos
 	{
-		[JsonProperty("products")]
+		[JsonPropertyName("products")]
 		public Dictionary<string, DLGamerJuego> Datos { get; set; }
 	}
 
 	public class DLGamerJuego
 	{
-		[JsonProperty("name")]
+		[JsonPropertyName("name")]
 		public string Nombre { get; set; }
 
-		[JsonProperty("id")]
+		[JsonPropertyName("id")]
 		public string Id { get; set; }
 
-		[JsonProperty("price")]
+		[JsonPropertyName("price")]
 		public string PrecioRebajado { get; set; }
 
-		[JsonProperty("price_strike")]
+		[JsonPropertyName("price_strike")]
 		public string PrecioBase { get; set; }
 
-		[JsonProperty("price_purcent")]
+		[JsonPropertyName("price_purcent")]
 		public string Descuento { get; set; }
 
-		[JsonProperty("link")]
+		[JsonPropertyName("link")]
 		public string Enlace { get; set; }
 
-		[JsonProperty("image_box")]
+		[JsonPropertyName("image_box")]
 		public string Imagen { get; set; }
 
-		[JsonProperty("drm")]
+		[JsonPropertyName("drm")]
 		public string DRM { get; set; }
 
-		[JsonProperty("id_steam")]
+		[JsonPropertyName("id_steam")]
 		public string SteamID { get; set; }
 
-		[JsonProperty("discount_end_at")]
+		[JsonPropertyName("discount_end_at")]
 		public string FechaTermina { get; set; }
 	}
 
