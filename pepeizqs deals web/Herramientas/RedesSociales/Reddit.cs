@@ -63,6 +63,10 @@ namespace Herramientas.RedesSociales
 			{
 				subTexto = "/r/gamesdealssteam";
 			}
+			else if (tipo == "gog")
+			{
+				subTexto = "/r/gamedealsgog";
+			}
 
 			if (string.IsNullOrEmpty(subTexto) == false)
 			{
@@ -96,7 +100,7 @@ namespace Herramientas.RedesSociales
 
 						if (string.IsNullOrEmpty(codigoDescuento) == false)
 						{
-							comentario = "Use code " + codigoTexto + " to obtain the price indicated in the title." + Environment.NewLine;
+							comentario = "Use code " + codigoDescuento + " to obtain the price indicated in the title." + Environment.NewLine;
 						}
 
 						if (juego2.Bundles != null)

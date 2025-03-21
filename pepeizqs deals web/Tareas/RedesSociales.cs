@@ -25,7 +25,7 @@ namespace Tareas
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
 				WebApplicationBuilder builder = WebApplication.CreateBuilder();
-				string piscinaApp = builder.Configuration.GetValue<string>("PoolWeb:Contenido");
+				string piscinaApp = builder.Configuration.GetValue<string>("PoolTiendas:Contenido");
 				string piscinaUsada = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
 
 				if (piscinaApp == piscinaUsada)
@@ -40,13 +40,16 @@ namespace Tareas
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						try
+						if (BaseDatos.Admin.Buscar.TiendasEnUso(TimeSpan.FromSeconds(60), conexion) == null)
 						{
-							BaseDatos.RedesSociales.Buscar.PendientesPosteo(conexion);
-						}
-						catch (Exception ex)
-						{
-							BaseDatos.Errores.Insertar.Mensaje("Tarea - Redes Sociales", ex, conexion);
+							try
+							{
+								BaseDatos.RedesSociales.Buscar.PendientesPosteo(conexion);
+							}
+							catch (Exception ex)
+							{
+								BaseDatos.Errores.Insertar.Mensaje("Tarea - Redes Sociales", ex, conexion);
+							}
 						}
 					}
 				}

@@ -1703,15 +1703,18 @@
                                     @{
                                         if (string.IsNullOrEmpty(juego.Media.Video) == false)
                                         {
-                                            <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
-                                                <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
+                                            if (juego.Imagenes != null)
+                                            {
+                                                <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
 
-                                                <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                                    <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                        <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9l0 176c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
-                                                    </svg>
+                                                    <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                            <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9l0 176c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
+                                                        </svg>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
                                         }
 
                                         int i = 0;

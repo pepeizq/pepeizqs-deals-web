@@ -185,6 +185,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Patreon>());
+builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.RedesSociales>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.HumbleStore>());
