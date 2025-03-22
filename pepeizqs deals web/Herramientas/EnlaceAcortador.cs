@@ -96,11 +96,7 @@ namespace Herramientas
 					{
 						enlace = APIs.Fanatical.Tienda.Referido(enlace);
 					}
-					else if (tienda == APIs.GreenManGaming.Tienda.Generar().Id)
-					{
-						enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
-					}
-					else if (tienda == APIs.GreenManGaming.Tienda.GenerarGold().Id)
+					else if (tienda == APIs.GreenManGaming.Tienda.Generar().Id || tienda == APIs.GreenManGaming.Tienda.GenerarGold().Id)
 					{
 						enlace = APIs.GreenManGaming.Tienda.Referido(enlace);
 					}

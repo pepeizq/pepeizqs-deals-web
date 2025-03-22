@@ -92,129 +92,142 @@ namespace Herramientas.RedesSociales
 
 					if (juego2 != null)
 					{
-						string titulo = "[" + nombreTienda + "] " + juego2.Nombre + " (" + Herramientas.Precios.Euro(decimal.Parse(precio)) + " / " + descuento + "% off)";
+						bool valido = true;
 
-						RedditSharp.Things.Post post = sub.SubmitPost(titulo, enlace);
-
-						string comentario = string.Empty;
-
-						if (string.IsNullOrEmpty(codigoDescuento) == false)
+						if (tipo == "gog")
 						{
-							comentario = "Use code " + codigoDescuento + " to obtain the price indicated in the title." + Environment.NewLine;
+							if (juego2.Tipo != JuegoTipo.Game)
+							{
+								valido = false;
+							}
 						}
 
-						if (juego2.Bundles != null)
+						if (valido == true)
 						{
-							if (juego2.Bundles.Count > 0)
+							string titulo = "[" + nombreTienda + "] " + juego2.Nombre + " (" + Herramientas.Precios.Euro(decimal.Parse(precio)) + " / " + descuento + "% off)";
+
+							RedditSharp.Things.Post post = sub.SubmitPost(titulo, enlace);
+
+							string comentario = string.Empty;
+
+							if (string.IsNullOrEmpty(codigoDescuento) == false)
 							{
-								List<int> bundlesActivos = new List<int>();
-								List<int> bundlesViejunos = new List<int>();
+								comentario = "Use code " + codigoDescuento + " to obtain the price indicated in the title." + Environment.NewLine;
+							}
 
-								foreach (var bundle in juego2.Bundles)
+							if (juego2.Bundles != null)
+							{
+								if (juego2.Bundles.Count > 0)
 								{
-									if (bundle.FechaEmpieza <= DateTime.Now && bundle.FechaTermina >= DateTime.Now)
-									{
-										bundlesActivos.Add(bundle.BundleId);
-									}
-									else
-									{
-										bundlesViejunos.Add(bundle.BundleId);
-									}
-								}
+									List<int> bundlesActivos = new List<int>();
+									List<int> bundlesViejunos = new List<int>();
 
-								if (bundlesActivos.Count > 0)
-								{
-									comentario = comentario + Environment.NewLine + juego2.Nombre + " is part of the following bundles:" + Environment.NewLine;
-
-									foreach (var bundle in bundlesActivos)
+									foreach (var bundle in juego2.Bundles)
 									{
-										Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
-
-										if (bundle2 != null)
+										if (bundle.FechaEmpieza <= DateTime.Now && bundle.FechaTermina >= DateTime.Now)
 										{
-											comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](" + bundle2.Enlace + ")" + Environment.NewLine;
+											bundlesActivos.Add(bundle.BundleId);
+										}
+										else
+										{
+											bundlesViejunos.Add(bundle.BundleId);
 										}
 									}
-								}
 
-								if (bundlesViejunos.Count > 0)
-								{
-									comentario = comentario + Environment.NewLine + juego2.Nombre + " was part of the following bundles:" + Environment.NewLine;
-
-									foreach (var bundle in bundlesViejunos)
+									if (bundlesActivos.Count > 0)
 									{
-										Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
+										comentario = comentario + Environment.NewLine + juego2.Nombre + " is part of the following bundles:" + Environment.NewLine;
 
-										if (bundle2 != null)
+										foreach (var bundle in bundlesActivos)
 										{
-											comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](https://pepeizqdeals.com/bundle/" + bundle2.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle2.NombreBundle) + "/) (" + Calculadora.DiferenciaTiempo(bundle2.FechaEmpieza, "en") + ")" + Environment.NewLine;
+											Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
+
+											if (bundle2 != null)
+											{
+												comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](" + bundle2.Enlace + ")" + Environment.NewLine;
+											}
+										}
+									}
+
+									if (bundlesViejunos.Count > 0)
+									{
+										comentario = comentario + Environment.NewLine + juego2.Nombre + " was part of the following bundles:" + Environment.NewLine;
+
+										foreach (var bundle in bundlesViejunos)
+										{
+											Bundles2.Bundle bundle2 = global::BaseDatos.Bundles.Buscar.UnBundle(bundle);
+
+											if (bundle2 != null)
+											{
+												comentario = comentario + "* [" + bundle2.NombreBundle + " • " + bundle2.NombreTienda + "](https://pepeizqdeals.com/bundle/" + bundle2.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle2.NombreBundle) + "/) (" + Calculadora.DiferenciaTiempo(bundle2.FechaEmpieza, "en") + ")" + Environment.NewLine;
+											}
 										}
 									}
 								}
 							}
-						}
 
-						if (juego2.Gratis != null)
-						{
-							if (juego2.Gratis.Count > 0)
+							if (juego2.Gratis != null)
 							{
-								foreach (var gratis in juego2.Gratis)
+								if (juego2.Gratis.Count > 0)
 								{
-									if (gratis.FechaEmpieza <= DateTime.Now && gratis.FechaTermina >= DateTime.Now)
+									foreach (var gratis in juego2.Gratis)
 									{
-										if (comentario.Contains(juego2.Nombre + " is currently free on:") == false)
+										if (gratis.FechaEmpieza <= DateTime.Now && gratis.FechaTermina >= DateTime.Now)
 										{
-											comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently free on:" + Environment.NewLine;
-										}
+											if (comentario.Contains(juego2.Nombre + " is currently free on:") == false)
+											{
+												comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently free on:" + Environment.NewLine;
+											}
 
-										comentario = comentario + "* [" + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + "](" + gratis.Enlace + ")" + Environment.NewLine;
-									}
-									else
-									{
-										if (comentario.Contains(juego2.Nombre + " was free on:") == false)
+											comentario = comentario + "* [" + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + "](" + gratis.Enlace + ")" + Environment.NewLine;
+										}
+										else
 										{
-											comentario = comentario + Environment.NewLine + juego2.Nombre + " was free on:" + Environment.NewLine;
-										}
+											if (comentario.Contains(juego2.Nombre + " was free on:") == false)
+											{
+												comentario = comentario + Environment.NewLine + juego2.Nombre + " was free on:" + Environment.NewLine;
+											}
 
-										comentario = comentario + "* " + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(gratis.FechaEmpieza, "en") + ")" + Environment.NewLine;
+											comentario = comentario + "* " + Gratis2.GratisCargar.DevolverGratis(gratis.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(gratis.FechaEmpieza, "en") + ")" + Environment.NewLine;
+										}
 									}
 								}
 							}
-						}
 
-						if (juego2.Suscripciones != null)
-						{
-							if (juego2.Suscripciones.Count > 0)
+							if (juego2.Suscripciones != null)
 							{
-								foreach (var suscripcion in juego2.Suscripciones)
+								if (juego2.Suscripciones.Count > 0)
 								{
-									if (suscripcion.FechaEmpieza <= DateTime.Now && suscripcion.FechaTermina >= DateTime.Now)
+									foreach (var suscripcion in juego2.Suscripciones)
 									{
-										if (comentario.Contains(juego2.Nombre + " is currently available on subscription services:") == false)
+										if (suscripcion.FechaEmpieza <= DateTime.Now && suscripcion.FechaTermina >= DateTime.Now)
 										{
-											comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently available on subscription services:" + Environment.NewLine;
-										}
+											if (comentario.Contains(juego2.Nombre + " is currently available on subscription services:") == false)
+											{
+												comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently available on subscription services:" + Environment.NewLine;
+											}
 
-										comentario = comentario + "* [" + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + "](" + suscripcion.Enlace + ")" + Environment.NewLine;
-									}
-									else
-									{
-										if (comentario.Contains(juego2.Nombre + " was available on subscription services:") == false)
+											comentario = comentario + "* [" + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + "](" + suscripcion.Enlace + ")" + Environment.NewLine;
+										}
+										else
 										{
-											comentario = comentario + Environment.NewLine + juego2.Nombre + " was available on subscription services:" + Environment.NewLine;
-										}
+											if (comentario.Contains(juego2.Nombre + " was available on subscription services:") == false)
+											{
+												comentario = comentario + Environment.NewLine + juego2.Nombre + " was available on subscription services:" + Environment.NewLine;
+											}
 
-										comentario = comentario + "* " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(suscripcion.FechaEmpieza, "en") + ")" + Environment.NewLine;
+											comentario = comentario + "* " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(suscripcion.FechaEmpieza, "en") + ")" + Environment.NewLine;
+										}
 									}
 								}
 							}
-						}
 
-						if (string.IsNullOrEmpty(comentario) == false)
-						{
-							comentario = comentario.Trim();
+							if (string.IsNullOrEmpty(comentario) == false)
+							{
+								comentario = comentario.Trim();
 
-							post.Comment(comentario);
+								post.Comment(comentario);
+							}
 						}
 					}
 				}
