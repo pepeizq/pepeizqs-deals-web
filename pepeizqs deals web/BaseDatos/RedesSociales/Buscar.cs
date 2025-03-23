@@ -56,7 +56,7 @@ namespace BaseDatos.RedesSociales
 
 							if (lector.IsDBNull(7) == false)
 							{
-								codigoTexto = lector.GetString(6);
+								codigoTexto = lector.GetString(7);
 							}
 
 							Herramientas.RedesSociales.Reddit.Postear(enlace, idJuego, descuento, precio, tipo, tienda, codigoDescuento, codigoDescuento);

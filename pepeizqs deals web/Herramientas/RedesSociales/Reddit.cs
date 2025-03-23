@@ -110,9 +110,9 @@ namespace Herramientas.RedesSociales
 
 							string comentario = string.Empty;
 
-							if (string.IsNullOrEmpty(codigoDescuento) == false)
+							if (string.IsNullOrEmpty(codigoTexto) == false)
 							{
-								comentario = "Use code " + codigoDescuento + " to obtain the price indicated in the title." + Environment.NewLine;
+								comentario = "Use code " + codigoTexto + " to obtain the price indicated in the title." + Environment.NewLine;
 							}
 
 							if (juego2.Bundles != null)
