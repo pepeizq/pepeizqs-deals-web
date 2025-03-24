@@ -59,7 +59,7 @@ namespace BaseDatos.RedesSociales
 								codigoTexto = lector.GetString(7);
 							}
 
-							Herramientas.RedesSociales.Reddit.Postear(enlace, idJuego, descuento, precio, tipo, tienda, codigoDescuento, codigoDescuento);
+							Herramientas.RedesSociales.Reddit.Postear(enlace, idJuego, descuento, precio, tipo, tienda, codigoDescuento, codigoTexto);
 						}
 					}
 				}
