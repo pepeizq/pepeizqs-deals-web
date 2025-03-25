@@ -65,7 +65,7 @@ namespace Herramientas.RedesSociales
 			}
 			else if (tipo == "gog")
 			{
-				subTexto = "/r/gamedealsgog";
+				subTexto = "/r/gamesdealsgog";
 			}
 
 			if (string.IsNullOrEmpty(subTexto) == false)

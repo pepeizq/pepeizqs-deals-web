@@ -570,6 +570,15 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                     BaseDatos.Errores.Insertar.Mensaje("Enviar Reddit Noticia", ex);
                 }
 
+                try
+                {
+                    Herramientas.RedesSociales.Discord.Postear(noticiaAñadir);
+                }
+                catch (Exception ex)
+                {
+                    BaseDatos.Errores.Insertar.Mensaje("Enviar Discord Noticia", ex);
+                }
+
                 foreach (var usuario in UserManager.Users)
                 {
                     try

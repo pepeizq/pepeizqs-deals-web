@@ -159,6 +159,10 @@
 					Reddit
 				</button>
 
+				<button @onclick="(e => EnviarDiscord(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
+					Discord
+				</button>
+
 				<button @onclick="(e => EnviarNotificacionesPush(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
 					Notificaciones Push
 				</button>
@@ -415,6 +419,11 @@
 	private void EnviarReddit(MouseEventArgs e)
 	{
 		Herramientas.RedesSociales.Reddit.Postear(noticia);
+	}
+
+	private void EnviarDiscord(MouseEventArgs e)
+	{
+		Herramientas.RedesSociales.Discord.Postear(noticia);
 	}
 
 	private async void EnviarNotificacionesPush(MouseEventArgs e)
