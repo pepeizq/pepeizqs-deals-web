@@ -72,7 +72,7 @@ namespace Herramientas.RedesSociales
 			{
 				RedditSharp.Reddit cliente = new RedditSharp.Reddit();
 				cliente.LogIn(cuenta, contraseña);
-
+			
 				cliente.InitOrUpdateUser();
 
 				if (cliente.User != null)
