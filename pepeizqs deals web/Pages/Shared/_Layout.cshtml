@@ -4,6 +4,8 @@
 @using Microsoft.Extensions.Caching.Memory
 @using pepeizqs_deals_web.Areas.Identity.Data
 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
@@ -173,9 +175,9 @@
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
     <meta name="theme-color" content="#002033" />
 
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
-  
     <base href="/" />
+
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 
 <body class="cuerpo" id="cuerpazo">

@@ -1,3 +1,7 @@
 {
-  "Title": "Compare"
+  "Title": "Compare",
+  "String1": "search",
+  "String2": "Search the first game to compare",
+  "String3": "Search the second game to compare",
+  "String4": "Open game"
 }

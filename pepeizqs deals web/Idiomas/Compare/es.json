@@ -1,3 +1,7 @@
 {
-  "Title": "Comparar"
+  "Title": "Comparar",
+  "String1": "buscar",
+  "String2": "Busca el primer juego para comparar",
+  "String3": "Busca el segundo juego para comparar",
+  "String4": "Abrir juego"
 }

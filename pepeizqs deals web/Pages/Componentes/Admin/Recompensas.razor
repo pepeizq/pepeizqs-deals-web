@@ -183,7 +183,7 @@ else
 			{
 				cadenaBusqueda = texto.Value.ToString().Trim();
 
-				resultadosBusqueda = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 250);
+				resultadosBusqueda = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 250, true, -1, true);
 			}
 		}
 	}

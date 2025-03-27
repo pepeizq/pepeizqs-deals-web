@@ -113,7 +113,23 @@
         {
             if (juego.Tipo == JuegoTipo.Game)
             {
-                <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre" loading="lazy" />
+                bool mostrar = true;
+
+                if (usuarioLogeado == false)
+                {
+                    if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                    {
+                        if (juego.MayorEdad.ToLower() == "true")
+                        {
+                            mostrar = false;
+                        }
+                    }
+                }
+                            
+                if (mostrar == true)
+                {
+                    <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre" loading="lazy" />
+                }
             }
         }
 
@@ -143,9 +159,31 @@
                     {
                         if (string.IsNullOrEmpty(juego.Imagenes.Header_460x215) == false)
                         {
-                            <div class="juego-flexible-izquierda">
-                                <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
-                            </div>
+                            bool difuminar = false;
+
+                            if (usuarioLogeado == false)
+                            {
+                                if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                                {
+                                    if (juego.MayorEdad.ToLower() == "true")
+                                    {
+                                        difuminar = true;                                        
+                                    }
+                                }
+                            }
+                            
+                            if (difuminar == false)
+                            {
+                                <div class="juego-flexible-izquierda">
+                                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="juego-flexible-izquierda" style="overflow: hidden;">
+                                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" style="filter: blur(10px);" alt="@juego.Nombre" loading="lazy" />
+                                </div>
+                            }
                         }
                     }
 
@@ -377,7 +415,14 @@
                                 </div>
 
                                 <div style="width: 100%;">
-                                    @Idiomas.BuscarTexto(idioma, "String45", "Game")
+                                    @if (usuarioLogeado == true)
+                                    {
+                                        @Idiomas.BuscarTexto(idioma, "String45", "Game")
+                                    }
+                                    else
+                                    {
+                                        @string.Format("{0} {1}", Idiomas.BuscarTexto(idioma, "String45", "Game"), Idiomas.BuscarTexto(idioma, "String93", "Game"))
+                                    }
                                 </div>
                             </div>
                         }
@@ -1671,8 +1716,21 @@
                 {
                     if (juego.Media.Capturas.Count > 0)
                     {
+                        bool difuminar = false;
+
+                        if (usuarioLogeado == false)
+                        {
+                            if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                            {
+                                if (juego.MayorEdad.ToLower() == "true")
+                                {
+                                    difuminar = true;
+                                }
+                            }
+                        }
+
                         <div class="juego-galeria-contenedor">
-                            @if (mediaMostrarPosicion == 99999)
+                            @if (mediaMostrarPosicion == 99999 && difuminar == false)
                             {
                                 <video style="width: 100vw; height: calc(100vh - 190px); cursor: pointer; max-width: 1320px; max-height: 742.50px;" controls="controls" preload="metadata">
                                     <source src="@mediaMostrar" type="video/mp4" />
@@ -1681,9 +1739,17 @@
                             }
                             else
                             {
-                                <div>
+                                <div style="overflow: hidden;">
                                     <div class="juego-galeria-numero">@(mediaMostrarPosicion + 1) / @(juego.Media.Capturas.Count)</div>
-                                    <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre" loading="lazy">
+                                    
+                                    @if (difuminar == false)
+                                    {
+                                        <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre" loading="lazy">
+                                    }
+                                    else
+                                    {
+                                        <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
+                                    } 
                                 </div>
 
                                 <a class="juego-galeria-atras" @onclick="@(e => CambiarMediaMostrar(e, mediaMostrarPosicion - 1))">&#10094;</a>
@@ -1692,16 +1758,9 @@
 
                             @if (juego.Media.Miniaturas != null)
                             {
-                                string añadirMargin = string.Empty;
-
-                                if (string.IsNullOrEmpty(juego.Media.Video) == false)
-                                {
-                                    añadirMargin = "margin-top: -5px;";
-                                }
-
-                                <div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro); @añadirMargin">
+                                <div class="juego-galeria-fila" style="scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
                                     @{
-                                        if (string.IsNullOrEmpty(juego.Media.Video) == false)
+                                        if (string.IsNullOrEmpty(juego.Media.Video) == false && difuminar == false)
                                         {
                                             if (juego.Imagenes != null)
                                             {
@@ -1722,9 +1781,18 @@
                                         {
                                             int nuevaPosicion = i;
 
-                                            <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
-                                                <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
-                                            </div>
+                                            if (difuminar == false)
+                                            {
+                                                <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))" style="overflow: hidden;">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
+                                                </div>
+                                            }
 
                                             i += 1;
                                         }
@@ -2856,6 +2924,9 @@
     [Parameter]
     public string usuarioId { get; set; }
 
+    [Parameter]
+    public bool usuarioLogeado { get; set; }
+
     private Usuario usuario = new Usuario();
     private bool usuarioPatreon = false;
     private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
@@ -3143,18 +3214,36 @@
             {
                 if (string.IsNullOrEmpty(juego.Media.Video) == false)
                 {
-                    mediaMostrar = juego.Media.Video;
-                    mediaMostrar = mediaMostrar.Replace("http://", "https://");
-                    mediaMostrar = mediaMostrar.Replace("http://", "https://");
-                    mediaMostrarPosicion = 99999;
+                    bool cargar = true;
+
+                    if (usuarioLogeado == false)
+                    {
+                        if (string.IsNullOrEmpty(juego.MayorEdad) == false)
+                        {
+                            if (juego.MayorEdad.ToLower() == "true")
+                            {
+                                cargar = false;
+                            }
+                        }
+                    }
+
+                    if (cargar == true)
+                    {
+                        mediaMostrar = juego.Media.Video;
+                        mediaMostrar = mediaMostrar.Replace("http://", "https://");
+                        mediaMostrar = mediaMostrar.Replace("http://", "https://");
+                        mediaMostrarPosicion = 99999;
+                    }
                 }
-                else
+
+                if (mediaMostrarPosicion == 0)
                 {
                     if (juego.Media.Capturas != null)
                     {
                         if (juego.Media.Capturas.Count > 0)
                         {
                             mediaMostrar = juego.Media.Capturas[0];
+                            mediaMostrarPosicion = 1;
                         }
                     }
                 }

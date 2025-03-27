@@ -616,7 +616,7 @@ else
             {
                 pestañaSeleccionada = -1;
 
-                List<Juegos.Juego> resultadosGestor = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false);
+                List<Juegos.Juego> resultadosGestor = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, -1, usuarioLogeado);
 
                 resultadosJuegos.Clear();
                 resultadosDLCs.Clear();

@@ -858,7 +858,7 @@
             {
                 cadenaBusquedaPendiente = texto.Value.ToString().Trim();
 
-                List<global::Juegos.Juego> resultados = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
+                List<global::Juegos.Juego> resultados = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250, true, -1, true);
 
                 if (resultados.Count > 0)
                 {
@@ -1019,7 +1019,7 @@
         {
             BaseDatos.Juegos.Borrar.Ejecutar(id, conexion);
 
-            buscadorPendientesJuegos = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250);
+            buscadorPendientesJuegos = BaseDatos.Juegos.Buscar.Nombre(cadenaBusquedaPendiente, conexion, 250, true, -1, true);
         }
     }
 

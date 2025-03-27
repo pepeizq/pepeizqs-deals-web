@@ -728,7 +728,7 @@ namespace BaseDatos.Juegos
             return null;
         }
 
-        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30, bool todo = true, int tipo = -1)
+        public static List<Juego> Nombre(string nombre, SqlConnection conexion, int cantidad = 30, bool todo = true, int tipo = -1, bool logeado = false)
 		{
             if (conexion == null)
             {
@@ -811,8 +811,18 @@ namespace BaseDatos.Juegos
 			{
 				busqueda = busqueda + " AND tipo = " + tipo.ToString();
 			}
-    
-            using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+
+			if (logeado == false)
+			{
+				busqueda = busqueda + " AND (mayorEdad='false' OR mayorEdad IS NULL)";
+			}
+
+			if (string.IsNullOrEmpty(busqueda) == false)
+			{
+				busqueda = busqueda + " ORDER BY CASE\r\n    WHEN ISJSON(analisis) > 0 THEN CONVERT(int, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',',''))\r\n    ELSE id\r\nEND DESC";
+			}
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 			{
 				using (SqlDataReader lector = comando.ExecuteReader())
 				{
@@ -943,13 +953,6 @@ namespace BaseDatos.Juegos
 					}
 				}
 			}
-
-            if (juegos.Count > 0)
-            {
-                return juegos.OrderBy(x => x.Nombre)
-                             .ThenBy(x => x.Id)
-                             .ToList();
-            }
 
             return juegos;
         }
