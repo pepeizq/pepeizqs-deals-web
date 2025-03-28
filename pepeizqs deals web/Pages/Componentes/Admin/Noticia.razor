@@ -186,10 +186,8 @@
 
 	public global::Noticias.Noticia noticia = new global::Noticias.Noticia();
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		await Task.Delay(10);
-
 		noticia = BaseDatos.Noticias.Buscar.UnaNoticia(noticiaId);
 
 		if (noticia != null)

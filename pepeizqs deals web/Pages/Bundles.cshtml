@@ -31,5 +31,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Bundle");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Bundles)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" />
+	<component type="typeof(Componentes.Secciones.Bundles)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" />
 }

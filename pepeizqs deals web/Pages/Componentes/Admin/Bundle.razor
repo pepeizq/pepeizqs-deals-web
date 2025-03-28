@@ -89,10 +89,8 @@
 
 	public Bundles2.Bundle bundle = new Bundles2.Bundle();
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		await Task.Delay(10);
-
 		bundle = BaseDatos.Bundles.Buscar.UnBundle(bundleId);
 
 		if (bundle != null)

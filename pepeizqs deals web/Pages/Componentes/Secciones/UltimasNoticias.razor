@@ -6,6 +6,34 @@
 	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "LastNews");
 	string enlace = "https://pepeizqdeals.com/last-news/";
 	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+	string keywords = "news";
+
+	if (noticiasMostrar != null)
+	{
+		if (noticiasMostrar.Count > 0)
+		{
+			int i = 0;
+			foreach (var noticiaMostrar in noticiasMostrar)
+			{
+				if (i < 3)
+				{
+					string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(noticiaMostrar.TituloEn, false).Split(' ');
+					List<string> keywordsLista = new List<string>();
+					keywordsLista.AddRange(keywordsEnBruto);
+
+					foreach (var keyword in keywordsLista)
+					{
+						if (keywords.Contains(keyword) == false && keyword.Length > 3)
+						{
+							keywords = keywords + ", " + keyword;
+						}
+					}
+				}
+
+                i += 1;
+			}
+		}
+	}
 
 	<PageTitle>@titulo</PageTitle>
 	<HeadContent>
@@ -16,8 +44,8 @@
 		<meta name="og:image" content="@imagen" />
 		<meta name="og:site_name" content="pepeizq's deals" />
 		<meta name="og:type" content="website" />
-		<meta name="robots" content="index, follow, noimageindex" />
-		<meta name="keywords" content="deals, games, free, offers, bundles" />
+		<meta name="robots" content="index, follow, noimageindex, noai, noimageai" />
+		<meta name="keywords" content="@keywords" />
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>
@@ -33,87 +61,90 @@
 		}
 </style>
 
-@if (noticiasMostrar.Count > 0)
+@if (noticiasMostrar != null)
 {
-	<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
-		<div style="display: flex; align-items: center; width: 100%;">
-			<div style="font-size: 23px; text-align: left;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews")
-			</div>
-			<div style="flex: 1;"></div>
-
-			<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" />
-		</div>
-	</div>
-
-	<div style="display: flex; flex-direction: column; gap: 30px; margin-top: 20px;">
-		@foreach (var noticiaMostrar in noticiasMostrar)
-		{
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; align-items: center; gap: 30px;">
-				<div style="width: 50%;">
-					<a href="/news/@noticiaMostrar.Id/">
-						<img src="@noticiaMostrar.Imagen" class="imagen-expandir" style="width: 100%; height: 100%; border: 1px solid var(--fondoBotonPequeño);" />
-					</a>
+	if (noticiasMostrar.Count > 0)
+	{
+		<div style="background-color: var(--fondoCuerpo); position: sticky; position: -webkit-sticky; top: 70px; z-index: 1; margin: -10px; padding: 10px;">
+			<div style="display: flex; align-items: center; width: 100%;">
+				<div style="font-size: 23px; text-align: left;">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews")
 				</div>
+				<div style="flex: 1;"></div>
 
-				<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
-					<div style="font-size: 20px;">
-						@Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.TituloEn, noticiaMostrar.TituloEs)
+				<pepeizqs_deals_web.Pages.Componentes.Interfaz.RedesSociales idioma="@idioma" />
+			</div>
+		</div>
+
+		<div style="display: flex; flex-direction: column; gap: 30px; margin-top: 20px;">
+			@foreach (var noticiaMostrar in noticiasMostrar)
+			{
+				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; align-items: center; gap: 30px;">
+					<div style="width: 50%;">
+						<a href="/news/@noticiaMostrar.Id/">
+							<img src="@noticiaMostrar.Imagen" class="imagen-expandir" style="width: 100%; height: 100%; border: 1px solid var(--fondoBotonPequeño);" />
+						</a>
 					</div>
 
-					<div style="font-size: 18px;">
-						@noticiaMostrar.FechaEmpieza.Day.ToString()/@noticiaMostrar.FechaEmpieza.Month.ToString()/@noticiaMostrar.FechaEmpieza.Year.ToString()
-					</div>
+					<div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+						<div style="font-size: 20px;">
+							@Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.TituloEn, noticiaMostrar.TituloEs)
+						</div>
 
-					<div>
-						@{
-							string texto = Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.ContenidoEn, noticiaMostrar.ContenidoEs);
+						<div style="font-size: 18px;">
+							@noticiaMostrar.FechaEmpieza.Day.ToString()/@noticiaMostrar.FechaEmpieza.Month.ToString()/@noticiaMostrar.FechaEmpieza.Year.ToString()
+						</div>
 
-							if (string.IsNullOrEmpty(texto) == false)
-							{
-								if (texto.Contains("</div>") == true)
+						<div>
+							@{
+								string texto = Herramientas.Idiomas.ElegirTexto(idioma, noticiaMostrar.ContenidoEn, noticiaMostrar.ContenidoEs);
+
+								if (string.IsNullOrEmpty(texto) == false)
 								{
-									int int1 = texto.IndexOf("</div>");
-									texto = texto.Remove(int1, texto.Length - int1);
-
-									if (texto.Contains("<div") == true)
+									if (texto.Contains("</div>") == true)
 									{
-										int int2 = texto.IndexOf(">");
-										texto = texto.Remove(0, int2 + 1);
+										int int1 = texto.IndexOf("</div>");
+										texto = texto.Remove(int1, texto.Length - int1);
+
+										if (texto.Contains("<div") == true)
+										{
+												int int2 = texto.IndexOf(">");
+												texto = texto.Remove(0, int2 + 1);
+										}
 									}
+									else
+									{
+										if (texto.Contains("<") == true)
+										{
+												int int1 = texto.IndexOf("<");
+												texto = texto.Remove(int1, texto.Length - int1);
+										}
+									}
+								}
+
+								<div>
+									@((MarkupString)texto)							
+								</div>
+
+								if (noticiaMostrar.Tipo == Noticias.NoticiaTipo.Bundles)
+								{
+									<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "LastNews")
+									</a>
 								}
 								else
 								{
-									if (texto.Contains("<") == true)
-									{
-										int int1 = texto.IndexOf("<");
-										texto = texto.Remove(int1, texto.Length - int1);
-									}
+									<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "LastNews")
+									</a>
 								}
 							}
-
-							<div>
-								@((MarkupString)texto))								
-							</div>
-
-							if (noticiaMostrar.Tipo == Noticias.NoticiaTipo.Bundles)
-							{
-								<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "LastNews")
-								</a>
-							}
-							else
-							{
-								<a href="/news/@noticiaMostrar.Id/" class="boton-pequeño" style="width: auto; margin-top: 20px; padding: 10px 15px;">
-									@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "LastNews")
-								</a>
-							}
-						}
+						</div>
 					</div>
 				</div>
-			</div>
-		}
-	</div>
+			}
+		</div>
+	}
 }
 
 <div style="font-size: 23px; margin-top: 40px;">

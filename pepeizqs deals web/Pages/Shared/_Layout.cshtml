@@ -4,8 +4,6 @@
 @using Microsoft.Extensions.Caching.Memory
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
@@ -167,9 +165,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="alternate" type="application/rss+xml" href="https://pepeizqdeals.com/rss-en.xml" />
-
-    <link rel="prefetch" href="_framework/blazor.server.js">
+    <link rel="alternate" type="application/rss+xml" href="/rss-en.xml" />
 
     <meta name="msapplication-TileColor" content="#002033" />
     <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
@@ -267,7 +263,7 @@
                 </div>
 
                 <div style="padding: 0px 80px; display: flex; flex-direction: column; gap: 30px;">
-                    <component type="typeof(Componentes.Interfaz.RedesSociales)" render-mode="Server" param-idioma="idioma"/>
+                    <component type="typeof(Componentes.Interfaz.RedesSociales)" render-mode="ServerPrerendered" param-idioma="idioma"/>
                 </div>
 
                 <div>
@@ -282,10 +278,6 @@
     </footer>
 
     <script src="~/superjs.js" defer></script>
-
-@*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script> *@
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
 
@@ -371,11 +363,12 @@
         };
     </script>
 
- @*    <script src="~/pushNotifications.js"></script> *@
     <script>navigator.serviceWorker.register('service-worker.js');</script>
 
     <div id="components-reconnect-modal" style="display: none"/>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <persist-component-state />
 </body>
 </html>

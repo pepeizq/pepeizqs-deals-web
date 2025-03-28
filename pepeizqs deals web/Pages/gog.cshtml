@@ -31,7 +31,7 @@
 	ViewData["Title"] = Model.juego.Nombre;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.Server, new 
+	@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new 
 	{ 
 		idioma = idioma, 
 		juego = Model.juego 

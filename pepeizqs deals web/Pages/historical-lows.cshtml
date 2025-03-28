@@ -31,5 +31,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "HistoricalLows");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Minimos)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-drmEscrito="Model.drm" param-tiendaEscrita="Model.tienda" />
+	<component type="typeof(Componentes.Secciones.Minimos)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-drmEscrito="Model.drm" param-tiendaEscrita="Model.tienda" />
 }

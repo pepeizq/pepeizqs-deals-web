@@ -10,6 +10,53 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastAdded") + " • pepeizq's deals";
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String1", "LastAdded");
+	string enlace = "https://pepeizqdeals.com/free/";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+	string keywords = "last, added";
+
+	if (juegosMostrar.Count > 0)
+	{
+		int i = 0;
+		foreach (var juego in juegosMostrar)
+		{
+			if (i < 10)
+			{
+				string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
+				List<string> keywordsLista = new List<string>();
+				keywordsLista.AddRange(keywordsEnBruto);
+
+				foreach (var keyword in keywordsLista)
+				{
+					if (keywords.Contains(keyword) == false && keyword.Length > 3)
+					{
+						keywords = keywords + ", " + keyword;
+					}
+				}
+			}
+
+			i += 1;
+		}
+	}
+
+	<PageTitle>@titulo</PageTitle>
+	<HeadContent>
+		<meta name="og:title" content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, follow, noimageindex, noai, noimageai" />
+		<meta name="keywords" content="@keywords" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 @if (juegosMostrar.Count > 0)
 {
 	<div style="max-width: 1000px; margin: auto;">

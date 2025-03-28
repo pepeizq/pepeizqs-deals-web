@@ -12,6 +12,7 @@
     string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Free");
     string enlace = "https://pepeizqdeals.com/free/";
     string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+    string keywords = "free";
 
     if (juegosActuales.Count > 0)
     {
@@ -29,6 +30,18 @@
             else if (juego.Juego.Tipo == Juegos.JuegoTipo.DLC)
             {
                 dlcs += 1;
+            }
+
+            string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(juego.Nombre + " " + Gratis2.GratisCargar.DevolverGratis(juego.Tipo).Nombre, false).Split(' ');
+            List<string> keywordsLista = new List<string>();
+            keywordsLista.AddRange(keywordsEnBruto);
+
+            foreach (var keyword in keywordsLista)
+            {
+                if (keywords.Contains(keyword) == false && keyword.Length > 3)
+                {
+                    keywords = keywords + ", " + keyword;
+                }
             }
         }
 
@@ -98,8 +111,8 @@
         <meta name="og:image" content="@imagen" />
         <meta name="og:site_name" content="pepeizq's deals" />
         <meta name="og:type" content="website" />
-        <meta name="robots" content="index, nofollow, noimageindex" />
-        <meta name="keywords" content="deals, games, free, offers, bundles" />
+        <meta name="robots" content="index, nofollow, noimageindex, noai, noimageai" />
+        <meta name="keywords" content="@keywords" />
 
         <link rel="canonical" href="@enlace" />
     </HeadContent>

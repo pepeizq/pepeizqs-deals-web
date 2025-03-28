@@ -40,6 +40,20 @@
 
 	string descripcion = texto2;
 
+	string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(titulo, false).Split(' ');
+	List<string> keywordsLista = new List<string>();
+	keywordsLista.AddRange(keywordsEnBruto);
+
+	string keywords = "news";
+
+	foreach (string keyword in keywordsLista)
+	{
+		if (keyword.Length > 3)
+		{
+			keywords = keywords + ", " + keyword;
+		}
+	}
+
 	<PageTitle>@tituloSeo</PageTitle>
 	<HeadContent>
 		<meta name="og:title" Content="@tituloSeo" />
@@ -50,8 +64,8 @@
 		<meta name="og:video" content="@video" />
 		<meta name="og:site_name" content="pepeizq's deals" />
 		<meta name="og:type" content="website" />
-		<meta name="robots" content="index, nofollow, noimageindex" />
-		<meta name="keywords" content="deals, games, free, offers, bundles" />
+		<meta name="robots" content="index, nofollow, noimageindex, noai, noimageai" />
+		<meta name="keywords" content="@keywords" />
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>

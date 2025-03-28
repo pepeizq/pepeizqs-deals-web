@@ -50,7 +50,7 @@ namespace BaseDatos.Bundles
 
 			using (conexion)
 			{
-				string busqueda = "SELECT * FROM bundles WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina";
+				string busqueda = "SELECT * FROM bundles WHERE GETDATE() BETWEEN fechaEmpieza AND fechaTermina ORDER BY fechaTermina";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -62,11 +62,6 @@ namespace BaseDatos.Bundles
 						}
 					}
 				}
-			}
-
-			if (bundles.Count > 0)
-			{
-				bundles.Reverse();
 			}
 
 			return bundles;

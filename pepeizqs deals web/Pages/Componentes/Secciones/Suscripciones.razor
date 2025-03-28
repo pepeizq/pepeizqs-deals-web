@@ -3,8 +3,8 @@
 @using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
-@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
+@using System.Text.Json
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
@@ -15,6 +15,22 @@
     string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Subscriptions");
     string enlace = "https://pepeizqdeals.com/subscriptions";
     string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+    string keywords = "subscriptions";
+
+    foreach (var suscripcion in Suscripciones2.SuscripcionesCargar.GenerarListado())
+    {
+        string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(suscripcion.Nombre, false).Split(' ');
+        List<string> keywordsLista = new List<string>();
+        keywordsLista.AddRange(keywordsEnBruto);
+
+        foreach (var keyword in keywordsLista)
+        {
+            if (keywords.Contains(keyword) == false && keyword.Length > 3)
+            {
+                keywords = keywords + ", " + keyword;
+            }
+        }
+    }
 
     <PageTitle>@titulo</PageTitle>
     <HeadContent>
@@ -25,8 +41,8 @@
         <meta name="og:image" content="@imagen" />
         <meta name="og:site_name" content="pepeizq's deals" />
         <meta name="og:type" content="website" />
-        <meta name="robots" content="index, nofollow, noimageindex" />
-        <meta name="keywords" content="deals, games, free, offers, bundles" />
+        <meta name="robots" content="index, nofollow, noimageindex, noai, noimageai" />
+        <meta name="keywords" content="@keywords" />
 
         <link rel="canonical" href="@enlace" />
     </HeadContent>

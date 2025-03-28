@@ -31,5 +31,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "LastNews");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.UltimasNoticias)" render-mode="Server" param-idioma="idioma" />
+	<component type="typeof(Componentes.Secciones.UltimasNoticias)" render-mode="ServerPrerendered" param-idioma="idioma" />
 }

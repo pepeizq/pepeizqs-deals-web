@@ -30,5 +30,5 @@
 	ViewData["Title"] = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Portada)" render-mode="Server" param-idioma="idioma" param-usuarioLogeado="usuarioLogeado" param-usuarioId="usuario?.Id" />
+	<component type="typeof(Portada)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioLogeado="usuarioLogeado" param-usuarioId="usuario?.Id" />
 }

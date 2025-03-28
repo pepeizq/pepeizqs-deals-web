@@ -62,6 +62,37 @@ namespace APIs.AmazonLuna
 			}
 			catch { }
 
+			GestionarHtml(html, cantidad, conexion);
+
+			HttpClient clienteEa = new HttpClient();
+			clienteEa.BaseAddress = new Uri("https://luna.amazon.es/");
+			clienteEa.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+			string peticionEnBrutoEa = "{\"timeout\":10000,\"featureScheme\":\"WEB_V1\",\"pageContext\":{\"pageUri\":\"ea?ref=tmp_pghq_landingpage\",\"pageId\":\"default\"},\"cacheKey\":\"3411e8dc-75f4-4b58-8860-815159a61183\",\"clientContext\":{\"browserMetadata\":{\"browserType\":\"Firefox\",\"browserVersion\":\"136.0\",\"deviceModel\":\"rv:136.0\",\"deviceType\":\"unknown\",\"osName\":\"Windows\",\"osVersion\":\"10\"}},\"inputContext\":{\"gamepadTypes\":[]},\"dynamicFeatures\":[]}";
+
+			HttpRequestMessage peticionEa = new HttpRequestMessage(HttpMethod.Post, "https://proxy-prod.eu-west-1.tempo.digital.a2z.com/getPage")
+			{
+				Content = new StringContent(peticionEnBrutoEa, Encoding.UTF8, "application/json"),
+				Headers = { { "x-amz-locale", "es_ES" },
+							{ "x-amz-platform", "web" }
+				}
+			};
+
+			HttpResponseMessage respuestaEa = await clienteEa.SendAsync(peticionEa);
+
+			string htmlEa = string.Empty;
+
+			try
+			{
+				htmlEa = await respuestaEa.Content.ReadAsStringAsync();
+			}
+			catch { }
+
+			GestionarHtml(htmlEa, cantidad, conexion);
+		}
+
+		private static void GestionarHtml(string html, int cantidad, SqlConnection conexion)
+		{
 			if (string.IsNullOrEmpty(html) == false)
 			{
 				AmazonLunaPlusAPI api = JsonSerializer.Deserialize<AmazonLunaPlusAPI>(html);

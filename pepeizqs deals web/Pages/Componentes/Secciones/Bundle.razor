@@ -12,49 +12,81 @@
 
 @if (bundle != null)
 {
-	string titulo = bundle.NombreBundle + " • " + bundle.NombreTienda + " • pepeizq's deals";
-	string descripcion = string.Empty;
-	string enlace = "https://pepeizqdeals.com/bundle/" + bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/";
-	string imagen = string.Empty;
-
-	if (bundle.Tiers != null)
+	if (tipo == Tipo.Bundle)
 	{
-		string precio = bundle.Tiers[0].Precio.ToString();
-		precio = precio.Replace(".", ",");
-		precio = precio.Trim() + "€";
+		string titulo = bundle.NombreBundle + " • " + bundle.NombreTienda + " • pepeizq's deals";
+		string descripcion = string.Empty;
+		string enlace = "https://pepeizqdeals.com/bundle/" + bundle.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(bundle.NombreBundle) + "/";
+		string imagen = string.Empty;
 
-		if (bundle.Pick == false)
+		if (bundle.Tiers != null)
 		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Bundle") + " " + precio;
+			string precio = bundle.Tiers[0].Precio.ToString();
+			precio = precio.Replace(".", ",");
+			precio = precio.Trim() + "€";
+
+			if (bundle.Pick == false)
+			{
+				descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Bundle") + " " + precio;
+			}
+			else
+			{
+				descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Bundle") + " " + precio;
+			}
 		}
-		else
+
+		if (string.IsNullOrEmpty(bundle.ImagenNoticia) == false)
 		{
-			descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Bundle") + " " + precio;
+			if (bundle.ImagenNoticia.Contains("https://") == true)
+			{
+				imagen = bundle.ImagenNoticia;
+			}
 		}
+
+		string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(bundle.NombreBundle, false).Split(' ');
+		List<string> keywordsLista = new List<string>();
+		keywordsLista.AddRange(keywordsEnBruto);
+
+		string keywords = "bundle";
+
+		foreach (string keyword in keywordsLista)
+		{
+			if (keyword.Length > 3)
+			{
+				keywords = keywords + ", " + keyword;
+			}
+		}
+
+		foreach (var juego in bundle.Juegos)
+		{
+			string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
+			List<string> keywordsListaJuego = new List<string>();
+			keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+			foreach (string keyword in keywordsListaJuego)
+			{
+				if (keywords.Contains(keyword) == false && keyword.Length > 3)
+				{
+					keywords = keywords + ", " + keyword;
+				}
+			}
+		}
+
+		<PageTitle>@titulo</PageTitle>
+		<HeadContent>
+			<meta name="og:title" Content="@titulo" />
+			<meta name="description" content="@descripcion" />
+			<meta name="og:description" content="@descripcion" />
+			<meta name="og:url" content="@enlace" />
+			<meta name="og:image" content="@imagen" />
+			<meta name="og:site_name" content="pepeizq's deals" />
+			<meta name="og:type" content="website" />
+			<meta name="robots" content="index, nofollow, noimageindex, noai, noimageai" />
+			<meta name="keywords" content="@keywords" />
+
+			<link rel="canonical" href="@enlace" />
+		</HeadContent>
 	}
-
-	if (string.IsNullOrEmpty(bundle.ImagenNoticia) == false)
-	{
-		if (bundle.ImagenNoticia.Contains("https://") == true)
-		{
-			imagen = bundle.ImagenNoticia;
-		}
-	}
-
-	<PageTitle>@titulo</PageTitle>
-	<HeadContent>
-		<meta name="og:title" Content="@titulo" />
-		<meta name="description" content="@descripcion" />
-		<meta name="og:description" content="@descripcion" />
-		<meta name="og:url" content="@enlace" />
-		<meta name="og:image" content="@imagen" />
-		<meta name="og:site_name" content="pepeizq's deals" />
-		<meta name="og:type" content="website" />
-		<meta name="robots" content="index, nofollow, noimageindex" />
-		<meta name="keywords" content="deals, games, free, offers, bundles" />
-
-		<link rel="canonical" href="@enlace" />
-	</HeadContent>
 }
 
 <script>
@@ -619,7 +651,7 @@
 	[Parameter]
 	public Tipo tipo { get; set; } = Tipo.Bundle;
 
-    public Bundles2.Bundle bundle = new Bundles2.Bundle();
+    public Bundles2.Bundle bundle = null;
 
 	protected override async Task OnInitializedAsync()
 	{

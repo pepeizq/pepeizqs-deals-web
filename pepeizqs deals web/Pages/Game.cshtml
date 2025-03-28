@@ -54,5 +54,5 @@
 		userAgent = HttpContext.Request.Headers.UserAgent;
 	}
 
-	<component type="typeof(Componentes.Secciones.Juego)" render-mode="Server" param-idioma="idioma" param-juego="Model.juego" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-userAgent="userAgent" />
+	<component type="typeof(Componentes.Secciones.Juego)" render-mode="ServerPrerendered" param-idioma="idioma" param-juego="Model.juego" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-userAgent="userAgent" />
 }

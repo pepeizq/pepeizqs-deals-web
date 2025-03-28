@@ -20,6 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Componentes\Secciones\RSS.razor~RF166eb2d.TMP" />
+    <None Remove="Pages\ednnoemi.3ot~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
     <RuntimeHostConfigurationOption Include="System.Net.DisableIPv6" Value="true" />
   </ItemGroup>

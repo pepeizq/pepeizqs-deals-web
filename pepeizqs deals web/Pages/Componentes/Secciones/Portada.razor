@@ -11,6 +11,9 @@
 
 @inject UserManager<Usuario> UserManager
 
+@implements IDisposable
+@inject PersistentComponentState ApplicationState
+
 @{
 	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
@@ -19,7 +22,7 @@
 
 	<PageTitle>@titulo</PageTitle>
 	<HeadContent>
-		<meta name="og:title" Content="@titulo" />
+		<meta name="og:title" content="@titulo" />
 		<meta name="description" content="@descripcion" />
 		<meta name="og:description" content="@descripcion" />
 		<meta name="og:url" content="@enlace" />
@@ -594,6 +597,8 @@
 	private Usuario usuario = new Usuario();
 	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
+	private PersistingComponentStateSubscription persistingSubscription;
+
 	private string fondoDestacado = string.Empty;
 	private string logoDestacado = string.Empty;
 	private string videoDestacado = string.Empty;
@@ -605,11 +610,13 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+
 		if (string.IsNullOrEmpty(usuarioId) == false)
 		{
 			usuario = await UserManager.FindByIdAsync(usuarioId);
 
-			if (usuario != null)
+			if (usuarioLogeado == true)
 			{
 				juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
 
@@ -655,7 +662,15 @@
 		{
 			#region Destacados
 
-			juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(conexion);
+			if (ApplicationState.TryTakeFromJson<List<Juegos.Juego>>(nameof(juegosDestacadosMostrar), out var datosRestaurados) == true)
+			{
+				juegosDestacadosMostrar = datosRestaurados;
+			}
+
+            if (juegosDestacadosMostrar == null)
+            {
+                juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(conexion);
+            }	
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
@@ -710,6 +725,18 @@
 
 			#endregion
 		}
+	}
+
+	private Task PersistData()
+	{
+		ApplicationState.PersistAsJson(nameof(juegosDestacadosMostrar), juegosDestacadosMostrar);
+
+		return Task.CompletedTask;
+	}
+
+	void IDisposable.Dispose()
+	{
+		persistingSubscription.Dispose();
 	}
 
 	private void EnseñarDestacadoVideo(EventArgs args, Juegos.Juego juegoDestacado)

@@ -31,5 +31,5 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Compare");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Comparador)" render-mode="Server" param-idioma="idioma" param-ids="Model?.ids" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado"/>
+	<component type="typeof(Componentes.Secciones.Comparador)" render-mode="ServerPrerendered" param-idioma="idioma" param-ids="Model?.ids" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado"/>
 }

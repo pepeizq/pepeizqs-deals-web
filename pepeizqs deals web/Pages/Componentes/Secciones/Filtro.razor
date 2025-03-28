@@ -16,6 +16,7 @@
 	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Filter");
 	string enlace = "https://pepeizqdeals.com/filter/" + ids + "/";
 	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+	string keywords = "filter";
 
 	if (string.IsNullOrEmpty(ids) == false)
 	{
@@ -23,23 +24,88 @@
 
 		if (ids2.Length > 0)
 		{
-			if (ids.Length == 1)
+			foreach (string id in ids2)
 			{
-				foreach (string id in ids2)
+				if (string.IsNullOrEmpty(id) == false)
 				{
-					if (string.IsNullOrEmpty(id) == false)
+					if (id.ToLower().Contains("t") == true)
 					{
-						if (id.ToLower().Contains("t") == true)
+						string cadena = id.Replace("t", null);
+
+						if (titulo.Contains("•") == false)
 						{
-							string cadena = id.Replace("t", null);
-							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags") + ")";
+							titulo = titulo + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags");
+						}
+						else
+						{
+							titulo = titulo + ", " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags");
 						}
 
-						if (id.ToLower().Contains("c") == true)
+						keywords = keywords + ", " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Tags").ToLower();
+					}
+
+					if (id.ToLower().Contains("c") == true)
+					{
+						string cadena = id.Replace("c", null);
+
+						if (titulo.Contains("•") == false)
 						{
-							string cadena = id.Replace("c", null);
-							titulo = titulo + " (" + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories") + ")";
+							titulo = titulo + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories");
 						}
+						else
+						{
+							titulo = titulo + ", " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories");
+						}
+
+						keywords = keywords + ", " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Categories").ToLower();
+					}
+
+					if (id.ToLower().Contains("s") == true)
+					{
+						string cadena = id.Replace("s", null);
+
+						if (titulo.Contains("•") == false)
+						{
+							titulo = titulo + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "System" + cadena, "Filter");
+						}
+						else
+						{
+							titulo = titulo + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "System" + cadena, "Filter");
+						}
+
+						keywords = keywords + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "System" + cadena, "Filter").ToLower();
+					}
+
+					if (id.ToLower().Contains("i") == true)
+					{
+						string cadena = id.Replace("i", null);
+
+						if (titulo.Contains("•") == false)
+						{
+							titulo = titulo + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "Type" + cadena, "Filter");
+						}
+						else
+						{
+							titulo = titulo + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "Type" + cadena, "Filter");
+						}
+
+						keywords = keywords + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "Type" + cadena, "Filter").ToLower();
+					}
+
+					if (id.ToLower().Contains("d") == true)
+					{
+						string cadena = id.Replace("d", null);
+						
+						if (titulo.Contains("•") == false)
+						{
+							titulo = titulo + " • " + Herramientas.Idiomas.BuscarTexto(idioma, "Deck" + cadena, "Filter");
+						}
+						else
+						{
+							titulo = titulo + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "Deck" + cadena, "Filter");
+						}
+
+						keywords = keywords + ", " + Herramientas.Idiomas.BuscarTexto(idioma, "Deck" + cadena, "Filter").ToLower();
 					}
 				}
 			}
@@ -58,7 +124,7 @@
 		<meta name="og:site_name" content="pepeizq's deals" />
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow, noimageindex, noai, noimageai" />
-		<meta name="keywords" content="deals, games, free, offers, bundles" />
+		<meta name="keywords" content="@keywords" />
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>
