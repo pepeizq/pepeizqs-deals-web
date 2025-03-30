@@ -101,7 +101,7 @@ namespace Herramientas
 				return nombre;
 			}
 
-			return null;
+			return nombre;
 		}
 
 		public static bool ComprobarBundles(Juegos.Juego juego)

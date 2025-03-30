@@ -59,15 +59,18 @@
 
 		foreach (var juego in bundle.Juegos)
 		{
-			string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
-			List<string> keywordsListaJuego = new List<string>();
-			keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
-
-			foreach (string keyword in keywordsListaJuego)
+			if (juego != null)
 			{
-				if (keywords.Contains(keyword) == false && keyword.Length > 3)
+				string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
+				List<string> keywordsListaJuego = new List<string>();
+				keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+				foreach (string keyword in keywordsListaJuego)
 				{
-					keywords = keywords + ", " + keyword;
+					if (keywords.Contains(keyword) == false && keyword.Length > 3)
+					{
+						keywords = keywords + ", " + keyword;
+					}
 				}
 			}
 		}

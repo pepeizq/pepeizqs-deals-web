@@ -28,7 +28,7 @@ namespace Herramientas
 			return descuento;
 		}
 
-		public static string RedondearAnalisis(string idioma, string cantidad)
+		public static string RedondearAnalisis(string idioma, string cantidad, bool incluirTexto = true)
 		{
 			int numCantidad = int.Parse(cantidad.Replace(",", null));
 			string cantidadFinal = string.Empty;
@@ -68,7 +68,14 @@ namespace Herramientas
 
 				numCantidad = (int)(Math.Round(double.Parse(cantidad.Replace(",", null)) / divisor, 0) * divisor);
 
-				cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.BuscarTexto(idioma, "String9", "Game");
+				if (incluirTexto == true)
+				{
+					cantidadFinal = numCantidad.ToString("N0") + "+ " + Idiomas.BuscarTexto(idioma, "String9", "Game");
+				}
+				else
+				{
+					cantidadFinal = numCantidad.ToString("N0");
+				}
 			}
 
 			return cantidadFinal;

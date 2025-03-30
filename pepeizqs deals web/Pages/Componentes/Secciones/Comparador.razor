@@ -28,12 +28,39 @@
 		}
 </style>
 
-<div style="display: flex; flex-direction: column; gap: 20px;">
-	@if (id1 == 0)
+<div style="display: flex; flex-direction: column;">
+	@if (id1 == 0 || id2 == 0 || id3 == 0 || id4 == 0)
 	{
-		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
-			<div style="width: 100%; text-align: center; margin-bottom: 15px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Compare")
+		int posicion = 0;
+		string marginAbajo = null;
+
+		if (id1 == 0)
+		{
+			posicion = 1;
+			marginAbajo = null;
+		}
+        else if (id2 == 0)
+        {
+            posicion = 2;
+            marginAbajo = "margin-bottom: 50px;";
+        }
+        else if (id3 == 0)
+        {
+            posicion = 3;
+			marginAbajo = "margin-bottom: 50px;";
+        }
+        else if (id4 == 0)
+        {
+            posicion = 4;
+			marginAbajo = "margin-bottom: 50px;";
+        }
+
+		<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Compare")</h1>
+		<hr />
+
+		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px 30px; @marginAbajo">
+			<div style="width: 100%; margin-bottom: 15px;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String" + (posicion + 1).ToString(), "Compare")
 			</div>
 
 			<div style="display: flex; align-items: center; gap: 20px;">
@@ -43,78 +70,113 @@
 					</svg>
 				</div>
 
-				<input type="text" @oninput="(e => TextoCambiarBuscadorJuego(e, 1))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Compare")" style="min-width: 10%;" />
+				<input type="text" @oninput="(e => TextoCambiarBuscadorJuego(e))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Compare")" style="min-width: 10%;" />
 			</div>
 
-			@if (resultadosJuego1 != null)
+			@if (resultadosBuscador != null)
 			{
-					if (resultadosJuego1.Count > 0)
-					{
-							<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-								@foreach (var juego in resultadosJuego1)
-								{
-										<button @onclick="@(e => ClickearIdJuego(e, juego.Id.ToString(), 1))" class="boton-pequeño" style="text-align: center;">
-											<div style="display: flex; align-items: center; gap: 20px;">
-												<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
-
-												<div style="width: 100%; text-align: center;">
-													@juego.Nombre
-												</div>
-											</div>
-										</button>
-								}
-							</div>
-					}
+				if (resultadosBuscador.Count > 0)
+				{
+					<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+						@foreach (var juego in resultadosBuscador)
+						{
+							<button @onclick="@(e => ClickearIdJuego(e, juego.Id.ToString(), posicion))" class="boton-pequeño" style="text-align: center;">
+								<div style="display: flex; align-items: center; gap: 20px;">
+									<img src="@juego.Imagenes.Library_600x900" alt="@juego.Nombre" style="max-width: 100%; max-height: 100%;"/>
+								</div>
+							</button>
+						}
+					</div>
+				}
 			}
 		</div>
 	}
 
-	@if (id1 > 0 && id2 == 0)
+	@if (id1 > 0 || id2 > 0 || id3 > 0 || id4 > 0)
 	{
-		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
-			<div style="width: 100%; text-align: center; margin-bottom: 15px;">
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Compare")
-			</div>
+		<div style="display: flex; align-items: center; gap: 20px; padding-left: 20px; padding-right: 20px;">
+			<h1 style="width: 100%; font-size: 22px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Compare")</h1>
 
-			<div style="display: flex; align-items: center; gap: 20px;">
-				<div style="width: 16px; height: 16px;">
-					<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-						<path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-					</svg>
-				</div>
-
-				<input type="text" @oninput="(e => TextoCambiarBuscadorJuego(e, 2))" class="entrada-texto" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Compare")" style="min-width: 10%;" />
-			</div>
-
-			@if (resultadosJuego2 != null)
+			@if (id1 > 0)
 			{
-					if (resultadosJuego2.Count > 0)
-					{
-							<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-								@foreach (var juego in resultadosJuego2)
-								{
-										<button @onclick="@(e => ClickearIdJuego(e, juego.Id.ToString(), 2))" class="boton-pequeño" style="text-align: center;">
-											<div style="display: flex; align-items: center; gap: 20px;">
-												<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 112px;" />
+				<div style="width: 33%;">
+					<a href="/game/@juego1.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego1.Nombre)/">
+						<img src="@juego1.Imagenes.Header_460x215" alt="@juego1.Nombre" style="max-width: 100%; max-height: 100%;" />
+					</a>
+				</div>
+			}
 
-												<div style="width: 100%; text-align: center;">
-													@juego.Nombre
-												</div>
-											</div>
-										</button>
-								}
-							</div>
-					}
+			@if (id2 > 0)
+			{
+				<div style="width: 33%;">
+					<a href="/game/@juego2.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego2.Nombre)/">
+						<img src="@juego2.Imagenes.Header_460x215" alt="@juego2.Nombre" style="max-width: 100%; max-height: 100%;" />
+					</a>
+				</div>
+			}
+
+			@if (id3 > 0)
+			{
+				<div style="width: 33%;">
+					<a href="/game/@juego3.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego3.Nombre)/">
+						<img src="@juego3.Imagenes.Header_460x215" alt="@juego3.Nombre" style="max-width: 100%; max-height: 100%;" />
+					</a>
+				</div>
+			}
+
+			@if (id4 > 0)
+			{
+				<div style="width: 33%;">
+					<a href="/game/@juego4.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego4.Nombre)/">
+						<img src="@juego4.Imagenes.Header_460x215" alt="@juego4.Nombre" style="max-width: 100%; max-height: 100%;" />
+					</a>
+				</div>
 			}
 		</div>
+			
+		<hr />
+
+		<div style="display: flex; align-items: center; gap: 20px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px;">
+			<div style="width: 100%;">
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Compare")
+			</div>
+
+			@if (id1 > 0)
+			{
+				<div style="width: 33%; text-align: center;">
+					@Herramientas.Calculadora.RedondearAnalisis(idioma, juego1.Analisis.Cantidad, false)
+				</div>
+			}
+
+			@if (id2 > 0)
+			{
+				<div style="width: 33%; text-align: center;">
+					@Herramientas.Calculadora.RedondearAnalisis(idioma, juego2.Analisis.Cantidad, false)
+				</div>
+			}
+
+			@if (id3 > 0)
+			{
+				<div style="width: 33%; text-align: center;">
+					@Herramientas.Calculadora.RedondearAnalisis(idioma, juego3.Analisis.Cantidad, false)
+				</div>
+			}
+
+			@if (id4 > 0)
+			{
+				<div style="width: 33%; text-align: center;">
+					@Herramientas.Calculadora.RedondearAnalisis(idioma, juego4.Analisis.Cantidad, false)
+				</div>
+			}
+		</div>
+
 	}
 </div>
 
 
 
 
-@* <h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Compare")</h1>
-<hr />
+@* 
 
 <div style="display: flex; flex-direction: column; gap: 20px;">
 	<div style="display: flex; align-items: start; gap: 40px;">
@@ -271,10 +333,7 @@
 	public Juegos.Juego juego3 = null;
 	public Juegos.Juego juego4 = null;
 
-	public List<Juegos.Juego> resultadosJuego1 = new List<Juegos.Juego>();
-	public List<Juegos.Juego> resultadosJuego2 = new List<Juegos.Juego>();
-	public List<Juegos.Juego> resultadosJuego3 = new List<Juegos.Juego>();
-	public List<Juegos.Juego> resultadosJuego4 = new List<Juegos.Juego>();
+	public List<Juegos.Juego> resultadosBuscador = new List<Juegos.Juego>();
 
 	private Usuario usuario = new Usuario();
 
@@ -343,7 +402,7 @@
 		}
 	}
 
-	private void TextoCambiarBuscadorJuego(ChangeEventArgs texto, int posicion)
+	private void TextoCambiarBuscadorJuego(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 2)
 		{
@@ -360,54 +419,32 @@
 			}
 
 			string cadenaBusqueda = texto.Value.ToString().Trim();
-
-			if (posicion == 1)
-			{
-				resultadosJuego1 = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, 0, usuarioLogeado);
-			}
-			else if (posicion == 2)
-			{
-				resultadosJuego2 = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, 0, usuarioLogeado);
-			}
-			else if (posicion == 3)
-			{
-				resultadosJuego3 = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, 0, usuarioLogeado);
-			}
-			else if (posicion == 4)
-			{
-				resultadosJuego4 = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, 0, usuarioLogeado);
-			}
+			resultadosBuscador = BaseDatos.Juegos.Buscar.Nombre(cadenaBusqueda, conexion, 50, false, 0, usuarioLogeado);
 		}
 	}
 
 	private async void ClickearIdJuego(MouseEventArgs e, string id, int posicion)
 	{
+		resultadosBuscador.Clear();
+
 		if (posicion == 1)
 		{
 			id1 = int.Parse(id);
-			resultadosJuego1.Clear();
-
 			juego1 = BaseDatos.Juegos.Buscar.UnJuego(id1);
 		}
 		else if (posicion == 2)
 		{
 			id2 = int.Parse(id);
-			resultadosJuego2.Clear();
-
 			juego2 = BaseDatos.Juegos.Buscar.UnJuego(id2);
 		}
 		else if (posicion == 3)
 		{
 			id3 = int.Parse(id);
-			resultadosJuego3.Clear();
-
 			juego3 = BaseDatos.Juegos.Buscar.UnJuego(id3);
 		}
 		else if (posicion == 4)
 		{
 			id4 = int.Parse(id);
-			resultadosJuego4.Clear();
-
 			juego4 = BaseDatos.Juegos.Buscar.UnJuego(id4);
 		}
 
