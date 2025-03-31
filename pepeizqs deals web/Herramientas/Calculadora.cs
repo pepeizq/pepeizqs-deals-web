@@ -74,7 +74,7 @@ namespace Herramientas
 				}
 				else
 				{
-					cantidadFinal = numCantidad.ToString("N0");
+					cantidadFinal = numCantidad.ToString("N0") + "+";
 				}
 			}
 
