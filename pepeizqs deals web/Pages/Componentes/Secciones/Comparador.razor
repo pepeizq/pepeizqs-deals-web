@@ -94,13 +94,30 @@
 
 	@if (id1 > 0 || id2 > 0 || id3 > 0 || id4 > 0)
 	{
-		<div style="display: flex; align-items: center; gap: 20px;">
-			<div style="width: 100%; font-size: 22px;"></div>
+		string anchoImagenes = "75%";
 
-			<div style="background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 20px;">
+		if (id2 > 0)
+		{
+			anchoImagenes = "150%";
+		}
+		
+		if (id3 > 0)
+		{
+			anchoImagenes = "225%";
+		}
+
+		if (id4 > 0)
+		{
+			anchoImagenes = "300%";
+		}
+
+		<div style="display: flex; align-items: center; gap: 20px; width: 100%; position: sticky; top: 70px; z-index: 3;">
+			<div style="width: 200%; font-size: 22px;"></div>
+
+			<div style="width: @anchoImagenes; background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 20px;">
 				@if (id1 > 0)
 				{
-					<div style="width: 33%; border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
 						<a href="/game/@juego1.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego1.Nombre)/">
 							<img src="@juego1.Imagenes.Header_460x215" alt="@juego1.Nombre" style="max-width: 100%; max-height: 100%;" />
 						</a>
@@ -109,7 +126,7 @@
 
 				@if (id2 > 0)
 				{
-					<div style="width: 33%; border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
 						<a href="/game/@juego2.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego2.Nombre)/">
 							<img src="@juego2.Imagenes.Header_460x215" alt="@juego2.Nombre" style="max-width: 100%; max-height: 100%;" />
 						</a>
@@ -118,7 +135,7 @@
 
 				@if (id3 > 0)
 				{
-					<div style="width: 33%; border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
 						<a href="/game/@juego3.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego3.Nombre)/">
 							<img src="@juego3.Imagenes.Header_460x215" alt="@juego3.Nombre" style="max-width: 100%; max-height: 100%;" />
 						</a>
@@ -127,7 +144,7 @@
 
 				@if (id4 > 0)
 				{
-					<div style="width: 33%; border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
 						<a href="/game/@juego4.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego4.Nombre)/">
 							<img src="@juego4.Imagenes.Header_460x215" alt="@juego4.Nombre" style="max-width: 100%; max-height: 100%;" />
 						</a>
@@ -170,6 +187,12 @@
 								@juego1.Analisis.Porcentaje%
 							</div>	
 						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
@@ -196,6 +219,12 @@
 							<div>
 								@juego2.Analisis.Porcentaje%
 							</div>	
+						}
+						else
+						{
+							<div>
+								--
+							</div>
 						}
 					</div>
 				}
@@ -224,6 +253,12 @@
 								@juego3.Analisis.Porcentaje%
 							</div>	
 						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
@@ -249,7 +284,13 @@
 
 							<div>
 								@juego4.Analisis.Porcentaje%
-							</div>	
+							</div>
+						}
+						else
+						{
+							<div>
+								--
+							</div>
 						}
 					</div>
 				}
@@ -265,28 +306,64 @@
 				@if (id1 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@Herramientas.Calculadora.RedondearAnalisis(idioma, juego1.Analisis.Cantidad, false)
+						@if (juego1.Analisis != null)
+						{
+							@Herramientas.Calculadora.RedondearAnalisis(idioma, juego1.Analisis.Cantidad, false)
+						}
+						else
+						{
+							<div>
+                                --
+							</div>
+						}
 					</div>
 				}
 
 				@if (id2 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@Herramientas.Calculadora.RedondearAnalisis(idioma, juego2.Analisis.Cantidad, false)
+						@if (juego2.Analisis != null)
+						{
+							@Herramientas.Calculadora.RedondearAnalisis(idioma, juego2.Analisis.Cantidad, false)
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id3 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@Herramientas.Calculadora.RedondearAnalisis(idioma, juego3.Analisis.Cantidad, false)
+						@if (juego3.Analisis != null)
+						{
+							@Herramientas.Calculadora.RedondearAnalisis(idioma, juego3.Analisis.Cantidad, false)
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id4 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@Herramientas.Calculadora.RedondearAnalisis(idioma, juego4.Analisis.Cantidad, false)
+						@if (juego4.Analisis != null)
+						{
+							@Herramientas.Calculadora.RedondearAnalisis(idioma, juego4.Analisis.Cantidad, false)
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 			</div>
@@ -301,28 +378,64 @@
 				@if (id1 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@juego1.CantidadJugadores.Cantidad
+						@if (juego1.CantidadJugadores != null)
+						{
+							@juego1.CantidadJugadores.Cantidad
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id2 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@juego2.CantidadJugadores.Cantidad
+						@if (juego2.CantidadJugadores != null)
+						{
+							@juego2.CantidadJugadores.Cantidad
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id3 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@juego3.CantidadJugadores.Cantidad
+						@if (juego3.CantidadJugadores != null)
+						{
+							@juego3.CantidadJugadores.Cantidad
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id4 > 0)
 				{
 					<div style="width: 33%; text-align: center;">
-						@juego4.CantidadJugadores.Cantidad
+						@if (juego4.CantidadJugadores != null)
+						{
+							@juego4.CantidadJugadores.Cantidad
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 			</div>
@@ -337,233 +450,1250 @@
 				@if (id1 > 0)
 				{
 					<div style="width: 33%; text-align: center; height: 24px;">
-						@if (juego1.Deck == Juegos.JuegoDeck.Verificado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
-		                }
+						@if (juego1.Deck != Juegos.JuegoDeck.Desconocido)
+						{
+							@if (juego1.Deck == Juegos.JuegoDeck.Verificado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
+							}
 
-		                @if (juego1.Deck == Juegos.JuegoDeck.Jugable)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
-		                }
+							@if (juego1.Deck == Juegos.JuegoDeck.Jugable)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
+							}
 
-				        @if (juego1.Deck == Juegos.JuegoDeck.NoSoportado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
-		                }
+							@if (juego1.Deck == Juegos.JuegoDeck.NoSoportado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
+							}
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id2 > 0)
 				{
-							<div style="width: 33%; text-align: center; height: 20px;">
-						@if (juego2.Deck == Juegos.JuegoDeck.Verificado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
-		                }
+					<div style="width: 33%; text-align: center; height: 24px;">
+						@if (juego2.Deck != Juegos.JuegoDeck.Desconocido)
+						{
+							@if (juego2.Deck == Juegos.JuegoDeck.Verificado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
+							}
 
-		                @if (juego2.Deck == Juegos.JuegoDeck.Jugable)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
-		                }
+							@if (juego2.Deck == Juegos.JuegoDeck.Jugable)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
+							}
 
-		                @if (juego2.Deck == Juegos.JuegoDeck.NoSoportado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
-		                }
+							@if (juego2.Deck == Juegos.JuegoDeck.NoSoportado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
+							}
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id3 > 0)
 				{
-							<div style="width: 33%; text-align: center; height: 20px;">
-						@if (juego3.Deck == Juegos.JuegoDeck.Verificado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
-		                }
+					<div style="width: 33%; text-align: center; height: 24px;">
+						@if (juego3.Deck != Juegos.JuegoDeck.Desconocido)
+						{
+							@if (juego3.Deck == Juegos.JuegoDeck.Verificado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
+							}
 
-		                @if (juego3.Deck == Juegos.JuegoDeck.Jugable)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
-		                }
+							@if (juego3.Deck == Juegos.JuegoDeck.Jugable)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
+							}
 
-		                @if (juego3.Deck == Juegos.JuegoDeck.NoSoportado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
-		                }
+							@if (juego3.Deck == Juegos.JuegoDeck.NoSoportado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
+							}
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 
 				@if (id4 > 0)
 				{
-							<div style="width: 33%; text-align: center; height: 20px;">
-						@if (juego4.Deck == Juegos.JuegoDeck.Verificado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
-		                }
+					<div style="width: 33%; text-align: center; height: 24px;">
+						@if (juego4.Deck != Juegos.JuegoDeck.Desconocido)
+						{
+							@if (juego4.Deck == Juegos.JuegoDeck.Verificado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.33342 11.9222L14.4945 5.76667L16.4556 7.72779L8.33342 15.8556L3.26675 10.7833L5.22786 8.82223L8.33342 11.9222Z" fill="var(--deckVerificado)"></path></svg>
+							}
 
-		                @if (juego4.Deck == Juegos.JuegoDeck.Jugable)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
-		                }
+							@if (juego4.Deck == Juegos.JuegoDeck.Jugable)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM8.61079 9.44444V15H11.3886V9.44444H8.61079ZM9.07372 8.05245C9.34781 8.23558 9.67004 8.33333 9.99967 8.33333C10.4417 8.33333 10.8656 8.15774 11.1782 7.84518C11.4907 7.53262 11.6663 7.10869 11.6663 6.66667C11.6663 6.33703 11.5686 6.0148 11.3855 5.74072C11.2023 5.46663 10.942 5.25301 10.6375 5.12687C10.3329 5.00072 9.99783 4.96771 9.67452 5.03202C9.35122 5.09633 9.05425 5.25507 8.82116 5.48815C8.58808 5.72124 8.42934 6.01821 8.36503 6.34152C8.30072 6.66482 8.33373 6.99993 8.45988 7.30447C8.58602 7.60902 8.79964 7.86931 9.07372 8.05245Z" fill="var(--deckJugable)"></path></svg>
+							}
 
-				        @if (juego4.Deck == Juegos.JuegoDeck.NoSoportado)
-		                {
-			                <svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
-		                }
+							@if (juego4.Deck == Juegos.JuegoDeck.NoSoportado)
+							{
+								<svg style="display: block; width: 100%; height: 100%;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.193 15.606a7 7 0 0 1-9.799-9.799l9.8 9.8Zm1.414-1.414a7 7 0 0 0-9.799-9.799l9.8 9.8ZM19.001 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="var(--colorTexto)"></path></svg>
+							}
+						}
+						else
+						{
+							<div>
+								--
+							</div>
+						}
 					</div>
 				}
 			</div>
 		</div>
-		
 
+		<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Compare")</div>
+
+		<hr />
+
+		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			@foreach (var drmHistorico in preciosHistoricos)
+			{
+				<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+					<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+						<img src="@Juegos.JuegoDRM2.SacarImagen(drmHistorico)" style="max-width: 24px; max-height: 24px;" />
+
+						@Juegos.JuegoDRM2.DevolverDRM(drmHistorico)
+					</div>
+					
+					@if (id1 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+                                foreach (var minimo in juego1.PrecioMinimosHistoricos)
+                                {
+                                    if (drmHistorico == minimo.DRM)
+                                    {
+                                        mensaje = Herramientas.Precios.Euro(minimo.Precio);
+                                    }
+                                }
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id2 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								foreach (var minimo in juego2.PrecioMinimosHistoricos)
+								{
+									if (drmHistorico == minimo.DRM)
+									{
+										mensaje = Herramientas.Precios.Euro(minimo.Precio);
+									}
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id3 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								foreach (var minimo in juego3.PrecioMinimosHistoricos)
+								{
+									if (drmHistorico == minimo.DRM)
+									{
+										mensaje = Herramientas.Precios.Euro(minimo.Precio);
+									}
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id4 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								foreach (var minimo in juego4.PrecioMinimosHistoricos)
+								{
+									if (drmHistorico == minimo.DRM)
+									{
+										mensaje = Herramientas.Precios.Euro(minimo.Precio);
+									}
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+				</div>
+			}
+		</div>
+
+		<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Compare")</div>
+
+		<hr />
+
+		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			@foreach (var drmActual in preciosActuales)
+			{
+				<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+					<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+						<img src="@Juegos.JuegoDRM2.SacarImagen(drmActual)" style="max-width: 24px; max-height: 24px;" />
+
+						@Juegos.JuegoDRM2.DevolverDRM(drmActual)
+					</div>
+
+					@if (id1 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								decimal minimoCantidad = 10000000;
+								Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+								if (juego1.PrecioActualesTiendas != null)
+								{
+									foreach (var oferta in juego1.PrecioActualesTiendas)
+									{
+										bool drmAdecuado = true;
+
+										if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+										{
+											drmAdecuado = false;
+										}
+										else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+										{
+											drmAdecuado = false;
+										}
+
+										if (oferta.DRM == drmActual)
+										{
+											if (drmAdecuado == true)
+											{
+												if (Herramientas.OfertaActiva.Verificar(oferta) == true)
+												{
+													decimal tempPrecio = oferta.Precio;
+
+													if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+													{
+														tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+													}
+
+													if (tempPrecio < minimoCantidad)
+													{
+														minimoCantidad = tempPrecio;
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (minimoCantidad > 0 && minimoCantidad < 10000000)
+								{
+									mensaje = Herramientas.Precios.Euro(minimoCantidad);
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id2 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								decimal minimoCantidad = 10000000;
+								Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+								if (juego2.PrecioActualesTiendas != null)
+								{
+									foreach (var oferta in juego2.PrecioActualesTiendas)
+									{
+										bool drmAdecuado = true;
+
+										if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+										{
+											drmAdecuado = false;
+										}
+										else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+										{
+											drmAdecuado = false;
+										}
+
+										if (oferta.DRM == drmActual)
+										{
+											if (drmAdecuado == true)
+											{
+												if (Herramientas.OfertaActiva.Verificar(oferta) == true)
+												{
+													decimal tempPrecio = oferta.Precio;
+
+													if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+													{
+														tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+													}
+
+													if (tempPrecio < minimoCantidad)
+													{
+														minimoCantidad = tempPrecio;
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (minimoCantidad > 0 && minimoCantidad < 10000000)
+								{
+									mensaje = Herramientas.Precios.Euro(minimoCantidad);
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id3 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								decimal minimoCantidad = 10000000;
+								Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+								if (juego3.PrecioActualesTiendas != null)
+								{
+									foreach (var oferta in juego3.PrecioActualesTiendas)
+									{
+										bool drmAdecuado = true;
+
+										if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+										{
+											drmAdecuado = false;
+										}
+										else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+										{
+											drmAdecuado = false;
+										}
+
+										if (oferta.DRM == drmActual)
+										{
+											if (drmAdecuado == true)
+											{
+												if (Herramientas.OfertaActiva.Verificar(oferta) == true)
+												{
+													decimal tempPrecio = oferta.Precio;
+
+													if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+													{
+														tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+													}
+
+													if (tempPrecio < minimoCantidad)
+													{
+														minimoCantidad = tempPrecio;
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (minimoCantidad > 0 && minimoCantidad < 10000000)
+								{
+									mensaje = Herramientas.Precios.Euro(minimoCantidad);
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+
+					@if (id4 > 0)
+					{
+						<div style="width: 33%; text-align: center;">
+							@{
+								string mensaje = "--";
+
+								decimal minimoCantidad = 10000000;
+								Juegos.JuegoPrecio minimoFinal = new Juegos.JuegoPrecio();
+
+								if (juego4.PrecioActualesTiendas != null)
+								{
+									foreach (var oferta in juego4.PrecioActualesTiendas)
+									{
+										bool drmAdecuado = true;
+
+										if (oferta.DRM == Juegos.JuegoDRM.NoEspecificado)
+										{
+											drmAdecuado = false;
+										}
+										else if (oferta.DRM == Juegos.JuegoDRM.Microsoft)
+										{
+											drmAdecuado = false;
+										}
+
+										if (oferta.DRM == drmActual)
+										{
+											if (drmAdecuado == true)
+											{
+												if (Herramientas.OfertaActiva.Verificar(oferta) == true)
+												{
+													decimal tempPrecio = oferta.Precio;
+
+													if (oferta.Moneda != Herramientas.JuegoMoneda.Euro)
+													{
+														tempPrecio = Herramientas.Divisas.Cambio(tempPrecio, oferta.Moneda);
+													}
+
+													if (tempPrecio < minimoCantidad)
+													{
+														minimoCantidad = tempPrecio;
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (minimoCantidad > 0 && minimoCantidad < 10000000)
+								{
+									mensaje = Herramientas.Precios.Euro(minimoCantidad);
+								}
+
+								@mensaje
+							}
+						</div>
+					}
+				</div>
+			}
+		</div>
+
+		@if (bundlesActuales.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var bundle in bundlesActuales)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Bundles2.BundlesCargar.DevolverBundle(bundle).NombreTienda
+						</div>
+
+						@if (id1 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Bundles != null)
+									{
+										foreach (var bundle2 in juego1.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaEmpieza && DateTime.Now < bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id2 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Bundles != null)
+									{
+										foreach (var bundle2 in juego2.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaEmpieza && DateTime.Now < bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Bundles != null)
+									{
+										foreach (var bundle2 in juego3.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaEmpieza && DateTime.Now < bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Bundles != null)
+									{
+										foreach (var bundle2 in juego4.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaEmpieza && DateTime.Now < bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
+
+		@if (bundlesAntiguos.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var bundle in bundlesAntiguos)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Bundles2.BundlesCargar.DevolverBundle(bundle).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Bundles2.BundlesCargar.DevolverBundle(bundle).NombreTienda
+						</div>
+
+						@if (id1 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Bundles != null)
+									{
+										foreach (var bundle2 in juego1.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+                                    if (string.IsNullOrEmpty(mensaje) == false)
+                                    {
+                                        @mensaje
+                                    }
+								}
+							</div>
+						}
+
+						@if (id2 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Bundles != null)
+									{
+										foreach (var bundle2 in juego2.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Bundles != null)
+									{
+										foreach (var bundle2 in juego3.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Bundles != null)
+									{
+										foreach (var bundle2 in juego4.Bundles)
+										{
+											if (DateTime.Now > bundle2.FechaTermina)
+											{
+												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
+
+		@if (gratisAntiguos.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var gratis in gratisAntiguos)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Gratis2.GratisCargar.DevolverGratis(gratis).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Gratis2.GratisCargar.DevolverGratis(gratis).Nombre
+						</div>
+
+						@if (id1 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Gratis != null)
+									{
+										foreach (var gratis2 in juego1.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id2 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Gratis != null)
+									{
+										foreach (var gratis2 in juego2.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Gratis != null)
+									{
+										foreach (var gratis2 in juego3.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Gratis != null)
+									{
+										foreach (var gratis2 in juego4.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
 	}
 </div>
 
 @code {
 
-    #nullable disable
-
-    [Parameter]
-    public string idioma { get; set; }
-
-	#nullable enable
-    [Parameter]
-    public string? ids { get; set; }
 	#nullable disable
 
-    [Parameter]
-    public string usuarioId { get; set; }
+	[Parameter]
+	public string idioma { get; set; }
 
-    [Parameter]
-    public bool usuarioLogeado { get; set; }
+	#nullable enable
+	[Parameter]
+	public string? ids { get; set; }
+	#nullable disable
 
-    public int id1 = 0;
-    public int id2 = 0;
-    public int id3 = 0;
-    public int id4 = 0;
+	[Parameter]
+	public string usuarioId { get; set; }
 
-    public Juegos.Juego juego1 = null;
-    public Juegos.Juego juego2 = null;
-    public Juegos.Juego juego3 = null;
-    public Juegos.Juego juego4 = null;
+	[Parameter]
+	public bool usuarioLogeado { get; set; }
 
-    public List<Juegos.Juego> resultadosBuscador = new List<Juegos.Juego>();
+	public int id1 = 0;
+	public int id2 = 0;
+	public int id3 = 0;
+	public int id4 = 0;
 
-    private Usuario usuario = new Usuario();
+	public Juegos.Juego juego1 = null;
+	public Juegos.Juego juego2 = null;
+	public Juegos.Juego juego3 = null;
+	public Juegos.Juego juego4 = null;
 
-    private SqlConnection conexion = new SqlConnection();
+	public List<Juegos.JuegoDRM> preciosHistoricos = new List<Juegos.JuegoDRM>();
+	public List<Juegos.JuegoDRM> preciosActuales = new List<Juegos.JuegoDRM>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        usuario = await UserManager.FindByIdAsync(usuarioId);		
+	public List<Bundles2.BundleTipo> bundlesActuales = new List<Bundles2.BundleTipo>();
+	public List<Bundles2.BundleTipo> bundlesAntiguos = new List<Bundles2.BundleTipo>();
 
-        if (string.IsNullOrEmpty(ids) == false)
-        {
-            string[] ids2 = ids.Split(',');
+	public List<Gratis2.GratisTipo> gratisActuales = new List<Gratis2.GratisTipo>();
+    public List<Gratis2.GratisTipo> gratisAntiguos = new List<Gratis2.GratisTipo>();
 
-            if (ids2.Length == 1)
-            {
-                id1 = int.Parse(ids2[0]);
-            }
-            else if (ids2.Length == 2)
-            {
-                id1 = int.Parse(ids2[0]);
-                id2 = int.Parse(ids2[1]);
-            }
-            else if (ids2.Length == 3)
-            {
-                id1 = int.Parse(ids2[0]);
-                id2 = int.Parse(ids2[1]);
-                id3 = int.Parse(ids2[2]);
-            }
-            else if (ids2.Length > 3)
-            {
-                id1 = int.Parse(ids2[0]);
-                id2 = int.Parse(ids2[1]);
-                id3 = int.Parse(ids2[2]);
-                id4 = int.Parse(ids2[3]);
-            }
+	public List<Juegos.Juego> resultadosBuscador = new List<Juegos.Juego>();
 
-            if (id1 > 0)
-            {
-                juego1 = BaseDatos.Juegos.Buscar.UnJuego(id1);
-                ActualizarCantidadJugadores(juego1);
-            }
+	private Usuario usuario = new Usuario();
 
-            if (id2 > 0)
-            {
-                juego2 = BaseDatos.Juegos.Buscar.UnJuego(id2);
+	private SqlConnection conexion = new SqlConnection();
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);		
+
+		if (string.IsNullOrEmpty(ids) == false)
+		{
+			string[] ids2 = ids.Split(',');
+
+			if (ids2.Length == 1)
+			{
+				id1 = int.Parse(ids2[0]);
+			}
+			else if (ids2.Length == 2)
+			{
+				id1 = int.Parse(ids2[0]);
+				id2 = int.Parse(ids2[1]);
+			}
+			else if (ids2.Length == 3)
+			{
+				id1 = int.Parse(ids2[0]);
+				id2 = int.Parse(ids2[1]);
+				id3 = int.Parse(ids2[2]);
+			}
+			else if (ids2.Length > 3)
+			{
+				id1 = int.Parse(ids2[0]);
+				id2 = int.Parse(ids2[1]);
+				id3 = int.Parse(ids2[2]);
+				id4 = int.Parse(ids2[3]);
+			}
+
+			if (id1 > 0)
+			{
+				juego1 = BaseDatos.Juegos.Buscar.UnJuego(id1);
+
+				ActualizarCantidadJugadores(juego1);
+				ActualizarPreciosHistoricos(juego1);
+				ActualizarPreciosActuales(juego1);
+				ActualizarBundlesActuales(juego1);
+				ActualizarBundlesAntiguos(juego1);
+				ActualizarGratisAntiguos(juego1);
+			}
+
+			if (id2 > 0)
+			{
+				juego2 = BaseDatos.Juegos.Buscar.UnJuego(id2);
+
 				ActualizarCantidadJugadores(juego2);
-            }
+				ActualizarPreciosHistoricos(juego2);
+				ActualizarPreciosActuales(juego2);
+				ActualizarBundlesActuales(juego2);
+				ActualizarBundlesAntiguos(juego2);
+				ActualizarGratisAntiguos(juego2);
+			}
 
-            if (id3 > 0)
-            {
-                juego3 = BaseDatos.Juegos.Buscar.UnJuego(id3);
+			if (id3 > 0)
+			{
+				juego3 = BaseDatos.Juegos.Buscar.UnJuego(id3);
+
 				ActualizarCantidadJugadores(juego3);
-            }
+				ActualizarPreciosHistoricos(juego3);
+				ActualizarPreciosActuales(juego3);
+				ActualizarBundlesActuales(juego3);
+				ActualizarBundlesAntiguos(juego3);
+				ActualizarGratisAntiguos(juego3);
+			}
 
-            if (id4 > 0)
-            {
-                juego4 = BaseDatos.Juegos.Buscar.UnJuego(id4);
+			if (id4 > 0)
+			{
+				juego4 = BaseDatos.Juegos.Buscar.UnJuego(id4);
+
 				ActualizarCantidadJugadores(juego4);
-            }
-        }
-    }
+				ActualizarPreciosHistoricos(juego4);
+				ActualizarPreciosActuales(juego4);
+				ActualizarBundlesActuales(juego4);
+				ActualizarBundlesAntiguos(juego4);
+				ActualizarGratisAntiguos(juego4);
+			}
+		}
+	}
 
-    protected override async Task OnAfterRenderAsync(bool primerRender)
-    {
-        if (primerRender == true)
-        {
-            if (id1 > 0 && id2 == 0 && id3 == 0 && id4 == 0)
-            {
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "/");
-            }
-            else if (id1 > 0 && id2 > 0 && id3 == 0 && id4 == 0)
-            {
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "/");
-            }
-            else if (id1 > 0 && id2 > 0 && id3 > 0 && id4 == 0)
-            {
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "," + id3.ToString() + "/");
-            }
-            else if (id1 > 0 && id2 > 0 && id3 > 0 && id4 > 0)
-            {
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "," + id3.ToString() + "," + id4.ToString() + "/");
-            }
-        }
-    }
+	protected override async Task OnAfterRenderAsync(bool primerRender)
+	{
+		if (primerRender == true)
+		{
+			if (id1 > 0 && id2 == 0 && id3 == 0 && id4 == 0)
+			{
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "/");
+			}
+			else if (id1 > 0 && id2 > 0 && id3 == 0 && id4 == 0)
+			{
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "/");
+			}
+			else if (id1 > 0 && id2 > 0 && id3 > 0 && id4 == 0)
+			{
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "," + id3.ToString() + "/");
+			}
+			else if (id1 > 0 && id2 > 0 && id3 > 0 && id4 > 0)
+			{
+				await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "," + id3.ToString() + "," + id4.ToString() + "/");
+			}
+		}
+	}
 
-    private async void ActualizarCantidadJugadores(Juegos.Juego juego)
-    {
-        if (juego != null)
-        {
-            bool actualizarCantidadJugadores = false;
+	private async void ActualizarCantidadJugadores(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			bool actualizarCantidadJugadores = false;
 
-            if (juego.CantidadJugadores == null)
-            {
-                actualizarCantidadJugadores = true;
-            }
-            else
-            {
-                if (juego.CantidadJugadores.Fecha.AddMinutes(5) < DateTime.Now)
-                {
-                    actualizarCantidadJugadores = true;
-                }
-            }
+			if (juego.CantidadJugadores == null)
+			{
+				actualizarCantidadJugadores = true;
+			}
+			else
+			{
+				if (juego.CantidadJugadores.Fecha.AddMinutes(5) < DateTime.Now)
+				{
+					actualizarCantidadJugadores = true;
+				}
+			}
 
-            if (actualizarCantidadJugadores == true)
-            {
+			if (actualizarCantidadJugadores == true)
+			{
 				Juegos.JuegoCantidadJugadoresSteam cantidadNueva = new Juegos.JuegoCantidadJugadoresSteam();
-                cantidadNueva.Cantidad = await APIs.Steam.Juego.CargarCantidadJugadores(juego.IdSteam.ToString());
+				cantidadNueva.Cantidad = await APIs.Steam.Juego.CargarCantidadJugadores(juego.IdSteam.ToString());
 				cantidadNueva.Fecha = DateTime.Now;
 
 				juego.CantidadJugadores = cantidadNueva;
 
 				global::BaseDatos.Juegos.Actualizar.CantidadJugadoresSteam(juego);
 			}
-        }
-    }
+		}
+	}
+
+	private void ActualizarPreciosHistoricos(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			foreach (var precio in juego.PrecioMinimosHistoricos)
+			{
+				if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
+				{
+					bool añadir = true;
+
+					if (preciosHistoricos.Count > 0)
+					{
+						foreach (var drm in preciosHistoricos)
+						{
+							if (drm == precio.DRM)
+							{
+								añadir = false;
+							}
+						}
+					}
+
+					if (añadir == true)
+					{
+						preciosHistoricos.Add(precio.DRM);
+					}
+				}
+			}
+		}
+	}
+
+	private void ActualizarPreciosActuales(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			foreach (var precio in juego.PrecioActualesTiendas)
+			{
+				if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
+				{
+					bool añadir = true;
+
+					if (preciosActuales.Count > 0)
+					{
+						foreach (var drm in preciosActuales)
+						{
+							if (drm == precio.DRM)
+							{
+								añadir = false;
+							}
+						}
+					}
+
+					if (añadir == true)
+					{
+						preciosActuales.Add(precio.DRM);
+					}
+				}
+			}
+		}
+	}
+
+	private void ActualizarBundlesActuales(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Bundles != null)
+			{
+				foreach (var bundle in juego.Bundles)
+				{
+					if (DateTime.Now > bundle.FechaEmpieza && DateTime.Now < bundle.FechaTermina)
+					{
+						if (bundle.DRM != Juegos.JuegoDRM.NoEspecificado && bundle.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (bundlesActuales.Count > 0)
+							{
+								foreach (var bundle2 in bundlesActuales)
+								{
+									if (bundle2 == bundle.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								bundlesActuales.Add(bundle.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void ActualizarBundlesAntiguos(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Bundles != null)
+			{
+				foreach (var bundle in juego.Bundles)
+				{
+					if (DateTime.Now > bundle.FechaTermina)
+					{
+						if (bundle.DRM != Juegos.JuegoDRM.NoEspecificado && bundle.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (bundlesAntiguos.Count > 0)
+							{
+								foreach (var bundle2 in bundlesAntiguos)
+								{
+									if (bundle2 == bundle.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								bundlesAntiguos.Add(bundle.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void ActualizarGratisAntiguos(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Gratis != null)
+			{
+				foreach (var gratis in juego.Gratis)
+				{
+					if (DateTime.Now > gratis.FechaTermina)
+					{
+						if (gratis.DRM != Juegos.JuegoDRM.NoEspecificado && gratis.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (gratisAntiguos.Count > 0)
+							{
+								foreach (var gratis2 in gratisAntiguos)
+								{
+									if (gratis2 == gratis.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								gratisAntiguos.Add(gratis.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	private void TextoCambiarBuscadorJuego(ChangeEventArgs texto)
 	{
@@ -602,21 +1732,49 @@
 		{
 			id1 = int.Parse(id);
 			juego1 = BaseDatos.Juegos.Buscar.UnJuego(id1);
+
+			ActualizarCantidadJugadores(juego1);
+			ActualizarPreciosHistoricos(juego1);
+			ActualizarPreciosActuales(juego1);
+			ActualizarBundlesActuales(juego1);
+            ActualizarBundlesAntiguos(juego1);
+			ActualizarGratisAntiguos(juego1);
 		}
 		else if (posicion == 2)
 		{
 			id2 = int.Parse(id);
 			juego2 = BaseDatos.Juegos.Buscar.UnJuego(id2);
+
+			ActualizarCantidadJugadores(juego2);
+			ActualizarPreciosHistoricos(juego2);
+			ActualizarPreciosActuales(juego2);
+			ActualizarBundlesActuales(juego2);
+			ActualizarBundlesAntiguos(juego2);
+			ActualizarGratisAntiguos(juego2);
 		}
 		else if (posicion == 3)
 		{
 			id3 = int.Parse(id);
 			juego3 = BaseDatos.Juegos.Buscar.UnJuego(id3);
+
+			ActualizarCantidadJugadores(juego3);
+			ActualizarPreciosHistoricos(juego3);
+			ActualizarPreciosActuales(juego3);
+			ActualizarBundlesActuales(juego3);
+			ActualizarBundlesAntiguos(juego3);
+			ActualizarGratisAntiguos(juego3);
 		}
 		else if (posicion == 4)
 		{
 			id4 = int.Parse(id);
 			juego4 = BaseDatos.Juegos.Buscar.UnJuego(id4);
+
+			ActualizarCantidadJugadores(juego4);
+			ActualizarPreciosHistoricos(juego4);
+			ActualizarPreciosActuales(juego4);
+			ActualizarBundlesActuales(juego4);
+			ActualizarBundlesAntiguos(juego4);
+			ActualizarGratisAntiguos(juego4);
 		}
 
 		if (id1 > 0 && id2 == 0 && id3 == 0 && id4 == 0)

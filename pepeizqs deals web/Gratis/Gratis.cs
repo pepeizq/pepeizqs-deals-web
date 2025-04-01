@@ -14,7 +14,7 @@ namespace Gratis2
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;
 		public bool DRMEnseñar;
-		public int id;
+		public int Id;
 		public string ImagenNoticia;
 	}
 

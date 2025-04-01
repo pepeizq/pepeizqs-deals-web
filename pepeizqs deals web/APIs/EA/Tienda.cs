@@ -39,6 +39,7 @@ namespace APIs.EA
 
 			int juegos2 = 0;
 
+            List<string> listaIds = new List<string>();
 			string html = await Decompiladores.Estandar("https://api3.origin.com/supercat/GB/en_GB/supercat-PCWIN_MAC-GB-en_GB.json.gz");
 
 			if (string.IsNullOrEmpty(html) == false)
@@ -49,109 +50,113 @@ namespace APIs.EA
 				{
 					string superIds = string.Empty;
 					int i = 0;
-					int total = 0;
 
 					foreach (var juegoEA in basedatos.Juegos)
 					{
 						superIds = superIds + juegoEA.Id + ",";
 						i += 1;
 
-						if (i == 100)
+						if (i == 20)
 						{
-							total += i;
 							i = 0;
 
 							superIds = superIds.Remove(superIds.Length - 1, 1);
+                            listaIds.Add(superIds);
 
-							string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
-							AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
 							superIds = string.Empty;
 						}
+					}
 
-						if ((total + 1) == basedatos.Juegos.Count)
+					if (listaIds.Count > 0)
+					{
+						foreach (var superIds2 in listaIds)
 						{
-							if (superIds.Length > 0)
-							{
-								superIds = superIds.Remove(superIds.Length - 1, 1);
+							string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds2);
 
-								string html2 = await Decompiladores.Estandar("https://api1.origin.com/supercarp/rating/offers/anonymous?country=ES&locale=es_ES&pid=&currency=EUR&offerIds=" + superIds);
-								AñadirPrecios(html2, basedatos.Juegos, juegos2, conexion);
+							if (string.IsNullOrEmpty(html2) == false)
+							{
+								StringReader stream = new StringReader(html2);
+								XmlSerializer xml = new XmlSerializer(typeof(EAPrecio1));
+								EAPrecio1 precio1 = null;
+
+								try
+								{
+									precio1 = (EAPrecio1)xml.Deserialize(stream);
+								}
+								catch 
+								{ }
+
+								if (precio1 != null)
+								{
+									if (precio1.Precio2 != null)
+									{
+										foreach (var precioEA in precio1.Precio2)
+										{
+											if (precioEA.Precio3 != null)
+											{
+												decimal precioRebajado = precioEA.Precio3.PrecioRebajado;
+												decimal precioBase = precioEA.Precio3.PrecioBase;
+
+												int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
+
+												if (descuento > 0)
+												{
+													foreach (var juegobd in basedatos.Juegos)
+													{
+														if (precioEA.Id == juegobd.Id)
+														{
+															string nombre = WebUtility.HtmlDecode(juegobd.i18n.Titulo);
+
+															string enlace = "https://www.origin.com/store" + juegobd.Enlace;
+
+															string imagen = juegobd.ImagenServidor + juegobd.i18n.ImagenGrande;
+
+															JuegoPrecio oferta = new JuegoPrecio
+															{
+																Nombre = nombre,
+																Enlace = enlace,
+																Imagen = imagen,
+																Moneda = JuegoMoneda.Euro,
+																Precio = precioRebajado,
+																Descuento = descuento,
+																Tienda = Generar().Id,
+																DRM = JuegoDRM.EA,
+																FechaDetectado = DateTime.Now,
+																FechaActualizacion = DateTime.Now
+															};
+
+															try
+															{
+																BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+															}
+															catch (Exception ex)
+															{
+																BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+															}
+
+															juegos2 += 1;
+
+															try
+															{
+																BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
+															}
+															catch (Exception ex)
+															{
+																BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-
-        private static void AñadirPrecios(string html2, List<EABDJuego> basedatos, int juegos2, SqlConnection conexion, ViewDataDictionary objeto = null)
-        {
-            if (html2 != null)
-            {
-                StringReader stream = new StringReader(html2);
-                XmlSerializer xml = new XmlSerializer(typeof(EAPrecio1));
-                EAPrecio1 precio1 = (EAPrecio1)xml.Deserialize(stream);
-
-                foreach (var precioEA in precio1.Precio2)
-                {
-                    if (precioEA.Precio3 != null) 
-                    {
-                        decimal precioRebajado = decimal.Parse(precioEA.Precio3.PrecioRebajado);
-                        decimal precioBase = decimal.Parse(precioEA.Precio3.PrecioBase);
-
-                        int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
-
-                        if (descuento > 0)
-                        {
-                            foreach (var juegobd in basedatos)
-                            {
-                                if (precioEA.Id == juegobd.Id)
-                                {
-                                    string nombre = WebUtility.HtmlDecode(juegobd.i18n.Titulo);
-
-                                    string enlace = "https://www.origin.com/store" + juegobd.Enlace;
-
-                                    string imagen = juegobd.ImagenServidor + juegobd.i18n.ImagenGrande;
-
-                                    JuegoPrecio oferta = new JuegoPrecio
-                                    {
-                                        Nombre = nombre,
-                                        Enlace = enlace,
-                                        Imagen = imagen,
-                                        Moneda = JuegoMoneda.Euro,
-                                        Precio = precioRebajado,
-                                        Descuento = descuento,
-                                        Tienda = Generar().Id,
-                                        DRM = JuegoDRM.EA,
-                                        FechaDetectado = DateTime.Now,
-                                        FechaActualizacion = DateTime.Now
-                                    };
-
-									try
-									{
-										BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
-									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
-                                    }
-
-									juegos2 += 1;
-
-									try
-									{
-										BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
-									}
-									catch (Exception ex)
-									{
-                                        BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
-                                    }
-								}
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     #region Clases
@@ -239,10 +244,10 @@ namespace APIs.EA
     public class EAPrecio3
     {
         [XmlElement("finalTotalAmount")]
-        public string PrecioRebajado { get; set; }
+        public decimal PrecioRebajado { get; set; }
 
         [XmlElement("originalTotalPrice")]
-        public string PrecioBase { get; set; }
+        public decimal PrecioBase { get; set; }
     }
 
     #endregion
