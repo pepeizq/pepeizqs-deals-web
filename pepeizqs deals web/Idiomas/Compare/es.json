@@ -1,5 +1,5 @@
 {
-  "Title": "Comparar",
+  "Title": "Comparar Juegos",
   "String1": "buscar",
   "String2": "Busca el primer juego para comparar",
   "String3": "Busca el segundo juego para comparar",
@@ -14,5 +14,10 @@
   "String12": "Precios (Ofertas Actuales)",
   "String13": "Bundles (Ha Estado)",
   "String14": "Bundles (Actualmente)",
-  "String15": "Gratis (Ha Estado)"
+  "String15": "Gratis (Ha Estado)",
+  "String16": "Gratis (Actualmente)",
+  "String17": "Suscripciones (Ha Estado)",
+  "String18": "Suscripciones (Actualmente)",
+  "String19": "Limpiar",
+  "String20": "Busca juegos y compáralos entre ellos para ver cual se adecúa mejor a ti"
 }

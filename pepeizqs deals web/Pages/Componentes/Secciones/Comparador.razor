@@ -9,6 +9,89 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
+@{
+	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Compare") + " • pepeizq's deals";
+	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Compare");
+	string enlace = "https://pepeizqdeals.com/compare/";
+	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+
+	string keywords = "compare";
+
+	if (juego1 != null)
+	{
+		string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego1.Nombre, false).Split(' ');
+		List<string> keywordsListaJuego = new List<string>();
+		keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+		foreach (string keyword in keywordsListaJuego)
+		{
+			if (keywords.Contains(keyword) == false && keyword.Length > 3)
+			{
+				keywords = keywords + ", " + keyword;
+			}
+		}
+	}
+
+	if (juego2 != null)
+	{
+		string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego2.Nombre, false).Split(' ');
+		List<string> keywordsListaJuego = new List<string>();
+		keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+		foreach (string keyword in keywordsListaJuego)
+		{
+			if (keywords.Contains(keyword) == false && keyword.Length > 3)
+			{
+				keywords = keywords + ", " + keyword;
+			}
+		}
+	}
+
+	if (juego3 != null)
+	{
+		string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego3.Nombre, false).Split(' ');
+		List<string> keywordsListaJuego = new List<string>();
+		keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+		foreach (string keyword in keywordsListaJuego)
+		{
+			if (keywords.Contains(keyword) == false && keyword.Length > 3)
+			{
+				keywords = keywords + ", " + keyword;
+			}
+		}
+	}
+
+	if (juego4 != null)
+	{
+		string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego4.Nombre, false).Split(' ');
+		List<string> keywordsListaJuego = new List<string>();
+		keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+		foreach (string keyword in keywordsListaJuego)
+		{
+			if (keywords.Contains(keyword) == false && keyword.Length > 3)
+			{
+				keywords = keywords + ", " + keyword;
+			}
+		}
+	}
+
+	<HeadContent>
+		<meta name="og:title" Content="@titulo" />
+		<meta name="description" content="@descripcion" />
+		<meta name="og:description" content="@descripcion" />
+		<meta name="og:url" content="@enlace" />
+		<meta name="og:image" content="@imagen" />
+		<meta name="og:site_name" content="pepeizq's deals" />
+		<meta name="og:type" content="website" />
+		<meta name="robots" content="index, follow" />
+		<meta name="keywords" content="@keywords" />
+
+		<link rel="canonical" href="@enlace" />
+	</HeadContent>
+}
+
 <script>
     window.ChangeUrl = function (url) {
 		history.pushState(null, '', url);
@@ -55,7 +138,7 @@
 			marginAbajo = "margin-bottom: 50px;";
         }
 
-		<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Compare")</h1>
+		<h1 style="font-size: 22px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Compare")</h1>
 		<hr />
 
 		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px 30px; @marginAbajo">
@@ -111,42 +194,50 @@
 			anchoImagenes = "300%";
 		}
 
-		<div style="display: flex; align-items: center; gap: 20px; width: 100%; position: sticky; top: 70px; z-index: 3;">
-			<div style="width: 200%; font-size: 22px;"></div>
+		<div style="display: flex; align-items: center; gap: 20px; width: 100%; position: sticky; top: 70px; z-index: 3; background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); padding: 10px;">
+			<div style="width: 200%; font-size: 22px;">
+				<button @onclick="@(e => ClickearLimpieza(e))" class="boton-expandir boton-pequeño" style="padding: 12px 15px; margin: auto;">
+					<div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+						<svg xmlns="http://www.w3.org/2000/svg" style="display: block; width: 24px; max-height: 24px;" fill="var(--colorTexto)" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
+						
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Compare")
+					</div>
+				</button>
+			</div>
 
-			<div style="width: @anchoImagenes; background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); padding: 10px; display: flex; align-items: center; gap: 20px;">
-				@if (id1 > 0)
+			<div style="width: @anchoImagenes; display: flex; align-items: center;">
+				@if (id1 > 0 && juego1 != null)
 				{
-					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño); margin-left: auto; margin-right: auto;" class="boton-expandir">
 						<a href="/game/@juego1.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego1.Nombre)/">
-							<img src="@juego1.Imagenes.Header_460x215" alt="@juego1.Nombre" style="max-width: 100%; max-height: 100%;" />
+							<img src="@juego1.Imagenes.Header_460x215" alt="@juego1.Nombre" style="max-width: 100%; max-height: 82px;" />
 						</a>
 					</div>
 				}
 
-				@if (id2 > 0)
+				@if (id2 > 0 && juego2 != null)
 				{
-					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño); margin-left: auto; margin-right: auto;" class="boton-expandir">
 						<a href="/game/@juego2.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego2.Nombre)/">
-							<img src="@juego2.Imagenes.Header_460x215" alt="@juego2.Nombre" style="max-width: 100%; max-height: 100%;" />
+							<img src="@juego2.Imagenes.Header_460x215" alt="@juego2.Nombre" style="max-width: 100%; max-height: 82px;" />
 						</a>
 					</div>
 				}
 
-				@if (id3 > 0)
+				@if (id3 > 0 && juego3 != null)
 				{
-					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño); margin-left: auto; margin-right: auto;" class="boton-expandir">
 						<a href="/game/@juego3.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego3.Nombre)/">
-							<img src="@juego3.Imagenes.Header_460x215" alt="@juego3.Nombre" style="max-width: 100%; max-height: 100%;" />
+							<img src="@juego3.Imagenes.Header_460x215" alt="@juego3.Nombre" style="max-width: 100%; max-height: 82px;" />
 						</a>
 					</div>
 				}
 
-				@if (id4 > 0)
+				@if (id4 > 0 && juego4 != null)
 				{
-					<div style="border: 1px solid var(--fondoBotonPequeño);" class="boton-expandir">
+					<div style="border: 1px solid var(--fondoBotonPequeño); margin-left: auto; margin-right: auto;" class="boton-expandir">
 						<a href="/game/@juego4.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego4.Nombre)/">
-							<img src="@juego4.Imagenes.Header_460x215" alt="@juego4.Nombre" style="max-width: 100%; max-height: 100%;" />
+							<img src="@juego4.Imagenes.Header_460x215" alt="@juego4.Nombre" style="max-width: 100%; max-height: 82px;" />
 						</a>
 					</div>
 				}
@@ -163,7 +254,7 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Compare")
 				</div>
 
-				@if (id1 > 0)
+					@if (id1 > 0 && juego1 != null)
 				{
 					<div style="width: 33%; display: flex; align-items: center; gap: 10px; justify-content: center;">
 						@if (juego1.Analisis != null)
@@ -196,7 +287,7 @@
 					</div>
 				}
 
-				@if (id2 > 0)
+				@if (id2 > 0 && juego2 != null)
 				{
 					<div style="width: 33%; display: flex; align-items: center; gap: 10px; justify-content: center;">
 						@if (juego2.Analisis != null)
@@ -229,7 +320,7 @@
 					</div>
 				}
 
-				@if (id3 > 0)
+				@if (id3 > 0 && juego3 != null)
 				{
 					<div style="width: 33%; display: flex; align-items: center; gap: 10px; justify-content: center;">
 						@if (juego3.Analisis != null)
@@ -262,7 +353,7 @@
 					</div>
 				}
 
-				@if (id4 > 0)
+				@if (id4 > 0 && juego4 != null)
 				{
 					<div style="width: 33%; display: flex; align-items: center; gap: 10px; justify-content: center;">
 						@if (juego4.Analisis != null)
@@ -303,7 +394,7 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Compare")
 				</div>
 
-				@if (id1 > 0)
+					@if (id1 > 0 && juego1 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego1.Analisis != null)
@@ -319,7 +410,7 @@
 					</div>
 				}
 
-				@if (id2 > 0)
+				@if (id2 > 0 && juego2 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego2.Analisis != null)
@@ -335,7 +426,7 @@
 					</div>
 				}
 
-				@if (id3 > 0)
+				@if (id3 > 0 && juego3 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego3.Analisis != null)
@@ -351,7 +442,7 @@
 					</div>
 				}
 
-				@if (id4 > 0)
+				@if (id4 > 0 && juego4 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego4.Analisis != null)
@@ -375,12 +466,12 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Compare")
 				</div>
 
-				@if (id1 > 0)
+				@if (id1 > 0 && juego1 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego1.CantidadJugadores != null)
 						{
-							@juego1.CantidadJugadores.Cantidad
+							@juego1.CantidadJugadores.Cantidad.ToString("N0")
 						}
 						else
 						{
@@ -391,12 +482,12 @@
 					</div>
 				}
 
-				@if (id2 > 0)
+				@if (id2 > 0 && juego2 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego2.CantidadJugadores != null)
 						{
-							@juego2.CantidadJugadores.Cantidad
+							@juego2.CantidadJugadores.Cantidad.ToString("N0")
 						}
 						else
 						{
@@ -407,12 +498,12 @@
 					</div>
 				}
 
-				@if (id3 > 0)
+				@if (id3 > 0 && juego3 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego3.CantidadJugadores != null)
 						{
-							@juego3.CantidadJugadores.Cantidad
+							@juego3.CantidadJugadores.Cantidad.ToString("N0")
 						}
 						else
 						{
@@ -423,12 +514,12 @@
 					</div>
 				}
 
-				@if (id4 > 0)
+				@if (id4 > 0 && juego4 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego4.CantidadJugadores != null)
 						{
-							@juego4.CantidadJugadores.Cantidad
+							@juego4.CantidadJugadores.Cantidad.ToString("N0")
 						}
 						else
 						{
@@ -447,7 +538,7 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Compare")
 				</div>
 
-				@if (id1 > 0)
+				@if (id1 > 0 && juego1 != null)
 				{
 					<div style="width: 33%; text-align: center; height: 24px;">
 						@if (juego1.Deck != Juegos.JuegoDeck.Desconocido)
@@ -476,7 +567,7 @@
 					</div>
 				}
 
-				@if (id2 > 0)
+				@if (id2 > 0 && juego2 != null)
 				{
 					<div style="width: 33%; text-align: center; height: 24px;">
 						@if (juego2.Deck != Juegos.JuegoDeck.Desconocido)
@@ -505,7 +596,7 @@
 					</div>
 				}
 
-				@if (id3 > 0)
+				@if (id3 > 0 && juego3 != null)
 				{
 					<div style="width: 33%; text-align: center; height: 24px;">
 						@if (juego3.Deck != Juegos.JuegoDeck.Desconocido)
@@ -534,7 +625,7 @@
 					</div>
 				}
 
-				@if (id4 > 0)
+				@if (id4 > 0 && juego4 != null)
 				{
 					<div style="width: 33%; text-align: center; height: 24px;">
 						@if (juego4.Deck != Juegos.JuegoDeck.Desconocido)
@@ -579,7 +670,7 @@
 						@Juegos.JuegoDRM2.DevolverDRM(drmHistorico)
 					</div>
 					
-					@if (id1 > 0)
+					@if (id1 > 0 && juego1 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -598,7 +689,7 @@
 						</div>
 					}
 
-					@if (id2 > 0)
+					@if (id2 > 0 && juego2 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -617,7 +708,7 @@
 						</div>
 					}
 
-					@if (id3 > 0)
+					@if (id3 > 0 && juego3 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -636,7 +727,7 @@
 						</div>
 					}
 
-					@if (id4 > 0)
+					@if (id4 > 0 && juego4 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -672,7 +763,7 @@
 						@Juegos.JuegoDRM2.DevolverDRM(drmActual)
 					</div>
 
-					@if (id1 > 0)
+							@if (id1 > 0 && juego1 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -729,7 +820,7 @@
 						</div>
 					}
 
-					@if (id2 > 0)
+					@if (id2 > 0 && juego2 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -786,7 +877,7 @@
 						</div>
 					}
 
-					@if (id3 > 0)
+					@if (id3 > 0 && juego3 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -843,7 +934,7 @@
 						</div>
 					}
 
-					@if (id4 > 0)
+					@if (id4 > 0 && juego4 != null)
 					{
 						<div style="width: 33%; text-align: center;">
 							@{
@@ -919,7 +1010,7 @@
 							@Bundles2.BundlesCargar.DevolverBundle(bundle).NombreTienda
 						</div>
 
-						@if (id1 > 0)
+									@if (id1 > 0 && juego1 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -951,7 +1042,7 @@
 							</div>
 						}
 
-						@if (id2 > 0)
+						@if (id2 > 0 && juego2 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -983,7 +1074,7 @@
 							</div>
 						}
 
-						@if (id3 > 0)
+						@if (id3 > 0 && juego3 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1015,7 +1106,7 @@
 							</div>
 						}
 
-						@if (id4 > 0)
+						@if (id4 > 0 && juego4 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1067,7 +1158,7 @@
 							@Bundles2.BundlesCargar.DevolverBundle(bundle).NombreTienda
 						</div>
 
-						@if (id1 > 0)
+						@if (id1 > 0 && juego1 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1099,7 +1190,7 @@
 							</div>
 						}
 
-						@if (id2 > 0)
+						@if (id2 > 0 && juego2 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1131,7 +1222,7 @@
 							</div>
 						}
 
-						@if (id3 > 0)
+						@if (id3 > 0 && juego3 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1163,7 +1254,7 @@
 							</div>
 						}
 
-						@if (id4 > 0)
+						@if (id4 > 0 && juego4 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1176,6 +1267,154 @@
 											if (DateTime.Now > bundle2.FechaTermina)
 											{
 												if (bundle2.Tipo == bundle)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
+
+		@if (gratisActuales.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var gratis in gratisActuales)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Gratis2.GratisCargar.DevolverGratis(gratis).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Gratis2.GratisCargar.DevolverGratis(gratis).Nombre
+						</div>
+
+									@if (id1 > 0 && juego1 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Gratis != null)
+									{
+										foreach (var gratis2 in juego1.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaEmpieza && DateTime.Now < gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id2 > 0 && juego2 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Gratis != null)
+									{
+										foreach (var gratis2 in juego2.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaEmpieza && DateTime.Now < gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0 && juego3 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Gratis != null)
+									{
+										foreach (var gratis2 in juego3.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaEmpieza && DateTime.Now < gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0 && juego4 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Gratis != null)
+									{
+										foreach (var gratis2 in juego4.Gratis)
+										{
+											if (DateTime.Now > gratis2.FechaEmpieza && DateTime.Now < gratis2.FechaTermina)
+											{
+												if (gratis2.Tipo == gratis)
 												{
 													mensaje = string.Empty;
 
@@ -1215,7 +1454,7 @@
 							@Gratis2.GratisCargar.DevolverGratis(gratis).Nombre
 						</div>
 
-						@if (id1 > 0)
+									@if (id1 > 0 && juego1 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1247,7 +1486,7 @@
 							</div>
 						}
 
-						@if (id2 > 0)
+						@if (id2 > 0 && juego2 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1279,7 +1518,7 @@
 							</div>
 						}
 
-						@if (id3 > 0)
+						@if (id3 > 0 && juego3 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1311,7 +1550,7 @@
 							</div>
 						}
 
-						@if (id4 > 0)
+						@if (id4 > 0 && juego4 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1324,6 +1563,414 @@
 											if (DateTime.Now > gratis2.FechaTermina)
 											{
 												if (gratis2.Tipo == gratis)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
+
+		@if (suscripcionesActuales.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var suscripcion in suscripcionesActuales)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion).Nombre
+						</div>
+
+						@if (id1 > 0 && juego1 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego1.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaEmpieza && DateTime.Now < suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego1.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id2 > 0 && juego2 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego2.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaEmpieza && DateTime.Now < suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego2.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0 && juego3 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego3.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaEmpieza && DateTime.Now < suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego3.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0 && juego4 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego4.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaEmpieza && DateTime.Now < suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego4.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+					</div>
+				}
+			</div>
+		}
+
+		@if (suscripcionesAntiguas.Count > 0)
+		{
+			<div style="width: 100%; font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String17", "Compare")</div>
+
+			<hr />
+
+			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+				@foreach (var suscripcion in suscripcionesAntiguas)
+				{
+					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
+						<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+							<img src="@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion).ImagenIcono" style="max-width: 24px; max-height: 24px;" />
+
+							@Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion).Nombre
+						</div>
+
+									@if (id1 > 0 && juego1 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego1.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego1.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego1.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id2 > 0 && juego2 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego2.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego2.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego2.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id3 > 0 && juego3 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego3.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego3.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego3.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
+												{
+													mensaje = string.Empty;
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 24px; max-height: 24px; margin: auto;" fill="var(--colorTexto)" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+
+													break;
+												}
+											}
+										}
+									}
+
+									if (string.IsNullOrEmpty(mensaje) == false)
+									{
+										@mensaje
+									}
+								}
+							</div>
+						}
+
+						@if (id4 > 0 && juego4 != null)
+						{
+							<div style="width: 33%; text-align: center;">
+								@{
+									string mensaje = "--";
+
+									if (juego4.Suscripciones != null)
+									{
+										foreach (var suscripcion2 in juego4.Suscripciones)
+										{
+											if (DateTime.Now > suscripcion2.FechaTermina)
+											{
+												bool añadir = true;
+
+												if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion != null)
+												{
+													foreach (Juegos.JuegoSuscripcion suscripcion3 in juego4.Suscripciones)
+													{
+														if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).IncluyeSuscripcion == suscripcion3.Tipo)
+														{
+															añadir = false;
+															break;
+														}
+													}
+												}
+
+												if (añadir == true && suscripcion2.Tipo == suscripcion)
 												{
 													mensaje = string.Empty;
 
@@ -1384,7 +2031,10 @@
 	public List<Bundles2.BundleTipo> bundlesAntiguos = new List<Bundles2.BundleTipo>();
 
 	public List<Gratis2.GratisTipo> gratisActuales = new List<Gratis2.GratisTipo>();
-    public List<Gratis2.GratisTipo> gratisAntiguos = new List<Gratis2.GratisTipo>();
+	public List<Gratis2.GratisTipo> gratisAntiguos = new List<Gratis2.GratisTipo>();
+
+	public List<Suscripciones2.SuscripcionTipo> suscripcionesActuales = new List<Suscripciones2.SuscripcionTipo>();
+	public List<Suscripciones2.SuscripcionTipo> suscripcionesAntiguas = new List<Suscripciones2.SuscripcionTipo>();
 
 	public List<Juegos.Juego> resultadosBuscador = new List<Juegos.Juego>();
 
@@ -1402,25 +2052,61 @@
 
 			if (ids2.Length == 1)
 			{
-				id1 = int.Parse(ids2[0]);
+				if (string.IsNullOrEmpty(ids2[0]) == false)
+				{
+					id1 = int.Parse(ids2[0]);
+				}
 			}
 			else if (ids2.Length == 2)
 			{
-				id1 = int.Parse(ids2[0]);
-				id2 = int.Parse(ids2[1]);
+				if (string.IsNullOrEmpty(ids2[0]) == false)
+				{
+					id1 = int.Parse(ids2[0]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[1]) == false)
+				{
+					id2 = int.Parse(ids2[1]);
+				}
 			}
 			else if (ids2.Length == 3)
 			{
-				id1 = int.Parse(ids2[0]);
-				id2 = int.Parse(ids2[1]);
-				id3 = int.Parse(ids2[2]);
+				if (string.IsNullOrEmpty(ids2[0]) == false)
+				{
+					id1 = int.Parse(ids2[0]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[1]) == false)
+				{
+					id2 = int.Parse(ids2[1]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[2]) == false)
+				{
+					id3 = int.Parse(ids2[2]);
+				}
 			}
 			else if (ids2.Length > 3)
 			{
-				id1 = int.Parse(ids2[0]);
-				id2 = int.Parse(ids2[1]);
-				id3 = int.Parse(ids2[2]);
-				id4 = int.Parse(ids2[3]);
+				if (string.IsNullOrEmpty(ids2[0]) == false)
+				{
+					id1 = int.Parse(ids2[0]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[1]) == false)
+				{
+					id2 = int.Parse(ids2[1]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[2]) == false)
+				{
+					id3 = int.Parse(ids2[2]);
+				}
+
+				if (string.IsNullOrEmpty(ids2[3]) == false)
+				{
+					id4 = int.Parse(ids2[3]);
+				}
 			}
 
 			if (id1 > 0)
@@ -1432,7 +2118,10 @@
 				ActualizarPreciosActuales(juego1);
 				ActualizarBundlesActuales(juego1);
 				ActualizarBundlesAntiguos(juego1);
+				ActualizarGratisActuales(juego1);
 				ActualizarGratisAntiguos(juego1);
+				ActualizarSuscripcionesActuales(juego1);
+				ActualizarSuscripcionesAntiguas(juego1);
 			}
 
 			if (id2 > 0)
@@ -1444,7 +2133,10 @@
 				ActualizarPreciosActuales(juego2);
 				ActualizarBundlesActuales(juego2);
 				ActualizarBundlesAntiguos(juego2);
+				ActualizarGratisActuales(juego2);
 				ActualizarGratisAntiguos(juego2);
+				ActualizarSuscripcionesActuales(juego2);
+				ActualizarSuscripcionesAntiguas(juego2);
 			}
 
 			if (id3 > 0)
@@ -1456,7 +2148,10 @@
 				ActualizarPreciosActuales(juego3);
 				ActualizarBundlesActuales(juego3);
 				ActualizarBundlesAntiguos(juego3);
+				ActualizarGratisActuales(juego3);
 				ActualizarGratisAntiguos(juego3);
+				ActualizarSuscripcionesActuales(juego3);
+				ActualizarSuscripcionesAntiguas(juego3);
 			}
 
 			if (id4 > 0)
@@ -1468,7 +2163,10 @@
 				ActualizarPreciosActuales(juego4);
 				ActualizarBundlesActuales(juego4);
 				ActualizarBundlesAntiguos(juego4);
+				ActualizarGratisActuales(juego4);
 				ActualizarGratisAntiguos(juego4);
+				ActualizarSuscripcionesActuales(juego4);
+				ActualizarSuscripcionesAntiguas(juego4);
 			}
 		}
 	}
@@ -1531,26 +2229,29 @@
 	{
 		if (juego != null)
 		{
-			foreach (var precio in juego.PrecioMinimosHistoricos)
+			if (juego.PrecioMinimosHistoricos != null)
 			{
-				if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
+				foreach (var precio in juego.PrecioMinimosHistoricos)
 				{
-					bool añadir = true;
-
-					if (preciosHistoricos.Count > 0)
+					if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
 					{
-						foreach (var drm in preciosHistoricos)
+						bool añadir = true;
+
+						if (preciosHistoricos.Count > 0)
 						{
-							if (drm == precio.DRM)
+							foreach (var drm in preciosHistoricos)
 							{
-								añadir = false;
+								if (drm == precio.DRM)
+								{
+									añadir = false;
+								}
 							}
 						}
-					}
 
-					if (añadir == true)
-					{
-						preciosHistoricos.Add(precio.DRM);
+						if (añadir == true)
+						{
+							preciosHistoricos.Add(precio.DRM);
+						}
 					}
 				}
 			}
@@ -1561,29 +2262,32 @@
 	{
 		if (juego != null)
 		{
-			foreach (var precio in juego.PrecioActualesTiendas)
+			if (juego.PrecioActualesTiendas != null)
 			{
-				if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
+				foreach (var precio in juego.PrecioActualesTiendas)
 				{
-					bool añadir = true;
-
-					if (preciosActuales.Count > 0)
+					if (precio.DRM != Juegos.JuegoDRM.NoEspecificado && precio.DRM != Juegos.JuegoDRM.Microsoft)
 					{
-						foreach (var drm in preciosActuales)
+						bool añadir = true;
+
+						if (preciosActuales.Count > 0)
 						{
-							if (drm == precio.DRM)
+							foreach (var drm in preciosActuales)
 							{
-								añadir = false;
+								if (drm == precio.DRM)
+								{
+									añadir = false;
+								}
 							}
 						}
-					}
 
-					if (añadir == true)
-					{
-						preciosActuales.Add(precio.DRM);
+						if (añadir == true)
+						{
+							preciosActuales.Add(precio.DRM);
+						}
 					}
 				}
-			}
+			}	
 		}
 	}
 
@@ -1659,6 +2363,42 @@
 		}
 	}
 
+	private void ActualizarGratisActuales(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Gratis != null)
+			{
+				foreach (var gratis in juego.Gratis)
+				{
+					if (DateTime.Now > gratis.FechaEmpieza && DateTime.Now < gratis.FechaTermina)
+					{
+						if (gratis.DRM != Juegos.JuegoDRM.NoEspecificado && gratis.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (gratisActuales.Count > 0)
+							{
+								foreach (var gratis2 in gratisActuales)
+								{
+									if (gratis2 == gratis.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								gratisActuales.Add(gratis.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private void ActualizarGratisAntiguos(Juegos.Juego juego)
 	{
 		if (juego != null)
@@ -1695,6 +2435,102 @@
 		}
 	}
 
+	private void ActualizarSuscripcionesActuales(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Suscripciones != null)
+			{
+				foreach (var suscripcion in juego.Suscripciones)
+				{
+					if (DateTime.Now > suscripcion.FechaEmpieza && DateTime.Now < suscripcion.FechaTermina)
+					{
+						if (suscripcion.DRM != Juegos.JuegoDRM.NoEspecificado && suscripcion.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (suscripcionesActuales.Count > 0)
+							{
+								foreach (var suscripcion2 in suscripcionesActuales)
+								{
+									if (suscripcion2 == suscripcion.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
+							{
+								foreach (Juegos.JuegoSuscripcion suscripcion2 in juego.Suscripciones)
+								{
+									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
+									{
+										añadir = false;
+										break;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								suscripcionesActuales.Add(suscripcion.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void ActualizarSuscripcionesAntiguas(Juegos.Juego juego)
+	{
+		if (juego != null)
+		{
+			if (juego.Suscripciones != null)
+			{
+				foreach (var suscripcion in juego.Suscripciones)
+				{
+					if (DateTime.Now > suscripcion.FechaTermina)
+					{
+						if (suscripcion.DRM != Juegos.JuegoDRM.NoEspecificado && suscripcion.DRM != Juegos.JuegoDRM.Microsoft)
+						{
+							bool añadir = true;
+
+							if (suscripcionesAntiguas.Count > 0)
+							{
+								foreach (var suscripcion2 in suscripcionesAntiguas)
+								{
+									if (suscripcion2 == suscripcion.Tipo)
+									{
+										añadir = false;
+									}
+								}
+							}
+
+							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
+							{
+								foreach (Juegos.JuegoSuscripcion suscripcion2 in juego.Suscripciones)
+								{
+									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
+									{
+										añadir = false;
+										break;
+									}
+								}
+							}
+
+							if (añadir == true)
+							{
+								suscripcionesAntiguas.Add(suscripcion.Tipo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private void TextoCambiarBuscadorJuego(ChangeEventArgs texto)
 	{
 		if (texto.Value.ToString().Trim().Length > 2)
@@ -1718,7 +2554,7 @@
 			{
 				if (id1 > 0 || id2 > 0 || id3 > 0)
 				{
-                    resultadosBuscador.RemoveAll(x => x.Id == id1 || x.Id == id2 || x.Id == id3);
+					resultadosBuscador.RemoveAll(x => x.Id == id1 || x.Id == id2 || x.Id == id3);
 				}
 			}
 		}
@@ -1737,8 +2573,11 @@
 			ActualizarPreciosHistoricos(juego1);
 			ActualizarPreciosActuales(juego1);
 			ActualizarBundlesActuales(juego1);
-            ActualizarBundlesAntiguos(juego1);
+			ActualizarBundlesAntiguos(juego1);
+			ActualizarGratisActuales(juego1);
 			ActualizarGratisAntiguos(juego1);
+			ActualizarSuscripcionesActuales(juego1);
+			ActualizarSuscripcionesAntiguas(juego1);
 		}
 		else if (posicion == 2)
 		{
@@ -1750,7 +2589,10 @@
 			ActualizarPreciosActuales(juego2);
 			ActualizarBundlesActuales(juego2);
 			ActualizarBundlesAntiguos(juego2);
+			ActualizarGratisActuales(juego2);
 			ActualizarGratisAntiguos(juego2);
+			ActualizarSuscripcionesActuales(juego2);
+			ActualizarSuscripcionesAntiguas(juego2);
 		}
 		else if (posicion == 3)
 		{
@@ -1762,7 +2604,10 @@
 			ActualizarPreciosActuales(juego3);
 			ActualizarBundlesActuales(juego3);
 			ActualizarBundlesAntiguos(juego3);
+			ActualizarGratisActuales(juego3);
 			ActualizarGratisAntiguos(juego3);
+			ActualizarSuscripcionesActuales(juego3);
+			ActualizarSuscripcionesAntiguas(juego3);
 		}
 		else if (posicion == 4)
 		{
@@ -1774,7 +2619,10 @@
 			ActualizarPreciosActuales(juego4);
 			ActualizarBundlesActuales(juego4);
 			ActualizarBundlesAntiguos(juego4);
+			ActualizarGratisActuales(juego4);
 			ActualizarGratisAntiguos(juego4);
+			ActualizarSuscripcionesActuales(juego4);
+			ActualizarSuscripcionesAntiguas(juego4);
 		}
 
 		if (id1 > 0 && id2 == 0 && id3 == 0 && id4 == 0)
@@ -1798,5 +2646,29 @@
 	private void ClickearAbrirJuego(MouseEventArgs e, int id)
 	{
 		NavManager.NavigateTo("/game/" + id.ToString() + "/", true);
+	}
+
+	private async void ClickearLimpieza(MouseEventArgs e)
+	{
+		id1 = 0;
+		id2 = 0;
+		id3 = 0;
+		id4 = 0;
+
+		juego1 = null;
+		juego2 = null;
+		juego3 = null;
+		juego4 = null;
+
+		preciosActuales = new List<Juegos.JuegoDRM>();
+		preciosHistoricos = new List<Juegos.JuegoDRM>();
+		bundlesActuales = new List<Bundles2.BundleTipo>();
+		bundlesAntiguos = new List<Bundles2.BundleTipo>();
+		gratisActuales = new List<Gratis2.GratisTipo>();
+		gratisAntiguos = new List<Gratis2.GratisTipo>();
+		suscripcionesActuales = new List<Suscripciones2.SuscripcionTipo>();
+        suscripcionesAntiguas = new List<Suscripciones2.SuscripcionTipo>();
+
+		await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/");
 	}
 }
