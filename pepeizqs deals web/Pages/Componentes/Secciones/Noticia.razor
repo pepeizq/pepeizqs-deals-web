@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
+@using Microsoft.VisualBasic
 @using Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using Suscripciones2
@@ -57,7 +58,6 @@
 		}
 	}
 
-	<PageTitle>@tituloSeo</PageTitle>
 	<HeadContent>
 		<meta name="og:title" Content="@tituloSeo" />
 		<meta name="description" content="@descripcion" />
@@ -67,8 +67,26 @@
 		<meta name="og:video" content="@video" />
 		<meta name="og:site_name" content="pepeizq's deals" />
 		<meta name="og:type" content="website" />
-		<meta name="robots" content="index, nofollow, noimageindex, noai, noimageai" />
+		<meta name="robots" content="index, follow" />
 		<meta name="keywords" content="@keywords" />
+
+		<script type="application/ld+json">
+			@{
+				string seoJson = "{" + Environment.NewLine +
+					Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "NewsArticle" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "headline" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + noticia.TituloEn + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "image" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + noticia.Imagen + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "datePublished" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + noticia.FechaEmpieza.ToString("yyyy-MM-ddTHH:mm:ss") + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "description" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "author" + Strings.ChrW(34) + ": {" + Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "Person" + Strings.ChrW(34) + "," + Environment.NewLine + 
+					Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "pepeizq" + Strings.ChrW(34) + "," + Environment.NewLine + 
+					Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://pepeizqapps.com/" + Strings.ChrW(34) + Environment.NewLine + "} ," + Environment.NewLine +
+					Strings.ChrW(34) + "isAccessibleForFree" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "true" + Strings.ChrW(34) + "}";
+            }
+
+            @((MarkupString)seoJson)
+        </script>
 
 		<link rel="canonical" href="@enlace" hreflang="@idioma"/>
 	</HeadContent>

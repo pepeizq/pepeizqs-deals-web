@@ -24,7 +24,7 @@ namespace BaseDatos.Sitemaps
 
 			using (conexion)
 			{
-				string buscar = "SELECT TOP 1000 id, nombre FROM juegos ORDER BY NEWID()";
+				string buscar = "SELECT TOP 2000 id, nombre FROM juegos ORDER BY NEWID()";
 
 				using (SqlCommand comando = new SqlCommand(buscar, conexion))
 				{
@@ -148,7 +148,7 @@ namespace BaseDatos.Sitemaps
 
 			using (conexion)
 			{
-				string buscar = "SELECT TOP 200 id, nombre FROM juegos ORDER BY id DESC";
+				string buscar = "SELECT TOP 500 id, nombre FROM juegos ORDER BY id DESC";
 
 				using (SqlCommand comando = new SqlCommand(buscar, conexion))
 				{
@@ -210,7 +210,7 @@ namespace BaseDatos.Sitemaps
 
 			using (conexion)
 			{
-				string buscar = "SELECT TOP 100 id, nombre FROM bundles ORDER BY NEWID()";
+				string buscar = "SELECT TOP 500 id, nombre FROM bundles ORDER BY NEWID()";
 
 				using (SqlCommand comando = new SqlCommand(buscar, conexion))
 				{
@@ -334,7 +334,7 @@ namespace BaseDatos.Sitemaps
 
 			using (conexion)
 			{
-				string buscar = "SELECT TOP 100 id, tituloEn FROM noticias ORDER BY id DESC";
+				string buscar = "SELECT TOP 200 id, tituloEn FROM noticias ORDER BY id DESC";
 
 				using (SqlCommand comando = new SqlCommand(buscar, conexion))
 				{
@@ -396,7 +396,7 @@ namespace BaseDatos.Sitemaps
 
 			using (conexion)
 			{
-				string buscar = "SELECT TOP 100 id, tituloEs FROM noticias ORDER BY id DESC";
+				string buscar = "SELECT TOP 200 id, tituloEs FROM noticias ORDER BY id DESC";
 
 				using (SqlCommand comando = new SqlCommand(buscar, conexion))
 				{

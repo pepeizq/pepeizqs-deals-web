@@ -9,6 +9,41 @@ namespace Herramientas
 	public class Sitemaps : Controller
 	{
 		[HttpGet("sitemap.xml")]
+		public IActionResult Maestro()
+		{
+			List<string> sitemaps = ["https://pepeizqdeals.com/sitemap-main.xml", 
+				"https://pepeizqdeals.com/sitemap-games.xml",
+				"https://pepeizqdeals.com/sitemap-gamesrandom.xml",
+				"https://pepeizqdeals.com/sitemap-lastgames.xml",
+				"https://pepeizqdeals.com/sitemap-bundles.xml",
+				"https://pepeizqdeals.com/sitemap-bundlesrandom.xml",
+				"https://pepeizqdeals.com/sitemap-news.xml",
+				"https://pepeizqdeals.com/sitemap-newses.xml",
+				"https://pepeizqdeals.com/sitemap-curators.xml"];
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			sb.Append("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+			foreach (var sitemap in sitemaps)
+			{
+				sb.Append("<sitemap>");
+				sb.Append("<loc>" + sitemap + "</loc>");
+				sb.Append("<lastmod>" + DateTime.Now.ToString("yyyy-MM-dd") + "</lastmod>");
+				sb.Append("</sitemap>");
+			}
+
+			sb.Append("</sitemapindex>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-main.xml")]
 		public IActionResult Principal()
 		{
 			StringBuilder sb = new StringBuilder();

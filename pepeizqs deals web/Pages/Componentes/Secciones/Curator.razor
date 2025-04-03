@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.VisualBasic
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -48,6 +49,31 @@
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow" />
 		<meta name="keywords" content="@keywords" />
+	
+		<script type="application/ld+json">
+			@{
+				string seoJson = "{" + Environment.NewLine +
+					Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ProfilePage" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "mainEntity" + Strings.ChrW(34) + ": {" + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "Organization" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + curator.Nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "description" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "image" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + imagen + Strings.ChrW(34);
+
+				if (curator.Web != null)
+				{
+					if (string.IsNullOrEmpty(curator.Web.Enlace) == false)
+					{
+						seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "sameAs" + Strings.ChrW(34) + ": [ " + Strings.ChrW(34) + curator.Web.Enlace + Strings.ChrW(34) + " ]";
+					}
+				}
+
+				seoJson = seoJson + "}" + Environment.NewLine + "}";
+            }
+
+            @((MarkupString)seoJson)
+        </script>
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>
@@ -306,7 +332,7 @@
 	private bool usuarioPatreon = false;
 	private Herramientas.UsuarioListadosJuegos juegosUsuario = new Herramientas.UsuarioListadosJuegos();
 
-	private BaseDatos.Curators.Curator curator = new BaseDatos.Curators.Curator();
+	private BaseDatos.Curators.Curator curator = null;
 	private List<Juegos.Juego> juegosCurator = new List<Juegos.Juego>();
 	private List<Juegos.Juego> juegosDestacados = new List<Juegos.Juego>();
 

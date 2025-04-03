@@ -42,29 +42,6 @@ namespace Herramientas
 			{
 				sb.Append(@"
 User-agent: *
-Disallow: /
-
-User-agent: Googlebot
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
-User-agent: Bingbot
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
-User-agent: DuckDuckBot
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
-User-agent: Chrome-Lighthouse
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
-User-agent: archive.org_bot
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
-User-agent: Qwantbot
 Disallow: /account/
 Disallow: /link/*
 Disallow: /publisher/*

@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Data.SqlClient
 @using Microsoft.JSInterop
+@using Microsoft.VisualBasic
 @using Noticias
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using pepeizqs_deals_web.Pages.Componentes.Interfaz
@@ -18,7 +19,9 @@
 	string titulo = "pepeizq's deals • " + Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	string descripcion = Herramientas.Idiomas.BuscarTexto(idioma, "Subtitle", "Index");
 	string enlace = "https://pepeizqdeals.com/";
+	string enlace2 = "https://pepeizqdeals.com/contact";
 	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
+	string imagen2 = "https://pepeizqdeals.com/logo/logo6.png";
 
 	<HeadContent>
 		<meta name="og:title" content="@titulo" />
@@ -30,6 +33,41 @@
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow" />
 		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<script type="application/ld+json">
+			@{
+				WebApplicationBuilder builder = WebApplication.CreateBuilder();
+				string? patreon = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+				string? discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
+				string? telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
+				string? reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
+				string? twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
+				string? steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
+				string? bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
+
+				string seoJson = "{" + Environment.NewLine +
+					Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "Organization" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "pepeizq's deals" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "description" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + enlace + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "brand" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "pepeizq's apps" + Strings.ChrW(34) + "," + Environment.NewLine +
+					Strings.ChrW(34) + "logo" + Strings.ChrW(34) + ": {" + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ImageObject" + Strings.ChrW(34) + "," +
+					Strings.ChrW(34) + "logo" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + imagen2 + Strings.ChrW(34) + "," +
+					Strings.ChrW(34) + "caption" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "pepeizq's deals logo" + Strings.ChrW(34) + "} ," +
+					Strings.ChrW(34) + "contactPoint" + Strings.ChrW(34) + ": [{" + Environment.NewLine +
+					Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ContactPoint" + Strings.ChrW(34) + "," +
+					Strings.ChrW(34) + "contactType" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "customer service" + Strings.ChrW(34) + "," +
+					Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + enlace2 + Strings.ChrW(34) + "," +
+					Strings.ChrW(34) + "availableLanguage" + Strings.ChrW(34) + ": [" + Strings.ChrW(34) + "English" + Strings.ChrW(34) + "," + Strings.ChrW(34) + "Spanish" + Strings.ChrW(34) + "]}]," + Environment.NewLine +
+					Strings.ChrW(34) + "sameAs" + Strings.ChrW(34) + ": [" + Strings.ChrW(34) + patreon + Strings.ChrW(34) + "," + Strings.ChrW(34) + discord + Strings.ChrW(34) + "," + Strings.ChrW(34) + telegram + Strings.ChrW(34) + "," + Strings.ChrW(34) + reddit + Strings.ChrW(34) + "," + Strings.ChrW(34) + twitter + Strings.ChrW(34) + "," + Strings.ChrW(34) + steam + Strings.ChrW(34) + "," + Strings.ChrW(34) + bluesky + Strings.ChrW(34) + "]";
+
+				seoJson = seoJson + Environment.NewLine + "}";
+            }
+
+            @((MarkupString)seoJson)
+        </script>
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>

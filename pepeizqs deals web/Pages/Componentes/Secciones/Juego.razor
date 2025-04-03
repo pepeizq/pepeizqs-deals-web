@@ -72,13 +72,85 @@
         <meta name="robots" content="index, follow" />
         <meta name="keywords" content="@keywords" />
 
+        <script type="application/ld+json">
+            @{
+                string seoJson = "{" + Environment.NewLine +
+                    Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "SoftwareApplication" + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juego.Nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "operatingSystem" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "WINDOWS" + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "applicationCategory" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "GameApplication" + Strings.ChrW(34); 
+
+                if (juego.Imagenes != null)
+                {
+                    seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "image" + Strings.ChrW(34) + ": {" + Strings.ChrW(34) + 
+                        "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ImageObject" + Strings.ChrW(34) + "," + Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juego.Imagenes.Header_460x215 + Strings.ChrW(34) + 
+                        "," + Strings.ChrW(34) + "contentUrl" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juego.Imagenes.Header_460x215 + Strings.ChrW(34) + "}";
+                }
+
+                if (juego.Analisis != null)
+                {
+                    seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "aggregateRating" + Strings.ChrW(34) + ":" + Environment.NewLine + "{" + Environment.NewLine +
+                        Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "AggregateRating" + Strings.ChrW(34);
+
+                    if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
+                    {
+                        decimal estrellas = decimal.Parse(juego.Analisis.Porcentaje) / 20;
+                        seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingValue" + Strings.ChrW(34) + ":" + estrellas.ToString();
+                    }
+
+                    if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+                    {
+                        string cantidad = juego.Analisis.Cantidad;
+                        cantidad = cantidad.Replace(",", null);
+
+                        seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingCount" + Strings.ChrW(34) + ":"  + cantidad;
+                    }
+
+                    seoJson = seoJson + Environment.NewLine + "}";
+                }
+
+                if (juego.PrecioActualesTiendas != null)
+                {
+                    decimal minimoCantidad = 10000000;
+
+                    foreach (var precio in juego.PrecioActualesTiendas)
+                    {
+                        if (Herramientas.OfertaActiva.Verificar(precio) == true && precio.DRM != JuegoDRM.NoEspecificado && precio.DRM != JuegoDRM.Microsoft)
+                        {
+                            decimal tempPrecio = precio.Precio;
+
+                            if (tempPrecio < minimoCantidad)
+                            {
+                                minimoCantidad = tempPrecio;
+                            }
+                        }
+                    }
+
+                    if (minimoCantidad < 10000000)
+                    {
+                         seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "offers" + Strings.ChrW(34) + ":" + Environment.NewLine + "{" +
+                            Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "Offer" + Strings.ChrW(34) + "," +
+                            Strings.ChrW(34) + "price" + Strings.ChrW(34) + ":" + minimoCantidad.ToString() + "," +
+                            Strings.ChrW(34) + "priceCurrency" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "EUR" + Strings.ChrW(34) + "," +
+                            Strings.ChrW(34) + "availability" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org/InStock" + Strings.ChrW(34) + "," +
+                            Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + enlace + Strings.ChrW(34) + Environment.NewLine + "}";
+                    }
+                }
+
+                seoJson = seoJson + "}";
+            }
+
+            @((MarkupString)seoJson)
+        </script>
+
         <link rel="canonical" href="@enlace" />
     </HeadContent>
 }
 
 <script>
     window.ChangeUrl = function (url) {
-    history.pushState(null, '', url);
+        history.pushState(null, '', url);
     }
 </script>
 
