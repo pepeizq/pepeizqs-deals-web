@@ -1,8 +1,9 @@
 ﻿@using APIs.Steam
 @using Juegos
-@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.VisualBasic
 @using pepeizqs_deals_web.Areas.Identity.Data
 @using System.Text.Json
 
@@ -42,6 +43,83 @@
         <meta name="og:type" content="website" />
         <meta name="robots" content="index, follow" />
         <meta name="keywords" content="@keywords" />
+
+        @{
+            List<JuegoSuscripcion> juegosEnSuscripciones = new List<JuegoSuscripcion>();
+
+            if (suscripcionesActuales != null)
+            {
+                foreach (var suscripcion in suscripcionesActuales)
+                {
+                    if (suscripcion.Tipo.Id == Suscripciones2.SuscripcionTipo.HumbleChoice || suscripcion.Tipo.Id == Suscripciones2.SuscripcionTipo.PrimeGaming)
+                    {
+                        foreach (var juego in suscripcion.Juegos)
+                        {
+                            bool añadir = true;
+
+                            if (juegosEnSuscripciones.Count > 100)
+                            {
+                                añadir = false;
+                                break;
+                            }
+
+                            if (juegosEnSuscripciones.Count > 0)
+                            {
+                                foreach (var juego2 in juegosEnSuscripciones)
+                                {
+                                    if (juego2.JuegoId == juego.JuegoId)
+                                    {
+                                        añadir = false;
+                                    }
+                                }
+                            }
+
+                            if (añadir == true)
+                            {
+                                juegosEnSuscripciones.Add(juego);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (juegosEnSuscripciones.Count > 0)
+            {
+                 <script type="application/ld+json">
+			        @{
+				        string seoJson = "{" + Environment.NewLine +
+					        Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
+					        Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ItemList" + Strings.ChrW(34) + "," + Environment.NewLine +
+					        Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
+					        Strings.ChrW(34) + "numberOfItems" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juegosEnSuscripciones.Count.ToString() + Strings.ChrW(34) + "," + Environment.NewLine +
+					        Strings.ChrW(34) + "itemListOrder" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "Descending" + Strings.ChrW(34) + "," + Environment.NewLine +
+					        Strings.ChrW(34) + "itemListElement" + Strings.ChrW(34) + ": [";
+
+				        int i = 0;
+                        while (i < juegosEnSuscripciones.Count)
+				        {
+					        if (i != 0)
+					        {
+						        seoJson = seoJson + ",";
+					        }
+
+					        seoJson = seoJson + "{" + Environment.NewLine +
+						        Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "ListItem" + Strings.ChrW(34) + "," + Environment.NewLine +
+						        Strings.ChrW(34) + "position" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + (i + 1).ToString() + Strings.ChrW(34) + "," + Environment.NewLine +
+						        Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juegosEnSuscripciones[i].Nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+						        Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://pepeizqdeals.com/game/" + juegosEnSuscripciones[i].JuegoId.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juegosEnSuscripciones[i].Nombre) + "/" + Strings.ChrW(34) + "," + Environment.NewLine +
+						        Strings.ChrW(34) + "image" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juegosEnSuscripciones[i].Imagen + Strings.ChrW(34) + "}";
+
+					        i += 1;
+				        }
+
+				        seoJson = seoJson + "]" + Environment.NewLine + "}";
+			        }
+
+			        @((MarkupString)seoJson)
+		        </script>
+            }
+        }
 
         <link rel="canonical" href="@enlace" />
     </HeadContent>
