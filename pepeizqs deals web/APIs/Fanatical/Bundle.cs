@@ -16,7 +16,7 @@ namespace APIs.Fanatical
 				Tipo = Bundles2.BundleTipo.Fanatical,
 				NombreTienda = "Fanatical",
 				ImagenTienda = "/imagenes/bundles/fanatical_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/fanatical_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/fanatical_icono.webp",
 				EnlaceBase = "fanatical.com",
 				Pick = false
 			};

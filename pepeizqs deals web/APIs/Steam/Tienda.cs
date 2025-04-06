@@ -29,7 +29,7 @@ namespace APIs.Steam
 				Nombre = "Steam",
 				ImagenLogo = "/imagenes/tiendas/steam_logo.webp",
 				Imagen300x80 = "/imagenes/tiendas/steam_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/steam_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/steam_icono.webp",
 				Color = "#2e4460",
                 AdminEnseñar = true,
 				AdminInteractuar = true

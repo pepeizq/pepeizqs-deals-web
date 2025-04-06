@@ -186,7 +186,7 @@
                 {
                     <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño suscripcion-grid" style="display: flex; flex-direction: column; align-items: center;">
                         <div style="width: 200px; height: 70px; display: flex; justify-content: center;">
-                            <img src="@suscripcionActual.Tipo.ImagenLogo" alt="@suscripcionActual.Tipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(suscripcionActual.Tipo.ImagenLogo, 200, 70)" alt="@suscripcionActual.Tipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                         </div>
 
                         @if (suscripcionActual.Juegos != null)
@@ -231,7 +231,7 @@
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         @foreach (var drm in drms)
                                         {
-                                            <img src="@JuegoDRM2.SacarImagen(drm)" style="max-width: 20px; max-height: 20px;" />
+                                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drm), 20, 20)" style="max-width: 20px; max-height: 20px;" />
                                         }
                                     </div>
                                 </div>
@@ -277,7 +277,7 @@
                             {
                                 <div style="margin-right: 15px; font-size: 14px;">
                                     <a onclick="moverScroll('pasado-@suscripcionPasada.Tipo.Id.ToString()')" style="color: var(--colorTexto); text-decoration: none; cursor: pointer;">
-                                        <img src="@suscripcionPasada.Tipo.ImagenIcono" style="width: 22px; height: 22px;" alt="Store" /> (@suscripcionAño.Count.ToString())
+                                        <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(suscripcionPasada.Tipo.ImagenIcono, 22, 22)" style="width: 22px; height: 22px;" alt="Store" /> (@suscripcionAño.Count.ToString())
                                     </a>
                                 </div>
                             }
@@ -366,7 +366,7 @@ else
 
             <div style="display: flex; align-items: center; gap: 30px; width: 100%;">
                 <div style="width: 150px; height: 60px; display: flex; justify-content: center;">
-                    <img src="@suscripcionSeleccionadaTipo.ImagenLogo" alt="@suscripcionSeleccionadaTipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(suscripcionSeleccionadaTipo.ImagenLogo, 150, 60)" alt="@suscripcionSeleccionadaTipo.Nombre" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -434,7 +434,7 @@ else
                             <button @onclick="@(e => FiltrarDRM(e, drm))" class="texto-cabecera menu-dropdown-item" style="text-align: right; width: 100%; border: 0px;">
                                 <div style="display: flex; align-items: center; gap: 10px; justify-content: right;">
                                     @Juegos.JuegoDRM2.DevolverDRM(drm)
-                                    <img src="@Juegos.JuegoDRM2.SacarImagen(drm)" style="max-width: 22px; max-height: 22px" />
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(Juegos.JuegoDRM2.SacarImagen(drm), 22, 22)" style="max-width: 22px; max-height: 22px" />
                                 </div>
                             </button>
                         }
@@ -496,11 +496,11 @@ else
                     
                     <div class="boton-expandir" style="@fondoColor display: flex; flex-direction: column;">
                         <div>
-                            <img src="@juego.Juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
+                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Juego.Imagenes.Library_600x900)" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
                         </div>
 
                         <div style="width: 100%; text-align: right; padding: 10px;">
-                            <img src="@JuegoDRM2.SacarImagen(juego.DRM)" style="max-width: 20px; max-height: 20px;" />
+                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.DRM))" style="max-width: 20px; max-height: 20px;" />
                         </div>
                     </div>
                 </a>

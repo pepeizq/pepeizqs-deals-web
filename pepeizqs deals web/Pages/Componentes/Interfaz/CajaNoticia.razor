@@ -20,7 +20,7 @@
 	<a href="/news/@noticia.Id/@Herramientas.EnlaceAdaptador.Nombre(titulo)/" style="cursor: pointer; text-decoration: none; color: var(--colorTexto);">
 		<div class="cnoticia-expandir" style="background-color: var(--fondoBotonPequeño); display: flex; align-items: center;" title="@titulo">
 			<div>
-				<img src="@noticia.Imagen" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo" loading="lazy" />
+				<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(noticia.Imagen, 200, 110)" style="width: 200px; height: 110px; object-fit: cover; opacity: 0.8;" alt="@titulo" loading="lazy" />
 			</div>
 
 			<div style="padding: 10px 20px; display: flex; flex-direction: column; gap: 10px;">
@@ -50,7 +50,7 @@
 						if (string.IsNullOrEmpty(icono) == false)
 						{
 							<div>
-								<img src="@icono" style="width: 18px; height: 18px;" alt="@Noticias.NoticiasCargar.Traduccion(noticia.Tipo, idioma)" loading="lazy" />
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(icono, 18, 18)" style="width: 18px; height: 18px;" alt="@Noticias.NoticiasCargar.Traduccion(noticia.Tipo, idioma)" loading="lazy" />
 							</div>
 						}
 					}

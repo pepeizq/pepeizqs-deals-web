@@ -9,7 +9,7 @@
                 Tipo = Gratis2.GratisTipo.Humble,
                 Nombre = "Humble Store",
                 ImagenLogo = "/imagenes/tiendas/humblestore_300x80.webp",
-                ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
+                ImagenIcono = "/imagenes/tiendas/humblestore_icono.webp",
                 DRMDefecto = Juegos.JuegoDRM.Steam,
                 DRMEnseñar = true
             };

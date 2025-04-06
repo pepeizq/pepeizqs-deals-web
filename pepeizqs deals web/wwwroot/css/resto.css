@@ -435,7 +435,7 @@
 }
 
 .juego-galeria-capturas {
-    opacity: 0.6;
+    opacity: 0.8;
     aspect-ratio: 16 / 9;
     object-fit: cover;
 }

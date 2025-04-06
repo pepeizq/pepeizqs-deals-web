@@ -11,6 +11,7 @@
 @using System.Text.Json
 
 @inject UserManager<Usuario> UserManager
+@inject NavigationManager NavManager
 
 @implements IDisposable
 @inject PersistentComponentState ApplicationState
@@ -33,6 +34,54 @@
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow" />
 		<meta name="keywords" content="deals, games, free, offers, bundles" />
+
+		<script type="application/ld+json">
+			{
+			  "@@context": "https://schema.org",
+			  "@@type": "BreadcrumbList",
+			  "itemListElement": [{
+				"@@type": "ListItem",
+				"position": 1,
+				"name": "Bundles",
+				"item": "https://pepeizqdeals.com/bundles"
+			  },{
+				"@@type": "ListItem",
+				"position": 2,
+				"name": "Historial Lows",
+				"item": "https://pepeizqdeals.com/historical-lows"
+			  },{
+				"@@type": "ListItem",
+				"position": 3,
+				"name": "Free",
+				"item": "https://pepeizqdeals.com/free"
+			  },{
+				"@@type": "ListItem",
+				"position": 4,
+				"name": "Subscriptions",
+				"item": "https://pepeizqdeals.com/subscriptions"
+			  },{
+				"@@type": "ListItem",
+				"position": 5,
+				"name": "Patreon",
+				"item": "https://pepeizqdeals.com/patreon"
+			  },{
+				"@@type": "ListItem",
+				"position": 6,
+				"name": "Compare",
+				"item": "https://pepeizqdeals.com/compare"
+			  },{
+				"@@type": "ListItem",
+				"position": 7,
+				"name": "API",
+				"item": "https://pepeizqdeals.com/api"
+			  },{
+				"@@type": "ListItem",
+				"position": 8,
+				"name": "Last Added",
+				"item": "https://pepeizqdeals.com/last-added"
+			  }]
+			}
+		</script>
 
 		<script type="application/ld+json">
 			@{
@@ -234,7 +283,7 @@
 							@if (string.IsNullOrEmpty(videoDestacado) == false)
 							{
 								<div class="destacado-fondo">
-									<img src="@fondoDestacado" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
+									<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(fondoDestacado, 1314, 424)" style="width: 100%;" alt="@juegoSeleccionado.Nombre">
 								</div>
 
 								<div class="destacado-video">
@@ -243,38 +292,38 @@
 							}
 							else
 							{
-								<img src="@fondoDestacado" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(fondoDestacado, 1314, 424)" style="width: 100%; aspect-ratio: 96/31;" alt="@juegoSeleccionado.Nombre">
 							}
 
 							<div style="position: absolute; left: 0; bottom: 0; background-image: linear-gradient(to bottom, rgba(255,0,0,0), @colorSeleccionado);
 										display: flex; align-items: end; justify-content: space-between; width: 100%;" class="destacado-hueco">
 
-								<img src="@logoDestacado" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(logoDestacado)" class="destacado-logo-medidas" alt="@juegoSeleccionado.Nombre">
 
 								<div style="display: flex; align-items: center; margin-bottom: 30px; color: var(--colorTexto);">
-									<img class="destacado-icono" src="@JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM)" style="margin-right: 20px;" alt="DRM" />
+									<img class="destacado-icono" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juegoSeleccionado.PrecioMinimosHistoricos[0].DRM), 40, 40)" style="margin-right: 20px;" alt="DRM" />
 
-								@{
-									string iconoTienda = string.Empty;
-									List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+									@{
+										string iconoTienda = string.Empty;
+										List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
 
-									foreach (var tienda in tiendas)
-									{
-										if (tienda.Id == juegoSeleccionado.PrecioMinimosHistoricos[0].Tienda)
+										foreach (var tienda in tiendas)
 										{
-											iconoTienda = tienda.ImagenIcono;
-											break;
+											if (tienda.Id == juegoSeleccionado.PrecioMinimosHistoricos[0].Tienda)
+											{
+												iconoTienda = tienda.ImagenIcono;
+												break;
+											}
 										}
 									}
-								}
 
-								<img class="destacado-icono" src="@iconoTienda" style="margin-right: 40px;" alt="Store" />
+									<img class="destacado-icono" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda, 40, 40)" style="margin-right: 40px;" alt="Store" />
 
-								<div class="destacado-precio-descuento" style="background-color: darkgreen;">
-									@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
-								</div>
+									<div class="destacado-precio-descuento" style="background-color: darkgreen;">
+										@juegoSeleccionado.PrecioMinimosHistoricos[0].Descuento.ToString()%
+									</div>
 									<div class="destacado-precio-descuento" style="background-color: var(--fondoOscuro);">
-									@Herramientas.Precios.Euro(juegoSeleccionado.PrecioMinimosHistoricos[0].Precio)
+										@Herramientas.Precios.Euro(juegoSeleccionado.PrecioMinimosHistoricos[0].Precio)
 									</div>
 								</div>
 							</div>
@@ -313,7 +362,7 @@
 					}
 
 					<div class="destacados-galeria-columna" @onclick="@(e => CambiarJuegoDestacado(e, destacado))" style="@colorFondoDestacado">
-						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@destacado.Imagenes.Header_460x215" style="@opacidad" alt="@destacado.Nombre">
+						<img class="destacados-galeria-captura destacados-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(destacado.Imagenes.Header_460x215, 214, 100)" style="@opacidad" alt="@destacado.Nombre">
 
 						@if (mostrarBarra == true)
 						{
@@ -559,7 +608,7 @@
 							@if (drm.DRMId != JuegoDRM.DRMFree)
 							{
 								<div style="margin-left: 20px; padding-bottom: 10px;">
-									<img src="@iconoDRM" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" loading="lazy" />
+									<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoDRM)" style="max-width: 24px; max-height: 24px;" title="@nombreDRM" loading="lazy" />
 								</div>
 							}
 							else
@@ -1243,4 +1292,9 @@
 	}
 
 	#endregion
+
+	private void AbrirEnlace(MouseEventArgs e, string enlace)
+	{
+		NavManager.NavigateTo("/account/register", true);
+	}
 }

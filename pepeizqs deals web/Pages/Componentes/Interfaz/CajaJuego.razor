@@ -150,16 +150,16 @@
 
 				<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
 					<div style="margin-right: 20px;">
-						<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
 					</div>
 					<div style="margin-right: 20px;">
-						<img src="@iconoTienda" style="width: 20px; height: 20px;" alt="Store" loading="lazy" />
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 20px; height: 20px;" alt="Store" loading="lazy" />
 					</div>
 
 					@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
 					{
 						<div style="margin-right: 20px;">
-							<img src="@tooltip.ReviewsIcono" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
 						</div>
 					}
 
@@ -243,15 +243,15 @@
 			<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
 				<div class="perfil-flexible-centrado">
 					<div style="max-width: 230px;">
-						<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" alt="@juego.Nombre" loading="lazy" />
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 100%; height: 100%;" alt="@juego.Nombre" loading="lazy" />
 					</div>
 
 					<div class="cjuego-titulo" style="width: 100%; display: flex; flex-flow: column wrap;">
 						<div class="minimo-fuente">@juego.Nombre</div>
 
 						<div style="margin-top: 15px; display: flex; align-items: center;">
-							<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" loading="lazy" />
-							<img src="@iconoTienda" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" loading="lazy" />
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" loading="lazy" />
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" loading="lazy" />
 							<div class="cjuego-fecha">@Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma)</div>
 						</div>
 					</div>
@@ -274,7 +274,7 @@
 			<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
 				<div class="perfil-flexible-centrado">
 					<div style="max-width: 230px;">
-						<img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%;" loading="lazy" />
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 100%; height: 100%;" loading="lazy" />
 					</div>
 
 					<div style="width: 100%; display: flex; flex-flow: column wrap; padding: 10px 20px;">
@@ -282,11 +282,11 @@
 
 						<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
 							<div style="width: 20px; height: 20px;">
-								<img src="@JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM)" style="width: 100%; height: 100%;" loading="lazy" />
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="width: 100%; height: 100%;" loading="lazy" />
 							</div>
 
 							<div style="width: 20px; height: 20px; margin-left: 10px;">
-								<img src="@iconoTienda" style="width: 100%; height: 100%;" loading="lazy" />
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 100%; height: 100%;" loading="lazy" />
 							</div>
 
 							@if (juego.Analisis != null)

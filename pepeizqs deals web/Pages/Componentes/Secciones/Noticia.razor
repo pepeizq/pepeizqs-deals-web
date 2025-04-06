@@ -115,7 +115,7 @@
 	@if (string.IsNullOrEmpty(imagenDestacada) == false)
 	{
 		<div style="display: flex; justify-content: center; align-items: center; overflow: hidden;">
-			<img style="height: 170px; flex-shrink: 0; min-width: 100%; object-fit: cover;" src="@imagenDestacada" alt="Image" />
+			<img style="height: 170px; flex-shrink: 0; min-width: 100%; object-fit: cover;" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagenDestacada)" alt="Image" />
 		</div>
 	}
 
@@ -141,7 +141,7 @@
 				if (string.IsNullOrEmpty(imagenCabecera) == false)
 				{
 					<div>
-						<img src="@imagenCabecera" style="max-width: 200px; max-height: 80px;" alt="Logo" />
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagenCabecera)" style="max-width: 200px; max-height: 80px;" alt="Logo" />
 					</div>
 				}
 			}
@@ -283,7 +283,7 @@
 
 									<a href="@Herramientas.EnlaceAcortador.Generar(gratis.Enlace, gratis.Tipo, usuarioPatreon)" class="boton-pequeño" style="padding: 2px;" target="_blank">
 										<div>
-											<img src="@imagen" style="max-width: 100%; max-height: 100%;" alt="@gratis.Nombre" />
+											<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagen)" style="max-width: 100%; max-height: 100%;" alt="@gratis.Nombre" />
 										</div>
 									</a>
 								}
@@ -344,11 +344,11 @@
 
 									<a href="@Herramientas.EnlaceAcortador.Generar(suscripcion.Enlace, suscripcion.Tipo, usuarioPatreon)" class="boton-pequeño" style="padding: 2px;" target="_blank">
 										<div>
-											<img src="@juego.Imagenes.Library_600x900" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
+											<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Library_600x900)" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
 										</div>
 
 										<div style="display: flex; align-items: center; justify-content: right; height: 40px;">
-											<img src="@Juegos.JuegoDRM2.SacarImagen(suscripcion.DRM)" style="max-width: 24px; max-height: 24px; margin: 10px;" alt="DRM" />
+											<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(Juegos.JuegoDRM2.SacarImagen(suscripcion.DRM))" style="max-width: 24px; max-height: 24px; margin: 10px;" alt="DRM" />
 										</div>
 									</a>
 								}

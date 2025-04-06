@@ -9,7 +9,7 @@
                 Tipo = Gratis2.GratisTipo.Fanatical,
                 Nombre = "Fanatical",
                 ImagenLogo = "/imagenes/tiendas/fanatical_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/fanatical_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/fanatical_icono.webp",
 				DRMDefecto = Juegos.JuegoDRM.Steam,
                 DRMEnseñar = true
             };

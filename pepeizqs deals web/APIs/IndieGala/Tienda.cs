@@ -22,7 +22,7 @@ namespace APIs.IndieGala
 				Nombre = "IndieGala",
 				ImagenLogo = "/imagenes/tiendas/indiegala_logo.webp",
 				Imagen300x80 = "/imagenes/tiendas/indiegala_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/indiegala_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/indiegala_icono.webp",
 				Color = "#ffccd4",
 				AdminEnseñar = true,
 				AdminInteractuar = true

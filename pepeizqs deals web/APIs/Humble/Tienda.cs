@@ -29,7 +29,7 @@ namespace APIs.Humble
 				Nombre = "Humble Store",
 				ImagenLogo = "/imagenes/tiendas/humblestore_logo.webp",
 				Imagen300x80 = "/imagenes/tiendas/humblestore_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/humblestore_icono.webp",
 				Color = "#ea9192",
 				AdminEnseñar = true,
 				AdminInteractuar = true
@@ -57,7 +57,7 @@ namespace APIs.Humble
 				Nombre = "Humble Choice",
 				ImagenLogo = "/imagenes/tiendas/humblechoice_logo.webp",
 				Imagen300x80 = "/imagenes/tiendas/humblechoice_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/humblestore_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/humblestore_icono.webp",
 				Color = "#ea9192",
 				AdminEnseñar = false,
 				AdminInteractuar = false

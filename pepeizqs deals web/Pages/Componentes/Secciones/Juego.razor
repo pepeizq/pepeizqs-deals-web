@@ -98,6 +98,12 @@
                         if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                         {
                             decimal estrellas = decimal.Parse(juego.Analisis.Porcentaje) / 20;
+
+                            if (estrellas < 0.5m)
+                            {
+                                estrellas = 0;
+                            }
+
                             seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingValue" + Strings.ChrW(34) + ":" + estrellas.ToString();
                         }
 
@@ -219,7 +225,7 @@
                             
                 if (mostrar == true)
                 {
-                    <img class="juego-fondo" src="@juego.Imagenes.Library_1920x620" alt="@juego.Nombre" loading="lazy" />
+                    <img class="juego-fondo" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Library_1920x620, 1536, 496)" alt="@juego.Nombre" loading="lazy" />
                 }
             }
         }
@@ -266,13 +272,13 @@
                             if (difuminar == false)
                             {
                                 <div class="juego-flexible-izquierda">
-                                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
                                 </div>
                             }
                             else
                             {
                                 <div class="juego-flexible-izquierda" style="overflow: hidden;">
-                                    <img src="@juego.Imagenes.Header_460x215" class="juego-imagen" style="filter: blur(10px);" alt="@juego.Nombre" loading="lazy" />
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" style="filter: blur(10px);" alt="@juego.Nombre" loading="lazy" />
                                 </div>
                             }
                         }
@@ -337,7 +343,7 @@
                                                     {
                                                         <button onclick="moverScroll('@drm.Id')" class="boton-pequeño" style="@fondoBotonDRM width: 40px; height: 40px; text-align: center; padding: 9px;">
                                                             <div style="display: flex; align-items: center;">
-                                                                <img src="@JuegoDRM2.SacarImagen(drm.Id)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" loading="lazy" />
+                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drm.Id), 40, 40)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" loading="lazy" />
                                                             </div>
                                                         </button>
                                                     }
@@ -776,7 +782,7 @@
                                             else
                                             {
                                                 <div style="max-width: 40px; max-height: 40px;">
-                                                    <img src="@JuegoDRM2.SacarImagen(drm.Id)" alt="@drm.Nombre" style="width: 100%; height: 100%;" loading="lazy" />
+                                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drm.Id), 40, 40)" alt="@drm.Nombre" style="width: 100%; height: 100%;" loading="lazy" />
                                                 </div>
                                             }
 
@@ -1841,11 +1847,11 @@
                                     
                                     @if (difuminar == false)
                                     {
-                                        <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre" loading="lazy">
+                                        <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(mediaMostrar)" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain;" alt="@juego.Nombre" loading="lazy">
                                     }
                                     else
                                     {
-                                        <img src="@mediaMostrar" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
+                                        <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(mediaMostrar)" style="width: 100vw; height: calc(100vh - 190px); max-width: 1320px; max-height: 742.50px; object-fit: contain; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
                                     } 
                                 </div>
 
@@ -1862,7 +1868,7 @@
                                             if (juego.Imagenes != null)
                                             {
                                                 <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
-                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Imagenes.Header_460x215" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
 
                                                     <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                                         <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1881,13 +1887,13 @@
                                             if (difuminar == false)
                                             {
                                                 <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))">
-                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Media.Miniaturas[i], 220, 124)" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
                                                 </div>
                                             }
                                             else
                                             {
                                                 <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, nuevaPosicion))" style="overflow: hidden;">
-                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@juego.Media.Miniaturas[i]" style="width: 100%; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Media.Miniaturas[i], 220, 124)" style="width: 100%; filter: blur(10px);" alt="@juego.Nombre" loading="lazy">
                                                 </div>
                                             }
 
@@ -2199,7 +2205,7 @@
                             <div id="curator-@curator.Curator.Id.ToString()" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 20px;">
-                                        <img src="@curator.Curator.Imagen" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />
+                                        <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(curator.Curator.Imagen, 60, 60)" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />
 
                                         <a href="/curator/@curator.Curator.Slug.ToLower()/" target="_blank" style="text-decoration: none;">
                                             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -2258,7 +2264,7 @@
 
                                                         <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
                                                             <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juegosCurator[i].Nombre">
-                                                                <img src="@juegosCurator[i].Imagenes.Header_460x215" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
+                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juegosCurator[i].Imagenes.Header_460x215)" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
 
                                                                 <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
                                                                     @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
@@ -2569,7 +2575,7 @@
                                 <a href="/game/@dlc.Id/@Herramientas.EnlaceAdaptador.Nombre(dlc.Nombre)/" style="font-size: 16px; cursor: pointer; color: var(--colorTexto); text-decoration: none; padding: 0px;">
                                     <div class="boton-expandir" style="background: color-mix(in srgb, var(--fondoBotonPequeño), var(--fondoDlc) 30%); display: flex; align-items: center; gap: 20px;">
                                         <div>
-                                            <img src="@dlc.Imagenes.Header_460x215" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" loading="lazy" />
+                                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(dlc.Imagenes.Header_460x215)" style="max-width: 230px; max-height: 107px;" alt="@dlc.Nombre" loading="lazy" />
                                         </div>
 
                                         <div style="width: 100%;">
@@ -2616,7 +2622,7 @@
     </div>
 }
 
-    @if (juego != null && bundleId > 0)
+@if (juego != null && bundleId > 0)
 {
     <div class="opciones-panel">
         <div style="max-width: 1320px; margin: 20px auto; overflow-y: scroll; padding-right: 20px; scrollbar-color: var(--fondoCodigo) var(--fondoOscuro);">
@@ -2957,7 +2963,7 @@
 
                                         if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
                                         {
-                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" loading="lazy" />
+                                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagenIdioma)" style="max-width: 25px; max-height: 25px;" loading="lazy" />
                                         }
                                         else
                                         {
@@ -2987,7 +2993,7 @@
 
                                         if (string.IsNullOrEmpty(Herramientas.Idiomas.EncontrarIdiomaImagen(idioma.Idioma)) == false)
                                         {
-                                            <img src="@imagenIdioma" style="max-width: 25px; max-height: 25px;" loading="lazy" />
+                                            <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagenIdioma)" style="max-width: 25px; max-height: 25px;" loading="lazy" />
                                         }
                                         else
                                         {

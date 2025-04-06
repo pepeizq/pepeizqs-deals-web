@@ -9,7 +9,7 @@
                 Tipo = Gratis2.GratisTipo.IndieGala,
                 Nombre = "IndieGala",
                 ImagenLogo = "/imagenes/tiendas/indiegala_logo.webp",
-                ImagenIcono = "/imagenes/tiendas/indiegala_icono.ico",
+                ImagenIcono = "/imagenes/tiendas/indiegala_icono.webp",
                 DRMDefecto = Juegos.JuegoDRM.Steam,
                 DRMEnseñar = true
             };

@@ -282,17 +282,21 @@
 
     <script src="_framework/blazor.server.js" autostart="false"></script>
 
-    <script>
-        // Blazor.start({
-        //     reconnectionOptions: {
-        //         maxRetries: 5,
-        //         retryIntervalMilliseconds: 2000
-        //     },
-        //     configureSignalR: function (builder) {
-        //         builder.withServerTimeout(60000);
-        //     }
-        // })
-    </script>
+@*     <script>
+        Blazor.start({
+            reconnectionOptions: {
+                maxRetries: 5,
+                retryIntervalMilliseconds: 2000
+            },
+            configureSignalR: function (builder) {
+                builder.withServerTimeout(30000).withKeepAliveInterval(15000);
+            },
+            reconnectionHandler: {
+                onConnectionDown: (options, error) => console.error(error),
+                onConnectionUp: () => console.log("Up, up, and away!")
+            }
+        })
+    </script> *@
 
     <script>
         function delay(milliseconds) {
@@ -304,8 +308,8 @@
         async function boot() {
             await Blazor.start({
                 reconnectionOptions: {
-                    maxRetries: 100,
-                    retryIntervalMilliseconds: 5000
+                    maxRetries: 10,
+                    retryIntervalMilliseconds: 1000
                 }
             })
 
