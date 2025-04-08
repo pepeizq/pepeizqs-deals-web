@@ -16,7 +16,6 @@
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
-@inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
@@ -74,10 +73,13 @@
 
         <script type="application/ld+json">
             @{
+                string nombre = juego.Nombre.Replace(Strings.ChrW(34).ToString(), null);
+
                 string seoJson = "{" + Environment.NewLine +
                     Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "SoftwareApplication" + Strings.ChrW(34) + "," + Environment.NewLine +
-                    Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juego.Nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "description" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "operatingSystem" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "WINDOWS" + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "applicationCategory" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "GameApplication" + Strings.ChrW(34); 
 
@@ -101,7 +103,7 @@
 
                             if (estrellas < 0.5m)
                             {
-                                estrellas = 0;
+                                estrellas = 0.5m;
                             }
 
                             seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingValue" + Strings.ChrW(34) + ":" + estrellas.ToString();
@@ -343,7 +345,7 @@
                                                     {
                                                         <button onclick="moverScroll('@drm.Id')" class="boton-pequeño" style="@fondoBotonDRM width: 40px; height: 40px; text-align: center; padding: 9px;">
                                                             <div style="display: flex; align-items: center;">
-                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drm.Id), 40, 40)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" loading="lazy" />
+                                                                <img src="@JuegoDRM2.SacarImagen(drm.Id)" style="max-width: 100%; max-height: 100%;" alt="@drm.Nombre" loading="lazy" />
                                                             </div>
                                                         </button>
                                                     }
@@ -781,7 +783,7 @@
                                             }
                                             else
                                             {
-                                                <div style="max-width: 40px; max-height: 40px;">
+                                                <div style="min-width: 40px; max-width: 40px;">
                                                     <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drm.Id), 40, 40)" alt="@drm.Nombre" style="width: 100%; height: 100%;" loading="lazy" />
                                                 </div>
                                             }

@@ -280,25 +280,23 @@
 
     <script src="~/superjs.js" defer></script>
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
-
-@*     <script>
-        Blazor.start({
-            reconnectionOptions: {
-                maxRetries: 5,
-                retryIntervalMilliseconds: 2000
-            },
-            configureSignalR: function (builder) {
-                builder.withServerTimeout(30000).withKeepAliveInterval(15000);
-            },
-            reconnectionHandler: {
-                onConnectionDown: (options, error) => console.error(error),
-                onConnectionUp: () => console.log("Up, up, and away!")
-            }
-        })
-    </script> *@
+    <script src="_framework/blazor.web.js" autostart="false"></script>
 
     <script>
+        Blazor.start({
+            circuit: {
+                reconnectionOptions: {
+                    maxRetries: 6,
+                    retryIntervalMilliseconds: (previousAttempts, maxRetries) =>
+                            previousAttempts >= maxRetries
+                                ? null
+                                : previousAttempts * 1000
+                    },
+                },
+        });
+    </script>
+
+@*     <script>
         function delay(milliseconds) {
             return new Promise(resolve => {
                 setTimeout(resolve, milliseconds)
@@ -324,7 +322,7 @@
         }
 
         boot()
-    </script>
+    </script> *@
 
     <script>
         function hoverTooltip(e, id) {

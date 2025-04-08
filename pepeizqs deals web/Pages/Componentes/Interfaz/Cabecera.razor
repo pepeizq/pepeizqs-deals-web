@@ -372,11 +372,15 @@
 
                                 <div class="perfil-flexible-centrado" style="padding-top: 10px;">
                                     @{
+                                        int ancho = 230;
+                                        int alto = 107;
                                         string imagen = "width: 230px; height: 107px;";
                                         string enlace = "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
 
                                         if (pestañaSeleccionada == 7)
                                         {
+                                            ancho = 107;
+                                            alto = 107;
                                             imagen = "width: 107px; height: 107px;";
                                             enlace = "/curator/" + juego.NombreCodigo.ToLower() + "/";
                                         }
@@ -385,7 +389,7 @@
                                     <a class="boton-pequeño" href="@enlace" style="padding: 0px; @fondoColor">
                                         <div class="perfil-flexible-centrado">
                                             <div>
-                                                <img src="@juego.Imagenes.Header_460x215" style="@imagen" />
+                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, ancho, alto)" style="@imagen" />
                                             </div>
 
                                             <div style="width: 100%; padding-left: 20px; padding-right: 20px;">
@@ -425,7 +429,7 @@
                 {
                     @if (usuario?.Avatar.ToLower().Contains(".jpg") == true || usuario?.Avatar.ToLower().Contains(".jpeg") == true || usuario?.Avatar.ToLower().Contains(".png") == true || usuario?.Avatar.ToLower().Contains(".webp") == true)
                     {
-                        <img src="@usuario?.Avatar" style="max-height: 32px; max-width: 32px;" title="@usuario?.Nickname"/>
+                        <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(usuario?.Avatar)" style="max-height: 32px; max-width: 32px;" title="@usuario?.Nickname"/>
                     }
                     else
                     {
@@ -675,9 +679,6 @@ else
                     {
                         encontroAlgo = true;
 
-                        resultadosJuegos = resultadosJuegos.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosJuegos.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosJuegos.Where(x => x.Analisis == null)).ToList();
-
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 0;
@@ -691,9 +692,6 @@ else
                     if (resultadosDLCs.Count > 0)
                     {
                         encontroAlgo = true;
-
-                        resultadosDLCs = resultadosDLCs.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosDLCs.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosDLCs.Where(x => x.Analisis == null)).ToList();
 
                         if (pestañaSeleccionada == -1)
                         {
@@ -709,9 +707,6 @@ else
                     {
                         encontroAlgo = true;
 
-                        resultadosBandasSonoras = resultadosBandasSonoras.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosBandasSonoras.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosBandasSonoras.Where(x => x.Analisis == null)).ToList();
-
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 2;
@@ -726,33 +721,12 @@ else
                     {
                         encontroAlgo = true;
 
-                        resultadosSoftware = resultadosSoftware.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                        ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-
                         if (pestañaSeleccionada == -1)
                         {
                             pestañaSeleccionada = 3;
                             resultadosMostrar = resultadosSoftware;
                         }
                     }
-                }
-
-                if (resultadosBundles.Count > 0)
-                {
-                    resultadosBundles = resultadosBundles.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                }
-
-                if (resultadosGratis.Count > 0)
-                {
-                    resultadosGratis = resultadosGratis.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
-                }
-
-                if (resultadosSuscripciones.Count > 0)
-                {
-                    resultadosSuscripciones = resultadosSuscripciones.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).
-                    ThenBy(x => x.NombreCodigo.IndexOf(Herramientas.Buscador.LimpiarNombre(cadenaBusqueda)) > 0).Concat(resultadosSoftware.Where(x => x.Analisis != null && x.Analisis.Porcentaje == null && x.Analisis.Cantidad == null)).Concat(resultadosSoftware.Where(x => x.Analisis == null)).ToList();
                 }
 
                 List<BaseDatos.Curators.Curator> resultadosCurators2 = BaseDatos.Curators.Buscar.Nombre(cadenaBusqueda, conexion);

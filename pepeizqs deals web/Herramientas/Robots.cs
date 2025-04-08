@@ -40,8 +40,7 @@ namespace Herramientas
 
 			if (piscinaApp == piscinaUsada)
 			{
-				sb.Append(@"
-User-agent: *
+				sb.Append(@"User-agent: *
 Disallow: /account/
 Disallow: /link/*
 Disallow: /publisher/*

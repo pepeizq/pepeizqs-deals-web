@@ -3,7 +3,6 @@ using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -86,32 +85,21 @@ builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization.*", LogLevel.None)
 
 //----------------------------------------------------------------------------------
 
-#region Detallado en Componentes Razor
-
-builder.Services.AddServerSideBlazor(opciones =>
-{
-	opciones.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(90);
-})
-.AddCircuitOptions(opciones => 
-{
-	opciones.DetailedErrors = true;
-});
-
-#endregion
-
 #region Redireccionador
 
-builder.Services.AddControllersWithViews().AddMvcOptions(opciones =>
-	opciones.Filters.Add(
-		new ResponseCacheAttribute
-		{
-			NoStore = true,
-			Location = ResponseCacheLocation.None
-		}));
+builder.Services.AddControllersWithViews();
+
+//builder.Services.AddControllersWithViews().AddMvcOptions(opciones =>
+//	opciones.Filters.Add(
+//		new ResponseCacheAttribute
+//		{
+//			NoStore = true,
+//			Location = ResponseCacheLocation.None
+//		}));
 
 #endregion
 
-builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
@@ -250,19 +238,31 @@ builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
 #endregion
 
-#region Blazor
+#region Blazor Servidor
 
-//builder.Services.AddRazorComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents(opciones =>
+{
+	opciones.DetailedErrors = true;
+}).AddHubOptions(opciones =>
+{
+	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+	opciones.HandshakeTimeout = TimeSpan.FromSeconds(30);
+	opciones.EnableDetailedErrors = true;
+	opciones.MaximumReceiveMessageSize = null;
+}).AddCircuitOptions(opciones =>
+{
+	opciones.DetailedErrors = true;
+});
 
 #endregion
 
-builder.Services.AddSignalR(opciones =>
-{
-	opciones.EnableDetailedErrors = true;
-	//opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
-	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-	opciones.MaximumReceiveMessageSize = 102400000;
-});
+//builder.Services.AddSignalR(opciones =>
+//{
+//	opciones.EnableDetailedErrors = true;
+//	//opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//	opciones.MaximumReceiveMessageSize = 102400000;
+//});
 
 #region Necesario para Juegos
 
@@ -401,18 +401,19 @@ app.UseDeveloperExceptionPage();
 //}
 
 app.UseHttpsRedirection();
+app.UseAntiforgery();
 
 app.MapStaticAssets();
-
-#region Compresion (Primero)
-
-app.UseResponseCompression();
-
-#endregion
 
 #region Optimizador (Despues Compresion)
 
 app.UseWebOptimizer();
+
+#endregion
+
+#region Compresion (Primero)
+
+app.UseResponseCompression();
 
 #endregion
 
@@ -427,7 +428,8 @@ app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
-});
+	opciones.CloseOnAuthenticationExpiration = true;
+}).WithOrder(-1);
 
 #region CORS necesario para extension
 

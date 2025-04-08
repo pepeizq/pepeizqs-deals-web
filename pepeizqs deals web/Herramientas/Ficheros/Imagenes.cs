@@ -91,7 +91,7 @@ namespace Herramientas.Ficheros
 
 					if (ancho > 0 && alto > 0)
 					{
-						enlace = enlace + "&w=" + ancho + "&h=" + alto;
+						enlace = enlace + "&w=" + ancho + "&h=" + alto + "&dpr=2";
 					}
 				}
 			}

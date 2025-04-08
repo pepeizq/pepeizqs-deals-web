@@ -819,7 +819,7 @@ namespace BaseDatos.Juegos
 
 			if (string.IsNullOrEmpty(busqueda) == false)
 			{
-				busqueda = busqueda + " ORDER BY CASE\r\n    WHEN ISJSON(analisis) > 0 THEN CONVERT(int, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',',''))\r\n    ELSE id\r\nEND DESC";
+				busqueda = busqueda + " ORDER BY CASE\r\n WHEN analisis = 'null' OR analisis IS NULL THEN 0 ELSE CONVERT(int, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',',''))\r\n END DESC";
 			}
 
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
