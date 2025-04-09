@@ -6,7 +6,7 @@ namespace Herramientas
 {
     public static class Tooltip
     {
-        public static ToolTipDatos Generar(string idioma, Juego juego, JuegoDRM drm, bool usuarioConectado, bool usuarioTieneJuego, bool usuarioDeseaJuego)
+        public static ToolTipDatos Generar(string idioma, Juego juego, JuegoDRM drm, bool usuarioConectado, bool usuarioTieneJuego, bool usuarioDeseaJuego, int idBundleDescartar = 0)
         {
             ToolTipDatos datos = new ToolTipDatos
             {
@@ -93,35 +93,45 @@ namespace Herramientas
 
 				foreach (var bundle in juego.Bundles)
 				{
-					if (bundle.FechaEmpieza < DateTime.Now && bundle.FechaTermina > DateTime.Now)
-					{
-						bundlesActuales += 1;
+					bool contar = true;
 
-						if (bundlesActuales == 1)
+					if (idBundleDescartar > 0 && bundle.BundleId == idBundleDescartar)
+					{
+						contar = false;
+					}
+
+					if (contar == true)
+					{
+						if (bundle.FechaEmpieza < DateTime.Now && bundle.FechaTermina > DateTime.Now)
 						{
-							bundleExtraActual = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
-						}
-						else if (bundlesActuales > 1)
-						{
-							if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraActual)
+							bundlesActuales += 1;
+
+							if (bundlesActuales == 1)
 							{
-								bundleExtraActual = null;
+								bundleExtraActual = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
+							}
+							else if (bundlesActuales > 1)
+							{
+								if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraActual)
+								{
+									bundleExtraActual = null;
+								}
 							}
 						}
-					}
-					else
-					{
-                        bundlesPasados += 1;
+						else
+						{
+							bundlesPasados += 1;
 
-						if (bundlesPasados == 1)
-						{
-							bundleExtraPasado = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
-						}
-						else if (bundlesPasados > 1)
-						{
-							if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraPasado)
+							if (bundlesPasados == 1)
 							{
-								bundleExtraPasado = null;
+								bundleExtraPasado = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
+							}
+							else if (bundlesPasados > 1)
+							{
+								if (Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda != bundleExtraPasado)
+								{
+									bundleExtraPasado = null;
+								}
 							}
 						}
 					}

@@ -77,24 +77,35 @@ namespace Herramientas
 
 		public static bool ComprobarSiEsta(string deseadosSteamEnBruto, string deseadosWebEnBruto, string deseadosGogEnBruto, Juego juego, JuegoDRM drm = JuegoDRM.NoEspecificado, bool usarIdMaestra = false)
 		{
+			if (usarIdMaestra == true && juego.IdMaestra == 0)
+			{
+				juego.IdMaestra = juego.Id;
+			}
+
 			if (drm == JuegoDRM.Steam || drm == JuegoDRM.NoEspecificado)
 			{
-				List<string> deseadosSteam = new List<string>();
-
-				if (string.IsNullOrEmpty(deseadosSteamEnBruto) == false)
+				if (juego.IdSteam > 0)
 				{
-					deseadosSteam = Listados.Generar(deseadosSteamEnBruto);
-				}
+					List<string> deseadosSteam = new List<string>();
 
-				if (deseadosSteam != null)
-				{
-					if (deseadosSteam.Count > 0)
+					if (string.IsNullOrEmpty(deseadosSteamEnBruto) == false)
 					{
-						foreach (var deseado in deseadosSteam)
+						deseadosSteam = Listados.Generar(deseadosSteamEnBruto);
+					}
+
+					if (deseadosSteam != null)
+					{
+						if (deseadosSteam.Count > 0)
 						{
-							if (juego.IdSteam.ToString() == deseado && (drm == JuegoDRM.Steam || drm == JuegoDRM.NoEspecificado))
+							foreach (var deseado in deseadosSteam)
 							{
-								return true;
+								if (juego.IdSteam > 0)
+								{
+									if (juego.IdSteam.ToString() == deseado && (drm == JuegoDRM.Steam || drm == JuegoDRM.NoEspecificado))
+									{
+										return true;
+									}
+								}
 							}
 						}
 					}
@@ -103,56 +114,22 @@ namespace Herramientas
 
 			if (drm == JuegoDRM.GOG || drm == JuegoDRM.NoEspecificado)
 			{
-				List<string> deseadosGog = new List<string>();
-
-				if (string.IsNullOrEmpty(deseadosGogEnBruto) == false)
+				if (juego.IdGog > 0)
 				{
-					deseadosGog = Listados.Generar(deseadosGogEnBruto);
-				}
+					List<string> deseadosGog = new List<string>();
 
-				if (deseadosGog != null)
-				{
-					if (deseadosGog.Count > 0)
+					if (string.IsNullOrEmpty(deseadosGogEnBruto) == false)
 					{
-						foreach (var deseado in deseadosGog)
-						{
-							if (juego.IdGog.ToString() == deseado && (drm == JuegoDRM.GOG || drm == JuegoDRM.NoEspecificado))
-							{
-								return true;
-							}
-						}
+						deseadosGog = Listados.Generar(deseadosGogEnBruto);
 					}
-				}
-			}
 
-			List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
-
-			if (string.IsNullOrEmpty(deseadosWebEnBruto) == false)
-			{
-				deseadosWeb = JsonSerializer.Deserialize<List<JuegoDeseado>>(deseadosWebEnBruto);
-			}
-
-			if (deseadosWeb != null)
-			{
-				if (deseadosWeb.Count > 0)
-				{
-					foreach (var deseado in deseadosWeb)
+					if (deseadosGog != null)
 					{
-						if (usarIdMaestra == false)
+						if (deseadosGog.Count > 0)
 						{
-							if (juego.Id == int.Parse(deseado.IdBaseDatos))
+							foreach (var deseado in deseadosGog)
 							{
-								if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
-								{
-									return true;
-								}
-							}
-						}
-						else
-						{
-							if (juego.IdMaestra == int.Parse(deseado.IdBaseDatos))
-							{
-								if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
+								if (juego.IdGog.ToString() == deseado && (drm == JuegoDRM.GOG || drm == JuegoDRM.NoEspecificado))
 								{
 									return true;
 								}
@@ -162,6 +139,46 @@ namespace Herramientas
 				}
 			}
 
+			if (juego.Id > 0)
+			{
+				List<JuegoDeseado> deseadosWeb = new List<JuegoDeseado>();
+
+				if (string.IsNullOrEmpty(deseadosWebEnBruto) == false)
+				{
+					deseadosWeb = JsonSerializer.Deserialize<List<JuegoDeseado>>(deseadosWebEnBruto);
+				}
+
+				if (deseadosWeb != null)
+				{
+					if (deseadosWeb.Count > 0)
+					{
+						foreach (var deseado in deseadosWeb)
+						{
+							if (usarIdMaestra == false)
+							{
+								if (juego.Id == int.Parse(deseado.IdBaseDatos))
+								{
+									if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
+									{
+										return true;
+									}
+								}
+							}
+							else
+							{
+								if (juego.IdMaestra == int.Parse(deseado.IdBaseDatos))
+								{
+									if (drm == deseado.DRM || drm == JuegoDRM.NoEspecificado)
+									{
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 			return false;
 		}
 

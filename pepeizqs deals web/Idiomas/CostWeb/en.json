@@ -1,6 +1,7 @@
 {
   "Title": "Cost of maintaining this website",
-  "String1": "Personally, I believe in being as transparent as possible with this project and all the money I have earned from this project I have used to pay in advance the various costs that I specify below. I have never used the money earned from referrals or donations to pay myself whims because I prefer that this project remains open source, without ads and without massive data collection.",
+  "Subtitle": "Here I detail the costs of keeping the website operational, and I also include the transactions and things I'd like to add to the website but that cost money.",
+  "String1": "Personally, I believe in being as transparent as possible with this project and that entails an important aspect, the money generated. Below I've detailed website-related transactions, costs required for the website to operate, and things I'd like to do on the website but that cost money. I have never used the money earned from referrals or donations to pay myself whims because I prefer that this project remains open source, without ads and without massive data collection.",
   "String2": "Server • $286.20",
   "String3": "Paid until {0} hosted on SmarterASP hosting with the .NET Premium mode.",
   "String4": "Domain • 70.95€",
@@ -13,9 +14,12 @@
   "String11": "It is paid every 5 years (taxes not included).",
   "String12": "It is paid every 1 year (taxes included).",
   "String13": "It is paid every 1 year (taxes included).",
-  "String14": "There is currently a positive balance of {0}€, when it is time to renew the expenses below will be deducted from this balance.",
-  "String15": "Currently there is a negative balance of {0}€, as soon as there is an income the negative balance will be covered first and when there is a positive balance it will be used to extend the times of the expenses below.",
+  "String14": "Note: Starting in November 2024, I started recording every transaction related to the website.",
+  "String15": "Things I'd like to add but cost money I don't have",
   "String16": "Current balance",
   "String17": "Expenses necessary for the operation of the website",
-  "String18": "Transactions"
+  "String18": "Transactions",
+  "String19": "Expanding the main server, with more RAM and more hard drive space, I could add things like image hosting or game information in multiple languages.",
+  "String20": "Extending the server and domain timeframes would take a weight off my shoulders, so not having to worry about these bills would be a real relief.",
+  "String21": "Expanding the email server, the one I have is embarrassing but it's what I can afford."
 }

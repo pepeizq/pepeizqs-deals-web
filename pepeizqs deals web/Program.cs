@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
+using pepeizqs_deals_web.Pages.Shared;
 using System.Globalization;
 using System.IO.Compression;
 using System.Threading.RateLimiting;
@@ -401,7 +402,6 @@ app.UseDeveloperExceptionPage();
 //}
 
 app.UseHttpsRedirection();
-app.UseAntiforgery();
 
 app.MapStaticAssets();
 
@@ -417,19 +417,19 @@ app.UseResponseCompression();
 
 #endregion
 
-app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
 
-app.MapRazorPages();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
-	opciones.CloseOnAuthenticationExpiration = true;
-}).WithOrder(-1);
+});
+
+//app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+//app.UseAntiforgery();
 
 #region CORS necesario para extension
 
@@ -448,5 +448,13 @@ app.MapControllers();
 app.UseRateLimiter();
 
 #endregion
+
+#region Login
+
+app.MapRazorPages();
+
+#endregion
+
+app.UseRouting();
 
 app.Run();

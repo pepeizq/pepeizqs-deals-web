@@ -9,7 +9,6 @@
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
-@inject NavigationManager NavManager
 
 <style>
     .buscador-panel {
@@ -452,9 +451,9 @@
             </div>
 
             <div class="menu-dropdown-contenido" style="right: -10px;">
-                <button @onclick="@(e => AbrirCuenta(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                <a href="/account" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "Account", "Header")
-                </button>
+                </a>
 
                 @if (usuarioPatreon == false)
                 {
@@ -466,13 +465,13 @@
                     </a>
                 }
 
-                <button @onclick="@(e => AbrirTiendaPatreon(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                <a href="/account/patreonstore/" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "PatreonStore", "Header")
-                </button>
+                </a>
 
-                <button @onclick="@(e => Desconectar(e))" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                <a href="/account/logout" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "Logout", "Header")
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -480,13 +479,13 @@
 else
 {
     <div style="display: flex; align-items: center; flex: 1 auto 1;">
-        <button class="texto-cabecera" @onclick="@(e => AbrirLogin(e))" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
+        <a href="/account/login" class="texto-cabecera" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
             @Herramientas.Idiomas.BuscarTexto(idioma, "Login", "Header")
-        </button>
+        </a>
 
-        <button class="texto-cabecera" @onclick="@(e => AbrirRegistro(e))" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
+        <a href="/account/register" class="texto-cabecera" style="text-align: left; border: 0; padding: 8px 15px; margin: 0px; font-size: 14px;">
             @Herramientas.Idiomas.BuscarTexto(idioma, "Register", "Header")
-        </button>
+        </a>
     </div>
 }
 
@@ -548,16 +547,6 @@ else
                 }
             }
         }
-    }
-
-    private void Inicio(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/", true);
-    }
-
-    private void Desconectar(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/logout", true, false);
     }
 
     #region Buscador
@@ -772,25 +761,5 @@ else
     }
 
     #endregion
-
-    private void AbrirLogin(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/login", true);
-    }
-
-    private void AbrirRegistro(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/register", true);
-    }
-
-    private void AbrirCuenta(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/", true);
-    }
-
-    private void AbrirTiendaPatreon(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/patreonstore/", true);
-    }
 }
 

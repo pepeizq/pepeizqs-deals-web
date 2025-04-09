@@ -33,7 +33,7 @@
 
 	foreach (string keyword in keywordsLista)
 	{
-		if (keyword.Length > 3)
+		if (keyword.Length > 3 && keywords.Contains(keyword) == false)
 		{
 			keywords = keywords + ", " + keyword;
 		}

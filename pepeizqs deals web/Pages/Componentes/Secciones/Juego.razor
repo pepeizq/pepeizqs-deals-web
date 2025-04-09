@@ -17,7 +17,6 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IJSRuntime JavaScript
-@inject NavigationManager NavManager
 
 @implements IDisposable
 @inject PersistentComponentState ApplicationState
@@ -71,14 +70,47 @@
         <meta name="robots" content="index, follow" />
         <meta name="keywords" content="@keywords" />
 
+        @{
+            string nombreJson = juego.Nombre.Replace(Strings.ChrW(34).ToString(), null);
+
+            decimal estrellasJson = 0;
+            string cantidadJson = string.Empty;
+            
+            if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+            {
+                estrellasJson = decimal.Parse(juego.Analisis.Porcentaje) / 20;
+
+                if (estrellasJson < 0.5m)
+                {
+                    estrellasJson = 0.5m;
+                }
+
+                cantidadJson = juego.Analisis.Cantidad.Replace(",", null);
+            }
+
+            string desarrolladorJson = "not detected";
+
+            if (juego.Caracteristicas != null)
+            {
+                if (juego.Caracteristicas.Desarrolladores != null)
+                {
+                    if (juego.Caracteristicas.Desarrolladores.Count > 0)
+                    {
+                        if (string.IsNullOrEmpty(juego.Caracteristicas.Desarrolladores[0]) == false)
+                        {
+                            desarrolladorJson = juego.Caracteristicas.Desarrolladores[0];
+                        }
+                    }
+                }
+            } 
+        }
+
         <script type="application/ld+json">
             @{
-                string nombre = juego.Nombre.Replace(Strings.ChrW(34).ToString(), null);
-
                 string seoJson = "{" + Environment.NewLine +
                     Strings.ChrW(34) + "@context" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "https://schema.org" + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "SoftwareApplication" + Strings.ChrW(34) + "," + Environment.NewLine +
-                    Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + nombre + Strings.ChrW(34) + "," + Environment.NewLine +
+                    Strings.ChrW(34) + "name" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + nombreJson + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "description" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + descripcion + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "operatingSystem" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "WINDOWS" + Strings.ChrW(34) + "," + Environment.NewLine +
                     Strings.ChrW(34) + "applicationCategory" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "GameApplication" + Strings.ChrW(34); 
@@ -90,35 +122,14 @@
                         "," + Strings.ChrW(34) + "contentUrl" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + juego.Imagenes.Header_460x215 + Strings.ChrW(34) + "}";
                 }
 
-                if (juego.Analisis != null)
+                if (estrellasJson > 0 && string.IsNullOrEmpty(cantidadJson) == false)
                 {
-                    if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-                    {
-                        seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "aggregateRating" + Strings.ChrW(34) + ":" + Environment.NewLine + "{" + Environment.NewLine +
+                    seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "aggregateRating" + Strings.ChrW(34) + ":" + Environment.NewLine + "{" + Environment.NewLine +
                         Strings.ChrW(34) + "@type" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "AggregateRating" + Strings.ChrW(34);
-
-                        if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
-                        {
-                            decimal estrellas = decimal.Parse(juego.Analisis.Porcentaje) / 20;
-
-                            if (estrellas < 0.5m)
-                            {
-                                estrellas = 0.5m;
-                            }
-
-                            seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingValue" + Strings.ChrW(34) + ":" + estrellas.ToString();
-                        }
-
-                        if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-                        {
-                            string cantidad = juego.Analisis.Cantidad;
-                            cantidad = cantidad.Replace(",", null);
-
-                            seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingCount" + Strings.ChrW(34) + ":"  + cantidad;
-                        }
-
-                        seoJson = seoJson + Environment.NewLine + "}";
-                    }
+                        
+                    seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingValue" + Strings.ChrW(34) + ":" + estrellasJson.ToString();
+                    seoJson = seoJson + "," + Environment.NewLine + Strings.ChrW(34) + "ratingCount" + Strings.ChrW(34) + ":" + cantidadJson;
+                    seoJson = seoJson + Environment.NewLine + "}";
                 }
 
                 if (juego.PrecioActualesTiendas != null)
@@ -155,6 +166,51 @@
             @((MarkupString)seoJson)
         </script>
 
+        <script type="application/ld+json">
+            {
+              "@@context": "https://schema.org/",
+              "@@type": "Product",
+              "name": "@nombreJson",
+              "description": "@descripcion",
+              "url": "@enlace",
+              "review": {
+                "@@type": "Review",
+                "reviewRating": {
+                  "@@type": "Rating",
+                  "ratingValue": @estrellasJson,
+                  "bestRating": 5
+                },
+                "author": {
+                  "@@type": "Organization",
+                  "name": "@desarrolladorJson"
+                }
+              },
+              "aggregateRating": {
+                "@@type": "AggregateRating",
+                "ratingValue": @estrellasJson,
+                "reviewCount": @cantidadJson
+              }
+            }
+        </script>
+
+        @if (string.IsNullOrEmpty(mediaMostrar) == false)
+        {
+            <script type="application/ld+json">
+                {
+                  "@@context": "https://schema.org",
+                  "@@type": "VideoObject",
+                  "name": "@nombreJson Trailer",
+                  "description": "@descripcion",
+                  "thumbnailUrl": [
+                    "@imagen"
+                   ],
+                  "contentUrl": "@mediaMostrar",
+                  "embedUrl": "@mediaMostrar",
+                  "uploadDate": "@DateTime.Now.ToString()+06:00"
+                }
+            </script>            
+        }
+
         <link rel="canonical" href="@enlace" />
     </HeadContent>
 }
@@ -167,11 +223,11 @@
 
 <script>
     function moverScroll(id) {
-    const yOffset = -185;
-    const element = document.getElementById(id);
-    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        const yOffset = -185;
+        const element = document.getElementById(id);
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-    window.scrollTo({ top: y, behavior: 'smooth' });
+        window.scrollTo({ top: y, behavior: 'smooth' });
     }
 </script>
 
@@ -358,7 +414,7 @@
 
                             @if (juego.Bundles != null)
                             {
-                                <button onclick="moverScroll('gratis')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "Bundles", "Header")</button>
+                                <button onclick="moverScroll('bundles')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); font-size: 16px; width: fit-content;">@Idiomas.BuscarTexto(idioma, "Bundles", "Header")</button>
                             }
 
                             @if (juego.Gratis != null)
@@ -1870,7 +1926,7 @@
                                             if (juego.Imagenes != null)
                                             {
                                                 <div class="juego-galeria-columna" @onclick="@(e => CambiarMediaMostrar(e, 99999))" style="position: relative;">
-                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
+                                                    <img class="juego-galeria-capturas juego-galeria-cursor" src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 220, 124)" style="width: 100%;" alt="@juego.Nombre" loading="lazy">
 
                                                     <div style="max-width: 42px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                                         <svg class="svg-boton" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -2266,7 +2322,7 @@
 
                                                         <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
                                                             <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juegosCurator[i].Nombre">
-                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juegosCurator[i].Imagenes.Header_460x215)" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
+                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juegosCurator[i].Imagenes.Header_460x215, 255, 120)" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
 
                                                                 <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
                                                                     @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
@@ -2918,13 +2974,13 @@
                 @Herramientas.Idiomas.BuscarTexto(idioma, "String63", "Game")
 
                 <div style="display: flex; align-items: center; gap: 20px;">
-                    <button @onclick="@(e => LogearAbrirRegistrar(e))" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
+                    <a href="/account/register" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "Register", "Header")
-                    </button>
+                    </a>
 
-                    <button @onclick="@(e => LogearAbrirLogin(e))" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
+                    <a href="/account/login" class="boton-pequeño" style="width: auto; text-align: center; padding: 10px 20px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "Login", "Header")
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -3380,173 +3436,7 @@
 
             if (juego.IdSteam > 0)
             {
-                bool actualizarDatosAPI = false;
-
-                if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
-                {
-                    actualizarDatosAPI = true;
-                }
-
-                if (juego.Categorias == null && juego.Generos == null)
-                {
-                    actualizarDatosAPI = true;
-
-                    if (juego.Tipo == JuegoTipo.Music)
-                    {
-                        actualizarDatosAPI = false;
-                    }
-                }
-
-                if (actualizarDatosAPI == true)
-                {
-                    global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
-
-                    if (nuevoJuego != null)
-                    {
-                        global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
-                    }
-                }
-
-                //---------------------------
-
-                if (juego.Tipo == JuegoTipo.Game)
-                {
-                    bool actualizarCantidadJugadores = false;
-
-                    if (juego.CantidadJugadores == null)
-                    {
-                        actualizarCantidadJugadores = true;
-                    }
-                    else
-                    {
-                        if (juego.CantidadJugadores.Fecha.AddMinutes(5) < DateTime.Now)
-                        {
-                            actualizarCantidadJugadores = true;
-                        }
-                    }
-
-                    if (actualizarCantidadJugadores == true)
-                    {
-                        JuegoCantidadJugadoresSteam cantidadNueva = new JuegoCantidadJugadoresSteam();
-                        cantidadNueva.Cantidad = await APIs.Steam.Juego.CargarCantidadJugadores(juego.IdSteam.ToString());
-                        cantidadNueva.Fecha = DateTime.Now;
-
-                        juego.CantidadJugadores = cantidadNueva;
-
-                        global::BaseDatos.Juegos.Actualizar.CantidadJugadoresSteam(juego);
-                    }
-                } 
-
-                if (Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == false)
-                {
-                    string idiomaSteam = "english";
-
-                    if (string.IsNullOrEmpty(idioma) == false)
-                    {
-                        foreach (var idioma2 in Idiomas.ListadoIdiomasGenerar())
-                        {
-                            if (idioma2.SteamReseñas == true)
-                            {
-                                if (idioma2.Id.ToLower() == idioma.ToLower())
-                                {
-                                    idiomaSteam = idioma2.SteamAPI;
-                                }
-
-                                foreach (var codigo in idioma2.Codigos)
-                                {
-                                    if (codigo.ToLower() == idioma.ToLower())
-                                    {
-                                        idiomaSteam = idioma2.SteamAPI;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    idiomaAnalisis = idiomaSteam;
-
-                    if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
-                    {
-                        APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
-
-                        if (analisis != null)
-                        {
-                            if (analisis.Analisis != null)
-                            {
-                                global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
-
-                                analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
-                    }
-                }   
-            }
-
-            if (juego.IdGog > 0)
-            {
-                if (juego.GalaxyGOG == null)
-                {
-                    juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
-                    juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
-
-                    global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
-                }
-                else
-                {
-                    if (juego.GalaxyGOG.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
-                    {
-                        juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
-                        juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
-
-                        global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(juego.SlugEpic) == false)
-            {
-                if (juego.EpicGames == null)
-                {
-                    juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
-                    juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
-
-                    global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
-                }
-                else
-                {
-                    if (juego.EpicGames.Fecha + TimeSpan.FromDays(240) < DateTime.Now)
-                    {
-                        juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
-                        juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
-
-                        global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(juego.IdXbox) == false)
-            {
-                if (juego.Xbox == null)
-                {
-                    juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
-                    juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
-
-                    global::BaseDatos.Juegos.Actualizar.Xbox(juego);
-                }
-                else
-                {
-                    if (juego.Xbox.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
-                    {
-                        juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
-                        juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
-
-                        global::BaseDatos.Juegos.Actualizar.Xbox(juego);
-                    }
-                }
+               
             }
 
             if (juego.CuratorsSteam != null)
@@ -3607,11 +3497,75 @@
         if (primerRender == true)
         {
             if (juego != null)
-            {			
+            {	
+                await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+
                 if (juego.IdSteam > 0)
                 {
+                    #region API
+
+                    bool actualizarDatosAPI = false;
+
+                    if (juego.FechaSteamAPIComprobacion + TimeSpan.FromDays(60) < DateTime.Now)
+                    {
+                        actualizarDatosAPI = true;
+                    }
+
+                    if (juego.Categorias == null && juego.Generos == null)
+                    {
+                        actualizarDatosAPI = true;
+
+                        if (juego.Tipo == JuegoTipo.Music)
+                        {
+                            actualizarDatosAPI = false;
+                        }
+                    }
+
+                    if (actualizarDatosAPI == true)
+                    {
+                        global::Juegos.Juego nuevoJuego = await APIs.Steam.Juego.CargarDatosJuego(juego.IdSteam.ToString());
+
+                        if (nuevoJuego != null)
+                        {
+                            global::BaseDatos.Juegos.Actualizar.Media(nuevoJuego, juego);
+                        }
+                    }
+
+                    #endregion
+
                     if (juego.Tipo == JuegoTipo.Game)
                     {
+                        #region Cantidad Jugadores
+
+                        bool actualizarCantidadJugadores = false;
+
+                        if (juego.CantidadJugadores == null)
+                        {
+                            actualizarCantidadJugadores = true;
+                        }
+                        else
+                        {
+                            if (juego.CantidadJugadores.Fecha.AddMinutes(5) < DateTime.Now)
+                            {
+                                actualizarCantidadJugadores = true;
+                            }
+                        }
+
+                        if (actualizarCantidadJugadores == true)
+                        {
+                            JuegoCantidadJugadoresSteam cantidadNueva = new JuegoCantidadJugadoresSteam();
+                            cantidadNueva.Cantidad = await APIs.Steam.Juego.CargarCantidadJugadores(juego.IdSteam.ToString());
+                            cantidadNueva.Fecha = DateTime.Now;
+
+                            juego.CantidadJugadores = cantidadNueva;
+
+                            global::BaseDatos.Juegos.Actualizar.CantidadJugadoresSteam(juego);
+                        }
+
+                        #endregion
+
+                        #region Deck API
+
                         bool actualizarDeckAPI = false;
 
                         if (juego.DeckComprobacion == null)
@@ -3679,10 +3633,130 @@
                                 global::BaseDatos.Juegos.Actualizar.DeckVacio(juego);
                             }
                         }
+
+                        #endregion
+                    }
+
+                    #region Reseñas
+
+                    if (Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == false)
+                    {
+                        string idiomaSteam = "english";
+
+                        if (string.IsNullOrEmpty(idioma) == false)
+                        {
+                            foreach (var idioma2 in Idiomas.ListadoIdiomasGenerar())
+                            {
+                                if (idioma2.SteamReseñas == true)
+                                {
+                                    if (idioma2.Id.ToLower() == idioma.ToLower())
+                                    {
+                                        idiomaSteam = idioma2.SteamAPI;
+                                    }
+
+                                    foreach (var codigo in idioma2.Codigos)
+                                    {
+                                        if (codigo.ToLower() == idioma.ToLower())
+                                        {
+                                            idiomaSteam = idioma2.SteamAPI;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        idiomaAnalisis = idiomaSteam;
+
+                        if (global::BaseDatos.Analisis.Buscar.DebeModificarse(juego.Id, idiomaSteam) == true)
+                        {
+                            APIs.Steam.SteamAnalisisAPI analisis = await APIs.Steam.Juego.CargarDatosAnalisis(juego.IdSteam, idiomaSteam);
+
+                            if (analisis != null)
+                            {
+                                if (analisis.Analisis != null)
+                                {
+                                    global::BaseDatos.Analisis.Insertar.Ejecutar(juego.Id, analisis.Sumario.TotalPositivas, analisis.Sumario.TotalNegativas, idiomaSteam, JsonSerializer.Serialize(analisis.Analisis));
+
+                                    analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            analisisAmpliado = global::BaseDatos.Analisis.Buscar.Cargar(juego.Id, idiomaSteam);
+                        }
+                    }
+
+                    #endregion
+                }
+
+                if (juego.IdGog > 0)
+                {
+                    if (juego.GalaxyGOG == null)
+                    {
+                        juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
+                        juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+
+                        global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
+                    }
+                    else
+                    {
+                        if (juego.GalaxyGOG.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+                        {
+                            juego.GalaxyGOG = await APIs.GOG.Juego.GalaxyDatos(juego.IdGog.ToString());
+                            juego.Idiomas = await APIs.GOG.Juego.GalaxyIdiomas(juego.IdGog.ToString(), juego.Idiomas);
+
+                            global::BaseDatos.Juegos.Actualizar.GalaxyGOG(juego);
+                        }
                     }
                 }
 
-                await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+                if (string.IsNullOrEmpty(juego.SlugEpic) == false)
+                {
+                    if (juego.EpicGames == null)
+                    {
+                        juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
+                        juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
+
+                        global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
+                    }
+                    else
+                    {
+                        if (juego.EpicGames.Fecha + TimeSpan.FromDays(240) < DateTime.Now)
+                        {
+                            juego.EpicGames = await APIs.EpicGames.Juego.EpicGamesDatos(juego.SlugEpic);
+                            juego.Idiomas = await APIs.EpicGames.Juego.EpicGamesIdiomas(juego.SlugEpic, juego.Idiomas);
+
+                            global::BaseDatos.Juegos.Actualizar.EpicGames(juego);
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(juego.IdXbox) == false)
+                {
+                    if (juego.Xbox == null)
+                    {
+                        juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
+                        juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+
+                        global::BaseDatos.Juegos.Actualizar.Xbox(juego);
+                    }
+                    else
+                    {
+                        if (juego.Xbox.Fecha + TimeSpan.FromDays(120) < DateTime.Now)
+                        {
+                            juego.Xbox = await APIs.Xbox.Juego.XboxDatos(juego.IdXbox);
+                            juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
+
+                            global::BaseDatos.Juegos.Actualizar.Xbox(juego);
+                        }
+                    }
+                }
+
+                await InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
             }
         }
     }
@@ -5114,16 +5188,6 @@
     private void LogearCerrar(MouseEventArgs e)
     {
         enseñarLogear = false;
-    }
-
-    private void LogearAbrirRegistrar(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/register", true);
-    }
-
-    private void LogearAbrirLogin(MouseEventArgs e)
-    {
-        NavManager.NavigateTo("/account/login", true);
     }
 
     #endregion

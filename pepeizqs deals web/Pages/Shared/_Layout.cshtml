@@ -1,7 +1,6 @@
 ﻿@using APIs.Steam
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.Extensions.Caching.Memory
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject SignInManager<Usuario> SignInManager
@@ -283,20 +282,6 @@
     <script src="_framework/blazor.web.js" autostart="false"></script>
 
     <script>
-        Blazor.start({
-            circuit: {
-                reconnectionOptions: {
-                    maxRetries: 6,
-                    retryIntervalMilliseconds: (previousAttempts, maxRetries) =>
-                            previousAttempts >= maxRetries
-                                ? null
-                                : previousAttempts * 1000
-                    },
-                },
-        });
-    </script>
-
-@*     <script>
         function delay(milliseconds) {
             return new Promise(resolve => {
                 setTimeout(resolve, milliseconds)
@@ -311,7 +296,7 @@
                 }
             })
 
-            if (document.location.href != "https://pepeizqdeals.com/admin") {
+            if (document.location.href.indexOf("https://pepeizqdeals.com/admin") == -1) {
                 while (Blazor.defaultReconnectionHandler === undefined) {
                     await delay(100)
                 }
@@ -322,7 +307,7 @@
         }
 
         boot()
-    </script> *@
+    </script>
 
     <script>
         function hoverTooltip(e, id) {

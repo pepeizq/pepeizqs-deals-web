@@ -1,6 +1,7 @@
 {
   "Title": "Coste de mantener esta web",
-  "String1": "Personalmente creo en ser tan transparente como sea posible con este proyecto y todo ingreso de dinero que he obtenido con este proyecto lo he dedicado a pagar por adelantado los diversos costes que os especifico abajo. Nunca he dedicado el dinero ganado con referidos o donaciones a pagarme caprichos por que prefiero que este proyecto siga siendo de código abierto, sin anuncios y sin recolección masiva de datos.",
+  "Subtitle": "Aquí os detallo los costes para mantener la web operativa, aparte os incluyo las transacciones y cosas que me gustaría añadir a la web pero cuestan dinero.",
+  "String1": "Personalmente creo en ser tan transparente como sea posible con este proyecto y eso conlleva un aspecto importante, el dinero generado. Abajo os detallo transacciones relacionadas con la web, costes necesarios para que funcione la web y cosas que me gustaría hacer en la web pero cuestan dinero. Nunca he dedicado el dinero ganado con referidos o donaciones a pagarme caprichos por que prefiero que este proyecto siga siendo de código abierto, sin anuncios y sin recolección masiva de datos.",
   "String2": "Servidor • $286.20",
   "String3": "Pagado hasta {0} hospedado en el hosting SmarterASP con la modalidad .NET Premium.",
   "String4": "Dominio • 70.95€",
@@ -13,9 +14,12 @@
   "String11": "Se paga cada 5 años (no incluye impuestos).",
   "String12": "Se paga cada 1 año (incluye impuestos).",
   "String13": "Se paga cada 1 año (incluye impuestos).",
-  "String14": "Actualmente hay un saldo positivo de {0}€, cuando toque renovar los gastos de abajo se descontara del saldo.",
-  "String15": "Actualmente hay un saldo negativo de {0}€, en cuanto haya un ingreso se cubrirá el balance negativo primero y cuando haya un balance positivo se usará para ampliar los tiempos de los gastos de abajo.",
+  "String14": "Nota: Desde noviembre de 2024 empecé a registrar cada transacción relacionada con la web.",
+  "String15": "Cosas que me gustaría añadir pero cuestan dinero que no tengo",
   "String16": "Saldo actual",
   "String17": "Gastos necesarios para el funcionamiento de la web",
-  "String18": "Transacciones"
+  "String18": "Transacciones",
+  "String19": "Ampliar servidor principal, con mayor RAM y mayor espacio de disco duro podría añadir cosas como el hospedaje de imagénes o información de los juegos en varios idiomas.",
+  "String20": "Ampliar los tiempos del servidor y del dominio, no tener que preocuparme de estas facturas me quitaría un peso de encima.",
+  "String21": "Ampliar el servidor de correo, el que tengo da vergüenza ajena pero es lo que me puedo permitir."
 }

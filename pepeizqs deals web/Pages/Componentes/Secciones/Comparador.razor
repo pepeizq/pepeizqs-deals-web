@@ -7,7 +7,6 @@
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
 @inject IJSRuntime JavaScript
-@inject NavigationManager NavManager
 
 @{
 	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Compare") + " • pepeizq's deals";
@@ -2641,11 +2640,6 @@
 		{
 			await JavaScript.InvokeVoidAsync("ChangeUrl", "/compare/" + id1.ToString() + "," + id2.ToString() + "," + id3.ToString() + "," + id4.ToString() + "/");
 		}
-	}
-
-	private void ClickearAbrirJuego(MouseEventArgs e, int id)
-	{
-		NavManager.NavigateTo("/game/" + id.ToString() + "/", true);
 	}
 
 	private async void ClickearLimpieza(MouseEventArgs e)

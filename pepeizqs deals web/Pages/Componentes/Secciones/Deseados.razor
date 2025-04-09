@@ -13,7 +13,6 @@
 @inject SignInManager<Usuario> SignInManager
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IJSRuntime JavaScript
-@inject NavigationManager NavManager
 
 @{
 	string titulo = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Wishlist") + " • pepeizq's deals";
@@ -946,10 +945,6 @@
 			#endregion
 
 			cargado = true;
-		}
-		else
-		{
-			NavManager.NavigateTo("/", true);
 		}
 
 		deseadosSteam.Clear();

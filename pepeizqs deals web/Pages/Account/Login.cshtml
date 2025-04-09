@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @using pepeizqs_deals_web.Areas.Identity.Data
 
-@model LoginModel
+@model pepeizqs_deals_web.Pages.Account.LoginModel
 
 @inject SignInManager<Usuario> SignInManager
 
@@ -12,64 +12,59 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 
     bool usuarioLogeado = SignInManager.IsSignedIn(User);
-}
 
-@if (usuarioLogeado == false)
-{
-    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
-        <form id="account" method="post">
-            <div class="texto-info">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Login")</div>
-
-            <hr />
-
-            <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
-
-            <div style="margin-bottom: 20px;">
-                <label asp-for="Input.Email" class="texto-info-entrada">
-                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Login")
-                </label>
-                <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Login")" />
-                <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label asp-for="Input.Password" class="texto-info-entrada">
-                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Login")
-                </label>
-                <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Login")" />
-                <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
-            </div>
-
-            <div style="margin: 30px 0px 20px 0px;">
-                <label asp-for="Input.RememberMe" class="form-label">
-                    <div style="display: flex; align-items: center;">
-                        <div class="checkbox-caja">
-                            <input type="checkbox" class="checkbox-interior" asp-for="Input.RememberMe">
-                        </div>
-
-                        <div style="margin-left: 15px; margin-bottom: 8px; cursor: pointer;">
-                            @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Login")
-                        </div>
-                    </div>
-                </label>
-            </div>
-
-            <div>
-                <button id="login-submit" type="submit" class="boton">
-                    @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Login")
-                </button>
-            </div>
-        </form>
-    </div>
-
-    @(await Html.RenderComponentAsync<Componentes.Cuenta.Accesos>(RenderMode.ServerPrerendered, new
+    if (usuarioLogeado == false)
     {
-        idioma = Model.idioma,
-        mostrarLogin = false
-    }))
-}
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
+            <form id="account" method="post">
+                <div class="texto-info">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Login")</div>
 
+                <hr />
+
+                <div asp-validation-summary="ModelOnly" class="texto-peligro-entrada" role="alert"></div>
+
+                <div style="margin-bottom: 20px;">
+                    <label asp-for="Input.Email" class="texto-info-entrada">
+                        @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String2", "Login")
+                    </label>
+                    <input asp-for="Input.Email" class="entrada-texto" autocomplete="username" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String4", "Login")" />
+                    <span asp-validation-for="Input.Email" class="texto-peligro-entrada"></span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label asp-for="Input.Password" class="texto-info-entrada">
+                        @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String3", "Login")
+                    </label>
+                    <input asp-for="Input.Password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String5", "Login")" />
+                    <span asp-validation-for="Input.Password" class="texto-peligro-entrada"></span>
+                </div>
+
+                <div style="margin: 30px 0px 20px 0px;">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <div style="display: flex; align-items: center;">
+                            <div class="checkbox-caja">
+                                <input type="checkbox" class="checkbox-interior" asp-for="Input.RememberMe">
+                            </div>
+
+                            <div style="margin-left: 15px; margin-bottom: 8px; cursor: pointer;">
+                                @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String6", "Login")
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <div>
+                    <button id="login-submit" type="submit" class="boton">
+                        @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Login")
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <component type="typeof(Componentes.Cuenta.Accesos)" render-mode="ServerPrerendered" param-idioma="Model.idioma" param-mostrarLogin="false" />
+    }
+}
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+   <partial name="_ValidationScriptsPartial" />
 }

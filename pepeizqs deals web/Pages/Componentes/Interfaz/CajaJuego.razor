@@ -3,7 +3,6 @@
 @using Microsoft.JSInterop
 @using Microsoft.VisualBasic
 
-@inject NavigationManager NavManager
 @inject IJSRuntime JavaScript
 
 <style>
@@ -57,49 +56,65 @@
 </style>
 
 @{
+	int idMaestra = juego.IdMaestra;
+
+	if (tipo == Tipo.Bundle)
+	{
+		idMaestra = juego.Id;
+	}
+
 	string descuento = string.Empty;
 	string precio = string.Empty;
-	string enlace = string.Empty;
-	string enlaceNuevaPestaña = string.Empty;
+	string enlace = "/game/" + juego.Id + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
+	string enlaceNuevaPestaña = "_self";
 	string iconoTienda = string.Empty;
 	string codigoTexto = string.Empty;
 
-	JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
-
-	if (oferta != null)
+	if (tipo == Tipo.Portada || tipo == Tipo.MinimosHistoricos)
 	{
-		descuento = oferta.Descuento.ToString() + "%";
-		precio = Herramientas.Precios.Euro(oferta.Precio);
-		codigoTexto = oferta.CodigoTexto;
+		JuegoPrecio oferta = juego.PrecioMinimosHistoricos[0];
 
-		//--------------------------------------------------------
-
-		if (tipo == Tipo.Portada)
+		if (oferta != null)
 		{
-			enlace = "/game/" + juego.Id + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/";
-			enlaceNuevaPestaña = "_self";
-		}
-		else
-		{
-			enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda, usuarioPatreon);
-			enlaceNuevaPestaña = "_blank";
-		}	
+			descuento = oferta.Descuento.ToString() + "%";
+			precio = Herramientas.Precios.Euro(oferta.Precio);
+			codigoTexto = oferta.CodigoTexto;
 
-		//--------------------------------------------------------
+			//--------------------------------------------------------
 
-		List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
-
-		foreach (var tienda in tiendas)
-		{
-			if (tienda.Id == oferta.Tienda)
+			if (tipo == Tipo.MinimosHistoricos)
 			{
-				iconoTienda = tienda.ImagenIcono;
-				break;
+				enlace = Herramientas.EnlaceAcortador.Generar(oferta.Enlace, oferta.Tienda, usuarioPatreon);
+				enlaceNuevaPestaña = "_blank";
+			}
+
+			//--------------------------------------------------------
+
+			List<Tiendas2.Tienda> tiendas = Tiendas2.TiendasCargar.GenerarListado();
+
+			foreach (var tienda in tiendas)
+			{
+				if (tienda.Id == oferta.Tienda)
+				{
+					iconoTienda = tienda.ImagenIcono;
+					break;
+				}
 			}
 		}
 	}
 
-	bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego, juego.PrecioMinimosHistoricos[0].DRM);
+	JuegoDRM drmUsar = JuegoDRM.NoEspecificado;
+
+	if (tipo == Tipo.Bundle)
+	{
+		drmUsar = drmBundle;
+	}
+	else
+	{
+		drmUsar = juego.PrecioMinimosHistoricos[0].DRM;
+	}
+
+	bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego, drmUsar);
 	bool usuarioTieneDeseado = false;
 
 	string fondoColor = string.Empty;
@@ -112,7 +127,7 @@
 	}
 	else
 	{
-		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuarioDeseadosSteam, usuarioDeseadosWeb, usuarioDeseadosGog, juego, juego.PrecioMinimosHistoricos[0].DRM, true);
+		usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuarioDeseadosSteam, usuarioDeseadosWeb, usuarioDeseadosGog, juego, drmUsar, true);
 
 		if (usuarioTieneDeseado == true)
 		{
@@ -134,10 +149,10 @@
 		}		
 	}
 
-	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, juego.PrecioMinimosHistoricos[0].DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
+	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, drmUsar, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado, idBundle);
 
-	<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.IdMaestra.ToString()-@juego.PrecioMinimosHistoricos[0].DRM.ToString()')">
-		<div id="tooltip-@juego.IdMaestra.ToString()-@juego.PrecioMinimosHistoricos[0].DRM.ToString()" class="tooltip-relleno">
+	<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@idMaestra.ToString()-@drmUsar.ToString()')">
+		<div id="tooltip-@idMaestra.ToString()-@drmUsar.ToString()" class="tooltip-relleno">
 			@if (string.IsNullOrEmpty(tooltip.Video) == false)
 			{
 				<video src="@tooltip.Video" onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;" />
@@ -148,28 +163,61 @@
 					@tooltip.Nombre
 				</div>
 
-				<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
-					<div style="margin-right: 20px;">
-						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
-					</div>
-					<div style="margin-right: 20px;">
-						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 20px; height: 20px;" alt="Store" loading="lazy" />
-					</div>
-
-					@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
-					{
+				@if (tipo == Tipo.Portada || tipo == Tipo.MinimosHistoricos)
+				{
+					<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
 						<div style="margin-right: 20px;">
-							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
 						</div>
-					}
+						<div style="margin-right: 20px;">
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 20px; height: 20px;" alt="Store" loading="lazy" />
+						</div>
 
-					<div style="margin-right: 15px; background-color: darkgreen; padding: 5px 10px;">
-						@descuento
+						@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
+						{
+							<div style="margin-right: 20px;">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							</div>
+						}
+
+						<div style="margin-right: 15px; background-color: darkgreen; padding: 5px 10px;">
+							@descuento
+						</div>
+						<div>
+							@precio
+						</div>
 					</div>
-					<div>
-						@precio
+				}
+				else if (tipo == Tipo.Bundle)
+				{
+					<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
+						<div style="margin-right: 20px;">
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
+						</div>
+
+						@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
+						{
+							<div style="margin-right: 20px;">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							</div>
+						}
+
+						@if (juego.PrecioMinimosHistoricos != null)
+						{
+							foreach (var historico in juego.PrecioMinimosHistoricos)
+							{
+								if (historico.DRM == drmUsar)
+								{
+									<div style="text-align: center; font-size: 14px;">
+										@Herramientas.Idiomas.BuscarTexto(idioma, "String25", "Bundle") @Herramientas.Precios.Euro(historico.Precio)
+									</div>
+
+									break;
+								}
+							}
+						}
 					</div>
-				</div>
+				}
 
 				@if (string.IsNullOrEmpty(tooltip.BundlesActuales) == false || string.IsNullOrEmpty(tooltip.GratisActuales) == false || string.IsNullOrEmpty(tooltip.SuscripcionesActuales) == false)
 				{
@@ -250,7 +298,7 @@
 						<div class="minimo-fuente">@juego.Nombre</div>
 
 						<div style="margin-top: 15px; display: flex; align-items: center;">
-							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" loading="lazy" />
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" loading="lazy" />
 							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" loading="lazy" />
 							<div class="cjuego-fecha">@Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma)</div>
 						</div>
@@ -282,7 +330,7 @@
 
 						<div class="perfil-flexible-centrado" style="justify-content: left; margin-top: 10px;">
 							<div style="width: 20px; height: 20px;">
-								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(juego.PrecioMinimosHistoricos[0].DRM))" style="width: 100%; height: 100%;" loading="lazy" />
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="width: 100%; height: 100%;" loading="lazy" />
 							</div>
 
 							<div style="width: 20px; height: 20px; margin-left: 10px;">
@@ -342,6 +390,74 @@
 				</div>
 			}
 		}
+
+		@if (tipo == Tipo.Bundle)
+		{
+			<a class="boton-pequeño" style="padding: 0px; @fondoColor" href="@enlace" target="@enlaceNuevaPestaña">
+				<div style="padding: 0px; position: relative;">
+					@{
+						bool añadirNuevo = false;
+
+						if (juego.Bundles != null)
+						{
+							if (juego.Bundles.Count == 1)
+							{
+								añadirNuevo = true;
+							}
+						}
+
+						if (juego.Suscripciones != null)
+						{
+							if (juego.Suscripciones.Count > 0)
+							{
+								foreach (var suscripcion in juego.Suscripciones)
+								{
+									if (suscripcion.DRM == drmBundle)
+									{
+										añadirNuevo = false;
+										break;
+									}
+								}
+							}
+						}
+					}
+
+					<div style="text-align: center;">
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 292, 136)" style="width: 100%; height: 100%;" alt="@juego.Nombre" />
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<div style="display: flex; align-items: center; gap: 15px; padding: 15px; width: 100%;">
+							<img src="@Juegos.JuegoDRM2.SacarImagen(drmBundle)" style="max-width: 20px; max-height: 20px;" alt="@Juegos.JuegoDRM2.DevolverDRM(drmBundle)" />
+
+							@if (añadirNuevo == true)
+							{
+								<div style="font-size: 14px; width: 100%; text-align: center;">
+									@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Bundle")
+								</div>
+							}
+						</div>
+
+						@if (dlcsBundle != null)
+						{
+							if (dlcsBundle.Count > 0)
+							{
+								<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; width: 42%;">
+									@if (dlcsBundle.Count == 1)
+									{
+										@("+" + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs1", "Bundle"))
+									}
+									else if (dlcsBundle.Count > 1)
+									{
+										@string.Format("+ " + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs2", "Bundle"), dlcsBundle.Count)
+									}
+								</div>
+							}
+						}
+					</div>
+				</div>
+			</a>
+		}
 	</div>
 }
 
@@ -373,15 +489,20 @@
 	[Parameter]
 	public Tipo tipo { get; set; }
 
+	[Parameter]
+	public int idBundle { get; set; }
+
+	[Parameter]
+	public JuegoDRM drmBundle { get; set; }
+
+	[Parameter]
+	public List<string> dlcsBundle { get; set; }
+
 	public enum Tipo
 	{
 		Portada,
-		MinimosHistoricos
-	}
-
-	private void AbrirEnlace(MouseEventArgs e, string enlace)
-	{
-		NavManager.NavigateTo(enlace, true);
+		MinimosHistoricos,
+		Bundle
 	}
 
 	#region Portapapeles
