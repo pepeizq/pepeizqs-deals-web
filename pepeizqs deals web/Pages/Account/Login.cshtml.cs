@@ -73,7 +73,7 @@ namespace pepeizqs_deals_web.Pages.Account
 			{
 				Microsoft.AspNetCore.Identity.SignInResult resultado = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-				if (resultado.Succeeded)
+				if (resultado.Succeeded == true)
 				{
 					if (string.IsNullOrEmpty(returnUrl) == false)
 					{

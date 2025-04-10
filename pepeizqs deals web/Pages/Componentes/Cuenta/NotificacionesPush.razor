@@ -259,6 +259,11 @@
 			if (suscripcion2 != null)
 			{
 				userAgentRegistrado = suscripcion.UserAgent;
+
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
 			}
 		}
 	}

@@ -69,6 +69,7 @@
 	string enlaceNuevaPestaña = "_self";
 	string iconoTienda = string.Empty;
 	string codigoTexto = string.Empty;
+    DateTime fechaDetectado = DateTime.Now;
 
 	if (tipo == Tipo.Portada || tipo == Tipo.MinimosHistoricos)
 	{
@@ -79,6 +80,7 @@
 			descuento = oferta.Descuento.ToString() + "%";
 			precio = Herramientas.Precios.Euro(oferta.Precio);
 			codigoTexto = oferta.CodigoTexto;
+            fechaDetectado = oferta.FechaDetectado;
 
 			//--------------------------------------------------------
 
@@ -300,7 +302,7 @@
 						<div style="margin-top: 15px; display: flex; align-items: center;">
 							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="width: 16px; height: 16px; margin-right: 10px;" alt="DRM" loading="lazy" />
 							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(iconoTienda)" style="width: 16px; height: 16px; margin-right: 10px;" alt="Store" loading="lazy" />
-							<div class="cjuego-fecha">@Herramientas.Calculadora.DiferenciaTiempo(juego.PrecioMinimosHistoricos[0].FechaDetectado, idioma)</div>
+							<div class="cjuego-fecha">@Herramientas.Calculadora.DiferenciaTiempo(fechaDetectado, idioma)</div>
 						</div>
 					</div>
 

@@ -3,12 +3,13 @@ using Herramientas;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using pepeizqs_deals_web.Areas.Identity.Data;
 using pepeizqs_deals_web.Data;
-using pepeizqs_deals_web.Pages.Shared;
 using System.Globalization;
 using System.IO.Compression;
 using System.Threading.RateLimiting;
@@ -19,17 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddResponseCompression(opciones =>
 {
-    //opciones.Providers.Add<BrotliCompressionProvider>();
     opciones.Providers.Add<GzipCompressionProvider>();
     opciones.EnableForHttps = true;
 	opciones.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
 				new[] { "application/octet-stream", "application/rss+xml", "text/html", "text/css", "image/png", "image/x-icon", "text/javascript" });
 });
-
-//builder.Services.Configure<BrotliCompressionProviderOptions>(opciones =>
-//{
-//    opciones.Level = CompressionLevel.Fastest;
-//});
 
 builder.Services.Configure<GzipCompressionProviderOptions>(opciones =>
 {
@@ -88,26 +83,26 @@ builder.Logging.AddFilter("Microsoft.AspNetCore.Authorization.*", LogLevel.None)
 
 #region Redireccionador
 
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 
-//builder.Services.AddControllersWithViews().AddMvcOptions(opciones =>
-//	opciones.Filters.Add(
-//		new ResponseCacheAttribute
-//		{
-//			NoStore = true,
-//			Location = ResponseCacheLocation.None
-//		}));
+builder.Services.AddControllersWithViews().AddMvcOptions(opciones =>
+	opciones.Filters.Add(
+		new ResponseCacheAttribute
+		{
+			NoStore = true,
+			Location = ResponseCacheLocation.None
+		}));
 
 #endregion
 
 //builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddSession(options =>
-{
-	options.IdleTimeout = TimeSpan.FromSeconds(10);
-	options.Cookie.HttpOnly = true;
-	options.Cookie.IsEssential = true;
-});
+//builder.Services.AddSession(options =>
+//{
+//	options.IdleTimeout = TimeSpan.FromSeconds(10);
+//	options.Cookie.HttpOnly = true;
+//	options.Cookie.IsEssential = true;
+//});
 
 #region Tareas
 
@@ -214,7 +209,10 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 
 #region Acceder Usuario en Codigo y RSS
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers(opciones =>
+{
+	opciones.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+}).AddNewtonsoftJson();
 builder.Services.AddHttpContextAccessor();
 
 #endregion
@@ -241,19 +239,21 @@ builder.Services.AddSingleton<IDecompiladores, Decompiladores2>();
 
 #region Blazor Servidor
 
-builder.Services.AddRazorComponents().AddInteractiveServerComponents(opciones =>
-{
-	opciones.DetailedErrors = true;
-}).AddHubOptions(opciones =>
-{
-	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
-	opciones.HandshakeTimeout = TimeSpan.FromSeconds(30);
-	opciones.EnableDetailedErrors = true;
-	opciones.MaximumReceiveMessageSize = null;
-}).AddCircuitOptions(opciones =>
-{
-	opciones.DetailedErrors = true;
-});
+builder.Services.AddServerSideBlazor();
+
+//builder.Services.AddRazorComponents().AddInteractiveServerComponents(opciones =>
+//{
+//	opciones.DetailedErrors = true;
+//}).AddHubOptions(opciones =>
+//{
+//	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+//	opciones.HandshakeTimeout = TimeSpan.FromSeconds(30);
+//	opciones.EnableDetailedErrors = true;
+//	opciones.MaximumReceiveMessageSize = null;
+//}).AddCircuitOptions(opciones =>
+//{
+//	opciones.DetailedErrors = true;
+//});
 
 #endregion
 
@@ -395,9 +395,8 @@ var app = builder.Build();
 
 //if (!app.Environment.IsDevelopment())
 //{
-//app.UseExceptionHandler("/Error");
-app.UseDeveloperExceptionPage();
-
+	//app.UseExceptionHandler("/Error");
+	app.UseDeveloperExceptionPage();
     app.UseHsts();
 //}
 
@@ -420,16 +419,19 @@ app.UseResponseCompression();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession();
-
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
 	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+	opciones.WebSockets.SubProtocolSelector = subprotocols =>
+	{
+		if (subprotocols.Contains("json.v3"))
+		{
+			return "json.v3";
+		}
+		return null;
+	};
 });
-
-//app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
-//app.UseAntiforgery();
 
 #region CORS necesario para extension
 
@@ -451,10 +453,8 @@ app.UseRateLimiter();
 
 #region Login
 
-app.MapRazorPages();
+app.MapRazorPages().WithStaticAssets();
 
 #endregion
-
-app.UseRouting();
 
 app.Run();

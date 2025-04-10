@@ -7,14 +7,25 @@ namespace Herramientas
 {
 	public static class RobotsUserAgents
 	{
-		private static List<string> botsBuenos = ["www.google.com/bot.html", "www.bing.com/bingbot.htm", 
-			"duckduckgo.com/duckduckbot.html", "Valve Client", "Steam Client", "Valve/Steam", "archive.org", "help.qwant.com/bot/"];
+		public static List<string> bots = ["Googlebot", 
+			"Bingbot",
+			"YandexBot", 
+			"Applebot", 
+			"Twitterbot", 
+			"DuckDuckBot", 
+			"Baiduspider", 
+			"Slurp",
+			"Yeti",
+			"Exabot",
+			"archive.org_bot",
+			"Valve Client",
+			"Valve Steam"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{
 			if (string.IsNullOrEmpty(userAgent) == false)
 			{
-				foreach (var bot in botsBuenos)
+				foreach (var bot in bots)
 				{
 					if (userAgent.Contains(bot) == true)
 					{
@@ -40,11 +51,16 @@ namespace Herramientas
 
 			if (piscinaApp == piscinaUsada)
 			{
-				sb.Append(@"User-agent: *
-Disallow: /account/
-Disallow: /link/*
-Disallow: /publisher/*
+				sb.Append(@"
+User-agent: *
+Disallow: /");
 
+				foreach (var bot in RobotsUserAgents.bots)
+				{
+					sb.Append($"\r\nUser-agent: {bot}\r\nDisallow: /account/\r\nDisallow: /link/*\r\nDisallow: /publisher/*");
+				}
+
+				sb.Append(@"
 Sitemap: https://pepeizqdeals.com/sitemap.xml");
 			}
             else

@@ -69,11 +69,7 @@
         }
     </div>
 
-    @(await Html.RenderComponentAsync<Componentes.Cuenta.Accesos>(RenderMode.ServerPrerendered, new
-    {
-        idioma = Model.idioma,
-        mostrarRegistro = false
-    }))
+    <component type="typeof(Componentes.Cuenta.Accesos)" render-mode="ServerPrerendered" param-idioma="Model.idioma" param-mostrarRegistro="false" />
 }
 
 @section Scripts {
