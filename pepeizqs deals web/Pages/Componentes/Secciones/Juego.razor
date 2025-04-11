@@ -76,18 +76,21 @@
             decimal estrellasJson = 0;
             string cantidadJson = string.Empty;
             
-            if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
+            if (juego.Analisis != null)
             {
-                estrellasJson = decimal.Parse(juego.Analisis.Porcentaje) / 20;
-
-                if (estrellasJson < 0.5m)
+                if (string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
                 {
-                    estrellasJson = 0.5m;
+                    estrellasJson = decimal.Parse(juego.Analisis.Porcentaje) / 20;
+
+                    if (estrellasJson < 0.5m)
+                    {
+                        estrellasJson = 0.5m;
+                    }
+
+                    cantidadJson = juego.Analisis.Cantidad.Replace(",", null);
                 }
-
-                cantidadJson = juego.Analisis.Cantidad.Replace(",", null);
             }
-
+            
             string desarrolladorJson = "not detected";
 
             if (juego.Caracteristicas != null)

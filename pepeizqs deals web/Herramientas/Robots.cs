@@ -12,14 +12,18 @@ namespace Herramientas
 			"YandexBot", 
 			"Applebot", 
 			"Twitterbot", 
-			"DuckDuckBot", 
+			"DuckDuckBot",
+			"DuckAssistBot",
 			"Baiduspider", 
 			"Slurp",
 			"Yeti",
 			"Exabot",
 			"archive.org_bot",
 			"Valve Client",
-			"Valve Steam"];
+			"Valve Steam",
+			"MojeekBot",
+			"OpenWebSearchBot",
+			"Qwantify"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{

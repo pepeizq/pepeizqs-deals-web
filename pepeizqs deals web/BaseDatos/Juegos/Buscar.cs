@@ -749,7 +749,7 @@ namespace BaseDatos.Juegos
 
 			if (todo == false)
 			{
-				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis, idSteam, idGog, idAmazon, exeEpic, exeUbisoft";
+				busquedaTodo = "id, nombre, imagenes, precioMinimosHistoricos, precioActualesTiendas, bundles, gratis, suscripciones, tipo, analisis, idSteam, idGog, idAmazon, exeEpic, exeUbisoft, freeToPlay";
 			}
 
 			if (nombre.Contains(" ") == true)
@@ -945,6 +945,14 @@ namespace BaseDatos.Juegos
 								if (string.IsNullOrEmpty(lector.GetString(14)) == false)
 								{
 									juego.ExeUbisoft = lector.GetString(14);
+								}
+							}
+
+							if (lector.IsDBNull(15) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(15)) == false)
+								{
+									juego.FreeToPlay = lector.GetString(15);
 								}
 							}
 

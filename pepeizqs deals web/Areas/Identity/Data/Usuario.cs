@@ -260,5 +260,13 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "datetime(8)")]
 	public DateTime? EaLastImport { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "int(4)")]
+	public int? ForumRank { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "int(4)")]
+	public int? ForumPosts { get; set; }
 }
 

@@ -20,9 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Areas\Identity\Data\xfm50tic.hpc~" />
     <None Remove="Idiomas\Footer\cubo0ri2.kfw~" />
     <None Remove="Pages\Componentes\Secciones\RSS.razor~RF166eb2d.TMP" />
     <None Remove="Pages\ednnoemi.3ot~" />
+    <None Remove="Pages\forum.cshtml~RF245eab.TMP" />
   </ItemGroup>
 
   <ItemGroup>

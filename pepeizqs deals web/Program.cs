@@ -260,8 +260,8 @@ builder.Services.AddServerSideBlazor();
 //builder.Services.AddSignalR(opciones =>
 //{
 //	opciones.EnableDetailedErrors = true;
-//	//opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
-//	//opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+//	opciones.KeepAliveInterval = TimeSpan.FromSeconds(15);
+//	opciones.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
 //	opciones.MaximumReceiveMessageSize = 102400000;
 //});
 
@@ -285,11 +285,10 @@ builder.Services.Configure<HubOptions>(opciones =>
 
 builder.Services.ConfigureApplicationCookie(opciones =>
 {
-	opciones.AccessDeniedPath = "/Identity/Account/AccessDenied";
+	opciones.AccessDeniedPath = "/";
 	opciones.Cookie.Name = "cookiePepeizq";
 	opciones.ExpireTimeSpan = TimeSpan.FromDays(30);
-	opciones.LoginPath = "/Identity/Account/Login";
-	opciones.SlidingExpiration = true;
+	opciones.LoginPath = "/account/login";
 });
 
 //builder.Services.AddDataProtection().UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
@@ -422,15 +421,8 @@ app.UseAuthorization();
 app.MapBlazorHub(opciones =>
 {
 	opciones.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1);
-	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
-	opciones.WebSockets.SubProtocolSelector = subprotocols =>
-	{
-		if (subprotocols.Contains("json.v3"))
-		{
-			return "json.v3";
-		}
-		return null;
-	};
+	opciones.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling | HttpTransportType.ServerSentEvents;
+	opciones.AllowStatefulReconnects = true;
 });
 
 #region CORS necesario para extension

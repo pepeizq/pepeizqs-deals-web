@@ -428,6 +428,15 @@ namespace APIs.Steam
 
 			#endregion
 
+			#region The Elder Scrolls IV: Oblivion® Game of the Year Edition Deluxe
+
+			if (id == "900883")
+			{
+				id = "22330";
+			}
+
+			#endregion
+
 			return id;
 		}
 	}
