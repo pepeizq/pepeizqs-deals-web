@@ -23,7 +23,10 @@ namespace Herramientas
 			"Valve Steam",
 			"MojeekBot",
 			"OpenWebSearchBot",
-			"Qwantify"];
+			"Qwantify",
+			"TelegramBot",
+			"Discordbot",
+			"Lighthouse"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{
@@ -31,7 +34,7 @@ namespace Herramientas
 			{
 				foreach (var bot in bots)
 				{
-					if (userAgent.Contains(bot) == true)
+					if (userAgent.ToLower().Contains(bot.ToLower()) == true)
 					{
 						return true;
 					}

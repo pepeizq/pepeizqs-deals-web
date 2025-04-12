@@ -3412,7 +3412,6 @@
                     {
                         mediaMostrar = juego.Media.Video;
                         mediaMostrar = mediaMostrar.Replace("http://", "https://");
-                        mediaMostrar = mediaMostrar.Replace("http://", "https://");
                         mediaMostrarPosicion = 99999;
                     }
                 }
@@ -3429,57 +3428,6 @@
                     }
                 }
             }	
-
-            dlcs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
-
-            if (juego.Tipo == JuegoTipo.Game)
-            {
-                drmsGeforceNOW = global::BaseDatos.Streaming.Buscar.GeforceNOWDRMs(juego.Id);
-            }
-
-            if (juego.IdSteam > 0)
-            {
-               
-            }
-
-            if (juego.CuratorsSteam != null)
-            {
-                if (juego.CuratorsSteam.Count > 0)
-                {
-                    foreach (var curator in juego.CuratorsSteam)
-                    {
-                        if (string.IsNullOrEmpty(curator) == false)
-                        {
-                            global::BaseDatos.Curators.Curator curator2 = global::BaseDatos.Curators.Buscar.Uno(int.Parse(curator));
-
-                            if (curator2 == null)
-                            {
-                                global::BaseDatos.Curators.Insertar.Ejecutar(await APIs.Steam.Curator.Extraer(curator));
-                            }
-                            else
-                            {
-                                if (curator2.Fecha == null)
-                                {
-                                    global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
-                                }
-                                else
-                                {
-                                    if (curator2.Fecha?.Subtract(DateTime.Now) > TimeSpan.FromDays(90))
-                                    {
-                                        global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
-                                    }
-                                }
-
-                                global::BaseDatos.Curators.CuratorFicha ficha = new global::BaseDatos.Curators.CuratorFicha();
-                                ficha.Curator = curator2;
-                                ficha.Posicion = 0;
-
-                                curators.Add(ficha);
-                            }
-                        }                     
-                    }
-                }
-            }
         }
     }
 
@@ -3502,6 +3450,13 @@
             if (juego != null)
             {	
                 await JavaScript.InvokeVoidAsync("ChangeUrl", "/game/" + juego.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(juego.Nombre) + "/");
+
+                dlcs = global::BaseDatos.Juegos.Buscar.DLCs(juego.Id.ToString());
+
+                if (juego.Tipo == JuegoTipo.Game)
+                {
+                    drmsGeforceNOW = global::BaseDatos.Streaming.Buscar.GeforceNOWDRMs(juego.Id);
+                }
 
                 if (juego.IdSteam > 0)
                 {
@@ -3752,6 +3707,45 @@
                             juego.Idiomas = await APIs.Xbox.Juego.XboxIdiomas(juego.IdXbox, juego.Idiomas);
 
                             global::BaseDatos.Juegos.Actualizar.Xbox(juego);
+                        }
+                    }
+                }
+
+                if (juego.CuratorsSteam != null)
+                {
+                    if (juego.CuratorsSteam.Count > 0)
+                    {
+                        foreach (var curator in juego.CuratorsSteam)
+                        {
+                            if (string.IsNullOrEmpty(curator) == false)
+                            {
+                                global::BaseDatos.Curators.Curator curator2 = global::BaseDatos.Curators.Buscar.Uno(int.Parse(curator));
+
+                                if (curator2 == null)
+                                {
+                                    global::BaseDatos.Curators.Insertar.Ejecutar(await APIs.Steam.Curator.Extraer(curator));
+                                }
+                                else
+                                {
+                                    if (curator2.Fecha == null)
+                                    {
+                                        global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
+                                    }
+                                    else
+                                    {
+                                        if (curator2.Fecha?.Subtract(DateTime.Now) > TimeSpan.FromDays(90))
+                                        {
+                                            global::BaseDatos.Curators.Actualizar.Ejecutar(curator2);
+                                        }
+                                    }
+
+                                    global::BaseDatos.Curators.CuratorFicha ficha = new global::BaseDatos.Curators.CuratorFicha();
+                                    ficha.Curator = curator2;
+                                    ficha.Posicion = 0;
+
+                                    curators.Add(ficha);
+                                }
+                            }
                         }
                     }
                 }

@@ -9,7 +9,6 @@
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <ServerGarbageCollection>false</ServerGarbageCollection>
-    <CompressionEnabled>false</CompressionEnabled>
   </PropertyGroup>
 
   <ItemGroup>

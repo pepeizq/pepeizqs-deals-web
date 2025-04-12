@@ -12,5 +12,9 @@
   "String5": "Close",
   "String6": "Forum",
   "String7": "In these forums you can only write in English.",
-  "String8": "In these forums you can only write in Spanish."
+  "String8": "In these forums you can only write in Spanish.",
+  "String9": "Written by {0} {1}",
+  "String10": "Reply",
+  "String11": "Edit",
+  "String12": "Edit post"
 }

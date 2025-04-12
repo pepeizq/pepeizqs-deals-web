@@ -444,14 +444,14 @@
 						{
 							if (dlcsBundle.Count > 0)
 							{
-								<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; width: 42%;">
+								<div style="background-color: var(--fondoDlc); font-size: 14px; padding: 15px 10px; flex-shrink: 0;">
 									@if (dlcsBundle.Count == 1)
 									{
-										@("+" + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs1", "Bundle"))
+										@("+" + Herramientas.Idiomas.BuscarTexto(idioma, "String27", "Bundle"))
 									}
 									else if (dlcsBundle.Count > 1)
 									{
-										@string.Format("+ " + Herramientas.Idiomas.BuscarTexto(idioma, "DLCs2", "Bundle"), dlcsBundle.Count)
+										@string.Format("+ " + Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Bundle"), dlcsBundle.Count)
 									}
 								</div>
 							}

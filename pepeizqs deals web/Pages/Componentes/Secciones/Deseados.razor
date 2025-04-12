@@ -490,7 +490,7 @@
 									@if (string.IsNullOrEmpty(otroUsuario) == true && usuarioLogeado == true && juego.Importado == false)
 									{
 										<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; right: -100px; position: absolute;">
-											<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
+											<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM, juego))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
 												@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
 											</button>
 										</div>
@@ -595,7 +595,7 @@
 												@if (string.IsNullOrEmpty(otroUsuario) == true && usuarioLogeado == true && juego.Importado == false)
 												{
 													<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; right: -100px; position: absolute;">
-														<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
+														<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM, juego))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
 															@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
 														</button>
 													</div>
@@ -663,7 +663,7 @@
 												@if (string.IsNullOrEmpty(otroUsuario) == true && usuarioLogeado == true && juego.Importado == false)
 												{
 													<div style="background-color: transparent; padding: 5px 10px; display: flex; align-items: center; gap: 10px; right: -100px; position: absolute;">
-														<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
+														<button @onclick="@(e => QuitarJuego(e, juego.Id, juego.DRM, juego))" style="width: fit-content; font-size: 14px; color: var(--colorEnlace); background: transparent; border: 0px; text-decoration: none; margin-left: auto;">
 															@Herramientas.Idiomas.BuscarTexto(idioma, "String22", "Wishlist")
 														</button>
 													</div>
@@ -1138,7 +1138,7 @@
 		return null;
 	}
 
-	private async void QuitarJuego(MouseEventArgs e, int juegoId, Juegos.JuegoDRM drm)
+	private async void QuitarJuego(MouseEventArgs e, int juegoId, Juegos.JuegoDRM drm, JuegoDeseadoMostrar juegoMostrar)
 	{
 		Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(juegoId);
 
@@ -1149,80 +1149,22 @@
 
 		if (deseadosOfertas.Count > 0)
 		{
-			int i = 0;
-
-			foreach (var oferta in deseadosOfertas)
-			{
-				if (oferta.Id == juego.Id && oferta.DRM == drm)
-				{
-					break;
-				}
-
-				i += 1;
-			}
-
-			deseadosOfertas.RemoveAt(i);
+			deseadosOfertas.Remove(juegoMostrar);
 		}
 
 		if (deseadosHistoricos.Count > 0)
 		{
-			int i = 0;
-
-			foreach (var oferta in deseadosHistoricos)
-			{
-				if (oferta.Id == juego.Id && oferta.DRM == drm)
-				{
-					break;
-				}
-
-				i += 1;
-			}
-
-			deseadosHistoricos.RemoveAt(i);
+			deseadosHistoricos.Remove(juegoMostrar);
 		}
 
 		if (deseadosBundles.Count > 0)
 		{
-			int j = 0;
-			while (j < 10)
-			{
-				int i = 0;
-
-				foreach (var oferta in deseadosBundles)
-				{
-					if (oferta.Id == juego.Id && oferta.DRM == drm)
-					{
-						break;
-					}
-
-					i += 1;
-				}
-
-				deseadosBundles.RemoveAt(i);
-				j += 1;
-			}
+			deseadosBundles.Remove(juegoMostrar);
 		}
 
 		if (deseadosSuscripciones.Count > 0)
 		{
-			int j = 0;
-			while (j < 10)
-			{
-				int i = 0;
-
-				foreach (var oferta in deseadosSuscripciones)
-				{
-					if (oferta.Id == juego.Id && oferta.DRM == drm)
-					{
-						break;
-					}
-
-					i += 1;
-				}
-
-				deseadosSuscripciones.RemoveAt(i);
-				j += 1;
-			}
+			deseadosSuscripciones.Remove(juegoMostrar);
 		}
 
 		await InvokeAsync(StateHasChanged);

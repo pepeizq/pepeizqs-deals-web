@@ -1,9 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
+@inject IJSRuntime JavaScript
+
+<script>
+    window.ChangeUrl = function (url) {
+        history.pushState(null, '', url);
+    }
+</script>
 
 <style>
     .titulo-foro {
@@ -100,8 +108,8 @@
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <img src="/imagenes/banderas/spanish.svg" style="width: 24px; height: 24px;" alt="Spanish" />
 
-                                        <div style="font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Forum")    
+                        <div style="font-size: 14px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Forum")    
                         </div>
                     </div>
 
@@ -123,9 +131,22 @@ else if (categoriaId > 0 && postId == 0)
     if (posts != null)
     {
         <div class="titulo-foro">
-            <h1 style="font-size: 20px;">
-                <a href="/forum/">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")</a> • @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoriaId.ToString(), "Forum")
-            </h1>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <button @onclick="@(e => NavegacionPrincipal(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                    <h1 style="font-size: 20px; margin: 0px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")
+                    </h1>
+                </button>
+
+                <div style="font-size: 20px">
+                    •
+                </div>
+
+                <h1 style="font-size: 20px; margin: 0px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoriaId.ToString(), "Forum")
+                </h1>
+            </div>
+
             <hr/>
         </div>
 
@@ -179,7 +200,7 @@ else if (categoriaId > 0 && postId == 0)
                                             </div>
 
                                             <div>
-                                                <img src="@usuario.Avatar" style="width: 24px; height: 24px;" alt="@usuario.Nickname" />
+                                                <img src="@usuario.Avatar" style="width: 26px; height: 26px;" alt="@usuario.Nickname" />
                                             </div>
 
                                             <div style="flex-shrink: 0;">
@@ -200,18 +221,183 @@ else if (categoriaId > 0 && postId > 0)
 {
     if (post != null)
     {
-        <div>
-            <a href="/forum/@post.CategoriaId.ToString()/">
-                @post.CategoriaId.ToString() test
-            </a>
+        <div class="titulo-foro">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <button @onclick="@(e => NavegacionPrincipal(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                    <h1 style="font-size: 20px; margin: 0px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")
+                    </h1>
+                </button>
+
+                <div style="font-size: 20px">
+                    •
+                </div>
+
+                <button @onclick="@(e => NavegacionCategoria(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                    <h1 style="font-size: 20px; margin: 0px;">
+                        @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoriaId.ToString(), "Forum")
+                    </h1>
+                </button>
+            </div>
+
+            <hr />
         </div>
 
-        <div>
-            <h1>@post.Titulo</h1>
-            <p>@post.Contenido</p>
-            <p>Autor: @post.AutorId</p>
-            <p>Fecha: @post.FechaCreacion.ToString("dd/MM/yyyy")</p>
+        <div class="caja-foro">
+            <div style="font-size: 20px;">@post.Titulo</div>
+
+            <div style="margin-top: 20px; display: flex; align-items: center; gap: 20px; justify-content: space-between;">
+                @{
+                    var autor = UserManager.FindByIdAsync(post.AutorId).Result;
+
+                    if (autor != null)
+                    {
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 14px;">
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Forum"), autor.Nickname, Herramientas.Calculadora.DiferenciaTiempo(post.FechaCreacion, idioma))
+                            </div>
+                        </div>
+                        
+                        @if (editarPostEnseñar == false)
+                        {
+                            <button @onclick="@(e => EditarPostEnseñar(e, post.Id, false))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                            </button>
+                        }
+                    }
+                }
+            </div>
+
+            <hr/>
+
+            <div>
+                @if (editarPostEnseñar == false || (editarPostId > 0 && editarPostId != post.Id))
+                {
+                    <div style="white-space: pre-line; max-width: 100%; overflow-wrap: anywhere;">
+                        @post.Contenido
+                    </div>
+                }
+                else if (editarPostEnseñar == true && editarPostId == post.Id)
+                {
+                    <textarea type="text" @oninput="@(e => EditarPostContenidoTexto(e))" class="entrada-texto" rows="6" style="min-width: 50px;">
+                        @post.Contenido  
+                    </textarea>
+
+                    <div style="width: 100%; display: flex; align-items: center; gap: 20px; justify-content: space-between; margin-top: 20px;">
+                        <button @onclick="@(e => EditarPostEnviar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Forum")
+                        </button>
+
+                        <button @onclick="@(e => EditarPostCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Forum")
+                        </button>
+                    </div>
+                }
+            </div>
         </div>
+
+        @if (respuestasPost != null)
+        {
+            if (respuestasPost.Count > 0)
+            {
+                <div style="display: flex; flex-direction: column; gap: 30px; margin-top: 30px;">
+                    @foreach (var respuesta in respuestasPost)
+                    {
+                        <div class="caja-foro">
+                            <div style="display: flex; align-items: start; gap: 30px;">
+                                @{
+                                    var autor2 = UserManager.FindByIdAsync(respuesta.AutorId).Result;
+                                }
+
+                                <div style="width: 60px; padding: 5px;">
+                                    @if (autor2 != null)
+                                    {
+                                        <img src="@autor2.Avatar" style="width: 50px; height: 50px;" alt="@autor2.Nickname" />
+                                    }
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; width: 100%;">
+                                    <div style="display: flex; align-items: start; gap: 20px; justify-content: space-between; width: 100%;">
+                                        <div>
+                                            @if (autor2 != null)
+                                            {
+                                                @autor2.Nickname
+                                            }
+                                        </div>
+
+                                        <div style="font-size: 14px; display: flex; align-items: start; gap: 20px;">
+                                            @if (editarPostEnseñar == false)
+                                            {
+                                                <button @onclick="@(e => EditarPostEnseñar(e, respuesta.Id, true))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                                    @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                                                </button>
+                                            }
+
+                                            @Herramientas.Calculadora.DiferenciaTiempo(respuesta.FechaCreacion, idioma)
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    @if (editarPostEnseñar == false || (editarPostId > 0 && editarPostId != respuesta.Id))
+                                    {
+                                        <div style="white-space: pre-line; max-width: 100%; overflow-wrap: anywhere;">
+                                            @respuesta.Contenido
+                                        </div>
+                                    }
+                                    else if (editarPostEnseñar == true && editarPostId == respuesta.Id)
+                                    {
+                                        <textarea type="text" @oninput="@(e => EditarPostContenidoTexto(e))" class="entrada-texto" rows="6" style="min-width: 50px;">
+                                            @respuesta.Contenido    
+                                        </textarea>
+
+                                        <div style="width: 100%; display: flex; align-items: center; gap: 20px; justify-content: space-between; margin-top: 20px;">
+                                            <button @onclick="@(e => EditarPostEnviar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                                                @Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Forum")
+                                            </button>
+
+                                            <button @onclick="@(e => EditarPostCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                                                @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Forum")
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </div> 
+                        </div>
+                    }
+                </div>
+            }
+        }
+
+        @if (usuario != null)
+        {
+            <div class="caja-foro" style="margin-top: 30px;">
+                @if (responderPostEnseñar == false)
+                {
+                    <div>
+                        <button @onclick="@(e => ResponderPostEnseñar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Forum")
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div style="display: flex; flex-direction: column; gap: 20px;">                       
+                        <textarea type="text" @oninput="@(e => ResponderPostContenidoTexto(e))" class="entrada-texto" rows="6" style="min-width: 50px;" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Forum")" />
+
+                        <div style="width: 100%; display: flex; align-items: center; gap: 20px; justify-content: space-between;">
+                            <button @onclick="@(e => ResponderPostEnviar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Forum")
+                            </button>
+
+                            <button @onclick="@(e => ResponderPostCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Forum")
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
 }
 
@@ -233,6 +419,7 @@ else if (categoriaId > 0 && postId > 0)
     private List<BaseDatos.Foro.ForoCategoria> categorias = null;
     private List<BaseDatos.Foro.ForoPost> posts = null;
     private BaseDatos.Foro.ForoPost post = null;
+    private List<BaseDatos.Foro.ForoPost> respuestasPost = null;
 
     [Parameter]
     public int categoriaId { get; set; } = 0;
@@ -243,6 +430,14 @@ else if (categoriaId > 0 && postId > 0)
     private bool crearPostEnseñar = false;
     private string crearPostTitulo = null;
     private string crearPostContenido = null;
+
+    private bool responderPostEnseñar = false;
+    private string responderPostContenido = null;
+
+    private bool editarPostEnseñar = false;
+    private int editarPostId = 0;
+    private string editarPostContenido = null;
+    private bool editarPostEsRespuesta = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -262,12 +457,46 @@ else if (categoriaId > 0 && postId > 0)
         else if (categoriaId > 0 && postId > 0)
         {
             post = BaseDatos.Foro.Buscar.Post(postId);
+
+            if (post != null)
+            {
+                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+            }
         }
     }
+
+    private async void NavegacionPrincipal(MouseEventArgs e)
+    {
+        categoriaId = 0;
+        postId = 0;
+
+        categorias = BaseDatos.Foro.Buscar.Categorias();
+
+        await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/");
+    }
+
+    private async void NavegacionCategoria(MouseEventArgs e)
+    {
+        postId = 0;
+
+        posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+
+        await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
+    }
+
+    private async void NavegacionPost(MouseEventArgs e)
+    {
+        
+    }
+
+    #region Crear
 
     private void CrearPostEnseñar(MouseEventArgs e)
     {
         crearPostEnseñar = true;
+
+        crearPostTitulo = null;
+        crearPostContenido = null;
     }
 
     private void CrearPostTituloTexto(ChangeEventArgs e)
@@ -308,4 +537,93 @@ else if (categoriaId > 0 && postId > 0)
     {
         crearPostEnseñar = false;
     }
+
+    #endregion
+
+    #region Responder
+
+    private void ResponderPostEnseñar(MouseEventArgs e)
+    {
+        responderPostEnseñar = true;
+
+        responderPostContenido = null;
+    }
+
+    private void ResponderPostContenidoTexto(ChangeEventArgs e)
+    {
+        responderPostContenido = e.Value.ToString();
+    }
+
+    private void ResponderPostEnviar(MouseEventArgs e)
+    {
+        if (post != null)
+        {
+            BaseDatos.Foro.ForoPost postEnviar = new BaseDatos.Foro.ForoPost
+            {
+                Titulo = post.Titulo + " - Respuesta",
+                Contenido = responderPostContenido,
+                AutorId = usuario.Id,
+                CategoriaId = categoriaId,
+                FechaCreacion = DateTime.Now,
+                RespuestaId = post.Id
+            };
+
+            BaseDatos.Foro.Insertar.Post(postEnviar);
+
+            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+
+            responderPostEnseñar = false;
+        }
+    }
+
+    private void ResponderPostCerrar(MouseEventArgs e)
+    {
+        responderPostEnseñar = false;
+    }
+
+    #endregion
+
+    #region Edición
+
+    private void EditarPostEnseñar(MouseEventArgs e, int id, bool esRespuesta)
+    {
+        editarPostEnseñar = true;
+
+        editarPostId = id;
+        editarPostContenido = null;
+        editarPostEsRespuesta = esRespuesta;
+    }
+
+    private void EditarPostContenidoTexto(ChangeEventArgs e)
+    {
+        editarPostContenido = e.Value.ToString();
+    }
+
+    private void EditarPostEnviar(MouseEventArgs e)
+    {
+        if (editarPostId > 0)
+        {
+            BaseDatos.Foro.Actualizar.Ejecutar(editarPostId, editarPostContenido);
+
+            if (editarPostEsRespuesta == false)
+            {
+                post = BaseDatos.Foro.Buscar.Post(editarPostId);
+            }
+
+            if (post != null)
+            {
+                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+            }
+
+            editarPostEnseñar = false;
+            editarPostId = 0;
+        }
+    }
+
+    private void EditarPostCerrar(MouseEventArgs e)
+    {
+        editarPostEnseñar = false;
+    }
+
+    #endregion
 }

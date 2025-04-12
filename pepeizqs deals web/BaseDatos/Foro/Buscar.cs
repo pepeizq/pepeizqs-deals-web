@@ -80,7 +80,7 @@ namespace BaseDatos.Foro
 					conexion = Herramientas.BaseDatos.Conectar();
 				}
 			}
-			string busqueda = "SELECT TOP 30 * FROM foroPost WHERE categoriaId=@categoria ORDER BY fecha DESC";
+			string busqueda = "SELECT TOP 30 * FROM foroPost WHERE categoriaId=@categoria AND respuestaId IS NULL ORDER BY fecha DESC";
 			
 			List<ForoPost> posts = new List<ForoPost>();
 			
@@ -159,6 +159,65 @@ namespace BaseDatos.Foro
 				}
 			}
 			return post;
+		}
+
+		public static List<ForoPost> RespuestasPost(int postId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT * FROM foroPost WHERE respuestaId=@respuestaId";
+
+			List<ForoPost> respuestas = new List<ForoPost>();
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@respuestaId", postId);
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read() == true)
+					{
+						ForoPost respuesta = new ForoPost();
+						respuesta.Id = lector.GetInt32(0);
+						respuesta.AutorId = lector.GetString(1);
+						respuesta.CategoriaId = lector.GetInt32(2);
+						respuesta.Titulo = lector.GetString(3);
+
+						if (lector.IsDBNull(4) == false)
+						{
+							respuesta.Contenido = lector.GetString(4);
+						}
+
+						if (lector.IsDBNull(5) == false)
+						{
+							respuesta.FechaCreacion = lector.GetDateTime(5);
+						}
+
+						if (lector.IsDBNull(6) == false)
+						{
+							respuesta.FechaEdicion = lector.GetDateTime(6);
+						}
+
+						if (lector.IsDBNull(7) == false)
+						{
+							respuesta.RespuestaId = lector.GetInt32(7);
+						}
+
+						respuestas.Add(respuesta);
+					}
+				}
+			}
+
+			return respuestas;
 		}
 	}
 }
