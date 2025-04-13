@@ -1,0 +1,129 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (usuario != null)
+{
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+            
+            @if (puedeCambiarNombre == true)
+            {
+                <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "AccountForum")</label>
+                <input @onchange="@(e => CambiarNombre(e))" value="@nombre" class="entrada-texto" autocomplete="email" aria-required="true" />
+            }      
+            else
+            {
+                if (usuario.ForumLastChangeName != null)
+                {
+                    <div style="background-color: var(--fondoPeligro); color: var(--colorTexto); padding: 15px 20px;">
+                        @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String4", "AccountForum"), Math.Round(30 - (DateTime.Now - usuario.ForumLastChangeName).Value.TotalDays, 0).ToString())
+                    </div>
+                }
+            }
+
+            <label class="texto-info-entrada" style="margin-top: 20px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "AccountForum")</label>
+            <input @onchange="@(e => CambiarAvatar(e))" value="@avatar" class="entrada-texto" autocomplete="email" aria-required="true" />
+
+            <img src="@avatar" alt="Avatar" style="width: 60px; height: 60px; margin-top: 10px; margin-left: 10px;" />
+
+            <div style="margin-top: 30px;">
+                <button @onclick="ClickActualizar" class="boton" style="font-size: 18px; width: fit-content; padding: 10px 20px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "AccountForum")
+                </button>
+            </div>
+
+            @if (otroUsuarioUsaNombre == true)
+            {
+                <div style="background-color: var(--fondoPeligro); color: var(--colorTexto); padding: 15px 20px; margin-top: 20px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "String5", "AccountForum")
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+    #nullable disable
+
+    [Parameter]
+    public string idioma { get; set; }
+
+    private Usuario usuario = new Usuario();
+
+    private string nombre = string.Empty;
+    private string avatar = string.Empty;
+
+    private bool puedeCambiarNombre = true;
+    private bool otroUsuarioUsaNombre = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+        if (usuario != null)
+        {
+            nombre = usuario.Nickname;
+            avatar = usuario.Avatar;
+
+            if (usuario.ForumLastChangeName != null)
+            {
+                if ((DateTime.Now - usuario.ForumLastChangeName).Value.TotalDays < 30)
+                {
+                    puedeCambiarNombre = false;
+                }
+            }
+        }
+    }
+
+    private void CambiarNombre(ChangeEventArgs texto)
+    {
+        nombre = texto.Value.ToString();
+    }
+
+    private void CambiarAvatar(ChangeEventArgs texto)
+    {
+        avatar = texto.Value.ToString();
+    }
+
+    private async void ClickActualizar()
+    {
+        if (usuario != null)
+        {
+            otroUsuarioUsaNombre = false;
+
+            if (puedeCambiarNombre == true)
+            {
+                if (string.IsNullOrEmpty(nombre) == false)
+                {
+                    if (nombre.Length > 3)
+                    {
+                        if (BaseDatos.Usuarios.Buscar.UsuarioNombreRepetido(nombre) == false)
+                        {
+                            usuario.Nickname = nombre;
+                            usuario.ForumLastChangeName = DateTime.Now;
+                        }
+                        else
+                        {
+                            otroUsuarioUsaNombre = true;
+                        }
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(avatar) == false)
+            {
+                if (avatar.Contains("https://") == true && (avatar.Contains(".png") == true || avatar.Contains(".jpg") == true || avatar.Contains(".jpeg") == true) || avatar.Contains(".webp") == true)
+                {
+                    usuario.Avatar = avatar;
+                }
+            }
+
+            await UserManager.UpdateAsync(usuario);
+        }
+    }
+}

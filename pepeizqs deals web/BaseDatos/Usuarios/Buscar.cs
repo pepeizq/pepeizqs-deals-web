@@ -370,41 +370,6 @@ namespace BaseDatos.Usuarios
 			return "en";
 		}
 
-		public static List<string> UsuariosCorreoSumario(SqlConnection conexion = null)
-		{
-			if (conexion == null)
-			{
-				conexion = Herramientas.BaseDatos.Conectar();
-			}
-			else
-			{
-				if (conexion.State != System.Data.ConnectionState.Open)
-				{
-					conexion = Herramientas.BaseDatos.Conectar();
-				}
-			}
-
-			List<string> usuariosId = new List<string>();
-
-			string busqueda = "SELECT Id FROM AspNetUsers WHERE MailSummary='true'";
-
-			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
-			{
-				using (SqlDataReader lector = comando.ExecuteReader())
-				{
-					while (lector.Read())
-					{
-						if (lector.IsDBNull(lector.GetOrdinal("Id")) == false)
-						{
-							usuariosId.Add(lector.GetString(lector.GetOrdinal("Id")));
-						}
-					}
-				}
-			}
-
-			return usuariosId;
-		}
-
 		public static string UsuarioDeseadosNickname(string otroUsuario, SqlConnection conexion = null)
 		{
 			if (conexion == null)
@@ -547,6 +512,44 @@ namespace BaseDatos.Usuarios
 						if (lector.IsDBNull(0) == false)
 						{
 							return lector.GetBoolean(0);
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static bool UsuarioNombreRepetido(string nombre, SqlConnection sqlConnection = null)
+		{
+			if (string.IsNullOrEmpty(nombre) == false)
+			{
+				if (sqlConnection == null)
+				{
+					sqlConnection = Herramientas.BaseDatos.Conectar();
+				}
+				else
+				{
+					if (sqlConnection.State != System.Data.ConnectionState.Open)
+					{
+						sqlConnection = Herramientas.BaseDatos.Conectar();
+					}
+				}
+
+				string busqueda = "SELECT Id FROM AspNetUsers WHERE Nickname=@Nickname";
+
+				using (SqlCommand comando = new SqlCommand(busqueda, sqlConnection))
+				{
+					comando.Parameters.AddWithValue("@Nickname", nombre);
+
+					using (SqlDataReader lector = comando.ExecuteReader())
+					{
+						if (lector.Read() == true)
+						{
+							if (lector.IsDBNull(0) == false)
+							{
+								return true;
+							}
 						}
 					}
 				}

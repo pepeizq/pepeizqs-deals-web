@@ -94,9 +94,9 @@
                     <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                         @foreach (var categoria in categoriasIngles)
                         {
-                            <a href="/forum/@categoria.Id.ToString()/" class="boton-pequeño" style="padding: 15px 20px;">
+                            <button @onclick="@(e => NavegacionCategoria(e, categoria.Id))" class="boton-pequeño" style="padding: 15px 20px;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoria.Id.ToString(), "Forum")
-                            </a>
+                            </button>
                         }
                     </div>
                 </div>
@@ -116,9 +116,9 @@
                     <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
                         @foreach (var categoria in categoriasEspañol)
                         {
-                            <a href="/forum/@categoria.Id.ToString()/" class="boton-pequeño" style="padding: 15px 20px;">
+                            <button @onclick="@(e => NavegacionCategoria(e, categoria.Id))" class="boton-pequeño" style="padding: 15px 20px;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoria.Id.ToString(), "Forum")
-                            </a>
+                            </button>
                         }
                     </div>
                 </div>
@@ -132,7 +132,7 @@ else if (categoriaId > 0 && postId == 0)
     {
         <div class="titulo-foro">
             <div style="display: flex; align-items: center; gap: 5px;">
-                <button @onclick="@(e => NavegacionPrincipal(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                <button @onclick="@(e => NavegacionPrincipalVolver(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
                     <h1 style="font-size: 20px; margin: 0px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")
                     </h1>
@@ -189,26 +189,38 @@ else if (categoriaId > 0 && postId == 0)
                     <Virtualize Context="post" Items="posts">
 					    <ItemContent>
                             @{
-                                var usuario = UserManager.FindByIdAsync(post.AutorId).Result;
+                                Usuario? usuario = null;
+                                DateTime fechaUsar = post.FechaCreacion;
 
-                                if (usuario != null)
+                                if (string.IsNullOrEmpty(post.AutorIdUltimaRespuesta) == false)
                                 {
-                                    <a href="/forum/@categoriaId.ToString()/@post.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(post.Titulo)/" class="boton-pequeño" style="padding: 15px 20px;">
-                                        <div style="display: flex; align-items: center; gap: 20px;">
-                                            <div style="width: 100%;">
-                                                @post.Titulo
-                                            </div>
-
-                                            <div>
-                                                <img src="@usuario.Avatar" style="width: 26px; height: 26px;" alt="@usuario.Nickname" />
-                                            </div>
-
-                                            <div style="flex-shrink: 0;">
-                                                @Herramientas.Calculadora.DiferenciaTiempo(post.FechaCreacion, idioma)
-                                            </div>
-                                        </div>
-                                    </a>
+                                    usuario = UserManager.FindByIdAsync(post.AutorIdUltimaRespuesta).Result;
+                                    fechaUsar = post.FechaUltimaRespuesta;
                                 }
+                                else
+                                {
+                                    usuario = UserManager.FindByIdAsync(post.AutorId).Result;
+                                }
+
+                                <button @onclick="@(e => NavegacionPost(e, post.Id))" class="boton-pequeño" style="padding: 15px 20px;">
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        <div style="width: 100%;">
+                                            @post.Titulo
+                                        </div>
+
+                                        <div>
+                                            @post.CantidadRespuestas
+                                        </div>
+
+                                        <div>
+                                            <img src="@usuario?.Avatar" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
+                                        </div>
+
+                                        <div style="flex-shrink: 0;">
+                                            @Herramientas.Calculadora.DiferenciaTiempo(fechaUsar, idioma)
+                                        </div>
+                                    </div>
+                                </button>
                             }
 					    </ItemContent>
 				    </Virtualize>
@@ -223,7 +235,7 @@ else if (categoriaId > 0 && postId > 0)
     {
         <div class="titulo-foro">
             <div style="display: flex; align-items: center; gap: 5px;">
-                <button @onclick="@(e => NavegacionPrincipal(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                <button @onclick="@(e => NavegacionPrincipalVolver(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
                     <h1 style="font-size: 20px; margin: 0px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")
                     </h1>
@@ -233,7 +245,7 @@ else if (categoriaId > 0 && postId > 0)
                     •
                 </div>
 
-                <button @onclick="@(e => NavegacionCategoria(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                <button @onclick="@(e => NavegacionCategoriaVolver(e))" style="width: fit-content; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
                     <h1 style="font-size: 20px; margin: 0px;">
                         @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoriaId.ToString(), "Forum")
                     </h1>
@@ -258,11 +270,17 @@ else if (categoriaId > 0 && postId > 0)
                             </div>
                         </div>
                         
-                        @if (editarPostEnseñar == false)
+                        if (usuario != null)
                         {
-                            <button @onclick="@(e => EditarPostEnseñar(e, post.Id, false))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
-                            </button>
+                            if (usuario.Id == post.AutorId)
+                            {
+                                if (editarPostEnseñar == false)
+                                {
+                                    <button @onclick="@(e => EditarPostEnseñar(e, post.Id, false))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                        @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                                    </button>
+                                }
+                            }
                         }
                     }
                 }
@@ -326,11 +344,17 @@ else if (categoriaId > 0 && postId > 0)
                                         </div>
 
                                         <div style="font-size: 14px; display: flex; align-items: start; gap: 20px;">
-                                            @if (editarPostEnseñar == false)
+                                            @if (usuario != null)
                                             {
-                                                <button @onclick="@(e => EditarPostEnseñar(e, respuesta.Id, true))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
-                                                    @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
-                                                </button>
+                                                if (usuario.Id == respuesta.AutorId)
+                                                {
+                                                    if (editarPostEnseñar == false)
+                                                    {
+                                                        <button @onclick="@(e => EditarPostEnseñar(e, respuesta.Id, true))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                                            @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                                                        </button>
+                                                    }
+                                                }
                                             }
 
                                             @Herramientas.Calculadora.DiferenciaTiempo(respuesta.FechaCreacion, idioma)
@@ -387,7 +411,7 @@ else if (categoriaId > 0 && postId > 0)
 
                         <div style="width: 100%; display: flex; align-items: center; gap: 20px; justify-content: space-between;">
                             <button @onclick="@(e => ResponderPostEnviar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Forum")
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Forum")
                             </button>
 
                             <button @onclick="@(e => ResponderPostCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
@@ -444,6 +468,18 @@ else if (categoriaId > 0 && postId > 0)
         if (usuarioLogeado == true)
         {
             usuario = await UserManager.FindByIdAsync(usuarioId);
+
+            if (string.IsNullOrEmpty(usuario.Nickname) == true)
+            {
+                usuario = null;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(usuario.Avatar) == true)
+                {
+                    usuario.Avatar = "/imagenes/otros/avatardefectosteam.jpg";
+                }
+            }
         }
 
         if (categoriaId == 0 && postId == 0)
@@ -465,8 +501,10 @@ else if (categoriaId > 0 && postId > 0)
         }
     }
 
-    private async void NavegacionPrincipal(MouseEventArgs e)
+    private async void NavegacionPrincipalVolver(MouseEventArgs e)
     {
+        NavegacionOcultarControles();
+
         categoriaId = 0;
         postId = 0;
 
@@ -475,8 +513,21 @@ else if (categoriaId > 0 && postId > 0)
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/");
     }
 
-    private async void NavegacionCategoria(MouseEventArgs e)
+    private async void NavegacionCategoria(MouseEventArgs e, int nuevaCategoriaId)
     {
+        NavegacionOcultarControles();
+
+        categoriaId = nuevaCategoriaId;
+
+        posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+
+        await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
+    }
+
+    private async void NavegacionCategoriaVolver(MouseEventArgs e)
+    {
+        NavegacionOcultarControles();
+
         postId = 0;
 
         posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
@@ -484,9 +535,27 @@ else if (categoriaId > 0 && postId > 0)
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
     }
 
-    private async void NavegacionPost(MouseEventArgs e)
+    private async void NavegacionPost(MouseEventArgs e, int nuevoPostId)
     {
-        
+        NavegacionOcultarControles();
+
+        postId = nuevoPostId;
+
+        post = BaseDatos.Foro.Buscar.Post(postId);
+
+        if (post != null)
+        {
+            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+
+            await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/" + post.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(post.Titulo) + "/");
+        }
+    }
+
+    private void NavegacionOcultarControles()
+    {
+        crearPostEnseñar = false;
+        responderPostEnseñar = false;
+        editarPostEnseñar = false;
     }
 
     #region Crear
@@ -511,7 +580,7 @@ else if (categoriaId > 0 && postId > 0)
 
     private void CrearPostEnviar(MouseEventArgs e)
     {
-        if (string.IsNullOrEmpty(crearPostTitulo) && string.IsNullOrEmpty(crearPostContenido))
+        if (string.IsNullOrEmpty(crearPostTitulo) == false && string.IsNullOrEmpty(crearPostContenido) == false)
         {
             if (crearPostTitulo.Length > 10 && crearPostContenido.Length > 20)
             {

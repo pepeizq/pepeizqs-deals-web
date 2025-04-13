@@ -20,7 +20,7 @@ namespace BaseDatos.Foro
 				}
 			}
 
-			string actualizar = "UPDATE foroPost SET contenido=@contenido WHERE id=@id";
+			string actualizar = "UPDATE foroPost SET contenido=@contenido, fechaEdicion=@fechaEdicion WHERE id=@id";
 
 			using (SqlCommand comando = new SqlCommand(actualizar, conexion))
 			{

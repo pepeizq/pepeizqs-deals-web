@@ -27,6 +27,9 @@ namespace BaseDatos.Foro
 		public DateTime FechaCreacion { get; set; }
 		public DateTime FechaEdicion { get; set; }
 		public int RespuestaId { get; set; }
+		public int CantidadRespuestas { get; set; }
+		public DateTime FechaUltimaRespuesta { get; set; }
+		public string AutorIdUltimaRespuesta { get; set; }
 	}
 
 	public static class Buscar
@@ -80,7 +83,16 @@ namespace BaseDatos.Foro
 					conexion = Herramientas.BaseDatos.Conectar();
 				}
 			}
-			string busqueda = "SELECT TOP 30 * FROM foroPost WHERE categoriaId=@categoria AND respuestaId IS NULL ORDER BY fecha DESC";
+
+			string busqueda = @"SELECT TOP 30 *, 
+  (SELECT count(*) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) AS respuestas, 
+  (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) AS fechaRespuesta, 
+  (SELECT TOP 1 autorId FROM foroPost AS V2 WHERE V2.respuestaId=V1.id ORDER BY fecha DESC) AS autorId2 
+FROM foroPost AS V1 WHERE categoriaId=3 AND respuestaId IS NULL  
+ORDER BY CASE
+WHEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) IS NULL THEN fecha
+WHEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) > fecha THEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id)
+END DESC";
 			
 			List<ForoPost> posts = new List<ForoPost>();
 			
@@ -92,17 +104,35 @@ namespace BaseDatos.Foro
 				{
 					while (lector.Read() == true)
 					{
-						posts.Add(new ForoPost
+						ForoPost nuevoPost = new ForoPost
 						{
 							Id = lector.GetInt32(0),
 							AutorId = lector.GetString(1),
 							CategoriaId = lector.GetInt32(2),
 							Titulo = lector.GetString(3),
 							FechaCreacion = lector.GetDateTime(5)
-						});
+						};
+
+						if (lector.IsDBNull(9) == false)
+						{
+							nuevoPost.CantidadRespuestas = lector.GetInt32(9);
+						}
+
+						if (lector.IsDBNull(10) == false)
+						{
+							nuevoPost.FechaUltimaRespuesta = lector.GetDateTime(10);
+						}
+
+						if (lector.IsDBNull(11) == false)
+						{
+							nuevoPost.AutorIdUltimaRespuesta = lector.GetString(11);
+						}
+
+						posts.Add(nuevoPost);
 					}
 				}
 			}
+
 			return posts;
 		}
 

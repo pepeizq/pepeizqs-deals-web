@@ -266,7 +266,7 @@ public class Usuario : IdentityUser
 	public int? ForumRank { get; set; }
 
 	[PersonalData]
-	[Column(TypeName = "int(4)")]
-	public int? ForumPosts { get; set; }
+	[Column(TypeName = "datetime(8)")]
+	public DateTime? ForumLastChangeName { get; set; }
 }
 
