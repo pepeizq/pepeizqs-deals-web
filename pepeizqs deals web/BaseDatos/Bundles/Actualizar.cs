@@ -1,7 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Bundles
 {
@@ -23,8 +23,8 @@ namespace BaseDatos.Bundles
 				comando.Parameters.AddWithValue("@enlace", bundle.Enlace);
 				comando.Parameters.AddWithValue("@fechaEmpieza", bundle.FechaEmpieza.ToString());
 				comando.Parameters.AddWithValue("@fechaTermina", bundle.FechaTermina.ToString());
-				comando.Parameters.AddWithValue("@juegos", JsonConvert.SerializeObject(bundle.Juegos));
-				comando.Parameters.AddWithValue("@tiers", JsonConvert.SerializeObject(bundle.Tiers));
+				comando.Parameters.AddWithValue("@juegos", JsonSerializer.Serialize(bundle.Juegos));
+				comando.Parameters.AddWithValue("@tiers", JsonSerializer.Serialize(bundle.Tiers));
 				comando.Parameters.AddWithValue("@pick", bundle.Pick.ToString());
 				comando.Parameters.AddWithValue("@imagenNoticia", bundle.ImagenNoticia);
 

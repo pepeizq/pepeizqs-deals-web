@@ -128,7 +128,7 @@
 }
 else if (categoriaId > 0 && postId == 0)
 {
-    if (posts != null)
+    if (postsUltimos != null)
     {
         <div class="titulo-foro">
             <div style="display: flex; align-items: center; gap: 5px;">
@@ -183,10 +183,62 @@ else if (categoriaId > 0 && postId == 0)
                 <hr/>
             }
 
-            @if (posts.Count > 0)
+            @if (postsFijos.Count > 0)
             {
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <Virtualize Context="post" Items="posts">
+                <div style="display: flex; flex-direction: column;">
+                    <Virtualize Context="post" Items="postsFijos">
+                        <ItemContent>
+                            @{
+                                Usuario? usuario = null;
+                                DateTime fechaUsar = post.FechaCreacion;
+
+                                if (string.IsNullOrEmpty(post.AutorIdUltimaRespuesta) == false)
+                                {
+                                    usuario = UserManager.FindByIdAsync(post.AutorIdUltimaRespuesta).Result;
+                                    fechaUsar = post.FechaUltimaRespuesta;
+                                }
+                                else
+                                {
+                                    usuario = UserManager.FindByIdAsync(post.AutorId).Result;
+                                }
+
+                                <button @onclick="@(e => NavegacionPost(e, post.Id))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        <div style="width: 20px;">
+                                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                                <path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z" />
+                                            </svg>
+                                        </div>
+
+                                        <div style="width: 100%;">
+                                            @post.Titulo
+                                        </div>
+
+                                        <div>
+                                            @post.CantidadRespuestas
+                                        </div>
+
+                                        <div>
+                                            <img src="@usuario?.Avatar" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
+                                        </div>
+
+                                        <div style="flex-shrink: 0;">
+                                            @Herramientas.Calculadora.DiferenciaTiempo(fechaUsar, idioma)
+                                        </div>
+                                    </div>
+                                </button>
+                            }
+                        </ItemContent>
+                    </Virtualize>   
+                </div>
+
+                <hr/>
+            }
+
+            @if (postsUltimos.Count > 0)
+            {
+                <div style="display: flex; flex-direction: column;">
+                    <Virtualize Context="post" Items="postsUltimos">
 					    <ItemContent>
                             @{
                                 Usuario? usuario = null;
@@ -202,7 +254,7 @@ else if (categoriaId > 0 && postId == 0)
                                     usuario = UserManager.FindByIdAsync(post.AutorId).Result;
                                 }
 
-                                <button @onclick="@(e => NavegacionPost(e, post.Id))" class="boton-pequeño" style="padding: 15px 20px;">
+                                <button @onclick="@(e => NavegacionPost(e, post.Id))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
                                     <div style="display: flex; align-items: center; gap: 20px;">
                                         <div style="width: 100%;">
                                             @post.Titulo
@@ -231,7 +283,7 @@ else if (categoriaId > 0 && postId == 0)
 }
 else if (categoriaId > 0 && postId > 0)
 {
-    if (post != null)
+    if (postAbierto != null)
     {
         <div class="titulo-foro">
             <div style="display: flex; align-items: center; gap: 5px;">
@@ -256,31 +308,40 @@ else if (categoriaId > 0 && postId > 0)
         </div>
 
         <div class="caja-foro">
-            <div style="font-size: 20px;">@post.Titulo</div>
+            <div style="font-size: 20px;">@postAbierto.Titulo</div>
 
             <div style="margin-top: 20px; display: flex; align-items: center; gap: 20px; justify-content: space-between;">
                 @{
-                    var autor = UserManager.FindByIdAsync(post.AutorId).Result;
+                    var autor = UserManager.FindByIdAsync(postAbierto.AutorId).Result;
 
                     if (autor != null)
                     {
                         <div style="display: flex; align-items: center; gap: 20px;">
                             <div style="font-size: 14px;">
-                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Forum"), autor.Nickname, Herramientas.Calculadora.DiferenciaTiempo(post.FechaCreacion, idioma))
+                                @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String9", "Forum"), autor.Nickname, Herramientas.Calculadora.DiferenciaTiempo(postAbierto.FechaCreacion, idioma))
                             </div>
                         </div>
                         
                         if (usuario != null)
                         {
-                            if (usuario.Id == post.AutorId)
-                            {
-                                if (editarPostEnseñar == false)
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                @if (usuario.ForumRank > 99 || BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
                                 {
-                                    <button @onclick="@(e => EditarPostEnseñar(e, post.Id, false))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
-                                        @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                                    <button @onclick="@(e => BorrarPost(e, postAbierto.Id))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorTextoPeligro);">
+                                        @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Forum")
                                     </button>
                                 }
-                            }
+
+                                @if (usuario.Id == postAbierto.AutorId)
+                                {
+                                    if (editarPostEnseñar == false)
+                                    {
+                                        <button @onclick="@(e => EditarPostEnseñar(e, postAbierto.Id, false))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                            @Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Forum")
+                                        </button>
+                                    }
+                                }
+                            </div>
                         }
                     }
                 }
@@ -289,16 +350,16 @@ else if (categoriaId > 0 && postId > 0)
             <hr/>
 
             <div>
-                @if (editarPostEnseñar == false || (editarPostId > 0 && editarPostId != post.Id))
+                @if (editarPostEnseñar == false || (editarPostId > 0 && editarPostId != postAbierto.Id))
                 {
                     <div style="white-space: pre-line; max-width: 100%; overflow-wrap: anywhere;">
-                        @post.Contenido
+                        @postAbierto.Contenido
                     </div>
                 }
-                else if (editarPostEnseñar == true && editarPostId == post.Id)
+                else if (editarPostEnseñar == true && editarPostId == postAbierto.Id)
                 {
                     <textarea type="text" @oninput="@(e => EditarPostContenidoTexto(e))" class="entrada-texto" rows="6" style="min-width: 50px;">
-                        @post.Contenido  
+                        @postAbierto.Contenido  
                     </textarea>
 
                     <div style="width: 100%; display: flex; align-items: center; gap: 20px; justify-content: space-between; margin-top: 20px;">
@@ -346,6 +407,13 @@ else if (categoriaId > 0 && postId > 0)
                                         <div style="font-size: 14px; display: flex; align-items: start; gap: 20px;">
                                             @if (usuario != null)
                                             {
+                                                if (usuario.ForumRank > 99 || BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                                                {
+                                                    <button @onclick="@(e => BorrarPost(e, postAbierto.Id))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorTextoPeligro);">
+                                                        @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Forum")
+                                                    </button>
+                                                }
+
                                                 if (usuario.Id == respuesta.AutorId)
                                                 {
                                                     if (editarPostEnseñar == false)
@@ -441,8 +509,9 @@ else if (categoriaId > 0 && postId > 0)
     private Usuario usuario = null;
 
     private List<BaseDatos.Foro.ForoCategoria> categorias = null;
-    private List<BaseDatos.Foro.ForoPost> posts = null;
-    private BaseDatos.Foro.ForoPost post = null;
+    private List<BaseDatos.Foro.ForoPost> postsFijos = null;
+    private List<BaseDatos.Foro.ForoPost> postsUltimos = null;
+    private BaseDatos.Foro.ForoPost postAbierto = null;
     private List<BaseDatos.Foro.ForoPost> respuestasPost = null;
 
     [Parameter]
@@ -450,6 +519,8 @@ else if (categoriaId > 0 && postId > 0)
 
     [Parameter]
     public int postId { get; set; } = 0;
+
+    private PeriodicTimer cronometro = null;
 
     private bool crearPostEnseñar = false;
     private string crearPostTitulo = null;
@@ -465,6 +536,8 @@ else if (categoriaId > 0 && postId > 0)
 
     protected override async Task OnInitializedAsync()
     {
+        Cronometro();
+
         if (usuarioLogeado == true)
         {
             usuario = await UserManager.FindByIdAsync(usuarioId);
@@ -488,16 +561,27 @@ else if (categoriaId > 0 && postId > 0)
         }
         else if (categoriaId > 0 && postId == 0)
         {
-            posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+            postsFijos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 5, true);
+            postsUltimos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 30, false);
         }
         else if (categoriaId > 0 && postId > 0)
         {
-            post = BaseDatos.Foro.Buscar.Post(postId);
+            postAbierto = BaseDatos.Foro.Buscar.Post(postId);
 
-            if (post != null)
+            if (postAbierto != null)
             {
-                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(postAbierto.Id);
             }
+        }
+    }
+
+    private async void Cronometro()
+    {
+        cronometro = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
+        while (await cronometro.WaitForNextTickAsync())
+        {
+            await InvokeAsync(StateHasChanged);
         }
     }
 
@@ -519,7 +603,8 @@ else if (categoriaId > 0 && postId > 0)
 
         categoriaId = nuevaCategoriaId;
 
-        posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+        postsFijos = BaseDatos.Foro.Buscar.UltimosPosts(nuevaCategoriaId, 5, true);
+        postsUltimos = BaseDatos.Foro.Buscar.UltimosPosts(nuevaCategoriaId, 30, false);
 
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
     }
@@ -530,7 +615,8 @@ else if (categoriaId > 0 && postId > 0)
 
         postId = 0;
 
-        posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+        postsFijos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 5, true);
+        postsUltimos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 30, false);
 
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
     }
@@ -541,13 +627,13 @@ else if (categoriaId > 0 && postId > 0)
 
         postId = nuevoPostId;
 
-        post = BaseDatos.Foro.Buscar.Post(postId);
+        postAbierto = BaseDatos.Foro.Buscar.Post(postId);
 
-        if (post != null)
+        if (postAbierto != null)
         {
-            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(postAbierto.Id);
 
-            await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/" + post.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(post.Titulo) + "/");
+            await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/" + postAbierto.Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(postAbierto.Titulo) + "/");
         }
     }
 
@@ -595,7 +681,7 @@ else if (categoriaId > 0 && postId > 0)
 
                 BaseDatos.Foro.Insertar.Post(postEnviar);
 
-                posts = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId);
+                postsUltimos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 30, false);
 
                 crearPostEnseñar = false;
             }
@@ -625,21 +711,21 @@ else if (categoriaId > 0 && postId > 0)
 
     private void ResponderPostEnviar(MouseEventArgs e)
     {
-        if (post != null)
+        if (postAbierto != null)
         {
             BaseDatos.Foro.ForoPost postEnviar = new BaseDatos.Foro.ForoPost
             {
-                Titulo = post.Titulo + " - Respuesta",
+                Titulo = postAbierto.Titulo + " - Respuesta",
                 Contenido = responderPostContenido,
                 AutorId = usuario.Id,
                 CategoriaId = categoriaId,
                 FechaCreacion = DateTime.Now,
-                RespuestaId = post.Id
+                RespuestaId = postAbierto.Id
             };
 
             BaseDatos.Foro.Insertar.Post(postEnviar);
 
-            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+            respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(postAbierto.Id);
 
             responderPostEnseñar = false;
         }
@@ -676,12 +762,12 @@ else if (categoriaId > 0 && postId > 0)
 
             if (editarPostEsRespuesta == false)
             {
-                post = BaseDatos.Foro.Buscar.Post(editarPostId);
+                postAbierto = BaseDatos.Foro.Buscar.Post(editarPostId);
             }
 
-            if (post != null)
+            if (postAbierto != null)
             {
-                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(post.Id);
+                respuestasPost = BaseDatos.Foro.Buscar.RespuestasPost(postAbierto.Id);
             }
 
             editarPostEnseñar = false;
@@ -692,6 +778,27 @@ else if (categoriaId > 0 && postId > 0)
     private void EditarPostCerrar(MouseEventArgs e)
     {
         editarPostEnseñar = false;
+    }
+
+    #endregion
+
+    #region Borrar
+
+    private async void BorrarPost(MouseEventArgs e, int id)
+    {
+        if (id > 0)
+        {
+            BaseDatos.Foro.Limpiar.Post(id);
+
+            NavegacionOcultarControles();
+
+            postId = 0;
+
+            postsFijos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 5, true);
+            postsUltimos = BaseDatos.Foro.Buscar.UltimosPosts(categoriaId, 30, false);
+
+            await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/" + categoriaId.ToString() + "/");
+        }
     }
 
     #endregion

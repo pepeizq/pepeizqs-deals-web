@@ -2,8 +2,8 @@
 
 using Herramientas;
 using Microsoft.VisualBasic;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
 
 namespace APIs.Fanatical
 {
@@ -101,7 +101,7 @@ namespace APIs.Fanatical
 					html = html.Remove(0, 1);
 					html = "[" + html + "]";
 
-					List<FanaticalJuego> juegos = JsonConvert.DeserializeObject<List<FanaticalJuego>>(html);
+					List<FanaticalJuego> juegos = JsonSerializer.Deserialize<List<FanaticalJuego>>(html);
 
 					if (juegos != null)
 					{

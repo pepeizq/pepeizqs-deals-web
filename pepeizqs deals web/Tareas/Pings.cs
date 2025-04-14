@@ -19,7 +19,7 @@ namespace Tareas
 
         protected override async Task ExecuteAsync(CancellationToken tokenParar)
         {
-            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(120));
 
             while (await timer.WaitForNextTickAsync(tokenParar))
             {
@@ -58,16 +58,4 @@ namespace Tareas
             await base.StopAsync(stoppingToken);
         }
     }
-
-	public class BingApi
-	{
-		public string siteUrl { get; set; }
-		public string url { get; set; }
-
-		public BingApi(string newurl)
-		{
-			siteUrl = "https://pepeizqdeals.com";
-			url = newurl;
-		}
-	}
 }

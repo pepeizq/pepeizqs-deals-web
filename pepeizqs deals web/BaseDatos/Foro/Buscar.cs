@@ -70,7 +70,7 @@ namespace BaseDatos.Foro
 			return categorias;
 		}
 
-		public static List<ForoPost> UltimosPosts(int categoria, SqlConnection conexion = null)
+		public static List<ForoPost> UltimosPosts(int categoria, int cantidad, bool fijo = false, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -84,16 +84,28 @@ namespace BaseDatos.Foro
 				}
 			}
 
-			string busqueda = @"SELECT TOP 30 *, 
+			string busqueda = @"SELECT TOP @cantidad *, 
   (SELECT count(*) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) AS respuestas, 
   (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) AS fechaRespuesta, 
   (SELECT TOP 1 autorId FROM foroPost AS V2 WHERE V2.respuestaId=V1.id ORDER BY fecha DESC) AS autorId2 
-FROM foroPost AS V1 WHERE categoriaId=3 AND respuestaId IS NULL  
+FROM foroPost AS V1 WHERE categoriaId=@categoriaId AND respuestaId IS NULL @fijo 
 ORDER BY CASE
 WHEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) IS NULL THEN fecha
 WHEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id) > fecha THEN (SELECT MAX(fecha) FROM foroPost AS V2 WHERE V2.respuestaId=V1.id)
 END DESC";
-			
+
+			busqueda = busqueda.Replace("@cantidad", cantidad.ToString());
+			busqueda = busqueda.Replace("@categoriaId", categoria.ToString());
+
+			if (fijo == false)
+			{
+				busqueda = busqueda.Replace("@fijo", "AND (fijo IS NULL OR fijo = 'False')");
+			}
+			else
+			{
+				busqueda = busqueda.Replace("@fijo", "AND (fijo IS NOT NULL AND fijo = 'True')");
+			}
+
 			List<ForoPost> posts = new List<ForoPost>();
 			
 			using (SqlCommand comando = new SqlCommand(busqueda, conexion))

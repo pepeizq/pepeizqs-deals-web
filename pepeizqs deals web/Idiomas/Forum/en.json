@@ -3,6 +3,9 @@
   "Category1": "Admin",
   "Category2": "General",
   "Category3": "General",
+  "Category4": "Web",
+  "Category5": "Web",
+  "Category6": "Testing",
   "Language0": "English",
   "Language1": "Spanish",
   "String1": "Create Post",
@@ -17,5 +20,6 @@
   "String10": "Reply",
   "String11": "Edit",
   "String12": "Edit post",
-  "String13": "Reply post"
+  "String13": "Reply post",
+  "String14": "Delete"
 }

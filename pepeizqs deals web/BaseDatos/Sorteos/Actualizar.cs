@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using Sorteos2;
+using System.Text.Json;
 
 namespace BaseDatos.Sorteos
 {
@@ -14,7 +14,7 @@ namespace BaseDatos.Sorteos
             using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
             {
                 comando.Parameters.AddWithValue("@id", sorteo.Id);
-                comando.Parameters.AddWithValue("@participantes", JsonConvert.SerializeObject(sorteo.Participantes));
+                comando.Parameters.AddWithValue("@participantes", JsonSerializer.Serialize(sorteo.Participantes));
 
                 try
                 {

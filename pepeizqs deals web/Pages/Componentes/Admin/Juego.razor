@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.Data.SqlClient
-@using Newtonsoft.Json
+@using System.Text.Json
 @using global::Juegos
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
@@ -559,17 +559,17 @@
 	{
 		if (juego.Bundles != null)
 		{
-			textoBundles = JsonConvert.SerializeObject(juego.Bundles);
+			textoBundles = JsonSerializer.Serialize(juego.Bundles);
 		}
 
 		if (juego.Gratis != null)
 		{
-			textoGratis = JsonConvert.SerializeObject(juego.Gratis);
+			textoGratis = JsonSerializer.Serialize(juego.Gratis);
 		}
 
 		if (juego.Suscripciones != null)
 		{
-			textoSuscripciones = JsonConvert.SerializeObject(juego.Suscripciones);
+			textoSuscripciones = JsonSerializer.Serialize(juego.Suscripciones);
 		}
 
 		if (juego.Tipo == global::Juegos.JuegoTipo.DLC)
@@ -646,12 +646,12 @@
 
 		if (juego.UsuariosInteresados != null)
 		{
-			textoDeseados = JsonConvert.SerializeObject(juego.UsuariosInteresados);
+			textoDeseados = JsonSerializer.Serialize(juego.UsuariosInteresados);
 		}
 
 		if (juego.Historicos != null)
 		{
-			textoHistoricos = JsonConvert.SerializeObject(juego.Historicos);
+			textoHistoricos = JsonSerializer.Serialize(juego.Historicos);
 		}
 	}
 
@@ -753,14 +753,14 @@
 		{
 			if (juego.PrecioActualesTiendas != null)
 			{
-				textoPrecios = JsonConvert.SerializeObject(juego.PrecioActualesTiendas);
+				textoPrecios = JsonSerializer.Serialize(juego.PrecioActualesTiendas);
 			}			
 		}
 		else if (pestañaMostrarPrecios == 2)
 		{
 			if (juego.PrecioMinimosHistoricos != null)
 			{
-				textoPrecios = JsonConvert.SerializeObject(juego.PrecioMinimosHistoricos);
+				textoPrecios = JsonSerializer.Serialize(juego.PrecioMinimosHistoricos);
 			}			
 		}
 	}
@@ -779,12 +779,12 @@
 			{
 				if (pestañaMostrarPrecios == 1)
 				{
-					juego.PrecioActualesTiendas = JsonConvert.DeserializeObject<List<global::Juegos.JuegoPrecio>>(textoPrecios);
+					juego.PrecioActualesTiendas = JsonSerializer.Deserialize<List<global::Juegos.JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosActuales(juego, conexion);
 				}
 				else if (pestañaMostrarPrecios == 2)
 				{
-					juego.PrecioMinimosHistoricos = JsonConvert.DeserializeObject<List<global::Juegos.JuegoPrecio>>(textoPrecios);
+					juego.PrecioMinimosHistoricos = JsonSerializer.Deserialize<List<global::Juegos.JuegoPrecio>>(textoPrecios);
 					BaseDatos.Juegos.Actualizar.PreciosHistoricos(juego, conexion);
 				}				
 			}
@@ -809,7 +809,7 @@
 
 			using (conexion)
 			{
-				juego.Bundles = JsonConvert.DeserializeObject<List<global::Juegos.JuegoBundle>>(textoBundles);
+				juego.Bundles = JsonSerializer.Deserialize<List<global::Juegos.JuegoBundle>>(textoBundles);
 				BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
 			}
 		}
@@ -843,7 +843,7 @@
 
 			using (conexion)
 			{
-				juego.Gratis = JsonConvert.DeserializeObject<List<global::Juegos.JuegoGratis>>(textoGratis);
+				juego.Gratis = JsonSerializer.Deserialize<List<global::Juegos.JuegoGratis>>(textoGratis);
 				BaseDatos.Juegos.Actualizar.Gratis(juego, conexion);
 			}
 		}
@@ -877,7 +877,7 @@
 
 			using (conexion)
 			{
-				juego.Suscripciones = JsonConvert.DeserializeObject<List<global::Juegos.JuegoSuscripcion>>(textoSuscripciones);
+				juego.Suscripciones = JsonSerializer.Deserialize<List<global::Juegos.JuegoSuscripcion>>(textoSuscripciones);
 				BaseDatos.Juegos.Actualizar.Suscripciones(juego, conexion);
 			}
 		}
@@ -1302,7 +1302,7 @@
 			string nuevoTexto = texto.Value.ToString().Trim();
 
 			textoHistoricos = nuevoTexto;
-			juego.Historicos = JsonConvert.DeserializeObject<List<global::Juegos.JuegoHistorico>>(textoHistoricos);
+			juego.Historicos = JsonSerializer.Deserialize<List<global::Juegos.JuegoHistorico>>(textoHistoricos);
 
 			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
 

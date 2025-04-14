@@ -1,7 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Usuarios
 {
@@ -25,7 +25,7 @@ namespace BaseDatos.Usuarios
                         {
                             if (string.IsNullOrEmpty(lector.GetString(24)) == false)
                             {
-                                claves = JsonConvert.DeserializeObject<List<Clave>>(lector.GetString(24));
+                                claves = JsonSerializer.Deserialize<List<Clave>>(lector.GetString(24));
                             }
                         }
                     }
@@ -40,7 +40,7 @@ namespace BaseDatos.Usuarios
             using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
             {
                 comando.Parameters.AddWithValue("@Id", usuarioId);
-                comando.Parameters.AddWithValue("@Keys", JsonConvert.SerializeObject(claves));
+                comando.Parameters.AddWithValue("@Keys", JsonSerializer.Serialize(claves));
 
                 try
                 {

@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Data.SqlClient
-@using Newtonsoft.Json
+@using System.Text.Json
 
 @if (bundle != null)
 {
@@ -100,7 +100,7 @@
 			textoImagenNoticia = bundle.ImagenNoticia;
 			textoFechaEmpieza = bundle.FechaEmpieza.ToString();
 			textoFechaTermina = bundle.FechaTermina.ToString();
-			textoJuegos = JsonConvert.SerializeObject(bundle.Juegos);
+			textoJuegos = JsonSerializer.Serialize(bundle.Juegos);
 		}
 	}
 

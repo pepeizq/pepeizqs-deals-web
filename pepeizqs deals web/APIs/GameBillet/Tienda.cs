@@ -24,7 +24,7 @@ namespace APIs.GameBillet
 				Nombre = "GameBillet",
 				ImagenLogo = "/imagenes/tiendas/gamebillet_logo.webp",
 				Imagen300x80 = "/imagenes/tiendas/gamebillet_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/gamebillet_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/gamebillet_icono.webp",
 				Color = "#F1652A",
 				AdminEnseñar = true,
 				AdminInteractuar = true

@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web;
 @using Microsoft.AspNetCore.Identity
-@using Newtonsoft.Json
+@using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
 
 @inject UserManager<Usuario> UserManager
@@ -47,7 +47,7 @@
 
 					if (string.IsNullOrEmpty(usuario.Wishlist) == false)
 					{
-						List<global::Juegos.JuegoDeseado> lista = JsonConvert.DeserializeObject<List<global::Juegos.JuegoDeseado>>(usuario.Wishlist);
+						List<global::Juegos.JuegoDeseado> lista = JsonSerializer.Deserialize<List<global::Juegos.JuegoDeseado>>(usuario.Wishlist);
 
 						if (lista != null)
 						{

@@ -1,7 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Sorteos
 {
@@ -41,7 +41,7 @@ namespace BaseDatos.Sorteos
                             {
                                 try
                                 {
-                                    sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                    sorteo.Participantes = JsonSerializer.Deserialize<List<string>>(lector.GetString(4));
                                 }
                                 catch { }
                             }
@@ -93,7 +93,7 @@ namespace BaseDatos.Sorteos
                                 {
                                     try
                                     {
-                                        sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                        sorteo.Participantes = JsonSerializer.Deserialize<List<string>>(lector.GetString(4));
                                     }
                                     catch { }
                                 }
@@ -142,7 +142,7 @@ namespace BaseDatos.Sorteos
                             {
                                 try
                                 {
-                                    sorteo.Participantes = JsonConvert.DeserializeObject<List<string>>(lector.GetString(4));
+                                    sorteo.Participantes = JsonSerializer.Deserialize<List<string>>(lector.GetString(4));
                                 }
                                 catch { }
                             }

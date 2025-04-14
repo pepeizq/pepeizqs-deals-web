@@ -2,7 +2,7 @@
 
 using Juegos;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BaseDatos.Gratis
 {
@@ -20,7 +20,7 @@ namespace BaseDatos.Gratis
 				using (SqlCommand comando = new SqlCommand(sqlActualizarJuego, conexion))
 				{
 					comando.Parameters.AddWithValue("@id", id);
-					comando.Parameters.AddWithValue("@gratis", JsonConvert.SerializeObject(listaVecesGratis));
+					comando.Parameters.AddWithValue("@gratis", JsonSerializer.Serialize(listaVecesGratis));
 
 					try
 					{

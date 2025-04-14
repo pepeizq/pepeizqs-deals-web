@@ -3,6 +3,9 @@
   "Category1": "Admin",
   "Category2": "General",
   "Category3": "General",
+  "Category4": "Web",
+  "Category5": "Web",
+  "Category6": "Pruebas",
   "Language0": "Inglés",
   "Language1": "Español",
   "String1": "Crear Post",
@@ -17,5 +20,6 @@
   "String10": "Responder",
   "String11": "Editar",
   "String12": "Editar post",
-  "String13": "Responder post"
+  "String13": "Responder post",
+  "String14": "Borrar"
 }
