@@ -36,43 +36,6 @@
     {
         if (categorias.Count > 0)
         {
-            List<BaseDatos.Foro.ForoCategoria> categoriasIngles = new List<BaseDatos.Foro.ForoCategoria>();
-            List<BaseDatos.Foro.ForoCategoria> categoriasEspañol = new List<BaseDatos.Foro.ForoCategoria>();
-
-            foreach (var categoria in categorias)
-            {
-                bool mostrar = true;
-
-                if (categoria.SoloAdmin == true)
-                {
-                    mostrar = false;
-
-                    if (usuarioLogeado == true)
-                    {
-                        if (usuario != null)
-                        {
-                            if (usuario.ForumRank > 99)
-                            {
-                                mostrar = true;
-                            }
-                        }
-                    }
-                }
-
-                if (mostrar == true)
-                {
-                    if (categoria.Idioma == BaseDatos.Foro.ForoIdioma.Ingles)
-                    {
-                        categoriasIngles.Add(categoria);
-                    }
-                    
-                    if (categoria.Idioma == BaseDatos.Foro.ForoIdioma.Español)
-                    {
-                        categoriasEspañol.Add(categoria);
-                    }
-                }
-            }
-
             <div class="titulo-foro">
                 <h1 style="font-size: 20px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Forum")
@@ -80,19 +43,51 @@
                 <hr/>
             </div>
 
-            if (categoriasIngles.Count > 0)
-            {
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                @if (usuarioLogeado == true)
+                {
+                    if (usuario != null)
+                    {
+                        if (usuario.ForumRank > 99 || BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                        {
+                            <div class="caja-foro">
+                                <div style="display: flex; flex-direction: column; gap: 20px;">
+                                    @foreach (var categoria in categoriasAdmin)
+                                    {
+                                        <button @onclick="@(e => NavegacionCategoria(e, categoria.Id))" class="boton-pequeño" style="padding: 15px 20px;">
+                                            @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoria.Id.ToString(), "Forum")
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
                 <div class="caja-foro">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <img src="/imagenes/banderas/english.svg" style="width: 24px; height: 24px;" alt="English" />
+                    @if (idiomaId == 0)
+                    {
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <img src="/imagenes/banderas/english.svg" style="width: 24px; height: 24px;" alt="English" />
 
-                        <div style="font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Forum")    
+                            <div style="font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Forum")
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else if (idiomaId == 1)
+                    {
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <img src="/imagenes/banderas/spanish.svg" style="width: 24px; height: 24px;" alt="Spanish" />
+
+                            <div style="font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Forum")
+                            </div>
+                        </div>
+                    }
 
                     <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
-                        @foreach (var categoria in categoriasIngles)
+                        @foreach (var categoria in categorias)
                         {
                             <button @onclick="@(e => NavegacionCategoria(e, categoria.Id))" class="boton-pequeño" style="padding: 15px 20px;">
                                 @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoria.Id.ToString(), "Forum")
@@ -100,29 +95,7 @@
                         }
                     </div>
                 </div>
-            }
-
-            if (categoriasEspañol.Count > 0)
-            {
-                <div class="caja-foro" style="margin-top: 30px;">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <img src="/imagenes/banderas/spanish.svg" style="width: 24px; height: 24px;" alt="Spanish" />
-
-                        <div style="font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Forum")    
-                        </div>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
-                        @foreach (var categoria in categoriasEspañol)
-                        {
-                            <button @onclick="@(e => NavegacionCategoria(e, categoria.Id))" class="boton-pequeño" style="padding: 15px 20px;">
-                                @Herramientas.Idiomas.BuscarTexto(idioma, "Category" + categoria.Id.ToString(), "Forum")
-                            </button>
-                        }
-                    </div>
-                </div>
-            }
+            </div>
         }
     }
 }
@@ -330,6 +303,17 @@ else if (categoriaId > 0 && postId > 0)
                                     <button @onclick="@(e => BorrarPost(e, postAbierto.Id))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorTextoPeligro);">
                                         @Herramientas.Idiomas.BuscarTexto(idioma, "String14", "Forum")
                                     </button>
+
+                                    <button @onclick="@(e => FijarPost(e, postAbierto.Id))" style="width: fit-content; font-size: 14px; padding: 0px; border: 0px; background: transparent; color: var(--colorEnlace);">
+                                        @if (postAbierto.Fijo == false)
+                                        {
+                                            @Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Forum")
+                                        }
+                                        else
+                                        {
+                                            @Herramientas.Idiomas.BuscarTexto(idioma, "String16", "Forum")
+                                        }
+                                    </button>
                                 }
 
                                 @if (usuario.Id == postAbierto.AutorId)
@@ -500,6 +484,8 @@ else if (categoriaId > 0 && postId > 0)
     [Parameter]
     public string idioma { get; set; }
 
+    private int idiomaId = 0;
+
     [Parameter]
     public string usuarioId { get; set; }
 
@@ -508,6 +494,7 @@ else if (categoriaId > 0 && postId > 0)
 
     private Usuario usuario = null;
 
+    private List<BaseDatos.Foro.ForoCategoria> categoriasAdmin = null;
     private List<BaseDatos.Foro.ForoCategoria> categorias = null;
     private List<BaseDatos.Foro.ForoPost> postsFijos = null;
     private List<BaseDatos.Foro.ForoPost> postsUltimos = null;
@@ -538,6 +525,11 @@ else if (categoriaId > 0 && postId > 0)
     {
         Cronometro();
 
+        if (Herramientas.Idiomas.ListadoIdiomasGenerar()[1].Id == idioma)
+        {
+            idiomaId = 1;
+        }
+
         if (usuarioLogeado == true)
         {
             usuario = await UserManager.FindByIdAsync(usuarioId);
@@ -557,7 +549,18 @@ else if (categoriaId > 0 && postId > 0)
 
         if (categoriaId == 0 && postId == 0)
         {
-            categorias = BaseDatos.Foro.Buscar.Categorias();
+            if (usuarioLogeado == true)
+            {
+                if (usuario != null)
+                {
+                    if (usuario.ForumRank > 99 || BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                    {
+                        categoriasAdmin = BaseDatos.Foro.Buscar.CategoriasAdmin();
+                    }
+                }
+            }
+
+            categorias = BaseDatos.Foro.Buscar.CategoriasIdiomas(idiomaId);
         }
         else if (categoriaId > 0 && postId == 0)
         {
@@ -592,7 +595,18 @@ else if (categoriaId > 0 && postId > 0)
         categoriaId = 0;
         postId = 0;
 
-        categorias = BaseDatos.Foro.Buscar.Categorias();
+        if (usuarioLogeado == true)
+        {
+            if (usuario != null)
+            {
+                if (usuario.ForumRank > 99 || BaseDatos.Usuarios.Buscar.RolDios(usuario.Id) == true)
+                {
+                    categoriasAdmin = BaseDatos.Foro.Buscar.CategoriasAdmin();
+                }
+            }
+        }
+
+        categorias = BaseDatos.Foro.Buscar.CategoriasIdiomas(idiomaId);
 
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/");
     }
@@ -758,7 +772,7 @@ else if (categoriaId > 0 && postId > 0)
     {
         if (editarPostId > 0)
         {
-            BaseDatos.Foro.Actualizar.Ejecutar(editarPostId, editarPostContenido);
+            BaseDatos.Foro.Actualizar.Post(editarPostId, editarPostContenido);
 
             if (editarPostEsRespuesta == false)
             {
@@ -782,7 +796,17 @@ else if (categoriaId > 0 && postId > 0)
 
     #endregion
 
-    #region Borrar
+    #region Admin
+
+    private void FijarPost(MouseEventArgs e, int id)
+    {
+        if (id > 0)
+        {
+            BaseDatos.Foro.Actualizar.Fijo(id);
+
+            postAbierto = BaseDatos.Foro.Buscar.Post(id);
+        }
+    }
 
     private async void BorrarPost(MouseEventArgs e, int id)
     {

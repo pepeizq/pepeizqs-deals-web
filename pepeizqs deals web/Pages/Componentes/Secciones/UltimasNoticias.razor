@@ -29,6 +29,10 @@
 						}
 					}
 				}
+				else
+				{
+					break;
+				}
 
                 i += 1;
 			}
@@ -45,6 +49,47 @@
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow" />
 		<meta name="keywords" content="@keywords" />
+
+		@if (noticiasMostrar != null)
+		{
+			if (noticiasMostrar.Count > 0)
+			{
+				<script type="application/ld+json">
+					{
+					  "@@context": "https://schema.org",
+					  "@@type": "BreadcrumbList",
+					  "itemListElement": [
+					@{
+						string jsonContenido = string.Empty;
+						for (int i = 1; i < 20; i += 1)
+						{
+							string jsonAñadir = @"{
+							""@type"": ""ListItem"",
+							""position"": @posicion,
+							""name"": ""@titulo"",
+							""item"": ""@enlace""
+							}";
+
+							jsonAñadir = jsonAñadir.Replace("@posicion", i.ToString());
+							jsonAñadir = jsonAñadir.Replace("@titulo", noticiasMostrar[i - 1].TituloEn);
+							jsonAñadir = jsonAñadir.Replace("@enlace", "https://pepeizqdeals.com/news/" + noticiasMostrar[i - 1].Id.ToString() + "/" + Herramientas.EnlaceAdaptador.Nombre(noticiasMostrar[i - 1].TituloEn + "/"));
+
+							if (i < 20 - 1)
+							{
+								jsonAñadir = jsonAñadir + ",";
+							}
+
+							jsonContenido = jsonContenido + jsonAñadir;
+						}
+					}
+					@((MarkupString)jsonContenido)
+						]
+					}
+				</script>
+			}
+		}
+
+
 
 		<link rel="canonical" href="@enlace" />
 	</HeadContent>

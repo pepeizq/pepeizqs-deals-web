@@ -30,11 +30,12 @@ namespace BaseDatos.Foro
 		public int CantidadRespuestas { get; set; }
 		public DateTime FechaUltimaRespuesta { get; set; }
 		public string AutorIdUltimaRespuesta { get; set; }
+		public bool Fijo { get; set; }
 	}
 
 	public static class Buscar
 	{
-		public static List<ForoCategoria> Categorias(SqlConnection conexion = null)
+		public static List<ForoCategoria> CategoriasIdiomas(int idiomaId, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -47,7 +48,47 @@ namespace BaseDatos.Foro
 					conexion = Herramientas.BaseDatos.Conectar();
 				}
 			}
-			string busqueda = "SELECT * FROM foroCategoria";
+
+			string busqueda = "SELECT * FROM foroCategoria WHERE idioma=@idioma";
+
+			List<ForoCategoria> categorias = new List<ForoCategoria>();
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@idioma", idiomaId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read() == true)
+					{
+						categorias.Add(new ForoCategoria
+						{
+							Id = lector.GetInt32(0),
+							SoloAdmin = lector.GetBoolean(1),
+							Idioma = (ForoIdioma)lector.GetInt32(2)
+						});
+					}
+				}
+			}
+
+			return categorias;
+		}
+
+		public static List<ForoCategoria> CategoriasAdmin(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT * FROM foroCategoria WHERE soloAdmin='True'";
 
 			List<ForoCategoria> categorias = new List<ForoCategoria>();
 
@@ -196,6 +237,11 @@ END DESC";
 						if (lector.IsDBNull(7) == false)
 						{
 							post.RespuestaId = lector.GetInt32(7);
+						}
+
+						if (lector.IsDBNull(8) == false)
+						{
+							post.Fijo = lector.GetBoolean(8);
 						}
 					}
 				}

@@ -9,7 +9,7 @@
 				Tipo = Gratis2.GratisTipo.Steam,
 				Nombre = "Steam",
 				ImagenLogo = "/imagenes/tiendas/steam_300x80.webp",
-				ImagenIcono = "/imagenes/tiendas/steam_icono.ico",
+				ImagenIcono = "/imagenes/tiendas/steam_icono.webp",
 				DRMDefecto = Juegos.JuegoDRM.Steam,
 				DRMEnseñar = false
 			};
