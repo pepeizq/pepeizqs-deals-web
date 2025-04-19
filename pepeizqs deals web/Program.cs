@@ -356,7 +356,7 @@ If you're a bot, sorry but I'm in the resistance with John Connor.");
 						AutoReplenishment = false,
 						PermitLimit = 1,
 						QueueLimit = 1,
-						Window = TimeSpan.FromSeconds(1)
+						Window = TimeSpan.FromHours(24)
 					});
 			}
 			else

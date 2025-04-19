@@ -75,21 +75,23 @@ namespace pepeizqs_deals_web.Pages.Account
 
 				if (resultado.Succeeded == true)
 				{
-					if (string.IsNullOrEmpty(returnUrl) == false)
-					{
-						if (returnUrl.Contains("/account/login") == true)
-						{
-							return RedirectToPage("./");
-						}
-						else
-						{
-							return LocalRedirect(returnUrl);
-						}
-					}
-					else
-					{
-						return RedirectToPage("./");
-					}
+					return Redirect("https://pepeizqdeals.com/");
+
+					//if (string.IsNullOrEmpty(returnUrl) == false)
+					//{
+					//	if (returnUrl.Contains("/account/login") == true)
+					//	{
+					//		return RedirectToPage("./");
+					//	}
+					//	else
+					//	{
+					//		return LocalRedirect(returnUrl);
+					//	}
+					//}
+					//else
+					//{
+					//	return RedirectToPage("./");
+					//}
 				}
 
 				if (resultado.RequiresTwoFactor)

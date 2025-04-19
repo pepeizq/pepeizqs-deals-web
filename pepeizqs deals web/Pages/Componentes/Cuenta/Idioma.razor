@@ -137,7 +137,7 @@
 
                             foreach (var idioma2 in listadoIdiomas2)
                             {
-                                <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaWeb(e, idioma2.Id))">
+                                <button class="texto-cabecera menu-dropdown-item" style="font-size: 14px; text-align: left; width: 100%; border: 0px;" @onclick="(e => CambiarIdiomaJuegos(e, idioma2.Id))">
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         @{
                                             string imagenBandera = "/imagenes/banderas/" + Herramientas.Idiomas.EncontrarIdiomaImagen(idioma2.Id) + ".svg";

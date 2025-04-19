@@ -125,6 +125,13 @@
                 </a>
             }
 
+            @if (ubicacionEnlace.Contains("/forum") == false)
+            {
+                <a class="texto-cabecera boton-superior" href="/forum" style="font-size: 15px;">
+                    @Herramientas.Idiomas.BuscarTexto(idioma, "Forum", "Header")
+                </a>
+            }
+
             <a class="texto-cabecera boton-superior" href="https://pepeizqapps.com/extension/pepeizq-deals" title="@Herramientas.Idiomas.BuscarTexto(idioma, "Extension", "Footer")">
                 <div style="width: 22px; height: 22px;">
                     <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -178,6 +185,13 @@
                     {
                         <a class="texto-cabecera boton-superior" href="/subscriptions" style="font-size: 15px;">
                             @Herramientas.Idiomas.BuscarTexto(idioma, "Subscriptions", "Header")
+                        </a>
+                    }
+
+                    @if (ubicacionEnlace.Contains("/forum") == false)
+                    {
+                        <a class="texto-cabecera boton-superior" href="/forum" style="font-size: 15px;">
+                            @Herramientas.Idiomas.BuscarTexto(idioma, "Forum", "Header")
                         </a>
                     }
                 </div>

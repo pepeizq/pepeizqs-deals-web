@@ -4,7 +4,9 @@
 	{
 		public static List<string> ListadoIps()
 		{
-			List<string> listadoIps = ["47.79.", "47.82.", "103.207."];
+			List<string> listadoIps = ["47.76.", "47.79.", "47.82.", "47.242.", "47.243.",
+				"103.207.", "103.120.",  
+				"8.210.", "81.177.", "113.172."];
 
 			return listadoIps;
 		}

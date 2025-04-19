@@ -7,7 +7,11 @@ namespace Herramientas
 {
 	public static class RobotsUserAgents
 	{
-		public static List<string> bots = ["Googlebot", 
+		public static List<string> bots = ["Googlebot",
+			"Google-Safety",
+			"GoogleAssociationService",
+			"fetcher",
+			"Feedfetcher-Google",
 			"Bingbot",
 			"YandexBot", 
 			"Applebot", 
@@ -24,9 +28,12 @@ namespace Herramientas
 			"MojeekBot",
 			"OpenWebSearchBot",
 			"Qwantify",
+			"Barkrowler",
 			"TelegramBot",
 			"Discordbot",
-			"Lighthouse"];
+			"Lighthouse",
+			"Chrome-Lighthouse",
+			"SeznamBot"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{

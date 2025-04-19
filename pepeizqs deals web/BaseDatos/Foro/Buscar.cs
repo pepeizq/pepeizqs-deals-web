@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
+using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 
 namespace BaseDatos.Foro
 {
@@ -15,6 +16,7 @@ namespace BaseDatos.Foro
 		public int Id { get; set; }
 		public bool SoloAdmin { get; set; }
 		public ForoIdioma Idioma { get; set; }
+		public int CantidadPosts { get; set; }
 	}
 
 	public class ForoPost
@@ -31,6 +33,7 @@ namespace BaseDatos.Foro
 		public DateTime FechaUltimaRespuesta { get; set; }
 		public string AutorIdUltimaRespuesta { get; set; }
 		public bool Fijo { get; set; }
+		public ForoIdioma? Idioma { get; set; }
 	}
 
 	public static class Buscar
@@ -49,7 +52,7 @@ namespace BaseDatos.Foro
 				}
 			}
 
-			string busqueda = "SELECT * FROM foroCategoria WHERE idioma=@idioma";
+			string busqueda = "SELECT *, (SELECT count(id) FROM foropost WHERE categoriaId=T1.id) AS posts FROM foroCategoria AS T1 WHERE idioma=@idioma";
 
 			List<ForoCategoria> categorias = new List<ForoCategoria>();
 
@@ -65,13 +68,48 @@ namespace BaseDatos.Foro
 						{
 							Id = lector.GetInt32(0),
 							SoloAdmin = lector.GetBoolean(1),
-							Idioma = (ForoIdioma)lector.GetInt32(2)
+							Idioma = (ForoIdioma)lector.GetInt32(2),
+							CantidadPosts = lector.GetInt32(3)
 						});
 					}
 				}
 			}
 
 			return categorias;
+		}
+
+		public static bool CategoriaSoloAdmin(int categoriaId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = "SELECT soloAdmin FROM foroCategoria WHERE id=@id";
+
+			bool soloAdmin = false;
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", categoriaId);
+
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read() == true)
+					{
+						soloAdmin = lector.GetBoolean(0);
+					}
+				}
+			}
+
+			return soloAdmin;
 		}
 
 		public static List<ForoCategoria> CategoriasAdmin(SqlConnection conexion = null)
@@ -111,7 +149,56 @@ namespace BaseDatos.Foro
 			return categorias;
 		}
 
-		public static List<ForoPost> UltimosPosts(int categoria, int cantidad, bool fijo = false, SqlConnection conexion = null)
+		public static List<ForoPost> UltimosPosts(SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string busqueda = @"SELECT TOP 10 *, (SELECT idioma FROM foroCategoria WHERE id=T1.categoriaId AND soloAdmin='False') AS idioma FROM foroPost AS T1 
+WHERE GETDATE() BETWEEN fecha AND DATEADD(day, 3, fecha)
+ORDER BY fecha DESC";
+
+			List<ForoPost> posts = new List<ForoPost>();
+
+			using (SqlCommand comando = new SqlCommand(busqueda, conexion))
+			{
+				using (SqlDataReader lector = comando.ExecuteReader())
+				{
+					while (lector.Read() == true)
+					{
+						ForoPost nuevoPost = new ForoPost
+						{
+							Id = lector.GetInt32(0),
+							AutorId = lector.GetString(1),
+							CategoriaId = lector.GetInt32(2),
+							Titulo = lector.GetString(3),
+							Contenido = lector.GetString(4),
+							FechaCreacion = lector.GetDateTime(5)
+						};
+
+						if (lector.IsDBNull(9) == false)
+						{
+							nuevoPost.Idioma = (ForoIdioma)lector.GetInt32(9);
+
+							posts.Add(nuevoPost);
+						}
+					}
+				}
+			}
+
+			return posts;
+		}
+
+		public static List<ForoPost> UltimosPosts(int categoria, int cantidad = 20, bool fijo = false, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{

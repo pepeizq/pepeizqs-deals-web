@@ -84,10 +84,15 @@
 
                     if (estrellasJson < 0.5m)
                     {
-                        estrellasJson = 0.5m;
+                        estrellasJson = 0.50m;
                     }
 
                     cantidadJson = juego.Analisis.Cantidad.Replace(",", null);
+
+                    if (string.IsNullOrEmpty(cantidadJson) == true)
+                    {
+                        cantidadJson = "10";
+                    }
                 }
             }
             
