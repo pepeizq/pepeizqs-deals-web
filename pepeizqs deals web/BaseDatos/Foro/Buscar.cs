@@ -1,7 +1,6 @@
 ﻿#nullable disable
 
 using Microsoft.Data.SqlClient;
-using pepeizqs_deals_web.Pages.Componentes.Cuenta;
 
 namespace BaseDatos.Foro
 {
@@ -33,6 +32,7 @@ namespace BaseDatos.Foro
 		public DateTime FechaUltimaRespuesta { get; set; }
 		public string AutorIdUltimaRespuesta { get; set; }
 		public bool Fijo { get; set; }
+		public bool Cerrado { get; set; }
 		public ForoIdioma? Idioma { get; set; }
 	}
 
