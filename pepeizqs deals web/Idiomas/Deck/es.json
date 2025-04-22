@@ -24,5 +24,6 @@
   "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Este juego requiere que la compatibilidad del mando se active manualmente con los ajustes dentro del juego.",
   "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "No se puede acceder a alguna funcionalidad en Steam Deck: editor de mapas.",
   "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "Este juego no es compatible con Steam Deck porque utiliza un sistema antitrampas o un servicio multijugador incompatibles.",
-  "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedLocalMultiplayer": "Este juego no permite usar mandos Bluetooth o USB externos en Deck para el modo multijugador local."
+  "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedLocalMultiplayer": "Este juego no permite usar mandos Bluetooth o USB externos en Deck para el modo multijugador local.",
+  "#SteamDeckVerified_TestResult_DeviceCompatibilityWarningsShown": "Este juego muestra advertencias de compatibilidad cuando se ejecuta en Steam Deck, pero funciona bien."
 }

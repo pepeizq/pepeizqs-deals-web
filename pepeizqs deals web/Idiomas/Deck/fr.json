@@ -24,5 +24,6 @@
   "#SteamDeckVerified_TestResult_GamepadNotEnabledByDefault": "Ce jeu nécessite l'activation manuelle de la prise en charge des manettes à l'aide des paramètres du jeu.",
   "#SteamDeckVerified_TestResult_AuxFunctionalityNotAccessible_MapEditor": "Certaines fonctionnalités auxiliaires ne sont pas accessibles sur Steam Deck : éditeur de cartes",
   "#SteamDeckVerified_TestResult_UnsupportedAntiCheat_Other": "Ce jeu n'est pas pris en charge sur Steam Deck en raison de l'utilisation d'un service anti-triche ou multijoueur non pris en charge.",
-  "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedLocalMultiplayer": "Ce jeu ne prend pas en charge les contrôleurs externes Bluetooth/USB sur Steam Deck pour le mode multijoueur en local."
+  "#SteamDeckVerified_TestResult_ExternalControllersNotSupportedLocalMultiplayer": "Ce jeu ne prend pas en charge les contrôleurs externes Bluetooth/USB sur Steam Deck pour le mode multijoueur en local.",
+  "#SteamDeckVerified_TestResult_DeviceCompatibilityWarningsShown": "Ce jeu affiche des avertissements de compatibilité lors de la course sur Steam Deck, mais fonctionne bien"
 }
