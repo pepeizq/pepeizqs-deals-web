@@ -149,7 +149,7 @@ namespace BaseDatos.Foro
 			return categorias;
 		}
 
-		public static List<ForoPost> UltimosPosts(SqlConnection conexion = null)
+		public static List<ForoPost> UltimosPostsTodoForo(int idiomaId, int cantidad, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -163,9 +163,12 @@ namespace BaseDatos.Foro
 				}
 			}
 
-			string busqueda = @"SELECT TOP 10 *, (SELECT idioma FROM foroCategoria WHERE id=T1.categoriaId AND soloAdmin='False') AS idioma FROM foroPost AS T1 
-WHERE GETDATE() BETWEEN fecha AND DATEADD(day, 3, fecha)
+			string busqueda = @"SELECT TOP @cantidad * FROM foroPost AS T1 
+WHERE GETDATE() BETWEEN fecha AND DATEADD(day, 3, fecha) AND (SELECT idioma FROM foroCategoria WHERE id=T1.categoriaId AND soloAdmin='False')=@idioma
 ORDER BY fecha DESC";
+
+			busqueda = busqueda.Replace("@cantidad", cantidad.ToString());
+			busqueda = busqueda.Replace("@idioma", idiomaId.ToString());
 
 			List<ForoPost> posts = new List<ForoPost>();
 
@@ -185,12 +188,7 @@ ORDER BY fecha DESC";
 							FechaCreacion = lector.GetDateTime(5)
 						};
 
-						if (lector.IsDBNull(9) == false)
-						{
-							nuevoPost.Idioma = (ForoIdioma)lector.GetInt32(9);
-
-							posts.Add(nuevoPost);
-						}
+						posts.Add(nuevoPost);
 					}
 				}
 			}
@@ -253,19 +251,19 @@ END DESC";
 							FechaCreacion = lector.GetDateTime(5)
 						};
 
-						if (lector.IsDBNull(9) == false)
-						{
-							nuevoPost.CantidadRespuestas = lector.GetInt32(9);
-						}
-
 						if (lector.IsDBNull(10) == false)
 						{
-							nuevoPost.FechaUltimaRespuesta = lector.GetDateTime(10);
+							nuevoPost.CantidadRespuestas = lector.GetInt32(10);
 						}
 
 						if (lector.IsDBNull(11) == false)
 						{
-							nuevoPost.AutorIdUltimaRespuesta = lector.GetString(11);
+							nuevoPost.FechaUltimaRespuesta = lector.GetDateTime(11);
+						}
+
+						if (lector.IsDBNull(12) == false)
+						{
+							nuevoPost.AutorIdUltimaRespuesta = lector.GetString(12);
 						}
 
 						posts.Add(nuevoPost);

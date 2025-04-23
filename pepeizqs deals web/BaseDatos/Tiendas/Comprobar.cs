@@ -267,6 +267,20 @@ namespace BaseDatos.Tiendas
 								juego.FechaSteamAPIComprobacion = DateTime.Now;
 								juego.Categorias = nuevoJuego.Categorias;
 								juego.Generos = nuevoJuego.Generos;
+
+								if (nuevoJuego.Analisis != null)
+								{
+									if (string.IsNullOrEmpty(nuevoJuego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(nuevoJuego.Analisis.Cantidad) == false)
+									{
+										JuegoAnalisis reseñas = new JuegoAnalisis
+										{
+											Cantidad = nuevoJuego.Analisis.Cantidad,
+											Porcentaje = nuevoJuego.Analisis.Porcentaje
+										};
+
+										juego.Analisis = reseñas;
+									}
+								}
 							}
 
 							juego.Etiquetas = etiquetas;

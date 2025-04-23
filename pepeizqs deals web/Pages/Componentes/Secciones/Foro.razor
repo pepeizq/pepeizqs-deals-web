@@ -130,8 +130,6 @@
         }
     }
 
-    List<BaseDatos.Foro.ForoPost> postsUltimosTodoForo = BaseDatos.Foro.Buscar.UltimosPosts();
-
     if (postsUltimosTodoForo != null)
     {
         if (postsUltimosTodoForo.Count > 0)
@@ -149,8 +147,7 @@
                 <div style="display: flex; flex-direction: column;">
                     <Virtualize Context="post" Items="postsUltimosTodoForo">
                         <ItemContent>
-                            @if (post.Idioma != null)
-                            {
+                            @{
                                 Usuario? usuario = null;
                                 DateTime fechaUsar = post.FechaCreacion;
 
@@ -615,6 +612,7 @@ else if (categoriaId > 0 && postId > 0)
 
     private List<BaseDatos.Foro.ForoCategoria> categoriasAdmin = null;
     private List<BaseDatos.Foro.ForoCategoria> categorias = null;
+    private List<BaseDatos.Foro.ForoPost> postsUltimosTodoForo = null;
     private List<BaseDatos.Foro.ForoPost> postsFijos = null;
     private List<BaseDatos.Foro.ForoPost> postsUltimos = null;
     private BaseDatos.Foro.ForoPost postAbierto = null;
@@ -685,6 +683,7 @@ else if (categoriaId > 0 && postId > 0)
             }
 
             categorias = BaseDatos.Foro.Buscar.CategoriasIdiomas(idiomaId);
+            postsUltimosTodoForo = BaseDatos.Foro.Buscar.UltimosPostsTodoForo(idiomaId, 10);
         }
         else if (categoriaId > 0 && postId == 0)
         {
@@ -717,6 +716,7 @@ else if (categoriaId > 0 && postId > 0)
         idiomaId = nuevoIdiomaId;
 
         categorias = BaseDatos.Foro.Buscar.CategoriasIdiomas(idiomaId);
+        postsUltimosTodoForo = BaseDatos.Foro.Buscar.UltimosPostsTodoForo(idiomaId, 10);
     }
 
     #region Navegación
@@ -734,6 +734,7 @@ else if (categoriaId > 0 && postId > 0)
         }
 
         categorias = BaseDatos.Foro.Buscar.CategoriasIdiomas(idiomaId);
+        postsUltimosTodoForo = BaseDatos.Foro.Buscar.UltimosPostsTodoForo(idiomaId, 10);
 
         await JavaScript.InvokeVoidAsync("ChangeUrl", "/forum/");
     }

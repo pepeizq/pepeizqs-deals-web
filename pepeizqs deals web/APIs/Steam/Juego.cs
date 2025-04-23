@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿//https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={"ids":[{"appid":1091500}],"context":{"language":"english","country_code":"ES","steam_realm":1},"data_request":{"include_reviews":true,"include_basic_info":true, "include_assets": true, "include_links": true}}
+
+#nullable disable
 
 using Herramientas;
 using System.Globalization;
@@ -11,10 +13,56 @@ namespace APIs.Steam
 	public static class Juego
 	{
 		public static string dominioImagenes = "https://cdn.cloudflare.steamstatic.com";
+		public static string dominioImagenes2 = "https://shared.cloudflare.steamstatic.com";
 
 		public static async Task<Juegos.Juego> CargarDatosJuego(string enlace)
 		{
 			string id = LimpiarID(enlace);
+
+			Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
+			Juegos.JuegoAnalisis reseñas = new Juegos.JuegoAnalisis();
+
+			string html2 = await Decompiladores.Estandar(@"https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={""ids"":[{""appid"":" + id + @"}],""context"":{""language"":""english"",""country_code"":""ES"",""steam_realm"":1},""data_request"":{""include_reviews"":true,""include_basic_info"":true, ""include_assets"": true, ""include_links"": true}}");
+
+			if (string.IsNullOrEmpty(html2) == false)
+			{
+				SteamJuegoAPI2 datos2 = null;
+
+				try
+				{
+					datos2 = JsonSerializer.Deserialize<SteamJuegoAPI2>(html2);
+				}
+				catch { }
+
+				if (datos2 != null)
+				{
+					if (datos2.Respuesta.Juegos.Count == 1)
+					{
+						if (string.IsNullOrEmpty(datos2.Respuesta.Juegos[0].Media.Header_460x215) == false)
+						{
+							imagenes.Header_460x215 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Header_460x215;
+						}
+
+						if (string.IsNullOrEmpty(datos2.Respuesta.Juegos[0].Media.Capsule_231x87) == false)
+						{
+							imagenes.Capsule_231x87 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Capsule_231x87;
+						}
+
+						if (string.IsNullOrEmpty(datos2.Respuesta.Juegos[0].Media.Library_600x900) == false)
+						{
+							imagenes.Library_600x900 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Library_600x900;
+						}
+
+						if (string.IsNullOrEmpty(datos2.Respuesta.Juegos[0].Media.Library_600x900) == false)
+						{
+							imagenes.Library_1920x620 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Library_1920x620;
+						}
+						
+						reseñas.Porcentaje = datos2.Respuesta.Juegos[0].Reseñas.Filtrado.Porcentaje.ToString();
+						reseñas.Cantidad = datos2.Respuesta.Juegos[0].Reseñas.Filtrado.Cantidad.ToString();
+					}
+				}
+			}
 
 			string html = await Decompiladores.Estandar("https://store.steampowered.com/api/appdetails/?appids=" + id + "&l=english");
 
@@ -35,15 +83,32 @@ namespace APIs.Steam
 
 				if (datos != null)
 				{
-					Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
-
 					if (datos.Datos != null) 
 					{
-						imagenes.Header_460x215 = datos.Datos.ImagenHeader_460x215;
-						imagenes.Capsule_231x87 = datos.Datos.ImagenCapsule_231x87;
-						imagenes.Logo = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/logo.png";
-						imagenes.Library_1920x620 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_hero.jpg";
-						imagenes.Library_600x900 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_600x900.jpg";
+						if (string.IsNullOrEmpty(imagenes.Header_460x215) == true)
+						{
+							imagenes.Header_460x215 = datos.Datos.ImagenHeader_460x215;
+						}
+
+						if (string.IsNullOrEmpty(imagenes.Capsule_231x87) == true)
+						{
+							imagenes.Capsule_231x87 = datos.Datos.ImagenCapsule_231x87;
+						}
+
+						if (string.IsNullOrEmpty(imagenes.Logo) == true)
+						{
+							imagenes.Logo = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/logo.png";
+						}
+
+						if (string.IsNullOrEmpty(imagenes.Library_1920x620) == true)
+						{
+							imagenes.Library_1920x620 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_hero.jpg";
+						}
+
+						if (string.IsNullOrEmpty(imagenes.Library_600x900) == true)
+						{
+							imagenes.Library_600x900 = dominioImagenes + "/steam/apps/" + datos.Datos.Id + "/library_600x900.jpg";
+						}
 					}
 
 					//------------------------------------------------------
@@ -127,6 +192,10 @@ namespace APIs.Steam
 						{
 							juego.Tipo = Juegos.JuegoTipo.DLC;
 
+							juego.Imagenes.Logo = null;
+							juego.Imagenes.Library_600x900 = null;
+							juego.Imagenes.Library_1920x620 = null;
+
 							Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, datos.Datos.Maestro.Id.ToString());
 
 							if (maestro != null)
@@ -140,14 +209,24 @@ namespace APIs.Steam
 						else if (datos.Datos.Tipo == "music")
 						{
 							juego.Tipo = Juegos.JuegoTipo.Music;
+
+							juego.Imagenes.Logo = null;
+							juego.Imagenes.Library_600x900 = null;
+							juego.Imagenes.Library_1920x620 = null;
 						}
 						else if (datos.Datos.Tipo == "software" || datos.Datos.Tipo == "application")
 						{
 							juego.Tipo = Juegos.JuegoTipo.Software;
+
+							juego.Imagenes.Logo = null;
+							juego.Imagenes.Library_600x900 = null;
+							juego.Imagenes.Library_1920x620 = null;
 						}
 						else
 						{
 							juego.Tipo = Juegos.JuegoTipo.Game;
+
+							juego.Analisis = reseñas;
 						}
 
 						if (string.IsNullOrEmpty(datos.Datos.Free2Play.ToString()) == false)
@@ -249,7 +328,7 @@ namespace APIs.Steam
 							}
 						}
 						catch { }
-
+						
 						return juego;
 					}
 				}
@@ -557,6 +636,61 @@ namespace APIs.Steam
 
 		[JsonPropertyName("description")]
 		public string Descripcion { get; set; }
+	}
+
+	#endregion
+
+	#region Clases Juego2
+
+	public class SteamJuegoAPI2
+	{
+		[JsonPropertyName("response")]
+		public SteamJuegoAPI2Resultados Respuesta { get; set; }
+	}
+
+	public class SteamJuegoAPI2Resultados
+	{
+		[JsonPropertyName("store_items")]
+		public List<SteamJuegoAPI2Juego> Juegos { get; set; }
+	}
+
+	public class SteamJuegoAPI2Juego
+	{
+		[JsonPropertyName("assets")]
+		public SteamJuegoAPI2JuegoMedia Media { get; set; }
+
+		[JsonPropertyName("reviews")]
+		public SteamJuegoAPI2JuegoReseñas Reseñas { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoMedia
+	{
+		[JsonPropertyName("small_capsule")]
+		public string Capsule_231x87 { get; set; }
+
+		[JsonPropertyName("header")]
+		public string Header_460x215 { get; set; }
+
+		[JsonPropertyName("library_capsule")]
+		public string Library_600x900 { get; set; }
+
+		[JsonPropertyName("library_hero")]
+		public string Library_1920x620 { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoReseñas
+	{
+		[JsonPropertyName("summary_filtered")]
+		public SteamJuegoAPI2JuegoReseñasFiltrado Filtrado { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoReseñasFiltrado
+	{
+		[JsonPropertyName("review_count")]
+		public int Cantidad { get; set; }
+
+		[JsonPropertyName("percent_positive")]
+		public int Porcentaje { get; set; }
 	}
 
 	#endregion

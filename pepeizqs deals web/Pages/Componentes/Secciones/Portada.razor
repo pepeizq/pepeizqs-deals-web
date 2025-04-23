@@ -11,6 +11,7 @@
 @using System.Text.Json
 
 @inject UserManager<Usuario> UserManager
+@inject NavigationManager NavManager
 
 @implements IDisposable
 @inject PersistentComponentState ApplicationState
@@ -375,7 +376,6 @@
 		</div>
 	}
 
-
 	<div style="min-height: 50px;">
 		<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around;">
 			<div style="display: flex; align-items: center; gap: 30px; padding: 15px 25px;">
@@ -417,7 +417,6 @@
 				@if (noticiasSemana.Count > 0)
 				{
 					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Index")">
-
 						<Virtualize Context="noticia" Items="noticiasSemana">
 							<ItemContent>
 								<CajaNoticia idioma="@idioma" noticia="@noticia" />
@@ -454,10 +453,78 @@
 		}
 	</div>
 
+	@if (cargarForo == true)
+	{
+		if (postsUltimosForo.Count > 0)
+		{
+			<div style="min-height: 50px;">
+				<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around; margin-bottom: 10px;">
+					<a href="/forum" style="font-size: 18px; text-decoration: none; color: var(--colorEnlace);">
+						@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Index") (@Herramientas.Idiomas.BuscarTexto(idioma, "Language" + idiomaForo.ToString(), "Forum"))
+					</a>
+				</div>
+
+				<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; padding: 10px 20px;">
+					<Virtualize Context="post" Items="postsUltimosForo">
+						<ItemContent>
+							@{
+								Usuario? usuario = null;
+								DateTime fechaUsar = post.FechaCreacion;
+
+								if (string.IsNullOrEmpty(post.AutorIdUltimaRespuesta) == false)
+								{
+									usuario = UserManager.FindByIdAsync(post.AutorIdUltimaRespuesta).Result;
+									fechaUsar = post.FechaUltimaRespuesta;
+								}
+								else
+								{
+									usuario = UserManager.FindByIdAsync(post.AutorId).Result;
+								}
+
+								<button @onclick="@(e => AbrirPost(e, post.CategoriaId, post.Id))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
+									<div style="display: flex; align-items: center; gap: 20px;">
+										<div>
+											<img src="@usuario?.Avatar" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
+										</div>
+
+										<div style="width: 100%;">
+											@{
+												string contenido = post.Contenido;
+
+												if (contenido.Length > 40)
+												{
+													contenido = contenido.Remove(40, contenido.Length - 40) + "...";
+												}
+											}
+
+											@contenido
+										</div>
+
+										<div style="flex-shrink: 0;">
+											@Herramientas.Calculadora.DiferenciaTiempo(fechaUsar, idioma)
+										</div>
+									</div>
+								</button>
+							}                           
+						</ItemContent>
+					</Virtualize>
+				</div>
+			</div>
+		}
+		else
+		{
+			<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around; max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px;">
+				<a href="/forum" style="text-decoration: none; color: var(--colorEnlace);">
+					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Index")
+				</a>
+			</div>
+		}
+	}
+
 	@if (juegosMinimosMostrar.Count > 0)
 	{
 		<div style="max-width: 1000px; width: 100vw; margin: auto;">
-			<div style="display: flex; font-size: 20px; align-items: center; gap: 30px; justify-content: center;">
+			<div style="display: flex; font-size: 18px; align-items: center; gap: 30px; justify-content: center;">
 				<div style="display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%;">
 					<a href="/historical-lows" style="text-decoration: none; color: var(--colorEnlace);">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Index")</a>
 
@@ -697,9 +764,13 @@
 	private string videoDestacado = string.Empty;
 
 	private SqlConnection conexion = new SqlConnection();
-
+  
 	private List<Noticias.Noticia> noticiasTresDias = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasSemana = new List<Noticias.Noticia>();
+
+	private bool cargarForo = true;
+	private List<BaseDatos.Foro.ForoPost> postsUltimosForo = new List<BaseDatos.Foro.ForoPost>();
+	private int idiomaForo = 0;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -760,9 +831,9 @@
 				juegosDestacadosMostrar = datosRestaurados;
 			}
 			else
-            {
-                juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(conexion);
-            }	
+			{
+				juegosDestacadosMostrar = BaseDatos.Portada.Buscar.Destacados(conexion);
+			}	
 
 			if (juegosDestacadosMostrar.Count > 0)
 			{
@@ -795,6 +866,39 @@
 			catch (Exception ex)
 			{
 				BaseDatos.Errores.Insertar.Mensaje("Portada Noticias", ex);
+			}
+
+			#endregion
+
+			#region Foro
+
+			if (usuarioLogeado == true)
+			{
+				if (usuario != null)
+				{
+					if (usuario.ForumIndex != null)
+					{
+						if (usuario.ForumIndex == false)
+						{
+							cargarForo = false;
+						}
+					}
+				}
+			}
+
+			if (cargarForo == true)
+			{
+				idiomaForo = 0;
+
+				foreach (var codigo in Herramientas.Idiomas.ListadoIdiomasGenerar()[1].Codigos)
+				{
+					if (codigo == idioma)
+					{
+						idiomaForo = 1;
+					}
+				}
+
+				postsUltimosForo = BaseDatos.Foro.Buscar.UltimosPostsTodoForo(idiomaForo, 5, conexion);
 			}
 
 			#endregion
@@ -1297,6 +1401,15 @@
 			await InvokeAsync(StateHasChanged);
 		}
 	}
+
+	#endregion
+
+	#region Foro
+
+	private void AbrirPost(MouseEventArgs e, int categoria, int postId)
+    {
+        NavManager.NavigateTo("/forum/" + categoria.ToString() + "/" + postId.ToString(), true);
+    }
 
 	#endregion
 }

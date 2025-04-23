@@ -738,6 +738,18 @@ namespace BaseDatos.Juegos
 					}
 				}
 
+				string añadirAnalisis = null;
+
+				if (nuevoJuego.Analisis != null)
+				{
+					if (string.IsNullOrEmpty(nuevoJuego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(nuevoJuego.Analisis.Cantidad) == false)
+					{
+						juego.Analisis = nuevoJuego.Analisis;
+
+						añadirAnalisis = ", analisis=@analisis";
+					}
+				}
+
 				if (conexion == null)
 				{
 					conexion = Herramientas.BaseDatos.Conectar();
@@ -753,7 +765,7 @@ namespace BaseDatos.Juegos
 				using (conexion)
 				{
 					string sqlActualizar = "UPDATE juegos " +
-										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas WHERE id=@id";
+										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas" + añadirAnalisis + " WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
@@ -767,6 +779,11 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
 						comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
+
+						if (string.IsNullOrEmpty(añadirAnalisis) == false)
+						{
+							comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
+						}
 
 						try
 						{

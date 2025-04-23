@@ -268,5 +268,9 @@ public class Usuario : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "datetime(8)")]
 	public DateTime? ForumLastChangeName { get; set; }
+
+	[PersonalData]
+	[Column(TypeName = "bit(1)")]
+	public bool? ForumIndex { get; set; }
 }
 
