@@ -1,9 +1,11 @@
 {
-  "Bundle1": "El bundle {0} ha sido lanzado en {1}",
+  "BundleTitle1.1": "El bundle {0} ha sido lanzado en {1}",
+  "BundleTitle1.2": "{0} ha sido lanzado en {1}",
+  "BundleTitle2.1": "{1} ha puesto hoy a la venta el bundle {0}",
+  "BundleTitle2.2": "{1} ha puesto hoy a la venta {0}",
   "Bundle2": "En {0} hay un nuevo bundle con los siguientes juegos:",
   "Bundle3": "En {0} hay un nuevo bundle donde puedes coger los juegos que quieras por un precio determinado:",
   "Bundle4": "juegos",
-  "Bundle5": "{0} ha sido lanzado en {1}",
   "Free1": "está gratis para reclamar en",
   "Free2": "y",
   "Free3": "están gratis para reclamar en",

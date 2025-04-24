@@ -31,7 +31,7 @@ namespace BaseDatos.Portada
 									CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
 									((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND 
 									(freeToPlay = 'false' OR freeToPlay IS NULL) AND
-									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 14";
+									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 9";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -69,12 +69,17 @@ namespace BaseDatos.Portada
 
 			using (conexion)
 			{
-				string busqueda = @"SELECT TOP 6 idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video') as video, idSteam FROM seccionMinimos
-									WHERE tipo = 0 AND JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaActualizacion')) > GETDATE() - 12
-										AND (CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 4999 AND bundles IS NULL AND gratis IS NULL 
-										AND (suscripciones IS NULL OR (suscripciones IS NOT NULL AND NOT suscripciones LIKE '%,""DRM"":0,%')) OR CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 49999) 
-										AND (ocultarPortada IS NULL OR ocultarPortada = 'false') 
-									ORDER BY NEWID()";
+				string busqueda = @"SELECT TOP 6 idMaestra, nombre, JSON_VALUE(imagenes, '$.Logo') as logo, JSON_VALUE(imagenes, '$.Library_1920x620') as fondo, JSON_VALUE(imagenes, '$.Header_460x215') as header, precioMinimosHistoricos, JSON_VALUE(media, '$.Video') as video, idSteam FROM seccionMinimos
+WHERE tipo = 0 AND 
+CONVERT(float, JSON_VALUE(precioMinimosHistoricos, '$[0].Precio')) > 1.99 AND 
+JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND 
+CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaActualizacion')) > GETDATE() - 12 AND 
+(CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 1999 AND 
+bundles IS NULL AND 
+gratis IS NULL AND 
+(suscripciones IS NULL OR (suscripciones IS NOT NULL AND NOT suscripciones LIKE '%,""DRM"":0,%')) OR CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 29999) AND 
+(ocultarPortada IS NULL OR ocultarPortada = 'false') 
+ORDER BY NEWID()";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{
@@ -102,7 +107,12 @@ namespace BaseDatos.Portada
 							{
 								if (string.IsNullOrEmpty(lector.GetString(2)) == false)
 								{
-									juego.Imagenes = JsonSerializer.Deserialize<JuegoImagenes>(lector.GetString(2));
+									if (juego.Imagenes == null)
+									{
+										juego.Imagenes = new JuegoImagenes();
+									}
+
+									juego.Imagenes.Logo = lector.GetString(2);
 								}
 							}
 
@@ -110,7 +120,12 @@ namespace BaseDatos.Portada
 							{
 								if (string.IsNullOrEmpty(lector.GetString(3)) == false)
 								{
-									juego.PrecioMinimosHistoricos = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(3));
+									if (juego.Imagenes == null)
+									{
+										juego.Imagenes = new JuegoImagenes();
+									}
+
+									juego.Imagenes.Library_1920x620 = lector.GetString(3);
 								}
 							}
 
@@ -118,16 +133,37 @@ namespace BaseDatos.Portada
 							{
 								if (string.IsNullOrEmpty(lector.GetString(4)) == false)
 								{
-									JuegoMedia media = new JuegoMedia();
-									media.Video = lector.GetString(4);
+									if (juego.Imagenes == null)
+									{
+										juego.Imagenes = new JuegoImagenes();
+									}
 
-									juego.Media = media;
+									juego.Imagenes.Header_460x215 = lector.GetString(4);
 								}
 							}
 
 							if (lector.IsDBNull(5) == false)
 							{
-								juego.IdSteam = lector.GetInt32(5);
+								if (string.IsNullOrEmpty(lector.GetString(5)) == false)
+								{
+									juego.PrecioMinimosHistoricos = JsonSerializer.Deserialize<List<JuegoPrecio>>(lector.GetString(5));
+								}
+							}
+
+							if (lector.IsDBNull(6) == false)
+							{
+								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
+								{
+									JuegoMedia media = new JuegoMedia();
+									media.Video = lector.GetString(6);
+
+									juego.Media = media;
+								}
+							}
+
+							if (lector.IsDBNull(7) == false)
+							{
+								juego.IdSteam = lector.GetInt32(7);
 							}
 
 							resultados.Add(juego);

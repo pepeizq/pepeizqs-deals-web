@@ -251,6 +251,11 @@ END DESC";
 							FechaCreacion = lector.GetDateTime(5)
 						};
 
+						if (lector.IsDBNull(9) == false)
+						{
+							nuevoPost.Cerrado = lector.GetBoolean(9);
+						}
+
 						if (lector.IsDBNull(10) == false)
 						{
 							nuevoPost.CantidadRespuestas = lector.GetInt32(10);
@@ -327,6 +332,11 @@ END DESC";
 						if (lector.IsDBNull(8) == false)
 						{
 							post.Fijo = lector.GetBoolean(8);
+						}
+
+						if (lector.IsDBNull(9) == false)
+						{
+							post.Cerrado = lector.GetBoolean(9);
 						}
 					}
 				}

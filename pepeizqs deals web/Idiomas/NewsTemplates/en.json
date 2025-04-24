@@ -1,9 +1,11 @@
 {
-  "Bundle1": "{0} bundle has been released on {1}",
+  "BundleTitle1.1": "{0} bundle has been released on {1}",
+  "BundleTitle1.2": "{0} has been released on {1}",
+  "BundleTitle2.1": "{1} has released the {0} bundle today",
+  "BundleTitle2.2": "{1} has released the {0} today",
   "Bundle2": "At {0} there is a new bundle with the following games:",
   "Bundle3": "At {0} there is a new bundle where you can get the games you want for a certain price:",
   "Bundle4": "games",
-  "Bundle5": "{0} has been released on {1}",
   "Free1": "is free to claim on",
   "Free2": "and",
   "Free3": "are free to claim on",

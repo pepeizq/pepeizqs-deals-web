@@ -57,5 +57,31 @@ WHERE id=@id";
 				comando.ExecuteNonQuery();
 			}
 		}
+
+		public static void Cerrado(int postId, SqlConnection conexion = null)
+		{
+			if (conexion == null)
+			{
+				conexion = Herramientas.BaseDatos.Conectar();
+			}
+			else
+			{
+				if (conexion.State != System.Data.ConnectionState.Open)
+				{
+					conexion = Herramientas.BaseDatos.Conectar();
+				}
+			}
+
+			string actualizar = @"UPDATE foroPost 
+SET cerrado = CASE WHEN cerrado IS NOT NULL THEN ~cerrado ELSE 'True' END
+WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(actualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", postId);
+
+				comando.ExecuteNonQuery();
+			}
+		}
 	}
 }

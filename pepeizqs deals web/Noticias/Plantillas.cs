@@ -38,15 +38,18 @@ namespace Noticias
 
 					#region Titulo
 
+					Random azarTitulo = new Random();
+					int azarTitulo2 = azarTitulo.Next(1, 3);
+
 					if (bundle.NombreBundle.ToLower().Contains("bundle") == false)
 					{
-						plantilla.TituloEn = string.Format(Idiomas.BuscarTexto("en", "Bundle1", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
-						plantilla.TituloEs = string.Format(Idiomas.BuscarTexto("es", "Bundle1", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEn = string.Format(Idiomas.BuscarTexto("en", "BundleTitle" + azarTitulo2.ToString() + ".1", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEs = string.Format(Idiomas.BuscarTexto("es", "BundleTitle" + azarTitulo2.ToString() + ".1", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
 					}
 					else
 					{
-						plantilla.TituloEn = string.Format(Idiomas.BuscarTexto("en", "Bundle5", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
-						plantilla.TituloEs = string.Format(Idiomas.BuscarTexto("es", "Bundle5", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEn = string.Format(Idiomas.BuscarTexto("en", "BundleTitle" + azarTitulo2.ToString() + ".2", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
+						plantilla.TituloEs = string.Format(Idiomas.BuscarTexto("es", "BundleTitle" + azarTitulo2.ToString() + ".2", "NewsTemplates"), bundle.NombreBundle, bundle.NombreTienda);
 					}
 
 					#endregion
