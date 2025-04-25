@@ -667,39 +667,16 @@ namespace BaseDatos.Juegos
 				juego.Caracteristicas.Mac = nuevoJuego.Caracteristicas.Mac;
 				juego.Caracteristicas.Linux = nuevoJuego.Caracteristicas.Linux;
 
-				List<string> desarrolladores = new List<string>();
-
-				if (nuevoJuego.Caracteristicas.Desarrolladores != null)
-				{
-					if (nuevoJuego.Caracteristicas.Desarrolladores.Count > 0)
-					{
-						foreach (var desarrollador in nuevoJuego.Caracteristicas.Desarrolladores)
-						{
-							desarrolladores.Add(desarrollador.Trim());
-						}
-					}
-				}
-
-				juego.Caracteristicas.Desarrolladores = desarrolladores;
-
-				List<string> publishers = new List<string>();
-
-				if (nuevoJuego.Caracteristicas.Publishers != null)
-				{
-					if (nuevoJuego.Caracteristicas.Publishers.Count > 0)
-					{
-						foreach (var publisher in nuevoJuego.Caracteristicas.Publishers)
-						{
-							publishers.Add(publisher.Trim());
-						}
-					}
-				}
-
-				juego.Caracteristicas.Publishers = publishers;
+				juego.Caracteristicas.Desarrolladores2 = nuevoJuego.Caracteristicas.Desarrolladores2;
+				juego.Caracteristicas.Editores2 = nuevoJuego.Caracteristicas.Editores2;
+				juego.Caracteristicas.Franquicias = nuevoJuego.Caracteristicas.Franquicias;
+				juego.Caracteristicas.FechaLanzamientoSteam = nuevoJuego.Caracteristicas.FechaLanzamientoSteam;
+				juego.Caracteristicas.FechaLanzamientoOriginal = nuevoJuego.Caracteristicas.FechaLanzamientoOriginal;
 
 				juego.Media = nuevoJuego.Media;
 				juego.Categorias = nuevoJuego.Categorias;
 				juego.Generos = nuevoJuego.Generos;
+				juego.Etiquetas = nuevoJuego.Etiquetas;
 
 				if (juego.Idiomas == null)
 				{
@@ -765,7 +742,7 @@ namespace BaseDatos.Juegos
 				using (conexion)
 				{
 					string sqlActualizar = "UPDATE juegos " +
-										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas" + añadirAnalisis + " WHERE id=@id";
+										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, etiquetas=@etiquetas, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas" + añadirAnalisis + " WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
@@ -777,6 +754,7 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@nombreCodigo", Herramientas.Buscador.LimpiarNombre(juego.Nombre));
 						comando.Parameters.AddWithValue("@categorias", JsonSerializer.Serialize(juego.Categorias));
 						comando.Parameters.AddWithValue("@generos", JsonSerializer.Serialize(juego.Generos));
+						comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
 						comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
 

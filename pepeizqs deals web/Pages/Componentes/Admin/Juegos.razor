@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Data.SqlClient
+@using System.Text.Json
 
 <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
     <div class="perfil-flexible-centrado">
@@ -388,47 +389,31 @@ else
                 </div>
             }
 
-            @if (juegoAñadir.Caracteristicas.Desarrolladores != null)
+            @if (juegoAñadir.Caracteristicas.Desarrolladores2 != null)
             {
-                if (juegoAñadir.Caracteristicas.Desarrolladores.Count > 0)
+                if (juegoAñadir.Caracteristicas.Desarrolladores2.Count > 0)
                 {
                     <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
                         <div style="width: 20%; padding: 5px; text-align: right;">
                             <label>Desarrolladores</label>
                         </div>
                         <div style="width: 80%;">
-                            @{
-                                int i = 0;
-
-                                foreach (var desarrollador in juegoAñadir.Caracteristicas.Desarrolladores)
-                                {
-                                    <input class="entrada-texto" value="@desarrollador" @onchange="@(e => CambiarDesarrollador(e, i))" />
-                                    i += 1;
-                                }
-                            }
+                            <input class="entrada-texto" value="@JsonSerializer.Serialize(juegoAñadir.Caracteristicas.Desarrolladores2)" @onchange="@(e => CambiarDesarrolladores(e))" />
                         </div>
                     </div>
                 }
             }
 
-            @if (juegoAñadir.Caracteristicas.Publishers != null)
+            @if (juegoAñadir.Caracteristicas.Editores2 != null)
             {
-                if (juegoAñadir.Caracteristicas.Publishers.Count > 0)
+                if (juegoAñadir.Caracteristicas.Editores2.Count > 0)
                 {
                     <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
                         <div style="width: 20%; padding: 5px; text-align: right;">
-                            <label>Publishers</label>
+                            <label>Editores</label>
                         </div>
                         <div style="width: 80%;">
-                            @{
-                                int i = 0;
-
-                                foreach (var publisher in juegoAñadir.Caracteristicas.Publishers)
-                                {
-                                    <input class="entrada-texto" value="@publisher" @onchange="@(e => CambiarPublisher(e, i))" />
-                                    i += 1;
-                                }
-                            }
+                            <input class="entrada-texto" value="@JsonSerializer.Serialize(juegoAñadir.Caracteristicas.Editores2)" @onchange="@(e => CambiarEditores(e))" />
                         </div>
                     </div>
                 }
@@ -804,19 +789,19 @@ else
         }
     }
 
-    private void CambiarDesarrollador(ChangeEventArgs texto, int posicion)
+    private void CambiarDesarrolladores(ChangeEventArgs texto)
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegoAñadir.Caracteristicas.Desarrolladores[posicion] = texto.Value.ToString();
+            juegoAñadir.Caracteristicas.Desarrolladores2 = JsonSerializer.Deserialize<List<global::Juegos.JuegoCaracteristicasCurator>>(texto.Value.ToString());
         }
     }
 
-    private void CambiarPublisher(ChangeEventArgs texto, int posicion)
+    private void CambiarEditores(ChangeEventArgs texto)
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegoAñadir.Caracteristicas.Publishers[posicion] = texto.Value.ToString();
+            juegoAñadir.Caracteristicas.Editores2 = JsonSerializer.Deserialize<List<global::Juegos.JuegoCaracteristicasCurator>>(texto.Value.ToString());
         }
     }
 

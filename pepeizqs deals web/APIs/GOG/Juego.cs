@@ -97,10 +97,10 @@ namespace APIs.GOG
 
 												string enlacePrecio = "https://www.gog.com/en/game/" + resultado.Slug;
 
-												Juegos.JuegoPrecio precio = new Juegos.JuegoPrecio
+												JuegoPrecio precio = new JuegoPrecio
 												{
 													Descuento = descuento,
-													DRM = Juegos.JuegoDRM.GOG,
+													DRM = JuegoDRM.GOG,
 													Precio = decimal.Parse(precioFormateado, CultureInfo.InvariantCulture),
 													Moneda = JuegoMoneda.Euro,
 													FechaDetectado = DateTime.Now,
@@ -110,7 +110,7 @@ namespace APIs.GOG
 
 												//------------------------------------------------------
 
-												Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes
+												JuegoImagenes imagenes = new JuegoImagenes
 												{
 													Header_460x215 = resultado.CoverHorizontal,
 													Capsule_231x87 = "https:" + datos.Imagenes.Logo,
@@ -120,13 +120,11 @@ namespace APIs.GOG
 
 												//------------------------------------------------------
 
-												Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas
+												JuegoCaracteristicas caracteristicas = new JuegoCaracteristicas
 												{
 													Windows = datos.Sistemas.Windows,
 													Mac = datos.Sistemas.Mac,
-													Linux = datos.Sistemas.Linux,
-													Desarrolladores = resultado.Desarrolladores,
-													Publishers = resultado.Publishers
+													Linux = datos.Sistemas.Linux
 												};
 
 												if (resultado.Sistemas.Count > 0)
@@ -158,7 +156,7 @@ namespace APIs.GOG
 													capturas.Add(captura2);
 												}
 
-												Juegos.JuegoMedia media = new Juegos.JuegoMedia
+												JuegoMedia media = new JuegoMedia
 												{
 													Capturas = capturas
 												};

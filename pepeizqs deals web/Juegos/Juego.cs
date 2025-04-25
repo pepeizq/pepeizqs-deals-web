@@ -122,9 +122,18 @@ namespace Juegos
 		public bool Windows { get; set; }
 		public bool Mac { get; set; }
 		public bool Linux { get; set; }
-		public List<string> Desarrolladores { get; set; }
-		public List<string> Publishers { get; set; }
 		public string Descripcion { get; set; }
+		public List<JuegoCaracteristicasCurator> Desarrolladores2 { get; set; }
+		public List<JuegoCaracteristicasCurator> Editores2 { get; set; }
+		public List<JuegoCaracteristicasCurator> Franquicias { get; set; }
+		public DateTime FechaLanzamientoSteam { get; set; }
+		public DateTime FechaLanzamientoOriginal { get; set; }
+	}
+
+	public class JuegoCaracteristicasCurator
+	{
+		public int Id { get; set; }
+		public string Nombre { get; set; }
 	}
 
 	public class JuegoMedia

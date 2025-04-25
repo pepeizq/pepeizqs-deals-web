@@ -100,13 +100,13 @@
 
             if (juego.Caracteristicas != null)
             {
-                if (juego.Caracteristicas.Desarrolladores != null)
+                if (juego.Caracteristicas.Desarrolladores2 != null)
                 {
-                    if (juego.Caracteristicas.Desarrolladores.Count > 0)
+                    if (juego.Caracteristicas.Desarrolladores2.Count > 0)
                     {
-                        if (string.IsNullOrEmpty(juego.Caracteristicas.Desarrolladores[0]) == false)
+                        if (string.IsNullOrEmpty(juego.Caracteristicas.Desarrolladores2[0].Nombre) == false)
                         {
-                            desarrolladorJson = juego.Caracteristicas.Desarrolladores[0];
+                            desarrolladorJson = juego.Caracteristicas.Desarrolladores2[0].Nombre;
                         }
                     }
                 }
@@ -1983,140 +1983,80 @@
                         </div>
                     }
 
-                    @if (juego.Caracteristicas.Desarrolladores != null || juego.Caracteristicas.Publishers != null || juego.Generos != null)
+                    @if (juego.Caracteristicas.Desarrolladores2 != null || juego.Caracteristicas.Editores2 != null || juego.Generos != null)
                     {
                         <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 15px;">
-                            @if (juego.Caracteristicas.Desarrolladores != null)
+                            @if (juego.Caracteristicas.Desarrolladores2 != null)
                             {
-                                if (juego.Caracteristicas.Desarrolladores.Count > 0)
+                                if (juego.Caracteristicas.Desarrolladores2.Count > 0)
                                 {
-                                    List<string> listaDesarrolladores = new List<string>();
+                                    <div>
+                                        <div>@Idiomas.BuscarTexto(idioma, "String35", "Game")</div>
 
-                                    foreach (var desarrollador in juego.Caracteristicas.Desarrolladores)
-                                    {
-                                        if (string.IsNullOrEmpty(desarrollador) == false)
-                                        {
-                                            listaDesarrolladores.Add(desarrollador);
-                                        }
-                                    }
+                                        @{
+                                            int i = 0;
 
-                                    if (listaDesarrolladores.Count > 0)
-                                    {
-                                        <div>
-                                            <div>@Idiomas.BuscarTexto(idioma, "String35", "Game")</div>
+                                            foreach (var desarrollador in juego.Caracteristicas.Desarrolladores2)
+                                            {
+                                                if (i > 0)
+                                                {
+                                                    <label style="margin-right: 5px;">,</label>
+                                                }
 
-                                            <div>
-                                                @{
-                                                    int i = 0;
-
-                                                    foreach (var desarrollador in listaDesarrolladores)
+                                                if (desarrollador.Id > 0)
+                                                {
+                                                    <button onclick="moverScroll('curator-@desarrollador.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@desarrollador.Nombre</button>
+                                                }
+                                                else
+                                                {
+                                                    if (string.IsNullOrEmpty(desarrollador.Nombre) == false)
                                                     {
-                                                        bool añadido = false;
-
-                                                        if (i > 0)
-                                                        {
-                                                            <label style="margin-right: 5px;">,</label>
-                                                        }
-
-                                                        if (curators.Count > 0)
-                                                        {
-                                                            foreach (var curator in curators)
-                                                            {
-                                                                if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
-                                                                {
-                                                                    añadido = true;
-                                                                    <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@desarrollador</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(desarrollador, true))
-                                                                    {
-                                                                        añadido = true;
-                                                                        <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@desarrollador</button>
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-
-                                                        if (añadido == false)
-                                                        {
-                                                            @desarrollador
-                                                        }
-
-                                                        i += 1;
+                                                        @desarrollador.Nombre
                                                     }
                                                 }
-                                            </div>
-                                        </div>									
-                                    }
-                                }
-                            }
 
-                            @if (juego.Caracteristicas.Publishers != null)
-                            {
-                                if (juego.Caracteristicas.Publishers.Count > 0)
-                                {
-                                    List<string> listaPublishers = new List<string>();
-
-                                    foreach (var publisher in juego.Caracteristicas.Publishers)
-                                    {
-                                        if (string.IsNullOrEmpty(publisher) == false)
-                                        {
-                                            listaPublishers.Add(publisher);
+                                                i += 1;
+                                            }
                                         }
-                                    }
+                                    </div>
+                                }
+                            }       
+                            
+                            @if (juego.Caracteristicas.Editores2 != null)
+                            {
+                                if (juego.Caracteristicas.Editores2.Count > 0)
+                                {
+                                    <div>
+                                        <div>@Idiomas.BuscarTexto(idioma, "String36", "Game")</div>
 
-                                    if (listaPublishers.Count > 0)
-                                    {
-                                        <div>
-                                            <div>@Idiomas.BuscarTexto(idioma, "String36", "Game")</div>
+                                        @{
+                                            int i = 0;
 
-                                            <div>
-                                                @{
-                                                    int i = 0;
+                                            foreach (var editor in juego.Caracteristicas.Editores2)
+                                            {
+                                                if (i > 0)
+                                                {
+                                                    <label style="margin-right: 5px;">,</label>
+                                                }
 
-                                                    foreach (var publisher in listaPublishers)
+                                                if (editor.Id > 0)
+                                                {
+                                                    <button onclick="moverScroll('curator-@editor.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@editor.Nombre</button>
+                                                }
+                                                else
+                                                {
+                                                    if (string.IsNullOrEmpty(editor.Nombre) == false)
                                                     {
-                                                        bool añadido = false;
-
-                                                        if (i > 0)
-                                                        {
-                                                            <label style="margin-right: 5px;">,</label>
-                                                        }
-
-                                                        if (curators.Count > 0)
-                                                        {
-                                                            foreach (var curator in curators)
-                                                            {
-                                                                if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Nombre, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
-                                                                {
-                                                                    añadido = true;
-                                                                    <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@publisher</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (Herramientas.Buscador.LimpiarNombre(curator.Curator.Slug, true) == Herramientas.Buscador.LimpiarNombre(publisher, true))
-                                                                    {
-                                                                        añadido = true;
-                                                                        <button onclick="moverScroll('curator-@curator.Curator.Id.ToString()')" class="boton" style="padding: 0px; background-color: transparent; color: var(--colorEnlace); text-decoration: underline; font-size: 16px; width: fit-content;">@publisher</button>
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-
-                                                        if (añadido == false)
-                                                        {
-                                                            @publisher
-                                                        }
-
-                                                        i += 1;
+                                                        @editor.Nombre
                                                     }
                                                 }
-                                            </div>
-                                        </div>	
-                                    }
+
+                                                i += 1;
+                                            }
+                                        }
+                                    </div>
                                 }
-                            }
+                            }           
 
                             @if (juego.Generos != null)
                             {
@@ -2243,26 +2183,30 @@
             {
                 foreach (var curator in curators)
                 {
-                    List<Juegos.Juego> juegosCurator = global::BaseDatos.Juegos.Buscar.MultiplesJuegosSteam(curator.Curator.SteamIds);
+                    List<int> curators2 = curator.Curator.SteamIds;
+                   
+                    int j = 0;
+                    int posicionBorrar = -1;
 
-                    if (juegosCurator.Count > 0)
+                    foreach (var curator2 in curators2)
                     {
-                        int posicion = 0;
-
-                        foreach (var juegoCurator in juegosCurator)
+                        if (curator2 == juego.IdSteam)
                         {
-                            if (juegoCurator.IdSteam == juego.IdSteam)
-                            {
-                                break;
-                            }
-
-                            posicion += 1;
+                            posicionBorrar = j;
+                            break;                            
                         }
 
-                        if (posicion < juegosCurator.Count)
-                        {
-                            juegosCurator.RemoveAt(posicion);
-                        }
+                        j += 1;
+                    }
+
+                    if (posicionBorrar > -1)
+                    {
+                        curators2.RemoveAt(posicionBorrar);
+                    }
+
+                    if (curators2.Count > 0)
+                    {
+                        List<Juegos.Juego> juegosCurator = global::BaseDatos.Juegos.Buscar.MultiplesJuegosSteam(curators2);
 
                         if (juegosCurator.Count > 0)
                         {
@@ -2359,6 +2303,25 @@
                             </div>
                         }
                     }
+                    else
+                    {
+                        <div id="curator-@curator.Curator.Id.ToString()" style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(curator.Curator.Imagen, 60, 60)" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />
+
+                                    <a href="/curator/@curator.Curator.Slug.ToLower()/" target="_blank" style="text-decoration: none;">
+                                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                                            <div style="font-size: 18px;">
+                                                @string.Format(Idiomas.BuscarTexto(idioma, "String89", "Game"), curator.Curator.Nombre)
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                 }
             }
 
@@ -2752,7 +2715,7 @@
         <div style="max-width: 900px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; overflow-y: scroll;">
             <div style="display: flex; align-items: start; flex-direction: row; gap: 40px;">
                 <button @onclick="@(e => DeckCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
-                    <div style="max-width: 24px; max-height: 24px;">
+                    <div style="width: 24px;">
                         <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
                         </svg>
@@ -3716,11 +3679,109 @@
                     }
                 }
 
-                if (juego.CuratorsSteam != null)
+                List<string> curatorsBuscar = new List<string>();
+
+                if (juego.Caracteristicas != null)
                 {
-                    if (juego.CuratorsSteam.Count > 0)
+                    if (juego.Caracteristicas.Desarrolladores2 != null)
                     {
-                        foreach (var curator in juego.CuratorsSteam)
+                        if (juego.Caracteristicas.Desarrolladores2.Count > 0)
+                        {
+                            foreach (var desarrollador in juego.Caracteristicas.Desarrolladores2)
+                            {
+                                if (desarrollador.Id > 0)
+                                {
+                                    bool añadir = true;
+
+                                    if (curatorsBuscar.Count > 0)
+                                    {
+                                        foreach (var curator in curatorsBuscar)
+                                        {
+                                            if (curator == desarrollador.Id.ToString())
+                                            {
+                                                añadir = false;
+                                                break;
+                                            }                                            
+                                        }
+                                    }
+
+                                    if (añadir == true)
+                                    {
+                                        curatorsBuscar.Add(desarrollador.Id.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (juego.Caracteristicas.Editores2 != null)
+                    {
+                        if (juego.Caracteristicas.Editores2.Count > 0)
+                        {
+                            foreach (var editor in juego.Caracteristicas.Editores2)
+                            {
+                                if (editor.Id > 0)
+                                {
+                                    bool añadir = true;
+
+                                    if (curatorsBuscar.Count > 0)
+                                    {
+                                        foreach (var curator in curatorsBuscar)
+                                        {
+                                            if (curator == editor.Id.ToString())
+                                            {
+                                                añadir = false;
+                                                break;
+                                            }                                            
+                                        }
+                                    }
+
+                                    if (añadir == true)
+                                    {
+                                        curatorsBuscar.Add(editor.Id.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (juego.Caracteristicas.Franquicias != null)
+                    {
+                        if (juego.Caracteristicas.Franquicias.Count > 0)
+                        {
+                            foreach (var franquicia in juego.Caracteristicas.Franquicias)
+                            {
+                                if (franquicia.Id > 0)
+                                {
+                                    bool añadir = true;
+
+                                    if (curatorsBuscar.Count > 0)
+                                    {
+                                        foreach (var curator in curatorsBuscar)
+                                        {
+                                            if (curator == franquicia.Id.ToString())
+                                            {
+                                                añadir = false;
+                                                break;
+                                            }                                            
+                                        }
+                                    }
+
+                                    if (añadir == true)
+                                    {
+                                        curatorsBuscar.Add(franquicia.Id.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (curatorsBuscar != null)
+                {
+                    if (curatorsBuscar.Count > 0)
+                    {
+                        foreach (var curator in curatorsBuscar)
                         {
                             if (string.IsNullOrEmpty(curator) == false)
                             {

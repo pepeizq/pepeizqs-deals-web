@@ -8,7 +8,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, List<string> curators, SqlConnection conexion = null, int deck = 0)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, SqlConnection conexion = null, int deck = 0)
 		{
 			if (conexion == null)
 			{
@@ -55,7 +55,7 @@ namespace BaseDatos.Tiendas
 						}
 					}
 
-					string buscarJuego = "SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, fechaSteamAPIComprobacion, curatorsSteam FROM juegos WHERE idSteam=@idSteam";
+					string buscarJuego = "SELECT id, precioMinimosHistoricos, precioActualesTiendas, usuariosInteresados, idSteam, historicos, fechaSteamAPIComprobacion FROM juegos WHERE idSteam=@idSteam";
 
 					using (SqlCommand comando = new SqlCommand(buscarJuego, conexion))
 					{
@@ -78,29 +78,9 @@ namespace BaseDatos.Tiendas
 										actualizarAPI = true;
 									}
 
-									if (lector.IsDBNull(7) == false)
-									{
-										if (string.IsNullOrEmpty(lector.GetString(7)) == false)
-										{
-											List<string> curators2 = JsonSerializer.Deserialize<List<string>>(lector.GetString(7));
-
-											if (curators2.Count == 0 && curators.Count > 0)
-											{
-												actualizarAPI = true;
-											}
-										}
-									}
-									else
-									{
-										if (curators.Count > 0)
-										{
-											actualizarAPI = true;
-										}
-									}
-
 									if (actualizarAPI == true)
 									{
-										ActualizarDatosSteamAPI(juego, oferta, analisis, etiquetas, curators, deck, conexion);
+										ActualizarDatosSteamAPI(juego, oferta, analisis, deck, conexion);
 									}
 									else
 									{
@@ -212,7 +192,7 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, List<string> etiquetas, List<string> curators, int deck = 0, SqlConnection conexion = null)
+		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, int deck = 0, SqlConnection conexion = null)
 		{
 			if (juego.IdSteam > 0)
 			{
@@ -254,6 +234,7 @@ namespace BaseDatos.Tiendas
 							if (nuevoJuego != null)
 							{
 								juego.Nombre = nuevoJuego.Nombre;
+								juego.Caracteristicas = nuevoJuego.Caracteristicas;
 								juego.Media = nuevoJuego.Media;
 
 								if (juego.Tipo == JuegoTipo.DLC)
@@ -283,8 +264,7 @@ namespace BaseDatos.Tiendas
 								}
 							}
 
-							juego.Etiquetas = etiquetas;
-							juego.CuratorsSteam = curators;
+							juego.Etiquetas = nuevoJuego.Etiquetas;
 
 							if (deck > 0)
 							{

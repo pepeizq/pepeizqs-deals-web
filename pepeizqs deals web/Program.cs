@@ -347,7 +347,7 @@ If you're a bot, sorry but I'm in the resistance with John Connor.");
 	opciones.GlobalLimiter = PartitionedRateLimiter.CreateChained(
 		PartitionedRateLimiter.Create<HttpContext, string>(contexto =>
 		{
-			if (Herramientas.BloqueosIps.EstaBloqueada(contexto.Connection?.RemoteIpAddress?.ToString()) == true)
+			if (BloqueosIps.EstaBloqueada(contexto.Connection?.RemoteIpAddress?.ToString()) == true)
 			{
 				return RateLimitPartition.GetFixedWindowLimiter(
 					partitionKey: contexto.Request.Headers.Host.ToString(),

@@ -1,4 +1,4 @@
-﻿//https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={"ids":[{"appid":1091500}],"context":{"language":"english","country_code":"ES","steam_realm":1},"data_request":{"include_reviews":true,"include_basic_info":true, "include_assets": true, "include_links": true}}
+﻿//https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={"ids":[{"appid":1091500}],"context":{"language":"english","country_code":"ES","steam_realm":1},"data_request":{"include_reviews":true,"include_basic_info":true, "include_assets": true, "include_links": true, "include_tag_count": 20, "include_release": true, "include_platforms": true}}
 
 #nullable disable
 
@@ -19,10 +19,17 @@ namespace APIs.Steam
 		{
 			string id = LimpiarID(enlace);
 
+			if (string.IsNullOrEmpty(id) == true)
+			{
+				return null;
+			}
+
+			Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas();
 			Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
 			Juegos.JuegoAnalisis reseñas = new Juegos.JuegoAnalisis();
+			List<string> etiquetas = new List<string>();
 
-			string html2 = await Decompiladores.Estandar(@"https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={""ids"":[{""appid"":" + id + @"}],""context"":{""language"":""english"",""country_code"":""ES"",""steam_realm"":1},""data_request"":{""include_reviews"":true,""include_basic_info"":true, ""include_assets"": true, ""include_links"": true}}");
+			string html2 = await Decompiladores.Estandar(@"https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={""ids"":[{""appid"":" + id + @"}],""context"":{""language"":""english"",""country_code"":""ES"",""steam_realm"":1},""data_request"":{""include_reviews"":true,""include_basic_info"":true, ""include_assets"": true, ""include_links"": true, ""include_tag_count"": 20, ""include_release"": true, ""include_platforms"": true}}");
 
 			if (string.IsNullOrEmpty(html2) == false)
 			{
@@ -38,6 +45,91 @@ namespace APIs.Steam
 				{
 					if (datos2.Respuesta.Juegos.Count == 1)
 					{
+						#region Caracteristicas
+
+						if (datos2.Respuesta.Juegos[0].Info != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Info.Desarrolladores != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Info.Desarrolladores.Count > 0)
+								{
+									List<Juegos.JuegoCaracteristicasCurator> desarrolladores = new List<Juegos.JuegoCaracteristicasCurator>();
+
+									foreach (var desarrollador in datos2.Respuesta.Juegos[0].Info.Desarrolladores)
+									{
+										Juegos.JuegoCaracteristicasCurator desarrollador2 = new Juegos.JuegoCaracteristicasCurator
+										{
+											Id = desarrollador.Id,
+											Nombre = desarrollador.Nombre
+										};
+
+										desarrolladores.Add(desarrollador2);
+									}
+
+									caracteristicas.Desarrolladores2 = desarrolladores;
+								}
+							}
+
+							if (datos2.Respuesta.Juegos[0].Info.Editores != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Info.Editores.Count > 0)
+								{
+									List<Juegos.JuegoCaracteristicasCurator> editores = new List<Juegos.JuegoCaracteristicasCurator>();
+
+									foreach (var editor in datos2.Respuesta.Juegos[0].Info.Editores)
+									{
+										Juegos.JuegoCaracteristicasCurator editor2 = new Juegos.JuegoCaracteristicasCurator
+										{
+											Id = editor.Id,
+											Nombre = editor.Nombre
+										};
+
+										editores.Add(editor2);
+									}
+
+									caracteristicas.Editores2 = editores;
+								}
+							}
+
+							if (datos2.Respuesta.Juegos[0].Info.Franquicias != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Info.Franquicias.Count > 0)
+								{
+									List<Juegos.JuegoCaracteristicasCurator> franquicias = new List<Juegos.JuegoCaracteristicasCurator>();
+
+									foreach (var franquicia in datos2.Respuesta.Juegos[0].Info.Franquicias)
+									{
+										Juegos.JuegoCaracteristicasCurator franquicia2 = new Juegos.JuegoCaracteristicasCurator
+										{
+											Id = franquicia.Id,
+											Nombre = franquicia.Nombre
+										};
+
+										franquicias.Add(franquicia2);
+									}
+
+									caracteristicas.Franquicias = franquicias;
+								}
+							}
+						}
+
+						if (datos2.Respuesta.Juegos[0].Lanzamiento != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Lanzamiento.Steam > 0)
+							{
+								caracteristicas.FechaLanzamientoSteam = DateTime.UnixEpoch.AddSeconds(datos2.Respuesta.Juegos[0].Lanzamiento.Steam);
+							}
+
+							if (datos2.Respuesta.Juegos[0].Lanzamiento.Original > 0)
+							{
+								caracteristicas.FechaLanzamientoOriginal = DateTime.UnixEpoch.AddSeconds(datos2.Respuesta.Juegos[0].Lanzamiento.Original);
+							}
+						}
+
+						#endregion
+
+						#region Imagenes
+
 						if (string.IsNullOrEmpty(datos2.Respuesta.Juegos[0].Media.Header_460x215) == false)
 						{
 							imagenes.Header_460x215 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Header_460x215;
@@ -57,9 +149,33 @@ namespace APIs.Steam
 						{
 							imagenes.Library_1920x620 = dominioImagenes2 + "/store_item_assets/steam/apps/" + id + "/" + datos2.Respuesta.Juegos[0].Media.Library_1920x620;
 						}
-						
+
+						#endregion
+
+						#region Reseñas
+
 						reseñas.Porcentaje = datos2.Respuesta.Juegos[0].Reseñas.Filtrado.Porcentaje.ToString();
 						reseñas.Cantidad = datos2.Respuesta.Juegos[0].Reseñas.Filtrado.Cantidad.ToString();
+
+						#endregion
+
+						#region Etiquetas
+
+						if (datos2.Respuesta.Juegos[0].Etiquetas != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Etiquetas.Count > 0)
+							{
+								foreach (int etiqueta in datos2.Respuesta.Juegos[0].Etiquetas)
+								{
+									if (etiqueta > 0)
+									{
+										etiquetas.Add(etiqueta.ToString());
+									}
+								}
+							}
+						}
+
+						#endregion
 					}
 				}
 			}
@@ -113,15 +229,11 @@ namespace APIs.Steam
 
 					//------------------------------------------------------
 
-					Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas();
-
 					if (datos.Datos != null)
 					{
 						caracteristicas.Windows = datos.Datos.Sistemas.Windows;
 						caracteristicas.Mac = datos.Datos.Sistemas.Mac;
 						caracteristicas.Linux = datos.Datos.Sistemas.Linux;
-						caracteristicas.Desarrolladores = datos.Datos.Desarrolladores;
-						caracteristicas.Publishers = datos.Datos.Publishers;
 
 						if (string.IsNullOrEmpty(datos.Datos.DescripcionCorta) == false)
 						{
@@ -281,6 +393,11 @@ namespace APIs.Steam
 						if (string.IsNullOrEmpty(datos.Datos.Idiomas) == false)
 						{
 							juego.Idiomas = Herramientas.Idiomas.SteamSacarIdiomas(datos.Datos.Idiomas);
+						}
+
+						if (etiquetas.Count > 0)
+						{
+							juego.Etiquetas = etiquetas;
 						}
 
 						try
@@ -661,6 +778,15 @@ namespace APIs.Steam
 
 		[JsonPropertyName("reviews")]
 		public SteamJuegoAPI2JuegoReseñas Reseñas { get; set; }
+
+		[JsonPropertyName("tagids")]
+		public List<int> Etiquetas { get; set; }
+
+		[JsonPropertyName("basic_info")]
+		public SteamJuegoAPI2JuegoInfo Info { get; set; }
+
+		[JsonPropertyName("release")]
+		public SteamJuegoAPI2JuegoLanzamiento Lanzamiento { get; set; }
 	}
 
 	public class SteamJuegoAPI2JuegoMedia
@@ -691,6 +817,36 @@ namespace APIs.Steam
 
 		[JsonPropertyName("percent_positive")]
 		public int Porcentaje { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoInfo
+	{
+		[JsonPropertyName("publishers")]
+		public List<SteamJuegoAPI2JuegoInfoDesarrollador> Editores { get; set; }
+
+		[JsonPropertyName("developers")]
+		public List<SteamJuegoAPI2JuegoInfoDesarrollador> Desarrolladores { get; set; }
+
+		[JsonPropertyName("franchises")]
+		public List<SteamJuegoAPI2JuegoInfoDesarrollador> Franquicias { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoInfoDesarrollador
+	{
+		[JsonPropertyName("name")]
+		public string Nombre { get; set; }
+
+		[JsonPropertyName("creator_clan_account_id")]
+		public int Id { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoLanzamiento
+	{
+		[JsonPropertyName("steam_release_date")]
+		public int Steam { get; set; }
+
+		[JsonPropertyName("original_release_date")]
+		public int Original { get; set; }
 	}
 
 	#endregion
