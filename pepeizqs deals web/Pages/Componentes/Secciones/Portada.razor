@@ -941,15 +941,12 @@
 
 		if (juegoSeleccionado.Media != null)
 		{
-			if (string.IsNullOrEmpty(juegoSeleccionado.Media.Video) == false)
+			if (juegoSeleccionado.Media.Videos != null)
 			{
-				int int2 = juegoSeleccionado.Media.Video.LastIndexOf("/");
-				string temp1 = juegoSeleccionado.Media.Video.Remove(int2, juegoSeleccionado.Media.Video.Length - int2);
-
-				videoDestacado = temp1 + "/microtrailer.webm";
-
-				videoDestacado = videoDestacado.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-				videoDestacado = videoDestacado.Replace("http://", "https://");
+				if (juegoSeleccionado.Media.Videos.Count > 0)
+				{
+					videoDestacado = juegoSeleccionado.Media.Videos[0].Micro;
+				}
 			}
 		}
 	}

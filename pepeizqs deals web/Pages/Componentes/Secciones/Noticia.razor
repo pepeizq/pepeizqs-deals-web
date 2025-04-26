@@ -469,9 +469,12 @@
 				{
 					if (juegos.Count == 1)
 					{
-						if (juegos[0].Media.Video != null)
+						if (juegos[0].Media.Videos != null)
 						{
-							video = juegos[0].Media.Video;
+							if (juegos[0].Media.Videos.Count > 0)
+							{
+								video = juegos[0].Media.Videos[0].Enlace;
+                            }
 						}
 					}
 					else if (juegos.Count > 1)

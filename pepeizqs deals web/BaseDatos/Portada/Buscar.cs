@@ -69,7 +69,7 @@ namespace BaseDatos.Portada
 
 			using (conexion)
 			{
-				string busqueda = @"SELECT TOP 6 idMaestra, nombre, JSON_VALUE(imagenes, '$.Logo') as logo, JSON_VALUE(imagenes, '$.Library_1920x620') as fondo, JSON_VALUE(imagenes, '$.Header_460x215') as header, precioMinimosHistoricos, JSON_VALUE(media, '$.Video') as video, idSteam FROM seccionMinimos
+				string busqueda = @"SELECT TOP 6 idMaestra, nombre, JSON_VALUE(imagenes, '$.Logo') as logo, JSON_VALUE(imagenes, '$.Library_1920x620') as fondo, JSON_VALUE(imagenes, '$.Header_460x215') as header, precioMinimosHistoricos, JSON_VALUE(media, '$.Videos[0].Micro') as video, idSteam FROM seccionMinimos
 WHERE tipo = 0 AND 
 CONVERT(float, JSON_VALUE(precioMinimosHistoricos, '$[0].Precio')) > 1.99 AND 
 JSON_VALUE(precioMinimosHistoricos, '$[0].DRM') = 0 AND 
@@ -155,7 +155,11 @@ ORDER BY NEWID()";
 								if (string.IsNullOrEmpty(lector.GetString(6)) == false)
 								{
 									JuegoMedia media = new JuegoMedia();
-									media.Video = lector.GetString(6);
+									
+									JuegoMediaVideo video = new JuegoMediaVideo();
+									video.Micro = lector.GetString(6);
+
+									media.Videos = [video];
 
 									juego.Media = media;
 								}
@@ -249,7 +253,7 @@ ORDER BY NEWID()";
 					}
 				}
 
-				string busqueda = @"SELECT DISTINCT TOP @cantidadJuegos idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Video'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
+				string busqueda = @"SELECT DISTINCT TOP @cantidadJuegos idMaestra, nombre, imagenes, precioMinimosHistoricos, JSON_VALUE(media, '$.Videos[0].Micro'), bundles, gratis, suscripciones, idSteam, CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) AS Fecha FROM seccionMinimos 
                                     WHERE CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > @cantidadAnalisis AND CONVERT(datetime2, JSON_VALUE(precioMinimosHistoricos, '$[0].FechaDetectado')) > DATEADD(day, -7, CAST(GETDATE() AS date)) @categoria @drm
                                     ORDER BY Fecha DESC";
 
@@ -301,7 +305,11 @@ ORDER BY NEWID()";
 								if (string.IsNullOrEmpty(lector.GetString(4)) == false)
 								{
 									JuegoMedia media = new JuegoMedia();
-									media.Video = lector.GetString(4);
+
+									JuegoMediaVideo video = new JuegoMediaVideo();
+									video.Micro = lector.GetString(4);
+
+									media.Videos = [video];
 
 									juego.Media = media;
 								}

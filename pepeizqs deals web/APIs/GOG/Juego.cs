@@ -148,17 +148,28 @@ namespace APIs.GOG
 
 												//------------------------------------------------------
 
-												List<string> capturas = new List<string>();
+												List<JuegoMediaCaptura> capturas = new List<JuegoMediaCaptura>();
 
+												int i = 1;
 												foreach (string captura in resultado.Capturas)
 												{
 													string captura2 = captura.Replace("_{formatter}", null);
-													capturas.Add(captura2);
+
+													JuegoMediaCaptura captura3 = new JuegoMediaCaptura
+													{
+														Imagen = captura2,
+														Posicion = i,
+														MayorEdad = false
+													};
+
+													capturas.Add(captura3);
+
+													i += 1;
 												}
 
 												JuegoMedia media = new JuegoMedia
 												{
-													Capturas = capturas
+													Capturas2 = capturas
 												};
 
 												//------------------------------------------------------

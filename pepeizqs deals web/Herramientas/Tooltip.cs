@@ -25,16 +25,16 @@ namespace Herramientas
 
             if (juego.Media != null)
             {
-                if (string.IsNullOrEmpty(juego.Media.Video) == false)
-                {
-                    int int1 = juego.Media.Video.LastIndexOf("/");
-                    string temp1 = juego.Media.Video.Remove(int1, juego.Media.Video.Length - int1);
-
-                    datos.Video = temp1 + "/microtrailer.webm";
-
-                    datos.Video = datos.Video.Replace("cdn.akamai.steamstatic.com/", "cdn.cloudflare.steamstatic.com/");
-                    datos.Video = datos.Video.Replace("http://", "https://");
-                }
+				if (juego.Media.Videos != null)
+				{
+					if (juego.Media.Videos.Count > 0)
+					{
+						if (string.IsNullOrEmpty(juego.Media.Videos[0].Micro) == false)
+						{
+							datos.Video = juego.Media.Videos[0].Micro;
+						}
+					}
+				}
             }
 
             if (juego.Analisis != null)

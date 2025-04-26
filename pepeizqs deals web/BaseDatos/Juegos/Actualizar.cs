@@ -673,6 +673,8 @@ namespace BaseDatos.Juegos
 				juego.Caracteristicas.FechaLanzamientoSteam = nuevoJuego.Caracteristicas.FechaLanzamientoSteam;
 				juego.Caracteristicas.FechaLanzamientoOriginal = nuevoJuego.Caracteristicas.FechaLanzamientoOriginal;
 
+				juego.Deck = nuevoJuego.Deck;
+
 				juego.Media = nuevoJuego.Media;
 				juego.Categorias = nuevoJuego.Categorias;
 				juego.Generos = nuevoJuego.Generos;
@@ -742,7 +744,7 @@ namespace BaseDatos.Juegos
 				using (conexion)
 				{
 					string sqlActualizar = "UPDATE juegos " +
-										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, etiquetas=@etiquetas, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas" + añadirAnalisis + " WHERE id=@id";
+										"SET nombre=@nombre, imagenes=@imagenes, caracteristicas=@caracteristicas, media=@media, nombreCodigo=@nombreCodigo, categorias=@categorias, generos=@generos, etiquetas=@etiquetas, fechaSteamAPIComprobacion=@fechaSteamAPIComprobacion, idiomas=@idiomas, deck=@deck" + añadirAnalisis + " WHERE id=@id";
 
 					using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 					{
@@ -757,6 +759,7 @@ namespace BaseDatos.Juegos
 						comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
 						comando.Parameters.AddWithValue("@fechaSteamAPIComprobacion", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
 						comando.Parameters.AddWithValue("@idiomas", JsonSerializer.Serialize(juego.Idiomas));
+						comando.Parameters.AddWithValue("@deck", juego.Deck);
 
 						if (string.IsNullOrEmpty(añadirAnalisis) == false)
 						{

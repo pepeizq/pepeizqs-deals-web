@@ -138,9 +138,25 @@ namespace Juegos
 
 	public class JuegoMedia
 	{ 
-		public string Video { get; set; }
-		public List<string> Capturas { get; set; }
-		public List<string> Miniaturas { get; set; }
+		public List<JuegoMediaVideo> Videos { get; set; }
+		public List<JuegoMediaCaptura> Capturas2 { get; set; }
+	}
+
+	public class JuegoMediaCaptura
+	{
+		public string Imagen { get; set; }
+		public int Posicion { get; set; }
+		public bool MayorEdad { get; set; }
+	}
+
+	public class JuegoMediaVideo
+	{
+		public string Nombre { get; set; }
+		public string Enlace { get; set; }
+		public string Captura { get; set; }
+		public string CapturaPequeña { get; set; }
+		public bool MayorEdad { get; set; }
+		public string Micro { get; set; }
 	}
 
 	public class JuegoUsuariosInteresados

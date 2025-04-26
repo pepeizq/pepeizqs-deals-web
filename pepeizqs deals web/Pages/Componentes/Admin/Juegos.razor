@@ -439,24 +439,33 @@ else
             <label class="texto-info-entrada">Media</label>
             <hr />
 
-            @if (string.IsNullOrEmpty(juegoAñadir.Media.Video) == false)
+            @if (juegoAñadir.Media.Videos != null)
             {
-                <div style="display: flex; align-items: center; margin-top: 20px; gap: 15px;">
-                    <div style="width: 20%; padding: 0px 30px; text-align: right;">
-                        <label>Video</label>
-                    </div>
-                    <div style="width: 80%;">
-                        <input class="entrada-texto" value="@juegoAñadir.Media.Video" @onchange="@(e => CambiarVideo(e))" />
-                    </div>
-                </div>
-            }
-
-            @if (juegoAñadir.Media.Capturas != null)
-            {
-                if (juegoAñadir.Media.Capturas.Count > 0)
+                if (juegoAñadir.Media.Videos.Count > 0)
                 {
                     int i = 0;
-                    foreach (var captura in juegoAñadir.Media.Capturas)
+                    foreach (var video in juegoAñadir.Media.Videos)
+                    {
+                        i += 1;
+
+                        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
+                            <div style="width: 20%; padding: 5px; text-align: right;">
+                                <label>Video @i.ToString()</label>
+                            </div>
+                            <div style="width: 80%;">
+                                <input class="entrada-texto" value="@video" @onchange="@(e => CambiarVideo(e, i))" />
+                            </div>
+                        </div>
+                    }
+                }
+            }
+
+            @if (juegoAñadir.Media.Capturas2 != null)
+            {
+                if (juegoAñadir.Media.Capturas2.Count > 0)
+                {
+                    int i = 0;
+                    foreach (var captura in juegoAñadir.Media.Capturas2)
                     {
                         i += 1;
 
@@ -467,28 +476,6 @@ else
                             <div style="width: 80%;">
                                 <input class="entrada-texto" value="@captura" @onchange="@(e => CambiarCaptura(e, i))" />
                                 <img src="@captura" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
-                            </div>
-                        </div>
-                    }
-                }
-            }
-
-            @if (juegoAñadir.Media.Miniaturas != null)
-            {
-                if (juegoAñadir.Media.Miniaturas.Count > 0)
-                {
-                    int i = 0;
-                    foreach (var miniatura in juegoAñadir.Media.Miniaturas)
-                    {
-                        i += 1;
-
-                        <div style="display: flex; align-items: start; margin-top: 20px; gap: 15px;">
-                            <div style="width: 20%; padding: 5px; text-align: right;">
-                                <label>Miniatura @i.ToString()</label>
-                            </div>
-                            <div style="width: 80%;">
-                                <input class="entrada-texto" value="@miniatura" @onchange="@(e => CambiarMiniatura(e, i))" />
-                                <img src="@miniatura" style="max-width: 200px; max-height: 200px; margin-top: 10px;" />
                             </div>
                         </div>
                     }
@@ -813,11 +800,11 @@ else
         }
     }
 
-    private void CambiarVideo(ChangeEventArgs texto)
+    private void CambiarVideo(ChangeEventArgs texto, int posicion)
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegoAñadir.Media.Video = texto.Value.ToString();
+            juegoAñadir.Media.Videos[posicion].Enlace = texto.Value.ToString();
         }
     }
 
@@ -825,15 +812,7 @@ else
     {
         if (texto.Value.ToString().Trim().Length > 1)
         {
-            juegoAñadir.Media.Capturas[posicion] = texto.Value.ToString();
-        }
-    }
-
-    private void CambiarMiniatura(ChangeEventArgs texto, int posicion)
-    {
-        if (texto.Value.ToString().Trim().Length > 1)
-        {
-            juegoAñadir.Media.Miniaturas[posicion] = texto.Value.ToString();
+            juegoAñadir.Media.Capturas2[posicion].Imagen = texto.Value.ToString();
         }
     }
 
