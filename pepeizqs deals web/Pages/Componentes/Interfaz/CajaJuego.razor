@@ -58,7 +58,7 @@
 @{
 	int idMaestra = juego.IdMaestra;
 
-	if (tipo == Tipo.Bundle)
+	if (tipo == Tipo.Bundle || tipo == Tipo.Noticia)
 	{
 		idMaestra = juego.Id;
 	}
@@ -110,6 +110,10 @@
 	if (tipo == Tipo.Bundle)
 	{
 		drmUsar = drmBundle;
+	}
+	else if (tipo == Tipo.Noticia)
+	{
+		drmUsar = drmNoticia;
 	}
 	else
 	{
@@ -217,6 +221,21 @@
 									break;
 								}
 							}
+						}
+					</div>
+				}
+				else if (tipo == Tipo.Noticia)
+				{
+					<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
+						<div style="margin-right: 20px;">
+							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
+						</div>
+
+						@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
+						{
+							<div style="margin-right: 20px;">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							</div>
 						}
 					</div>
 				}
@@ -460,6 +479,26 @@
 				</div>
 			</a>
 		}
+
+		@if (tipo == Tipo.Noticia)
+		{
+			string imagen = juego.Imagenes.Library_600x900;
+
+			if (juego.Tipo != JuegoTipo.Game)
+			{
+				imagen = juego.Imagenes.Header_460x215;			
+			}
+
+			<a href="@enlaceNoticia" class="boton-pequeño" style="padding: 2px; @fondoColor" target="_blank">
+				<div>
+					<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(imagen)" style="max-width: 100%; max-height: 100%;" alt="@juego.Nombre" />
+				</div>
+
+				<div style="display: flex; align-items: center; justify-content: right; height: 40px;">
+					<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(Juegos.JuegoDRM2.SacarImagen(drmNoticia))" style="max-width: 24px; max-height: 24px; margin: 10px;" alt="DRM" />
+				</div>
+			</a>
+		}
 	</div>
 }
 
@@ -500,11 +539,18 @@
 	[Parameter]
 	public List<string> dlcsBundle { get; set; }
 
+	[Parameter]
+	public string enlaceNoticia { get; set; }
+
+	[Parameter]
+	public JuegoDRM drmNoticia { get; set; }
+
 	public enum Tipo
 	{
 		Portada,
 		MinimosHistoricos,
-		Bundle
+		Bundle,
+		Noticia
 	}
 
 	#region Portapapeles

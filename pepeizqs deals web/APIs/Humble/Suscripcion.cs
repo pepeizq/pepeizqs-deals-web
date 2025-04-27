@@ -17,7 +17,7 @@ namespace APIs.Humble
 				AdminInteractuar = true,
 				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = true,
-				Precio = 9.99
+				Precio = 12.99
 			};
 
 			DateTime fechaHumbleChoice = DateTime.Now;

@@ -25,7 +25,6 @@ namespace Tiendas2
 				APIs.GOG.Tienda.Generar(),
                 APIs.IndieGala.Tienda.Generar(),
                 APIs.WinGameStore.Tienda.Generar(),
-				APIs.EA.Tienda.Generar(),
 				APIs.DLGamer.Tienda.Generar(),
 				APIs.Battlenet.Tienda.Generar(),
 				APIs.JoyBuggy.Tienda.Generar(),

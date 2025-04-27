@@ -10,6 +10,7 @@ namespace Suscripciones2
 		public string Nombre;
 		public string ImagenLogo;
 		public string ImagenIcono;
+		public string ImagenFondo;
 		public string Enlace;
 		public DateTime FechaSugerencia;
 		public JuegoDRM DRMDefecto;

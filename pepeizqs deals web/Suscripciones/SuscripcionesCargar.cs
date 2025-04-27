@@ -26,8 +26,6 @@ namespace Suscripciones2
 				APIs.PrimeGaming.Suscripcion.Generar(),
 				APIs.Humble.Suscripcion.GenerarAntiguo(),
 				APIs.PrimeGaming.Suscripcion.GenerarAntiguo(),
-				APIs.EA.Suscripcion.Generar(),
-				APIs.EA.Suscripcion.GenerarPro(),
 				APIs.Xbox.Suscripcion.Generar(),
 				APIs.Ubisoft.Suscripcion.Generar(),
 				APIs.Ubisoft.Suscripcion.GenerarPremium(),

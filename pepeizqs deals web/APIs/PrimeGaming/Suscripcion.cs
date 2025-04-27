@@ -12,6 +12,7 @@ namespace APIs.PrimeGaming
 				Nombre = "Prime Gaming",
 				ImagenLogo = "/imagenes/suscripciones/primegaming.webp",
 				ImagenIcono = "/imagenes/suscripciones/primegaming_icono.webp",
+				ImagenFondo = "/imagenes/suscripciones/primegaming_fondo.webp",
 				Enlace = "https://gaming.amazon.com/",
 				DRMDefecto = JuegoDRM.Amazon,
 				AdminInteractuar = true,

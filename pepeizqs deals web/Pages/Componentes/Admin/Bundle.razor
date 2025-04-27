@@ -3,14 +3,14 @@
 
 @if (bundle != null)
 {
-	<div style="padding: 20px; background: var(--fondoCuerpo); border: 1px solid var(--fondoBotonPequeño);">
-		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+	<div style="padding: 20px; background: var(--fondoCuerpo); border: 1px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 20px;">
+		<div style="display: flex; align-items: center;">
 			<div style="width: 100%;">
 				Admin Editar • @bundle.NombreBundle
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+		<div style="display: flex; align-items: center;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Nombre
 			</div>
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+		<div style="display: flex; align-items: start;">
 			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
 				Imagen Bundle
 			</div>
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: start; margin-bottom: 20px;">
+		<div style="display: flex; align-items: start;">
 			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
 				Imagen Noticia
 			</div>
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+		<div style="display: flex; align-items: center;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Fecha Empieza
 			</div>
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 
-		<div style="display: flex; align-items: center; margin-bottom: 20px;">
+		<div style="display: flex; align-items: center;">
 			<div style="width: 15%; padding-right: 20px; text-align: right;">
 				Fecha Termina
 			</div>
@@ -69,6 +69,16 @@
 
 			<div style="width: 85%;">
 				<textarea @onchange="(e => TextoCambiaJuegos(e))" class="entrada-texto" rows="5">@textoJuegos</textarea>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Tiers
+			</div>
+
+			<div style="width: 85%;">
+				<textarea @onchange="(e => TextoCambiaTiers(e))" class="entrada-texto" rows="2">@textoTiers</textarea>
 			</div>
 		</div>
 	</div>
@@ -100,6 +110,7 @@
 			textoFechaEmpieza = bundle.FechaEmpieza.ToString();
 			textoFechaTermina = bundle.FechaTermina.ToString();
 			textoJuegos = Newtonsoft.Json.JsonConvert.SerializeObject(bundle.Juegos);
+			textoTiers = Newtonsoft.Json.JsonConvert.SerializeObject(bundle.Tiers);
 		}
 	}
 
@@ -201,6 +212,23 @@
 			using (conexion)
 			{
 				BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), nuevoTexto, conexion);
+			}
+		}
+	}
+
+	private string textoTiers = string.Empty;
+
+	private void TextoCambiaTiers(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			string nuevoTexto = texto.Value.ToString().Trim();
+
+			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+			using (conexion)
+			{
+				BaseDatos.Bundles.Actualizar.Tiers(bundleId.ToString(), nuevoTexto, conexion);
 			}
 		}
 	}

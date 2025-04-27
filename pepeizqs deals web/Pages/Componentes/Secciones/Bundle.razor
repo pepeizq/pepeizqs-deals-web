@@ -114,6 +114,15 @@
 </script>
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.bundle-tabla {
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	}
@@ -130,7 +139,7 @@
 	if (tipo == Tipo.Bundle)
 	{
 		<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
+			<div class="caja-diseño" style="padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
 				<div style="display: flex; align-items: center; flex-direction: row;">
 					<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" style="width: auto;" target="_blank">
 						<div style="height: 60px; padding-left: 20px; padding-right: 20px;">
@@ -151,7 +160,7 @@
 			</div>
 
 			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 10px 15px; font-size: 18px;" target="_blank">
-						@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Bundle")
+				@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Bundle")
 			</a>
 		</div>
 	}
@@ -159,7 +168,7 @@
 	if (tipo == Tipo.Noticia)
 	{
 		<div style="position: sticky; top: var(--alturaCabecera); z-index: 1000; width: 100%;">
-			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 20px;" target="_blank">
+			<a href="@Herramientas.EnlaceAcortador.Generar(bundle.Enlace, bundle.Tipo, usuarioPatreon)" class="boton-pequeño" style="text-align: center; padding: 15px 20px; font-size: 18px; margin-bottom: 40px;" target="_blank">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String26", "Bundle")
 			</a>
 		</div>
@@ -171,6 +180,8 @@
 
 		if (bundle.Tiers.Count > 0)
 		{
+			int i = 0;
+
 			foreach (var tier in OrdenarTiers(bundle.Tiers))
 			{
 				string marginFinal = string.Empty;
@@ -245,9 +256,9 @@
 					}
 				}
 
-				@if (bundle.Pick == true)
+				if (bundle.Pick == true)
 				{
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; font-size: 18px; display: flex; align-items: center; flex-direction: row; gap: 40px; justify-content: center; margin-bottom: 30px;">
+					<div class="caja-diseño" style="padding: 30px; font-size: 18px; display: flex; align-items: center; flex-direction: row; gap: 40px; justify-content: center; margin-bottom: 30px;">
 						@foreach (var tier2 in OrdenarTiers(bundle.Tiers))
 						{
 							<div style="text-align: center; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 15px 30px;">
@@ -264,10 +275,17 @@
 					</div>
 				}
 
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; margin-bottom: 30px;">
+				string espacioFondo = "margin-bottom: 40px;";
+
+				if (i == bundle.Tiers.Count - 1 || bundle.Pick == true)
+				{
+					espacioFondo = string.Empty;
+				}
+
+				<div class="caja-diseño" style="padding: 30px; @espacioFondo">
 					@if (bundle.Pick == false)
 					{
-						<div style="font-size: 18px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 30px;">
+						<div style="font-size: 18px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px; margin-bottom: 30px; border-radius: 5px;">
 							<div style="margin-bottom: 5px;">
 								Tier @tier.Posicion: @Herramientas.Precios.Euro(decimal.Parse(tier.Precio))
 							</div>
@@ -294,7 +312,7 @@
 						</div>
 					}
 
-					<div class="bundle-tabla" style="display: grid; grid-gap: 30px; margin-top: 10px;">
+					<div class="bundle-tabla" style="display: grid; grid-gap: 40px; margin-top: 10px;">
 						@foreach (var juego in juegosTier)
 						{
 							bool mostrar = true;
@@ -326,10 +344,12 @@
 					</div>
 				</div>
 
-				@if (bundle.Pick == true)
+				if (bundle.Pick == true)
 				{
 					break;
 				}
+
+				i += 1;
 			}
 		}
 	}

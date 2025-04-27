@@ -1,5 +1,6 @@
 ﻿//https://learn.microsoft.com/en-us/graph/search-concept-acceptlanguage-header
 //https://partner.steamgames.com/doc/store/localization/languages
+//https://store.steampowered.com/account/languagepreferences -> /dynamicstore/userdata/
 
 #nullable disable
 
@@ -17,6 +18,7 @@ namespace Herramientas
 		public List<string> Codigos { get; set; }
 		public string ImagenBandera { get; set; }
 		public string SteamAPI { get; set; }
+		public int SteamID { get; set; }
 		public bool SteamReseñas { get; set; }
 		public string Traduccion { get; set; }
 		public bool WebOfrece { get; set; }
@@ -34,6 +36,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "en", "en-US", "en-GB" },
 					ImagenBandera = "english",
 					SteamAPI = "english",
+					SteamID = 0,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -44,6 +47,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "es", "es-ES", "ca", "ca-ES-valencia", "eu", "gl" },
 					ImagenBandera = "spanish",
 					SteamAPI = "spanish",
+					SteamID = 5,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -54,6 +58,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "de", "de-DE" },
 					ImagenBandera = "german",
 					SteamAPI = "german",
+					SteamID = 1,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -64,6 +69,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "fr", "fr-FR", "fr-CA" },
 					ImagenBandera = "french",
 					SteamAPI = "french",
+					SteamID = 2,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -74,6 +80,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "it", "it-IT" },
 					ImagenBandera = "italian",
 					SteamAPI = "italian",
+					SteamID = 3,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -84,6 +91,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "pt", "pt-PT" },
 					ImagenBandera = "portuguese",
 					SteamAPI = "portuguese",
+					SteamID = 11,
 					SteamReseñas = true,
 					WebOfrece = true
 				},
@@ -94,6 +102,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "da", "da-DK" },
 					ImagenBandera = "danish",
 					SteamAPI = "danish",
+					SteamID = 13,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -104,6 +113,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "nl", "nl-NL", "nl-BE" },
 					ImagenBandera = "dutch",
 					SteamAPI = "dutch",
+					SteamID = 14,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -114,6 +124,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "nn", "nb", "nb-NO" },
 					ImagenBandera = "norwegian",
 					SteamAPI = "norwegian",
+					SteamID = 16,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -124,6 +135,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "pl", "pl-PL" },
 					ImagenBandera = "polish",
 					SteamAPI = "polish",
+					SteamID = 12,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -134,6 +146,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "sv", "sv-SE" },
 					ImagenBandera = "swedish",
 					SteamAPI = "swedish",
+					SteamID = 17,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -144,6 +157,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "ko", "ko-KR" },
 					ImagenBandera = "korean",
 					SteamAPI = "korean",
+					SteamID = 4,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -154,6 +168,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "zhs", "zh-Hans", "zh-CN", "cn" },
 					ImagenBandera = "chinese",
 					SteamAPI = "schinese",
+					SteamID = 6,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -164,6 +179,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "zht", "zh-Hant", "zh-TW", "zh" },
 					ImagenBandera = "chinese",
 					SteamAPI = "tchinese",
+					SteamID = 7,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -174,6 +190,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "lat", "es-MX", "es_mx", "es-US" },
 					ImagenBandera = "latam",
 					SteamAPI = "latam",
+					SteamID = 27,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -184,6 +201,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "br", "pt-BR" },
 					ImagenBandera = "brazilian",
 					SteamAPI = "brazilian",
+					SteamID = 22,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -194,6 +212,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "ja", "jp", "ja-JP" },
 					ImagenBandera = "japanese",
 					SteamAPI = "japanese",
+					SteamID = 10,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -204,6 +223,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "hu" },
 					ImagenBandera = "hungarian",
 					SteamAPI = "hungarian",
+					SteamID = 18,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -214,6 +234,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "cs" },
 					ImagenBandera = "czech",
 					SteamAPI = "czech",
+					SteamID = 19,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -224,6 +245,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "tr-TR" },
 					ImagenBandera = "turkish",
 					SteamAPI = "turkish",
+					SteamID = 21,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -234,6 +256,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "uk" },
 					ImagenBandera = "ukrainian",
 					SteamAPI = "ukrainian",
+					SteamID = 26,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -244,6 +267,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "fi", "fi-FI" },
 					ImagenBandera = "finnish",
 					SteamAPI = "finnish",
+					SteamID = 15,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -254,6 +278,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "ro" },
 					ImagenBandera = "romanian",
 					SteamAPI = "romanian",
+					SteamID = 20,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -264,6 +289,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "el" },
 					ImagenBandera = "greek",
 					SteamAPI = "greek",
+					SteamID = 24,
 					SteamReseñas = true,
 					WebOfrece = false
 				},
@@ -274,6 +300,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "ru", "ru-RU" },
 					ImagenBandera = "russian",
 					SteamAPI = "russian",
+					SteamID = 8,
 					SteamReseñas = false,
 					WebOfrece = false
 				},
@@ -284,6 +311,7 @@ namespace Herramientas
 					Codigos = new List<string>() { "ar", "ar-SA" },
 					ImagenBandera = "arabic",
 					SteamAPI = "arabic",
+					SteamID = 25,
 					SteamReseñas = false,
 					WebOfrece = false
 				}
@@ -510,84 +538,6 @@ namespace Herramientas
 			}
 
 			return null;
-		}
-
-		#endregion
-
-		#region Steam Juegos
-
-		public static List<JuegoIdioma> SteamSacarIdiomas(string contenido)
-		{
-			List<JuegoIdioma> idiomas = new List<JuegoIdioma>();
-
-			if (string.IsNullOrEmpty(contenido) == false)
-			{
-				foreach (var idioma in ListadoIdiomasGenerar())
-				{
-					foreach (var idiomaContenido in idioma.Contenidos)
-					{
-						if (contenido.Contains(idiomaContenido + "<strong>*</strong>") == true)
-						{
-							JuegoIdioma nuevoIdioma = new JuegoIdioma
-							{
-								DRM = JuegoDRM.Steam,
-								Idioma = idioma.Id,
-								Audio = true,
-								Texto = true
-							};
-
-							bool añadir = true;
-
-							if (idiomas.Count > 0)
-							{
-								foreach (var idioma2 in idiomas)
-								{
-									if (idioma2.Idioma == nuevoIdioma.Idioma)
-									{
-										añadir = false;
-									}
-								}
-							}
-
-							if (añadir == true)
-							{
-								idiomas.Add(nuevoIdioma);
-							}
-						}
-
-						if (contenido.Contains(idiomaContenido) == true)
-						{
-							JuegoIdioma nuevoIdioma = new JuegoIdioma
-							{
-								DRM = JuegoDRM.Steam,
-								Idioma = idioma.Id,
-								Audio = false,
-								Texto = true
-							};
-
-							bool añadir = true;
-
-							if (idiomas.Count > 0)
-							{
-								foreach (var idioma2 in idiomas)
-								{
-									if (idioma2.Idioma == nuevoIdioma.Idioma)
-									{
-										añadir = false;
-									}
-								}
-							}
-
-							if (añadir == true)
-							{
-								idiomas.Add(nuevoIdioma);
-							}
-						}
-					}
-				}
-			}
-
-			return idiomas;
 		}
 
 		#endregion

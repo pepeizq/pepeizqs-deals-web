@@ -142,14 +142,14 @@ builder.Services.AddSingleton<Tareas.Tiendas.DLGamer>();
 builder.Services.AddSingleton<Tareas.Tiendas.Voidu>();
 builder.Services.AddSingleton<Tareas.Tiendas.JoyBuggy>();
 builder.Services.AddSingleton<Tareas.Tiendas.Battlenet>();
-builder.Services.AddSingleton<Tareas.Tiendas.EA>();
+//builder.Services.AddSingleton<Tareas.Tiendas.EA>();
 builder.Services.AddSingleton<Tareas.Tiendas.EpicGames>();
 builder.Services.AddSingleton<Tareas.Tiendas.Ubisoft>();
 builder.Services.AddSingleton<Tareas.Tiendas.Playsum>();
 //builder.Services.AddSingleton<Tareas.Tiendas.Allyouplay>();
 builder.Services.AddSingleton<Tareas.Tiendas.PlanetPlay>();
 
-builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
+//builder.Services.AddSingleton<Tareas.Suscripciones.EAPlay>();
 builder.Services.AddSingleton<Tareas.Suscripciones.XboxGamePass>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusClassics>();
 builder.Services.AddSingleton<Tareas.Suscripciones.UbisoftPlusPremium>();
@@ -189,14 +189,14 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Voidu>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.JoyBuggy>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Battlenet>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EA>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.EpicGames>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Ubisoft>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Playsum>());
 //builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Allyouplay>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.PlanetPlay>());
 
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.EAPlay>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.XboxGamePass>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusClassics>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Suscripciones.UbisoftPlusPremium>());

@@ -177,5 +177,28 @@ namespace BaseDatos.Bundles
 				}
 			}
 		}
+
+		public static void Tiers(string id, string tiers, SqlConnection conexion)
+		{
+			string sqlActualizar = "UPDATE bundles " +
+					"SET tiers=@tiers " +
+					"WHERE id=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
+			{
+				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@tiers", tiers);
+
+				comando.ExecuteNonQuery();
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
+		}
 	}
 }

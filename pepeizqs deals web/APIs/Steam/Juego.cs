@@ -1,4 +1,4 @@
-﻿//https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={"ids":[{"appid":1091500}],"context":{"language":"english","country_code":"ES","steam_realm":1},"data_request":{"include_reviews":true,"include_basic_info":true, "include_assets": true, "include_links": true, "include_tag_count": 20, "include_release": true, "include_platforms": true, "include_screenshots": true, "include_trailers": true}}
+﻿//https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={"ids":[{"appid":1091500}],"context":{"language":"english","country_code":"ES","steam_realm":1},"data_request":{"include_reviews":true,"include_basic_info":true, "include_assets": true, "include_links": true, "include_tag_count": 20, "include_release": true, "include_platforms": true, "include_screenshots": true, "include_trailers": true, "include_supported_languages": true}}
 
 #nullable disable
 
@@ -26,14 +26,17 @@ namespace APIs.Steam
 			}
 
 			string nombre = string.Empty;
+			Juegos.JuegoTipo tipo = Juegos.JuegoTipo.Game;
 			Juegos.JuegoCaracteristicas caracteristicas = new Juegos.JuegoCaracteristicas();
 			Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
 			Juegos.JuegoMedia media = new Juegos.JuegoMedia();
 			Juegos.JuegoAnalisis reseñas = new Juegos.JuegoAnalisis();
 			List<string> etiquetas = new List<string>();
 			Juegos.JuegoDeck deck = Juegos.JuegoDeck.Desconocido;
+			bool freeToPlay = false;
+			List<Juegos.JuegoIdioma> idiomas = new List<Juegos.JuegoIdioma>();
 
-			string html2 = await Decompiladores.Estandar(@"https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={""ids"":[{""appid"":" + id + @"}],""context"":{""language"":""english"",""country_code"":""ES"",""steam_realm"":1},""data_request"":{""include_reviews"":true,""include_basic_info"":true, ""include_assets"": true, ""include_links"": true, ""include_tag_count"": 20, ""include_release"": true, ""include_platforms"": true, ""include_screenshots"": true, ""include_trailers"": true}}");
+			string html2 = await Decompiladores.Estandar(@"https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={""ids"":[{""appid"":" + id + @"}],""context"":{""language"":""english"",""country_code"":""ES"",""steam_realm"":1},""data_request"":{""include_reviews"":true,""include_basic_info"":true, ""include_assets"": true, ""include_links"": true, ""include_tag_count"": 20, ""include_release"": true, ""include_platforms"": true, ""include_screenshots"": true, ""include_trailers"": true, ""include_supported_languages"": true}}");
 
 			if (string.IsNullOrEmpty(html2) == false)
 			{
@@ -56,6 +59,27 @@ namespace APIs.Steam
 							Encoding Utf8 = Encoding.UTF8;
 							byte[] utf8Bytes = Utf8.GetBytes(datos2.Respuesta.Juegos[0].Nombre);
 							nombre = Utf8.GetString(utf8Bytes);
+						}
+
+						#endregion
+
+						#region Tipo
+
+						if (datos2.Respuesta.Juegos[0].Tipo == 0)
+						{
+							tipo = Juegos.JuegoTipo.Game;
+						}
+						else if (datos2.Respuesta.Juegos[0].Tipo == 4)
+						{
+							tipo = Juegos.JuegoTipo.DLC;
+						}
+						else if (datos2.Respuesta.Juegos[0].Tipo == 11)
+						{
+							tipo = Juegos.JuegoTipo.Music;
+						}
+						else if (datos2.Respuesta.Juegos[0].Tipo == 6)
+						{
+							tipo = Juegos.JuegoTipo.Software;
 						}
 
 						#endregion
@@ -339,6 +363,49 @@ namespace APIs.Steam
 						}
 
 						#endregion
+
+						#region FreeToPlay
+
+						if (datos2.Respuesta.Juegos[0].FreeToPlay == true)
+						{
+							freeToPlay = true;
+						}
+
+						#endregion
+
+						#region Idiomas
+
+						if (datos2.Respuesta.Juegos[0].Idiomas != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Idiomas.Count > 0)
+							{
+								foreach (var idioma in datos2.Respuesta.Juegos[0].Idiomas)
+								{
+									if (idioma.Soportado == true)
+									{
+										List<IdiomaClase> idiomas2 = Idiomas.ListadoIdiomasGenerar();
+
+										foreach (var idioma2 in idiomas2)
+										{
+											if (idioma2.SteamID == idioma.Id)
+											{
+												Juegos.JuegoIdioma nuevoIdioma = new Juegos.JuegoIdioma
+												{
+													 Idioma = idioma2.Id,
+													 Audio = idioma.Audio,
+													 Texto = idioma.Texto,
+													 DRM = Juegos.JuegoDRM.Steam
+												};
+
+												idiomas.Add(nuevoIdioma);
+											}
+										}
+									}
+								}
+							}
+						}
+
+						#endregion
 					}
 				}
 			}
@@ -373,13 +440,14 @@ namespace APIs.Steam
 							Imagenes = imagenes,
 							Caracteristicas = caracteristicas,
 							Media = media,
-							FechaSteamAPIComprobacion = DateTime.Now
+							FechaSteamAPIComprobacion = DateTime.Now,
+							FreeToPlay = freeToPlay.ToString(),
+							Tipo = tipo,
+							MayorEdad = "false"
 						};
 
-						if (datos.Datos.Tipo == "dlc")
+						if (tipo == Juegos.JuegoTipo.DLC)
 						{
-							juego.Tipo = Juegos.JuegoTipo.DLC;
-
 							juego.Imagenes.Logo = null;
 							juego.Imagenes.Library_600x900 = null;
 							juego.Imagenes.Library_1920x620 = null;
@@ -394,48 +462,23 @@ namespace APIs.Steam
 								}
 							}
 						}
-						else if (datos.Datos.Tipo == "music")
+						else if (tipo == Juegos.JuegoTipo.Music)
 						{
-							juego.Tipo = Juegos.JuegoTipo.Music;
-
 							juego.Imagenes.Logo = null;
 							juego.Imagenes.Library_600x900 = null;
 							juego.Imagenes.Library_1920x620 = null;
 						}
-						else if (datos.Datos.Tipo == "software" || datos.Datos.Tipo == "application")
+						else if (tipo == Juegos.JuegoTipo.Software)
 						{
-							juego.Tipo = Juegos.JuegoTipo.Software;
-
 							juego.Imagenes.Logo = null;
 							juego.Imagenes.Library_600x900 = null;
 							juego.Imagenes.Library_1920x620 = null;
 						}
 						else
 						{
-							juego.Tipo = Juegos.JuegoTipo.Game;
-
 							juego.Analisis = reseñas;
 							juego.Deck = deck;
 						}
-
-						if (string.IsNullOrEmpty(datos.Datos.Free2Play.ToString()) == false)
-						{
-							juego.FreeToPlay = datos.Datos.Free2Play.ToString();
-						}
-
-						juego.MayorEdad = "false";
-
-						//if (string.IsNullOrEmpty(datos.Datos.MayorEdad) == false)
-						//{
-						//	try
-						//	{
-						//		if (int.Parse(datos.Datos.MayorEdad) >= 18)
-						//		{
-						//			juego.MayorEdad = "true";
-						//		}
-						//	}
-						//	catch {}
-						//}
 
 						if (datos.Datos.Categorias != null)
 						{
@@ -467,9 +510,9 @@ namespace APIs.Steam
 							}
 						}
 
-						if (string.IsNullOrEmpty(datos.Datos.Idiomas) == false)
+						if (idiomas.Count > 0)
 						{
-							juego.Idiomas = Herramientas.Idiomas.SteamSacarIdiomas(datos.Datos.Idiomas);
+							juego.Idiomas = idiomas;
 						}
 
 						if (etiquetas.Count > 0)
@@ -828,6 +871,9 @@ namespace APIs.Steam
 		[JsonPropertyName("type")]
 		public int Tipo { get; set; }
 
+		[JsonPropertyName("is_free")]
+		public bool FreeToPlay { get; set; }
+
 		[JsonPropertyName("assets")]
 		public SteamJuegoAPI2JuegoImagenes Imagenes { get; set; }
 
@@ -851,6 +897,9 @@ namespace APIs.Steam
 
 		[JsonPropertyName("trailers")]
 		public SteamJuegoAPI2JuegoVideos Trailers { get; set; }
+
+		[JsonPropertyName("supported_languages")]
+		public List<SteamJuegoAPI2JuegoIdioma> Idiomas { get; set; }
 	}
 
 	public class SteamJuegoAPI2JuegoImagenes
@@ -986,6 +1035,21 @@ namespace APIs.Steam
 
 		[JsonPropertyName("type")]
 		public string Tipo { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoIdioma
+	{
+		[JsonPropertyName("elanguage")]
+		public int Id { get; set; }
+
+		[JsonPropertyName("supported")]
+		public bool Soportado { get; set; }
+
+		[JsonPropertyName("full_audio")]
+		public bool Audio { get; set; }
+
+		[JsonPropertyName("subtitles")]
+		public bool Texto { get; set; }
 	}
 
 	#endregion

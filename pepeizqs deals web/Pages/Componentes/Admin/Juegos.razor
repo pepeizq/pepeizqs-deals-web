@@ -453,7 +453,8 @@ else
                                 <label>Video @i.ToString()</label>
                             </div>
                             <div style="width: 80%;">
-                                <input class="entrada-texto" value="@video" @onchange="@(e => CambiarVideo(e, i))" />
+                                <input class="entrada-texto" value="@video.Enlace" @onchange="@(e => CambiarVideo(e, i))" />
+                                <img src="@video.Captura" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
                             </div>
                         </div>
                     }
@@ -474,14 +475,32 @@ else
                                 <label>Captura @i.ToString()</label>
                             </div>
                             <div style="width: 80%;">
-                                <input class="entrada-texto" value="@captura" @onchange="@(e => CambiarCaptura(e, i))" />
-                                <img src="@captura" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                                <input class="entrada-texto" value="@captura.Imagen" @onchange="@(e => CambiarCaptura(e, i))" />
+                                <img src="@captura.Imagen" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
                             </div>
                         </div>
                     }
                 }
             }
         </div>
+    }
+
+    @if (juegoAñadir.Idiomas != null)
+    {
+        if (juegoAñadir.Idiomas.Count > 0)
+        {
+            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+                <label class="texto-info-entrada">Idiomas</label>
+                <hr />
+
+                @foreach (var idioma in juegoAñadir.Idiomas)
+                {
+                    <div>
+                        @idioma.Idioma - Audio: @idioma.Audio.ToString() - Texto: @idioma.Texto.ToString()
+                    </div>
+                }
+            </div>
+        }
     }
 }
 

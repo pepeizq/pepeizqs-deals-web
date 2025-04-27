@@ -21,8 +21,10 @@
     }
 
     .caja-foro {
-        background-color: var(--fondoOscuro);
-        border: 1px solid var(--fondoBotonPequeño);
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
         padding: 20px;
         width: 100%;
         max-width: 1100px;
@@ -508,7 +510,7 @@ else if (categoriaId > 0 && postId > 0)
                     <div style="display: flex; flex-direction: column; gap: 30px; margin-top: 30px;">
                         @foreach (var respuesta in respuestasPost)
                         {
-                            <div class="caja-foro">
+                            <div id="message-@respuesta.Id" class="caja-foro">
                                 <div style="display: flex; align-items: start; gap: 30px;">
                                     @{
                                         var autor2 = UserManager.FindByIdAsync(respuesta.AutorId).Result;

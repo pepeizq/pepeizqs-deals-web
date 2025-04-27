@@ -123,6 +123,15 @@
 }
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.destacado-fondo {
 	display: block;
 	}
@@ -402,7 +411,7 @@
 				noHayNoticiasEstilo = "";
 			}
 
-			<div class="noticias-caja" style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
+			<div class="noticias-caja caja-diseño" style="display: flex; flex-direction: column; gap: 30px; @noHayNoticiasEstilo">
 				@if (noticiasTresDias.Count > 0 && noticiasSemana.Count == 0)
 				{
 					<div title="@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Index")" style="margin-top: -20px;">
@@ -464,7 +473,7 @@
 					</a>
 				</div>
 
-				<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; padding: 10px 20px;">
+				<div class="caja-diseño" style="max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; padding: 10px 20px;">
 					<Virtualize Context="post" Items="postsUltimosForo">
 						<ItemContent>
 							@{
@@ -481,7 +490,7 @@
 									usuario = UserManager.FindByIdAsync(post.AutorId).Result;
 								}
 
-								<button @onclick="@(e => AbrirPost(e, post.CategoriaId, post.Id))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
+								<button @onclick="@(e => AbrirPost(e, post.CategoriaId, post.Id, post.RespuestaId))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
 									<div style="display: flex; align-items: center; gap: 20px;">
 										<div>
 											<img src="@usuario?.Avatar" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
@@ -764,7 +773,7 @@
 	private string videoDestacado = string.Empty;
 
 	private SqlConnection conexion = new SqlConnection();
-  
+
 	private List<Noticias.Noticia> noticiasTresDias = new List<Noticias.Noticia>();
 	private List<Noticias.Noticia> noticiasSemana = new List<Noticias.Noticia>();
 
@@ -1403,9 +1412,20 @@
 
 	#region Foro
 
-	private void AbrirPost(MouseEventArgs e, int categoria, int postId)
-    {
-        NavManager.NavigateTo("/forum/" + categoria.ToString() + "/" + postId.ToString(), true);
+	private void AbrirPost(MouseEventArgs e, int categoria, int postId, int respuestaId)
+	{
+		int postId2 = postId;
+		string añadirRespuesta = string.Empty;
+
+		if (respuestaId > 0)
+		{
+			postId2 = respuestaId;
+
+			int respuestaId2 = postId;
+			añadirRespuesta = "#message-" + respuestaId2.ToString();
+		}
+
+        NavManager.NavigateTo("/forum/" + categoria.ToString() + "/" + postId2.ToString() + añadirRespuesta, true);
     }
 
 	#endregion

@@ -185,7 +185,8 @@ ORDER BY fecha DESC";
 							CategoriaId = lector.GetInt32(2),
 							Titulo = lector.GetString(3),
 							Contenido = lector.GetString(4),
-							FechaCreacion = lector.GetDateTime(5)
+							FechaCreacion = lector.GetDateTime(5),
+							RespuestaId = lector.GetInt32(7)
 						};
 
 						posts.Add(nuevoPost);
