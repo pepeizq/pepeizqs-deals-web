@@ -162,6 +162,15 @@
     }
 </script>
 
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
 @if (juegosActuales.Count > 0)
 {
 	<h1 style="font-size: 23px;">
@@ -170,7 +179,7 @@
 
     <hr>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-items: center; gap: 30px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
+    <div class="caja-diseño" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-items: center; gap: 30px; padding: 30px;">
         @foreach (var juego in juegosActuales)
         {
             bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego.Juego, juego.DRM);

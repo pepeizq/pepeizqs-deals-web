@@ -8,6 +8,15 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
     .cargando {
         width: 48px;
         height: 48px;
@@ -33,7 +42,7 @@
 @if (usuario != null)
 {
     <div style="display: flex; flex-direction: column; gap: 20px;">
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+        <div class="caja-diseño" style="padding: 30px;">
             <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                 <img src="@JuegoDRM2.SacarImagen(JuegoDRM.Ubisoft)" style="max-width: 40px; max-height: 40px;" />
 
@@ -74,7 +83,7 @@
                 @if (cantidadJuegos > 0)
                 {
                     <div style="margin-left: auto;">
-                        <button class="boton" style="padding: 10px 20px; width: fit-content;" @onclick="@(e => BorrarJuegos(e))">
+                        <button class="boton-pequeño" style="padding: 10px 15px; width: fit-content;" @onclick="@(e => BorrarJuegos(e))">
                              <div style="max-width: 18px;">
 							    <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                     <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/>
@@ -86,12 +95,12 @@
             </div>
         </div>
 
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+        <div class="caja-diseño" style="padding: 30px;">
             <div style="font-size: 18px;">
                 @Herramientas.Idiomas.BuscarTexto(idioma, "String15", "AccountGames")
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; padding: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño);">
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; padding: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); border-radius: 5px;">
                 <label>@string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String17", "AccountGames"), "Ubisoft Connect")</label>
 
                 @if (trabajando == false)
@@ -154,7 +163,7 @@
 
                         @if (trabajando == false)
                         {
-                            <label class="boton" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
+                            <label class="boton-pequeño" style="cursor: pointer; font-size: 16px; width: fit-content; padding: 10px 15px;">
                                 <InputFile OnChange="PlayniteCargarFichero" accept=".db" hidden />
                                 @string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String23", "AccountGames"), "games.db")
                             </label>

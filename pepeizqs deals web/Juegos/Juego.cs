@@ -48,7 +48,6 @@ namespace Juegos
 		public List<JuegoHistorico> Historicos { get; set; }
 		public JuegoGalaxyGOG GalaxyGOG { get; set; }
 		public JuegoCantidadJugadoresSteam CantidadJugadores { get; set; }
-		public List<string> CuratorsSteam { get; set; }
 		public List<JuegoIdioma> Idiomas { get; set; }
 		public JuegoEpicGames EpicGames { get; set; }
 		public string IdXbox { get; set; }
@@ -128,6 +127,8 @@ namespace Juegos
 		public List<JuegoCaracteristicasCurator> Franquicias { get; set; }
 		public DateTime FechaLanzamientoSteam { get; set; }
 		public DateTime FechaLanzamientoOriginal { get; set; }
+		public List<string> Enlaces { get; set; }
+		public bool AccesoAnticipado { get; set; }
 	}
 
 	public class JuegoCaracteristicasCurator

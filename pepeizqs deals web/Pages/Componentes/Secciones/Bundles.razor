@@ -110,6 +110,15 @@
 </script>
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.bundles-grid {
 		gap: 40px;
 	}
@@ -133,7 +142,7 @@
 
 			<hr>
 
-			<div class="bundles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-items: center; margin-bottom: 70px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
+			<div class="bundles-grid caja-diseño" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-items: center; margin-bottom: 70px; padding: 30px;">
 				@foreach (var bundle in bundlesActuales)
 				{
 					<button @onclick="@(e => SeleccionarBundle(e, bundle))" class="boton-pequeño" style="padding: 0px;">
@@ -160,7 +169,7 @@
 			@if (bundleSeleccionado != null)
 			{
 				<div style="margin-bottom: 40px; position: -webkit-sticky; position: sticky; top: 70px; z-index: 3; overflow: hidden;">
-					<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
+					<div class="caja-diseño" style="padding: 20px 30px; display: flex; align-items: center; flex-direction: row;">
 						<button @onclick="@(e => CerrarBundle(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
 							<div style="max-width: 24px; max-height: 24px;">
 								<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

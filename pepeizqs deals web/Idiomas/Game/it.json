@@ -83,10 +83,14 @@
   "String85": "{0} volta",
   "String86": "{0} volte",
   "String87": "Giocabile da Amazon Luna",
-  "String88": "Collegamenti",
+  "String88": "Collegamenti esterni",
   "String89": "Altro da {0}",
-  "String90": "Codice Sconto:",
+  "String90": "Codice sconto:",
   "String91": "Audio",
   "String92": "Testo",
-  "String93": "Per visualizzare il contenuto, è necessario registrare un account sul sito Web."
+  "String93": "Per visualizzare il contenuto, è necessario registrare un account sul sito Web.",
+  "String94": "Questi collegamenti portano ad altri siti Web specializzati nei database di giochi",
+  "String95": "Collegamenti per sviluppatori",
+  "String96": "Questi collegamenti sono stati forniti dallo sviluppatore a Steam",
+  "String97": "Questo gioco è in anticipo, il che significa che è ancora in fase di sviluppo e mancheranno le caratteristiche."
 }

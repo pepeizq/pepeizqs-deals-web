@@ -170,6 +170,15 @@ namespace APIs.Steam
 							}
 						}
 
+						if (datos2.Respuesta.Juegos[0].AccesoAnticipado == true)
+						{
+							caracteristicas.AccesoAnticipado = true;
+						}
+						else
+						{
+							caracteristicas.AccesoAnticipado = false;
+						}
+
 						#endregion
 
 						#region Imagenes
@@ -381,26 +390,55 @@ namespace APIs.Steam
 							{
 								foreach (var idioma in datos2.Respuesta.Juegos[0].Idiomas)
 								{
-									if (idioma.Soportado == true)
+									List<IdiomaClase> idiomas2 = Idiomas.ListadoIdiomasGenerar();
+
+									foreach (var idioma2 in idiomas2)
 									{
-										List<IdiomaClase> idiomas2 = Idiomas.ListadoIdiomasGenerar();
-
-										foreach (var idioma2 in idiomas2)
+										if (idioma2.SteamID == idioma.Id)
 										{
-											if (idioma2.SteamID == idioma.Id)
-											{
-												Juegos.JuegoIdioma nuevoIdioma = new Juegos.JuegoIdioma
-												{
-													 Idioma = idioma2.Id,
-													 Audio = idioma.Audio,
-													 Texto = idioma.Texto,
-													 DRM = Juegos.JuegoDRM.Steam
-												};
+											bool texto = false;
 
-												idiomas.Add(nuevoIdioma);
+											if (idioma.Soportado == true || idioma.Texto == true)
+											{
+												texto = true;
 											}
+
+											Juegos.JuegoIdioma nuevoIdioma = new Juegos.JuegoIdioma
+											{
+												Idioma = idioma2.Id,
+												Audio = idioma.Audio,
+												Texto = texto,
+												DRM = Juegos.JuegoDRM.Steam
+											};
+
+											idiomas.Add(nuevoIdioma);
 										}
 									}
+								}
+							}
+						}
+
+						#endregion
+
+						#region Enlaces
+
+						if (datos2.Respuesta.Juegos[0].Enlaces != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Enlaces.Count > 0)
+							{
+								List<string> nuevosEnlaces = new List<string>();
+
+								foreach (var enlace2 in datos2.Respuesta.Juegos[0].Enlaces)
+								{
+									if (string.IsNullOrEmpty(enlace2.Enlace) == false)
+									{
+										nuevosEnlaces.Add(enlace2.Enlace);
+									}
+								}
+
+								if (nuevosEnlaces.Count > 0)
+								{
+									caracteristicas.Enlaces = nuevosEnlaces;
 								}
 							}
 						}
@@ -443,7 +481,8 @@ namespace APIs.Steam
 							FechaSteamAPIComprobacion = DateTime.Now,
 							FreeToPlay = freeToPlay.ToString(),
 							Tipo = tipo,
-							MayorEdad = "false"
+							MayorEdad = "false",
+							Analisis = reseñas
 						};
 
 						if (tipo == Juegos.JuegoTipo.DLC)
@@ -476,7 +515,6 @@ namespace APIs.Steam
 						}
 						else
 						{
-							juego.Analisis = reseñas;
 							juego.Deck = deck;
 						}
 
@@ -590,7 +628,10 @@ namespace APIs.Steam
 					{
 						api = JsonSerializer.Deserialize<SteamDeckAPI>(html);
 					}
-					catch { }
+					catch (Exception ex)
+					{
+						BaseDatos.Errores.Insertar.Mensaje("Deck API", ex);
+					}
 					
 					if (api != null)
 					{
@@ -874,6 +915,9 @@ namespace APIs.Steam
 		[JsonPropertyName("is_free")]
 		public bool FreeToPlay { get; set; }
 
+		[JsonPropertyName("is_early_access")]
+		public bool AccesoAnticipado { get; set; }
+
 		[JsonPropertyName("assets")]
 		public SteamJuegoAPI2JuegoImagenes Imagenes { get; set; }
 
@@ -900,6 +944,9 @@ namespace APIs.Steam
 
 		[JsonPropertyName("supported_languages")]
 		public List<SteamJuegoAPI2JuegoIdioma> Idiomas { get; set; }
+
+		[JsonPropertyName("links")]
+		public List<SteamJuegoAPI2JuegoEnlace> Enlaces { get; set; }
 	}
 
 	public class SteamJuegoAPI2JuegoImagenes
@@ -1050,6 +1097,12 @@ namespace APIs.Steam
 
 		[JsonPropertyName("subtitles")]
 		public bool Texto { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoEnlace
+	{
+		[JsonPropertyName("url")]
+		public string Enlace { get; set; }
 	}
 
 	#endregion

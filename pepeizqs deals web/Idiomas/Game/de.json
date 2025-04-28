@@ -83,10 +83,14 @@
   "String85": "{0} Mal",
   "String86": "{0} Mal",
   "String87": "Spielbar bei Amazon Luna",
-  "String88": "Links",
+  "String88": "Externe Links",
   "String89": "Mehr von {0}",
   "String90": "Rabattcode:",
   "String91": "Audio",
   "String92": "Text",
-  "String93": "Um den Inhalt anzuzeigen, müssen Sie ein Konto auf der Website registrieren."
+  "String93": "Um den Inhalt anzuzeigen, müssen Sie ein Konto auf der Website registrieren.",
+  "String94": "Diese Links führen zu anderen Websites, die auf Spieldatenbanken spezialisiert sind",
+  "String95": "Entwicklerverbindungen",
+  "String96": "Diese Links wurden vom Entwickler zum Steam bereitgestellt",
+  "String97": "Dieses Spiel befindet sich im frühen Zugriff, was bedeutet, dass es noch in der Entwicklung ist und die Funktionen fehlen."
 }

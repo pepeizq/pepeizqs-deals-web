@@ -136,6 +136,15 @@
 </script>
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
     .suscripciones-grid {
         gap: 30px;
     }
@@ -169,7 +178,7 @@
 
             <hr />
 
-            <div style="display: flex; align-items: center; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; gap: 20px;">
+            <div class="caja-diseño" style="display: flex; align-items: center; padding: 20px; gap: 20px;">
                 <div style="max-width: 26px;">
                     <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
@@ -181,7 +190,7 @@
                 </div>
             </div>
 
-            <div class="suscripciones-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 30px;">
+            <div class="suscripciones-grid caja-diseño" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; padding: 30px;">
                 @foreach (var suscripcionActual in suscripcionesActuales)
                 {
                     <button @onclick="@(e => SuscripcionAbrir(e, suscripcionActual))" class="boton-pequeño suscripcion-grid" style="display: flex; flex-direction: column; align-items: center;">
@@ -355,7 +364,7 @@
 else
 {
     <div style="display: flex; flex-direction: column; gap: 30px;">
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px 30px; display: flex; align-items: center; flex-direction: row; gap: 30px;">
+        <div class="caja-diseño" style="padding: 20px 30px; display: flex; align-items: center; flex-direction: row; gap: 30px;">
             <button @onclick="@(e => SuscripcionCerrar(e))" class="boton-pequeño" style="width: fit-content; padding: 10px 15px;">
                 <div style="max-width: 24px;">
                     <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -452,7 +461,7 @@ else
             </div>
         }
 
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px; display: flex; align-items: center; gap: 20px;">
+        <div class="caja-diseño" style="padding: 20px; display: flex; align-items: center; gap: 20px;">
             <div style="max-width: 16px;">
                 <svg class="svg-icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
@@ -462,7 +471,7 @@ else
             <input type="text" @onchange="(e => TextoCambiaBuscador(e))" class="entrada-texto" style="min-width: 50%;" />
         </div>
 
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
+        <div class="caja-diseño" style="padding: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
             @foreach (var juego in suscripcionSeleccionadaJuegosMostrar)
             {
                 string enlaceSuscripcion = Herramientas.EnlaceAcortador.Generar(juego.Enlace, juego.Tipo, usuarioPatreon);

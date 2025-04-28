@@ -59,16 +59,6 @@ namespace BaseDatos.Juegos
 				}
 			}
 
-			string añadirCurators = null;
-
-			if (juego.CuratorsSteam != null)
-			{
-				if (juego.CuratorsSteam.Count > 0)
-				{
-					añadirCurators = ", curatorsSteam=@curatorsSteam";
-				}
-			}
-
 			string añadirDeck = null;
 
 			if (juego.Deck != JuegoDeck.Desconocido)
@@ -79,7 +69,7 @@ namespace BaseDatos.Juegos
 			string sqlActualizar = "UPDATE juegos " +
 					"SET idSteam=@idSteam, idGog=@idGog, " +
 						"precioMinimosHistoricos=@precioMinimosHistoricos, precioActualesTiendas=@precioActualesTiendas, historicos=@historicos, " +
-                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirCurators + añadirDeck + añadirSlugGog + añadirSlugEpic;
+                        "nombreCodigo=@nombreCodigo" + añadirUltimaModificacion + añadirEtiquetas + añadirDeck + añadirSlugGog + añadirSlugEpic;
 
 			if (actualizarAPI == true)
 			{
@@ -124,14 +114,6 @@ namespace BaseDatos.Juegos
 						if (juego.Etiquetas.Count > 0)
 						{
 							comando.Parameters.AddWithValue("@etiquetas", JsonSerializer.Serialize(juego.Etiquetas));
-						}
-					}
-
-					if (juego.CuratorsSteam != null)
-					{
-						if (juego.CuratorsSteam.Count > 0)
-						{
-							comando.Parameters.AddWithValue("@curatorsSteam", JsonSerializer.Serialize(juego.CuratorsSteam));
 						}
 					}
 
@@ -662,17 +644,7 @@ namespace BaseDatos.Juegos
 					juego.Caracteristicas = new JuegoCaracteristicas();
 				}
 
-				juego.Caracteristicas.Descripcion = nuevoJuego.Caracteristicas.Descripcion;
-				juego.Caracteristicas.Windows = nuevoJuego.Caracteristicas.Windows;
-				juego.Caracteristicas.Mac = nuevoJuego.Caracteristicas.Mac;
-				juego.Caracteristicas.Linux = nuevoJuego.Caracteristicas.Linux;
-
-				juego.Caracteristicas.Desarrolladores2 = nuevoJuego.Caracteristicas.Desarrolladores2;
-				juego.Caracteristicas.Editores2 = nuevoJuego.Caracteristicas.Editores2;
-				juego.Caracteristicas.Franquicias = nuevoJuego.Caracteristicas.Franquicias;
-				juego.Caracteristicas.FechaLanzamientoSteam = nuevoJuego.Caracteristicas.FechaLanzamientoSteam;
-				juego.Caracteristicas.FechaLanzamientoOriginal = nuevoJuego.Caracteristicas.FechaLanzamientoOriginal;
-
+				juego.Caracteristicas = nuevoJuego.Caracteristicas;
 				juego.Deck = nuevoJuego.Deck;
 
 				juego.Media = nuevoJuego.Media;
@@ -723,8 +695,6 @@ namespace BaseDatos.Juegos
 				{
 					if (string.IsNullOrEmpty(nuevoJuego.Analisis.Porcentaje) == false && string.IsNullOrEmpty(nuevoJuego.Analisis.Cantidad) == false)
 					{
-						juego.Analisis = nuevoJuego.Analisis;
-
 						añadirAnalisis = ", analisis=@analisis";
 					}
 				}
@@ -763,7 +733,7 @@ namespace BaseDatos.Juegos
 
 						if (string.IsNullOrEmpty(añadirAnalisis) == false)
 						{
-							comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(juego.Analisis));
+							comando.Parameters.AddWithValue("@analisis", JsonSerializer.Serialize(nuevoJuego.Analisis));
 						}
 
 						try

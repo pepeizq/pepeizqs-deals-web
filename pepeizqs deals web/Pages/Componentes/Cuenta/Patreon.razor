@@ -6,11 +6,20 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<style>
+    .caja-diseño {
+        background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+        border: 2px solid var(--fondoOscuro);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+        border-radius: 5px;
+    }
+</style>
+
 @if (usuario != null)
 {
     if (Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
     {
-        <div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
+        <div style="background-color: var(--fondoBien); border: 1px solid var(--fondoBotonPequeño); border-radius: 5px; padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
             <div style="display: flex; align-items: center; gap: 25px;">
                 <div style="max-width: 26px;">
                     <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -31,7 +40,7 @@
     else
     {
         <div style="display: flex; flex-direction: column; gap: 30px;">
-            <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
+            <div style="background-color: var(--fondoAlerta); border: 1px solid var(--fondoBotonPequeño); border-radius: 5px; padding: 20px 25px; display: flex; flex-direction: column; gap: 30px;">
                 <div style="display: flex; align-items: center; gap: 25px;">
                     <div style="max-width: 26px;">
                         <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -49,7 +58,7 @@
                 </div>
             </div>
 
-            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 10px;">
+            <div class="caja-diseño" style="padding: 40px; display: flex; flex-direction: column; gap: 10px;">
                 <label style="margin-left: 5px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon3", "Account")</label>
                 <label style="margin-left: 5px; margin-bottom: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon4", "Account")</label>
 
@@ -60,8 +69,8 @@
                     <label style="margin-left: 5px; font-size: 14px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon6", "Account")</label>
                 }
             </div>
-            
-            <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+
+            <div class="caja-diseño" style="padding: 30px;">
                 <div style="display: flex; align-items: center; gap: 25px;">
                     <div style="max-width: 26px;">
                         <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

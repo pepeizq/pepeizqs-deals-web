@@ -83,10 +83,14 @@
   "String85": "{0} time",
   "String86": "{0} times",
   "String87": "Playable from Amazon Luna",
-  "String88": "Links",
+  "String88": "External links",
   "String89": "More from {0}",
   "String90": "Discount Code:",
   "String91": "Audio",
   "String92": "Text",
-  "String93": "To view the content, you must register an account on the website."
+  "String93": "To view the content, you must register an account on the website.",
+  "String94": "These links lead to other websites specialized in game databases",
+  "String95": "Developer Links",
+  "String96": "These links have been provided by the developer to Steam",
+  "String97": "This game is in Early Access, which means it's still in development and will be missing features."
 }

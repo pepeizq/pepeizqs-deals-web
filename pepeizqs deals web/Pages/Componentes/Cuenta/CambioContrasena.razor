@@ -5,9 +5,18 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
+<style>
+    .caja-diseño {
+        background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+        border: 2px solid var(--fondoOscuro);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+        border-radius: 5px;
+    }
+</style>
+
 @if (usuario != null)
 {
-    <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+    <div class="caja-diseño" style="padding: 40px;">
         <div style="margin-bottom: 20px;">
             <label class="texto-info-entrada">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword1", "Account")</label>
             <input value="@contraseñaActual" @onchange="@(e => CambiarActualContraseña(e))" type="password" class="entrada-texto" autocomplete="current-password" aria-required="true" placeholder="@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword2", "Account")" />
@@ -37,21 +46,21 @@
             }
         </div>
 
-        <div style="display: flex; flex-direction: column;">
-            <div class="perfil-flexible-izquierda">
-                <button @onclick="ClickearCambiarContraseña" class="boton" style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword7", "Account")</button>
-            </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <button @onclick="ClickearCambiarContraseña" class="boton-pequeño" style="font-size: 18px; width: fit-content; padding: 12px 20px;">
+                @Herramientas.Idiomas.BuscarTexto(idioma, "ChangePassword7", "Account")
+            </button>
 
             @if (string.IsNullOrEmpty(mensajeExito) == false)
             {
-                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 0px;" role="alert">
                     @mensajeExito
                 </div>
             }
 
             @if (string.IsNullOrEmpty(mensajeError) == false)
             {
-                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px; margin-top: 20px;" role="alert">
+                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 0px;" role="alert">
                     @mensajeError
                 </div>
             }

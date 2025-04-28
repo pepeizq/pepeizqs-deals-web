@@ -21,12 +21,21 @@
 	</HeadContent>
 }
 
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
 <div style="max-width: 1000px; margin: auto;">
 	<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Contact")</h1>
 	<hr />
 
 	<div style="display: flex; flex-direction: column; gap: 40px;">
-		<div style="display: flex; align-items: center; gap: 20px; background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+		<div class="caja-diseño" style="display: flex; align-items: center; gap: 20px; padding: 20px;">
 			<div style="max-width: 26px;">
 				<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 					<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
@@ -37,7 +46,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
+		<div class="caja-diseño" style="padding: 20px;">
 			<div style="margin-left: 8px; margin-bottom: 8px;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Contact")
 			</div>
@@ -55,13 +64,13 @@
 
 			@if (correoValido == true && tituloValido == true && contenidoValido == true)
 			{
-				<button class="boton" @onclick="EnviarmeCorreo" style="margin-top: 20px;">
+				<button class="boton-pequeño" @onclick="EnviarmeCorreo" style="margin-top: 20px; text-align: center; padding: 15px 20px; font-size: 18px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Contact")
 				</button>
 			}
 			else
 			{
-				<div class="boton" style="opacity: 0.5; margin-top: 20px;">
+				<div class="boton-pequeño" style="opacity: 0.5; margin-top: 20px; text-align: center; padding: 15px 20px; font-size: 18px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Contact")
 				</div>
 			}

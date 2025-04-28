@@ -12,22 +12,35 @@
 @inject IJSRuntime JavaScript
 @inject NavigationManager NavManager
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-    <div>@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData1", "Account")</div>
+<style>
+    .caja-diseño {
+        background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+        border: 2px solid var(--fondoOscuro);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+        border-radius: 5px;
+    }
+</style>
+
+<div class="caja-diseño" style="padding: 40px;">
+    <div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData1", "Account")</div>
 
     <div style="margin: 20px 0px 30px 0px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData2", "Account")</div>
 
-    <button @onclick="DescargarDatos" class="boton" style="font-size: 18px; max-width: 250px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData3", "Account")</button>
+    <button @onclick="DescargarDatos" class="boton-pequeño" style="font-size: 18px; width: fit-content; padding: 12px 20px;">
+        @Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData3", "Account")
+    </button>
 </div>
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-    <div>@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData4", "Account")</div>
+<div class="caja-diseño" style="padding: 40px; margin-top: 40px;">
+    <div style="font-size: 18px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData4", "Account")</div>
     
     @if (enseñarAvisoBorrado1 == false)
     {
         <div style="margin: 20px 0px 30px 0px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData5", "Account")</div>
 
-        <button @onclick="BorrarDatosPaso1" class="boton-peligro" style="font-size: 18px; max-width: 250px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData6", "Account")</button>
+        <button @onclick="BorrarDatosPaso1" class="boton-peligro" style="font-size: 18px; width: fit-content; padding: 12px 20px;">
+            @Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData6", "Account")
+        </button>
     }
     else
     {
@@ -41,7 +54,9 @@
         {
             <div style="font-size: 20px; margin: 20px 0px 30px 0px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData8", "Account")</div>
 
-            <button @onclick="BorrarDatosPaso2" class="boton-peligro" style="font-size: 18px; max-width: 250px;">@Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData9", "Account")</button>
+            <button @onclick="BorrarDatosPaso2" class="boton-peligro" style="font-size: 18px; width: fit-content; padding: 12px 20px;">
+                @Herramientas.Idiomas.BuscarTexto(idioma, "PersonalData9", "Account")
+            </button>
         }
     }
 </div>
