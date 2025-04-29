@@ -6,8 +6,9 @@ using Gratis2;
 using Herramientas;
 using Microsoft.AspNetCore.Components;
 using Suscripciones2;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Juegos
 {
@@ -40,7 +41,6 @@ namespace Juegos
 		public string SlugEpic { get; set; }
 		public DateTime? UltimaModificacion { get; set; }
 		public List<string> Categorias { get; set; }
-		public List<string> Generos { get; set; }
 		public List<string> Etiquetas { get; set; }
 		public JuegoDeck Deck { get; set; }
 		public List<JuegoDeckToken> DeckTokens { get; set; }
@@ -129,12 +129,23 @@ namespace Juegos
 		public DateTime FechaLanzamientoOriginal { get; set; }
 		public List<string> Enlaces { get; set; }
 		public bool AccesoAnticipado { get; set; }
+		public JuegoCaracteristicasRealidadVirtual RealidadVirtual { get; set; }
 	}
 
 	public class JuegoCaracteristicasCurator
 	{
 		public int Id { get; set; }
 		public string Nombre { get; set; }
+	}
+
+	public class JuegoCaracteristicasRealidadVirtual
+	{
+		public bool Vrhmd { get; set; }
+		public bool VrhmdOnly { get; set; }
+		public bool HtcVive { get; set; }
+		public bool OculusRift { get; set; }
+		public bool WindowsMr { get; set; }
+		public bool ValveIndex { get; set; }
 	}
 
 	public class JuegoMedia

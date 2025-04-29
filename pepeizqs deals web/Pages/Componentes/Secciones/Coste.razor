@@ -35,8 +35,17 @@
 	</HeadContent>
 }
 
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
 <div style="display: flex; flex-direction: column; gap: 20px;">
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+	<div class="caja-diseño" style="padding: 30px;">
 		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "CostWeb")
 	</div>
 
@@ -59,7 +68,7 @@
 		}
 	</div>
 
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+	<div class="caja-diseño" style="padding: 30px;">
 		@Herramientas.Idiomas.BuscarTexto(idioma, "String14", "CostWeb")
 
 		<hr />
@@ -107,7 +116,7 @@
 	</div>
 
 	<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "CostWeb")
 			</div>
@@ -125,7 +134,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "CostWeb")
 			</div>
@@ -143,7 +152,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "CostWeb")
 			</div>
@@ -161,7 +170,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "CostWeb")
 			</div>
@@ -184,7 +193,7 @@
 		@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "CostWeb")
 	</div>
 
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+	<div class="caja-diseño" style="padding: 30px;">
 		<ul>
 			<li>
                 @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "CostWeb")

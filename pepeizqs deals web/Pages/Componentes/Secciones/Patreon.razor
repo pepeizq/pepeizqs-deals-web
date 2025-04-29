@@ -25,6 +25,15 @@
 	</HeadContent>
 }
 
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
 <div style="max-width: 1200px; margin: auto;">
 	<h1 style="font-size: 23px;">
 		@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Patreon")
@@ -32,7 +41,7 @@
 
 	<hr>
 
-	<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+	<div class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
 		<div>
 			@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Patreon")
 		</div>
@@ -52,7 +61,7 @@
 	</div>
 
 	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Patreon")
 			</div>
@@ -64,7 +73,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				<a href="/account/patreonstore/" target="_blank">@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Patreon")</a>
 			</div>
@@ -76,7 +85,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Patreon")
 			</div>
@@ -88,19 +97,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
-			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String10", "Patreon")
-			</div>
-
-			<hr />
-
-			<div>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Patreon")
-			</div>
-		</div>
-
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px;">
+		<div class="caja-diseño" style="padding: 30px;">
 			<div>
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Patreon")
 			</div>
@@ -119,7 +116,7 @@
 			@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Patreon")
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 30px; display: flex; flex-direction: column; gap: 15px;">
+		<div class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 15px;">
 			@foreach (var noticia in noticias)
 			{
 				<div>

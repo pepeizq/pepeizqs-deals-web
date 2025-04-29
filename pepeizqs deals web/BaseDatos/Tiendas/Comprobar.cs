@@ -247,7 +247,6 @@ namespace BaseDatos.Tiendas
 
 								juego.FechaSteamAPIComprobacion = DateTime.Now;
 								juego.Categorias = nuevoJuego.Categorias;
-								juego.Generos = nuevoJuego.Generos;
 
 								if (nuevoJuego.Analisis != null)
 								{

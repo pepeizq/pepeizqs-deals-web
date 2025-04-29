@@ -31,6 +31,7 @@ namespace APIs.Steam
 			Juegos.JuegoImagenes imagenes = new Juegos.JuegoImagenes();
 			Juegos.JuegoMedia media = new Juegos.JuegoMedia();
 			Juegos.JuegoAnalisis reseñas = new Juegos.JuegoAnalisis();
+			List<string> categorias = new List<string>();
 			List<string> etiquetas = new List<string>();
 			Juegos.JuegoDeck deck = Juegos.JuegoDeck.Desconocido;
 			bool freeToPlay = false;
@@ -214,6 +215,55 @@ namespace APIs.Steam
 
 						#endregion
 
+						#region Categorias
+
+						if (datos2.Respuesta.Juegos[0].Categorias != null)
+						{
+							if (datos2.Respuesta.Juegos[0].Categorias.Tipo1 != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Categorias.Tipo1.Count > 0)
+								{
+									foreach (var nuevaCategoria in datos2.Respuesta.Juegos[0].Categorias.Tipo1)
+									{
+										if (nuevaCategoria > 0)
+										{
+											categorias.Add(nuevaCategoria.ToString());
+										}
+									}
+								}
+							}
+
+							if (datos2.Respuesta.Juegos[0].Categorias.Tipo2 != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Categorias.Tipo2.Count > 0)
+								{
+									foreach (var nuevaCategoria in datos2.Respuesta.Juegos[0].Categorias.Tipo2)
+									{
+										if (nuevaCategoria > 0)
+										{
+											categorias.Add(nuevaCategoria.ToString());
+										}
+									}
+								}
+							}
+
+							if (datos2.Respuesta.Juegos[0].Categorias.Tipo3 != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Categorias.Tipo3.Count > 0)
+								{
+									foreach (var nuevaCategoria in datos2.Respuesta.Juegos[0].Categorias.Tipo3)
+									{
+										if (nuevaCategoria > 0)
+										{
+											categorias.Add(nuevaCategoria.ToString());
+										}
+									}
+								}
+							}
+						}
+
+						#endregion
+
 						#region Etiquetas
 
 						if (datos2.Respuesta.Juegos[0].Etiquetas != null)
@@ -258,6 +308,69 @@ namespace APIs.Steam
 							if (datos2.Respuesta.Juegos[0].Plataformas.Deck > 0)
 							{
 								deck = (Juegos.JuegoDeck)datos2.Respuesta.Juegos[0].Plataformas.Deck;
+							}
+
+							if (datos2.Respuesta.Juegos[0].Plataformas.RV != null)
+							{
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.Vrhmd == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.Vrhmd = true;
+								}
+
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.VrhmdOnly == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.VrhmdOnly = true;
+								}
+
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.HtcVive == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.HtcVive = true;
+								}
+
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.OculusRift == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.OculusRift = true;
+								}
+
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.WindowsMr == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.WindowsMr = true;
+								}
+
+								if (datos2.Respuesta.Juegos[0].Plataformas.RV.ValveIndex == true)
+								{
+									if (caracteristicas.RealidadVirtual == null)
+									{
+										caracteristicas.RealidadVirtual = new Juegos.JuegoCaracteristicasRealidadVirtual();
+									}
+
+									caracteristicas.RealidadVirtual.ValveIndex = true;
+								}
 							}
 						}
 
@@ -518,34 +631,9 @@ namespace APIs.Steam
 							juego.Deck = deck;
 						}
 
-						if (datos.Datos.Categorias != null)
+						if (categorias.Count > 0)
 						{
-							if (datos.Datos.Categorias.Count > 0)
-							{
-								List<string> categorias = new List<string>();
-
-								foreach (var categoria in datos.Datos.Categorias)
-								{
-									categorias.Add(categoria.Id.ToString());
-								}
-
-								juego.Categorias = categorias;
-							}
-						}
-
-						if (datos.Datos.Generos != null)
-						{
-							if (datos.Datos.Generos.Count > 0)
-							{
-								List<string> generos = new List<string>();
-
-								foreach (var categoria in datos.Datos.Generos)
-								{
-									generos.Add(categoria.Id.ToString());
-								}
-
-								juego.Generos = generos;
-							}
+							juego.Categorias = categorias;
 						}
 
 						if (idiomas.Count > 0)
@@ -927,6 +1015,9 @@ namespace APIs.Steam
 		[JsonPropertyName("tagids")]
 		public List<int> Etiquetas { get; set; }
 
+		[JsonPropertyName("categories")]
+		public SteamJuegoAPI2JuegoCategorias Categorias { get; set; }
+
 		[JsonPropertyName("basic_info")]
 		public SteamJuegoAPI2JuegoInfo Info { get; set; }
 
@@ -1025,6 +1116,30 @@ namespace APIs.Steam
 
 		[JsonPropertyName("steam_deck_compat_category")]
 		public int Deck { get; set; }
+
+		[JsonPropertyName("vr_support")]
+		public SteamJuegoAPI2JuegoPlataformasRV RV { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoPlataformasRV
+	{
+		[JsonPropertyName("vrhmd")]
+		public bool Vrhmd { get; set; }
+
+		[JsonPropertyName("vrhmd_only")]
+		public bool VrhmdOnly { get; set; }
+
+		[JsonPropertyName("htc_vive")]
+		public bool HtcVive { get; set; }
+
+		[JsonPropertyName("oculus_rift")]
+		public bool OculusRift { get; set; }
+
+		[JsonPropertyName("windows_mr")]
+		public bool WindowsMr { get; set; }
+
+		[JsonPropertyName("valve_index")]
+		public bool ValveIndex { get; set; }
 	}
 
 	public class SteamJuegoAPI2JuegoCapturas
@@ -1103,6 +1218,18 @@ namespace APIs.Steam
 	{
 		[JsonPropertyName("url")]
 		public string Enlace { get; set; }
+	}
+
+	public class SteamJuegoAPI2JuegoCategorias
+	{
+		[JsonPropertyName("supported_player_categoryids")]
+		public List<int> Tipo1 { get; set; }
+
+		[JsonPropertyName("feature_categoryids")]
+		public List<int> Tipo2 { get; set; }
+
+		[JsonPropertyName("controller_categoryids")]
+		public List<int> Tipo3 { get; set; }
 	}
 
 	#endregion
