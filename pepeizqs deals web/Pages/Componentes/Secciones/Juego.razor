@@ -313,25 +313,25 @@
 
         <div style="position: relative; display: flex; flex-direction: column; gap: 50px;">
             @{
-                string fondoCabecera = "background-color: var(--fondoOscuroTransparente);";
+                string fondoCabecera = "background: linear-gradient(180deg, color-mix(in srgb, var(--fondoOscuro), transparent 5%), 0%, color-mix(in srgb, var(--fondoMinimo), transparent 5%) 211.07%);";
                 string fondoBoton = "background-color: var(--fondoBotonPequeño);";
                 string fondoCajas = "background-color: var(--fondoMinimo);";
 
                 if (juego.Tipo == JuegoTipo.DLC)
                 {
-                    fondoCabecera = "background: color-mix(in srgb, var(--fondoOscuroTransparente), var(--fondoDlc) 70%);";
+                    fondoCabecera = "background: linear-gradient(180deg, color-mix(in srgb, var(--fondoOscuro), transparent 5%), 0%, color-mix(in srgb, var(--fondoDlc), transparent 5%) 211.07%);";
                     fondoBoton = "background: color-mix(in srgb, var(--fondoBotonPequeño) 70%, var(--fondoDlc));";
                     fondoCajas = "background: color-mix(in srgb, var(--fondoMinimo), var(--fondoDlc) 60%);";
                 }
                 else if (juego.Tipo == JuegoTipo.Music)
                 {
-                    fondoCabecera = "background: color-mix(in srgb, var(--fondoOscuroTransparente), var(--fondoBandaSonora));";
+                    fondoCabecera = "background: linear-gradient(180deg, color-mix(in srgb, var(--fondoOscuro), transparent 5%), 0%, color-mix(in srgb, var(--fondoBandaSonora), transparent 5%) 211.07%);";
                     fondoBoton = "background: color-mix(in srgb, var(--fondoBotonPequeño) 70%, var(--fondoBandaSonora));";
                     fondoCajas = "background: color-mix(in srgb, var(--fondoMinimo), var(--fondoBandaSonora) 60%);";
                 }
             }
 
-            <div class="juego-cabecera" style="@fondoCabecera position: sticky; top: 70px; z-index: 3;">
+            <div class="juego-cabecera caja-diseño" style="@fondoCabecera position: sticky; top: 70px; z-index: 3; border-radius: 5px; border: 1px solid var(--fondoOscuro);">
                 <div class="perfil-flexible-centrado">
                     @if (juego.Imagenes != null)
                     {
@@ -353,13 +353,13 @@
                             if (difuminar == false)
                             {
                                 <div class="juego-flexible-izquierda">
-                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" alt="@juego.Nombre" loading="lazy" />
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" style="border-radius: 5px 0px 0px 5px;" alt="@juego.Nombre" loading="lazy" />
                                 </div>
                             }
                             else
                             {
                                 <div class="juego-flexible-izquierda" style="overflow: hidden;">
-                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" style="filter: blur(10px);" alt="@juego.Nombre" loading="lazy" />
+                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 250, 116)" class="juego-imagen" style="filter: blur(10px); border-radius: 5px 0px 0px 5px;" alt="@juego.Nombre" loading="lazy" />
                                 </div>
                             }
                         }
@@ -486,8 +486,8 @@
                                 {
                                     if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)
                                     {
-                                        <button onclick="moverScroll('reviews')" class="boton" style="width: fit-content; padding: 0px; color: var(--colorTexto);">
-                                            <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+                                        <button onclick="moverScroll('reviews')" class="boton" style="width: fit-content; padding: 0px; color: var(--colorTexto); background: transparent;">
+                                            <div style="@fondoCajas border: 1px solid var(--fondoBotonPequeño); padding: 10px; border-radius: 5px; display: flex; flex-direction: column; gap: 10px;">
                                                 <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
                                                     @if (int.Parse(juego.Analisis.Porcentaje) > 74)
                                                     {
@@ -523,7 +523,7 @@
                                     {
                                         if (juego.CantidadJugadores.Cantidad > -1)
                                         {
-                                            <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px; min-height: 82px;">
+                                            <div style="background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); border-radius: 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px; min-height: 82px;">
                                                 <div style="font-size: 17px; text-align: center; line-height: 30px;">
                                                     @juego.CantidadJugadores.Cantidad.ToString("N0")
                                                 </div>
@@ -779,7 +779,7 @@
                                 }
                                 else
                                 {
-                                    <button @onclick="(e => LogearEnseñar(e))" class="boton-pequeño" style="width: auto; padding: 20px 40px;">
+                                    <button @onclick="(e => LogearEnseñar(e))" class="boton-pequeño" style="width: auto; padding: 20px 40px; margin-left: 5px;">
                                         @Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Game")
                                     </button>
                                 }
@@ -1899,26 +1899,29 @@
 
                         foreach (var suscripcion2 in SuscripcionesAntiguas(juego.Suscripciones))
                         {
-                            <hr />
-                            <div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
-                                <div style="margin-right: 15px; width: 22px; height: 22px;">
-                                    <img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" loading="lazy" />
-                                </div>
+                            if (suscripcion2 != null)
+                            {
+                                <hr />
+                                <div style="display: flex; align-items: center; font-size: 16px; padding: 15px 5px;">
+                                    <div style="margin-right: 15px; width: 22px; height: 22px;">
+                                        <img src="@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Subscription" loading="lazy" />
+                                    </div>
 
-                                <div style="margin-right: 30px; width: 22px; height: 22px;">
-                                    <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
-                                </div>
+                                    <div style="margin-right: 30px; width: 22px; height: 22px;">
+                                        <img src="@JuegoDRM2.SacarImagen(suscripcion2.DRM)" style="max-width: 22px; max-height: 22px;" alt="DRM" loading="lazy" />
+                                    </div>
 
-                                <div style="padding-right: 20px; width: 15%;">
-                                    <label>@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Nombre</label><br />
-                                    <label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(suscripcion2.FechaTermina, idioma)</label>
-                                </div>
+                                    <div style="padding-right: 20px; width: 15%;">
+                                        <label>@SuscripcionesCargar.DevolverSuscripcion(suscripcion2.Tipo).Nombre</label><br />
+                                        <label style="font-size: 13px;">@Calculadora.DiferenciaTiempo(suscripcion2.FechaTermina, idioma)</label>
+                                    </div>
 
-                                <div style="padding-right: 20px; width: 85%;">
-                                    <label>@Idiomas.BuscarTexto(idioma, "String38", "Game") @Calculadora.DiferenciaDuranteDias(suscripcion2.FechaEmpieza, suscripcion2.FechaTermina, idioma)</label><br />
-                                    <label style="font-size: 13px;">@suscripcion2.FechaEmpieza.Day.ToString()/@suscripcion2.FechaEmpieza.Month.ToString()/@suscripcion2.FechaEmpieza.Year.ToString() • @suscripcion2.FechaTermina.Day.ToString()/@suscripcion2.FechaTermina.Month.ToString()/@suscripcion2.FechaTermina.Year.ToString()</label>
+                                    <div style="padding-right: 20px; width: 85%;">
+                                        <label>@Idiomas.BuscarTexto(idioma, "String38", "Game") @Calculadora.DiferenciaDuranteDias(suscripcion2.FechaEmpieza, suscripcion2.FechaTermina, idioma)</label><br />
+                                        <label style="font-size: 13px;">@suscripcion2.FechaEmpieza.Day.ToString()/@suscripcion2.FechaEmpieza.Month.ToString()/@suscripcion2.FechaEmpieza.Year.ToString() • @suscripcion2.FechaTermina.Day.ToString()/@suscripcion2.FechaTermina.Month.ToString()/@suscripcion2.FechaTermina.Year.ToString()</label>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         }
                     }
                 </div>
@@ -2327,7 +2330,7 @@
                                                 </div>
                                             </a>
                                         }
-                                        else if (enlace.Contains("https://www.tiktok.com/") == true)
+                                        else if (enlace.Contains("https://www.tiktok.com/") == true || enlace.Contains("https://v.douyin.com/") == true)
                                         {
                                             <a href="@enlace" target="_blank" class="boton-pequeño" title="TikTok" style="width: fit-content; padding: 10px;">
                                                 <div style="width: 30px; height: 30px; padding: 2px;">
@@ -4990,7 +4993,10 @@
             {
                 if (suscripciones.Count == 1)
                 {
-                    return string.Format(Idiomas.BuscarTexto(idioma, "String55", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo) != null)
+                    {
+                        return string.Format(Idiomas.BuscarTexto(idioma, "String55", "Game"), Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripciones[0].Tipo).Nombre);
+                    }
                 }
                 else if (suscripciones.Count > 1)
                 {
@@ -5036,10 +5042,13 @@
                 {
                     DateTime fechaTermina = suscripcion.FechaTermina;
 
-                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
+                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo) != null)
                     {
-                        fechaTermina = fechaTermina.AddDays(1);
-                    }
+                        if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
+                        {
+                            fechaTermina = fechaTermina.AddDays(1);
+                        }
+                    }  
 
                     if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= fechaTermina)
                     {
@@ -5114,27 +5123,30 @@
             {
                 foreach (var suscripcion in listaSuscripciones)
                 {
-                    DateTime fechaTermina = suscripcion.FechaTermina;
-
-                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
+                    if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo) != null)
                     {
-                        fechaTermina = fechaTermina.AddDays(1);
-                    }
+                        DateTime fechaTermina = suscripcion.FechaTermina;
 
-                    if (DateTime.Now > fechaTermina)
-                    {
-                        if (drm != JuegoDRM.NoEspecificado)
+                        if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).ParaSiempre == false)
                         {
-                            if (suscripcion.DRM == drm)
+                            fechaTermina = fechaTermina.AddDays(1);
+                        }
+
+                        if (DateTime.Now > fechaTermina)
+                        {
+                            if (drm != JuegoDRM.NoEspecificado)
+                            {
+                                if (suscripcion.DRM == drm)
+                                {
+                                    suscripcionesAntiguas.Add(suscripcion);
+                                }
+                            }
+                            else
                             {
                                 suscripcionesAntiguas.Add(suscripcion);
                             }
                         }
-                        else
-                        {
-                            suscripcionesAntiguas.Add(suscripcion);
-                        }
-                    }
+                    }                 
                 }
             }
         }

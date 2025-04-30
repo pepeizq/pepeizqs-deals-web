@@ -247,54 +247,60 @@ namespace Herramientas
 
 				foreach (JuegoSuscripcion suscripcion in juego.Suscripciones)
 				{
-					bool contar = true;
-
-					if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
+					if (suscripcion != null)
 					{
-						foreach (JuegoSuscripcion suscripcion2 in juego.Suscripciones)
-						{
-							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
-							{
-								contar = false;
-								break;
-							}
-						}
-					}
+						bool contar = true;
 
-					if (contar == true)
-					{
-						if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
+						if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo) != null)
 						{
-							suscripcionesActuales += 1;
-
-							if (suscripcionesActuales == 1)
+							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
 							{
-								suscripcionExtraActual = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
-							}
-							else if (suscripcionesActuales > 1)
-							{
-								if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraActual)
+								foreach (JuegoSuscripcion suscripcion2 in juego.Suscripciones)
 								{
-									suscripcionExtraActual = null;
+									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
+									{
+										contar = false;
+										break;
+									}
 								}
 							}
-						}
-						else
-						{
-							suscripcionesPasados += 1;
 
-							if (suscripcionesPasados == 1)
+							if (contar == true)
 							{
-								suscripcionExtraPasada = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
-							}
-							else if (suscripcionesPasados > 1)
-							{
-								if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraPasada)
+								if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
 								{
-									suscripcionExtraPasada = null;
+									suscripcionesActuales += 1;
+
+									if (suscripcionesActuales == 1)
+									{
+										suscripcionExtraActual = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+									}
+									else if (suscripcionesActuales > 1)
+									{
+										if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraActual)
+										{
+											suscripcionExtraActual = null;
+										}
+									}
+								}
+								else
+								{
+									suscripcionesPasados += 1;
+
+									if (suscripcionesPasados == 1)
+									{
+										suscripcionExtraPasada = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+									}
+									else if (suscripcionesPasados > 1)
+									{
+										if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraPasada)
+										{
+											suscripcionExtraPasada = null;
+										}
+									}
 								}
 							}
-						}
+						}					
 					}
 				}
 

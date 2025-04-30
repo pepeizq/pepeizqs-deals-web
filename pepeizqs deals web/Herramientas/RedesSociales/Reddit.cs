@@ -200,23 +200,26 @@ namespace Herramientas.RedesSociales
 								{
 									foreach (var suscripcion in juego2.Suscripciones)
 									{
-										if (suscripcion.FechaEmpieza <= DateTime.Now && suscripcion.FechaTermina >= DateTime.Now)
+										if (suscripcion != null)
 										{
-											if (comentario.Contains(juego2.Nombre + " is currently available on subscription services:") == false)
+											if (suscripcion.FechaEmpieza <= DateTime.Now && suscripcion.FechaTermina >= DateTime.Now)
 											{
-												comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently available on subscription services:" + Environment.NewLine;
-											}
+												if (comentario.Contains(juego2.Nombre + " is currently available on subscription services:") == false)
+												{
+													comentario = comentario + Environment.NewLine + juego2.Nombre + " is currently available on subscription services:" + Environment.NewLine;
+												}
 
-											comentario = comentario + "* [" + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + "](" + suscripcion.Enlace + ")" + Environment.NewLine;
-										}
-										else
-										{
-											if (comentario.Contains(juego2.Nombre + " was available on subscription services:") == false)
+												comentario = comentario + "* [" + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + "](" + suscripcion.Enlace + ")" + Environment.NewLine;
+											}
+											else
 											{
-												comentario = comentario + Environment.NewLine + juego2.Nombre + " was available on subscription services:" + Environment.NewLine;
-											}
+												if (comentario.Contains(juego2.Nombre + " was available on subscription services:") == false)
+												{
+													comentario = comentario + Environment.NewLine + juego2.Nombre + " was available on subscription services:" + Environment.NewLine;
+												}
 
-											comentario = comentario + "* " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(suscripcion.FechaEmpieza, "en") + ")" + Environment.NewLine;
+												comentario = comentario + "* " + Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre + " (" + Calculadora.DiferenciaTiempo(suscripcion.FechaEmpieza, "en") + ")" + Environment.NewLine;
+											}
 										}
 									}
 								}
