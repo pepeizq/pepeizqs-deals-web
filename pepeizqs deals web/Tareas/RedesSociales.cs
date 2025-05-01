@@ -20,7 +20,7 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(300));
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
