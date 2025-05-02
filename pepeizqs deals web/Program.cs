@@ -121,7 +121,7 @@ builder.Services.AddSingleton<Tareas.CorreosApps>();
 builder.Services.AddSingleton<Tareas.Pendientes>();
 builder.Services.AddSingleton<Tareas.Errores>();
 builder.Services.AddSingleton<Tareas.Patreon>();
-builder.Services.AddSingleton<Tareas.RedesSociales>();
+//builder.Services.AddSingleton<Tareas.RedesSociales>();
 
 builder.Services.AddSingleton<Tareas.Tiendas.Steam>();
 builder.Services.AddSingleton<Tareas.Tiendas.HumbleStore>();
@@ -168,7 +168,7 @@ builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Pendientes>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Errores>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Patreon>());
-builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.RedesSociales>());
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.RedesSociales>());
 
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.Steam>());
 builder.Services.AddHostedService(provider => provider.GetRequiredService<Tareas.Tiendas.HumbleStore>());

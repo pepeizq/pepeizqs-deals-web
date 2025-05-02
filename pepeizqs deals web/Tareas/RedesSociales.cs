@@ -20,7 +20,7 @@ namespace Tareas
 
 		protected override async Task ExecuteAsync(CancellationToken tokenParar)
 		{
-			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(300));
+			using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
 
 			while (await timer.WaitForNextTickAsync(tokenParar))
 			{
@@ -40,7 +40,7 @@ namespace Tareas
 
 					if (conexion.State == System.Data.ConnectionState.Open)
 					{
-						if (BaseDatos.Admin.Buscar.TiendasEnUso(TimeSpan.FromSeconds(60), conexion) == null)
+						if (BaseDatos.Admin.Buscar.TiendasEnUso(TimeSpan.FromSeconds(300), conexion) == null)
 						{
 							try
 							{
