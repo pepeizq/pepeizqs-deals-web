@@ -45,9 +45,9 @@ namespace APIs.DLGamer
 
 			int juegos2 = 0;
 
-			string html = await Decompiladores.Estandar("https://static.dlgamer.com/feeds/general_feed_eu.json");
+			string html = await Decompiladores.Estandar("http://static.dlgamer.com/feeds/general_feed_eu.json");
 
-			if (html != null)
+			if (string.IsNullOrEmpty(html) == false)
 			{
 				DLGamerJuegos basedatos = JsonSerializer.Deserialize<DLGamerJuegos>(html);
 
@@ -55,8 +55,8 @@ namespace APIs.DLGamer
 				{
 					foreach (var juegoDL in basedatos.Datos)
 					{
-						decimal precioRebajado = decimal.Parse(juegoDL.Value.PrecioRebajado);
-						decimal precioBase = decimal.Parse(juegoDL.Value.PrecioBase);
+						decimal precioRebajado = juegoDL.Value.PrecioRebajado;
+						decimal precioBase = juegoDL.Value.PrecioBase;
 
 						int descuento = Calculadora.SacarDescuento(precioBase, precioRebajado);
 
@@ -124,13 +124,13 @@ namespace APIs.DLGamer
 		public string Nombre { get; set; }
 
 		[JsonPropertyName("id")]
-		public string Id { get; set; }
+		public int Id { get; set; }
 
 		[JsonPropertyName("price")]
-		public string PrecioRebajado { get; set; }
+		public decimal PrecioRebajado { get; set; }
 
 		[JsonPropertyName("price_strike")]
-		public string PrecioBase { get; set; }
+		public decimal PrecioBase { get; set; }
 
 		[JsonPropertyName("price_purcent")]
 		public string Descuento { get; set; }
@@ -145,7 +145,7 @@ namespace APIs.DLGamer
 		public string DRM { get; set; }
 
 		[JsonPropertyName("id_steam")]
-		public string SteamID { get; set; }
+		public int SteamID { get; set; }
 
 		[JsonPropertyName("discount_end_at")]
 		public string FechaTermina { get; set; }
