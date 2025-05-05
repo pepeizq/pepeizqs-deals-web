@@ -33,7 +33,8 @@ namespace Tiendas2
 				APIs.GameBillet.Tienda.Generar(),
 				APIs.Ubisoft.Tienda.Generar(),
 				APIs.Playsum.Tienda.Generar(),
-				APIs.PlanetPlay.Tienda.Generar()
+				APIs.PlanetPlay.Tienda.Generar(),
+				APIs.EA.Tienda.Generar()
 			};
 
 			return tiendas;

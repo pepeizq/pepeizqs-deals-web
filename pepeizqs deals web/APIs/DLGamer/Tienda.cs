@@ -45,11 +45,20 @@ namespace APIs.DLGamer
 
 			int juegos2 = 0;
 
-			string html = await Decompiladores.Estandar("http://static.dlgamer.com/feeds/general_feed_eu.json");
+			string html = await Decompiladores.NoSeguro("https://static.dlgamer.com/feeds/general_feed_eu.json");
 
 			if (string.IsNullOrEmpty(html) == false)
 			{
-				DLGamerJuegos basedatos = JsonSerializer.Deserialize<DLGamerJuegos>(html);
+				DLGamerJuegos basedatos = null;
+				
+				try
+				{
+					basedatos = JsonSerializer.Deserialize<DLGamerJuegos>(html);
+				}
+				catch (Exception ex)
+				{
+					BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+				}
 
 				if (basedatos != null)
 				{
@@ -66,7 +75,7 @@ namespace APIs.DLGamer
 
 							string enlace = juegoDL.Value.Enlace;
 
-							string imagen = juegoDL.Value.Imagen;
+							string imagen = "https://www.dlgamer.com" + juegoDL.Value.Imagen;
 
 							JuegoDRM drm = JuegoDRM2.Traducir(juegoDL.Value.DRM, Generar().Id);
 
@@ -143,12 +152,6 @@ namespace APIs.DLGamer
 
 		[JsonPropertyName("drm")]
 		public string DRM { get; set; }
-
-		[JsonPropertyName("id_steam")]
-		public int SteamID { get; set; }
-
-		[JsonPropertyName("discount_end_at")]
-		public string FechaTermina { get; set; }
 	}
 
 	#endregion
