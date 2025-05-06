@@ -8,7 +8,7 @@ namespace BaseDatos.Tiendas
 {
 	public static class Comprobar
 	{
-		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, SqlConnection conexion = null, int deck = 0)
+		public static async void Steam(JuegoPrecio oferta, JuegoAnalisis analisis, SqlConnection conexion = null)
 		{
 			if (conexion == null)
 			{
@@ -80,7 +80,7 @@ namespace BaseDatos.Tiendas
 
 									if (actualizarAPI == true)
 									{
-										ActualizarDatosSteamAPI(juego, oferta, analisis, deck, conexion);
+										ActualizarDatosSteamAPI(juego, oferta, analisis, conexion);
 									}
 									else
 									{
@@ -192,7 +192,7 @@ namespace BaseDatos.Tiendas
 			}
 		}
 
-		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, int deck = 0, SqlConnection conexion = null)
+		private static async void ActualizarDatosSteamAPI(Juego juego, JuegoPrecio oferta, JuegoAnalisis analisis, SqlConnection conexion = null)
 		{
 			if (juego.IdSteam > 0)
 			{
@@ -264,11 +264,6 @@ namespace BaseDatos.Tiendas
 							}
 
 							juego.Etiquetas = nuevoJuego.Etiquetas;
-
-							if (deck > 0)
-							{
-								juego.Deck = Enum.Parse<JuegoDeck>(deck.ToString());
-							}
 
 							Juegos.Precios.Steam(juego, oferta, conexion, true);
 						}

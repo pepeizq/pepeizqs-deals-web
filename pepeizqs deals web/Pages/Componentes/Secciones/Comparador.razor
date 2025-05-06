@@ -98,6 +98,15 @@
 </script>
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.boton-expandir {
 		transition: transform .2s;
 		filter: brightness(100%);
@@ -140,7 +149,7 @@
 		<h1 style="font-size: 22px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Compare")</h1>
 		<hr />
 
-		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px 30px; @marginAbajo">
+		<div class="caja-diseño" style="padding: 20px 30px; @marginAbajo">
 			<div style="width: 100%; margin-bottom: 15px;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String" + (posicion + 1).ToString(), "Compare")
 			</div>
@@ -193,9 +202,9 @@
 			anchoImagenes = "300%";
 		}
 
-		<div style="display: flex; align-items: center; gap: 20px; width: 100%; position: sticky; top: 70px; z-index: 3; background-color: var(--fondoOscuro); border: 2px solid var(--fondoBotonPequeño); padding: 10px;">
+		<div class="caja-diseño" style="display: flex; align-items: center; gap: 20px; width: 100%; position: sticky; top: 70px; z-index: 3; padding: 10px;">
 			<div style="width: 200%; font-size: 22px;">
-				<button @onclick="@(e => ClickearLimpieza(e))" class="boton-expandir boton-pequeño" style="padding: 12px 15px; margin: auto;">
+				<button @onclick="@(e => ClickearLimpieza(e))" class="boton-expandir boton-pequeño" style="background-color: transparent; padding: 12px 15px; margin: auto;">
 					<div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
 						<svg xmlns="http://www.w3.org/2000/svg" style="display: block; width: 24px; max-height: 24px;" fill="var(--colorTexto)" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
 						
@@ -245,7 +254,7 @@
 			
 		<hr />
 
-	    <div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);"> 
+	    <div class="caja-diseño"> 
 			<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
 				<div style="display: flex; align-items: center; gap: 15px; width: 100%;">
 					<img src="@Juegos.JuegoDRM2.SacarImagen(Juegos.JuegoDRM.Steam)" style="max-width: 24px; max-height: 24px;"/>
@@ -393,7 +402,7 @@
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Compare")
 				</div>
 
-					@if (id1 > 0 && juego1 != null)
+				@if (id1 > 0 && juego1 != null)
 				{
 					<div style="width: 33%; text-align: center;">
 						@if (juego1.Analisis != null)
@@ -659,7 +668,7 @@
 
 		<hr />
 
-		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+		<div class="caja-diseño">
 			@foreach (var drmHistorico in preciosHistoricos)
 			{
 				<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -752,7 +761,7 @@
 
 		<hr />
 
-		<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+		<div class="caja-diseño">
 			@foreach (var drmActual in preciosActuales)
 			{
 				<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -999,7 +1008,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var bundle in bundlesActuales)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -1147,7 +1156,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var bundle in bundlesAntiguos)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -1295,7 +1304,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var gratis in gratisActuales)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -1443,7 +1452,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var gratis in gratisAntiguos)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -1453,7 +1462,7 @@
 							@Gratis2.GratisCargar.DevolverGratis(gratis).Nombre
 						</div>
 
-									@if (id1 > 0 && juego1 != null)
+						@if (id1 > 0 && juego1 != null)
 						{
 							<div style="width: 33%; text-align: center;">
 								@{
@@ -1591,7 +1600,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var suscripcion in suscripcionesActuales)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">
@@ -1795,7 +1804,7 @@
 
 			<hr />
 
-			<div style="background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño);">
+			<div class="caja-diseño">
 				@foreach (var suscripcion in suscripcionesAntiguas)
 				{
 					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%;">

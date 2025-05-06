@@ -47,27 +47,6 @@ namespace APIs.Steam
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
-			string añadirDeck = string.Empty;
-			int deck = 0;
-
-			if (DateTime.Now.Hour > 0 && DateTime.Now.Hour < 10)
-			{
-				Random rnd = new Random();
-				int azar = rnd.Next(1, 2);
-
-				if (azar == 1)
-				{
-					añadirDeck = "&deck_compatibility=3";
-					deck = 3;
-				}
-
-				if (azar == 2)
-				{
-					añadirDeck = "&deck_compatibility=2";
-					deck = 2;
-				}
-			}
-
 			int juegos = 0;
 
 			int arranque = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional", conexion);
@@ -85,7 +64,7 @@ namespace APIs.Steam
 
 				if (mirarOfertas == true)
 				{
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english&category1=998%2C21%2C990%2C994" + añadirDeck);
+					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english&category1=998%2C21%2C990%2C994");
 
 					try
 					{
@@ -338,7 +317,7 @@ namespace APIs.Steam
 
 													try
 													{
-														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, conexion, deck);
+														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, conexion);
 													}
 													catch (Exception ex)
 													{

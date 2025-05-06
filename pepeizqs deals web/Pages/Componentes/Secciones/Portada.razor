@@ -89,7 +89,6 @@
 				string? patreon = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
 				string? discord = builder.Configuration.GetValue<string>("RedesSociales:Discord");
 				string? telegram = builder.Configuration.GetValue<string>("RedesSociales:Telegram");
-				string? reddit = builder.Configuration.GetValue<string>("RedesSociales:Reddit");
 				string? twitter = builder.Configuration.GetValue<string>("RedesSociales:Twitter");
 				string? steam = builder.Configuration.GetValue<string>("RedesSociales:Steam");
 				string? bluesky = builder.Configuration.GetValue<string>("RedesSociales:Bluesky");
@@ -110,7 +109,7 @@
 					Strings.ChrW(34) + "contactType" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + "customer service" + Strings.ChrW(34) + "," +
 					Strings.ChrW(34) + "url" + Strings.ChrW(34) + ":" + Strings.ChrW(34) + enlace2 + Strings.ChrW(34) + "," +
 					Strings.ChrW(34) + "availableLanguage" + Strings.ChrW(34) + ": [" + Strings.ChrW(34) + "English" + Strings.ChrW(34) + "," + Strings.ChrW(34) + "Spanish" + Strings.ChrW(34) + "]}]," + Environment.NewLine +
-					Strings.ChrW(34) + "sameAs" + Strings.ChrW(34) + ": [" + Strings.ChrW(34) + patreon + Strings.ChrW(34) + "," + Strings.ChrW(34) + discord + Strings.ChrW(34) + "," + Strings.ChrW(34) + telegram + Strings.ChrW(34) + "," + Strings.ChrW(34) + reddit + Strings.ChrW(34) + "," + Strings.ChrW(34) + twitter + Strings.ChrW(34) + "," + Strings.ChrW(34) + steam + Strings.ChrW(34) + "," + Strings.ChrW(34) + bluesky + Strings.ChrW(34) + "]";
+					Strings.ChrW(34) + "sameAs" + Strings.ChrW(34) + ": [" + Strings.ChrW(34) + patreon + Strings.ChrW(34) + "," + Strings.ChrW(34) + discord + Strings.ChrW(34) + "," + Strings.ChrW(34) + telegram + Strings.ChrW(34) + "," + Strings.ChrW(34) + twitter + Strings.ChrW(34) + "," + Strings.ChrW(34) + steam + Strings.ChrW(34) + "," + Strings.ChrW(34) + bluesky + Strings.ChrW(34) + "]";
 
 				seoJson = seoJson + Environment.NewLine + "}";
             }
@@ -296,7 +295,10 @@
 								</div>
 
 								<div class="destacado-video">
-									<video src="@videoDestacado" onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;" />
+									<video onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="height: 100%; width: 100%; overflow: hidden; aspect-ratio: 3.14/1; object-fit: cover;">
+										<source src="@videoDestacado" type="video/mp4" />
+										<source src="@videoDestacado.Replace(".mp4", ".webm")" type="video/webm" />	
+									</video>
 								</div>
 							}
 							else
@@ -522,7 +524,7 @@
 		}
 		else
 		{
-			<div style="display: flex; align-items: center; gap: 30px; justify-content: space-around; max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; background-color: var(--fondoMinimo); border: 2px solid var(--fondoBotonPequeño); padding: 20px;">
+			<div class="caja-diseño" style="display: flex; align-items: center; gap: 30px; justify-content: space-around; max-width: 1000px; width: 100%; margin-left: auto; margin-right: auto; padding: 20px;">
 				<a href="/forum" style="text-decoration: none; color: var(--colorEnlace);">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String12", "Index")
 				</a>

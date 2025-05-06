@@ -164,22 +164,6 @@ namespace BaseDatos.Juegos
                                         }
                                     }
                                 }
-
-								//------------------------------------------
-
-								if (notificar == true)
-								{
-									if (juego.Analisis != null)
-									{
-										if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false)
-										{
-											if (juego.Analisis.Cantidad.Length > 3)
-											{
-												BaseDatos.RedesSociales.Insertar.Ejecutar(juego.Id, minimo, "steam", conexion);
-											}
-										}
-									}
-								}
 							}
 							else if (tempPrecio == minimo.Precio)
 							{
@@ -410,29 +394,6 @@ namespace BaseDatos.Juegos
 												}
 											}
 										}
-									}
-								}
-
-								//------------------------------------------
-
-								if (notificar == true)
-								{
-									if (minimo.DRM == JuegoDRM.Steam)
-									{
-										if (analisis != null)
-										{
-											if (string.IsNullOrEmpty(analisis.Cantidad) == false)
-											{
-												if (analisis.Cantidad.Length > 3)
-												{
-													BaseDatos.RedesSociales.Insertar.Ejecutar(id, minimo, "steam", conexion);
-												}
-											}
-										}
-									}
-									else if (minimo.DRM == JuegoDRM.GOG)
-									{
-										BaseDatos.RedesSociales.Insertar.Ejecutar(id, minimo, "gog", conexion);
 									}
 								}
 							}

@@ -7,58 +7,58 @@
 
 <style>
 	.cjuego-titulo {
-	padding: 10px 20px;
+		padding: 10px 20px;
 	}
 
 	.cjuego-fecha {
-	font-size: 14px;
+		font-size: 14px;
 	}
 
 	.cjuego-descuento {
-	font-size: 16px;
-	padding: 10px 15px;
-	min-width: 65px;
+		font-size: 16px;
+		padding: 10px 15px;
+		min-width: 65px;
 	}
 
 	.cjuego-precio {
-	font-size: 18px;
-	min-width: 110px;
+		font-size: 18px;
+		min-width: 110px;
 	}
 
 	@@media (max-width: 800px) {
-	.cjuego-titulo {
-	padding: 5px 10px;
-	}
+		.cjuego-titulo {
+			padding: 5px 10px;
+		}
 
-	.cjuego-fecha {
-	font-size: 10px;
-	}
+		.cjuego-fecha {
+			font-size: 10px;
+		}
 
-	.cjuego-descuento {
-	font-size: 12px;
-	padding: 5px 8px;
-	min-width: 35px;
-	}
+		.cjuego-descuento {
+			font-size: 12px;
+			padding: 5px 8px;
+			min-width: 35px;
+		}
 
-	.cjuego-precio {
-	font-size: 12px;
-	min-width: 50px;
-	}
+		.cjuego-precio {
+			font-size: 12px;
+			min-width: 50px;
+		}
 	}
 
 	.boton-expandir {
-	transition: transform .2s;
+		transition: transform .2s;
 	}
 
 	.boton-expandir:hover {
-	transform: scale(1.01);
+		transform: scale(1.01);
 	}
 </style>
 
 @{
 	int idMaestra = juego.IdMaestra;
 
-	if (tipo == Tipo.Bundle || tipo == Tipo.Noticia)
+	if (tipo == Tipo.Bundle || tipo == Tipo.Noticia || tipo == Tipo.Filtro || tipo == Tipo.CuratorDestacado || tipo == Tipo.CuratorLista)
 	{
 		idMaestra = juego.Id;
 	}
@@ -155,13 +155,19 @@
 		}		
 	}
 
+	int numeroTipo = (int)tipo;
 	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, drmUsar, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado, idBundle);
 
-	<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@idMaestra.ToString()-@drmUsar.ToString()')">
-		<div id="tooltip-@idMaestra.ToString()-@drmUsar.ToString()" class="tooltip-relleno">
+	<div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')">
+		<div id="tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()" class="tooltip-relleno">
 			@if (string.IsNullOrEmpty(tooltip.Video) == false)
 			{
-				<video src="@tooltip.Video" onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;" />
+				string videoMostrar = tooltip.Video;
+
+				<video onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;">
+					<source src="@videoMostrar" type="video/mp4" />
+					<source src="@videoMostrar.Replace(".mp4", ".webm")" type="video/webm" />	
+				</video>
 			}
 
 			<div style="padding: 15px; text-align: left; max-width: 460px; display: flex; flex-direction: column; gap: 5px;">
@@ -231,6 +237,17 @@
 							<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(JuegoDRM2.SacarImagen(drmUsar))" style="max-width: 20px; max-height: 20px;" alt="DRM" loading="lazy" />
 						</div>
 
+						@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
+						{
+							<div style="margin-right: 20px;">
+								<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(tooltip.ReviewsIcono)" style="width: 20px; height: 20px;" alt="Reviews" loading="lazy" />
+							</div>
+						}
+					</div>
+				}
+				else if (tipo == Tipo.Filtro)
+				{
+					<div style="display: flex; align-items: center; padding: 5px; text-align: left; justify-content: left;">
 						@if (string.IsNullOrEmpty(tooltip.ReviewsIcono) == false)
 						{
 							<div style="margin-right: 20px;">
@@ -499,6 +516,71 @@
 				</div>
 			</a>
 		}
+
+		@if (tipo == Tipo.Filtro)
+		{
+			<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px; @fondoColor">
+				<div style="display: flex; align-items: center;">
+					<div>
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 230px; height: 107px;" />
+					</div>
+
+					<div style="padding: 0px 20px;">
+						<div>
+							@juego.Nombre
+						</div>
+
+						<div style="margin-top: 10px; font-size: 15px;">
+							@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+						</div>
+					</div>
+				</div>
+			</a>
+		}
+
+		@if (tipo == Tipo.CuratorDestacado)
+		{
+			<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" target="_blank" class="boton-pequeño" style="height: 100%; padding: 0px; @fondoColor">
+				<div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juego.Nombre">
+					<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Library_600x900)" style="max-width: 186px; max-height: 278px; object-fit: cover;" alt="@juego.Nombre" />
+
+					@{
+						string mensaje = Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true);
+						string fuente = "font-size: 16px;";
+
+						if (mensaje.Contains("€") == true)
+						{
+							fuente = "font-size: 14px;";
+						}
+					}
+
+					<div style="@fuente display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
+						@mensaje
+					</div>
+				</div>
+			</a>
+		}
+
+		@if (tipo == Tipo.CuratorLista)
+		{
+			<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px; @fondoColor">
+				<div style="display: flex; align-items: center;">
+					<div>
+						<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215)" style="width: 230px; height: 107px;" alt="@juego.Nombre" />
+					</div>
+
+					<div style="padding: 0px 20px;">
+						<div>
+							@juego.Nombre
+						</div>
+
+						<div style="margin-top: 10px; font-size: 15px;">
+							@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+						</div>
+					</div>
+				</div>
+			</a>			
+		}
 	</div>
 }
 
@@ -550,7 +632,10 @@
 		Portada,
 		MinimosHistoricos,
 		Bundle,
-		Noticia
+		Noticia,
+		Filtro,
+		CuratorDestacado,
+		CuratorLista
 	}
 
 	#region Portapapeles

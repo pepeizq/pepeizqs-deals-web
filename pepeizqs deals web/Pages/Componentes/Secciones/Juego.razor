@@ -1660,7 +1660,7 @@
 
                                 if (bundle3 != null)
                                 {
-                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer;">
+                                    <a class="juego-boton-pequeño" href="@EnlaceAcortador.Generar(bundle2.Enlace, bundle3.Tipo, usuarioPatreon)" target="_blank" style="font-size: 16px; padding: 20px 25px; margin-top: 10px; margin-bottom: 10px; cursor: pointer; display: block;">
                                         <div style="display: flex; align-items: center;">
                                             <div style="margin-right: 15px;">
                                                 <img src="@BundlesCargar.DevolverBundle(bundle3.Tipo).ImagenIcono" style="max-width: 22px; max-height: 22px;" alt="Bundle" loading="lazy"/>
@@ -2325,7 +2325,7 @@
                                                 </div>
                                             </a>
                                         }
-                                        else if (enlace.Contains("https://www.tiktok.com/") == true || enlace.Contains("https://tiktok.com/") == true || enlace.Contains("https://v.douyin.com/") == true)
+                                        else if (enlace.Contains("https://www.tiktok.com/") == true || enlace.Contains("https://tiktok.com/") == true || enlace.Contains("https://v.douyin.com/") == true || enlace.Contains("https://www.douyin.com/") == true)
                                         {
                                             <a href="@enlace" target="_blank" class="boton-pequeño" title="TikTok" style="width: fit-content; padding: 10px;">
                                                 <div style="width: 30px; height: 30px; padding: 2px;">
@@ -2333,7 +2333,7 @@
                                                 </div>
                                             </a>
                                         }
-                                        else if (enlace.Contains("https://www.threads.net/") == true)
+                                        else if (enlace.Contains("https://www.threads.net/") == true || enlace.Contains("https://threads.net/") == true)
                                         {
                                             <a href="@enlace" target="_blank" class="boton-pequeño" title="Threads" style="width: fit-content; padding: 10px;">
                                                 <div style="width: 30px; height: 30px; padding: 2px;">
@@ -5590,7 +5590,7 @@
                     Left = 30
                 }
             },
-            Markers = new Markers { Shape = ShapeEnum.Circle, Size = 5, FillOpacity = new Opacity(0.8d) },
+            Markers = new Markers { Shape = MarkerShape.Circle, Size = 5, FillOpacity = new Opacity(0.8d) },
             Stroke = new Stroke { Curve = Curve.Smooth },
             Colors = new List<string> { "#345884", "#5C799C" },
             Legend = new Legend

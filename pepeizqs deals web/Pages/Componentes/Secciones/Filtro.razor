@@ -4,6 +4,7 @@
 @using Microsoft.JSInterop
 @using System.Text.Json
 @using pepeizqs_deals_web.Areas.Identity.Data
+@using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
@@ -135,6 +136,15 @@
 </script>
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.boton-expandir {
 		transition: transform .2s;
 		filter: brightness(100%);
@@ -142,7 +152,7 @@
 	}
 
 		.boton-expandir:hover {
-			transform: scale(1.01);
+			transform: scale(1.05);
 			filter: brightness(120%);
 		}
 </style>
@@ -272,27 +282,6 @@ else
 							</button>
 						}
 					}
-
-					if (id.Contains("g") == true)
-					{
-						string letra = "g";
-						string cadena = id.Replace(letra, null);
-						string generos = Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Filter") + " • " + Herramientas.Idiomas.BuscarTexto(idioma, cadena, "Genres");
-
-						if (string.IsNullOrEmpty(generos) == false)
-						{
-							<button @onclick="(e => CambiarIDs(e, cadena, letra))" class="boton-expandir" style="color: var(--colorTexto); text-decoration: none; border: 0px; background-color: var(--fondoBotonPequeño);">
-								<div style="display: flex; align-items: center; gap: 10px; padding: 5px 10px; height: 100%;">
-									<div style="font-size: 14px;">@generos</div>
-									<div style="max-width: 14px;">
-										<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-											<path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
-										</svg>
-									</div>
-								</div>
-							</button>
-						}
-					}
 				}
 			</div>
 		}
@@ -334,7 +323,7 @@ else
 
 					@if (enseñarDeck == true)
 					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+						<div class="caja-diseño" style="border-radius: 0px 0px 5px 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
 							@foreach (var deck in decks)
 							{
 								string fondo = string.Empty;
@@ -399,7 +388,7 @@ else
 
 					@if (enseñarTipos == true)
 					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+						<div class="caja-diseño" style="border-radius: 0px 0px 5px 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
 							@foreach (var tipo in tipos)
 							{
 								string fondo = string.Empty;
@@ -464,7 +453,7 @@ else
 
 					@if (enseñarSistemas == true)
 					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+						<div class="caja-diseño" style="border-radius: 0px 0px 5px 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
 							@foreach (var sistema in sistemas)
 							{
 								string fondo = string.Empty;
@@ -529,7 +518,7 @@ else
 
 					@if (enseñarEtiquetas == true)
 					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+						<div class="caja-diseño" style="border-radius: 0px 0px 5px 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
 							@foreach (var etiqueta in etiquetas)
 							{
 								string fondo = string.Empty;
@@ -594,7 +583,7 @@ else
 
 					@if (enseñarCategorias == true)
 					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+						<div class="caja-diseño" style="border-radius: 0px 0px 5px 5px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
 							@foreach (var categoria in categorias)
 							{
 								string fondo = string.Empty;
@@ -634,120 +623,13 @@ else
 					}
 				</div>
 			}
-
-			@if (generos.Count > 0)
-			{
-				string letra = "g";
-
-				<div>
-					<button @onclick="(e => AbrirGeneros(e))" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; background-color: var(--fondoBotonPequeño);">
-						<div style="display: flex; align-items: center;">
-							<div style="width: 100%;">
-								@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Filter") (@CantidadIDs(letra))
-							</div>
-
-							<div>
-								@if (enseñarGeneros == true)
-								{
-									<div style="max-width: 16px;">
-										<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-											<path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
-										</svg>
-									</div>
-								}
-								else
-								{
-									<div style="max-width: 16px;">
-										<svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-											<path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-										</svg>
-									</div>
-								}
-							</div>
-						</div>
-					</button>
-
-					@if (enseñarGeneros == true)
-					{
-						<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 10px; display: flex; flex-direction: column; gap: 10px;">
-							@foreach (var genero in generos)
-							{
-								string fondo = string.Empty;
-
-								if (idsLista != null)
-								{
-									if (idsLista.Count > 0)
-									{
-										foreach (var id2 in idsLista)
-										{
-											if (letra + genero.Id == id2)
-											{
-												fondo = "background-color: var(--fondoBotonPequeño);";
-												break;
-											}
-										}
-									}
-								}
-
-								<button @onclick="(e => CambiarIDs(e, genero.Id, letra))" class="boton-expandir" style="color: var(--colorTexto); border: 0px; width: 100%; text-align: center; padding: 10px; @fondo">
-									<div style="font-size: 14px;">
-										@genero.Contenido
-									</div>
-								</button>
-							}
-						</div>
-					}
-				</div>
-			}
 		</div>
 
 		<div style="width: 100%;">
-			<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 0px 20px; display: flex; flex-direction: column; gap: 20px;">
+			<div class="caja-diseño" style="padding: 0px 20px; display: flex; flex-direction: column; gap: 20px;">
 				<Virtualize Context="juego" Items="resultadosGestor" ItemSize="107" OverscanCount="6">
 					<ItemContent>
-						@{
-							bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juego);
-							bool usuarioTieneDeseado = false;
-
-							string fondoColor = string.Empty;
-
-							if (usuarioTieneJuego == true)
-							{
-								fondoColor = "background-color: var(--fondoBien);";
-							}
-							else
-							{
-								usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juego, Juegos.JuegoDRM.NoEspecificado, true);
-
-								if (usuarioTieneDeseado == true)
-								{
-									fondoColor = "background-color: var(--fondoAlerta);";
-								}
-							}
-
-							if (string.IsNullOrEmpty(fondoColor) == true)
-							{
-								fondoColor = "background-color: var(--fondoBotonPequeño);";
-							}
-
-							<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" class="boton-pequeño" style="padding: 2px; @fondoColor">
-								<div style="display: flex; align-items: center;">
-									<div>
-										<img src="@juego.Imagenes.Header_460x215" style="width: 230px; height: 107px;" />
-									</div>
-
-									<div style="padding: 0px 20px;">
-										<div>
-											@juego.Nombre
-										</div>
-
-										<div style="margin-top: 10px; font-size: 15px;">
-											@Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
-										</div>
-									</div>
-								</div>
-							</a>
-						}
+						<CajaJuego idioma="@idioma" juego="@juego" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Filtro" />
 					</ItemContent>
 				</Virtualize>
 			</div>
@@ -795,7 +677,6 @@ else
 		CargarSistemas();
 		CargarEtiquetas();
 		CargarCategorias();
-		CargarGeneros();
 
 		idsLista = Herramientas.Listados.Generar(ids);
 
@@ -1077,45 +958,6 @@ else
 		else
 		{
 			enseñarCategorias = true;
-		}
-	}
-
-	#endregion
-
-	#region Generos
-
-	private List<FiltroItem> generos = new List<FiltroItem>();
-
-	private void CargarGeneros()
-	{
-		string json = Herramientas.Idiomas.CogerTodo(idioma, "Genres");
-
-		if (string.IsNullOrEmpty(json) == false)
-		{
-			var items2 = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
-
-			foreach (var item2 in items2)
-			{
-				FiltroItem nuevaEtiqueta = new FiltroItem();
-				nuevaEtiqueta.Id = item2.Key;
-				nuevaEtiqueta.Contenido = item2.Value.ToString();
-
-				generos.Add(nuevaEtiqueta);
-			}
-		}
-	}
-
-	private bool enseñarGeneros = false;
-
-	private void AbrirGeneros(MouseEventArgs e)
-	{
-		if (enseñarGeneros == true)
-		{
-			enseñarGeneros = false;
-		}
-		else
-		{
-			enseñarGeneros = true;
 		}
 	}
 

@@ -21,12 +21,21 @@
 	</HeadContent>
 }
 
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
 <div style="max-width: 1200px; margin: auto;">
 	<h1 style="font-size: 23px;">@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "RSS")</h1>
 	<hr />
 
 	<div style="display: flex; flex-direction: column; gap: 40px;">
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 20px;">
+		<div class="caja-diseño" style="padding: 40px; display: flex; flex-direction: column; gap: 20px;">
 			<div style="font-size: 18px;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "RSS")
 			</div>
@@ -52,7 +61,7 @@
 			</div>
 		</div>
 
-		<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; display: flex; flex-direction: column; gap: 20px;">
+		<div class="caja-diseño" style="padding: 40px; display: flex; flex-direction: column; gap: 20px;">
 			<div style="font-size: 18px;">
 				@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "RSS")
 			</div>

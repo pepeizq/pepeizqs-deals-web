@@ -27,49 +27,7 @@
 	}
 
 	ViewData["Title"] = @Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Privacy");
+	Layout = "/Pages/Shared/_Layout.cshtml";
+
+	<component type="typeof(Componentes.Secciones.Privacidad)" render-mode="ServerPrerendered" param-idioma="idioma" />
 }
-
-<h1 style="font-size: 22px; text-align: left; margin: 0px;">
-	@Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Privacy")
-</h1>
-
-<hr />
-
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-bottom: 40px;">
-	<div style="font-size: 18px;">
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Privacy")
-	</div>
-
-	<hr />
-
-	<div>
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Privacy")
-
-		<ul>
-			<li>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String3", "Privacy")
-			</li>
-			<li>
-				@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Privacy")
-			</li>
-		</ul>
-
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Privacy")
-	</div>
-</div>
-
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
-	<div style="font-size: 18px;">
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String6", "Privacy")
-	</div>
-
-	<hr/>
-
-	<div style="margin-bottom: 20px;">
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Privacy")
-	</div>
-
-	<div>
-		@Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Privacy")
-	</div>
-</div>

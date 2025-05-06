@@ -53,6 +53,7 @@ namespace APIs.Steam
 						bool freeToPlay = false;
 						List<Juegos.JuegoIdioma> idiomas = new List<Juegos.JuegoIdioma>();
 						Juegos.JuegoPrecio precio = null;
+						int idMaestro = 0;
 
 						#region Nombre
 
@@ -593,6 +594,15 @@ namespace APIs.Steam
 
 						#endregion
 
+						#region DLC
+
+						if (datos2.Respuesta.Juegos[0].DLC != null)
+						{
+							idMaestro = datos2.Respuesta.Juegos[0].DLC.MaestroId;
+						}
+
+						#endregion
+
 						Juegos.Juego juego = new Juegos.Juego
 						{
 							IdSteam = int.Parse(id),
@@ -613,13 +623,16 @@ namespace APIs.Steam
 							juego.Imagenes.Library_600x900 = null;
 							juego.Imagenes.Library_1920x620 = null;
 
-							Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, id);
-
-							if (maestro != null)
+							if (idMaestro > 0)
 							{
-								if (maestro.IdSteam > 0)
+								Juegos.Juego maestro = BaseDatos.Juegos.Buscar.UnJuego(null, idMaestro.ToString());
+
+								if (maestro != null)
 								{
-									juego.Maestro = maestro.Id.ToString();
+									if (maestro.IdSteam > 0)
+									{
+										juego.Maestro = maestro.Id.ToString();
+									}
 								}
 							}
 						}
@@ -1010,6 +1023,9 @@ namespace APIs.Steam
 
 		[JsonPropertyName("best_purchase_option")]
 		public SteamJuegoAPI2JuegoPrecio Precio { get; set; }
+
+		[JsonPropertyName("related_items")]
+		public SteamJuegoAPI2JuegoDLC DLC { get; set; }
 	}
 
 	public class SteamJuegoAPI2JuegoImagenes
@@ -1214,6 +1230,12 @@ namespace APIs.Steam
 
 		[JsonPropertyName("discount_pct")]
 		public int Descuento { get; set; } = 0;
+	}
+
+	public class SteamJuegoAPI2JuegoDLC
+	{
+		[JsonPropertyName("parent_appid")]
+		public int MaestroId { get; set; }
 	}
 
 	#endregion

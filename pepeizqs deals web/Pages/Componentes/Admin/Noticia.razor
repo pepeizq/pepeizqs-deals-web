@@ -155,10 +155,6 @@
 					Telegram
 				</button>
 
-				<button @onclick="(e => EnviarReddit(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
-					Reddit
-				</button>
-
 				<button @onclick="(e => EnviarDiscord(e))" class="boton-pequeño" style="width: auto; padding: 10px 20px;">
 					Discord
 				</button>
@@ -412,11 +408,6 @@
 	private void EnviarTelegram(MouseEventArgs e)
 	{
 		Herramientas.RedesSociales.Telegram.Postear(noticia);
-	}
-
-	private void EnviarReddit(MouseEventArgs e)
-	{
-		Herramientas.RedesSociales.Reddit.Postear(noticia);
 	}
 
 	private void EnviarDiscord(MouseEventArgs e)

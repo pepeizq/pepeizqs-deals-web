@@ -561,15 +561,6 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                     BaseDatos.Errores.Insertar.Mensaje("Enviar Telegram Noticia", ex);
                 }
 
-                // try
-                // {
-                //     Herramientas.RedesSociales.Reddit.Postear(noticiaAñadir);
-                // }
-                // catch (Exception ex)
-                // {
-                //     BaseDatos.Errores.Insertar.Mensaje("Enviar Reddit Noticia", ex);
-                // }
-
                 try
                 {
                     Herramientas.RedesSociales.Discord.Postear(noticiaAñadir);

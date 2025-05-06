@@ -36,6 +36,15 @@
 }
 
 <style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+<style>
 	.boton-pestañas {
 		color: var(--colorTexto);
 		background: transparent;
@@ -59,7 +68,7 @@
 
 	<div style="display: flex; align-items: start; gap: 50px; margin-top: 20px;">
 		<div style="width: 33%;">
-			<div style="display: flex; align-items: center; flex-direction: column; gap: 10px;">
+			<div class="caja-diseño" style="padding: 10px; display: flex; align-items: center; flex-direction: column; gap: 10px;">
 				<button @onclick="(e => MostrarJuegos1(e))" class="boton-pestañas" style="@estiloJuegos1;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Api")
 				</button>
@@ -90,11 +99,10 @@
 			</div>
 		</div>
 
-
 		<div style="width: 100%;">
 			@if (mostrarJuegos1 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String2", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -108,7 +116,7 @@
 					</div>
 				</div>
 
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+				<div class="caja-diseño" style="padding: 40px; margin-top: 40px;">
 					<div style="margin-bottom: 20px;">
 						@Herramientas.Idiomas.BuscarTexto(idioma, "String4", "Api")
 					</div>
@@ -132,7 +140,7 @@
 					</div>
 				</div>
 
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
+				<div class="caja-diseño" style="padding: 40px; margin-top: 40px;">
 					<div style="margin-bottom: 20px;">
 						@Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Api")
 					</div>
@@ -159,7 +167,7 @@
 
 			@if (mostrarBundles1 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String11", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -182,7 +190,7 @@
 
 			@if (mostrarBundles2 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -199,7 +207,7 @@
 
 			@if (mostrarGratis1 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String24", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -216,7 +224,7 @@
 
 			@if (mostrarSuscripciones1 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String27", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -233,7 +241,7 @@
 
 			@if (mostrarNoticias1 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String15", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -250,7 +258,7 @@
 
 			@if (estiloNoticias2 == true)
 			{
-				<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px;">
+				<div class="caja-diseño" style="padding: 40px;">
 					@Herramientas.Idiomas.BuscarTexto(idioma, "String21", "Api")
 
 					<div style="padding: 10px 15px; background-color: var(--fondoCodigo); margin-top: 20px; margin-bottom: 20px;">
@@ -281,7 +289,7 @@
 		mostrarJuegos1 = true;
 	}
 
-	private string fondo = "background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño)";
+	private string fondo = "background-color: var(--fondoBotonPequeño);";
 
 	private void CerrarPestañas()
 	{
