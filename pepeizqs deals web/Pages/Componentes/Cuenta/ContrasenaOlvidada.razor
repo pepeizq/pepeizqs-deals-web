@@ -8,7 +8,16 @@
 @inject UserManager<Usuario> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
+<style>
+    .caja-diseño {
+        background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+        border: 2px solid var(--fondoOscuro);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+        border-radius: 5px;
+    }
+</style>
+
+<div class="caja-diseño" style="max-width: 600px; padding: 40px; margin: auto;">
     <div class="texto-info">@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "ForgotPassword")</div>
 
     <hr>
@@ -19,7 +28,7 @@
             <input value="@correo" @onchange="@(e => CambiarCorreo(e))" style="padding: 5px 10px; background-color: var(--fondoEntrada); border: 0px; color: var(--colorTexto); display: block;" />
 
             <div style="margin-top: 30px;">
-                <button @onclick="EnviarCorreo" class="boton" style="font-size: 18px;">
+                <button @onclick="EnviarCorreo" class="boton-pequeño" style="text-align: center; font-size: 20px; padding: 15px 20px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "String3", "ForgotPassword")
                 </button>
             </div>

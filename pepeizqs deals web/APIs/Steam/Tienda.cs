@@ -6,6 +6,7 @@
 //https://store.steampowered.com/appreviews/730?json=1
 //https://store.steampowered.com/curator/185907/ajaxgetcreatorhomeinfo?get_appids=true
 //https://steamcommunity.com/gid/103582791462511166/ajaxgetvanityandclanid/
+//https://store.steampowered.com/actions/ajaxresolvebundles?bundleids=45867&cc=ES&l=english
 
 #nullable disable
 
@@ -38,7 +39,24 @@ namespace APIs.Steam
 			return tienda;
 		}
 
-        public static string Referido(string enlace)
+		public static Tiendas2.Tienda GenerarBundles()
+		{
+			Tiendas2.Tienda tienda = new Tiendas2.Tienda
+			{
+				Id = "steambundles",
+				Nombre = "Steam (Bundles)",
+				ImagenLogo = "/imagenes/tiendas/steam_logo.webp",
+				Imagen300x80 = "/imagenes/tiendas/steam_300x80.webp",
+				ImagenIcono = "/imagenes/tiendas/steam_icono.webp",
+				Color = "#2e4460",
+				AdminEnseñar = false,
+				AdminInteractuar = true
+			};
+
+			return tienda;
+		}
+
+		public static string Referido(string enlace)
         {
             return enlace + "?curator_clanid=33500256";
         }
@@ -47,10 +65,22 @@ namespace APIs.Steam
 		{
 			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
+			string añadirBundles = string.Empty;
+
+			if (DateTime.Now.Hour > 0 && DateTime.Now.Hour < 19)
+			{
+				añadirBundles = "%2C996";
+			}
+
 			int juegos = 0;
 
 			int arranque = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional", conexion);
 			int tope = BaseDatos.Admin.Buscar.TiendasValorAdicional(Generar().Id, "valorAdicional2", conexion);
+
+			if (DateTime.Now.Hour == 19 && DateTime.Now.Minute >= 0 && DateTime.Now.Minute < 10)
+			{
+				arranque = 0;
+			}
 
 			if (arranque >= tope - 50)
 			{
@@ -64,7 +94,7 @@ namespace APIs.Steam
 
 				if (mirarOfertas == true)
 				{
-					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english&category1=998%2C21%2C990%2C994");
+					string html2 = await Decompiladores.Estandar("https://store.steampowered.com/search/results/?query&start=" + i.ToString() + "&count=50&dynamic_data=&force_infinite=1&supportedlang=english&specials=1&hidef2p=1&ndl=1&infinite=1&ignore_preferences=1&l=english&category1=998%2C21%2C990%2C994" + añadirBundles);
 
 					try
 					{
@@ -184,6 +214,10 @@ namespace APIs.Steam
 									{
 										enlace = "https://store.steampowered.com/app/" + Juego.LimpiarID(enlace);
 									}
+									else if (enlace.Contains("https://store.steampowered.com/bundle/") == true)
+									{
+										enlace = "https://store.steampowered.com/bundle/" + Juego.LimpiarID(enlace);
+									}
 
 									int int9 = temp4.IndexOf("<img src=");
 									string temp9 = temp4.Remove(0, int9 + 10);
@@ -199,7 +233,7 @@ namespace APIs.Steam
 										Porcentaje = "0"
 									};
 
-									if (enlace.Contains("https://store.steampowered.com/app/") == true)
+									if (enlace.Contains("https://store.steampowered.com/app/") == true || enlace.Contains("https://store.steampowered.com/bundle/") == true)
 									{
 										int int11 = temp4.IndexOf("data-tooltip-html=");
 
@@ -244,7 +278,24 @@ namespace APIs.Steam
 										}
 									}
 
-									if (analisis.Cantidad.Length > 1)
+									bool suficientesReseñas = false;
+
+									if (enlace.Contains("https://store.steampowered.com/app/") == true)
+									{
+										if (analisis.Cantidad.Length > 1)
+										{
+											suficientesReseñas = true;
+										}
+									}
+									else if (enlace.Contains("https://store.steampowered.com/bundle/") == true)
+									{
+										if (analisis.Cantidad.Length > 3)
+										{
+											suficientesReseñas = true;
+										}
+									}
+
+									if (suficientesReseñas == true)
 									{
 										int int11 = temp4.IndexOf("data-discount=" + Strings.ChrW(34));
 
@@ -284,6 +335,7 @@ namespace APIs.Steam
 													temp14 = temp14.Replace("--", "00");
 													temp14 = temp14.Replace(",", ".");
 													temp14 = temp14.Replace("€", null);
+													temp14 = temp14.Replace(" ", null);
 												}
 
 												bool precioFormato = true;
@@ -305,7 +357,7 @@ namespace APIs.Steam
 													{
 														Nombre = titulo,
 														Imagen = imagen,
-														Tienda = "steam",
+														Tienda = Generar().Id,
 														DRM = JuegoDRM.Steam,
 														Descuento = descuento,
 														Precio = precio,
@@ -315,13 +367,30 @@ namespace APIs.Steam
 														FechaActualizacion = DateTime.Now
 													};
 
-													try
+													if (enlace.Contains("https://store.steampowered.com/app/") == true)
 													{
-														BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, conexion);
+														try
+														{
+															BaseDatos.Tiendas.Comprobar.Steam(oferta, analisis, conexion);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+														}
 													}
-													catch (Exception ex)
+													
+													if (enlace.Contains("https://store.steampowered.com/bundle/") == true)
 													{
-														BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
+														oferta.Tienda = GenerarBundles().Id;
+
+														try
+														{
+															BaseDatos.Tiendas.Comprobar.Resto(oferta, conexion);
+														}
+														catch (Exception ex)
+														{
+															BaseDatos.Errores.Insertar.Mensaje(GenerarBundles().Id, ex, conexion);
+														}
 													}
 
 													juegos += 1;

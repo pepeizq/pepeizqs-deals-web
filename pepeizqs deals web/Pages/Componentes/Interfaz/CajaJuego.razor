@@ -58,7 +58,7 @@
 @{
 	int idMaestra = juego.IdMaestra;
 
-	if (tipo == Tipo.Bundle || tipo == Tipo.Noticia || tipo == Tipo.Filtro || tipo == Tipo.CuratorDestacado || tipo == Tipo.CuratorLista)
+	if (tipo == Tipo.Bundle || tipo == Tipo.Noticia || tipo == Tipo.Filtro || tipo == Tipo.CuratorDestacado || tipo == Tipo.CuratorLista || tipo == Tipo.CuratorJuego)
 	{
 		idMaestra = juego.Id;
 	}
@@ -581,6 +581,19 @@
 				</div>
 			</a>			
 		}
+
+		@if (tipo == Tipo.CuratorJuego)
+		{
+			<a href="/game/@juego.Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juego.Nombre)/" target="_blank" class="boton-pequeño" style="height: 100%; padding: 0px; @fondoColor">
+                <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juego.Nombre">
+                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juego.Imagenes.Header_460x215, 255, 120)" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juego.Nombre" loading="lazy" />
+
+                    <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
+                        @Herramientas.Buscador.GenerarMensaje(idioma, juego, true, true, true)
+                    </div>
+                </div>
+            </a>
+		}
 	</div>
 }
 
@@ -635,7 +648,8 @@
 		Noticia,
 		Filtro,
 		CuratorDestacado,
-		CuratorLista
+		CuratorLista,
+		CuratorJuego
 	}
 
 	#region Portapapeles

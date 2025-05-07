@@ -791,8 +791,10 @@ namespace APIs.Steam
 		{
 			enlace = enlace.Replace("http://store.steampowered.com/app/", null);
 			enlace = enlace.Replace("http://store.steampowered.com/dlc/", null);
+			enlace = enlace.Replace("http://store.steampowered.com/bundle/", null);
 			enlace = enlace.Replace("https://store.steampowered.com/app/", null);
 			enlace = enlace.Replace("https://store.steampowered.com/dlc/", null);
+			enlace = enlace.Replace("https://store.steampowered.com/bundle/", null);
 			enlace = enlace.Replace("https://steamdb.info/app/", null);
 
 			if (enlace.Contains("/") == true)

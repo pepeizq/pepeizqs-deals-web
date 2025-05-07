@@ -13,6 +13,7 @@
 @using System.Net
 @using System.Text.Json
 @using Tiendas2
+@using pepeizqs_deals_web.Pages.Componentes.Interfaz
 
 @inject UserManager<Usuario> UserManager
 @inject SignInManager<Usuario> SignInManager
@@ -2483,7 +2484,7 @@
 
                                             @if (juegosCurator.Count > 4)
                                             {
-                                                <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;" title="Back">
+                                                <button @onclick="@(e => CuratorAtras(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 12px 15px;" title="Back">
                                                     <div style="max-width: 24px;">
                                                         <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                             <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
@@ -2497,39 +2498,7 @@
                                                 {
                                                     if (i < juegosCurator.Count)
                                                     {
-                                                        bool usuarioTieneJuego = Herramientas.UsuarioJuegos.ComprobarSiTiene(juegosUsuario, juegosCurator[i]);
-                                                        bool usuarioTieneDeseado = false;
-
-                                                        string fondoColor = string.Empty;
-
-                                                        if (usuarioTieneJuego == true)
-                                                        {
-                                                            fondoColor = "background-color: var(--fondoBien);";
-                                                        }
-                                                        else
-                                                        {
-                                                            usuarioTieneDeseado = Herramientas.Deseados.ComprobarSiEsta(usuario?.SteamWishlist, usuario?.Wishlist, usuario?.GogWishlist, juegosCurator[i], Juegos.JuegoDRM.NoEspecificado, true);
-
-                                                            if (usuarioTieneDeseado == true)
-                                                            {
-                                                                fondoColor = "background-color: var(--fondoAlerta);";
-                                                            }
-                                                        }
-
-                                                        if (string.IsNullOrEmpty(fondoColor) == true)
-                                                        {
-                                                            fondoColor = "background-color: var(--fondoBotonPequeño);";
-                                                        }
-
-                                                        <a href="/game/@juegosCurator[i].Id.ToString()/@Herramientas.EnlaceAdaptador.Nombre(juegosCurator[i].Nombre)/" target="_blank" class="boton-pequeño" style="padding: 0px; @fondoColor">
-                                                            <div style="display: flex; flex-direction: column; padding: 2px; height: 100%;" title="@juegosCurator[i].Nombre">
-                                                                <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(juegosCurator[i].Imagenes.Header_460x215, 255, 120)" style="max-width: 100vw; max-height: 100vh; object-fit: cover;" alt="@juegosCurator[i].Nombre" loading="lazy" />
-
-                                                                <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; height: 100%; padding: 10px; text-align: center;">
-                                                                    @Herramientas.Buscador.GenerarMensaje(idioma, juegosCurator[i], true, true, true)
-                                                                </div>
-                                                            </div>
-                                                        </a>
+                                                        <CajaJuego idioma="@idioma" juego="@juegosCurator[i]" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.CuratorJuego" />
                                                     }
 
                                                     i += 1;
@@ -2538,7 +2507,7 @@
 
                                             @if (juegosCurator.Count > 4)
                                             {
-                                                <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 10px 20px;" title="Next">
+                                                <button @onclick="@(e => CuratorAdelante(e, curator, juegosCurator.Count))" class="boton-pequeño" style="width: auto; text-align: center; font-size: 23px; padding: 12px 15px;" title="Next">
                                                     <div style="max-width: 24px;">
                                                         <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                             <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>

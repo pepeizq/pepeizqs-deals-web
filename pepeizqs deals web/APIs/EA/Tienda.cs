@@ -30,7 +30,7 @@ namespace APIs.EA
                 Imagen300x80 = "/imagenes/tiendas/ea_300x80.webp",
                 ImagenIcono = "/imagenes/tiendas/ea_icono.webp",
                 Color = "#ff4747",
-                AdminEnseñar = true,
+                AdminEnseñar = false,
                 AdminInteractuar = true
             };
 

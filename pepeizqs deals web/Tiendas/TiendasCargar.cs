@@ -12,6 +12,7 @@ namespace Tiendas2
 			List<Tienda> tiendas = new List<Tienda>
 			{
 				APIs.Steam.Tienda.Generar(),
+				APIs.Steam.Tienda.GenerarBundles(),
 				APIs.GamersGate.Tienda.Generar(),
 				APIs.Humble.Tienda.Generar(),
 				APIs.Humble.Tienda.GenerarChoice(),

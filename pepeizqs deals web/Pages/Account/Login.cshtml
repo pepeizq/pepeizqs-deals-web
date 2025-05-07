@@ -7,6 +7,15 @@
 
 @inject SignInManager<Usuario> SignInManager
 
+<style>
+    .caja-diseño {
+        background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+        border: 2px solid var(--fondoOscuro);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+        border-radius: 5px;
+    }
+</style>
+
 @{
     ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(Model.idioma, "Title", "Login");
     Layout = "/Pages/Shared/_Layout.cshtml";
@@ -15,7 +24,7 @@
 
     if (usuarioLogeado == false)
     {
-        <div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); max-width: 600px; padding: 40px; margin: auto;">
+        <div class="caja-diseño" style="max-width: 600px; padding: 40px; margin: auto;">
             <form id="account" method="post">
                 <div class="texto-info">@Herramientas.Idiomas.BuscarTexto(Model.idioma, "String1", "Login")</div>
 
@@ -54,7 +63,7 @@
                 </div>
 
                 <div>
-                    <button id="login-submit" type="submit" class="boton">
+                    <button id="login-submit" type="submit" class="boton-pequeño" style="text-align: center; font-size: 20px; padding: 15px 20px;">
                         @Herramientas.Idiomas.BuscarTexto(Model.idioma, "String7", "Login")
                     </button>
                 </div>

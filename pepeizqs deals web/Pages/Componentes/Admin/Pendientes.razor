@@ -13,8 +13,6 @@
                 if (string.IsNullOrEmpty(idTiendaPendiente) == true && string.IsNullOrEmpty(idSuscripcionPendiente) == true && string.IsNullOrEmpty(idStreamingPendiente) == true && string.IsNullOrEmpty(idPlataformaPendiente) == true)
                 {
                     idTiendaPendiente = pendiente.Tienda.Id;
-
-                    ClickearTiendaPendientes(idTiendaPendiente);
                 }
                 else
                 {
@@ -117,16 +115,49 @@
                     <a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
                 </div>
 
-                <div style="width: 70%; margin-left: 20px;">
-                    <div style="margin-bottom: 20px;">
+                <div style="width: 70%; margin-left: 20px; display: flex; flex-direction: column; gap: 20px;">
+                    <div>
                         <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
                     </div>
 
                     <div>
-                        <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="margin: 10px 0px; width: 100%;" value="@idsPendiente" rows="1" />
+                        <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="width: 100%;" value="@idsPendiente" rows="1" />
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
+                        @if (string.IsNullOrEmpty(idsPendiente) == false)
+                        {
+                            foreach (var id in idsPendiente.Split(','))
+                            {
+                                if (id.Contains("no encontrado") == true)
+                                {
+                                    <div>
+                                        <a href="https://store.steampowered.com/app/@id.Replace("no encontrado", null).Trim()">id steam no encontrada: @id.Replace("no encontrado", null).Trim()</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (int.Parse(id) > 0)
+                                    {
+                                        global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(id);
+
+                                        if (juego != null)
+                                        {
+                                            <a href="/game/@id" target="_blank" style="text-decoration: none;"><img src="@juego.Imagenes.Header_460x215" style="width: 100%; height: 100%; object-fit: cover;"/></a>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                id base datos no encontrada
+                                            </div>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 20px;">
                         @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
                         {
                             <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
@@ -147,14 +178,14 @@
 
     @if (string.IsNullOrEmpty(cadenaBusquedaPendiente) == false)
     {
-        <div style="display: flex; align-items: center; margin: 20px 0px;">
-            <button @onclick="@(e => CambiarPestañas(e, 0))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloJuegos">Juegos (@buscadorPendientesJuegos.Count.ToString())</button>
+        <div style="display: flex; align-items: center; gap: 20px; margin: 20px 0px;">
+            <button @onclick="@(e => CambiarPestañas(e, 0))" class="boton-pequeño" style="width: 130px; text-align: center; @estiloJuegos">Juegos (@buscadorPendientesJuegos.Count.ToString())</button>
 
-            <button @onclick="@(e => CambiarPestañas(e, 1))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloDLCs">DLCs (@buscadorPendientesDLCs.Count.ToString())</button>
+            <button @onclick="@(e => CambiarPestañas(e, 1))" class="boton-pequeño" style="width: 130px; text-align: center; @estiloDLCs">DLCs (@buscadorPendientesDLCs.Count.ToString())</button>
 
-            <button @onclick="@(e => CambiarPestañas(e, 2))" class="boton-pequeño" style="margin-right: 20px; width: 180px; text-align: center; @estiloBandasSonoras">Bandas Sonoras (@buscadorPendientesBandasSonoras.Count.ToString())</button>
+            <button @onclick="@(e => CambiarPestañas(e, 2))" class="boton-pequeño" style="width: 180px; text-align: center; @estiloBandasSonoras">Bandas Sonoras (@buscadorPendientesBandasSonoras.Count.ToString())</button>
 
-            <button @onclick="@(e => CambiarPestañas(e, 3))" class="boton-pequeño" style="margin-right: 20px; width: 130px; text-align: center; @estiloSoftware">Software (@buscadorPendientesSoftware.Count.ToString())</button>
+            <button @onclick="@(e => CambiarPestañas(e, 3))" class="boton-pequeño" style="width: 130px; text-align: center; @estiloSoftware">Software (@buscadorPendientesSoftware.Count.ToString())</button>
         </div>
 
         @if (pestañaJuegos == true)
@@ -359,7 +390,7 @@
     private string idsPendiente = "0";
     private string cadenaBusquedaPendiente = null;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -370,7 +401,7 @@
 
         foreach (var tienda in Tiendas2.TiendasCargar.GenerarListado())
         {
-            if (tienda.Id != "steam")
+            if (tienda.Id != APIs.Steam.Tienda.Generar().Id)
             {
                 PendientesTienda pendienteTienda = new PendientesTienda();
                 pendienteTienda.Tienda = tienda;
@@ -380,6 +411,22 @@
                 {
                     pendientesTiendas.Add(pendienteTienda);
                 }
+            }
+        }
+
+        if (pendientesTiendas.Count > 0)
+        {
+            nombrePendiente = pendientesTiendas[0].Pendientes[0].Nombre;
+            imagenPendiente = pendientesTiendas[0].Pendientes[0].Imagen;
+            enlacePendiente = pendientesTiendas[0].Pendientes[0].Enlace;
+
+            if (pendientesTiendas[0].Tienda.Id == APIs.Steam.Tienda.GenerarBundles().Id)
+            {
+                idsPendiente = await APIs.Steam.Bundle.CargarDatosBundle(pendientesTiendas[0].Pendientes[0].Enlace);
+            }
+            else
+            {
+                idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(pendientesTiendas[0].Pendientes[0].Nombre, conexion);
             }
         }
 
@@ -429,17 +476,17 @@
         }
     }
 
-    private void ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
+    private async Task ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
     {
         idTiendaPendiente = id;
         idSuscripcionPendiente = null;
         idStreamingPendiente = null;
         idPlataformaPendiente = null;
 
-        ClickearTiendaPendientes(idTiendaPendiente);
+        await ClickearTiendaPendientes(idTiendaPendiente);
     }
 
-    private void ClickearTiendaPendientes(string id)
+    private async Task ClickearTiendaPendientes(string id)
     {
         if (string.IsNullOrEmpty(id) == false)
         {
@@ -467,7 +514,14 @@
 
                     enlacePendiente = juego.Enlace;
 
-                    idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
+                    if (id == APIs.Steam.Tienda.GenerarBundles().Id)
+                    {
+                        idsPendiente = await APIs.Steam.Bundle.CargarDatosBundle(enlacePendiente);
+                    }
+                    else
+                    {
+                        idsPendiente = BaseDatos.Pendientes.Buscar.Nombre(nombrePendiente, conexion);
+                    }
                 }
             }
         }
@@ -612,7 +666,7 @@
         }
     }
 
-    private void ClickearDescartarPendientes(MouseEventArgs e, string enlace)
+    private async Task ClickearDescartarPendientes(MouseEventArgs e, string enlace)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -633,7 +687,7 @@
                     }
                 }
 
-                ClickearTiendaPendientes(idTiendaPendiente);
+                await ClickearTiendaPendientes(idTiendaPendiente);
             }
 
             if (string.IsNullOrEmpty(idStreamingPendiente) == false)
@@ -683,7 +737,7 @@
         }
     }
 
-    private void ClickearActualizarPendientes(MouseEventArgs e, string enlace)
+    private async Task ClickearActualizarPendientes(MouseEventArgs e, string enlace)
     {
         if (conexion.State != System.Data.ConnectionState.Open)
         {
@@ -704,7 +758,7 @@
                     }
                 }
 
-                ClickearTiendaPendientes(idTiendaPendiente);
+                await ClickearTiendaPendientes(idTiendaPendiente);
             }
 
             if (string.IsNullOrEmpty(idSuscripcionPendiente) == false)
