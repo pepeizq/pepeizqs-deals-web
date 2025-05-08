@@ -110,19 +110,53 @@
     @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idSuscripcionPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
     {
         <div style="width: 100%;">
-            <div style="display: flex; justify-content: space-between;">
-                <div style="width: 30%;">
-                    <a href="@enlacePendiente" target="_blank" style="text-decoration: none;"><img src="@imagenPendiente" style="width: 100%;" /></a>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
+                    {
+                        <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
+                    }
+
+                    <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Buscar</button>
+
+                    @if (permitirHacerCosas == true)
+                    {
+                        <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Actualizar</button>
+                    }
+                    else
+                    {
+                        <button class="boton-pequeño" style="width: 130px; text-align: center; backdrop-filter: brightness(60%);">Actualizar</button>
+                    }   
                 </div>
 
-                <div style="width: 70%; margin-left: 20px; display: flex; flex-direction: column; gap: 20px;">
-                    <div>
-                        <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+                <div>
+                    <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">@nombrePendiente</a>
+                </div>
+
+                <div>
+                    <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="width: 100%;" value="@idsPendiente" rows="1" />
+                </div>
+
+                <div style="display: flex; align-items: start; gap: 20px;">
+                    @{
+                        string ancho = "max-width: 200px;";
+                        
+                        if (string.IsNullOrEmpty(idsPendiente) == false)
+                        {
+                            if (idsPendiente.Split(',').Length > 1)
+                            {
+                                ancho = "max-width: 120px;";
+                            }
+                        }
+                    }
+
+                    <div style="@ancho">
+                        <a href="@enlacePendiente" target="_blank" style="text-decoration: none;">
+                            <img src="@imagenPendiente" style="width: 100%;" />
+                        </a>
                     </div>
 
-                    <div>
-                        <textarea @oninput="TextoCambiaPendientes" class="entrada-texto" style="width: 100%;" value="@idsPendiente" rows="1" />
-                    </div>
+                    <div style="border: 3px solid var(--fondoBotonPequeño); height: 70px;" />
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
                         @if (string.IsNullOrEmpty(idsPendiente) == false)
@@ -155,17 +189,6 @@
                                 }
                             }
                         }
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        @if (string.IsNullOrEmpty(idTiendaPendiente) == false || string.IsNullOrEmpty(idStreamingPendiente) == false || string.IsNullOrEmpty(idPlataformaPendiente) == false)
-                        {
-                            <button @onclick="@(e => ClickearDescartarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Descartar</button>
-                        }
-
-                        <button @onclick="@(e => ClickearBuscarPendientes(e, nombrePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Buscar</button>
-
-                        <button @onclick="@(e => ClickearActualizarPendientes(e, enlacePendiente))" class="boton-pequeño" style="width: 130px; text-align: center;">Actualizar</button>
                     </div>
                 </div>
             </div>
@@ -374,6 +397,8 @@
 
     private SqlConnection conexion = new SqlConnection();
 
+    private bool permitirHacerCosas = true;
+
     private List<PendientesTienda> pendientesTiendas = new List<PendientesTienda>();
     private List<PendientesSuscripcion> pendientesSuscripcion = new List<PendientesSuscripcion>();
     private List<PendientesStreaming> pendientesStreaming = new List<PendientesStreaming>();
@@ -478,6 +503,8 @@
 
     private async Task ClickearTiendaPendientes(MouseEventArgs e, string id, string nombre)
     {
+        permitirHacerCosas = false;
+
         idTiendaPendiente = id;
         idSuscripcionPendiente = null;
         idStreamingPendiente = null;
@@ -516,7 +543,29 @@
 
                     if (id == APIs.Steam.Tienda.GenerarBundles().Id)
                     {
+                        await InvokeAsync(() =>
+                        {
+                            StateHasChanged();
+                        });
+
                         idsPendiente = await APIs.Steam.Bundle.CargarDatosBundle(enlacePendiente);
+
+                        if (string.IsNullOrEmpty(idsPendiente) == false)
+                        {
+                            await Task.Delay(2000);
+
+                            BaseDatos.Pendientes.Actualizar.Tienda(idTiendaPendiente, enlacePendiente, idsPendiente, conexion);
+
+                            foreach (var pendiente in pendientesTiendas)
+                            {
+                                if (pendiente.Tienda.Id == idTiendaPendiente)
+                                {
+                                    pendiente.Pendientes = BaseDatos.Pendientes.Buscar.Tienda(idTiendaPendiente, conexion);
+                                }
+                            }
+
+                            await ClickearTiendaPendientes(idTiendaPendiente);
+                        }
                     }
                     else
                     {
@@ -525,6 +574,8 @@
                 }
             }
         }
+
+        permitirHacerCosas = true;
     }
 
     private void ClickearSuscripcionPendientes(MouseEventArgs e, string id, string nombre)

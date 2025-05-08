@@ -57,24 +57,33 @@
 			}
 		}
 
-		foreach (var juego in bundle.Juegos)
+		if (bundle.Juegos != null)
 		{
-			if (juego != null)
+			if (bundle.Juegos.Count > 0)
 			{
-				string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
-				List<string> keywordsListaJuego = new List<string>();
-				keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
-
-				foreach (string keyword in keywordsListaJuego)
+				foreach (var juego in bundle.Juegos)
 				{
-					if (keywords.Contains(keyword) == false && keyword.Length > 3)
+					if (juego != null)
 					{
-						keywords = keywords + ", " + keyword;
+						if (string.IsNullOrEmpty(juego.Nombre) == false)
+						{
+							string[] keywordsEnBrutoJuego = Herramientas.Buscador.LimpiarNombre(juego.Nombre, false).Split(' ');
+							List<string> keywordsListaJuego = new List<string>();
+							keywordsListaJuego.AddRange(keywordsEnBrutoJuego);
+
+							foreach (string keyword in keywordsListaJuego)
+							{
+								if (keywords.Contains(keyword) == false && keyword.Length > 3)
+								{
+									keywords = keywords + ", " + keyword;
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-
+		
 		<HeadContent>
 			<meta name="og:title" Content="@titulo" />
 			<meta name="description" content="@descripcion" />
@@ -198,16 +207,22 @@
 
 				List<Bundles2.BundleJuego> juegosTier = new List<Bundles2.BundleJuego>();
 
-				foreach (var juego in bundle.Juegos)
+				if (bundle.Juegos != null)
 				{
-					if (juego.Tier != null)
+					if (bundle.Juegos.Count > 0)
 					{
-						if (juego.Tier.Posicion == tier.Posicion)
+						foreach (var juego in bundle.Juegos)
 						{
-							juegosTier.Add(juego);
+							if (juego.Tier != null)
+							{
+								if (juego.Tier.Posicion == tier.Posicion)
+								{
+									juegosTier.Add(juego);
+								}
+							}
 						}
 					}
-				}
+				}				
 
 				if (juegosTier.Count > 0)
 				{

@@ -74,6 +74,22 @@
 
 		<div style="display: flex; align-items: start;">
 			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
+				Añadir Juego
+			</div>
+
+			<div style="width: 85%; display: flex; align-items: start; gap: 15px;">
+				<input type="text" @onchange="(e => TextoCambiaAñadirJuegoID(e))" class="entrada-texto" placeholder="ID Juego" style="width: fit-content; min-width: 50px;"/>
+
+				<input type="text" @onchange="(e => TextoCambiaAñadirJuegoTier(e))" class="entrada-texto" placeholder="Tier" style="width: fit-content; min-width: 50px;"/>
+
+				<button class="boton-pequeño" @onclick="(e => ClickAñadirJuego(e))" style="width: fit-content; padding: 10px 15px;">
+					Añadir para Steam
+				</button>
+			</div>
+		</div>
+
+		<div style="display: flex; align-items: start;">
+			<div style="width: 15%; padding-right: 20px; text-align: right; margin-top: 5px;">
 				Tiers
 			</div>
 
@@ -203,15 +219,87 @@
 
 	private void TextoCambiaJuegos(ChangeEventArgs texto)
 	{
+		string nuevoTexto = texto.Value.ToString().Trim();
+
+		SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+		using (conexion)
+		{
+			BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), nuevoTexto, conexion);
+		}
+	}
+
+	private string textoAñadirJuegoID = string.Empty;
+	private string textoAñadirJuegoTier = string.Empty;
+
+	private void TextoCambiaAñadirJuegoID(ChangeEventArgs texto)
+	{
 		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
 		{
-			string nuevoTexto = texto.Value.ToString().Trim();
+			textoAñadirJuegoID = texto.Value.ToString().Trim();
+		}
+	}
 
-			SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+	private void TextoCambiaAñadirJuegoTier(ChangeEventArgs texto)
+	{
+		if (string.IsNullOrEmpty(texto.Value.ToString().Trim()) == false)
+		{
+			textoAñadirJuegoTier = texto.Value.ToString().Trim();
+		}
+	}
 
-			using (conexion)
+	private void ClickAñadirJuego(MouseEventArgs e)
+	{
+		if (string.IsNullOrEmpty(textoAñadirJuegoID) == false && string.IsNullOrEmpty(textoAñadirJuegoTier) == false)
+		{
+			global::Juegos.Juego juego = BaseDatos.Juegos.Buscar.UnJuego(textoAñadirJuegoID);
+
+			if (juego != null)
 			{
-				BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), nuevoTexto, conexion);
+				Bundles2.BundleTier tier = new Bundles2.BundleTier()
+				{
+                    Posicion = int.Parse(textoAñadirJuegoTier)
+                };
+
+				Bundles2.BundleJuego bundleJuego = new Bundles2.BundleJuego()
+				{
+					DRM = global::Juegos.JuegoDRM.Steam,
+                    JuegoId = juego.Id.ToString(),
+					Imagen = juego.Imagenes.Header_460x215,
+					Tier = tier
+                };
+
+				if (bundle.Juegos == null)
+				{
+					bundle.Juegos = new List<Bundles2.BundleJuego>();
+				}
+
+				bundle.Juegos.Add(bundleJuego);
+
+				SqlConnection conexion = Herramientas.BaseDatos.Conectar();
+
+				using (conexion)
+				{
+					BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(bundle.Juegos), conexion);
+
+					// global::Juegos.JuegoBundle bundleJuego2 = new global::Juegos.JuegoBundle()
+					// {
+					// 	BundleId = bundleId,
+					// 	JuegoId = juego.Id,
+					// 	Tier = tier,
+					// 	DRM = global::Juegos.JuegoDRM.Steam,
+					// 	Enlace = bundle.Enlace,
+					// 	Nombre = bundle.NombreBundle,
+					// 	Imagen = bundle.ImagenBundle,
+					// 	FechaEmpieza = bundle.FechaEmpieza,
+					// 	FechaTermina = bundle.FechaTermina,
+					// 	Tipo = bundle.Tipo
+					// };
+
+     //                juego.Bundles.Add(bundleJuego2);
+
+					// BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
+				}
 			}
 		}
 	}

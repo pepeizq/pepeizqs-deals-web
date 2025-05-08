@@ -4723,13 +4723,19 @@
     {
         int tier = 0;
 
-        foreach (var juego in bundle.Juegos)
+        if (bundle.Juegos != null)
         {
-            if (juegoId.ToString() == juego.JuegoId)
+            if (bundle.Juegos.Count > 0)
             {
-                tier = juego.Tier.Posicion;
-                break;
-            }
+                foreach (var juego in bundle.Juegos)
+                {
+                    if (juegoId.ToString() == juego.JuegoId)
+                    {
+                        tier = juego.Tier.Posicion;
+                        break;
+                    }
+                }
+            }       
         }
 
         if (tier > 0 && bundle.Tiers.Count > 0)
@@ -4752,13 +4758,19 @@
         {
             int tier = 0;
 
-            foreach (var juego in bundle.Juegos)
+            if (bundle.Juegos != null)
             {
-                if (juegoId.ToString() == juego.JuegoId)
+                if (bundle.Juegos.Count > 0)
                 {
-                    tier = juego.Tier.Posicion;
-                    break;
-                }
+                    foreach (var juego in bundle.Juegos)
+                    {
+                        if (juegoId.ToString() == juego.JuegoId)
+                        {
+                            tier = juego.Tier.Posicion;
+                            break;
+                        }
+                    }
+                }       
             }
 
             return Herramientas.Idiomas.BuscarTexto(idioma, "String39", "Game") + " " + tier.ToString();

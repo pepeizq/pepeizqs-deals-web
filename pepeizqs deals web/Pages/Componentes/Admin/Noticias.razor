@@ -294,15 +294,36 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     }
 </div>
 
-<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px;">
-    <div style="display: flex; width: 33%;">
-        <button @onclick="@(e => AñadirNoticia(e))" class="boton" style="text-align: center;">Añadir Noticia</button>
-    </div>
-
-    @if (string.IsNullOrEmpty(notificacionesEnviadas) == false)
+<div style="background-color: var(--fondoOscuro); border: 1px solid var(--fondoBotonPequeño); padding: 40px; margin-top: 20px; display: flex; flex-direction: column; gap: 30px;">
+    @if (enviandoNoticia == false)
     {
-        <div style="margin-top: 20px;">
-            @notificacionesEnviadas
+        <button @onclick="@(e => AñadirNoticia(e))" class="boton" style="text-align: center; width: fit-content; padding: 10px 40px;">
+            Añadir Noticia
+        </button>
+    }
+    else
+    {
+        <div>
+            Enviando Noticia...
+        </div>
+    }
+
+    @if (idNoticiaEnviada > 0)
+    {
+        <a href="/news/@idNoticiaEnviada/">/news/@idNoticiaEnviada/</a>
+
+        <div>
+            <div>
+                Redes Sociales
+            </div>
+
+            <hr/>
+
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div>
+                    Twitter @enviadoTwitter
+                </div>
+            </div>
         </div>
     }
 </div>
@@ -376,9 +397,11 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
     private string gratisSeleccionadoNoticias = null;
     private string suscripcionSeleccionadaNoticias = null;
 
-    private string notificacionesEnviadas = null;
-
     private Plantilla noticia = new Plantilla();
+
+    private bool enviandoNoticia = false;
+    private int idNoticiaEnviada = 0;
+    private bool enviadoTwitter = false;
 
     protected override void OnInitialized()
     {
@@ -446,8 +469,10 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
         noticia.Fecha = Convert.ToDateTime(texto.Value.ToString());
     }
 
-    private async void AñadirNoticia(MouseEventArgs e)
+    private async Task AñadirNoticia(MouseEventArgs e)
     {
+        enviandoNoticia = true;
+
         if (conexion.State != System.Data.ConnectionState.Open)
         {
             conexion = Herramientas.BaseDatos.Conectar();
@@ -504,6 +529,8 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 int id = BaseDatos.Noticias.Insertar.Ejecutar(noticiaAñadir);
                 noticiaAñadir.Id = id;
 
+                idNoticiaEnviada = id;
+
                 foreach (var usuario in UserManager.Users)
                 {
                     try
@@ -533,16 +560,16 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                         BaseDatos.Errores.Insertar.Mensaje("Enviar Correo Noticia", ex);
                     }
                 }
-            
+
                 try
                 {
-                    Herramientas.RedesSociales.Twitter.Twitear(noticiaAñadir);
+                    enviadoTwitter = await Herramientas.RedesSociales.Twitter.Twitear(noticiaAñadir);
                 }
                 catch (Exception ex)
                 {
                     BaseDatos.Errores.Insertar.Mensaje("Enviar Twitter Noticia", ex);
                 }
-                
+
                 try
                 {
                     Herramientas.RedesSociales.Bluesky.Postear(noticiaAñadir);
@@ -607,6 +634,8 @@ else if (noticiaTipoSeleccionada == NoticiaTipo.Suscripciones.ToString())
                 suscripcionSeleccionadaNoticias = null;
             }
         }
+
+        enviandoNoticia = false;
     }
 
     private void CambiarBundleNoticias(ChangeEventArgs texto)
