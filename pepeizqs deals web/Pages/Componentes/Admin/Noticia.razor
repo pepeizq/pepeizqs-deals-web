@@ -400,19 +400,19 @@
 		await Herramientas.RedesSociales.Twitter.Twitear(noticia);
 	}
 
-	private void EnviarBlueSky(MouseEventArgs e)
+	private async void EnviarBlueSky(MouseEventArgs e)
 	{
-		Herramientas.RedesSociales.Bluesky.Postear(noticia);
+		await Herramientas.RedesSociales.Bluesky.Postear(noticia);
 	}
 
-	private void EnviarTelegram(MouseEventArgs e)
+	private async void EnviarTelegram(MouseEventArgs e)
 	{
-		Herramientas.RedesSociales.Telegram.Postear(noticia);
+		await Herramientas.RedesSociales.Telegram.Postear(noticia);
 	}
 
-	private void EnviarDiscord(MouseEventArgs e)
+	private async void EnviarDiscord(MouseEventArgs e)
 	{
-		Herramientas.RedesSociales.Discord.Postear(noticia);
+		await Herramientas.RedesSociales.Discord.Postear(noticia);
 	}
 
 	private async void EnviarNotificacionesPush(MouseEventArgs e)

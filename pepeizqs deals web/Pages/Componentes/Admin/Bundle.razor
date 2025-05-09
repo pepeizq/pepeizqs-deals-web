@@ -282,23 +282,23 @@
 				{
 					BaseDatos.Bundles.Actualizar.Juegos(bundleId.ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(bundle.Juegos), conexion);
 
-					// global::Juegos.JuegoBundle bundleJuego2 = new global::Juegos.JuegoBundle()
-					// {
-					// 	BundleId = bundleId,
-					// 	JuegoId = juego.Id,
-					// 	Tier = tier,
-					// 	DRM = global::Juegos.JuegoDRM.Steam,
-					// 	Enlace = bundle.Enlace,
-					// 	Nombre = bundle.NombreBundle,
-					// 	Imagen = bundle.ImagenBundle,
-					// 	FechaEmpieza = bundle.FechaEmpieza,
-					// 	FechaTermina = bundle.FechaTermina,
-					// 	Tipo = bundle.Tipo
-					// };
+					global::Juegos.JuegoBundle bundleJuego2 = new global::Juegos.JuegoBundle()
+					{
+						BundleId = bundleId,
+						JuegoId = juego.Id,
+						Tier = tier,
+						DRM = global::Juegos.JuegoDRM.Steam,
+						Enlace = bundle.Enlace,
+						Nombre = bundle.NombreBundle,
+						Imagen = bundle.ImagenBundle,
+						FechaEmpieza = bundle.FechaEmpieza,
+						FechaTermina = bundle.FechaTermina,
+						Tipo = bundle.Tipo
+					};
 
-     //                juego.Bundles.Add(bundleJuego2);
+                    juego.Bundles.Add(bundleJuego2);
 
-					// BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
+					BaseDatos.Juegos.Actualizar.Bundles(juego, conexion);
 				}
 			}
 		}

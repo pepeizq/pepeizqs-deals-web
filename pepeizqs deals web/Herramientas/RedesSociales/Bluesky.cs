@@ -6,7 +6,7 @@ namespace Herramientas.RedesSociales
 {
 	public static class Bluesky
 	{
-		public static async void Postear(Noticias.Noticia noticia)
+		public static async Task<bool> Postear(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -64,6 +64,8 @@ namespace Herramientas.RedesSociales
 						};
 
 						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
+
+						return true;
 					}
 				}
 				catch
@@ -73,9 +75,19 @@ namespace Herramientas.RedesSociales
 
 				if (error == true)
 				{
-					await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
+					try
+					{
+						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
+						return true;
+					}
+					catch
+					{
+						return false;
+					}
 				}
 			}
+
+			return false;
 		}
 	}
 }

@@ -104,63 +104,6 @@ namespace Herramientas
 			return nombre;
 		}
 
-		public static bool ComprobarBundles(Juegos.Juego juego)
-		{
-			if (juego.Bundles != null)
-			{
-				if (juego.Bundles.Count > 0)
-				{
-					foreach (var bundle in juego.Bundles)
-					{
-						if (DateTime.Now >= bundle.FechaEmpieza && DateTime.Now <= bundle.FechaTermina)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarGratis(Juegos.Juego juego)
-		{
-			if (juego.Gratis != null)
-			{
-				if (juego.Gratis.Count > 0)
-				{
-					foreach (var gratis in juego.Gratis)
-					{
-						if (DateTime.Now >= gratis.FechaEmpieza && DateTime.Now <= gratis.FechaTermina)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		public static bool ComprobarSuscripcion(Juegos.Juego juego)
-		{
-			if (juego.Suscripciones != null)
-			{
-				if (juego.Suscripciones.Count > 0)
-				{
-					foreach (var suscripcion in juego.Suscripciones)
-					{
-						if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
 		public static string GenerarMensaje(string idioma, Juegos.Juego juego, bool buscarBundles, bool buscarGratis, bool buscarSuscripciones)
 		{
 			string mensaje = string.Empty;
@@ -194,7 +137,8 @@ namespace Herramientas
 
 			string mensajeComplementoTipo = string.Empty;
 			string mensajeComplementoTexto = string.Empty;
-			int mensajeComplementoCantidad = 0;
+			int mensajeComplementoCantidadBundles = 0;
+			int mensajeComplementoCantidadSuscripciones = 0;
 
 			if (buscarBundles == true)
 			{
@@ -208,7 +152,7 @@ namespace Herramientas
 							{
 								mensajeComplementoTipo = "bundle";
 								mensajeComplementoTexto = Bundles2.BundlesCargar.DevolverBundle(bundle.Tipo).NombreTienda;
-								mensajeComplementoCantidad = mensajeComplementoCantidad + 1;
+								mensajeComplementoCantidadBundles = mensajeComplementoCantidadBundles + 1;
 							}
 						}
 					}
@@ -242,7 +186,7 @@ namespace Herramientas
 								{
 									mensajeComplementoTipo = "suscripcion";
 									mensajeComplementoTexto = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
-									mensajeComplementoCantidad = mensajeComplementoCantidad + 1;
+									mensajeComplementoCantidadSuscripciones = mensajeComplementoCantidadSuscripciones + 1;
 								}
 							}
 						}
@@ -294,24 +238,24 @@ namespace Herramientas
 				{
 					if (mensajeComplementoTipo == "bundle")
 					{
-						if (mensajeComplementoCantidad == 1)
+						if (mensajeComplementoCantidadBundles == 1)
 						{
 							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage3", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoTexto);
 						}
-						else if (mensajeComplementoCantidad > 1)
+						else if (mensajeComplementoCantidadBundles > 1)
 						{
-							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage9", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoCantidad);
+							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage9", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoCantidadBundles);
 						}
 					}
 					else if (mensajeComplementoTipo == "suscripcion")
 					{
-						if (mensajeComplementoCantidad == 1)
+						if (mensajeComplementoCantidadSuscripciones == 1)
 						{
 							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage4", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoTexto);
 						}
-						else if (mensajeComplementoCantidad > 1)
+						else if (mensajeComplementoCantidadSuscripciones > 1)
 						{
-							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage10", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoCantidad);
+							return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage10", "Header"), Herramientas.Precios.Euro(minimoCantidad), mensajeComplementoCantidadSuscripciones);
 						}
 					}
 				}
@@ -325,24 +269,24 @@ namespace Herramientas
 			{
 				if (mensajeComplementoTipo == "bundle")
 				{
-					if (mensajeComplementoCantidad == 1)
+					if (mensajeComplementoCantidadBundles == 1)
 					{
 						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage7", "Header"), mensajeComplementoTexto);
 					}
-					else if (mensajeComplementoCantidad > 1)
+					else if (mensajeComplementoCantidadBundles > 1)
 					{
-						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage11", "Header"), mensajeComplementoCantidad);
+						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage11", "Header"), mensajeComplementoCantidadBundles);
 					}
 				}
 				else if (mensajeComplementoTipo == "suscripcion")
 				{
-					if (mensajeComplementoCantidad == 1)
+					if (mensajeComplementoCantidadSuscripciones == 1)
 					{
 						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage8", "Header"), mensajeComplementoTexto);
 					}
-					else if (mensajeComplementoCantidad > 1)
+					else if (mensajeComplementoCantidadSuscripciones > 1)
 					{
-						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage12", "Header"), mensajeComplementoCantidad);
+						return string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "SearchMessage12", "Header"), mensajeComplementoCantidadBundles);
 					}
 				}
 			}

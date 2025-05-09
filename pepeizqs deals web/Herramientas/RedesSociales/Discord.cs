@@ -8,7 +8,7 @@ namespace Herramientas.RedesSociales
 {
 	public static class Discord
 	{
-		public static void Postear(Noticias.Noticia noticia)
+		public static async Task<bool> Postear(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -41,11 +41,19 @@ namespace Herramientas.RedesSociales
 				}
 			}
 
-			Enviar(noticia.TituloEn, enlace, noticia.Imagen, ingles);
-			Enviar(noticia.TituloEs, enlace, noticia.Imagen, español);
+			bool enviados = false;
+
+			enviados = await Enviar(noticia.TituloEn, enlace, noticia.Imagen, ingles);
+
+			if (enviados == true)
+			{
+				enviados = await Enviar(noticia.TituloEs, enlace, noticia.Imagen, español);
+			}
+			
+			return enviados;
 		}
 
-		private static async void Enviar(string titulo, string enlace, string imagen, string hook)
+		private static async Task<bool> Enviar(string titulo, string enlace, string imagen, string hook)
 		{
 			using (DiscordWebhookClient cliente = new DiscordWebhookClient(hook))
 			{
@@ -64,7 +72,16 @@ namespace Herramientas.RedesSociales
 					constructor.Build()
 				};
 
-				await cliente.SendMessageAsync(titulo + Environment.NewLine + enlace, false, lista, "pepebot5");
+				ulong resultado = await cliente.SendMessageAsync(titulo + Environment.NewLine + enlace, false, lista, "pepebot5");
+
+				if (resultado > 0)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	}

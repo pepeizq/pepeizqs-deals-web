@@ -48,21 +48,28 @@ namespace Herramientas.RedesSociales
             string ubicacion = Path.GetFullPath("./wwwroot/imagenes/twitter.png");
             IMedia imagenTweet = null;
 
-            using (HttpClient descargador = new HttpClient())
+			try
 			{
-                using (HttpResponseMessage resultado1 = await descargador.GetAsync(noticia.Imagen))
-                {
-                    byte[] resultado2 = await resultado1.Content.ReadAsByteArrayAsync();
+				using (HttpClient descargador = new HttpClient())
+				{
+					using (HttpResponseMessage resultado1 = await descargador.GetAsync(noticia.Imagen))
+					{
+						byte[] resultado2 = await resultado1.Content.ReadAsByteArrayAsync();
 
-                    if (resultado2 != null)
-                    {
-                        await File.WriteAllBytesAsync(ubicacion, resultado2);
+						if (resultado2 != null)
+						{
+							await File.WriteAllBytesAsync(ubicacion, resultado2);
 
-                        imagenTweet = await cliente.Upload.UploadTweetImageAsync(resultado2);
-                    }
-                }
-            }
+							imagenTweet = await cliente.Upload.UploadTweetImageAsync(resultado2);
+						}
+					}
+				}
+			}
+			catch
+			{
 
+			}
+            
 			if (imagenTweet == null)
 			{
                 ITwitterResult resultado = await PonerTweet(cliente,

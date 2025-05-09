@@ -8,7 +8,7 @@ namespace Herramientas.RedesSociales
 {
 	public static class Telegram
 	{
-		public static async void Postear(Noticias.Noticia noticia)
+		public static async Task<bool> Postear(Noticias.Noticia noticia)
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder();
 			string token = builder.Configuration.GetValue<string>("Telegram:Token");
@@ -50,6 +50,8 @@ namespace Herramientas.RedesSociales
 				{
 					string imagenEnlace = noticia.Imagen;
 					await cliente.SendPhoto(chatId, InputFile.FromUri(WebUtility.HtmlDecode(noticia.Imagen)), noticia.TituloEn + " " + enlace);
+
+					return true;
 				}
 				catch
 				{
@@ -58,9 +60,20 @@ namespace Herramientas.RedesSociales
 
 				if (error == true)
 				{
-					await cliente.SendMessage(chatId, noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlace);
+					try
+					{
+						await cliente.SendMessage(chatId, noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlace);
+
+						return true;
+					}
+					catch
+					{
+						return false;
+					}
 				}
 			}
+
+			return false;
 		}
 	}
 }

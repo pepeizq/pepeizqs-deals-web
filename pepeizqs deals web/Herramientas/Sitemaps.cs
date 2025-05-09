@@ -11,15 +11,61 @@ namespace Herramientas
 		[HttpGet("sitemap.xml")]
 		public IActionResult Maestro()
 		{
-			List<string> sitemaps = ["https://pepeizqdeals.com/sitemap-main.xml", 
-				"https://pepeizqdeals.com/sitemap-games.xml",
-				"https://pepeizqdeals.com/sitemap-gamesrandom.xml",
-				"https://pepeizqdeals.com/sitemap-lastgames.xml",
-				"https://pepeizqdeals.com/sitemap-bundles.xml",
-				"https://pepeizqdeals.com/sitemap-bundlesrandom.xml",
-				"https://pepeizqdeals.com/sitemap-news.xml",
-				"https://pepeizqdeals.com/sitemap-newses.xml",
+			List<string> sitemaps = ["https://pepeizqdeals.com/sitemap-main.xml",
 				"https://pepeizqdeals.com/sitemap-curators.xml"];
+
+			int cantidadJuegos = global::BaseDatos.Sitemaps.Buscar.Cantidad("juegos");
+
+			if (cantidadJuegos > 0)
+			{
+				int segmentacion = cantidadJuegos / 1000;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-games-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
+
+			int cantidadBundles = global::BaseDatos.Sitemaps.Buscar.Cantidad("bundles");
+
+			if (cantidadBundles > 0)
+			{
+				int segmentacion = cantidadBundles / 100;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-bundles-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
+
+			int cantidadNoticias = global::BaseDatos.Sitemaps.Buscar.Cantidad("noticias");
+
+			if (cantidadNoticias > 0)
+			{
+				int segmentacion = cantidadNoticias / 100;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-news-en-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+
+				i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-news-es-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
 
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -29,7 +75,6 @@ namespace Herramientas
 			{
 				sb.Append("<sitemap>");
 				sb.Append("<loc>" + sitemap + "</loc>");
-				sb.Append("<lastmod>" + DateTime.Now.ToString("yyyy-MM-dd") + "</lastmod>");
 				sb.Append("</sitemap>");
 			}
 
@@ -52,7 +97,6 @@ namespace Herramientas
 			string textoIndex = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoIndex);
@@ -60,7 +104,6 @@ namespace Herramientas
 			string textoBundles = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/bundles/</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
-					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoBundles);
@@ -68,7 +111,6 @@ namespace Herramientas
 			string textoGratis = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/free/</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
-					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoGratis);
@@ -76,7 +118,6 @@ namespace Herramientas
 			string textoSuscripciones = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/subscriptions/</loc>" + Environment.NewLine +
 					"<changefreq>daily</changefreq>" + Environment.NewLine +
-					"<priority>0.7</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoSuscripciones);
@@ -84,7 +125,6 @@ namespace Herramientas
 			string textoMinimos = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/historical-lows/</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoMinimos);
@@ -92,7 +132,6 @@ namespace Herramientas
 			string textoNoticias = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/last-news/</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoNoticias);
@@ -100,34 +139,27 @@ namespace Herramientas
 			string textoAñadidos = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/last-added/</loc>" + Environment.NewLine +
 					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoAñadidos);
 
 			string textoPatreon = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/patreon/</loc>" + Environment.NewLine +
-					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoPatreon);
 
-			string textoCurators = "<url>" + Environment.NewLine +
-					"<loc>https://pepeizqdeals.com/curators/</loc>" + Environment.NewLine +
-					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
-					"</url>";
-
-			sb.Append(textoCurators);
-
 			string textoComparador = "<url>" + Environment.NewLine +
 					"<loc>https://pepeizqdeals.com/compare/</loc>" + Environment.NewLine +
-					"<changefreq>hourly</changefreq>" + Environment.NewLine +
-					"<priority>0.9</priority> " + Environment.NewLine +
 					"</url>";
 
 			sb.Append(textoComparador);
+
+			string textoApi = "<url>" + Environment.NewLine +
+					"<loc>https://pepeizqdeals.com/api/</loc>" + Environment.NewLine +
+					"</url>";
+
+			sb.Append(textoApi);
 
 			List<Noticia> noticias = global::BaseDatos.Noticias.Buscar.Ultimas(20);
 
@@ -170,25 +202,30 @@ namespace Herramientas
 			};
 		}
 
-		[HttpGet("sitemap-games.xml")]
-		public IActionResult JuegosMinimos()
+		[HttpGet("sitemap-games-{i:int}.xml")]
+		public IActionResult Juegos(int i)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> juegos = global::BaseDatos.Sitemaps.Buscar.JuegosMinimos();
+			int minimo = 0;
+			int maximo = 0;
 
-			if (juegos.Count > 0)
+			minimo = i * 1000;
+			maximo = (i + 1) * 1000;
+
+			if (i == 0)
 			{
-				foreach (var enlace in juegos)
-				{
-                    string textoJuegos = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
+				minimo = 0;
+			}
 
-                    sb.Append(textoJuegos);
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Juegos(minimo - 1, maximo);
+
+			if (lineas.Count > 0)
+			{
+				foreach (var linea in lineas)
+				{
+                    sb.Append(linea);
                 }
 			}
 
@@ -202,25 +239,30 @@ namespace Herramientas
 			};
 		}
 
-		[HttpGet("sitemap-gamesrandom.xml")]
-		public IActionResult JuegosAzar()
+        [HttpGet("sitemap-bundles-{i:int}.xml")]
+		public IActionResult Bundles(int i)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> juegos = global::BaseDatos.Sitemaps.Buscar.JuegosAzar();
+			int minimo = 0;
+			int maximo = 0;
 
-			if (juegos.Count > 0)
+			minimo = i * 100;
+			maximo = (i + 1) * 100;
+
+			if (i == 0)
 			{
-				foreach (var enlace in juegos)
-				{
-					string textoJuegos = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
+				minimo = 0;
+			}
 
-					sb.Append(textoJuegos);
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Bundles(minimo - 1, maximo);
+
+			if (lineas.Count > 0)
+			{
+				foreach (var linea in lineas)
+				{
+					sb.Append(linea);
 				}
 			}
 
@@ -234,57 +276,30 @@ namespace Herramientas
 			};
 		}
 
-		[HttpGet("sitemap-lastgames.xml")]
-        public IActionResult JuegosUltimos()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
-
-			List<string> juegos = global::BaseDatos.Sitemaps.Buscar.JuegosUltimos();
-
-			if (juegos.Count > 0)
-            {
-				foreach (var enlace in juegos)
-				{
-					string textoJuegos = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
-
-					sb.Append(textoJuegos);
-				}
-			}
-
-            sb.Append("</urlset>");
-
-            return new ContentResult
-            {
-                ContentType = "application/xml",
-                Content = sb.ToString(),
-                StatusCode = 200
-            };
-        }
-
-        [HttpGet("sitemap-bundles.xml")]
-		public IActionResult BundlesUltimos()
+		[HttpGet("sitemap-news-en-{i:int}.xml")]
+		public IActionResult NoticiasIngles(int i)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> bundles = global::BaseDatos.Sitemaps.Buscar.BundlesUltimos();
+			int minimo = 0;
+			int maximo = 0;
 
-			if (bundles.Count > 0)
+			minimo = i * 100;
+			maximo = (i + 1) * 100;
+
+			if (i == 0)
 			{
-				foreach (var enlace in bundles)
-				{
-					string texto = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
+				minimo = 0;
+			}
 
-					sb.Append(texto);
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.NoticiasIngles(minimo - 1, maximo);
+
+			if (lineas.Count > 0)
+			{
+				foreach (var linea in lineas)
+				{
+					sb.Append(linea);
 				}
 			}
 
@@ -298,89 +313,30 @@ namespace Herramientas
 			};
 		}
 
-		[HttpGet("sitemap-bundlesrandom.xml")]
-		public IActionResult BundlesAzar()
+		[HttpGet("sitemap-news-es-{i:int}.xml")]
+		public IActionResult NoticiasEspañol(int i)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> bundles = global::BaseDatos.Sitemaps.Buscar.BundlesAzar();
+			int minimo = 0;
+			int maximo = 0;
 
-			if (bundles.Count > 0)
+			minimo = i * 100;
+			maximo = (i + 1) * 100;
+
+			if (i == 0)
 			{
-				foreach (var enlace in bundles)
-				{
-					string texto = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
-
-					sb.Append(texto);
-				}
+				minimo = 0;
 			}
 
-			sb.Append("</urlset>");
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.NoticiasEspañol(minimo - 1, maximo);
 
-			return new ContentResult
+			if (lineas.Count > 0)
 			{
-				ContentType = "application/xml",
-				Content = sb.ToString(),
-				StatusCode = 200
-			};
-		}
-
-		[HttpGet("sitemap-news.xml")]
-		public IActionResult NoticiasUltimasIngles()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
-
-			List<string> noticias = global::BaseDatos.Sitemaps.Buscar.NoticiasUltimasIngles();
-
-			if (noticias.Count > 0)
-			{
-				foreach (var enlace in noticias)
+				foreach (var linea in lineas)
 				{
-					string texto = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
-
-					sb.Append(texto);
-				}
-			}
-
-			sb.Append("</urlset>");
-
-			return new ContentResult
-			{
-				ContentType = "application/xml",
-				Content = sb.ToString(),
-				StatusCode = 200
-			};
-		}
-
-		[HttpGet("sitemap-newses.xml")]
-		public IActionResult NoticiasUltimasEspañol()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
-
-			List<string> noticias = global::BaseDatos.Sitemaps.Buscar.NoticiasUltimasEspañol();
-
-			if (noticias.Count > 0)
-			{
-				foreach (var enlace in noticias)
-				{
-					string texto = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
-
-					sb.Append(texto);
+					sb.Append(linea);
 				}
 			}
 
@@ -400,19 +356,13 @@ namespace Herramientas
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> curators = global::BaseDatos.Sitemaps.Buscar.Curators();
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Curators();
 
-			if (curators.Count > 0)
+			if (lineas.Count > 0)
 			{
-				foreach (var enlace in curators)
+				foreach (var linea in lineas)
 				{
-					string texto = "<url>" + Environment.NewLine +
-						 "<loc>" + enlace + "</loc>" + Environment.NewLine +
-						 "<changefreq>hourly</changefreq>" + Environment.NewLine +
-						 "<priority>0.9</priority> " + Environment.NewLine +
-						 "</url>";
-
-					sb.Append(texto);
+					sb.Append(linea);
 				}
 			}
 
