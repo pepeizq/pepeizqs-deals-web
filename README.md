@@ -1,6 +1,6 @@
 # pepeizq's deals (Web)
 
-This is the source code of the website [pepeizqdeals.com](https://pepeizqdeals.com/). It has been developed with ASP.NET Core 8 and .NET 8.0 with the C# programming language.
+This is the source code of the website [pepeizqdeals.com](https://pepeizqdeals.com/). The website uses the following technologies: ASP.NET Core, Blazor, Javascript and .NET, the vast majority of the web is coded with the C# programming language.
 
 More Info:
 [https://pepeizqapps.com/web/pepeizqdeals](https://pepeizqapps.com/web/pepeizqdeals)
