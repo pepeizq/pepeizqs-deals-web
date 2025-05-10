@@ -32,5 +32,5 @@
 	ViewData["Title"] = Model.curator.Nombre + " (Curator)";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Curator)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorId="Model.curator.Id" />
+	<component type="typeof(Componentes.Secciones.Curator)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorIdSteam="Model.curator.IdSteam" />
 }

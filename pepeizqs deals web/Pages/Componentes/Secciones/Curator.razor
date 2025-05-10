@@ -252,7 +252,7 @@
 	public string usuarioId { get; set; }
 
 	[Parameter]
-	public int curatorId { get; set; }
+	public int curatorIdSteam { get; set; }
 
 	private Usuario usuario = new Usuario();
 	private bool usuarioPatreon = false;
@@ -279,19 +279,19 @@
 			juegosUsuario = Herramientas.UsuarioJuegos.Cargar(usuario);
 		}
 
-		curator = BaseDatos.Curators.Buscar.Uno(curatorId);
+		curator = BaseDatos.Curators.Buscar.Uno(curatorIdSteam);
 
 		if (curator != null)
 		{
 			if (string.IsNullOrEmpty(curator.ImagenFondo) == true)
 			{
-				SteamCuratorAPIVanidad api = await APIs.Steam.Curator.ExtraerVanidad(curator.Id.ToString());
+				SteamCuratorAPIVanidad api = await APIs.Steam.Curator.ExtraerVanidad(curator.IdSteam.ToString());
 
 				if (api != null)
 				{
 					if (string.IsNullOrEmpty(api.Imagen) == false)
 					{
-						BaseDatos.Curators.Actualizar.ImagenFondo(api.Imagen, curator.Id);
+						BaseDatos.Curators.Actualizar.ImagenFondo(api.Imagen, curator.IdSteam);
 						curator.ImagenFondo = api.Imagen;
 					}
 				}

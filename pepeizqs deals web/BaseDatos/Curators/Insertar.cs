@@ -25,12 +25,12 @@ namespace BaseDatos.Curators
 			if (api != null)
 			{
 				string sqlAñadir = "INSERT INTO curators " +
-					 "(id, nombre, imagen, descripcion, slug, steamIds, web, fecha) VALUES " +
-					 "(@id, @nombre, @imagen, @descripcion, @slug, @steamIds, @web, @fecha) ";
+					 "(idSteam, nombre, imagen, descripcion, slug, steamIds, web, fecha) VALUES " +
+					 "(@idSteam, @nombre, @imagen, @descripcion, @slug, @steamIds, @web, @fecha) ";
 
 				using (SqlCommand comando = new SqlCommand(sqlAñadir, conexion))
 				{
-					comando.Parameters.AddWithValue("@id", api.Id);
+					comando.Parameters.AddWithValue("@idSteam", api.Id);
 					comando.Parameters.AddWithValue("@nombre", api.Nombre);
 					comando.Parameters.AddWithValue("@imagen", api.Imagen);
 					comando.Parameters.AddWithValue("@descripcion", api.Descripcion);

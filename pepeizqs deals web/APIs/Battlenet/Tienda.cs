@@ -4,8 +4,9 @@ using Herramientas;
 using Juegos;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APIs.Battlenet
 {
@@ -30,7 +31,9 @@ namespace APIs.Battlenet
 
         private static List<string> ListaSlugs()
         {
-            List<string> slugs = ["call-of-duty-black-ops-4",
+            List<string> slugs = [
+				"avowed",
+				"call-of-duty-black-ops-4",
 				"call-of-duty-black-ops-6",
 				"call-of-duty-black-ops-cold-war",
 				"call-of-duty-modern-warfare",
@@ -42,6 +45,8 @@ namespace APIs.Battlenet
 				"diablo",
                 "diablo_ii_resurrected",
 				"diablo-iv",
+				"doom-the-dark-ages",
+				"sea-of-thieves",
 				"warcraft-orcs-and-humans",
 				"warcraft-ii-battle-net-edition"];
 
@@ -50,7 +55,7 @@ namespace APIs.Battlenet
 
         public static async Task BuscarOfertas(SqlConnection conexion, IDecompiladores decompilador, ViewDataDictionary objeto = null)
         {
-			BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, 0, conexion);
+			BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, 0, conexion);
 
 			int juegos2 = 0;
 
@@ -58,11 +63,17 @@ namespace APIs.Battlenet
 
 			foreach (var slug in listaSlugs)
 			{
-				string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-US");
+				string html = await Decompiladores.Estandar("https://eu.shop.battle.net/api/product/" + slug + "?platform=Web&locale=en-us");
 
-				if (html != null)
+				if (string.IsNullOrEmpty(html) == false)
 				{
-					BattlenetJuego juegobattle = JsonConvert.DeserializeObject<BattlenetJuego>(html);
+					BattlenetJuego juegobattle = null;
+
+					try
+					{
+						juegobattle = JsonSerializer.Deserialize<BattlenetJuego>(html);
+					}
+					catch { }
 
 					if (juegobattle != null)
 					{
@@ -147,18 +158,18 @@ namespace APIs.Battlenet
 											}
 											catch (Exception ex)
 											{
-												BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+												BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
 											}
 											
 											juegos2 += 1;
 
 											try
 											{
-												BaseDatos.Admin.Actualizar.Tiendas(Tienda.Generar().Id, DateTime.Now, juegos2, conexion);
+												BaseDatos.Admin.Actualizar.Tiendas(Generar().Id, DateTime.Now, juegos2, conexion);
 											}
 											catch (Exception ex)
 											{
-                                                BaseDatos.Errores.Insertar.Mensaje(Tienda.Generar().Id, ex, conexion);
+                                                BaseDatos.Errores.Insertar.Mensaje(Generar().Id, ex, conexion);
                                             }
 										}
 									}
@@ -175,43 +186,40 @@ namespace APIs.Battlenet
 
     public class BattlenetJuego
     {
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Nombre { get; set; }
 
-        [JsonProperty("products")]
+        [JsonPropertyName("products")]
         public List<BattlenetJuegoProducto> Productos { get; set; }
     }
 
     public class BattlenetJuegoProducto
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("quantificationLabel")]
+        [JsonPropertyName("quantificationLabel")]
         public string Subnombre { get; set; }
 
-        [JsonProperty("imageUrl")]
+        [JsonPropertyName("imageUrl")]
         public string Imagen { get; set; }
 
-        [JsonProperty("priceInfo")]
+        [JsonPropertyName("priceInfo")]
         public BattlenetJuegoProductoPrecio Precio { get; set; }
     }
 
     public class BattlenetJuegoProductoPrecio
     {
-        [JsonProperty("price")]
+        [JsonPropertyName("price")]
         public BattlenetJuegoProductoPrecio2 Precio { get; set; }
     }
 
     public class BattlenetJuegoProductoPrecio2
     {
-        [JsonProperty("discountPercentage")]
-        public string Descuento { get; set; }
-
-        [JsonProperty("fullAmount")]
+        [JsonPropertyName("fullAmount")]
         public string PrecioBase { get; set; }
 
-        [JsonProperty("discountAmount")]
+        [JsonPropertyName("discountAmount")]
         public string PrecioRebajado { get; set; }
     }
 

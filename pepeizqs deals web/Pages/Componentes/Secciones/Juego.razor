@@ -2227,7 +2227,7 @@
                                     <hr />
                                 </div>
 
-                                <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 5px;">
                                     @foreach (var enlace in juego.Caracteristicas.Enlaces)
                                     {
                                         if (enlace.Contains("https://www.twitch.tv/") == true || enlace.Contains("https://twitch.tv/") == true)
@@ -2270,7 +2270,7 @@
                                                  </div>
                                             </a>
                                         }
-                                        else if (enlace.Contains("https://www.linkedin.com/") == true)
+                                        else if (enlace.Contains("https://www.linkedin.com/") == true || enlace.Contains("https://linkedin.com/") == true) 
                                         {
                                              <a href="@enlace" target="_blank" class="boton-pequeño" title="Linkedin" style="width: fit-content; padding: 10px;">
                                                  <div style="width: 30px; height: 30px; padding: 2px;">
@@ -2415,14 +2415,8 @@
                                 <a href="https://pcgamingwiki.com/api/appid.php?appid=@juego.IdSteam" target="_blank" class="boton-pequeño" title="PCGamingWiki" style="width: fit-content; padding: 10px;">
                                     <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno("/imagenes/webs/pcgamingwiki.webp")" style="width: 30px; height: 30px;" loading="lazy" />
                                 </a>
-                                <a href="https://steambase.io/apps/@juego.IdSteam" target="_blank" class="boton-pequeño" title="SteamBase" style="width: fit-content; padding: 10px;">
-                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno("/imagenes/webs/steambase.webp")" style="width: 30px; height: 30px;" loading="lazy" />
-                                </a>
                                 <a href="https://isthereanydeal.com/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="IsThereAnyDeal" style="width: fit-content; padding: 10px;">
                                     <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno("/imagenes/webs/isthereanydeal.webp")" style="width: 30px; height: 30px;" loading="lazy" />
-                                </a>
-                                <a href="https://gg.deals/steam/app/@juego.IdSteam" target="_blank" class="boton-pequeño" title="GG.deals" style="width: fit-content; padding: 10px;">
-                                    <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno("/imagenes/webs/ggdeals.webp")" style="width: 30px; height: 30px;" loading="lazy" />
                                 </a>
                             }
 
@@ -2470,7 +2464,7 @@
                         {
                             juegosCurator = juegosCurator.Where(x => x.Analisis != null).Where(x => x.Analisis.Cantidad != null).OrderByDescending(x => int.Parse(x.Analisis.Cantidad.Replace(",", null))).ThenBy(x => x.Nombre).ToList();
 
-                            <div id="curator-@curator.Curator.Id.ToString()" class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                            <div id="curator-@curator.Curator.IdSteam.ToString()" class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 20px;">
                                         <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(curator.Curator.Imagen, 60, 60)" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />
@@ -2531,7 +2525,7 @@
                     }
                     else
                     {
-                        <div id="curator-@curator.Curator.Id.ToString()" class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 10px;">
+                        <div id="curator-@curator.Curator.IdSteam.ToString()" class="caja-diseño" style="padding: 30px; display: flex; flex-direction: column; gap: 10px;">
                             <div>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(curator.Curator.Imagen, 60, 60)" alt="@curator.Curator.Nombre" style="width: 60px; height: 60px;" loading="lazy" />

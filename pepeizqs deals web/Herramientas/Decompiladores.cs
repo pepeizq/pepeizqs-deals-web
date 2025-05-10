@@ -65,16 +65,16 @@ namespace Herramientas
 			{
 				cliente.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0");
 
-				for (int i = 0; i < 100; i += 1)
+				try
 				{
-					try
+					using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
 					{
-						using (HttpResponseMessage respuesta = await cliente.GetAsync(enlace, HttpCompletionOption.ResponseContentRead))
-						{
-							return await respuesta.Content.ReadAsStringAsync();
-						}
+						return await respuesta.Content.ReadAsStringAsync();
 					}
-					catch { }
+				}
+				catch (Exception ex) 
+				{
+					global::BaseDatos.Errores.Insertar.Mensaje("Decompilador", ex);
 				}
 			}
 

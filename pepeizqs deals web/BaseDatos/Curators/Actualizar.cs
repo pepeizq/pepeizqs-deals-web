@@ -29,11 +29,11 @@ namespace BaseDatos.Curators
 			}
 
 			string sqlActualizar = "UPDATE curators " +
-						"SET nombre=@nombre, imagen=@imagen, descripcion=@descripcion, slug=@slug, steamIds=@steamIds, web=@web, fecha=@fecha " + añadirImagenFondo + " WHERE id=@id";
+						"SET nombre=@nombre, imagen=@imagen, descripcion=@descripcion, slug=@slug, steamIds=@steamIds, web=@web, fecha=@fecha " + añadirImagenFondo + " WHERE idSteam=@idSteam";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
-				comando.Parameters.AddWithValue("@id", curator.Id);
+				comando.Parameters.AddWithValue("@idSteam", curator.IdSteam);
 				comando.Parameters.AddWithValue("@nombre", curator.Nombre);
 				comando.Parameters.AddWithValue("@imagen", curator.Imagen);
 				comando.Parameters.AddWithValue("@descripcion", curator.Descripcion);
@@ -75,11 +75,11 @@ namespace BaseDatos.Curators
 			}
 
 			string sqlActualizar = "UPDATE curators " +
-						"SET imagenFondo=@imagenFondo WHERE id=@id";
+						"SET imagenFondo=@imagenFondo WHERE idSteam=@idSteam";
 
 			using (SqlCommand comando = new SqlCommand(sqlActualizar, conexion))
 			{
-				comando.Parameters.AddWithValue("@id", id);
+				comando.Parameters.AddWithValue("@idSteam", id);
 				comando.Parameters.AddWithValue("@imagenFondo", imagenFondo);
 
 				SqlDataReader lector = comando.ExecuteReader();

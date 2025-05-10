@@ -11,8 +11,7 @@ namespace Herramientas
 		[HttpGet("sitemap.xml")]
 		public IActionResult Maestro()
 		{
-			List<string> sitemaps = ["https://pepeizqdeals.com/sitemap-main.xml",
-				"https://pepeizqdeals.com/sitemap-curators.xml"];
+			List<string> sitemaps = ["https://pepeizqdeals.com/sitemap-main.xml"];
 
 			int cantidadJuegos = global::BaseDatos.Sitemaps.Buscar.Cantidad("juegos");
 
@@ -44,6 +43,36 @@ namespace Herramientas
 				}
 			}
 
+			int cantidadGratis = global::BaseDatos.Sitemaps.Buscar.Cantidad("gratis");
+
+			if (cantidadGratis > 0)
+			{
+				int segmentacion = cantidadGratis / 1000;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-free-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
+
+			int cantidadSuscripciones = global::BaseDatos.Sitemaps.Buscar.Cantidad("suscripciones");
+
+			if (cantidadSuscripciones > 0)
+			{
+				int segmentacion = cantidadSuscripciones / 1000;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-subscriptions-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
+
 			int cantidadNoticias = global::BaseDatos.Sitemaps.Buscar.Cantidad("noticias");
 
 			if (cantidadNoticias > 0)
@@ -62,6 +91,21 @@ namespace Herramientas
 				while (i <= segmentacion)
 				{
 					sitemaps.Add("https://pepeizqdeals.com/sitemap-news-es-" + i.ToString() + ".xml");
+
+					i += 1;
+				}
+			}
+
+			int cantidadCurators = global::BaseDatos.Sitemaps.Buscar.Cantidad("curators");
+
+			if (cantidadCurators > 0)
+			{
+				int segmentacion = cantidadCurators / 1000;
+
+				int i = 0;
+				while (i <= segmentacion)
+				{
+					sitemaps.Add("https://pepeizqdeals.com/sitemap-curators-" + i.ToString() + ".xml");
 
 					i += 1;
 				}
@@ -276,6 +320,80 @@ namespace Herramientas
 			};
 		}
 
+		[HttpGet("sitemap-free-{i:int}.xml")]
+		public IActionResult Gratis(int i)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			int minimo = 0;
+			int maximo = 0;
+
+			minimo = i * 1000;
+			maximo = (i + 1) * 1000;
+
+			if (i == 0)
+			{
+				minimo = 0;
+			}
+
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Gratis(minimo - 1, maximo);
+
+			if (lineas.Count > 0)
+			{
+				foreach (var linea in lineas)
+				{
+					sb.Append(linea);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
+		[HttpGet("sitemap-subscriptions-{i:int}.xml")]
+		public IActionResult Suscripciones(int i)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
+
+			int minimo = 0;
+			int maximo = 0;
+
+			minimo = i * 1000;
+			maximo = (i + 1) * 1000;
+
+			if (i == 0)
+			{
+				minimo = 0;
+			}
+
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Suscripciones(minimo - 1, maximo);
+
+			if (lineas.Count > 0)
+			{
+				foreach (var linea in lineas)
+				{
+					sb.Append(linea);
+				}
+			}
+
+			sb.Append("</urlset>");
+
+			return new ContentResult
+			{
+				ContentType = "application/xml",
+				Content = sb.ToString(),
+				StatusCode = 200
+			};
+		}
+
 		[HttpGet("sitemap-news-en-{i:int}.xml")]
 		public IActionResult NoticiasIngles(int i)
 		{
@@ -350,13 +468,24 @@ namespace Herramientas
 			};
 		}
 
-		[HttpGet("sitemap-curators.xml")]
-		public IActionResult Curators()
+		[HttpGet("sitemap-curators-{i:int}.xml")]
+		public IActionResult Curators(int i)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\r\n        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\r\n");
 
-			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Curators();
+			int minimo = 0;
+			int maximo = 0;
+
+			minimo = i * 1000;
+			maximo = (i + 1) * 1000;
+
+			if (i == 0)
+			{
+				minimo = 0;
+			}
+
+			List<string> lineas = global::BaseDatos.Sitemaps.Buscar.Curators(minimo, maximo);
 
 			if (lineas.Count > 0)
 			{
