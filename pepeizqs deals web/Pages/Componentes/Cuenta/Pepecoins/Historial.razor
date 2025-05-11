@@ -1,0 +1,89 @@
+﻿@using BaseDatos.Recompensas
+@using Microsoft.AspNetCore.Identity
+@using pepeizqs_deals_web.Areas.Identity.Data
+
+@inject UserManager<Usuario> UserManager
+
+<style>
+	.caja-diseño {
+		background: linear-gradient(180deg, var(--fondoOscuro) 0%, var(--fondoMinimo) 211.07%);
+		border: 2px solid var(--fondoOscuro);
+		box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28),0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+		border-radius: 5px;
+	}
+</style>
+
+@if (entradas != null)
+{
+	if (entradas.Count > 0)
+	{
+		<div class="caja-diseño" style="padding: 40px; display: flex; flex-direction: row; align-items: start; gap: 40px;">
+			<div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
+				<hr/>
+				@foreach (var entrada in entradas)
+				{
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div>
+							@if (entrada.Coins >= 0)
+							{
+								<label>+@entrada.Coins</label>
+							}
+							else
+							{
+								<label>@entrada.Coins</label>
+							}
+
+						</div>
+
+						<div style="flex-grow: 1;">
+							@if (string.IsNullOrEmpty(entrada.Razon) == false)
+							{
+								string cadena = entrada.Razon;
+								string juego = string.Empty;
+
+								if (cadena.Contains("Buy") == true)
+								{
+									juego = cadena.Remove(0, 4);
+									cadena = "Buy2";
+								}
+
+								<label>@Herramientas.Idiomas.BuscarTexto(idioma, cadena, "PatreonStore") @juego</label>
+							}
+						</div>
+
+						<div style="text-align: right;">
+							@entrada.Fecha.Day/@entrada.Fecha.Month/@entrada.Fecha.Year
+						</div>
+					</div>
+
+					<hr />
+				}
+			</div>			
+		</div>
+	}
+}
+
+@code {
+
+	#nullable disable
+
+	[Parameter]
+	public string idioma { get; set; }
+
+	[Parameter]
+	public string usuarioId { get; set; }
+
+	private Usuario usuario = new Usuario();
+
+	private List<RecompensaHistorial> entradas = new List<RecompensaHistorial>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuario = await UserManager.FindByIdAsync(usuarioId);
+
+		if (usuario != null)
+		{
+			entradas = BaseDatos.Recompensas.Historial.Leer(usuario.Id);
+		}
+	}
+}

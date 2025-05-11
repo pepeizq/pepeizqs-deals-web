@@ -112,9 +112,9 @@
                     if (usuario.PatreonLastLogin == null && Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
                     {
                         usuario.PatreonLastLogin = DateTime.Now;
-                        usuario.PatreonCoins = 1;
+                        usuario.PatreonCoins = 2;
 
-                        global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
+                        global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 2, "Daily", DateTime.Now);
                     }
 
                     if (usuario.PatreonLastLogin != null && Herramientas.Patreon.VerificarActivo(usuario.PatreonLastCheck) == true)
@@ -124,7 +124,7 @@
                             if (usuario.PatreonLastLogin?.DayOfYear != DateTime.Now.DayOfYear)
                             {
                                 usuario.PatreonLastLogin = DateTime.Now;
-                                usuario.PatreonCoins = usuario.PatreonCoins + 1;
+                                usuario.PatreonCoins = usuario.PatreonCoins + 2;
 
                                 global::BaseDatos.Recompensas.Historial.Insertar(usuario.Id, 1, "Daily", DateTime.Now);
                             }

@@ -1,17 +1,16 @@
 {
-  "Title": "Patreon-Shop",
-  "String1": "Sie haben {0} Patreon-Münzen zum Ausgeben",
+  "Title": "Speichern",
+  "String1": "Sie müssen {0} Pepe-Münzen ausgeben",
   "String2": "Verfügbare Spiele",
   "String3": "Historisch",
   "Daily": "Täglicher Eintritt",
   "Buy2": "Bekommen",
-  "Denied": "Unten sehen Sie die Spiele, die Sie jetzt erhalten können, wenn Sie die Website auf Patreon finanziell unterstützen. Jeden Tag erhalten Sie 1 Patreon-Münze und wenn Sie genug haben, erhalten Sie das Spiel Ihrer Wahl:",
-  "Buy": "Sind Sie sicher, dass Sie {0} erhalten möchten?",
+  "Buy": "Sind Sie sicher, dass Sie {0} bekommen möchten?",
   "Yes": "Ja",
-  "No": "NEIN",
+  "No": "Nein",
   "Close": "Schließen",
   "Redeem": "Auf Steam einlösen",
-  "Poor": "Sie haben nicht genügend Patreon-Münzen, um {0} zu erhalten.",
-  "Problem": "Alle diese Spiele stammen aus Humble Bundle- und Fanatical-Bundles. Wenn Sie jedoch Probleme mit dem Schlüssel haben, senden Sie mir eine E-Mail an admin@pepeizqdeals.com, damit ich die von Ihnen ausgegebenen Patreon-Münzen zurückgeben kann.",
-  "Limit": "Sie haben das Limit von 30 Patreon-Münzen auf dem Konto erreicht. Wenn Sie Patreon-Münzen in einem Spiel ausgeben, erhalten Sie jeden Tag neue Münzen."
+  "Poor": "Sie haben nicht genug Pepe-Münzen, um {0} zu bekommen.",
+  "Problem": "Alle diese Spiele stammen aus bescheidenen Bundle und fanatischen Bündeln. Wenn Sie jedoch Probleme mit dem Schlüssel haben, senden Sie mir eine E -Mail an admin@pepeizqdeals.com, damit ich die von Ihnen ausgeben Sie die Pepe-Münzen zurückgeben können.",
+  "Limit": "Sie haben die Grenze von 30 Pepe-Münzen im Konto erreicht. Wenn Sie Pepe-Münzen in jedem Spiel ausgeben, verdienen Sie jeden Tag wieder Münzen."
 }

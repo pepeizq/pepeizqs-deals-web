@@ -307,25 +307,11 @@
             </div>
 
             <div class="menu-dropdown-contenido" style="right: -10px;">
-                <a href="/account" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                <a href="/account" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "Account", "Header")
                 </a>
 
-                @if (usuarioPatreon == false)
-                {
-                    WebApplicationBuilder builder = WebApplication.CreateBuilder();
-                    string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
-
-                    <a href="@patreonEnlace" target="_blank" style="text-decoration: none; text-align: left; border: 0; width: 100%; font-size: 14px;" class="texto-cabecera menu-dropdown-item">
-                        @Herramientas.Idiomas.BuscarTexto(idioma, "Patreon", "Header")
-                    </a>
-                }
-
-                <a href="/account/patreonstore/" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
-                    @Herramientas.Idiomas.BuscarTexto(idioma, "PatreonStore", "Header")
-                </a>
-
-                <a href="/account/logout" class="texto-cabecera menu-dropdown-item" style="text-align: left; border: 0; width: 100%; font-size: 14px;">
+                <a href="/account/logout" class="texto-cabecera menu-dropdown-item" style="text-align: right; border: 0; width: 100%; font-size: 14px;">
                     @Herramientas.Idiomas.BuscarTexto(idioma, "Logout", "Header")
                 </a>
             </div>

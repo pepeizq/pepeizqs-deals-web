@@ -1,17 +1,16 @@
 {
-  "Title": "Boutique Patreon",
-  "String1": "Vous avez {0} Patreon Coins à dépenser",
+  "Title": "Magasin",
+  "String1": "Vous avez {0} Pepe Coins à dépenser",
   "String2": "Jeux disponibles",
   "String3": "Historique",
   "Daily": "Entrée quotidienne",
   "Buy2": "A obtenu",
-  "Denied": "Ci-dessous vous pouvez voir les jeux qui peuvent être obtenus dès maintenant si vous aidez financièrement le site sur Patreon, chaque jour vous obtiendrez 1 Patreon Coin et lorsque vous en aurez assez, vous aurez le jeu de votre choix :",
-  "Buy": "Êtes-vous sûr de vouloir obtenir {0} ?",
+  "Buy": "Êtes-vous sûr de vouloir obtenir {0}?",
   "Yes": "Oui",
   "No": "Non",
   "Close": "Fermer",
   "Redeem": "Échanger sur Steam",
-  "Poor": "Vous n'avez pas assez de pièces Patreon pour obtenir {0}.",
-  "Problem": "Tous ces jeux proviennent des bundles Humble Bundle et Fanatical, mais si vous rencontrez des problèmes avec la clé, envoyez-moi un e-mail à admin@pepeizqdeals.com afin que je puisse vous rendre les pièces Patreon que vous dépensez.",
-  "Limit": "Vous avez atteint la limite de 30 Patreon Coins sur votre compte. Si vous dépensez des Patreon Coins dans n'importe quel jeu, vous gagnerez à nouveau des pièces chaque jour."
+  "Poor": "Vous n'avez pas assez de Pepe Coins pour obtenir {0}.",
+  "Problem": "Tous ces jeux proviennent de Humble Bundle et Bundles Fanatical, mais si vous avez des problèmes avec la clé, envoyez-moi un e-mail à admin@pepeizqdeals.com afin que je puisse retourner les Pepe Coins que vous dépensez.",
+  "Limit": "Vous avez atteint la limite de 30 Pepe Coins dans le compte, si vous dépensez des Pepe Coins dans n'importe quel jeu, vous gagnerez à nouveau des pièces chaque jour."
 }

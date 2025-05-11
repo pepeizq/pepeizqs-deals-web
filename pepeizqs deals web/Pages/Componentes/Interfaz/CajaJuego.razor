@@ -56,7 +56,7 @@
 </style>
 
 <script>
-	function hoverTooltip2(e, id, id2) {
+	function enseñarTooltip(e, id) {
         var x = e.clientX,
             y = e.clientY;
 
@@ -70,9 +70,20 @@
             tooltip.style.top = (y - 10) + 'px';
             tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
         };
-
-		document.getElementById(id2).load();
     };
+
+	function cargarVideo(e, id) {
+		const video = document.getElementById(id);
+		
+		if (video != null) {
+			if (video.readyState == 4)
+			{
+				video.pause();
+				video.currentTime = 0;
+				video.load();
+			};
+		};
+	};
 </script>
 
 @{
@@ -178,7 +189,7 @@
 	int numeroTipo = (int)tipo;
 	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, drmUsar, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado, idBundle);
 
-	<div class="tooltip-juego" onmousemove="hoverTooltip2(event, 'tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()', 'video-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')">
+	<div class="tooltip-juego" onmousemove="enseñarTooltip(event, 'tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')" onmouseenter="cargarVideo('video-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')">
 		<div id="tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()" class="tooltip-relleno">
 			@if (string.IsNullOrEmpty(tooltip.Video) == false)
 			{

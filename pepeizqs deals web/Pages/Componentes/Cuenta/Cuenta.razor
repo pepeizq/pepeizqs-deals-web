@@ -133,26 +133,6 @@
                 </div>
             </button>
 
-            <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <div style="max-width: 22px;">
-                        <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path d="M489.7 153.8c-.1-65.4-51-119-110.7-138.3C304.8-8.5 207-5 136.1 28.4C50.3 68.9 23.3 157.7 22.3 246.2C21.5 319 28.7 510.6 136.9 512c80.3 1 92.3-102.5 129.5-152.3c26.4-35.5 60.5-45.5 102.4-55.9c72-17.8 121.1-74.7 121-150z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <div>
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account")
-                        </div>
-
-                        <div style="margin-top: 5px; font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Account")
-                        </div>
-                    </div>
-                </div>
-            </button>
-
             <button @onclick="@(e => MostrarClaves(e))" class="boton-pestañas">
                 <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
                     <div style="max-width: 22px;">
@@ -196,6 +176,78 @@
 
         @if (usuario.EmailConfirmed == true)
         {
+            int? monedas = 0;
+
+            if (usuario.PatreonCoins != null)
+            {
+                monedas = usuario.PatreonCoins;
+            }
+
+            <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String28", "Account") (@monedas)</label>
+            <hr />
+
+            <div class="grid-estructura caja-diseño" style="padding: 20px;">
+                 <button @onclick="@(e => MostrarTienda(e))" class="boton-pestañas">
+                    <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                        <div style="max-width: 22px;">
+                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <path d="M547.6 103.8L490.3 13.1C485.2 5 476.1 0 466.4 0L109.6 0C99.9 0 90.8 5 85.7 13.1L28.3 103.8c-29.6 46.8-3.4 111.9 51.9 119.4c4 .5 8.1 .8 12.1 .8c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.2 0 49.3-11.4 65.2-29c16 17.6 39.1 29 65.2 29c4.1 0 8.1-.3 12.1-.8c55.5-7.4 81.8-72.5 52.1-119.4zM499.7 254.9c0 0 0 0-.1 0c-5.3 .7-10.7 1.1-16.2 1.1c-12.4 0-24.3-1.9-35.4-5.3L448 384l-320 0 0-133.4c-11.2 3.5-23.2 5.4-35.6 5.4c-5.5 0-11-.4-16.3-1.1l-.1 0c-4.1-.6-8.1-1.3-12-2.3L64 384l0 64c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-64 0-131.4c-4 1-8 1.8-12.3 2.3z"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Account")
+                            </div>
+
+                            <div style="margin-top: 5px; font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String30", "Account")
+                            </div>
+                        </div>
+                    </div>
+                </button>
+
+                 <button @onclick="@(e => MostrarHistorial(e))" class="boton-pestañas">
+                    <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                        <div style="max-width: 22px;">
+                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M512 80c0 18-14.3 34.6-38.4 48c-29.1 16.1-72.5 27.5-122.3 30.9c-3.7-1.8-7.4-3.5-11.3-5C300.6 137.4 248.2 128 192 128c-8.3 0-16.4 .2-24.5 .6l-1.1-.6C142.3 114.6 128 98 128 80c0-44.2 86-80 192-80S512 35.8 512 80zM160.7 161.1c10.2-.7 20.7-1.1 31.3-1.1c62.2 0 117.4 12.3 152.5 31.4C369.3 204.9 384 221.7 384 240c0 4-.7 7.9-2.1 11.7c-4.6 13.2-17 25.3-35 35.5c0 0 0 0 0 0c-.1 .1-.3 .1-.4 .2c0 0 0 0 0 0s0 0 0 0c-.3 .2-.6 .3-.9 .5c-35 19.4-90.8 32-153.6 32c-59.6 0-112.9-11.3-148.2-29.1c-1.9-.9-3.7-1.9-5.5-2.9C14.3 274.6 0 258 0 240c0-34.8 53.4-64.5 128-75.4c10.5-1.5 21.4-2.7 32.7-3.5zM416 240c0-21.9-10.6-39.9-24.1-53.4c28.3-4.4 54.2-11.4 76.2-20.5c16.3-6.8 31.5-15.2 43.9-25.5l0 35.4c0 19.3-16.5 37.1-43.8 50.9c-14.6 7.4-32.4 13.7-52.4 18.5c.1-1.8 .2-3.5 .2-5.3zm-32 96c0 18-14.3 34.6-38.4 48c-1.8 1-3.6 1.9-5.5 2.9C304.9 404.7 251.6 416 192 416c-62.8 0-118.6-12.6-153.6-32C14.3 370.6 0 354 0 336l0-35.4c12.5 10.3 27.6 18.7 43.9 25.5C83.4 342.6 135.8 352 192 352s108.6-9.4 148.1-25.9c7.8-3.2 15.3-6.9 22.4-10.9c6.1-3.4 11.8-7.2 17.2-11.2c1.5-1.1 2.9-2.3 4.3-3.4l0 3.4 0 5.7 0 26.3zm32 0l0-32 0-25.9c19-4.2 36.5-9.5 52.1-16c16.3-6.8 31.5-15.2 43.9-25.5l0 35.4c0 10.5-5 21-14.9 30.9c-16.3 16.3-45 29.7-81.3 38.4c.1-1.7 .2-3.5 .2-5.3zM192 448c56.2 0 108.6-9.4 148.1-25.9c16.3-6.8 31.5-15.2 43.9-25.5l0 35.4c0 44.2-86 80-192 80S0 476.2 0 432l0-35.4c12.5 10.3 27.6 18.7 43.9 25.5C83.4 438.6 135.8 448 192 448z"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Account")
+                            </div>
+
+                            <div style="margin-top: 5px; font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String32", "Account")
+                            </div>
+                        </div>
+                    </div>
+                </button>
+
+                <button @onclick="@(e => MostrarPatreon(e))" class="boton-pestañas">
+                    <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
+                        <div style="max-width: 22px;">
+                            <svg class="svg-boton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M489.7 153.8c-.1-65.4-51-119-110.7-138.3C304.8-8.5 207-5 136.1 28.4C50.3 68.9 23.3 157.7 22.3 246.2C21.5 319 28.7 510.6 136.9 512c80.3 1 92.3-102.5 129.5-152.3c26.4-35.5 60.5-45.5 102.4-55.9c72-17.8 121.1-74.7 121-150z" />
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div>
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account")
+                            </div>
+
+                            <div style="margin-top: 5px; font-size: 14px;">
+                                @Herramientas.Idiomas.BuscarTexto(idioma, "String13", "Account")
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
             <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String23", "Account")</label>
             <hr />
 
@@ -243,24 +295,6 @@
 
             <label style="font-size: 20px; margin-top: 40px;">@Herramientas.Idiomas.BuscarTexto(idioma, "String18", "Account")</label>
             <hr />
-
-            @*     <div class="grid-estructura" style="margin-top: 20px; background-color: var(--fondoMinimo); border: 1px solid var(--fondoBotonPequeño); padding: 20px;">
-            <button @onclick="@(e => MostrarIsthereanydeal(e))" class="boton-pestañas">
-                <div style="display: flex; align-items: center; gap: 20px; text-align: left;">
-                    <img src="/imagenes/otros/itad.webp" style="max-width: 30px; max-height: 30px;" />
-
-                    <div>
-                        <div>
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String19", "Account")
-                        </div>
-
-                        <div style="margin-top: 5px; font-size: 14px;">
-                            @Herramientas.Idiomas.BuscarTexto(idioma, "String20", "Account")
-                        </div>
-                    </div>
-                </div>
-            </button>
-        </div> *@
 
             <div class="grid-estructura caja-diseño" style="padding: 20px;">
                 <button @onclick="@(e => MostrarSteam(e))" class="boton-pestañas">
@@ -440,6 +474,16 @@ else
                 <Foro idioma="@idioma" />
             }
 
+            @if (mostrarTienda == true)
+            {
+                <pepeizqs_deals_web.Pages.Componentes.Cuenta.Pepecoins.Tienda idioma="@idioma" usuarioId="@usuario.Id"/>
+            }
+
+            @if (mostrarHistorial == true)
+            {
+                <pepeizqs_deals_web.Pages.Componentes.Cuenta.Pepecoins.Historial idioma="@idioma" usuarioId="@usuario.Id"/>
+            }
+
             @if (mostrarNotificacionesCorreo == true)
             {
                 <NotificacionesCorreo idioma="@idioma" />
@@ -478,11 +522,6 @@ else
             @if (mostrarEa == true)
             {
                 <pepeizqs_deals_web.Pages.Componentes.Cuenta.Juegos.Ea idioma="@idioma" />
-            }
-
-            @if (mostrarIsthereanydeal == true)
-            {
-                <Isthereanydeal idioma="@idioma" />
             }
         </div> 
     </div>
@@ -523,6 +562,9 @@ else
         mostrarClaves = false;
         mostrarForo = false;
 
+        mostrarTienda = false;
+        mostrarHistorial = false;
+
         mostrarNotificacionesCorreo = false;
         mostrarNotificacionesPush = false;
 
@@ -532,8 +574,6 @@ else
         mostrarEpicGames = false;
         mostrarUbisoft = false;
         mostrarEa = false;
-
-        mostrarIsthereanydeal = false;
     }
 
     private void ClickearCerrarPestaña()
@@ -541,6 +581,8 @@ else
         tituloOpcion = string.Empty;
         enseñarOpcion = false;
     }
+
+    #region Cuenta
 
     private bool mostrarCorreo = false;
 
@@ -612,6 +654,34 @@ else
         mostrarForo = true;
     }
 
+    #endregion
+
+    #region Pepecoins
+
+    private bool mostrarTienda = false;
+
+    private void MostrarTienda(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        tituloOpcion = Herramientas.Idiomas.BuscarTexto(idioma, "String29", "Account");
+        enseñarOpcion = true;
+        mostrarTienda = true;
+    }
+
+    private bool mostrarHistorial = false;
+
+    private void MostrarHistorial(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        tituloOpcion = Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Account");
+        enseñarOpcion = true;
+        mostrarHistorial = true;
+    }
+
+    #endregion
+
+    #region Notificaciones
+
     private bool mostrarNotificacionesCorreo = false;
 
     private void MostrarNotificacionesCorreo(MouseEventArgs e)
@@ -631,6 +701,10 @@ else
         enseñarOpcion = true;
         mostrarNotificacionesPush = true;
     }
+
+    #endregion
+
+    #region Juegos
 
     private bool mostrarSteam = false;
 
@@ -692,12 +766,5 @@ else
         mostrarEa = true;
     }
 
-    private bool mostrarIsthereanydeal = false;
-
-    private void MostrarIsthereanydeal(MouseEventArgs e)
-    {
-        CerrarPestañas();
-        enseñarOpcion = true;
-        mostrarIsthereanydeal = true;
-    }
+    #endregion
 }
