@@ -459,11 +459,6 @@ else
                 <Idioma idioma="@idioma" />
             }
 
-            @if (mostrarPatreon == true)
-            {
-                <Patreon idioma="@idioma" />
-            }
-
             @if (mostrarClaves == true)
             {
                 <Claves idioma="@idioma" />
@@ -482,6 +477,11 @@ else
             @if (mostrarHistorial == true)
             {
                 <pepeizqs_deals_web.Pages.Componentes.Cuenta.Pepecoins.Historial idioma="@idioma" usuarioId="@usuario.Id"/>
+            }
+
+            @if (mostrarPatreon == true)
+            {
+                <pepeizqs_deals_web.Pages.Componentes.Cuenta.Pepecoins.Patreon idioma="@idioma" />
             }
 
             @if (mostrarNotificacionesCorreo == true)

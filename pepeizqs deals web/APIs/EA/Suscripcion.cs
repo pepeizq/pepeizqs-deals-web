@@ -23,7 +23,7 @@ namespace APIs.EA
 				UsuarioEnlacesEspecificos = false,
 				ParaSiempre = false,
 				Precio = 5.99,
-				AdminPendientes = true,
+				AdminPendientes = false,
 				TablaPendientes = "tiendaea"
 			};
 

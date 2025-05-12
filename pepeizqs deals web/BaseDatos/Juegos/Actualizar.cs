@@ -405,6 +405,24 @@ namespace BaseDatos.Juegos
 
 				}
 			}
+
+			string sqlActualizar2 = "UPDATE seccionMinimos " +
+					"SET suscripciones=@suscripciones WHERE idMaestra=@id";
+
+			using (SqlCommand comando = new SqlCommand(sqlActualizar2, conexion))
+			{
+				comando.Parameters.AddWithValue("@idMaestra", juego.Id);
+				comando.Parameters.AddWithValue("@suscripciones", JsonSerializer.Serialize(juego.Suscripciones));
+
+				try
+				{
+					comando.ExecuteNonQuery();
+				}
+				catch
+				{
+
+				}
+			}
 		}
 
 		public static void DlcMaestro(Juego juego, SqlConnection conexion)

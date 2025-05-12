@@ -71,19 +71,6 @@
             tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
         };
     };
-
-	function cargarVideo(e, id) {
-		const video = document.getElementById(id);
-		
-		if (video != null) {
-			if (video.readyState == 4)
-			{
-				video.pause();
-				video.currentTime = 0;
-				video.load();
-			};
-		};
-	};
 </script>
 
 @{
@@ -100,7 +87,7 @@
 	string enlaceNuevaPestaña = "_self";
 	string iconoTienda = string.Empty;
 	string codigoTexto = string.Empty;
-    DateTime fechaDetectado = DateTime.Now;
+	DateTime fechaDetectado = DateTime.Now;
 
 	if (tipo == Tipo.Portada || tipo == Tipo.MinimosHistoricos)
 	{
@@ -111,7 +98,7 @@
 			descuento = oferta.Descuento.ToString() + "%";
 			precio = Herramientas.Precios.Euro(oferta.Precio);
 			codigoTexto = oferta.CodigoTexto;
-            fechaDetectado = oferta.FechaDetectado;
+			fechaDetectado = oferta.FechaDetectado;
 
 			//--------------------------------------------------------
 
@@ -187,15 +174,22 @@
 	}
 
 	int numeroTipo = (int)tipo;
+	string idTooltip = numeroTipo.ToString() + "-" + idMaestra.ToString() + "-" + drmUsar.ToString();
+
+	if (idCurator > 0)
+	{
+		idTooltip = idTooltip + "-" + idCurator.ToString();
+	}
+
 	Herramientas.ToolTipDatos tooltip = Herramientas.Tooltip.Generar(idioma, juego, drmUsar, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado, idBundle);
 
-	<div class="tooltip-juego" onmousemove="enseñarTooltip(event, 'tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')" onmouseenter="cargarVideo('video-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()')">
-		<div id="tooltip-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()" class="tooltip-relleno">
+	<div class="tooltip-juego" onmousemove="enseñarTooltip(event, 'tooltip-@idTooltip')">
+		<div id="tooltip-@idTooltip" class="tooltip-relleno">
 			@if (string.IsNullOrEmpty(tooltip.Video) == false)
 			{
 				string videoMostrar = tooltip.Video;
 
-				<video id="video-@numeroTipo-@idMaestra.ToString()-@drmUsar.ToString()" onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;">
+				<video onloadedmetadata="this.muted=true" playsinline autoplay loop muted style="width: 460px; height: 215px; object-fit: cover;">
 					<source src="@videoMostrar" type="video/mp4" />
 					<source src="@videoMostrar.Replace(".mp4", ".webm")" type="video/webm" />	
 				</video>
@@ -670,6 +664,9 @@
 
 	[Parameter]
 	public JuegoDRM drmNoticia { get; set; }
+
+	[Parameter]
+	public int idCurator { get; set; }
 
 	public enum Tipo
 	{

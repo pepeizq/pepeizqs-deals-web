@@ -813,6 +813,13 @@ namespace APIs.Steam
 
 			return id;
 		}
+
+		public static string EnlaceAPI(string id)
+		{
+			string enlace = "https://api.steampowered.com/IStoreBrowseService/GetItems/v1?input_json={\"ids\":[{\"appid\":" + id + "}],\"context\":{\"language\":\"english\",\"country_code\":\"ES\",\"steam_realm\":1},\"data_request\":{\"include_reviews\":true,\"include_basic_info\":true, \"include_assets\": true, \"include_links\": true, \"include_tag_count\": 20, \"include_release\": true, \"include_platforms\": true, \"include_screenshots\": true, \"include_trailers\": true, \"include_supported_languages\": true}}";
+
+			return enlace;
+		}
 	}
 
 	#region Clases Juego

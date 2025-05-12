@@ -6,14 +6,23 @@
 @using pepeizqs_deals_web.Areas.Identity.Data;
 
 <div style="padding: 20px; background: var(--fondoCuerpo); border: 1px solid var(--fondoBotonPequeño); margin-bottom: 50px;">
-	<div style="display: flex; align-items: center; margin-bottom: 20px;">
-		<div style="width: 100%;">
+	<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+		<div>
 			Admin Editar • @juego.Nombre
 		</div>
 
-		<a href="/api/game/@juego.Id" target="_blank" style="padding: 10px 15px; text-decoration: none;">
-			Api
-		</a>
+		<div style="display: flex; align-items: center; gap: 20px">
+			<a href="/api/game/@juego.Id" target="_blank" style="text-decoration: none;">
+				Api Web
+			</a>
+
+			@if (juego.IdSteam > 0)
+			{
+				<a href="@APIs.Steam.Juego.EnlaceAPI(juego.IdSteam.ToString())" target="_blank" style="text-decoration: none;">
+					Api Steam
+				</a>
+			}
+		</div>
 	</div>
 
 	<div style="display: flex; align-items: start; gap: 20px;">

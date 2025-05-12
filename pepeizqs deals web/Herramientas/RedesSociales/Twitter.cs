@@ -110,6 +110,8 @@ namespace Herramientas.RedesSociales
 			);
 		}
 
+		#region Clases
+
 		public class TweetV2PostRequest
 		{
 			#nullable enable
@@ -133,5 +135,7 @@ namespace Herramientas.RedesSociales
                 set => MediaIds = value?.Select(s => JsonConvert.DeserializeObject<long>(s)).ToList();
             }
         }
-    }
+
+		#endregion
+	}
 }

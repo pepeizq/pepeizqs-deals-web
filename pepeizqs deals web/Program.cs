@@ -50,7 +50,7 @@ builder.Services.AddDefaultIdentity<Usuario>(opciones =>
 	opciones.SignIn.RequireConfirmedAccount = false;
 	opciones.Lockout.MaxFailedAccessAttempts = 15;
 	opciones.Lockout.AllowedForNewUsers = true;
-    opciones.User.RequireUniqueEmail = true;
+	opciones.User.RequireUniqueEmail = true;
 }
 ).AddEntityFrameworkStores<pepeizqs_deals_webContext>();
 

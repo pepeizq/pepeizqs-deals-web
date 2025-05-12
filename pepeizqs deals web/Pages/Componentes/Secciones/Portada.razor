@@ -132,61 +132,61 @@
 
 <style>
 	.destacado-fondo {
-	display: block;
+		display: block;
 	}
 
 	.destacado-video {
-	display: none;
+		display: none;
 	}
 
 	.destacado-mostrar:hover .destacado-fondo {
-	display: none;
+		display: none;
 	}
 
 	.destacado-mostrar:hover .destacado-video {
-	display: block;
+		display: block;
 	}
 
 	.destacados-galeria-cursor {
-	cursor: pointer;
+		cursor: pointer;
 	}
 
 	.destacados-galeria-fila {
-	display: flex;
-	overflow: auto;
+		display: flex;
+		overflow: auto;
 	}
 
 	.destacados-galeria-fila:after {
-	content: "";
-	display: table;
-	clear: both;
+		content: "";
+		display: table;
+		clear: both;
 	}
 
 	.destacados-galeria-columna {
-	float: left;
-	width: 16.66%;
-	flex: 0 0 auto;
-	padding: 3px 3px 0px 3px;
-	aspect-ratio: 92/43;
+		float: left;
+		width: 16.66%;
+		flex: 0 0 auto;
+		padding: 3px 3px 0px 3px;
+		aspect-ratio: 92/43;
 	}
 
 	.destacados-galeria-captura {
-	opacity: 0.3;
-	object-fit: cover;
-	overflow: hidden;
-	transition: transform .2s;
-	min-width: 100px;
-	min-height: 50px;
-	max-width: 100%;
+		opacity: 0.3;
+		object-fit: cover;
+		overflow: hidden;
+		transition: transform .2s;
+		min-width: 100px;
+		min-height: 50px;
+		max-width: 100%;
 	}
 
 	.destacados-galeria-captura:hover {
-	opacity: 1;
-	transform: scale(1.01);
+		opacity: 1;
+		transform: scale(1.01);
 	}
 
 	.destacado-hueco {
-	padding: 80px 60px 30px 60px;
+		padding: 80px 60px 30px 60px;
 	}
 
 	.destacado-logo-medidas {
@@ -196,47 +196,47 @@
 	}
 
 	.destacado-logo-alto {
-	height: 150px;
+		height: 150px;
 	}
 
 	.destacado-precio-descuento {
-	padding: 12px 15px;
-	font-size: 22px;
+		padding: 12px 15px;
+		font-size: 22px;
 	}
 
 	.destacado-icono {
-	width: 40px;
-	height: 40px;
+		width: 40px;
+		height: 40px;
 	}
 
 	@@media (max-width: 800px) {
-	.destacado-hueco {
-	padding: 40px 30px 15px 30px;
-	}
+		.destacado-hueco {
+			padding: 40px 30px 15px 30px;
+		}
 
-	.destacado-logo-medidas {
-		width: 16vw;
-		height: 8vw;
-	}
+		.destacado-logo-medidas {
+			width: 16vw;
+			height: 8vw;
+		}
 
-	.destacado-logo-alto {
-	height: 100px;
-	}
+		.destacado-logo-alto {
+			height: 100px;
+		}
 
-	.destacado-precio-descuento {
-	padding: 6px 8px;
-	font-size: 15px;
-	}
+		.destacado-precio-descuento {
+			padding: 6px 8px;
+			font-size: 15px;
+		}
 
-	.destacado-icono {
-	width: 24px;
-	height: 24px;
-	}
+		.destacado-icono {
+			width: 24px;
+			height: 24px;
+		}
 	}
 
 	.destacado-progreso {
-	background-color: var(--fondoCodigo);
-	animation: barraProgreso 30s ease-in-out;
+		background-color: var(--fondoCodigo);
+		animation: barraProgreso 30s ease-in-out;
 	}
 
 	@@keyframes barraProgreso {
@@ -557,8 +557,8 @@
 				</button>
 			</div>
 
-			<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px;">
-				<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107">
+			<div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px; tab-index: -1;">
+				<Virtualize Context="juego" Items="juegosMinimosMostrar" ItemSize="107" OverscanCount="12">
 					<ItemContent>
 						<CajaJuego idioma="@idioma" juego="@juego" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.Portada" />
 					</ItemContent>

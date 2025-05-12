@@ -215,7 +215,7 @@ namespace Herramientas
 				}
 				else if (gratisActuales > 1)
 				{
-					datos.GratisActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+					datos.GratisActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), gratisActuales.ToString());
 				}
 
 				if (string.IsNullOrEmpty(gratisExtraActual) == false)
@@ -229,7 +229,7 @@ namespace Herramientas
 				}
 				else if (gratisPasados > 1)
 				{
-					datos.GratisPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), juego.Gratis.Count.ToString());
+					datos.GratisPasados = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String5", "Tooltip"), gratisPasados.ToString());
 				}
 
 				if (string.IsNullOrEmpty(gratisExtraPasado) == false)
@@ -251,56 +251,53 @@ namespace Herramientas
 					{
 						bool contar = true;
 
-						if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo) != null)
+						if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
 						{
-							if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion != null)
+							foreach (JuegoSuscripcion suscripcion2 in juego.Suscripciones)
 							{
-								foreach (JuegoSuscripcion suscripcion2 in juego.Suscripciones)
+								if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
 								{
-									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).IncluyeSuscripcion == suscripcion2.Tipo)
+									contar = false;
+									break;
+								}
+							}
+						}
+
+						if (contar == true)
+						{
+							if (DateTime.Now >= suscripcion.FechaEmpieza && DateTime.Now <= suscripcion.FechaTermina)
+							{
+								suscripcionesActuales += 1;
+
+								if (suscripcionesActuales == 1)
+								{
+									suscripcionExtraActual = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
+								}
+								else if (suscripcionesActuales > 1)
+								{
+									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraActual)
 									{
-										contar = false;
-										break;
+										suscripcionExtraActual = null;
 									}
 								}
 							}
-
-							if (contar == true)
+							else
 							{
-								if (suscripcion.FechaEmpieza < DateTime.Now && suscripcion.FechaTermina > DateTime.Now)
-								{
-									suscripcionesActuales += 1;
+								suscripcionesPasados += 1;
 
-									if (suscripcionesActuales == 1)
-									{
-										suscripcionExtraActual = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
-									}
-									else if (suscripcionesActuales > 1)
-									{
-										if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraActual)
-										{
-											suscripcionExtraActual = null;
-										}
-									}
+								if (suscripcionesPasados == 1)
+								{
+									suscripcionExtraPasada = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
 								}
-								else
+								else if (suscripcionesPasados > 1)
 								{
-									suscripcionesPasados += 1;
-
-									if (suscripcionesPasados == 1)
+									if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraPasada)
 									{
-										suscripcionExtraPasada = Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre;
-									}
-									else if (suscripcionesPasados > 1)
-									{
-										if (Suscripciones2.SuscripcionesCargar.DevolverSuscripcion(suscripcion.Tipo).Nombre != suscripcionExtraPasada)
-										{
-											suscripcionExtraPasada = null;
-										}
+										suscripcionExtraPasada = null;
 									}
 								}
 							}
-						}					
+						}
 					}
 				}
 
@@ -310,7 +307,7 @@ namespace Herramientas
 				}
 				else if (suscripcionesActuales > 1)
 				{
-					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+					datos.SuscripcionesActuales = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), suscripcionesActuales.ToString());
 				}
 
 				if (string.IsNullOrEmpty(suscripcionExtraActual) == false)
@@ -324,7 +321,7 @@ namespace Herramientas
 				}
 				else if (suscripcionesPasados > 1)
 				{
-					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), juego.Suscripciones.Count.ToString());
+					datos.SuscripcionesPasadas = string.Format(Herramientas.Idiomas.BuscarTexto(idioma, "String7", "Tooltip"), suscripcionesPasados.ToString());
 				}
 
 				if (string.IsNullOrEmpty(suscripcionExtraPasada) == false)

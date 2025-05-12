@@ -60,7 +60,10 @@ namespace APIs.AmazonLuna
 			{
 				html = await respuesta.Content.ReadAsStringAsync();
 			}
-			catch { }
+			catch (Exception ex) 
+			{ 
+				BaseDatos.Errores.Insertar.Mensaje("Amazon Luna", ex, conexion);
+			}
 
 			GestionarHtml(html, cantidad, conexion);
 
@@ -86,7 +89,10 @@ namespace APIs.AmazonLuna
 			{
 				htmlEa = await respuestaEa.Content.ReadAsStringAsync();
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				BaseDatos.Errores.Insertar.Mensaje("Amazon Luna EA", ex, conexion);
+			}
 
 			GestionarHtml(htmlEa, cantidad, conexion);
 		}
