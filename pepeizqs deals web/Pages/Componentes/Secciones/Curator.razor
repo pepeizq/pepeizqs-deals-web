@@ -42,8 +42,20 @@
 
 	<HeadContent>
 		<meta name="og:title" Content="@titulo" />
-		<meta name="description" content="@descripcion" />
-		<meta name="og:description" content="@descripcion" />
+
+		@if (string.IsNullOrEmpty(descripcion) == false)
+		{
+			string descripcionMeta = descripcion;
+
+			if (descripcionMeta.Length > 150)
+			{
+				descripcionMeta = descripcionMeta.Substring(0, 150) + " ...";
+			}
+
+			<meta name="description" content="@descripcionMeta" />
+			<meta name="og:description" content="@descripcionMeta" />
+		}
+
 		<meta name="og:url" content="@enlace" />
 		<meta name="og:image" content="@imagen" />
 		<meta name="og:site_name" content="pepeizq's deals" />
@@ -96,7 +108,7 @@
 
 		<div style="position: relative; display: flex; flex-direction: column; gap: 40px;">
 			<div class="caja-diseño" style="display: flex; align-items: center;">
-				<img src="@curator.Imagen" style="width: 140px; height: 140px;" alt="@curator.Nombre" />
+				<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(curator.Imagen)" style="width: 140px; height: 140px;" alt="@curator.Nombre" />
 
 				<div style="display: flex; flex-direction: column; gap: 15px; padding: 25px;">
 					<div style="font-size: 20px;">
@@ -118,16 +130,18 @@
 
 			@if (juegosDestacados.Count > 1)
 			{
-				<div class="caja-diseño" style="padding: 40px;">
-					<div style="font-size: 18px;">
+				<div>
+					<div style="font-size: 20px;">
 						@Herramientas.Idiomas.BuscarTexto(idioma, "String1", "Curators")
 					</div>
 					<hr />
-					<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px; width: 100%;">
-						@foreach (var destacado in juegosDestacados)
-						{
-							<CajaJuego idioma="@idioma" juego="@destacado" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.CuratorDestacado" />
-						}
+					<div class="caja-diseño" style="padding: 40px;">
+						<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px; width: 100%;">
+							@foreach (var destacado in juegosDestacados)
+							{
+								<CajaJuego idioma="@idioma" juego="@destacado" juegosUsuario="@juegosUsuario" usuarioDeseadosSteam="@usuario?.SteamWishlist" usuarioDeseadosWeb="@usuario?.Wishlist" usuarioDeseadosGog="@usuario?.GogWishlist" tipo="CajaJuego.Tipo.CuratorDestacado" />
+							}
+						</div>
 					</div>
 				</div>
 			}

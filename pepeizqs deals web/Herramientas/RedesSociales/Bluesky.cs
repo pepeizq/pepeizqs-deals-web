@@ -16,7 +16,7 @@ namespace Herramientas.RedesSociales
 			if (string.IsNullOrEmpty(correo) == false && string.IsNullOrEmpty(contraseña) == false)
 			{
 				IBlueskyClient cliente = new BlueskyClient(correo, contraseña);
-
+				
 				string enlace = string.Empty;
 
 				if (string.IsNullOrEmpty(noticia.Enlace) == false)
@@ -56,20 +56,29 @@ namespace Herramientas.RedesSociales
 					{
 						byte[] imageBytes = await respuesta.Content.ReadAsByteArrayAsync();
 
-						X.Bluesky.Models.Image imagen = new X.Bluesky.Models.Image
+						if (imageBytes != null)
 						{
-							Content = imageBytes,
-							Alt = noticia.TituloEn,
-							MimeType = "image/jpeg"
-						};
+							if (imageBytes.Length > 0)
+							{
+								X.Bluesky.Models.Image imagen = new X.Bluesky.Models.Image
+								{
+									Content = imageBytes,
+									Alt = noticia.TituloEn,
+									MimeType = "image/jpeg"
+								};
 
-						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
+								await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal, enlaceFinal, imagen);
 
-						return true;
+								return true;
+							}
+						}
+
+						error = true;
 					}
 				}
-				catch
+				catch (Exception ex)
 				{
+					global::BaseDatos.Errores.Insertar.Mensaje("Bluesky enviar imagen", ex);
 					error = true;
 				}
 
@@ -80,8 +89,9 @@ namespace Herramientas.RedesSociales
 						await cliente.Post(noticia.TituloEn + Environment.NewLine + Environment.NewLine + enlaceFinal);
 						return true;
 					}
-					catch
+					catch (Exception ex)
 					{
+						global::BaseDatos.Errores.Insertar.Mensaje("Bluesky enviar texto", ex);
 						return false;
 					}
 				}

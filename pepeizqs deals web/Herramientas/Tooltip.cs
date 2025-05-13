@@ -43,18 +43,18 @@ namespace Herramientas
                 {
                     if (int.Parse(juego.Analisis.Porcentaje) > 74)
                     {
-                        datos.ReviewsIcono = "/imagenes/analisis/positive.webp";
+                        datos.ReviewsIcono = "/imagenes/analisis/positivo3.svg";
                     }
                     else if (int.Parse(juego.Analisis.Porcentaje) > 49 && int.Parse(juego.Analisis.Porcentaje) < 75)
                     {
-                        datos.ReviewsIcono = "/imagenes/analisis/mixed.webp";
+                        datos.ReviewsIcono = "/imagenes/analisis/meh3.svg";
                     }
                     else if (int.Parse(juego.Analisis.Porcentaje) < 50)
                     {
-                        datos.ReviewsIcono = "/imagenes/analisis/negative.webp";
+                        datos.ReviewsIcono = "/imagenes/analisis/negative3.svg";
                     }
 
-                    datos.ReviewsCantidad = juego.Analisis.Porcentaje.ToString() + "% • " + Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad);
+					datos.ReviewsCantidad = juego.Analisis.Porcentaje.ToString() + "% • " + Calculadora.RedondearAnalisis(idioma, juego.Analisis.Cantidad);
                 }
             }
 

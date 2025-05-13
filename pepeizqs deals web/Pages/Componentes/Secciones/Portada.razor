@@ -24,6 +24,20 @@
 	string imagen = "https://pepeizqdeals.com/logo/logoentrada.webp";
 	string imagen2 = "https://pepeizqdeals.com/logo/logo6.png";
 
+	string[] keywordsEnBruto = Herramientas.Buscador.LimpiarNombre(descripcion, false).Split(' ');
+    List<string> keywordsLista = new List<string>();
+    keywordsLista.AddRange(keywordsEnBruto);
+
+    string keywords = "deals";
+
+    foreach (string keyword in keywordsLista)
+    {
+        if (keyword.Length > 3)
+        {
+            keywords = keywords + ", " + keyword;
+        }
+    }
+
 	<HeadContent>
 		<meta name="og:title" content="@titulo" />
 		<meta name="description" content="@descripcion" />
@@ -33,7 +47,7 @@
 		<meta name="og:site_name" content="pepeizq's deals" />
 		<meta name="og:type" content="website" />
 		<meta name="robots" content="index, follow" />
-		<meta name="keywords" content="deals, games, free, offers, bundles" />
+		<meta name="keywords" content="@keywords" />
 
 		<script type="application/ld+json">
 			{
@@ -495,7 +509,7 @@
 								<button @onclick="@(e => AbrirPost(e, post.CategoriaId, post.Id, post.RespuestaId))" class="boton-pequeño" style="padding: 15px 20px; margin-top: 10px; margin-bottom: 10px;">
 									<div style="display: flex; align-items: center; gap: 20px;">
 										<div>
-											<img src="@usuario?.Avatar" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
+											<img src="@Herramientas.Ficheros.Imagenes.ServidorExterno(usuario?.Avatar)" style="width: 26px; height: 26px;" alt="@usuario?.Nickname" />
 										</div>
 
 										<div style="width: 100%;">

@@ -677,8 +677,8 @@ select {
 .tooltip-relleno {
     background-color: var(--fondoBotonPequeño);
     color: var(--colorTexto);
-    border: 1px solid var(--fondoBoton);
-    border-radius: 2px;
+    border: 1px solid var(--fondoBotonHover);
+    border-radius: 5px;
     z-index: 1;
 }
 

@@ -153,6 +153,35 @@
 }
 
 <script>
+    function enseñarTooltip(e, id) {
+        var x = e.clientX,
+            y = e.clientY;
+
+        var tooltip = document.getElementById(id);
+
+        if (screen.width / 2 > x) {
+            tooltip.style.top = (y + 10) + 'px';
+            tooltip.style.left = (x + 20) + 'px';
+        }
+        else {
+            tooltip.style.top = (y - 10) + 'px';
+            tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
+        };
+    };
+
+    function moverScroll(id) {
+        const element = document.getElementById(id);
+        const y = element.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    function ocultar(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+</script>
+
+<script>
     function moverScroll(id) {
         const yOffset = -30;
         const element = document.getElementById(id);
@@ -210,7 +239,7 @@
 
             Herramientas.ToolTipDatos tooltipDatos = Herramientas.Tooltip.Generar(idioma, juego.Juego, juego.DRM, usuarioConectado, usuarioTieneJuego, usuarioTieneDeseado);
 
-            <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-@juego.JuegoId.ToString()-@juego.Tipo.ToString()')">
+            <div class="tooltip-juego" onmousemove="enseñarTooltip(event, 'tooltip-@juego.JuegoId.ToString()-@juego.Tipo.ToString()')">
                 <div id="tooltip-@juego.JuegoId.ToString()-@juego.Tipo.ToString()" class="tooltip-relleno" style="max-width: 460px;">
                     @if (string.IsNullOrEmpty(tooltipDatos.Video) == false)
                     {

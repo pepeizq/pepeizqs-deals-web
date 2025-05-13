@@ -310,22 +310,6 @@
     </script>
 
     <script>
-        function hoverTooltip(e, id) {
-            var x = e.clientX,
-                y = e.clientY;
-
-            var tooltip = document.getElementById(id);
-
-            if (screen.width / 2 > x) {
-                tooltip.style.top = (y + 10) + 'px';
-                tooltip.style.left = (x + 20) + 'px';
-            }
-            else {
-                tooltip.style.top = (y - 10) + 'px';
-                tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
-            };
-        };
-
         function moverScroll(id) {
             const element = document.getElementById(id);
             const y = element.getBoundingClientRect().top + window.pageYOffset;

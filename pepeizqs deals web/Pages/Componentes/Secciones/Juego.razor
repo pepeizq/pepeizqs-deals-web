@@ -240,6 +240,35 @@
 </script>
 
 <script>
+    function enseñarTooltip(e, id) {
+        var x = e.clientX,
+            y = e.clientY;
+
+        var tooltip = document.getElementById(id);
+
+        if (screen.width / 2 > x) {
+            tooltip.style.top = (y + 10) + 'px';
+            tooltip.style.left = (x + 20) + 'px';
+        }
+        else {
+            tooltip.style.top = (y - 10) + 'px';
+            tooltip.style.left = (x - 20 - tooltip.getBoundingClientRect().width) + 'px';
+        };
+    };
+
+    function moverScroll(id) {
+        const element = document.getElementById(id);
+        const y = element.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    function ocultar(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+</script>
+
+<script>
     function moverScroll(id) {
         const yOffset = -185;
         const element = document.getElementById(id);
@@ -491,7 +520,7 @@
 
                         if (añadirDivAnalisisJugadores == true)
                         {
-                            <div class="tooltip-juego" onmousemove="hoverTooltip(event, 'tooltip-reviews')" style="padding: 10px 20px; display: flex; flex-direction: row; align-items: stretch; gap: 15px;">
+                            <div class="tooltip-juego" onmousemove="enseñarTooltip(event, 'tooltip-reviews')" style="padding: 10px 20px; display: flex; flex-direction: row; align-items: stretch; gap: 15px;">
                                 @if (juego.Analisis != null)
                                 {
                                     if (string.IsNullOrEmpty(juego.Analisis.Cantidad) == false && string.IsNullOrEmpty(juego.Analisis.Porcentaje) == false)

@@ -558,12 +558,12 @@ else
         mostrarContraseña = false;
         mostrarDatosPersonales = false;
         mostrarIdioma = false;
-        mostrarPatreon = false;
         mostrarClaves = false;
         mostrarForo = false;
 
         mostrarTienda = false;
         mostrarHistorial = false;
+        mostrarPatreon = false;
 
         mostrarNotificacionesCorreo = false;
         mostrarNotificacionesPush = false;
@@ -624,16 +624,6 @@ else
         mostrarIdioma = true;
     }
 
-    private bool mostrarPatreon = false;
-
-    private void MostrarPatreon(MouseEventArgs e)
-    {
-        CerrarPestañas();
-        tituloOpcion = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account");
-        enseñarOpcion = true;
-        mostrarPatreon = true;
-    }
-
     private bool mostrarClaves = false;
 
     private void MostrarClaves(MouseEventArgs e)
@@ -676,6 +666,16 @@ else
         tituloOpcion = Herramientas.Idiomas.BuscarTexto(idioma, "String31", "Account");
         enseñarOpcion = true;
         mostrarHistorial = true;
+    }
+    
+    private bool mostrarPatreon = false;
+
+    private void MostrarPatreon(MouseEventArgs e)
+    {
+        CerrarPestañas();
+        tituloOpcion = Herramientas.Idiomas.BuscarTexto(idioma, "String8", "Account");
+        enseñarOpcion = true;
+        mostrarPatreon = true;
     }
 
     #endregion

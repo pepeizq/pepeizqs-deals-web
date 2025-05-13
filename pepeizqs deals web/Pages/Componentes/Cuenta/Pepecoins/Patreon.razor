@@ -31,7 +31,15 @@
                     <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon1", "Account")</label>
 
                     <div>
-                        <a href="/patreon">https://pepeizqdeals.com/patreon</a>
+                        @{
+                            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                            string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+
+                            if (string.IsNullOrEmpty(patreonEnlace) == false)
+                            {
+                                <a href="@patreonEnlace" target="_blank">@patreonEnlace</a>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -52,7 +60,15 @@
                         <label style="text-align: left; width: 100%;">@Herramientas.Idiomas.BuscarTexto(idioma, "Patreon2", "Account")</label>
 
                         <div>
-                            <a href="/patreon">https://pepeizqdeals.com/patreon</a>
+                            @{
+                                WebApplicationBuilder builder = WebApplication.CreateBuilder();
+                                string? patreonEnlace = builder.Configuration.GetValue<string>("RedesSociales:Patreon");
+
+                                if (string.IsNullOrEmpty(patreonEnlace) == false)
+                                {
+                                    <a href="@patreonEnlace" target="_blank">@patreonEnlace</a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

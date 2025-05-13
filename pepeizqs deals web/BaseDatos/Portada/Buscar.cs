@@ -30,8 +30,7 @@ namespace BaseDatos.Portada
 									WHERE ultimaModificacion >= DATEADD(day, -3, GETDATE()) AND JSON_PATH_EXISTS(analisis, '$.Cantidad') > 0 AND 
 									CONVERT(bigint, REPLACE(JSON_VALUE(analisis, '$.Cantidad'),',','')) > 99 AND 
 									((mayorEdad IS NOT NULL AND mayorEdad = 'false') OR (mayorEdad IS NULL)) AND 
-									(freeToPlay = 'false' OR freeToPlay IS NULL) AND
-									JSON_VALUE(precioMinimosHistoricos, '$[0].Descuento') > 9";
+									(freeToPlay = 'false' OR freeToPlay IS NULL)";
 
 				using (SqlCommand comando = new SqlCommand(busqueda, conexion))
 				{

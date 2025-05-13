@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <None Remove="Areas\Identity\Data\xfm50tic.hpc~" />
+    <None Remove="Herramientas\Tooltip.cs~RF262a14a.TMP" />
     <None Remove="Idiomas\Footer\cubo0ri2.kfw~" />
     <None Remove="Idiomas\PatreonStore\fr.json~RF31997ca.TMP" />
     <None Remove="Pages\Componentes\Admin\Juego.razor~RF299ad35.TMP" />
