@@ -31,8 +31,19 @@
 	ViewData["Title"] = Model.juego.Nombre;
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	@(await Html.RenderComponentAsync<Componentes.Secciones.Juego>(RenderMode.ServerPrerendered, new { 
-		idioma = idioma, 
-		juego = Model.juego 
-	}))
+	string userAgent = string.Empty;
+
+	if (HttpContext != null)
+	{
+		userAgent = HttpContext.Request.Headers.UserAgent;
+	}
+
+	if (Herramientas.RobotsUserAgents.EsBotVerificado(userAgent) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Juego)" render-mode="ServerPrerendered" param-idioma="idioma" param-juego="Model.juego" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-userAgent="userAgent" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Juego)" render-mode="Server" param-idioma="idioma" param-juego="Model.juego" param-usuarioId="usuario?.Id" param-usuarioLogeado="usuarioLogeado" param-userAgent="userAgent" />
+	}
 }

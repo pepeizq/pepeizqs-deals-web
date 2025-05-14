@@ -313,7 +313,7 @@ builder.Services.AddApexCharts(e =>
 	e.GlobalOptions = new ApexChartBaseOptions
 	{
 		Debug = false,
-		Theme = new Theme { 
+		Theme = new ApexCharts.Theme { 
 			Palette = PaletteType.Palette2,
 			Mode = Mode.Dark
 		}

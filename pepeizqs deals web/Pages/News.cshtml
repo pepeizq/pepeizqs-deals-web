@@ -47,5 +47,12 @@
 		}
 	}
 
-	<component type="typeof(Componentes.Secciones.Noticia)" render-mode="ServerPrerendered" param-idioma="idioma" param-noticiaId="Model.noticia.Id" param-usuarioId="usuario?.Id" />
+	if (Herramientas.RobotsUserAgents.EsBotVerificado(HttpContext.Request.Headers.UserAgent.ToString()) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Noticia)" render-mode="ServerPrerendered" param-idioma="idioma" param-noticiaId="Model.noticia.Id" param-usuarioId="usuario?.Id" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Noticia)" render-mode="Server" param-idioma="idioma" param-noticiaId="Model.noticia.Id" param-usuarioId="usuario?.Id" />
+	}
 }

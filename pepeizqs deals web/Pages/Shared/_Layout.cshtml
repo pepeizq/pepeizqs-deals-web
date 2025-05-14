@@ -179,7 +179,14 @@
     <header class="cabecera">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm cuerpo-ancho" style="padding: 0px;">
             <div class="cabecera-poner">
-                 <component type="typeof(Componentes.Interfaz.Cabecera)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuario="usuario" param-usuarioLogeado="usuarioLogeado" param-ubicacionEnlace="Context.Request.Path.ToString()"/>
+                @if (Herramientas.RobotsUserAgents.EsBotVerificado(Context.Request.Headers.UserAgent.ToString()) == true)
+	            {
+		            <component type="typeof(Componentes.Interfaz.Cabecera)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuario="usuario" param-usuarioLogeado="usuarioLogeado" param-ubicacionEnlace="Context.Request.Path.ToString()"/>
+	            }
+	            else
+	            {
+		            <component type="typeof(Componentes.Interfaz.Cabecera)" render-mode="Server" param-idioma="idioma" param-usuario="usuario" param-usuarioLogeado="usuarioLogeado" param-ubicacionEnlace="Context.Request.Path.ToString()"/>
+	            }
             </div>
         </nav>
     </header>

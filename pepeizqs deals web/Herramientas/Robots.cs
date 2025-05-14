@@ -33,7 +33,8 @@ namespace Herramientas
 			"Discordbot",
 			"Lighthouse",
 			"Chrome-Lighthouse",
-			"SeznamBot"];
+			"SeznamBot",
+			"Ecosia"];
 
 		public static bool EsBotVerificado(string userAgent)
 		{

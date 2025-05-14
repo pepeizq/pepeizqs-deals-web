@@ -29,5 +29,12 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Contact");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-    <component type="typeof(Componentes.Secciones.Contacto)" render-mode="ServerPrerendered" param-idioma="idioma" />
+    if (Herramientas.RobotsUserAgents.EsBotVerificado(HttpContext.Request.Headers.UserAgent.ToString()) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Contacto)" render-mode="ServerPrerendered" param-idioma="idioma" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Contacto)" render-mode="Server" param-idioma="idioma" />
+	}
 }

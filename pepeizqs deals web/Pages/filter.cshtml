@@ -31,5 +31,12 @@
 	ViewData["Title"] = Herramientas.Idiomas.BuscarTexto(idioma, "Title", "Filter");
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Filtro)" render-mode="ServerPrerendered" param-idioma="idioma" param-ids="Model?.ids" param-usuarioId="usuario?.Id" />
+	if (Herramientas.RobotsUserAgents.EsBotVerificado(HttpContext.Request.Headers.UserAgent.ToString()) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Filtro)" render-mode="ServerPrerendered" param-idioma="idioma" param-ids="Model?.ids" param-usuarioId="usuario?.Id" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Filtro)" render-mode="Server" param-idioma="idioma" param-ids="Model?.ids" param-usuarioId="usuario?.Id" />
+	}
 }

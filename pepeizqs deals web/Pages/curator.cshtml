@@ -32,5 +32,12 @@
 	ViewData["Title"] = Model.curator.Nombre + " (Curator)";
 	Layout = "/Pages/Shared/_Layout.cshtml";
 
-	<component type="typeof(Componentes.Secciones.Curator)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorIdSteam="Model.curator.IdSteam" />
+	if (Herramientas.RobotsUserAgents.EsBotVerificado(HttpContext.Request.Headers.UserAgent.ToString()) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Curator)" render-mode="ServerPrerendered" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorIdSteam="Model.curator.IdSteam" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Curator)" render-mode="Server" param-idioma="idioma" param-usuarioId="usuario?.Id" param-curatorIdSteam="Model.curator.IdSteam" />
+	}
 }

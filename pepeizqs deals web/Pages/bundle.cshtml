@@ -49,5 +49,12 @@
 		}
 	}
 
-	<component type="typeof(Componentes.Secciones.Bundle)" render-mode="ServerPrerendered" param-idioma="idioma" param-bundleId="Model.bundle.Id" param-usuarioId="usuario?.Id" />
+	if (Herramientas.RobotsUserAgents.EsBotVerificado(HttpContext.Request.Headers.UserAgent.ToString()) == true)
+	{
+		<component type="typeof(Componentes.Secciones.Bundle)" render-mode="ServerPrerendered" param-idioma="idioma" param-bundleId="Model.bundle.Id" param-usuarioId="usuario?.Id" />
+	}
+	else
+	{
+		<component type="typeof(Componentes.Secciones.Bundle)" render-mode="Server" param-idioma="idioma" param-bundleId="Model.bundle.Id" param-usuarioId="usuario?.Id" />
+	}
 }
